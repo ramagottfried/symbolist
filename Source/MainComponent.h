@@ -8,7 +8,8 @@
 
 #pragma once
 
-#include "ShapeComponents.h"
+#include "../JuceLibraryCode/JuceHeader.h"
+#include "Score.h"
 
 
 //==============================================================================
@@ -25,21 +26,11 @@ public:
 
     void paint (Graphics&) override;
     void resized() override;
-    
-    void mouseEnter( const MouseEvent& event ) override;
-    void mouseMove( const MouseEvent& event ) override;
-    void mouseDown( const MouseEvent& event ) override;
-    void mouseDrag( const MouseEvent& event ) override;
-    void mouseUp( const MouseEvent& event ) override;
-    void mouseExit( const MouseEvent& event ) override;
-    
+
 private:
     
-    CircleComponent m_circle;
-    LineComponent m_line;
-    
-    Point<float> m_down;
-    
+    ScoreComponent score;
+        
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };

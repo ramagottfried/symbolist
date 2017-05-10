@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="fABNre" name="symbolist" displaySplashScreen="1" reportAppUsage="1"
-              splashScreenColour="Dark" projectType="dll" version="1.0.0" bundleIdentifier="com.yourcompany.symbolist"
+              splashScreenColour="Dark" projectType="dll" version="1.0.0" bundleIdentifier="rama.jean.symbolist"
               includeBinaryInAppConfig="1" jucerVersion="5.0.1">
   <MAINGROUP id="pdlQg6" name="symbolist">
-    <GROUP id="{728672E2-ED9C-7932-7CB1-C5262BF70CDE}" name="Source"/>
+    <GROUP id="{728672E2-ED9C-7932-7CB1-C5262BF70CDE}" name="Source">
+      <GROUP id="{B9D663E2-6242-11E5-C283-15107E9AE566}" name="gui-window">
+        <FILE id="I0QwDL" name="MainComponent.hpp" compile="0" resource="0"
+              file="Source/MainComponent.hpp"/>
+        <FILE id="hrEhfY" name="MainWindow.hpp" compile="0" resource="0" file="Source/MainWindow.hpp"/>
+        <FILE id="jHL1YT" name="ShapeComponents.hpp" compile="0" resource="0"
+              file="Source/ShapeComponents.hpp"/>
+        <FILE id="dYLGqs" name="MainComponent.cpp" compile="1" resource="0"
+              file="Source/MainComponent.cpp"/>
+        <FILE id="GQ7OG9" name="MainWindow.cpp" compile="1" resource="0" file="Source/MainWindow.cpp"/>
+      </GROUP>
+      <GROUP id="{7451AA22-B70F-241D-826E-675E2B940080}" name="test-app">
+        <FILE id="oaLPAt" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      </GROUP>
+      <FILE id="m5kicP" name="symbolist.cpp" compile="1" resource="0" file="Source/symbolist.cpp"/>
+      <FILE id="J3gW8l" name="symbolist.hpp" compile="0" resource="0" file="Source/symbolist.hpp"/>
+    </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds_LOCAL/MacOSX">

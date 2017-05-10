@@ -7,6 +7,7 @@
  */
 /***************************************************/
 #include "symbolist.hpp"
+#include "MainWindow.hpp"
 
 
 int symbolistInit() {
@@ -15,6 +16,13 @@ int symbolistInit() {
 
 int symbolistExit() {
     return 1; // went ok
+}
+
+int symbolistTest() {
+    
+    MainWindow *w = new MainWindow("test");
+    return 1; // went ok
+
 }
 
 const char* symbolistInfo() {

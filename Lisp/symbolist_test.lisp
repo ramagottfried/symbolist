@@ -5,7 +5,7 @@
 (in-package :cl-user)
 
 ;;; load CFFI
-(load (merge-pathnames "ffi/load-cffi" *load-pathname*))
+;(load (merge-pathnames "ffi/load-cffi" *load-pathname*))
 
 ;;; link the C library
 (fli:register-module 
@@ -26,7 +26,7 @@
 (defun symbolist-test ()
   (symbolist::symbolistInit)
   (print (symbolist::symbolistInfo))
-  (symbolist::symbolistExit))
+  (symbolist::symbolistTest))
 
 ;; (symbolist-test)
 

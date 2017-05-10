@@ -9,5 +9,6 @@
 (cffi:defcfun ("symbolistInit" symbolistInit) :int)
 (cffi:defcfun ("symbolistExit" symbolistExit) :int)
 (cffi:defcfun ("symbolistInfo" symbolistInfo) :string)
+(cffi:defcfun ("symbolistTest" symbolistTest) :int)
 
 

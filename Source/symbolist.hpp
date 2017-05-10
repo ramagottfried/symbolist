@@ -27,8 +27,10 @@
 
 SYMBOLIST_API int symbolistInit();
 SYMBOLIST_API int symbolistExit();
+
 SYMBOLIST_API const char* symbolistInfo();
-SYMBOLIST_API int symbolistTest();
+
+SYMBOLIST_API void *symbolistTest();
 
 
 #endif /* symbolist_hpp */

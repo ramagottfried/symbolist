@@ -7,7 +7,7 @@
  */
 /***************************************************/
 #include "symbolist.hpp"
-#include "MainWindow.hpp"
+#include "MainWindow.h"
 
 
 int symbolistInit() {
@@ -18,10 +18,10 @@ int symbolistExit() {
     return 1; // went ok
 }
 
-int symbolistTest() {
+void *symbolistTest() {
     
     MainWindow *w = new MainWindow("test");
-    return 1; // went ok
+    return w; // went ok
 
 }
 

@@ -7,18 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		11CE00261EC3271700E4F624 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00251EC3271700E4F624 /* AppDelegate.m */; };
-		11CE00281EC3271700E4F624 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00271EC3271700E4F624 /* main.m */; };
-		11CE002B1EC3271700E4F624 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CE002A1EC3271700E4F624 /* ViewController.m */; };
-		11CE002D1EC3271700E4F624 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11CE002C1EC3271700E4F624 /* Images.xcassets */; };
-		11CE00301EC3271700E4F624 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11CE002E1EC3271700E4F624 /* Main.storyboard */; };
-		11CE00521EC328DE00E4F624 /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00511EC328DE00E4F624 /* Main.cpp */; };
 		11CE00571EC328EC00E4F624 /* MainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00531EC328EC00E4F624 /* MainComponent.cpp */; };
 		11CE00581EC328EC00E4F624 /* MainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00531EC328EC00E4F624 /* MainComponent.cpp */; };
 		27D1022754DD8B9BF3100BB7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A18855981466E65AB497B9D /* QuartzCore.framework */; };
 		41C3942D9A94933B560F98F2 /* include_juce_gui_basics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFC6EDE4A457A367163EEE /* include_juce_gui_basics.mm */; };
 		43C388A942D2F5ACD2A53FB6 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 981D2B1E1F9131A715FECA14 /* WebKit.framework */; };
+		446388CF1EC34B310038CFCB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26C36CB1C5754D666DE2579C /* Cocoa.framework */; };
+		446388D01EC34B3E0038CFCB /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87F9A8E8F628CFBD00805519 /* Carbon.framework */; };
+		446388D11EC34B7A0038CFCB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A18855981466E65AB497B9D /* QuartzCore.framework */; };
+		446388D21EC34B840038CFCB /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 981D2B1E1F9131A715FECA14 /* WebKit.framework */; };
+		446388D31EC34B980038CFCB /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 938CD7E1345066F383D85CAB /* IOKit.framework */; };
+		446388D51EC34DC90038CFCB /* MainWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 446388D41EC34DC90038CFCB /* MainWindow.cpp */; };
 		44A3C1EE1EC317BE00C4AD14 /* symbolist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */; };
+		44CFE0391EC377EA009135F8 /* MainWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 446388D41EC34DC90038CFCB /* MainWindow.cpp */; };
+		44CFE03A1EC3789C009135F8 /* include_juce_core.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3FAB00DCF22EB4922567B583 /* include_juce_core.mm */; };
+		44CFE03B1EC3789C009135F8 /* include_juce_data_structures.mm in Sources */ = {isa = PBXBuildFile; fileRef = B5F75CE38D2D3A7CD56C4F40 /* include_juce_data_structures.mm */; };
+		44CFE03C1EC3789C009135F8 /* include_juce_events.mm in Sources */ = {isa = PBXBuildFile; fileRef = C69F3680012FCE60A205EF05 /* include_juce_events.mm */; };
+		44CFE03D1EC3789C009135F8 /* include_juce_graphics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 853ACA2E570BAA4D86EE11C0 /* include_juce_graphics.mm */; };
+		44CFE03E1EC3789C009135F8 /* include_juce_gui_basics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFC6EDE4A457A367163EEE /* include_juce_gui_basics.mm */; };
+		44CFE03F1EC3789C009135F8 /* include_juce_gui_extra.mm in Sources */ = {isa = PBXBuildFile; fileRef = 48794DC1DC8CDA7359E3681F /* include_juce_gui_extra.mm */; };
+		44EE9BBE1EC37D3E0021C5A8 /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00511EC328DE00E4F624 /* Main.cpp */; };
 		52B193FE560B5C8022529FF5 /* include_juce_data_structures.mm in Sources */ = {isa = PBXBuildFile; fileRef = B5F75CE38D2D3A7CD56C4F40 /* include_juce_data_structures.mm */; };
 		6547753639FBD52E4D188A43 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87F9A8E8F628CFBD00805519 /* Carbon.framework */; };
 		8D57C4E2ADEA2935AAB91AAC /* include_juce_graphics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 853ACA2E570BAA4D86EE11C0 /* include_juce_graphics.mm */; };
@@ -32,21 +40,8 @@
 
 /* Begin PBXFileReference section */
 		11CE00201EC3271700E4F624 /* symbolist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = symbolist.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		11CE00231EC3271700E4F624 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		11CE00241EC3271700E4F624 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		11CE00251EC3271700E4F624 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		11CE00271EC3271700E4F624 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		11CE00291EC3271700E4F624 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		11CE002A1EC3271700E4F624 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		11CE002C1EC3271700E4F624 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		11CE002F1EC3271700E4F624 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		11CE003A1EC3271700E4F624 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		11CE003B1EC3271700E4F624 /* symbolistTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = symbolistTests.m; sourceTree = "<group>"; };
 		11CE00511EC328DE00E4F624 /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Main.cpp; path = ../../Source/Main.cpp; sourceTree = "<group>"; };
 		11CE00531EC328EC00E4F624 /* MainComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainComponent.cpp; path = ../../Source/MainComponent.cpp; sourceTree = "<group>"; };
-		11CE00541EC328EC00E4F624 /* MainComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainComponent.h; path = ../../Source/MainComponent.h; sourceTree = "<group>"; };
-		11CE00551EC328EC00E4F624 /* MainWindow.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = MainWindow.hpp; path = ../../Source/MainWindow.hpp; sourceTree = "<group>"; };
-		11CE00561EC328EC00E4F624 /* ShapeComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShapeComponents.h; path = ../../Source/ShapeComponents.h; sourceTree = "<group>"; };
 		1345DFF5C1163A6CDA99FFDC /* JuceHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JuceHeader.h; path = ../../JuceLibraryCode/JuceHeader.h; sourceTree = SOURCE_ROOT; };
 		1FFFC6EDE4A457A367163EEE /* include_juce_gui_basics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_gui_basics.mm; path = ../../JuceLibraryCode/include_juce_gui_basics.mm; sourceTree = SOURCE_ROOT; };
 		26C36CB1C5754D666DE2579C /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -54,8 +49,12 @@
 		31AA60335333AFCFC2C433D3 /* symbolist.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = symbolist.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		34B8AF3D31715BC6E31E4944 /* juce_data_structures */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_data_structures; path = ../../../JUCE/modules/juce_data_structures; sourceTree = SOURCE_ROOT; };
 		3FAB00DCF22EB4922567B583 /* include_juce_core.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_core.mm; path = ../../JuceLibraryCode/include_juce_core.mm; sourceTree = SOURCE_ROOT; };
+		446388D41EC34DC90038CFCB /* MainWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainWindow.cpp; path = ../../Source/MainWindow.cpp; sourceTree = "<group>"; };
 		44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = symbolist.cpp; path = ../../Source/symbolist.cpp; sourceTree = "<group>"; };
 		44A3C1ED1EC317BE00C4AD14 /* symbolist.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = symbolist.hpp; path = ../../Source/symbolist.hpp; sourceTree = "<group>"; };
+		44CFE0411EC37BA5009135F8 /* MainComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainComponent.h; path = ../../Source/MainComponent.h; sourceTree = "<group>"; };
+		44CFE0421EC37BA5009135F8 /* MainWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainWindow.h; path = ../../Source/MainWindow.h; sourceTree = "<group>"; };
+		44CFE0431EC37BA5009135F8 /* ShapeComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShapeComponents.h; path = ../../Source/ShapeComponents.h; sourceTree = "<group>"; };
 		48794DC1DC8CDA7359E3681F /* include_juce_gui_extra.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_gui_extra.mm; path = ../../JuceLibraryCode/include_juce_gui_extra.mm; sourceTree = SOURCE_ROOT; };
 		4A18855981466E65AB497B9D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		5B4BF2AC43CE9859FE07665E /* RecentFilesMenuTemplate.nib */ = {isa = PBXFileReference; lastKnownFileType = file.nib; path = RecentFilesMenuTemplate.nib; sourceTree = SOURCE_ROOT; };
@@ -77,6 +76,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				446388D31EC34B980038CFCB /* IOKit.framework in Frameworks */,
+				446388D21EC34B840038CFCB /* WebKit.framework in Frameworks */,
+				446388D11EC34B7A0038CFCB /* QuartzCore.framework in Frameworks */,
+				446388D01EC34B3E0038CFCB /* Carbon.framework in Frameworks */,
+				446388CF1EC34B310038CFCB /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,52 +117,13 @@
 		11CE00151EC3231E00E4F624 /* gui-window */ = {
 			isa = PBXGroup;
 			children = (
+				44CFE0411EC37BA5009135F8 /* MainComponent.h */,
+				44CFE0421EC37BA5009135F8 /* MainWindow.h */,
+				44CFE0431EC37BA5009135F8 /* ShapeComponents.h */,
+				446388D41EC34DC90038CFCB /* MainWindow.cpp */,
 				11CE00531EC328EC00E4F624 /* MainComponent.cpp */,
-				11CE00541EC328EC00E4F624 /* MainComponent.h */,
-				11CE00551EC328EC00E4F624 /* MainWindow.hpp */,
-				11CE00561EC328EC00E4F624 /* ShapeComponents.h */,
 			);
 			name = "gui-window";
-			sourceTree = "<group>";
-		};
-		11CE00211EC3271700E4F624 /* symbolist */ = {
-			isa = PBXGroup;
-			children = (
-				11CE00241EC3271700E4F624 /* AppDelegate.h */,
-				11CE00251EC3271700E4F624 /* AppDelegate.m */,
-				11CE00291EC3271700E4F624 /* ViewController.h */,
-				11CE002A1EC3271700E4F624 /* ViewController.m */,
-				11CE002C1EC3271700E4F624 /* Images.xcassets */,
-				11CE002E1EC3271700E4F624 /* Main.storyboard */,
-				11CE00221EC3271700E4F624 /* Supporting Files */,
-			);
-			path = symbolist;
-			sourceTree = "<group>";
-		};
-		11CE00221EC3271700E4F624 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				11CE00231EC3271700E4F624 /* Info.plist */,
-				11CE00271EC3271700E4F624 /* main.m */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		11CE00381EC3271700E4F624 /* symbolistTests */ = {
-			isa = PBXGroup;
-			children = (
-				11CE003B1EC3271700E4F624 /* symbolistTests.m */,
-				11CE00391EC3271700E4F624 /* Supporting Files */,
-			);
-			path = symbolistTests;
-			sourceTree = "<group>";
-		};
-		11CE00391EC3271700E4F624 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				11CE003A1EC3271700E4F624 /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		11CE00431EC3275500E4F624 /* test-app */ = {
@@ -184,8 +149,6 @@
 				94B8138ECA97E6DE808F6129 /* Juce Modules */,
 				0B36EDC8D7DFF8BAF3E150D2 /* Juce Library Code */,
 				7D07A1619BB37DE0267F74A0 /* Resources */,
-				11CE00211EC3271700E4F624 /* symbolist */,
-				11CE00381EC3271700E4F624 /* symbolistTests */,
 				A7E24EB545247497BBEC11FC /* Frameworks */,
 				DC261286FA49DEA35B3EC90D /* Products */,
 			);
@@ -218,8 +181,8 @@
 			children = (
 				11CE00431EC3275500E4F624 /* test-app */,
 				11CE00151EC3231E00E4F624 /* gui-window */,
-				44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */,
 				44A3C1ED1EC317BE00C4AD14 /* symbolist.hpp */,
+				44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -318,8 +281,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11CE002D1EC3271700E4F624 /* Images.xcassets in Resources */,
-				11CE00301EC3271700E4F624 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,11 +299,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11CE002B1EC3271700E4F624 /* ViewController.m in Sources */,
-				11CE00281EC3271700E4F624 /* main.m in Sources */,
-				11CE00521EC328DE00E4F624 /* Main.cpp in Sources */,
+				44EE9BBE1EC37D3E0021C5A8 /* Main.cpp in Sources */,
+				44CFE03D1EC3789C009135F8 /* include_juce_graphics.mm in Sources */,
 				11CE00581EC328EC00E4F624 /* MainComponent.cpp in Sources */,
-				11CE00261EC3271700E4F624 /* AppDelegate.m in Sources */,
+				44CFE03A1EC3789C009135F8 /* include_juce_core.mm in Sources */,
+				44CFE03F1EC3789C009135F8 /* include_juce_gui_extra.mm in Sources */,
+				44CFE03C1EC3789C009135F8 /* include_juce_events.mm in Sources */,
+				44CFE03E1EC3789C009135F8 /* include_juce_gui_basics.mm in Sources */,
+				44CFE03B1EC3789C009135F8 /* include_juce_data_structures.mm in Sources */,
+				44CFE0391EC377EA009135F8 /* MainWindow.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -354,6 +319,7 @@
 				52B193FE560B5C8022529FF5 /* include_juce_data_structures.mm in Sources */,
 				11CE00571EC328EC00E4F624 /* MainComponent.cpp in Sources */,
 				ECAB07494F266A96C75A7E47 /* include_juce_events.mm in Sources */,
+				446388D51EC34DC90038CFCB /* MainWindow.cpp in Sources */,
 				8D57C4E2ADEA2935AAB91AAC /* include_juce_graphics.mm in Sources */,
 				41C3942D9A94933B560F98F2 /* include_juce_gui_basics.mm in Sources */,
 				F94D2D6E7B944172DB771A09 /* include_juce_gui_extra.mm in Sources */,
@@ -363,17 +329,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXVariantGroup section */
-		11CE002E1EC3271700E4F624 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				11CE002F1EC3271700E4F624 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		11CE003E1EC3271700E4F624 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -382,7 +337,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
@@ -416,7 +371,7 @@
 					../../JuceLibraryCode,
 					../../../JUCE/modules,
 				);
-				INFOPLIST_FILE = symbolist/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -432,7 +387,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
@@ -461,7 +416,7 @@
 					../../JuceLibraryCode,
 					../../../JUCE/modules,
 				);
-				INFOPLIST_FILE = symbolist/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -599,6 +554,7 @@
 				11CE003F1EC3271700E4F624 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
 		};
 		1DD3065431DE8DDDE730383D /* Build configuration list for PBXProject "symbolist" */ = {
 			isa = XCConfigurationList;

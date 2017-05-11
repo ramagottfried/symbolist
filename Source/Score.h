@@ -39,13 +39,19 @@ public:
          */
     }
     
+    void addChildComponentOSC( Component *c )
+    {
+        addAndMakeVisible ( c );
+        // add to score here
+    }
+    
     void mouseDown ( const MouseEvent& event ) override
     {
         
         if ( event.mods.isShiftDown() )
         {
             CircleComponent *circle = new CircleComponent( event.position.getX(), event.position.getY(), 100 );
-            addAndMakeVisible ( circle );
+            addChildComponentOSC ( circle );
             circle->addMouseListener(this, false);
             score_stack.emplace_back ( circle );
         }
@@ -57,7 +63,7 @@ public:
     void mouseDrag ( const MouseEvent& event ) override
     {
         
-        if( event.eventComponent->getComponentID() == "Circle" )
+        if( event.eventComponent != this )
         {
             MouseEvent scoreEvent = event.getEventRelativeTo(this);
             

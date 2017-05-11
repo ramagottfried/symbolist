@@ -3,16 +3,20 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-
 class BaseComponent : public Component
 {
 public:
     BaseComponent(){}
     ~BaseComponent(){}
     
+    inline void attachScore(Component *s){ the_score = s; };
+    inline Component *getScore(){ return the_score; };
+
+    
     // add osc score w/r here?
     
 private:
+    Component *the_score;
     void *oscbundle;
     
     //==============================================================================

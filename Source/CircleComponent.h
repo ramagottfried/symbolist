@@ -38,6 +38,10 @@ private:
     float m_diameter = 10;
     Colour m_color = Colours::black;
     
+    Point<float> m_down;
+    Rectangle<int> m_bounds;
+
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CircleComponent)
 };

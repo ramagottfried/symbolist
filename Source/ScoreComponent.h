@@ -16,11 +16,13 @@ public:
     void mouseDown ( const MouseEvent& event ) override;
     void mouseDrag ( const MouseEvent& event ) override;
     
-    void addChildComponentOSC( Component *c );
+    void addChildComponentOSC( BaseComponent *c );
+    
+    inline Point<float> getScoreMouseDown(){ return m_down; }
     
 private:
     Point<float> m_down;
-    std::vector<Component *> score_stack;
+    std::vector<BaseComponent *> score_stack;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScoreComponent)

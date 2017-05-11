@@ -48,13 +48,14 @@
 #define JUCE_MODULE_AVAILABLE_juce_graphics             1
 #define JUCE_MODULE_AVAILABLE_juce_gui_basics           1
 #define JUCE_MODULE_AVAILABLE_juce_gui_extra            1
+#define JUCE_MODULE_AVAILABLE_juce_osc                  1
 
 //==============================================================================
 #ifndef    JUCE_STANDALONE_APPLICATION
  #if defined(JucePlugin_Name) && defined(JucePlugin_Build_Standalone)
   #define  JUCE_STANDALONE_APPLICATION JucePlugin_Build_Standalone
  #else
-  #define  JUCE_STANDALONE_APPLICATION 1
+  #define  JUCE_STANDALONE_APPLICATION 0
  #endif
 #endif
 

@@ -1,5 +1,6 @@
 Builds_LOCAL/
 intermediate/
+Builds/MacOSX/build/
 *.xcuserstate
 *~
 *.dylib

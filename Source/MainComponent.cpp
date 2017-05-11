@@ -5,8 +5,8 @@
 //==============================================================================
 MainContentComponent::MainContentComponent()
 {
-    addAndMakeVisible(score);
     setSize (600, 400);
+    addAndMakeVisible(score);
 }
 
 MainContentComponent::~MainContentComponent()

@@ -10,7 +10,7 @@ public:
     ~BaseComponenet(){}
     
 private:
-    void *osc;
+    void *oscbundle;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BaseComponenet)
@@ -26,7 +26,17 @@ public:
         setComponentID ( "Circle" );
     }
 
+    CircleComponent( float x, float y, float diameter )
+    {
+        std::cout << "new\n";
+        setComponentID ( "Circle" );
+        setBounds ( x, y, diameter, diameter );
+        m_diameter = diameter;
+
+    }
+    
     ~CircleComponent(){}
+    
     
     void paint ( Graphics& g ) override
     {
@@ -37,11 +47,18 @@ public:
         g.drawEllipse ( bounds, (float) m_strokeWeight );
     }
     
+    void moved () override
+    {
+        m_pos = getPosition().toFloat();
+        // push to score here?
+        
+//        std::cout << m_pos.getX() << " " << m_pos.getY() << "\n";
+    }
+    
     virtual void mouseDoubleClick (const MouseEvent& event) override
     {
         printf("2x click");
     }
-    
     
     void mouseEnter( const MouseEvent& event ) override
     {
@@ -51,7 +68,6 @@ public:
     
     void mouseMove( const MouseEvent& event ) override
     {
-     //   printf ( "circle %s at %f %f\n", __func__, event.position.getX(), event.position.getY() );
     }
     
     void mouseDown( const MouseEvent& event ) override
@@ -68,13 +84,36 @@ public:
         repaint();
     }
     
+    int getStrokeWeightFromScore()
+    {
+        return m_strokeWeight;
+    }
+
+    
+    Point<float> getPositionFromScore()
+    {
+        // the shape has a position set by the parent via setBounds, we can access it here also via getPosition
+        // however, this should querry the score actually
+        
+        return m_pos;
+    }
+    
+    float getDiameter()
+    {
+        return m_diameter;
+    }
+    
+    
 private:
+    Point<float> m_pos;
+    
     int m_strokeWeight = 2;
-    float m_radius = 10;
+    float m_diameter = 10;
     Colour m_color = Colours::black;
     
-    std::function<void ( const MouseEvent& event )> m_callback;
-
+    
+    // all parameters that might be used for performance should be stored in the score,
+    // separate from the graphic component class
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CircleComponent)

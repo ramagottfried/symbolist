@@ -9,13 +9,14 @@ class ScoreComponent : public Component
 public:
     ScoreComponent()
     {
-        addMouseListener(this, true);
-        addAndMakeVisible (circle);
-        addAndMakeVisible (line);
     }
     
     ~ScoreComponent()
     {
+        for ( int i = 0; i < score_stack.size(); i++ )
+        {
+           delete score_stack[i];
+        }
     }
     
     void paint (Graphics& g) override
@@ -29,21 +30,28 @@ public:
     
     void mouseMove ( const MouseEvent& event ) override
     {
+        /*
         std::cout << event.eventComponent->getComponentID() << "\n" ;
 
         MouseEvent scoreEvent = event.getEventRelativeTo(this);
         
         printf ( "score move at %f %f\n", scoreEvent.position.getX(), scoreEvent.position.getY() );
+         */
     }
     
     void mouseDown ( const MouseEvent& event ) override
     {
-        m_down = event.position;
         
         if ( event.mods.isShiftDown() )
         {
-            circle.setBounds ( m_down.getX(), m_down.getY(), 100, 100 );
+            CircleComponent *circle = new CircleComponent( event.position.getX(), event.position.getY(), 100 );
+            addAndMakeVisible ( circle );
+            circle->addMouseListener(this, false);
+            score_stack.emplace_back ( circle );
         }
+        else
+            m_down = event.position;
+        
     }
 
     void mouseDrag ( const MouseEvent& event ) override
@@ -52,8 +60,13 @@ public:
         if( event.eventComponent->getComponentID() == "Circle" )
         {
             MouseEvent scoreEvent = event.getEventRelativeTo(this);
+            
             Rectangle<int> bounds = event.eventComponent->getBounds();
-            event.eventComponent->setBounds ( scoreEvent.getPosition().getX(), scoreEvent.getPosition().getY(), bounds.getWidth(), bounds.getHeight() );
+            
+            event.eventComponent->setBounds (   scoreEvent.getPosition().getX() - m_down.getX(),
+                                                scoreEvent.getPosition().getY() - m_down.getY(),
+                                                bounds.getWidth(),
+                                                bounds.getHeight() );
             
         }
 
@@ -61,8 +74,7 @@ public:
 
 private:
     Point<float> m_down;
-    CircleComponent circle;
-    LineComponent line;
+    std::vector<Component *> score_stack;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScoreComponent)

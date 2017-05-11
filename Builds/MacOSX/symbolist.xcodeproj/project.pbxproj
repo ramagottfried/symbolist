@@ -115,7 +115,7 @@
 			name = "Juce Library Code";
 			sourceTree = "<group>";
 		};
-		11CE00151EC3231E00E4F624 /* gui-window */ = {
+		11CE00151EC3231E00E4F624 /* core */ = {
 			isa = PBXGroup;
 			children = (
 				11CE005B1EC3B9FF00E4F624 /* Shapes.h */,
@@ -125,7 +125,7 @@
 				446388D41EC34DC90038CFCB /* MainWindow.cpp */,
 				44CFE0421EC37BA5009135F8 /* MainWindow.h */,
 			);
-			name = "gui-window";
+			name = core;
 			sourceTree = "<group>";
 		};
 		11CE00431EC3275500E4F624 /* test-app */ = {
@@ -182,7 +182,7 @@
 			isa = PBXGroup;
 			children = (
 				11CE00431EC3275500E4F624 /* test-app */,
-				11CE00151EC3231E00E4F624 /* gui-window */,
+				11CE00151EC3231E00E4F624 /* core */,
 				44A3C1ED1EC317BE00C4AD14 /* symbolist.hpp */,
 				44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */,
 			);

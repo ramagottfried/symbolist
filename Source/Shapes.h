@@ -26,9 +26,8 @@ public:
         setComponentID ( "Circle" );
     }
 
-    CircleComponent( float x, float y, float diameter )
+    CircleComponent( float x, float y, float diameter = 10 )
     {
-        std::cout << "new\n";
         setComponentID ( "Circle" );
         setBounds ( x, y, diameter, diameter );
         m_diameter = diameter;
@@ -62,7 +61,7 @@ public:
     
     void mouseEnter( const MouseEvent& event ) override
     {
-        m_color = Colours::darkmagenta;
+        m_color = Colours::hotpink;
         repaint();
     }
     

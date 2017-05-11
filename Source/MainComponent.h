@@ -9,7 +9,7 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "Score.h"
+#include "ScoreComponent.h"
 
 
 //==============================================================================

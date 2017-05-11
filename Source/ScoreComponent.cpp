@@ -48,14 +48,6 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
         circle->addMouseListener(this, false);
         score_stack.emplace_back ( circle );
     }
-    else if ( event.mods.isAltDown() )
-    {
-        if( event.eventComponent != this )
-        {
-            ;
-        }
-
-    }
     else
         m_down = event.position;
     

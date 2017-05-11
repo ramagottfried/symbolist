@@ -1,8 +1,7 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "Shapes.h"
-
+#include "PrimitiveIncludes.h"
 
 class ScoreComponent : public Component
 {

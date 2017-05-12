@@ -6,15 +6,19 @@
 
 class MainWindow : public DocumentWindow {
     
-    public:
-    
-    MainWindow ( String name, Score& s );
+public:
+
+    MainWindow ( Score *s );
+    MainWindow ();
+
     ~MainWindow ();
-    
+
     void closeButtonPressed() override;
-    
-    private:
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow)
+
+private:
+    Score *score;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow)
 
 };
 

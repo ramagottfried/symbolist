@@ -35,13 +35,13 @@ private:
 
 class System
 {
+public:
     System(){};
     System( t_rect rect )
     {
         m_rect = rect;
     };
     
-public:
     void addStave(Stave& stave)
     {
         m_stave.emplace_back(stave);
@@ -56,7 +56,13 @@ private:
 
 class Score
 {
+public:
     Score(){};
+    Score( int n, void *bundle_array )
+    {
+        ;
+    };
+    
     ~Score()
     {
         for ( int i = 0; i < m_system.size(); i++ )
@@ -65,8 +71,6 @@ class Score
         }
     }
     
-    
-public:
     void addSystem(System *system)
     {
         m_system.emplace_back(system);

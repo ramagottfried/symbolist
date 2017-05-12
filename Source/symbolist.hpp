@@ -24,13 +24,12 @@
 
 #define SYMBOLIST_API SYMBOLIST_C_EXPORTS SYMBOLIST_VISIBILITY_DEFAULT
 
+SYMBOLIST_API const char* symbolistInfo();
 
 SYMBOLIST_API int symbolistInit();
 SYMBOLIST_API int symbolistExit();
 
-SYMBOLIST_API const char* symbolistInfo();
-
-SYMBOLIST_API void *symbolistTest();
-
+SYMBOLIST_API void* symbolistNewWindow();
+SYMBOLIST_API void* symbolistNewWindowWithSymbols(int n, void *bundle_array);
 
 #endif /* symbolist_hpp */

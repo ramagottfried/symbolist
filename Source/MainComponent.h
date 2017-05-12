@@ -11,7 +11,7 @@ class MainComponent   : public Component
 public:
     //==============================================================================
     MainComponent();
-    MainComponent( Score& s );
+    MainComponent( Score *s );
     
     ~MainComponent();
 

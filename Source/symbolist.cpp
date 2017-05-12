@@ -1,7 +1,7 @@
 /***************************************************/
 /*!
  *  @file       symbolist.cpp
- *  @brief      Laibrary for symbolic score display and editing
+ *  @brief      L'brary for symbolic score display and editing
  *  @author     Jean Bresson & Rama Gottfried
  *  @date       10/05/2017
  */
@@ -9,6 +9,10 @@
 #include "symbolist.hpp"
 #include "MainWindow.h"
 #include "ScoreData.h"
+
+const char* symbolistInfo() {
+    return "symbolist v.0.1";
+}
 
 int symbolistInit() {
     return 1; // went ok
@@ -20,22 +24,23 @@ int symbolistExit() {
 
 void setupTestScore(Score& s)
 {
-    System *sys = new System();;
+    System *sys = new System();
     s.addSystem( sys );
 }
 
-void *symbolistTest() {
-    
-    Score score();
-    
-    MainWindow *w = new MainWindow ( "test", score );
-    return w; // went ok
-
+void *symbolistNewWindow()
+{
+    return new MainWindow ();
 }
 
-const char* symbolistInfo() {
-    return "symbolist v.0.1";
+void *symbolistNewWindowWithSymbols(int n, void *bundle_array) {
+    
+    Score *s = new Score( n, bundle_array );
+
+    return new MainWindow( s );
 }
+
+
 
 
 

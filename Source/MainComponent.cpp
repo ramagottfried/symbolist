@@ -11,7 +11,7 @@ MainComponent::MainComponent()
 }
 
 
-MainComponent::MainComponent( Score& s )
+MainComponent::MainComponent( Score *s )
 {
     // setup score components here
 

@@ -2,7 +2,7 @@
 #include "MainWindow.h"
 
 
-MainWindow::MainWindow ( Score *s ) : DocumentWindow ("symbolist",
+MainWindow::MainWindow ( Score *s ) : DocumentWindow ( "symbolist",
                                             Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId),
                                             DocumentWindow::allButtons)
 {

@@ -18,14 +18,19 @@ CircleComponent::~CircleComponent(){}
 
 void CircleComponent::paint ( Graphics& g )
 {
+    BaseComponent::paint ( g );
+    
     g.setColour( m_color );
     const Rectangle<float> bounds = getLocalBounds().toFloat().reduced( m_strokeWeight );
     g.drawEllipse ( bounds, (float) m_strokeWeight );
+    
+    
 }
 
 void CircleComponent::moved ()
 {
-    m_pos = getPosition().toFloat();
+    BaseComponent::moved ();
+    
     // push to score here?
 }
 
@@ -46,44 +51,15 @@ void CircleComponent::mouseMove( const MouseEvent& event )
 
 void CircleComponent::mouseDown( const MouseEvent& event )
 {
-    m_down = event.position;
-    m_bounds = getBounds();
-    // at the moment mouse down is only for creating new objects
+    BaseComponent::mouseDown ( event );
+    
+       // at the moment mouse down is only for creating new objects
 }
 
 void CircleComponent::mouseDrag( const MouseEvent& event )
 {
-    
-    /*
-     if possible add move and resize operations to BaseComponent
-    */
-    
-    Component *score = this->getScore();
-    MouseEvent scoreEvent = event.getEventRelativeTo ( score );
-    
-    Point<float> mouseoffset = scoreEvent.position - m_down;
-    
-    if ( event.mods.isAltDown() )
-    {
-        
-        float newX = ( scoreEvent.position.getX() < m_bounds.getX() ) ? scoreEvent.position.getX() : m_bounds.getX();
-        float newY = ( scoreEvent.position.getY() < m_bounds.getY() ) ? scoreEvent.position.getY() : m_bounds.getY();
-        
-        float newW = std::abs( m_bounds.getWidth()  + mouseoffset.getX() - m_bounds.getX() );
-        float newH = std::abs( m_bounds.getHeight() + mouseoffset.getY() - m_bounds.getY() );
-        
-        newW = (newW < m_strokeWeight*2) ? m_strokeWeight*2 : newW;
-        newH = (newH < m_strokeWeight*2) ? m_strokeWeight*2 : newH;
-        
-        setBounds ( newX, newY, newW, newH );
-    }
-    else
-    {
-        setBounds ( mouseoffset.getX(),
-                    mouseoffset.getY(),
-                    m_bounds.getWidth(),
-                    m_bounds.getHeight() );
-    }
+    BaseComponent::mouseDrag ( event );
+
     
 }
 

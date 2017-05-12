@@ -9,7 +9,7 @@ public:
     CircleComponent( float x, float y, float diameter = 10 );
     ~CircleComponent();
     
-    void paint ( Graphics& g ) override;
+    void paint ( Graphics& g );
     void moved () override;
     
     virtual void mouseDoubleClick (const MouseEvent& event) override;
@@ -35,8 +35,6 @@ private:
     
     
     Point<float> m_down;
-    Rectangle<int> m_bounds;
-
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CircleComponent)

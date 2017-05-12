@@ -6,14 +6,34 @@
 class BaseComponent : public Component
 {
 public:
-    BaseComponent(){}
-    ~BaseComponent(){}
+    BaseComponent();
+    ~BaseComponent();
+
+    void mouseEnter( const MouseEvent& event ) override;
+    void mouseMove( const MouseEvent& event ) override;
+    void mouseDown( const MouseEvent& event ) override;
+    void mouseDrag( const MouseEvent& event ) override;
+    void mouseExit( const MouseEvent& event ) override;
+
+    void moved () override;
+    void resized () override;
     
     inline void attachScore(Component *s){ the_score = s; };
     inline Component *getScore(){ return the_score; };
 
+    void paint ( Graphics& g );
     
     // add osc score w/r here?
+    
+protected:
+    // parameters
+    Rectangle<int>  bounds;
+    float           strokeWeight = 1;
+    Colour          color = Colours::black;
+    
+    // interaction
+    Point<float>    m_down;
+    bool            showBoundingBox = true;
     
 private:
     Component *the_score;

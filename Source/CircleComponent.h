@@ -24,13 +24,21 @@ public:
     
     inline int getStrokeWeightFromScore() { return m_strokeWeight; }
     inline float getDiameter() { return m_diameter; }
-    inline Point<float> getPositionFromScore(){ return m_pos; }
     
 private:
-    // parameters
-    Point<float>    m_pos;
-    int             m_strokeWeight = 2;
+    // local parameters for this shape
     float           m_diameter = 10;
+    
+    /*
+     inherited:
+        
+     bounds (x,y,w,h)
+     color
+     strokeweight ?
+     
+     */
+    
+    int             m_strokeWeight = 2;
     Colour          m_color = Colours::black;
     
     

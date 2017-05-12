@@ -6,6 +6,7 @@ CircleComponent::CircleComponent()
     setComponentID ( "Circle" );
 }
 
+// add options for other params: color, stroke...
 CircleComponent::CircleComponent( float x, float y, float diameter )
 {
     setComponentID ( "Circle" );
@@ -13,6 +14,7 @@ CircleComponent::CircleComponent( float x, float y, float diameter )
     m_diameter = diameter;
     
 }
+
 
 CircleComponent::~CircleComponent(){}
 
@@ -23,7 +25,6 @@ void CircleComponent::paint ( Graphics& g )
     g.setColour( m_color );
     const Rectangle<float> bounds = getLocalBounds().toFloat().reduced( m_strokeWeight );
     g.drawEllipse ( bounds, (float) m_strokeWeight );
-    
     
 }
 

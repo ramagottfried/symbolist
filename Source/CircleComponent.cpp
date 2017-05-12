@@ -72,8 +72,8 @@ void CircleComponent::mouseDrag( const MouseEvent& event )
         float newW = std::abs( m_bounds.getWidth()  + mouseoffset.getX() - m_bounds.getX() );
         float newH = std::abs( m_bounds.getHeight() + mouseoffset.getY() - m_bounds.getY() );
         
-        newW = (newW < m_strokeWeight) ? m_strokeWeight : newW;
-        newH = (newH < m_strokeWeight) ? m_strokeWeight : newH;
+        newW = (newW < m_strokeWeight*2) ? m_strokeWeight*2 : newW;
+        newH = (newH < m_strokeWeight*2) ? m_strokeWeight*2 : newH;
         
         setBounds ( newX, newY, newW, newH );
     }

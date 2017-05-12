@@ -1,36 +1,27 @@
-/*
-  ==============================================================================
-
-    This file was auto-generated!
-
-  ==============================================================================
-*/
 
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "ScoreComponent.h"
+#include "ScoreData.h"
 
 
-//==============================================================================
-/*
-    This component lives inside our window, and this is where you should put all
-    your controls and content.
-*/
-class MainContentComponent   : public Component
+class MainComponent   : public Component
 {
 public:
     //==============================================================================
-    MainContentComponent();
-    ~MainContentComponent();
+    MainComponent();
+    MainComponent( Score& s );
+    
+    ~MainComponent();
 
     void paint (Graphics&) override;
     void resized() override;
 
 private:
     
-    ScoreComponent score;
+    ScoreComponent scoreGUI;
         
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

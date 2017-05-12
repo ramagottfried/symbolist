@@ -24,19 +24,15 @@ public:
     
     inline int getStrokeWeightFromScore() { return m_strokeWeight; }
     inline float getDiameter() { return m_diameter; }
-    inline Point<float> getPositionFromScore()
-    {
-        // the shape has a position set by the parent via setBounds, we can access it here also via getPosition
-        // however, this should querry the score actually
-        
-        return m_pos;
-    }
+    inline Point<float> getPositionFromScore(){ return m_pos; }
     
 private:
-    Point<float> m_pos;
-    int m_strokeWeight = 2;
-    float m_diameter = 10;
-    Colour m_color = Colours::black;
+    // parameters
+    Point<float>    m_pos;
+    int             m_strokeWeight = 2;
+    float           m_diameter = 10;
+    Colour          m_color = Colours::black;
+    
     
     Point<float> m_down;
     Rectangle<int> m_bounds;

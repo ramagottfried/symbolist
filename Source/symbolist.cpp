@@ -8,7 +8,7 @@
 /***************************************************/
 #include "symbolist.hpp"
 #include "MainWindow.h"
-
+#include "ScoreData.h"
 
 int symbolistInit() {
     return 1; // went ok
@@ -18,9 +18,17 @@ int symbolistExit() {
     return 1; // went ok
 }
 
+void setupTestScore(Score& s)
+{
+    System *sys = new System();;
+    s.addSystem( sys );
+}
+
 void *symbolistTest() {
     
-    MainWindow *w = new MainWindow("test");
+    Score score();
+    
+    MainWindow *w = new MainWindow ( "test", score );
     return w; // went ok
 
 }

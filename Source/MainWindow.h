@@ -1,32 +1,14 @@
-/*
-  ==============================================================================
-
-    This file was auto-generated!
-
-    It contains the basic startup code for a Juce application.
-
-  ==============================================================================
-*/
+#pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-
-//==============================================================================
-/*
- This class implements the desktop window that contains an instance of
- our MainContentComponent class.    */
-
-/* Note: Be careful if you override any DocumentWindow methods - the base
- class uses a lot of them, so by overriding you might break its functionality.
- It's best to do all your work in your content component instead, but if
- you really have to override any DocumentWindow methods, make sure your
- subclass also calls the superclass's method.
- */
+#include "MainComponent.h"
+#include "ScoreData.h"
 
 class MainWindow : public DocumentWindow {
     
     public:
     
-    MainWindow (String name);
+    MainWindow ( String name, Score& s );
     ~MainWindow ();
     
     void closeButtonPressed() override;

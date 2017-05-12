@@ -1,16 +1,13 @@
 
-
-
 #include "MainWindow.h"
-#include "MainComponent.h"
 
 
-MainWindow::MainWindow(String name) : DocumentWindow (name,
+MainWindow::MainWindow ( String name, Score& s ) : DocumentWindow (name,
                                             Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId),
                                             DocumentWindow::allButtons)
     {
         setUsingNativeTitleBar (true);
-        setContentOwned (new MainContentComponent(), true);
+        setContentOwned ( new MainComponent(s), true );
         
         centreWithSize (getWidth(), getHeight());
         setVisible (true);

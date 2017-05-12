@@ -2,26 +2,32 @@
 #include "MainComponent.h"
 
 
-//==============================================================================
-MainContentComponent::MainContentComponent()
+MainComponent::MainComponent()
 {
+    // here there is no preexisiting score
+
     setSize (600, 400);
-    addAndMakeVisible(score);
+    addAndMakeVisible(scoreGUI);
 }
 
-MainContentComponent::~MainContentComponent()
+
+MainComponent::MainComponent( Score& s )
+{
+    // setup score components here
+
+    setSize (600, 400);
+    addAndMakeVisible(scoreGUI);
+}
+
+MainComponent::~MainComponent()
 {
 }
 
-void MainContentComponent::paint (Graphics& g)
+void MainComponent::paint (Graphics& g)
 {
 }
 
-void MainContentComponent::resized()
+void MainComponent::resized()
 {
-    // This is called when the MainContentComponent is resized.
-    // If you add any child components, this is where you should
-    // update their positions.
-    
-    score.setBounds( getLocalBounds() );
+    scoreGUI.setBounds( getLocalBounds() );
 }

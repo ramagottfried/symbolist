@@ -15,6 +15,10 @@ ScoreComponent::~ScoreComponent()
 void ScoreComponent::paint (Graphics& g)
 {
     g.fillAll ( Colours::white );
+    
+    g.setFont (Font (16.0f));
+    g.setColour (Colours::grey);
+    g.drawText ("shift to make new circle | alt to resize", getLocalBounds(), Justification::centred, true);
 }
 
 void ScoreComponent::resized ()

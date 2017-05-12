@@ -39,6 +39,8 @@ protected:
     Colour          bb_color = Colours::cornflowerblue;
     
     
+    
+    
 private:
     Component *the_score;
     void *oscbundle;

@@ -17,12 +17,18 @@ void BaseComponent::paint ( Graphics& g )
         g.setColour( bb_color );
         const Rectangle<float> l_bounds = getLocalBounds().toFloat().reduced( bb_strokeWeight-1 );
         g.drawRect ( 0.0, 0.0, l_bounds.getWidth(), l_bounds.getHeight()  );
+        
+        
+        
     }
 }
 
 void BaseComponent::mouseEnter( const MouseEvent& event )
 {
     showBoundingBox = true;
+    // setup control points for resize...
+    
+    
 }
 
 void BaseComponent::mouseMove( const MouseEvent& event )

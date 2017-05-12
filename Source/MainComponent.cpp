@@ -5,7 +5,6 @@
 MainComponent::MainComponent()
 {
     // here there is no preexisiting score
-
     setSize (600, 400);
     addAndMakeVisible(scoreGUI);
 }

@@ -28,17 +28,17 @@ public:
 private:
     // local parameters for this shape
     float   m_diameter = 10;
-    
+    Colour  m_color = Colours::black;
+
     /*
      inherited:
         
      bounds (x,y,w,h)
      sel_color
-     strokeweight ?
+     strokeweight
      
      */
     
-    Colour          m_color = Colours::black;
     
     Point<float>    m_down;
     

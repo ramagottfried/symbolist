@@ -11,7 +11,8 @@ MainWindow::MainWindow ( Score *s ) : DocumentWindow ( "symbolist",
     
     centreWithSize (getWidth(), getHeight());
     setVisible (true);
-    
+    setResizable(true, true);
+
     score = s;
 }
 

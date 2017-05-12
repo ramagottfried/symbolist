@@ -20,9 +20,7 @@ MainWindow::MainWindow () : MainWindow( new Score () ) {}
 
 
 MainWindow::~MainWindow()
-{
-
-}
+{}
 
 
 void MainWindow::closeButtonPressed()

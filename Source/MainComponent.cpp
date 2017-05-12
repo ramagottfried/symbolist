@@ -7,6 +7,7 @@ MainComponent::MainComponent()
     // here there is no preexisiting score
     setSize (600, 400);
     addAndMakeVisible(scoreGUI);
+    
 }
 
 
@@ -28,5 +29,7 @@ void MainComponent::paint (Graphics& g)
 
 void MainComponent::resized()
 {
-    scoreGUI.setBounds( getLocalBounds() );
+    scoreGUI.setBounds( 20, 0, getWidth(), getHeight() );
 }
+
+// void MainComponent::buttonClicked (Button* button){}

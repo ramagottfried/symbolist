@@ -11,6 +11,8 @@
 		118C38DF1EC5BC4F006FF4A1 /* ScoreData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38DC1EC5BC4F006FF4A1 /* ScoreData.cpp */; };
 		118C38E31EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */; };
 		118C38E41EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */; };
+		118C38EF1EC61404006FF4A1 /* PaletteComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */; };
+		118C38F01EC61404006FF4A1 /* PaletteComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */; };
 		11CE00571EC328EC00E4F624 /* MainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00531EC328EC00E4F624 /* MainComponent.cpp */; };
 		11CE00581EC328EC00E4F624 /* MainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00531EC328EC00E4F624 /* MainComponent.cpp */; };
 		11CE005E1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */; };
@@ -53,6 +55,8 @@
 		118C38DC1EC5BC4F006FF4A1 /* ScoreData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreData.cpp; path = ../../Source/ScoreData.cpp; sourceTree = "<group>"; };
 		118C38DD1EC5BC4F006FF4A1 /* ScoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreData.h; path = ../../Source/ScoreData.h; sourceTree = "<group>"; };
 		118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BaseComponent.cpp; path = ../../Source/BaseComponent.cpp; sourceTree = "<group>"; };
+		118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PaletteComponent.cpp; path = ../../Source/PaletteComponent.cpp; sourceTree = "<group>"; };
+		118C38EE1EC61404006FF4A1 /* PaletteComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PaletteComponent.h; path = ../../Source/PaletteComponent.h; sourceTree = "<group>"; };
 		11CE00201EC3271700E4F624 /* symbolist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = symbolist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11CE00511EC328DE00E4F624 /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Main.cpp; path = ../../Source/Main.cpp; sourceTree = "<group>"; };
 		11CE00531EC328EC00E4F624 /* MainComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainComponent.cpp; path = ../../Source/MainComponent.cpp; sourceTree = "<group>"; };
@@ -139,6 +143,8 @@
 		118C38E01EC5C372006FF4A1 /* main-window */ = {
 			isa = PBXGroup;
 			children = (
+				118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */,
+				118C38EE1EC61404006FF4A1 /* PaletteComponent.h */,
 				11CE00531EC328EC00E4F624 /* MainComponent.cpp */,
 				44CFE0411EC37BA5009135F8 /* MainComponent.h */,
 				446388D41EC34DC90038CFCB /* MainWindow.cpp */,
@@ -361,6 +367,7 @@
 				44C0729F1EC4AF8C0028D5F8 /* include_juce_osc.cpp in Sources */,
 				44CFE03B1EC3789C009135F8 /* include_juce_data_structures.mm in Sources */,
 				44CFE0391EC377EA009135F8 /* MainWindow.cpp in Sources */,
+				118C38F01EC61404006FF4A1 /* PaletteComponent.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -382,6 +389,7 @@
 				44C0729E1EC4AF870028D5F8 /* include_juce_osc.cpp in Sources */,
 				F94D2D6E7B944172DB771A09 /* include_juce_gui_extra.mm in Sources */,
 				44A3C1EE1EC317BE00C4AD14 /* symbolist.cpp in Sources */,
+				118C38EF1EC61404006FF4A1 /* PaletteComponent.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

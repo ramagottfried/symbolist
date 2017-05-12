@@ -26,7 +26,8 @@ class MainWindow : public DocumentWindow {
     
     public:
     
-    MainWindow (String name);
+    MainWindow ();
+    MainWindow (int n, void* bundle_array);
     ~MainWindow ();
     
     void closeButtonPressed() override;

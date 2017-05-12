@@ -9,6 +9,9 @@
 #include "symbolist.hpp"
 #include "MainWindow.h"
 
+const char* symbolistInfo() {
+    return "symbolist v.0.1";
+}
 
 int symbolistInit() {
     return 1; // went ok
@@ -18,16 +21,15 @@ int symbolistExit() {
     return 1; // went ok
 }
 
-void *symbolistTest() {
-    
-    MainWindow *w = new MainWindow("test");
-    return w; // went ok
-
+void *symbolistNewWindow() {
+    return new MainWindow();
 }
 
-const char* symbolistInfo() {
-    return "symbolist v.0.1";
+void *symbolistNewWindowWithSymbols(int n, void *bundle_array) {
+    return new MainWindow(n, bundle_array);
 }
+
+
 
 
 

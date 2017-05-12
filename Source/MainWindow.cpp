@@ -5,7 +5,7 @@
 #include "MainComponent.h"
 
 
-MainWindow::MainWindow(String name) : DocumentWindow (name,
+MainWindow::MainWindow() : DocumentWindow ("symbolist",
                                             Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId),
                                             DocumentWindow::allButtons)
     {
@@ -15,6 +15,11 @@ MainWindow::MainWindow(String name) : DocumentWindow (name,
         centreWithSize (getWidth(), getHeight());
         setVisible (true);
     }
+
+
+MainWindow::MainWindow (int n, void* bundle_array) : MainWindow () {
+
+}
 
 MainWindow::~MainWindow(){}
 

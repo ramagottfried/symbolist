@@ -33,10 +33,9 @@ void *symbolistNewWindow()
     return new MainWindow ();
 }
 
-void *symbolistNewWindowWithSymbols(int n, void *bundle_array) {
+void *symbolistNewWindowWithSymbols(int n, void **bundle_array) {
     
     Score *s = new Score( n, bundle_array );
-
     return new MainWindow( s );
 }
 

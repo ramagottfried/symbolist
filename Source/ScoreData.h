@@ -1,4 +1,6 @@
 #pragma once
+
+#include "../JuceLibraryCode/JuceHeader.h"
 #include <vector>
 
 using namespace std;
@@ -9,76 +11,80 @@ struct t_rect
     float w, h;
 };
 
+/****************
+ * SYMBOL
+ ****************/
 
-class Symbol
-{
-public:
+class Symbol {
     
-private:
+    public:
+    Symbol(OSCBundle b);
+    
+    private:
+    OSCBundle osc_bundle;
     t_rect m_rect;
 };
 
 
-class Stave
-{
-public:
-    void addSymbol(Symbol& symbol)
-    {
-        m_symbol.emplace_back(symbol);
-    }
+/****************
+ * STAVE
+ ****************/
+
+class Stave {
     
-private:
-    vector<Symbol> m_symbol;
+    public:
+    
+    Stave();
+    Stave( t_rect rect );
+    ~Stave();
+    void addSymbol(Symbol *symbol);
+    
+    private:
+    
+    vector<Symbol*> m_symbol;
     t_rect m_rect;
 };
 
 
-class System
-{
-public:
-    System(){};
-    System( t_rect rect )
-    {
-        m_rect = rect;
-    };
+/****************
+ * SYSTEM
+ ****************/
+
+class System {
     
-    void addStave(Stave& stave)
-    {
-        m_stave.emplace_back(stave);
-    }
+    public:
+    
+    System();
+    System( t_rect rect );
+    ~System();
+    
+    void addStave(Stave *stave);
+    Stave *getStave(int n);
 
-private:
-    vector<Stave> m_stave;
-
-    t_rect m_rect;
+    private:
+        vector<Stave*> m_stave;
+        t_rect m_rect;
 };
 
 
-class Score
-{
-public:
-    Score(){};
-    Score( int n, void *bundle_array )
-    {
-        ;
-    };
+/****************
+ * SCORE
+ ****************/
+
+class Score {
+
+    public:
     
-    ~Score()
-    {
-        for ( int i = 0; i < m_system.size(); i++ )
-        {
-            delete m_system[i];
-        }
-    }
+        Score();
+        Score( int n, void **bundle_array ) ;
+        ~Score();
     
-    void addSystem(System *system)
-    {
-        m_system.emplace_back(system);
-    }
+        void addSystem(System *system);
+        System *getSystem(int n);
     
-    void getSystem();
+    private:
     
-private:
-    vector<System*> m_system;
+        vector<System*> m_system;
+        void importScoreFromOSC(int n, void** bundle_array);
     
 };

@@ -21,7 +21,7 @@ public:
     inline void attachScore(Component *s){ the_score = s; };
     inline Component *getScore(){ return the_score; };
 
-    void paint ( Graphics& g );
+    void paint ( Graphics& g ) override;
     
     // add osc score w/r here?
     

@@ -9,7 +9,7 @@ public:
     CircleComponent( float x, float y, float diameter = 10, float stroke = 2 );
     ~CircleComponent();
     
-    void paint ( Graphics& g );
+    void paint ( Graphics& g ) override;
     void moved () override;
     
     virtual void mouseDoubleClick (const MouseEvent& event) override;

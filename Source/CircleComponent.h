@@ -6,7 +6,7 @@ class CircleComponent : public BaseComponent
 {
 public:
     CircleComponent();
-    CircleComponent( float x, float y, float diameter = 10 );
+    CircleComponent( float x, float y, float diameter = 10, float stroke = 2 );
     ~CircleComponent();
     
     void paint ( Graphics& g );
@@ -22,27 +22,25 @@ public:
     
     // getters
     
-    inline int getStrokeWeightFromScore() { return m_strokeWeight; }
-    inline float getDiameter() { return m_diameter; }
+//    inline int getStrokeWeightFromScore() { return m_strokeWeight; }
+//    inline float getDiameter() { return m_diameter; }
     
 private:
     // local parameters for this shape
-    float           m_diameter = 10;
+    float   m_diameter = 10;
     
     /*
      inherited:
         
      bounds (x,y,w,h)
-     color
+     sel_color
      strokeweight ?
      
      */
     
-    int             m_strokeWeight = 2;
     Colour          m_color = Colours::black;
     
-    
-    Point<float> m_down;
+    Point<float>    m_down;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CircleComponent)

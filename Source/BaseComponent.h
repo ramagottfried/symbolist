@@ -29,11 +29,15 @@ protected:
     // parameters
     Rectangle<int>  bounds;
     float           strokeWeight = 1;
-    Colour          color = Colours::black;
     
     // interaction
     Point<float>    m_down;
+    Colour          sel_color = Colours::cornflowerblue;
+
     bool            showBoundingBox = true;
+    float           bb_strokeWeight = 1;
+    Colour          bb_color = Colours::cornflowerblue;
+    
     
 private:
     Component *the_score;

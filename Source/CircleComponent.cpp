@@ -7,11 +7,13 @@ CircleComponent::CircleComponent()
 }
 
 // add options for other params: color, stroke...
-CircleComponent::CircleComponent( float x, float y, float diameter )
+CircleComponent::CircleComponent( float x, float y, float diameter, float stroke )
 {
+
     setComponentID ( "Circle" );
     setBounds ( x, y, diameter, diameter );
     m_diameter = diameter;
+    strokeWeight = stroke;
     
 }
 
@@ -23,8 +25,8 @@ void CircleComponent::paint ( Graphics& g )
     BaseComponent::paint ( g );
     
     g.setColour( m_color );
-    const Rectangle<float> bounds = getLocalBounds().toFloat().reduced( m_strokeWeight );
-    g.drawEllipse ( bounds, (float) m_strokeWeight );
+    const Rectangle<float> bounds = getLocalBounds().toFloat().reduced( strokeWeight );
+    g.drawEllipse ( bounds, (float) strokeWeight );
     
 }
 
@@ -42,7 +44,9 @@ void CircleComponent::mouseDoubleClick (const MouseEvent& event)
 
 void CircleComponent::mouseEnter( const MouseEvent& event )
 {
-    m_color = Colours::hotpink;
+    BaseComponent::mouseEnter( event );
+    
+    m_color = sel_color;
     repaint();
 }
 
@@ -66,6 +70,8 @@ void CircleComponent::mouseDrag( const MouseEvent& event )
 
 void CircleComponent::mouseExit( const MouseEvent& event )
 {
+    BaseComponent::mouseExit( event );
+    
     m_color = Colours::black;
     repaint();
 }

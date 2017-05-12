@@ -14,14 +14,16 @@ void BaseComponent::paint ( Graphics& g )
 {
     if( showBoundingBox )
     {
-        g.setColour( Colours::red );
-        const Rectangle<float> l_bounds = getLocalBounds().toFloat().reduced( strokeWeight );
+        g.setColour( bb_color );
+        const Rectangle<float> l_bounds = getLocalBounds().toFloat().reduced( bb_strokeWeight-1 );
         g.drawRect ( 0.0, 0.0, l_bounds.getWidth(), l_bounds.getHeight()  );
     }
 }
 
 void BaseComponent::mouseEnter( const MouseEvent& event )
-{}
+{
+    showBoundingBox = true;
+}
 
 void BaseComponent::mouseMove( const MouseEvent& event )
 {
@@ -63,9 +65,10 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
                    bounds.getHeight() );
     }
 
-
 }
 
 void BaseComponent::mouseExit( const MouseEvent& event )
-{}
+{
+    showBoundingBox = false;
+}
 

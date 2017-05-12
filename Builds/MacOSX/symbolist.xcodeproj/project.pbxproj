@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 47;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -74,6 +74,7 @@
 		34B8AF3D31715BC6E31E4944 /* juce_data_structures */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_data_structures; path = ../../../JUCE/modules/juce_data_structures; sourceTree = SOURCE_ROOT; };
 		3FAB00DCF22EB4922567B583 /* include_juce_core.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_core.mm; path = ../../JuceLibraryCode/include_juce_core.mm; sourceTree = SOURCE_ROOT; };
 		446388D41EC34DC90038CFCB /* MainWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainWindow.cpp; path = ../../Source/MainWindow.cpp; sourceTree = "<group>"; };
+		447FFBF31EC60CB60001000D /* OSCParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OSCParser.h; path = ../../Source/OSCParser.h; sourceTree = "<group>"; };
 		44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = symbolist.cpp; path = ../../Source/symbolist.cpp; sourceTree = "<group>"; };
 		44A3C1ED1EC317BE00C4AD14 /* symbolist.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = symbolist.hpp; path = ../../Source/symbolist.hpp; sourceTree = "<group>"; };
 		44C0729B1EC4ADFA0028D5F8 /* juce_osc */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_osc; path = ../../../JUCE/modules/juce_osc; sourceTree = "<group>"; };
@@ -156,6 +157,7 @@
 		118C38E11EC5C39F006FF4A1 /* score */ = {
 			isa = PBXGroup;
 			children = (
+				447FFBF31EC60CB60001000D /* OSCParser.h */,
 				118C38DC1EC5BC4F006FF4A1 /* ScoreData.cpp */,
 				118C38DD1EC5BC4F006FF4A1 /* ScoreData.h */,
 			);
@@ -312,7 +314,7 @@
 				};
 			};
 			buildConfigurationList = 1DD3065431DE8DDDE730383D /* Build configuration list for PBXProject "symbolist" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (

@@ -26,7 +26,7 @@
 (defun symbolist-test ()
   (symbolist::symbolistInit)
   (print (symbolist::symbolistInfo))
-  (symbolist::symbolistTest))
+  (symbolist::symbolistNewWindow))
 
 ;; (symbolist-test)
 

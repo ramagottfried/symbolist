@@ -1,0 +1,5 @@
+rm -f ./OM/symbolist/lib/mac/symbolist.dylib
+
+cp ./Builds/MacOSX/build/Debug/symbolist.dylib ./OM/symbolist/lib/mac/symbolist.dylib
+
+

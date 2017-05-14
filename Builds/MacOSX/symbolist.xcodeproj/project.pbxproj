@@ -76,6 +76,7 @@
 		34B8AF3D31715BC6E31E4944 /* juce_data_structures */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_data_structures; path = ../../../JUCE/modules/juce_data_structures; sourceTree = SOURCE_ROOT; };
 		3FAB00DCF22EB4922567B583 /* include_juce_core.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_core.mm; path = ../../JuceLibraryCode/include_juce_core.mm; sourceTree = SOURCE_ROOT; };
 		446363931EC6F4960054CB6D /* OSCParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OSCParser.cpp; path = ../../Source/OSCParser.cpp; sourceTree = "<group>"; };
+		446363961EC8EF9C0054CB6D /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = types.h; path = ../../Source/types.h; sourceTree = "<group>"; };
 		446388D41EC34DC90038CFCB /* MainWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainWindow.cpp; path = ../../Source/MainWindow.cpp; sourceTree = "<group>"; };
 		447FFBF31EC60CB60001000D /* OSCParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OSCParser.h; path = ../../Source/OSCParser.h; sourceTree = "<group>"; };
 		44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = symbolist.cpp; path = ../../Source/symbolist.cpp; sourceTree = "<group>"; };
@@ -238,6 +239,7 @@
 			children = (
 				44A3C1ED1EC317BE00C4AD14 /* symbolist.hpp */,
 				44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */,
+				446363961EC8EF9C0054CB6D /* types.h */,
 				118C38E11EC5C39F006FF4A1 /* score */,
 				11CE00151EC3231E00E4F624 /* gui-primitives */,
 				118C38E01EC5C372006FF4A1 /* main-window */,

@@ -71,7 +71,8 @@
     (let* ((sscore (object-value self))
            (win (symbolist::symbolistNewWindowWithSymbols (length (symbols sscore)) (score-pointer sscore))))
       (setf (window self) win)
-      )))
+      (symbolist::symbolist-register-callback win)
+      win)))
 
 
 

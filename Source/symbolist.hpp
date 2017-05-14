@@ -10,6 +10,8 @@
 #ifndef symbolist_hpp
 #define symbolist_hpp
 
+#include "types.h"
+
 #ifdef _MSC_VER
 	#define SYMBOLIST_VISIBILITY_DEFAULT	__declspec( dllexport )
 #else
@@ -32,6 +34,6 @@ SYMBOLIST_API int symbolistExit();
 SYMBOLIST_API void* symbolistNewWindow();
 SYMBOLIST_API void* symbolistNewWindowWithSymbols(int n, void **bundle_array);
 
-SYMBOLIST_API void symbolistCallbackToHost(int n){};
+SYMBOLIST_API void symbolistRegisterCallback(void* window, symbolistCallback callback);
 
 #endif /* symbolist_hpp */

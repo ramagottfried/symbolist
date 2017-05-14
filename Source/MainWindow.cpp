@@ -19,19 +19,21 @@ MainWindow::MainWindow ( Score *s ) : DocumentWindow ( "symbolist",
 MainWindow::MainWindow () : MainWindow( new Score () ) {}
 
 
-MainWindow::~MainWindow()
-{}
+MainWindow::~MainWindow() {}
 
 
+void MainWindow::registerCallback(symbolistCallback c) {
 
-void MainWindow::closeButtonPressed()
-{
-        // This is called when the user tries to close this window. Here, we'll just
-        // ask the app to quit when this happens, but you can change this to do
-        // whatever you need.
-        //JUCEApplication::getInstance()->systemRequestedQuit();
-    symbolistCallbackToHost(-1);
+    myCallback = c;
+
+}
+
+
+void MainWindow::closeButtonPressed() {
+
+    if (myCallback) { myCallback( this, NULL ); }
     delete this;
+
 }
 
 

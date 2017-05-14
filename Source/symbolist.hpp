@@ -32,4 +32,6 @@ SYMBOLIST_API int symbolistExit();
 SYMBOLIST_API void* symbolistNewWindow();
 SYMBOLIST_API void* symbolistNewWindowWithSymbols(int n, void **bundle_array);
 
+SYMBOLIST_API void symbolistCallbackToHost(int n){};
+
 #endif /* symbolist_hpp */

@@ -34,11 +34,10 @@ void *symbolistNewWindow()
 }
 
 void *symbolistNewWindowWithSymbols(int n, void **bundle_array) {
-    
-    Score *s = new Score( n, bundle_array );
+    //static_cast<odot_bundle*>(
+    Score *s = new Score( n, bundle_array) ;
     return new MainWindow( s );
 }
-
 
 
 

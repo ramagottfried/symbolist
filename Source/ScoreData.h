@@ -71,6 +71,12 @@ class System {
  * SCORE
  ****************/
 
+struct odot_bundle
+{
+    long len;
+    char *data;
+};
+
 class Score {
 
     public:

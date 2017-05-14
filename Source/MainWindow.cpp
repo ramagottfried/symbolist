@@ -30,6 +30,8 @@ void MainWindow::closeButtonPressed()
         // ask the app to quit when this happens, but you can change this to do
         // whatever you need.
         //JUCEApplication::getInstance()->systemRequestedQuit();
+    symbolistCallbackToHost(-1);
+    delete this;
 }
 
 

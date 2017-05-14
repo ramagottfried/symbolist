@@ -1,6 +1,6 @@
 
 #include "ScoreData.h"
-//#include "OSCParser.h"
+#include "OSCParser.h"
 
 
 #include <iostream>
@@ -114,21 +114,23 @@ System *Score::getSystem(int n) {
 }
 
 
-
 void Score::importScoreFromOSC(int n, void **bundle_array)
 {
     std::cout << "importing OSC" << std::endl;
     
-    OSCReceiver *r = new OSCReceiver();
-
     for (int i = 0; i < n ; i++) {
-        void* bundle = bundle_array[i];
+
+        odot_bundle *bundle = static_cast<odot_bundle*>(bundle_array[i]);
+        
+        std::cout << "decoding " << bundle->len << " bytes : " << bundle->data << std::endl;
+
+        OSCParser p ( bundle->data, bundle->len );
+        Symbol oscb = Symbol(p.readBundle());
+        //Symbol oscb = Symbol(OSCBundle());
+        
+        // search for stave and system in the OSC messages inside oscb and reassign these values
         int n_stave = 1;
         int n_system = 1;
-        // search for stave and system in the OSC messages inside oscb and reassign these values
-        
-        //Symbol oscb = Symbol(r->parseBundle(bundle));
-        Symbol oscb = Symbol(OSCBundle());
         System* sys = getSystem(n_system);
         Stave* sta = sys->getStave(n_stave);
     
@@ -137,7 +139,6 @@ void Score::importScoreFromOSC(int n, void **bundle_array)
         sta->addSymbol(&oscb);
 
     }
-    delete r;
     std::cout << "importing OSC done !" << std::endl;
     
 }

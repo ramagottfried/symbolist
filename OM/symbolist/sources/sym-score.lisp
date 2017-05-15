@@ -57,24 +57,33 @@
     ))
 
 
-;;==================
+;;========================================================================
 ;; EDITOR 
-;;==================
+;;========================================================================
 
 (defmethod object-has-editor ((self sym-score)) t)
 (defmethod get-editor-class ((self sym-score)) 'sym-editor)
 
-(defclass sym-editor (OMEditor) ())
+(defclass sym-editor (OMEditor) 
+  ((symbolist-window :accessor symbolist-window :initform nil)))
+
+(defparameter *symbolist-editors* nil)
 
 (defmethod open-editor-window ((self sym-editor))
   (unless (window self)
     (let* ((sscore (object-value self))
            (win (symbolist::symbolistNewWindowWithSymbols (length (symbols sscore)) (score-pointer sscore))))
       (setf (window self) win)
+      (push self *symbolist-editors*)
       (symbolist::symbolist-register-callback win)
       win)))
 
-
-
-
+;;; to be redefined
+(defun symbolist::symbolist-handle-callback (win-ptr bundle-array-ptr) 
+  (let ((ed (find win-ptr *symbolist-editors* :key 'window :test 'om-pointer-equal)))
+    (if ed
+        (let ()
+          (setf (window ed) nil)
+          (setf *symbolist-editors* (remove ed *symbolist-editors*)))
+      (print "sym-score editor not found"))))
 

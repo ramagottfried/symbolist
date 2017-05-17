@@ -30,7 +30,6 @@ private:
     std::vector<BaseComponent *> score_stack;
     
     LassoComponent< BaseComponent * > lassoSelector;
-    
     SelectedItemSet<BaseComponent *> selected_items;
     
     

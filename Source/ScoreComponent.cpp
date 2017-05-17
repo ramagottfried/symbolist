@@ -47,22 +47,21 @@ void ScoreComponent::addScoreChildComponent( BaseComponent *c )
 
 void ScoreComponent::findLassoItemsInArea (Array <BaseComponent*>& results, const Rectangle<int>& area)
 {
-    /*
-    const Rectangle<int> lasso (area - subCompHolder->getPosition());
     
-    for (int i = 0; i < subCompHolder->getNumChildComponents(); ++i)
+    for (int i = 0; i < getNumChildComponents(); ++i)
     {
-        Component* c = subCompHolder->getChildComponent (i);
+        BaseComponent *c = (BaseComponent *)getChildComponent (i);
         
-        if (c->getBounds().intersects (lasso))
+        if (c->getBounds().intersects (area))
             results.add (c);
     }
-    */
 }
 
 SelectedItemSet<BaseComponent*> & ScoreComponent::getLassoSelection()
 {
     /// todo need to be completed
+    
+    printf("num selected %i\n", selected_items.getNumSelected() );
     
     return selected_items;
 }
@@ -76,19 +75,24 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
     }
     else
     {
-        addChildComponent( lassoSelector );
         
-        lassoSelector.beginLasso( event, this );
+        if ( event.mods.isShiftDown() )
+        {
+            CircleComponent *circle = new CircleComponent( event.position.getX(), event.position.getY() );
+            
+            addScoreChildComponent( circle );
+            
+            score_stack.emplace_back ( circle );
+        }
+        else
+        {
+            addChildComponent( lassoSelector );
+            
+            lassoSelector.beginLasso( event, this );
+        }
     }
     
-    if ( event.mods.isShiftDown() )
-    {
-        CircleComponent *circle = new CircleComponent( event.position.getX(), event.position.getY() );
-        
-        addChildComponent( circle );
-        
-        score_stack.emplace_back ( circle );
-    }
+    
    
     
 }

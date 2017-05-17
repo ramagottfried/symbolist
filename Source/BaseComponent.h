@@ -35,10 +35,10 @@ public:
     virtual void symbol_mouseExit( const MouseEvent& event ){}
     virtual void symbol_mouseDoubleClick( const MouseEvent& event ){}
 
+
     
     inline void attachScore(Component *s){ the_score = s; };
     inline Component *getScore(){ return the_score; };
-    
     inline void setSymbol(Symbol *s){ score_symbol = s; };
     
     

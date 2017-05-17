@@ -11,9 +11,9 @@
                              :date (om-random 0.0 60000.0)
                              :messages `(("/staff" ,(om-random 1 2))
                                          ("/type" ,(nth-random '("circle" "square")))
-                                         ("/pos-x" ,(om-random 0 500))
-                                         ("/pos-y" ,(om-random 0 500))
-                                         ("/radius" ,(om-random 2 15)))))
+                                         ("/x" ,(om-random 0.0 500.0))
+                                         ("/y" ,(om-random 0.0 500.0))
+                                         ("/size" ,(om-random 2.0 15.0)))))
         '< :key 'date)))
                                          
                                          

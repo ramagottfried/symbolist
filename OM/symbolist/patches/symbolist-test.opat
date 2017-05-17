@@ -5,8 +5,8 @@
  (:doc "")
  (:info
   (:created "2017/05/12 11:19:12")
-  (:modified "2017/05/12 12:39:42"))
- (:window (:size (676 318)) (:position (465 217)))
+  (:modified "2017/05/17 18:05:31"))
+ (:window (:size (676 318)) (:position (268 150)))
  (:boxes
   (:box
    (:library "symbolist")
@@ -14,8 +14,8 @@
    (:type :object)
    (:group-id nil)
    (:name nil)
-   (:x 410)
-   (:y 158)
+   (:x 357)
+   (:y 176)
    (:w 215)
    (:h 79)
    (:color (:color 0.9 0.9 0.9 1.0))
@@ -24,7 +24,7 @@
    (:name nil)
    (:display :mini-view)
    (:showname nil)
-   (:show-markers nil)
+   (:show-markers t)
    (:group-id nil)
    (:lock nil)
    (:inputs
@@ -52,26 +52,26 @@
        (:time-types
         (:list
          :master
-         4072.7449
-         8119.5044
-         10253.17
-         17889.633
-         28069.954
-         30751.276
-         33245.793
-         33924.243
-         34630.36
-         35231.895
-         40294.024
-         42772.3
-         45417.293
-         48455.33
-         48621.204
-         49200.547
-         49311.184
-         51065.176
+         3454.3777
+         3504.7532
+         4932.5396
+         11110.711
+         14251.592
+         15807.824
+         21980.653
+         27125.975
+         28246.543
+         29714.614
+         30839.067
+         33307.973
+         35311.082
+         35571.64
+         37309.856
+         37773.407
+         40918.696
+         42858.168
          :master))
-       (:duration 55898.875)
+       (:duration 57498.707)
        (:interpol nil)
        (:interpol-time 50)
        (:default-frame-type osc-bundle)
@@ -81,604 +81,604 @@
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 3729.4292)
+            (:item-internal-time 2184.72)
             (:item-type :master)
-            (:date 3729.4292)
+            (:date 2184.72)
             (:attributes nil)
             (:messages
              (:list
               (:list "/staff" 2)
               (:list "/type" "circle")
-              (:list "/pos-x" 94)
-              (:list "/pos-y" 478)
-              (:list "/radius" 8))))))
+              (:list "/x" 229.56252)
+              (:list "/y" 90.70492)
+              (:list "/size" 6.256142))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 4072.7449)
-            (:item-type 4072.7449)
-            (:date 4072.7449)
+            (:item-internal-time 3454.3777)
+            (:item-type 3454.3777)
+            (:date 3454.3777)
             (:attributes nil)
             (:messages
              (:list
               (:list "/staff" 2)
               (:list "/type" "square")
-              (:list "/pos-x" 358)
-              (:list "/pos-y" 39)
-              (:list "/radius" 5))))))
+              (:list "/x" 210.91927)
+              (:list "/y" 358.24185)
+              (:list "/size" 10.841643))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 8119.5044)
-            (:item-type 8119.5044)
-            (:date 8119.5044)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 1)
-              (:list "/type" "square")
-              (:list "/pos-x" 368)
-              (:list "/pos-y" 361)
-              (:list "/radius" 9))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 10253.17)
-            (:item-type 10253.17)
-            (:date 10253.17)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "square")
-              (:list "/pos-x" 437)
-              (:list "/pos-y" 44)
-              (:list "/radius" 5))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 17889.633)
-            (:item-type 17889.633)
-            (:date 17889.633)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 1)
-              (:list "/type" "square")
-              (:list "/pos-x" 245)
-              (:list "/pos-y" 384)
-              (:list "/radius" 13))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 28069.954)
-            (:item-type 28069.954)
-            (:date 28069.954)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "square")
-              (:list "/pos-x" 404)
-              (:list "/pos-y" 362)
-              (:list "/radius" 14))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 30751.276)
-            (:item-type 30751.276)
-            (:date 30751.276)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "square")
-              (:list "/pos-x" 39)
-              (:list "/pos-y" 269)
-              (:list "/radius" 4))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 33245.793)
-            (:item-type 33245.793)
-            (:date 33245.793)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 1)
-              (:list "/type" "square")
-              (:list "/pos-x" 105)
-              (:list "/pos-y" 154)
-              (:list "/radius" 3))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 33924.243)
-            (:item-type 33924.243)
-            (:date 33924.243)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "square")
-              (:list "/pos-x" 284)
-              (:list "/pos-y" 392)
-              (:list "/radius" 9))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 34630.36)
-            (:item-type 34630.36)
-            (:date 34630.36)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 1)
-              (:list "/type" "square")
-              (:list "/pos-x" 62)
-              (:list "/pos-y" 119)
-              (:list "/radius" 3))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 35231.895)
-            (:item-type 35231.895)
-            (:date 35231.895)
+            (:item-internal-time 3504.7532)
+            (:item-type 3504.7532)
+            (:date 3504.7532)
             (:attributes nil)
             (:messages
              (:list
               (:list "/staff" 1)
               (:list "/type" "circle")
-              (:list "/pos-x" 374)
-              (:list "/pos-y" 455)
-              (:list "/radius" 12))))))
+              (:list "/x" 372.3741)
+              (:list "/y" 445.06036)
+              (:list "/size" 5.6046195))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 40294.024)
-            (:item-type 40294.024)
-            (:date 40294.024)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "square")
-              (:list "/pos-x" 94)
-              (:list "/pos-y" 342)
-              (:list "/radius" 9))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 42772.3)
-            (:item-type 42772.3)
-            (:date 42772.3)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 1)
-              (:list "/type" "square")
-              (:list "/pos-x" 267)
-              (:list "/pos-y" 12)
-              (:list "/radius" 11))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 45417.293)
-            (:item-type 45417.293)
-            (:date 45417.293)
+            (:item-internal-time 4932.5396)
+            (:item-type 4932.5396)
+            (:date 4932.5396)
             (:attributes nil)
             (:messages
              (:list
               (:list "/staff" 1)
               (:list "/type" "circle")
-              (:list "/pos-x" 115)
-              (:list "/pos-y" 232)
-              (:list "/radius" 4))))))
+              (:list "/x" 281.66907)
+              (:list "/y" 281.3625)
+              (:list "/size" 12.484532))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 48455.33)
-            (:item-type 48455.33)
-            (:date 48455.33)
+            (:item-internal-time 11110.711)
+            (:item-type 11110.711)
+            (:date 11110.711)
             (:attributes nil)
             (:messages
              (:list
               (:list "/staff" 1)
               (:list "/type" "square")
-              (:list "/pos-x" 95)
-              (:list "/pos-y" 489)
-              (:list "/radius" 6))))))
+              (:list "/x" 245.67104)
+              (:list "/y" 367.50937)
+              (:list "/size" 14.360154))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 48621.204)
-            (:item-type 48621.204)
-            (:date 48621.204)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "square")
-              (:list "/pos-x" 254)
-              (:list "/pos-y" 263)
-              (:list "/radius" 7))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 49200.547)
-            (:item-type 49200.547)
-            (:date 49200.547)
+            (:item-internal-time 14251.592)
+            (:item-type 14251.592)
+            (:date 14251.592)
             (:attributes nil)
             (:messages
              (:list
               (:list "/staff" 1)
-              (:list "/type" "square")
-              (:list "/pos-x" 496)
-              (:list "/pos-y" 335)
-              (:list "/radius" 9))))))
+              (:list "/type" "circle")
+              (:list "/x" 420.00913)
+              (:list "/y" 104.11292)
+              (:list "/size" 12.669726))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 49311.184)
-            (:item-type 49311.184)
-            (:date 49311.184)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "square")
-              (:list "/pos-x" 430)
-              (:list "/pos-y" 390)
-              (:list "/radius" 15))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 51065.176)
-            (:item-type 51065.176)
-            (:date 51065.176)
+            (:item-internal-time 15807.824)
+            (:item-type 15807.824)
+            (:date 15807.824)
             (:attributes nil)
             (:messages
              (:list
               (:list "/staff" 2)
               (:list "/type" "circle")
-              (:list "/pos-x" 440)
-              (:list "/pos-y" 0)
-              (:list "/radius" 8))))))
+              (:list "/x" 69.67032)
+              (:list "/y" 460.9916)
+              (:list "/size" 2.6125846))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 55898.875)
+            (:item-internal-time 21980.653)
+            (:item-type 21980.653)
+            (:date 21980.653)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 1)
+              (:list "/type" "square")
+              (:list "/x" 472.094)
+              (:list "/y" 409.39993)
+              (:list "/size" 11.223352))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 27125.975)
+            (:item-type 27125.975)
+            (:date 27125.975)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 2)
+              (:list "/type" "circle")
+              (:list "/x" 25.601149)
+              (:list "/y" 22.269965)
+              (:list "/size" 4.34825))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 28246.543)
+            (:item-type 28246.543)
+            (:date 28246.543)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 1)
+              (:list "/type" "circle")
+              (:list "/x" 339.22708)
+              (:list "/y" 117.75953)
+              (:list "/size" 2.6611512))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 29714.614)
+            (:item-type 29714.614)
+            (:date 29714.614)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 2)
+              (:list "/type" "circle")
+              (:list "/x" 187.42984)
+              (:list "/y" 486.4205)
+              (:list "/size" 10.319774))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 30839.067)
+            (:item-type 30839.067)
+            (:date 30839.067)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 2)
+              (:list "/type" "square")
+              (:list "/x" 97.05764)
+              (:list "/y" 300.9836)
+              (:list "/size" 11.459642))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 33307.973)
+            (:item-type 33307.973)
+            (:date 33307.973)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 2)
+              (:list "/type" "circle")
+              (:list "/x" 367.81848)
+              (:list "/y" 408.10626)
+              (:list "/size" 11.9330015))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 35311.082)
+            (:item-type 35311.082)
+            (:date 35311.082)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 1)
+              (:list "/type" "square")
+              (:list "/x" 288.8941)
+              (:list "/y" 53.12091)
+              (:list "/size" 4.4525137))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 35571.64)
+            (:item-type 35571.64)
+            (:date 35571.64)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 2)
+              (:list "/type" "square")
+              (:list "/x" 247.67554)
+              (:list "/y" 403.43768)
+              (:list "/size" 12.432055))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 37309.856)
+            (:item-type 37309.856)
+            (:date 37309.856)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 1)
+              (:list "/type" "circle")
+              (:list "/x" 27.033627)
+              (:list "/y" 270.7607)
+              (:list "/size" 4.785186))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 37773.407)
+            (:item-type 37773.407)
+            (:date 37773.407)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 2)
+              (:list "/type" "circle")
+              (:list "/x" 268.5709)
+              (:list "/y" 67.143975)
+              (:list "/size" 10.390426))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 40918.696)
+            (:item-type 40918.696)
+            (:date 40918.696)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 2)
+              (:list "/type" "square")
+              (:list "/x" 385.45633)
+              (:list "/y" 151.88802)
+              (:list "/size" 10.235784))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 42858.168)
+            (:item-type 42858.168)
+            (:date 42858.168)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 2)
+              (:list "/type" "circle")
+              (:list "/x" 187.33907)
+              (:list "/y" 300.9985)
+              (:list "/size" 3.2030979))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 57498.707)
             (:item-type :master)
-            (:date 55898.875)
+            (:date 57498.707)
             (:attributes nil)
             (:messages
              (:list
               (:list "/staff" 1)
               (:list "/type" "circle")
-              (:list "/pos-x" 373)
-              (:list "/pos-y" 426)
-              (:list "/radius" 8))))))))
+              (:list "/x" 11.902868)
+              (:list "/y" 222.07439)
+              (:list "/size" 11.91036))))))))
        (:symbols
         (:list
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 3729.4292)
+            (:item-internal-time 2184.72)
             (:item-type :master)
-            (:date 3729.4292)
+            (:date 2184.72)
             (:attributes nil)
             (:messages
              (:list
               (:list "/staff" 2)
               (:list "/type" "circle")
-              (:list "/pos-x" 94)
-              (:list "/pos-y" 478)
-              (:list "/radius" 8))))))
+              (:list "/x" 229.56252)
+              (:list "/y" 90.70492)
+              (:list "/size" 6.256142))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 4072.7449)
-            (:item-type 4072.7449)
-            (:date 4072.7449)
+            (:item-internal-time 3454.3777)
+            (:item-type 3454.3777)
+            (:date 3454.3777)
             (:attributes nil)
             (:messages
              (:list
               (:list "/staff" 2)
               (:list "/type" "square")
-              (:list "/pos-x" 358)
-              (:list "/pos-y" 39)
-              (:list "/radius" 5))))))
+              (:list "/x" 210.91927)
+              (:list "/y" 358.24185)
+              (:list "/size" 10.841643))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 8119.5044)
-            (:item-type 8119.5044)
-            (:date 8119.5044)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 1)
-              (:list "/type" "square")
-              (:list "/pos-x" 368)
-              (:list "/pos-y" 361)
-              (:list "/radius" 9))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 10253.17)
-            (:item-type 10253.17)
-            (:date 10253.17)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "square")
-              (:list "/pos-x" 437)
-              (:list "/pos-y" 44)
-              (:list "/radius" 5))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 17889.633)
-            (:item-type 17889.633)
-            (:date 17889.633)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 1)
-              (:list "/type" "square")
-              (:list "/pos-x" 245)
-              (:list "/pos-y" 384)
-              (:list "/radius" 13))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 28069.954)
-            (:item-type 28069.954)
-            (:date 28069.954)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "square")
-              (:list "/pos-x" 404)
-              (:list "/pos-y" 362)
-              (:list "/radius" 14))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 30751.276)
-            (:item-type 30751.276)
-            (:date 30751.276)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "square")
-              (:list "/pos-x" 39)
-              (:list "/pos-y" 269)
-              (:list "/radius" 4))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 33245.793)
-            (:item-type 33245.793)
-            (:date 33245.793)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 1)
-              (:list "/type" "square")
-              (:list "/pos-x" 105)
-              (:list "/pos-y" 154)
-              (:list "/radius" 3))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 33924.243)
-            (:item-type 33924.243)
-            (:date 33924.243)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "square")
-              (:list "/pos-x" 284)
-              (:list "/pos-y" 392)
-              (:list "/radius" 9))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 34630.36)
-            (:item-type 34630.36)
-            (:date 34630.36)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 1)
-              (:list "/type" "square")
-              (:list "/pos-x" 62)
-              (:list "/pos-y" 119)
-              (:list "/radius" 3))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 35231.895)
-            (:item-type 35231.895)
-            (:date 35231.895)
+            (:item-internal-time 3504.7532)
+            (:item-type 3504.7532)
+            (:date 3504.7532)
             (:attributes nil)
             (:messages
              (:list
               (:list "/staff" 1)
               (:list "/type" "circle")
-              (:list "/pos-x" 374)
-              (:list "/pos-y" 455)
-              (:list "/radius" 12))))))
+              (:list "/x" 372.3741)
+              (:list "/y" 445.06036)
+              (:list "/size" 5.6046195))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 40294.024)
-            (:item-type 40294.024)
-            (:date 40294.024)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "square")
-              (:list "/pos-x" 94)
-              (:list "/pos-y" 342)
-              (:list "/radius" 9))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 42772.3)
-            (:item-type 42772.3)
-            (:date 42772.3)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 1)
-              (:list "/type" "square")
-              (:list "/pos-x" 267)
-              (:list "/pos-y" 12)
-              (:list "/radius" 11))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 45417.293)
-            (:item-type 45417.293)
-            (:date 45417.293)
+            (:item-internal-time 4932.5396)
+            (:item-type 4932.5396)
+            (:date 4932.5396)
             (:attributes nil)
             (:messages
              (:list
               (:list "/staff" 1)
               (:list "/type" "circle")
-              (:list "/pos-x" 115)
-              (:list "/pos-y" 232)
-              (:list "/radius" 4))))))
+              (:list "/x" 281.66907)
+              (:list "/y" 281.3625)
+              (:list "/size" 12.484532))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 48455.33)
-            (:item-type 48455.33)
-            (:date 48455.33)
+            (:item-internal-time 11110.711)
+            (:item-type 11110.711)
+            (:date 11110.711)
             (:attributes nil)
             (:messages
              (:list
               (:list "/staff" 1)
               (:list "/type" "square")
-              (:list "/pos-x" 95)
-              (:list "/pos-y" 489)
-              (:list "/radius" 6))))))
+              (:list "/x" 245.67104)
+              (:list "/y" 367.50937)
+              (:list "/size" 14.360154))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 48621.204)
-            (:item-type 48621.204)
-            (:date 48621.204)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "square")
-              (:list "/pos-x" 254)
-              (:list "/pos-y" 263)
-              (:list "/radius" 7))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 49200.547)
-            (:item-type 49200.547)
-            (:date 49200.547)
+            (:item-internal-time 14251.592)
+            (:item-type 14251.592)
+            (:date 14251.592)
             (:attributes nil)
             (:messages
              (:list
               (:list "/staff" 1)
-              (:list "/type" "square")
-              (:list "/pos-x" 496)
-              (:list "/pos-y" 335)
-              (:list "/radius" 9))))))
+              (:list "/type" "circle")
+              (:list "/x" 420.00913)
+              (:list "/y" 104.11292)
+              (:list "/size" 12.669726))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 49311.184)
-            (:item-type 49311.184)
-            (:date 49311.184)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "square")
-              (:list "/pos-x" 430)
-              (:list "/pos-y" 390)
-              (:list "/radius" 15))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 51065.176)
-            (:item-type 51065.176)
-            (:date 51065.176)
+            (:item-internal-time 15807.824)
+            (:item-type 15807.824)
+            (:date 15807.824)
             (:attributes nil)
             (:messages
              (:list
               (:list "/staff" 2)
               (:list "/type" "circle")
-              (:list "/pos-x" 440)
-              (:list "/pos-y" 0)
-              (:list "/radius" 8))))))
+              (:list "/x" 69.67032)
+              (:list "/y" 460.9916)
+              (:list "/size" 2.6125846))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 55898.875)
+            (:item-internal-time 21980.653)
+            (:item-type 21980.653)
+            (:date 21980.653)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 1)
+              (:list "/type" "square")
+              (:list "/x" 472.094)
+              (:list "/y" 409.39993)
+              (:list "/size" 11.223352))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 27125.975)
+            (:item-type 27125.975)
+            (:date 27125.975)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 2)
+              (:list "/type" "circle")
+              (:list "/x" 25.601149)
+              (:list "/y" 22.269965)
+              (:list "/size" 4.34825))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 28246.543)
+            (:item-type 28246.543)
+            (:date 28246.543)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 1)
+              (:list "/type" "circle")
+              (:list "/x" 339.22708)
+              (:list "/y" 117.75953)
+              (:list "/size" 2.6611512))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 29714.614)
+            (:item-type 29714.614)
+            (:date 29714.614)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 2)
+              (:list "/type" "circle")
+              (:list "/x" 187.42984)
+              (:list "/y" 486.4205)
+              (:list "/size" 10.319774))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 30839.067)
+            (:item-type 30839.067)
+            (:date 30839.067)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 2)
+              (:list "/type" "square")
+              (:list "/x" 97.05764)
+              (:list "/y" 300.9836)
+              (:list "/size" 11.459642))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 33307.973)
+            (:item-type 33307.973)
+            (:date 33307.973)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 2)
+              (:list "/type" "circle")
+              (:list "/x" 367.81848)
+              (:list "/y" 408.10626)
+              (:list "/size" 11.9330015))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 35311.082)
+            (:item-type 35311.082)
+            (:date 35311.082)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 1)
+              (:list "/type" "square")
+              (:list "/x" 288.8941)
+              (:list "/y" 53.12091)
+              (:list "/size" 4.4525137))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 35571.64)
+            (:item-type 35571.64)
+            (:date 35571.64)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 2)
+              (:list "/type" "square")
+              (:list "/x" 247.67554)
+              (:list "/y" 403.43768)
+              (:list "/size" 12.432055))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 37309.856)
+            (:item-type 37309.856)
+            (:date 37309.856)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 1)
+              (:list "/type" "circle")
+              (:list "/x" 27.033627)
+              (:list "/y" 270.7607)
+              (:list "/size" 4.785186))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 37773.407)
+            (:item-type 37773.407)
+            (:date 37773.407)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 2)
+              (:list "/type" "circle")
+              (:list "/x" 268.5709)
+              (:list "/y" 67.143975)
+              (:list "/size" 10.390426))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 40918.696)
+            (:item-type 40918.696)
+            (:date 40918.696)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 2)
+              (:list "/type" "square")
+              (:list "/x" 385.45633)
+              (:list "/y" 151.88802)
+              (:list "/size" 10.235784))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 42858.168)
+            (:item-type 42858.168)
+            (:date 42858.168)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 2)
+              (:list "/type" "circle")
+              (:list "/x" 187.33907)
+              (:list "/y" 300.9985)
+              (:list "/size" 3.2030979))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 57498.707)
             (:item-type :master)
-            (:date 55898.875)
+            (:date 57498.707)
             (:attributes nil)
             (:messages
              (:list
               (:list "/staff" 1)
               (:list "/type" "circle")
-              (:list "/pos-x" 373)
-              (:list "/pos-y" 426)
-              (:list "/radius" 8))))))))))))
+              (:list "/x" 11.902868)
+              (:list "/y" 222.07439)
+              (:list "/size" 11.91036))))))))))))
    (:id 0))
   (:box
    (:reference gen-score-symbols)
@@ -716,7 +716,7 @@
    (:group-id nil)
    (:name nil)
    (:x 40)
-   (:y 139)
+   (:y 138)
    (:w 126)
    (:h 53)
    (:color (:color 0.9 0.9 0.9 1.0))
@@ -725,7 +725,7 @@
    (:name nil)
    (:display :mini-view)
    (:showname nil)
-   (:show-markers nil)
+   (:show-markers t)
    (:group-id nil)
    (:lock nil)
    (:inputs
@@ -758,26 +758,26 @@
        (:time-types
         (:list
          :master
-         7697.3174
-         9624.066
-         12662.301
-         13692.162
-         18216.749
-         18729.344
-         19492
-         22087.834
-         22537.208
-         26026.504
-         33185.25
-         34141.03
-         37298.82
-         46365.53
-         51024.68
-         52196.51
-         52406.247
-         52642.536
+         3825.3594
+         4234.5713
+         10405.348
+         13948.1875
+         15152.228
+         15276.175
+         16312.272
+         20206.504
+         22756.633
+         23108.004
+         29795.28
+         30843.86
+         31079.465
+         31304.92
+         35218.848
+         39139.747
+         41579.28
+         46448.06
          :master))
-       (:duration 52930.434)
+       (:duration 49101.735)
        (:interpol nil)
        (:interpol-time 50)
        (:default-frame-type osc-bundle)
@@ -787,442 +787,442 @@
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 2807.8438)
+            (:item-internal-time 2147.9917)
             (:item-type :master)
-            (:date 2807.8438)
+            (:date 2147.9917)
             (:attributes
              (:list
               :sizey
               20
               :posy
-              47
+              60
               :color
-              (:color 0.69543195 0.3099215 0.86810625 0.4)))
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "circle")
-              (:list "/pos-x" 256)
-              (:list "/pos-y" 229)
-              (:list "/radius" 10))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 7697.3174)
-            (:item-type 7697.3174)
-            (:date 7697.3174)
-            (:attributes
-             (:list
-              :sizey
-              20
-              :posy
-              -23
-              :color
-              (:color 0.8680135 0.06087601 0.19819713 0.4)))
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "square")
-              (:list "/pos-x" 447)
-              (:list "/pos-y" 290)
-              (:list "/radius" 11))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 9624.066)
-            (:item-type 9624.066)
-            (:date 9624.066)
-            (:attributes
-             (:list
-              :sizey
-              20
-              :posy
-              35
-              :color
-              (:color 0.7331641 0.9522815 0.92854047 0.4)))
-            (:messages
-             (:list
-              (:list "/staff" 1)
-              (:list "/type" "square")
-              (:list "/pos-x" 435)
-              (:list "/pos-y" 350)
-              (:list "/radius" 12))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 12662.301)
-            (:item-type 12662.301)
-            (:date 12662.301)
-            (:attributes
-             (:list
-              :sizey
-              20
-              :posy
-              37
-              :color
-              (:color 0.14031244 0.26883495 0.8180611 0.4)))
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "circle")
-              (:list "/pos-x" 398)
-              (:list "/pos-y" 306)
-              (:list "/radius" 9))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 13692.162)
-            (:item-type 13692.162)
-            (:date 13692.162)
-            (:attributes
-             (:list
-              :sizey
-              20
-              :posy
-              -26
-              :color
-              (:color 0.8913144 0.5795107 0.7851752 0.4)))
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "circle")
-              (:list "/pos-x" 77)
-              (:list "/pos-y" 101)
-              (:list "/radius" 4))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 18216.749)
-            (:item-type 18216.749)
-            (:date 18216.749)
-            (:attributes
-             (:list
-              :sizey
-              20
-              :posy
-              -32
-              :color
-              (:color 0.08063638 0.24831581 0.13637686 0.4)))
+              (:color 0.36452758 0.42696476 0.9467249 0.4)))
             (:messages
              (:list
               (:list "/staff" 1)
               (:list "/type" "circle")
-              (:list "/pos-x" 419)
-              (:list "/pos-y" 131)
-              (:list "/radius" 11))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 18729.344)
-            (:item-type 18729.344)
-            (:date 18729.344)
-            (:attributes
-             (:list
-              :sizey
-              20
-              :posy
-              13
-              :color
-              (:color 0.5303074 0.45044017 0.028017879 0.4)))
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "square")
-              (:list "/pos-x" 459)
-              (:list "/pos-y" 341)
-              (:list "/radius" 8))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 19492)
-            (:item-type 19492)
-            (:date 19492)
-            (:attributes
-             (:list
-              :sizey
-              20
-              :posy
-              48
-              :color
-              (:color 0.79312635 0.45537448 0.498814 0.4)))
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "circle")
-              (:list "/pos-x" 67)
-              (:list "/pos-y" 291)
-              (:list "/radius" 11))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 22087.834)
-            (:item-type 22087.834)
-            (:date 22087.834)
-            (:attributes
-             (:list
-              :sizey
-              20
-              :posy
-              -17
-              :color
-              (:color 0.41743743 0.7251799 0.06652343 0.4)))
-            (:messages
-             (:list
-              (:list "/staff" 1)
-              (:list "/type" "circle")
-              (:list "/pos-x" 377)
-              (:list "/pos-y" 280)
-              (:list "/radius" 2))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 22537.208)
-            (:item-type 22537.208)
-            (:date 22537.208)
-            (:attributes
-             (:list
-              :sizey
-              20
-              :posy
-              -21
-              :color
-              (:color 0.7473726 0.16600824 0.7289219 0.4)))
-            (:messages
-             (:list
-              (:list "/staff" 1)
-              (:list "/type" "square")
-              (:list "/pos-x" 427)
-              (:list "/pos-y" 2)
-              (:list "/radius" 14))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 26026.504)
-            (:item-type 26026.504)
-            (:date 26026.504)
-            (:attributes
-             (:list
-              :sizey
-              20
-              :posy
-              32
-              :color
-              (:color 0.15742886 0.034868956 0.5526452 0.4)))
-            (:messages
-             (:list
-              (:list "/staff" 1)
-              (:list "/type" "square")
-              (:list "/pos-x" 127)
-              (:list "/pos-y" 51)
+              (:list "/pos-x" 358)
+              (:list "/pos-y" 276)
               (:list "/radius" 3))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 33185.25)
-            (:item-type 33185.25)
-            (:date 33185.25)
+            (:item-internal-time 3825.3594)
+            (:item-type 3825.3594)
+            (:date 3825.3594)
             (:attributes
              (:list
               :sizey
               20
               :posy
-              -1
+              60
               :color
-              (:color 0.26681578 0.57456697 0.24111045 0.4)))
+              (:color 0.48048067 0.63624537 0.84354365 0.4)))
             (:messages
              (:list
               (:list "/staff" 1)
-              (:list "/type" "circle")
-              (:list "/pos-x" 176)
-              (:list "/pos-y" 318)
+              (:list "/type" "square")
+              (:list "/pos-x" 412)
+              (:list "/pos-y" 62)
               (:list "/radius" 6))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 34141.03)
-            (:item-type 34141.03)
-            (:date 34141.03)
+            (:item-internal-time 4234.5713)
+            (:item-type 4234.5713)
+            (:date 4234.5713)
             (:attributes
              (:list
               :sizey
               20
               :posy
-              -16
+              60
               :color
-              (:color 0.4170786 0.12225783 0.8692645 0.4)))
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "square")
-              (:list "/pos-x" 167)
-              (:list "/pos-y" 235)
-              (:list "/radius" 15))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 37298.82)
-            (:item-type 37298.82)
-            (:date 37298.82)
-            (:attributes
-             (:list
-              :sizey
-              20
-              :posy
-              26
-              :color
-              (:color 0.835611 0.6135944 0.44862378 0.4)))
+              (:color 0.4948244 0.79233265 0.7182219 0.4)))
             (:messages
              (:list
               (:list "/staff" 1)
               (:list "/type" "circle")
-              (:list "/pos-x" 376)
-              (:list "/pos-y" 372)
-              (:list "/radius" 3))))))
+              (:list "/pos-x" 339)
+              (:list "/pos-y" 49)
+              (:list "/radius" 14))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 46365.53)
-            (:item-type 46365.53)
-            (:date 46365.53)
+            (:item-internal-time 10405.348)
+            (:item-type 10405.348)
+            (:date 10405.348)
             (:attributes
              (:list
               :sizey
               20
               :posy
-              37
+              60
               :color
-              (:color 0.5932864 0.6444397 0.12844563 0.4)))
+              (:color 0.28777194 0.12354088 0.0045861006 0.4)))
             (:messages
              (:list
               (:list "/staff" 2)
               (:list "/type" "circle")
-              (:list "/pos-x" 169)
-              (:list "/pos-y" 152)
-              (:list "/radius" 9))))))
+              (:list "/pos-x" 238)
+              (:list "/pos-y" 375)
+              (:list "/radius" 2))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 51024.68)
-            (:item-type 51024.68)
-            (:date 51024.68)
+            (:item-internal-time 13948.1875)
+            (:item-type 13948.1875)
+            (:date 13948.1875)
             (:attributes
              (:list
               :sizey
               20
               :posy
-              28
+              60
               :color
-              (:color 0.3642056 0.6821164 0.14307738 0.4)))
+              (:color 0.08992839 0.6340947 0.86814547 0.4)))
             (:messages
              (:list
               (:list "/staff" 1)
               (:list "/type" "square")
-              (:list "/pos-x" 93)
-              (:list "/pos-y" 146)
+              (:list "/pos-x" 130)
+              (:list "/pos-y" 2)
               (:list "/radius" 7))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 52196.51)
-            (:item-type 52196.51)
-            (:date 52196.51)
+            (:item-internal-time 15152.228)
+            (:item-type 15152.228)
+            (:date 15152.228)
             (:attributes
              (:list
               :sizey
               20
               :posy
-              41
+              60
               :color
-              (:color 0.9634094 0.32499588 0.10200596 0.4)))
+              (:color 0.7158489 0.8263935 0.3334694 0.4)))
             (:messages
              (:list
               (:list "/staff" 2)
               (:list "/type" "circle")
-              (:list "/pos-x" 190)
-              (:list "/pos-y" 51)
-              (:list "/radius" 11))))))
+              (:list "/pos-x" 33)
+              (:list "/pos-y" 340)
+              (:list "/radius" 14))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 52406.247)
-            (:item-type 52406.247)
-            (:date 52406.247)
+            (:item-internal-time 15276.175)
+            (:item-type 15276.175)
+            (:date 15276.175)
             (:attributes
              (:list
               :sizey
               20
               :posy
-              48
+              60
               :color
-              (:color 0.39262807 0.19432652 0.5202949 0.4)))
+              (:color 0.2376275 0.25473213 0.5387676 0.4)))
             (:messages
              (:list
               (:list "/staff" 2)
-              (:list "/type" "circle")
-              (:list "/pos-x" 112)
-              (:list "/pos-y" 89)
-              (:list "/radius" 3))))))
+              (:list "/type" "square")
+              (:list "/pos-x" 27)
+              (:list "/pos-y" 383)
+              (:list "/radius" 2))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 52642.536)
-            (:item-type 52642.536)
-            (:date 52642.536)
+            (:item-internal-time 16312.272)
+            (:item-type 16312.272)
+            (:date 16312.272)
             (:attributes
              (:list
               :sizey
               20
               :posy
-              24
+              60
               :color
-              (:color 0.90743304 0.38682318 0.0289855 0.4)))
+              (:color 0.74017287 0.11307359 0.44137132 0.4)))
+            (:messages
+             (:list
+              (:list "/staff" 1)
+              (:list "/type" "circle")
+              (:list "/pos-x" 80)
+              (:list "/pos-y" 482)
+              (:list "/radius" 15))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 20206.504)
+            (:item-type 20206.504)
+            (:date 20206.504)
+            (:attributes
+             (:list
+              :sizey
+              20
+              :posy
+              60
+              :color
+              (:color 0.68156767 0.6501113 0.73368776 0.4)))
             (:messages
              (:list
               (:list "/staff" 1)
               (:list "/type" "square")
-              (:list "/pos-x" 389)
-              (:list "/pos-y" 132)
+              (:list "/pos-x" 358)
+              (:list "/pos-y" 367)
+              (:list "/radius" 6))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 22756.633)
+            (:item-type 22756.633)
+            (:date 22756.633)
+            (:attributes
+             (:list
+              :sizey
+              20
+              :posy
+              60
+              :color
+              (:color 0.50332404 0.66789794 0.57110787 0.4)))
+            (:messages
+             (:list
+              (:list "/staff" 2)
+              (:list "/type" "square")
+              (:list "/pos-x" 323)
+              (:list "/pos-y" 226)
+              (:list "/radius" 12))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 23108.004)
+            (:item-type 23108.004)
+            (:date 23108.004)
+            (:attributes
+             (:list
+              :sizey
+              20
+              :posy
+              60
+              :color
+              (:color 0.3063972 0.7459744 0.04711461 0.4)))
+            (:messages
+             (:list
+              (:list "/staff" 1)
+              (:list "/type" "square")
+              (:list "/pos-x" 110)
+              (:list "/pos-y" 473)
+              (:list "/radius" 10))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 29795.28)
+            (:item-type 29795.28)
+            (:date 29795.28)
+            (:attributes
+             (:list
+              :sizey
+              20
+              :posy
+              60
+              :color
+              (:color 0.9527718 0.78693927 0.39651406 0.4)))
+            (:messages
+             (:list
+              (:list "/staff" 2)
+              (:list "/type" "square")
+              (:list "/pos-x" 384)
+              (:list "/pos-y" 153)
+              (:list "/radius" 10))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 30843.86)
+            (:item-type 30843.86)
+            (:date 30843.86)
+            (:attributes
+             (:list
+              :sizey
+              20
+              :posy
+              60
+              :color
+              (:color 0.327083 0.8663819 0.6464466 0.4)))
+            (:messages
+             (:list
+              (:list "/staff" 2)
+              (:list "/type" "circle")
+              (:list "/pos-x" 395)
+              (:list "/pos-y" 255)
               (:list "/radius" 13))))))
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 52930.434)
-            (:item-type :master)
-            (:date 52930.434)
+            (:item-internal-time 31079.465)
+            (:item-type 31079.465)
+            (:date 31079.465)
             (:attributes
              (:list
               :sizey
               20
               :posy
-              -4
+              60
               :color
-              (:color 0.7499715 0.39070988 0.25766635 0.4)))
+              (:color 0.33564687 0.821087 0.07991624 0.4)))
+            (:messages
+             (:list
+              (:list "/staff" 2)
+              (:list "/type" "circle")
+              (:list "/pos-x" 83)
+              (:list "/pos-y" 471)
+              (:list "/radius" 3))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 31304.92)
+            (:item-type 31304.92)
+            (:date 31304.92)
+            (:attributes
+             (:list
+              :sizey
+              20
+              :posy
+              60
+              :color
+              (:color 0.42815483 0.35682476 0.066412926 0.4)))
+            (:messages
+             (:list
+              (:list "/staff" 1)
+              (:list "/type" "square")
+              (:list "/pos-x" 13)
+              (:list "/pos-y" 88)
+              (:list "/radius" 4))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 35218.848)
+            (:item-type 35218.848)
+            (:date 35218.848)
+            (:attributes
+             (:list
+              :sizey
+              20
+              :posy
+              60
+              :color
+              (:color 0.41581512 0.06730521 0.74254847 0.4)))
+            (:messages
+             (:list
+              (:list "/staff" 1)
+              (:list "/type" "square")
+              (:list "/pos-x" 161)
+              (:list "/pos-y" 1)
+              (:list "/radius" 14))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 39139.747)
+            (:item-type 39139.747)
+            (:date 39139.747)
+            (:attributes
+             (:list
+              :sizey
+              20
+              :posy
+              60
+              :color
+              (:color 0.17186022 0.59203804 0.6552099 0.4)))
+            (:messages
+             (:list
+              (:list "/staff" 1)
+              (:list "/type" "square")
+              (:list "/pos-x" 68)
+              (:list "/pos-y" 101)
+              (:list "/radius" 6))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 41579.28)
+            (:item-type 41579.28)
+            (:date 41579.28)
+            (:attributes
+             (:list
+              :sizey
+              20
+              :posy
+              60
+              :color
+              (:color 0.62468017 0.9039042 0.033275366 0.4)))
+            (:messages
+             (:list
+              (:list "/staff" 1)
+              (:list "/type" "square")
+              (:list "/pos-x" 265)
+              (:list "/pos-y" 88)
+              (:list "/radius" 2))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 46448.06)
+            (:item-type 46448.06)
+            (:date 46448.06)
+            (:attributes
+             (:list
+              :sizey
+              20
+              :posy
+              60
+              :color
+              (:color 0.11050224 0.47407937 0.8994969 0.4)))
             (:messages
              (:list
               (:list "/staff" 2)
               (:list "/type" "square")
-              (:list "/pos-x" 352)
-              (:list "/pos-y" 419)
-              (:list "/radius" 10))))))))))))
+              (:list "/pos-x" 196)
+              (:list "/pos-y" 306)
+              (:list "/radius" 2))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 49101.735)
+            (:item-type :master)
+            (:date 49101.735)
+            (:attributes
+             (:list
+              :sizey
+              20
+              :posy
+              60
+              :color
+              (:color 0.26741993 0.032759667 0.17062664 0.4)))
+            (:messages
+             (:list
+              (:list "/staff" 2)
+              (:list "/type" "circle")
+              (:list "/pos-x" 131)
+              (:list "/pos-y" 454)
+              (:list "/radius" 2))))))))))))
    (:id 3))
   (:box
    (:reference fixnum)

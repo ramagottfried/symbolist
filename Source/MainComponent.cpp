@@ -38,7 +38,12 @@ MainComponent::MainComponent( Score *s )
     // setup score components here
 
     setSize (600, 400);
+    
+    // will populate scoreGUI
+    setContentFromScore(s);
+    
     addAndMakeVisible(scoreGUI);
+    
 }
 
 MainComponent::~MainComponent()
@@ -53,3 +58,25 @@ void MainComponent::resized()
 {
     scoreGUI.setBounds( 20, 0, getWidth(), getHeight() );
 }
+
+
+BaseComponent* MainComponent::makeComponentFromSymbol(Symbol* s) {
+
+    BaseComponent *c;
+    OSCBundle b = s->getOSCBundle();
+    
+    c = new CircleComponent( 10, 10);
+    
+    c->setSymbol(s);
+    return c;
+}
+
+void MainComponent::setContentFromScore ( Score* s ){
+    
+    for (int i = 0; i < s->getSize(); i++) {
+        scoreGUI.addChildComponent( makeComponentFromSymbol(s->getSymbol(i)) );
+    }
+}
+
+
+

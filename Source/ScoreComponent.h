@@ -16,7 +16,8 @@ public:
     void mouseDown ( const MouseEvent& event ) override;
     void mouseDrag ( const MouseEvent& event ) override;
     
-    void addChildComponentOSC( BaseComponent *c );
+    
+    void addChildComponent( BaseComponent *c );
     
     inline Point<float> getScoreMouseDown(){ return m_down; }
     

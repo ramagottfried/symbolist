@@ -3,6 +3,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+#include "ScoreData.h"
+
 class BaseComponent : public Component
 {
 public:
@@ -37,6 +39,9 @@ public:
     inline void attachScore(Component *s){ the_score = s; };
     inline Component *getScore(){ return the_score; };
     
+    inline void setSymbol(Symbol *s){ score_symbol = s; };
+    
+    
     // add osc score w/r here?
     
 protected:
@@ -66,7 +71,7 @@ protected:
     
 private:
     Component *the_score;
-    void *oscbundle;
+    Symbol *score_symbol;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BaseComponent)

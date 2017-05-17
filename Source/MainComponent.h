@@ -24,6 +24,19 @@ public:
         std::cout << event->eventComponent->getName() << type << std::endl;
     }
     
+    
+    BaseComponent* makeComponentFromSymbol(Symbol* s);
+    
+    // set the contents of scoreGUI from s
+    void setContentFromScore ( Score* s ) ;
+    
+    // toDo : create a Symbol from c and add it to parent Windows's score
+    void addInScore ( BaseComponent* c ) {} ;
+    
+    // toDo : removes the Symbol corresponding to c from parent Windows's score
+    void removeFromScore ( BaseComponent* c ) {} ;
+    
+    
 private:
     
     ScoreComponent scoreGUI;

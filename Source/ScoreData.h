@@ -15,6 +15,8 @@ class Symbol {
     public:
     Symbol(OSCBundle b);
     
+    OSCBundle getOSCBundle () { return osc_bundle; }
+    
     private:
     OSCBundle osc_bundle;
     t_rect m_rect;
@@ -78,6 +80,7 @@ class Score {
         ~Score();
 
         void addSymbol(Symbol *system);
+        size_t getSize();
         Symbol *getSymbol(int n);
 
         // NOT USED

@@ -10,14 +10,17 @@ SymbolistMainWindow::SymbolistMainWindow ( Score *s ): DocumentWindow ( "symboli
                                                                 Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId),
                                                                 DocumentWindow::allButtons)
 {
+    
+    score = s;
+    
     setUsingNativeTitleBar (true);
-    setContentOwned ( new MainComponent( s ), true );
+    setContentOwned ( new MainComponent( score ), true );
     
     centreWithSize (getWidth(), getHeight());
     setVisible (true);
     setResizable(true, true);
 
-    score = s;
+    
 }
 
 SymbolistMainWindow::SymbolistMainWindow () : SymbolistMainWindow( new Score () ) {}

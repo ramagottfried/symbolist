@@ -36,7 +36,7 @@ void ScoreComponent::mouseMove ( const MouseEvent& event )
      */
 }
 
-void ScoreComponent::addChildComponentOSC( BaseComponent *c )
+void ScoreComponent::addChildComponent( BaseComponent *c )
 {
     c->attachScore ( this );
     addAndMakeVisible ( c );
@@ -52,7 +52,7 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
     {
         CircleComponent *circle = new CircleComponent( event.position.getX(), event.position.getY() );
         
-        addChildComponentOSC ( circle );
+        addChildComponent( circle );
         
         score_stack.emplace_back ( circle );
     }

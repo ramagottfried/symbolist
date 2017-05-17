@@ -53,6 +53,12 @@ Symbol *Score::getSymbol(int n) {
     } else { return new Symbol(OSCBundle()); }
 }
 
+/***********************************
+ * Get the number of symbols
+ ***********************************/
+size_t Score::getSize() {
+    return symbols.size();
+}
 
 
 void Score::importScoreFromOSC(int n, odot_bundle **bundle_array)

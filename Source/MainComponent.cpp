@@ -52,11 +52,12 @@ MainComponent::~MainComponent()
 
 void MainComponent::paint (Graphics& g)
 {
+    g.fillAll ( Colours::white );
 }
 
 void MainComponent::resized()
 {
-    scoreGUI.setBounds( 20, 0, getWidth(), getHeight() );
+    scoreGUI.setBounds( 50, 50, getWidth()-100, getHeight()-100 );
 }
 
 

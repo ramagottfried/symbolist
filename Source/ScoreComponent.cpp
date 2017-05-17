@@ -15,6 +15,8 @@ ScoreComponent::~ScoreComponent()
 void ScoreComponent::paint (Graphics& g)
 {
     g.fillAll ( Colours::white );
+    g.setColour( Colours::black );
+    g.drawRect( getLocalBounds() );
     
     g.setFont (Font (16.0f));
     g.setColour (Colours::grey);
@@ -51,7 +53,7 @@ void ScoreComponent::findLassoItemsInArea (Array <BaseComponent*>& results, cons
     for (int i = 0; i < getNumChildComponents(); ++i)
     {
         BaseComponent *c = (BaseComponent *)getChildComponent (i);
-        
+
         if (c->getBounds().intersects (area))
             results.add (c);
     }
@@ -62,7 +64,12 @@ SelectedItemSet<BaseComponent*> & ScoreComponent::getLassoSelection()
     /// todo need to be completed
     
     printf("num selected %i\n", selected_items.getNumSelected() );
-    
+/*
+    for (auto it = selected_items.begin(); it != selected_items.end(); it++ )
+    {
+        
+    }
+  */
     return selected_items;
 }
 
@@ -87,13 +94,11 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
         else
         {
             addChildComponent( lassoSelector );
-            
+            getLookAndFeel().setColour( lassoSelector.lassoFillColourId, Colour::fromFloatRGBA(0.5, 0.5, 0., 0.1) );
+            getLookAndFeel().setColour( lassoSelector.lassoOutlineColourId, Colour::fromFloatRGBA(0.5, 0.5, 0., 1.) );
             lassoSelector.beginLasso( event, this );
         }
     }
-    
-    
-   
     
 }
 

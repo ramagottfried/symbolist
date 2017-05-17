@@ -8,26 +8,49 @@
 #include "ScoreData.h"
 
 
+/************************************************
+ * SHARED BY THE LIBRARY AND THE STANDALONE APP
+ ************************************************/
 
-
-class MainWindow : public DocumentWindow {
+class SymbolistMainWindow : public DocumentWindow {
     
 public:
 
-    MainWindow ( Score *s );
-    MainWindow ();
-
-    ~MainWindow ();
-
-    void closeButtonPressed() override;
-    void registerCallback(symbolistCallback c);
-
+    SymbolistMainWindow ( Score *s );
+    SymbolistMainWindow ();
+    ~SymbolistMainWindow ();
 
 private:
-    Score *score;
-    symbolistCallback myCallback;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow)
+    Score *score;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainWindow)
 
 };
 
+
+
+/***********************************
+ * SPECIFIC FOR THE LIBRARY
+ ***********************************/
+class SymbolistEditorWindow : public SymbolistMainWindow {
+    
+public:
+    
+    SymbolistEditorWindow () : SymbolistMainWindow (new Score()) {} ; // {}
+    SymbolistEditorWindow (Score *s)  : SymbolistMainWindow ( s ) {} ;
+    ~SymbolistEditorWindow () {};
+    
+    void closeButtonPressed() override;
+    void registerCloseCallback(symbolistCloseCallback c);
+    void registerUpdateCallback(symbolistUpdateCallback c);
+    
+    
+private:
+  
+    symbolistCloseCallback myCloseCallback;
+    symbolistUpdateCallback myUpdateCallback;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistEditorWindow)
+    
+};

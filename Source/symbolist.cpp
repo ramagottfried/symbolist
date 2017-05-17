@@ -22,28 +22,27 @@ int symbolistExit() {
     return 1; // went ok
 }
 
-void setupTestScore(Score& s)
-{
-    System *sys = new System();
-    s.addSystem( sys );
-}
-
 void *symbolistNewWindow()
 {
-    return new MainWindow ();
+    return new SymbolistEditorWindow ();
 }
 
-void *symbolistNewWindowWithSymbols(int n, void **bundle_array) {
+void *symbolistNewWindowWithSymbols(int n, odot_bundle **bundle_array) {
     Score *s = new Score( n, bundle_array) ;
-    return new MainWindow( s );
+    return new SymbolistEditorWindow( s );
 }
 
-void symbolistRegisterCallback(void* window, symbolistCallback callback){
-    static_cast<MainWindow*>(window)->registerCallback(callback);
+void symbolistRegisterCloseCallback(void* window, symbolistCloseCallback callback){
+    static_cast<SymbolistEditorWindow*>(window)->registerCloseCallback(callback);
+}
+
+void symbolistRegisterUpdateCallback(void* window, symbolistUpdateCallback callback){
+    static_cast<SymbolistEditorWindow*>(window)->registerUpdateCallback(callback);
 }
 
 
-
-
+void symbolistWindowToFront(void* window){
+    static_cast<SymbolistEditorWindow*>(window)->toFront(true);
+}
 
 

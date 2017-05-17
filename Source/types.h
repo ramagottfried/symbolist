@@ -9,7 +9,25 @@
 #ifndef types_h
 #define types_h
 
-typedef void (*symbolistCallback)( void * win, void** bundle_array);
+#include <vector>
+
+struct odot_bundle
+{
+    long len;
+    char *data;
+};
+
+struct t_rect
+{
+    std::vector<float> pos;
+    float w, h;
+};
+
+
+typedef void (*symbolistCloseCallback)( void * win);
+typedef void (*symbolistUpdateCallback)( void * win, void** bundle_array);
+
+
 
 #endif
 

@@ -2,9 +2,13 @@
 #include "MainWindow.h"
 
 
-MainWindow::MainWindow ( Score *s ) : DocumentWindow ( "symbolist",
-                                            Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId),
-                                            DocumentWindow::allButtons)
+/************************************************
+ * SHARED BY THE LIBRARY AND THE STANDALONE APP
+ ************************************************/
+
+SymbolistMainWindow::SymbolistMainWindow ( Score *s ): DocumentWindow ( "symbolist",
+                                                                Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId),
+                                                                DocumentWindow::allButtons)
 {
     setUsingNativeTitleBar (true);
     setContentOwned ( new MainComponent( s ), true );
@@ -16,22 +20,25 @@ MainWindow::MainWindow ( Score *s ) : DocumentWindow ( "symbolist",
     score = s;
 }
 
-MainWindow::MainWindow () : MainWindow( new Score () ) {}
+SymbolistMainWindow::SymbolistMainWindow () : SymbolistMainWindow( new Score () ) {}
 
 
-MainWindow::~MainWindow() {}
+SymbolistMainWindow::~SymbolistMainWindow() {}
 
 
-void MainWindow::registerCallback(symbolistCallback c) {
 
-    myCallback = c;
+/***********************************
+ * SPECIFIC FOR THE LIBRARY
+ ***********************************/
 
-}
+
+void SymbolistEditorWindow::registerCloseCallback(symbolistCloseCallback c) { myCloseCallback = c; }
+void SymbolistEditorWindow::registerUpdateCallback(symbolistUpdateCallback c) { myUpdateCallback = c; }
 
 
-void MainWindow::closeButtonPressed() {
+void SymbolistEditorWindow::closeButtonPressed() {
 
-    if (myCallback) { myCallback( this, NULL ); }
+    if (myCloseCallback) { myCloseCallback( this ); }
     delete this;
 
 }

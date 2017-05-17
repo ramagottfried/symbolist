@@ -70,20 +70,27 @@
 (defparameter *symbolist-editors* nil)
 
 (defmethod open-editor-window ((self sym-editor))
-  (unless (window self)
+  (if (window self)
+      (symbolist::symbolistWindowToFront (window self))
     (let* ((sscore (object-value self))
            (win (symbolist::symbolistNewWindowWithSymbols (length (symbols sscore)) (score-pointer sscore))))
       (setf (window self) win)
       (push self *symbolist-editors*)
-      (symbolist::symbolist-register-callback win)
+      (symbolist::symbolist-register-callbacks win)
       win)))
 
-;;; to be redefined
-(defun symbolist::symbolist-handle-callback (win-ptr bundle-array-ptr) 
+(defun symbolist::symbolist-handle-close-callback (win-ptr)
   (let ((ed (find win-ptr *symbolist-editors* :key 'window :test 'om-pointer-equal)))
     (if ed
         (let ()
           (setf (window ed) nil)
           (setf *symbolist-editors* (remove ed *symbolist-editors*)))
-      (print "sym-score editor not found"))))
+      (om-print "window-close callback : editor not found" "SYMBOLIST"))))
 
+(defun symbolist::symbolist-handle-update-callback (win-ptr bundle-array-ptr) 
+  (let ((ed (find win-ptr *symbolist-editors* :key 'window :test 'om-pointer-equal)))
+    (if ed
+        (let ()
+          ;;; process the new data
+          )
+      (om-print "update callback : editor not found" "SYMBOLIST"))))

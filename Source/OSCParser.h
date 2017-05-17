@@ -198,7 +198,6 @@ class OSCParser {
         while (! isExhausted() && bytesRead < maxBytesToRead)
         {
             bundle.addElement (readElement());
-            
             auto newPos = getPosition();
             bytesRead += newPos - pos;
             pos = newPos;

@@ -60,21 +60,53 @@ void MainComponent::resized()
 }
 
 
+
 BaseComponent* MainComponent::makeComponentFromSymbol(Symbol* s) {
 
-    BaseComponent *c;
-    OSCBundle b = s->getOSCBundle();
+    //BaseComponent *c;
+    float x = 0.0;
+    float y = 0.0;
+    float size = 10.0;
+
+    int xMessagePos = s->getOSCMessagePos("/x");
+    int yMessagePos = s->getOSCMessagePos("/y");
+    int sizeMessagePos = s->getOSCMessagePos("/size");
+    int typeMessagePos = s->getOSCMessagePos("/type");
+
+    if (xMessagePos != -1) x = s->getOSCMessageValue(xMessagePos).getFloat32();
+    if (yMessagePos != -1) y = s->getOSCMessageValue(yMessagePos).getFloat32();
+    if (sizeMessagePos != -1) size = s->getOSCMessageValue(sizeMessagePos).getFloat32();
+
     
-    c = new CircleComponent( 10, 10);
+    if ( typeMessagePos == -1 ) {
     
-    c->setSymbol(s);
-    return c;
+        return NULL;
+    
+    } else {
+        
+        String typeStr = s->getOSCMessageValue(typeMessagePos).getString();
+        
+        if (typeStr.equalsIgnoreCase(String("circle"))) {
+        
+            CircleComponent *c = new CircleComponent( x, y, size);
+            c->setSymbol(s);
+            return c;
+    
+        } else {
+            
+            return NULL;
+            
+        }
+    }
 }
+
 
 void MainComponent::setContentFromScore ( Score* s ){
     
-    for (int i = 0; i < s->getSize(); i++) {
-        scoreGUI.addScoreChildComponent( makeComponentFromSymbol(s->getSymbol(i)) );
+    for (int i = 0; i < s->getSize(); i++)
+    {
+        BaseComponent *c = makeComponentFromSymbol(s->getSymbol(i));
+        if ( c != NULL ) scoreGUI.addScoreChildComponent(c);
     }
 }
 

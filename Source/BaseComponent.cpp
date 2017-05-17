@@ -1,8 +1,26 @@
 
 #include "BaseComponent.h"
 
-BaseComponent::BaseComponent(){}
+BaseComponent::BaseComponent()
+{}
+
 BaseComponent::~BaseComponent(){}
+
+void BaseComponent::select()
+{
+    
+    is_selected = true;
+    
+    if( !resizableBorder )
+    {
+        addChildComponent( resizableBorder = new ResizableBorderComponent(this, nullptr) );
+        resizableBorder->setBounds( getLocalBounds() );
+        resizableBorder->setBorderThickness( BorderSize<int>(1) );
+    }
+    
+    resizableBorder->setVisible(1);
+    
+}
 
 void BaseComponent::moved ()
 {
@@ -12,6 +30,10 @@ void BaseComponent::moved ()
 void BaseComponent::resized ()
 {
     symbol_resized();
+    
+    if( resizableBorder )
+        resizableBorder->setBounds( getLocalBounds() );
+
 }
 
 void BaseComponent::paint ( Graphics& g )
@@ -51,19 +73,21 @@ void BaseComponent::mouseDown( const MouseEvent& event )
     m_down = event.position;
     bounds = getBounds();
     
-    symbol_mouseDown(event);
-
-    // do selection here
+    std::cout << bounds.getX() << " " << bounds.getY() << " " << bounds.getWidth() << " " << bounds.getHeight() << std::endl;
     
+    symbol_mouseDown(event);
+    
+    // do selection here
 }
 
 void BaseComponent::mouseDrag( const MouseEvent& event )
 {
+    
     Component *score = this->getScore();
     MouseEvent scoreEvent = event.getEventRelativeTo ( score );
     
     Point<float> mouseoffset = scoreEvent.position - m_down;
-    
+    /*
     if ( event.mods.isAltDown() )
     {
         
@@ -79,6 +103,9 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
         setBounds ( newX, newY, newW, newH );
     }
     else
+     */
+    
+    if( is_selected )
     {
         setBounds ( mouseoffset.getX(),
                    mouseoffset.getY(),
@@ -92,7 +119,7 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
 }
 
 void BaseComponent::mouseExit( const MouseEvent& event )
-{
+{    
     showBoundingBox = false;
     
     current_color = sym_color;
@@ -100,7 +127,7 @@ void BaseComponent::mouseExit( const MouseEvent& event )
     symbol_mouseExit(event);
     
     repaint();
-
+    
 }
 
 void BaseComponent::mouseDoubleClick( const MouseEvent& event )

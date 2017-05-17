@@ -4,22 +4,17 @@
 CircleComponent::CircleComponent()
 {
     setComponentID ( "Circle" );
+    // should this constructor exist?
 }
 
-// add options for other params: color, stroke...
-CircleComponent::CircleComponent( float x, float y, float diameter, float stroke, Colour color )
+CircleComponent::CircleComponent( float x, float y, float radius, float stroke, Colour color )
 {
-
     setComponentID ( "Circle" );
-    setBounds ( x, y, diameter, diameter );
+    setBounds ( x-radius, y-radius, radius+radius, radius+radius );
     strokeWeight = stroke;
     sym_color = color;
     
 }
-
-
-
-CircleComponent::~CircleComponent(){}
 
 
 void CircleComponent::symbol_paint ( Graphics& g )
@@ -29,38 +24,3 @@ void CircleComponent::symbol_paint ( Graphics& g )
     g.drawEllipse ( bounds, (float) strokeWeight );
     
 }
-
-
-void CircleComponent::symbol_mouseDoubleClick (const MouseEvent& event)
-{
-    printf("2x click");
-}
-
-/*
- 
-void CircleComponent::mouseEnter( const MouseEvent& event )
-{
-}
-
-void CircleComponent::mouseMove( const MouseEvent& event )
-{
-}
-
-void CircleComponent::mouseDown( const MouseEvent& event )
-{
-       // at the moment mouse down is only for creating new objects
-}
-
-void CircleComponent::mouseDrag( const MouseEvent& event )
-{
-    
-}
-
-void CircleComponent::mouseExit( const MouseEvent& event )
-{
-    BaseComponent::mouseExit( event );
-    
-    current_color = Colours::black;
-    repaint();
-}
-*/

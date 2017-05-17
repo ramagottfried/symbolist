@@ -36,7 +36,7 @@ void ScoreComponent::mouseMove ( const MouseEvent& event )
      */
 }
 
-void ScoreComponent::addChildComponent( BaseComponent *c )
+void ScoreComponent::addScoreChildComponent( BaseComponent *c )
 {
     c->attachScore ( this );
     addAndMakeVisible ( c );
@@ -45,8 +45,41 @@ void ScoreComponent::addChildComponent( BaseComponent *c )
     // add to score here
 }
 
+void ScoreComponent::findLassoItemsInArea (Array <BaseComponent*>& results, const Rectangle<int>& area)
+{
+    /*
+    const Rectangle<int> lasso (area - subCompHolder->getPosition());
+    
+    for (int i = 0; i < subCompHolder->getNumChildComponents(); ++i)
+    {
+        Component* c = subCompHolder->getChildComponent (i);
+        
+        if (c->getBounds().intersects (lasso))
+            results.add (c);
+    }
+    */
+}
+
+SelectedItemSet<BaseComponent*> & ScoreComponent::getLassoSelection()
+{
+    /// todo need to be completed
+    
+    return selected_items;
+}
+
 void ScoreComponent::mouseDown ( const MouseEvent& event )
 {
+    
+    if( event.eventComponent != this )
+    {
+        ((BaseComponent *)event.eventComponent)->select();
+    }
+    else
+    {
+        addChildComponent( lassoSelector );
+        
+        lassoSelector.beginLasso( event, this );
+    }
     
     if ( event.mods.isShiftDown() )
     {
@@ -62,5 +95,12 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
 
 void ScoreComponent::mouseDrag ( const MouseEvent& event )
 {
+    lassoSelector.dragLasso(event);
 }
+
+void ScoreComponent::mouseUp ( const MouseEvent& event )
+{
+    lassoSelector.endLasso();
+}
+
 

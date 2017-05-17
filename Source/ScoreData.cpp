@@ -34,13 +34,6 @@ Score::~Score(){
  ***********************************/
  void Score::addSymbol(Symbol *symbol) {
     symbols.emplace_back(symbol);
-     
-     // search for stave and system in the OSC messages inside oscb and reassign these values
-     //int n_stave = 1;
-     //int n_system = 1;
-     //System* sys = getSystem(n_system);
-     //Stave* sta = sys->getStave(n_stave);
-     //std::cout << "importing OSC symbol in system " << n_system << " / stave " << n_stave << std::endl;
 }
 
 

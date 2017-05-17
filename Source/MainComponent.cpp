@@ -74,7 +74,7 @@ BaseComponent* MainComponent::makeComponentFromSymbol(Symbol* s) {
 void MainComponent::setContentFromScore ( Score* s ){
     
     for (int i = 0; i < s->getSize(); i++) {
-        scoreGUI.addChildComponent( makeComponentFromSymbol(s->getSymbol(i)) );
+        scoreGUI.addScoreChildComponent( makeComponentFromSymbol(s->getSymbol(i)) );
     }
 }
 

@@ -41,6 +41,13 @@ public:
     
     inline void setSymbol(Symbol *s){ score_symbol = s; };
     
+    void select();
+    
+    void unselect()
+    {
+        is_selected = false;
+        resizableBorder->setVisible(0);
+    }
     
     // add osc score w/r here?
     
@@ -54,8 +61,13 @@ protected:
     Point<float>    m_down;
     Colour          current_color = Colours::black;
 
+    ScopedPointer<ResizableBorderComponent> resizableBorder;
+    
     
     bool            is_selected = false;
+    int             resize_mode = 0; // 0 = scale symbol to bounds, 1 = scale spacing (not resizing)
+    
+    
     bool            showBoundingBox = false;
     float           bb_strokeWeight = 1;
     Colour          bb_color = Colours::cornflowerblue;

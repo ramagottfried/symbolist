@@ -38,5 +38,9 @@ SYMBOLIST_API void symbolistRegisterCloseCallback(void* window, symbolistCloseCa
 SYMBOLIST_API void symbolistRegisterUpdateCallback(void* window, symbolistUpdateCallback callback);
 
 SYMBOLIST_API void symbolistWindowToFront(void* window);
+SYMBOLIST_API void symbolistWindowSetName(void* window, char *name);
+
+SYMBOLIST_API void symbolistWindowUpdateSymbols(void* window, int n, odot_bundle **bundle_array);
+
 
 #endif /* symbolist_hpp */

@@ -40,9 +40,16 @@ void symbolistRegisterUpdateCallback(void* window, symbolistUpdateCallback callb
     static_cast<SymbolistEditorWindow*>(window)->registerUpdateCallback(callback);
 }
 
-
 void symbolistWindowToFront(void* window){
     static_cast<SymbolistEditorWindow*>(window)->toFront(true);
+}
+
+void symbolistWindowSetName(void* window, char *name){
+    static_cast<SymbolistEditorWindow*>(window)->setName(String(name));
+}
+
+void symbolistWindowUpdateSymbols(void* window, int n, odot_bundle **bundle_array){
+    // static_cast<SymbolistEditorWindow*>(window)->updateSymbols(n, bundle_array);
 }
 
 

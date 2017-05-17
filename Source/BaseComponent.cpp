@@ -5,41 +5,56 @@ BaseComponent::BaseComponent(){}
 BaseComponent::~BaseComponent(){}
 
 void BaseComponent::moved ()
-{}
+{
+    symbol_moved();
+}
 
 void BaseComponent::resized ()
-{}
+{
+    symbol_resized();
+}
 
 void BaseComponent::paint ( Graphics& g )
 {
-    if( showBoundingBox )
+    if( showBoundingBox )      // setup control points for resize...
     {
         g.setColour( bb_color );
         const Rectangle<float> l_bounds = getLocalBounds().toFloat().reduced( bb_strokeWeight-1 );
         g.drawRect ( 0.0, 0.0, l_bounds.getWidth(), l_bounds.getHeight()  );
-        
-        
-        
     }
+    
+    symbol_paint( g );
+    
 }
 
 void BaseComponent::mouseEnter( const MouseEvent& event )
 {
     showBoundingBox = true;
-    // setup control points for resize...
     
+    current_color = sel_color;
     
+    symbol_mouseEnter(event);
+    
+    repaint();
 }
 
 void BaseComponent::mouseMove( const MouseEvent& event )
 {
   //    m_pos = getPosition().toFloat();
+    
+    symbol_mouseMove(event);
+
 }
 
 void BaseComponent::mouseDown( const MouseEvent& event )
 {
     m_down = event.position;
     bounds = getBounds();
+    
+    symbol_mouseDown(event);
+
+    // do selection here
+    
 }
 
 void BaseComponent::mouseDrag( const MouseEvent& event )
@@ -71,10 +86,24 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
                    bounds.getHeight() );
     }
 
+    
+    symbol_mouseDrag(event);
+
 }
 
 void BaseComponent::mouseExit( const MouseEvent& event )
 {
     showBoundingBox = false;
+    
+    current_color = sym_color;
+    
+    symbol_mouseExit(event);
+    
+    repaint();
+
 }
 
+void BaseComponent::mouseDoubleClick( const MouseEvent& event )
+{
+    symbol_mouseDoubleClick(event);
+}

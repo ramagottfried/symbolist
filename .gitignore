@@ -7,3 +7,4 @@ Builds/MacOSX/build/
 *.so
 *.dll
 .DS_Store
+*.zip

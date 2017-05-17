@@ -7,7 +7,7 @@
 #include "PaletteComponent.h"
 
 
-class MainComponent   : public Component//, public Button::Listener
+class MainComponent   : public Component
 {
 public:
     //==============================================================================
@@ -19,14 +19,21 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 
-//    void buttonClicked (Button* button) override;
+    void buttonCallback(MouseEvent *event, int type)
+    {
+        std::cout << event->eventComponent->getName() << type << std::endl;
+    }
     
 private:
     
     ScoreComponent scoreGUI;
     
-//    PaletteComponent palette;
-        
+    //DrawableButton *dbutton = NULL;
+//    PaletteComponent palette{this};
+    
+    OwnedArray<Component> palette; // << this should be dynamically expandable 
+
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

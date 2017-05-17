@@ -22,6 +22,7 @@ public:
     
 private:
     Point<float> m_down;
+    
     std::vector<BaseComponent *> score_stack;
     
     //==============================================================================

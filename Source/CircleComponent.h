@@ -6,30 +6,28 @@ class CircleComponent : public BaseComponent
 {
 public:
     CircleComponent();
-    CircleComponent( float x, float y, float diameter = 10, float stroke = 2 );
+    CircleComponent( float x, float y, float diameter = 10, float stroke = 2, Colour color = Colours::black );
+    
     ~CircleComponent();
     
-    void paint ( Graphics& g ) override;
-    void moved () override;
+    void symbol_paint ( Graphics& g ) override;
+    void symbol_moved () override {}
+    void symbol_resized () override {}
     
-    virtual void mouseDoubleClick (const MouseEvent& event) override;
+    void symbol_mouseEnter( const MouseEvent& event ) override {}
+    void symbol_mouseMove( const MouseEvent& event ) override {}
+    void symbol_mouseDown( const MouseEvent& event ) override {}
+    void symbol_mouseDrag( const MouseEvent& event ) override {}
+    void symbol_mouseExit( const MouseEvent& event ) override {}
+    void symbol_mouseDoubleClick( const MouseEvent& event ) override;
     
-    void mouseEnter( const MouseEvent& event ) override;
-    void mouseMove( const MouseEvent& event ) override;
-    void mouseDown( const MouseEvent& event ) override;
-    void mouseDrag( const MouseEvent& event ) override;
-    void mouseExit( const MouseEvent& event ) override;
-    
-    // getters
-    
-//    inline int getStrokeWeightFromScore() { return m_strokeWeight; }
-//    inline float getDiameter() { return m_diameter; }
     
 private:
-    // local parameters for this shape
-    float   m_diameter = 10;
-    Colour  m_color = Colours::black;
+    // local parameters for this shape:
+    //    none
 
+    
+    // bounds are determined by binding box, the symbol is abstract and normalized to the size of the box
     /*
      inherited:
         
@@ -39,9 +37,7 @@ private:
      
      */
     
-    
-    Point<float>    m_down;
-    
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CircleComponent)
 };

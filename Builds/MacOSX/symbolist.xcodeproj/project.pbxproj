@@ -150,6 +150,8 @@
 			children = (
 				118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */,
 				118C38EE1EC61404006FF4A1 /* PaletteComponent.h */,
+				11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */,
+				11CE005D1EC4B31200E4F624 /* ScoreComponent.h */,
 				11CE00531EC328EC00E4F624 /* MainComponent.cpp */,
 				44CFE0411EC37BA5009135F8 /* MainComponent.h */,
 				446388D41EC34DC90038CFCB /* MainWindow.cpp */,
@@ -177,8 +179,6 @@
 				11CE00611EC4B5A900E4F624 /* CircleComponent.h */,
 				118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */,
 				11CE00651EC4B90700E4F624 /* BaseComponent.h */,
-				11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */,
-				11CE005D1EC4B31200E4F624 /* ScoreComponent.h */,
 			);
 			name = "gui-primitives";
 			sourceTree = "<group>";

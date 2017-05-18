@@ -40,7 +40,7 @@ void ScoreComponent::mouseMove ( const MouseEvent& event )
 
 void ScoreComponent::addScoreChildComponent( BaseComponent *c )
 {
-    c->attachScore ( this );
+    c->attachScoreView ( this );
     addAndMakeVisible ( c );
     c->addMouseListener(this, false);
     

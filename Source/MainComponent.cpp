@@ -104,6 +104,7 @@ BaseComponent* MainComponent::makeComponentFromSymbol(Symbol* s) {
 
 void MainComponent::setContentFromScore ( Score* s ){
     
+    scoreGUI.deleteAllChildren();
     for (int i = 0; i < s->getSize(); i++)
     {
         BaseComponent *c = makeComponentFromSymbol(s->getSymbol(i));

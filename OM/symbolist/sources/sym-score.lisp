@@ -83,9 +83,11 @@
 (defmethod update-to-editor ((self sym-editor) (from t)) 
   (when (symbolist-window self)
     (symbolist::symbolistWindowSetName (symbolist-window self) (editor-window-title self))
-    ;; update the data
-    )
-  )
+    (symbolist::symbolistwindowupdatesymbols 
+     (symbolist-window self) 
+     (length (symbols (object-value self))) 
+     (score-pointer (object-value self)))
+    ))
 
 (defun symbolist::symbolist-handle-close-callback (win-ptr)
   (let ((ed (find win-ptr *symbolist-editors* :key 'symbolist-window :test 'om-pointer-equal)))

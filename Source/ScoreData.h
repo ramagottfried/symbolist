@@ -41,9 +41,11 @@ class Score {
         Score( int n, odot_bundle** bundle_array ) ;
         ~Score();
 
-        void addSymbol(Symbol *s);
         size_t getSize();
         Symbol *getSymbol(int n);
+    
+        void addSymbol(Symbol *s);
+        void updateContents( int n, odot_bundle** bundle_array ) ;
 
     private:
     

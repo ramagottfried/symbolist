@@ -37,8 +37,8 @@ public:
 
 
     
-    inline void attachScore(Component *s){ the_score = s; };
-    inline Component *getScore(){ return the_score; };
+    inline void attachScoreView(Component *c){ score_view = c; };
+    inline Component *getScoreView(){ return score_view; };
     inline void setSymbol(Symbol *s){ score_symbol = s; };
     
     void select();
@@ -82,7 +82,7 @@ protected:
      */
     
 private:
-    Component *the_score;
+    Component *score_view;
     Symbol *score_symbol;
     
     //==============================================================================

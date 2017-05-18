@@ -6,11 +6,11 @@
 //
 //
 
-#include "OSCParser.h"
+#include "OSCIO.h"
 #include <stdio.h>
 
 
-OSCArgument OSCParser::readArgument (OSCType type)
+OSCArgument OSCReader::readArgument (OSCType type)
 {
     switch (type)
     {
@@ -27,5 +27,23 @@ OSCArgument OSCParser::readArgument (OSCType type)
             // You supplied an invalid OSCType when calling readArgument! This should never happen.
             jassertfalse;
             throw OSCInternalError ("OSC input stream: internal error while reading message argument");
+    }
+}
+
+
+
+bool OSCWriter::writeArgument (const OSCArgument& arg)
+{
+    switch (arg.getType())
+    {
+        case 'i':   return writeInt32 (arg.getInt32());
+        case 'f':   return writeFloat32 (arg.getFloat32());
+        case 's':   return writeString (arg.getString());
+        case 'b':   return writeBlob (arg.getBlob());
+            
+        default:
+            // In this very unlikely case you supplied an invalid OSCType!
+            jassertfalse;
+            return false;
     }
 }

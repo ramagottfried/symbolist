@@ -1,6 +1,6 @@
 
 #include "ScoreData.h"
-#include "OSCParser.h"
+#include "OSCIO.h"
 
 
 #include <iostream>
@@ -31,7 +31,7 @@ int Symbol::getOSCMessagePos(const char* address)
 
 OSCArgument Symbol::getOSCMessageValue(int pos)
 {
-    OSCBundle::Element e = getOSCBundle()->operator[](pos);
+    OSCBundle::Element e = getOSCBundle().operator[](pos);
     return e.getMessage().operator[](0);
 }
 
@@ -52,15 +52,6 @@ Score::~Score()
     for ( int i = 0; i < symbols.size(); i++ ) { delete symbols[i]; }
 }
 
-
-void Score::updateContents( int n, odot_bundle** bundle_array )
-{
-    cout << "clearing score content" << endl;
-    for ( int i = 0; i < symbols.size(); i++ ) { delete symbols[i]; }
-    symbols.clear();
-    cout << "updating score content" << endl;
-    importScoreFromOSC( n, bundle_array );
-}
 
 /***********************************
  * Add a new Symbol in the Score
@@ -90,6 +81,9 @@ size_t Score::getSize()
     return symbols.size();
 }
 
+/***********************************
+ * OSC encoding/decoding
+ ***********************************/
 
 void Score::importScoreFromOSC(int n, odot_bundle **bundle_array)
 {
@@ -100,14 +94,49 @@ void Score::importScoreFromOSC(int n, odot_bundle **bundle_array)
         odot_bundle *bundle = bundle_array[i];
         std::cout << "decoding " << bundle->len << " bytes : " << bundle->data << std::endl;
 
-        OSCParser p ( bundle->data, bundle->len );
-        Symbol *s = new Symbol(p.readBundle());
+        OSCReader r ( bundle->data, bundle->len );
+        Symbol *s = new Symbol(r.readBundle());
         addSymbol(s);
-
     }
-    std::cout << "importing OSC done !" << std::endl;
+    std::cout << "import OK !" << std::endl;
 }
 
+void Score::updateScoreFromOSC( int n, odot_bundle** bundle_array )
+{
+    for ( int i = 0; i < symbols.size(); i++ ) { delete symbols[i]; }
+    symbols.clear();
+    importScoreFromOSC( n, bundle_array );
+}
+
+odot_bundle** Score::exportScoreToOSC()
+{
+    int size = static_cast<int>( symbols.size() );
+    cout << "export " << size << " symbols" << endl;
+
+    odot_bundle** bundle_array = new odot_bundle*[size];
+    for (int i = 0; i < size; i++)
+    {
+        OSCWriter w ;
+        w.writeBundle( symbols.operator[](i)->getOSCBundle() );
+        odot_bundle *ob = new odot_bundle;
+        ob->len = static_cast<long>(w.getDataSize());
+        ob->data = new char[w.getDataSize()];
+        std::strcpy(ob->data,static_cast<const char*>(w.getData()));
+        std::cout << "encoding " << ob->len << " bytes : " << ob->data << std::endl;
+        bundle_array[i] = ob;
+    }
+    return bundle_array;
+}
+
+void Score::deleteOdotBundleArray(odot_bundle** bundle_array, int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        cout << "delete " << i << " " << bundle_array[i] << endl;
+        delete bundle_array[i] ;
+    }
+    delete bundle_array ;
+}
 
 
 

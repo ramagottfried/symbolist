@@ -15,7 +15,7 @@ class Symbol {
     public:
         Symbol(OSCBundle b);
     
-        OSCBundle *getOSCBundle () { return &osc_bundle; }
+        OSCBundle getOSCBundle () { return osc_bundle; }
     
         int getOSCMessagePos(const char* address);
         OSCArgument getOSCMessageValue(int pos);
@@ -45,59 +45,17 @@ class Score {
         Symbol *getSymbol(int n);
     
         void addSymbol(Symbol *s);
-        void updateContents( int n, odot_bundle** bundle_array ) ;
-
+    
+        void importScoreFromOSC(int n, odot_bundle** bundle_array);
+        void updateScoreFromOSC( int n, odot_bundle** bundle_array ) ;
+        odot_bundle** exportScoreToOSC();
+    
+        static void deleteOdotBundleArray(odot_bundle** bundle_array, int size);
+    
     private:
     
         vector<Symbol*> symbols;
     
-        void importScoreFromOSC(int n, odot_bundle** bundle_array);
-    
 };
-
-
-
-
-
-/****************
- * STAVE
- ****************/
-/*
- class Stave {
- 
- public:
- 
- Stave();
- Stave( t_rect rect );
- ~Stave();
- void addSymbol(Symbol *symbol);
- 
- private:
- 
- vector<Symbol*> m_symbol;
- t_rect m_rect;
- };
- */
-
-/****************
- * SYSTEM
- ****************/
-/*
- class System {
- 
- public:
- 
- System();
- System( t_rect rect );
- ~System();
- 
- void addStave(Stave *stave);
- Stave *getStave(int n);
- 
- private:
- vector<Stave*> m_stave;
- t_rect m_rect;
- };
- */
 
 

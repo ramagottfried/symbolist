@@ -17,9 +17,9 @@
   (handler-bind ((error #'(lambda (e) (print (format nil "ERROR IN SYMBOLIST CLOSE CALLBACK: ~% ~A" e)))))
     (symbolist-handle-close-callback win)))
 
-(cffi::defcallback symbolist-update-callback :void ((win :pointer) (bundle_array :pointer))
+(cffi::defcallback symbolist-update-callback :void ((win :pointer) (n_bundles :int) (bundle_array :pointer))
   (handler-bind ((error #'(lambda (e) (print (format nil "ERROR IN SYMBOLIST UPDATE CALLBACK: ~% ~A" e)))))
-    (symbolist-handle-update-callback win bundle_array)))
+    (symbolist-handle-update-callback win n_bundles bundle_array)))
 
 
 ;; call this to enable callbacks

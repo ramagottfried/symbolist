@@ -41,8 +41,7 @@ public:
     inline void attachScoreView(Component *c){ score_view = c; };
     inline Component *getScoreView(){ return score_view; };
     inline void setSymbol(Symbol *s){ score_symbol = s; };
-
-    // add osc score w/r here?
+ 
     
 protected:
     // parameters

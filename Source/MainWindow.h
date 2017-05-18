@@ -20,13 +20,18 @@ public:
     SymbolistMainWindow ();
     ~SymbolistMainWindow ();
     
+    void registerUpdateCallback(symbolistUpdateCallback c);
+    
+    Score* getScore() { return score; }
     void updateSymbols( Score *s);
-    void notifyUpdate() {}; // do nothing
+    void notifyUpdate();
     
 protected:
 
     MainComponent *comp;
     Score *score;
+
+    symbolistUpdateCallback myUpdateCallback = NULL;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainWindow)
 
@@ -47,13 +52,10 @@ public:
     
     void closeButtonPressed() override;
     void registerCloseCallback(symbolistCloseCallback c);
-    void registerUpdateCallback(symbolistUpdateCallback c);
-    void notifyUpdate();
     
 private:
   
     symbolistCloseCallback myCloseCallback;
-    symbolistUpdateCallback myUpdateCallback;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistEditorWindow)
     

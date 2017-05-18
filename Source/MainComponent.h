@@ -25,17 +25,18 @@ public:
     void setContentFromScore ( Score* s ) ;
     void clearScore();
     
-    // toDo : create a Symbol from c and add it to parent Windows's score
-    void addInScore ( BaseComponent* c ) {} ;
+    // create a Symbol from c and add it to parent Windows's score
+    void handleNewComponent ( BaseComponent* c ) ;
     // toDo : removes the Symbol corresponding to c from parent Windows's score
-    void removeFromScore ( BaseComponent* c ) {} ;
+    void handleRemoveComponent ( BaseComponent* c ) {} ;
     
     
 private:
     
     ScoreComponent scoreGUI;
     
-    BaseComponent* makeComponentFromSymbol(Symbol* s);
+    static BaseComponent* makeComponentFromSymbol(Symbol* s);
+    static Symbol* makeSymbolFromComponent(BaseComponent* s);
     
     //DrawableButton *dbutton = NULL;
     //PaletteComponent palette{this};

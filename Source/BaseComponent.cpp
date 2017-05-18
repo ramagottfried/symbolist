@@ -1,12 +1,14 @@
 
 #include "BaseComponent.h"
 
+
 BaseComponent::BaseComponent()
 {
     addChildComponent( resizableBorder = new ResizableBorderComponent(this, nullptr) );
     resizableBorder->setBounds( getLocalBounds() );
     resizableBorder->setBorderThickness( BorderSize<int>(1) );
 }
+
 
 BaseComponent::~BaseComponent() {}
 

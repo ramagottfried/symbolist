@@ -8,7 +8,10 @@ public:
     CircleComponent();
     CircleComponent( float x, float y, float radius = 10, float stroke = 2, Colour color = Colours::black );
     
-    ~CircleComponent(){}
+    ~CircleComponent()
+    {
+        printf("freeing circle\n");
+    }
     
     void symbol_paint ( Graphics& g ) override;
     void symbol_moved () override {}

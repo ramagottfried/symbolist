@@ -26,13 +26,38 @@ ScoreComponent::~ScoreComponent()
     
 }
 
+/*
+ 
+to do: check if score component still  
+ 
+ */
 void ScoreComponent::groupSymbols()
 {
     printf("grouping\n");
-    for( auto it = selected_items.begin(); it != selected_items.end(); it++ )
+    
+    if ( selected_items.getNumSelected() > 1 )
     {
-        std::cout << (*it)->getComponentID() << "\n";
+        BaseComponent *group = new BaseComponent;
+
+        
+        for( auto it = selected_items.begin(); it != selected_items.end(); it++ )
+        {
+            
+            group->addAndMakeVisible( *it );
+            
+            std::cout << (*it)->getComponentID() << "\n";
+            
+            //   removeChildComponent( *it );
+
+        }
+        
+        addScoreChildComponent( group );
+        score_stack.emplace_back ( group );
+        
+
+        
     }
+    
 }
 
 void ScoreComponent::paint (Graphics& g)
@@ -43,7 +68,7 @@ void ScoreComponent::paint (Graphics& g)
     
     g.setFont (Font (16.0f));
     g.setColour (Colours::grey);
-    g.drawText ("shift to make new circle | alt to resize", getLocalBounds(), Justification::centred, true);
+    g.drawText ("shift to make new circle", getLocalBounds(), Justification::centred, true);
 }
 
 void ScoreComponent::resized ()

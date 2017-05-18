@@ -48,23 +48,40 @@ void ScoreComponent::groupSymbols()
     if ( selected_items.getNumSelected() > 1 )
     {
         BaseComponent *group = new BaseComponent;
-
+        group->setComponentID("group");
+        
+       
+        int minx = getWidth(), maxx = 0, miny = getHeight(), maxy = 0;
         
         for( auto it = selected_items.begin(); it != selected_items.end(); it++ )
         {
-            
-            group->addAndMakeVisible( *it );
-            
-            std::cout << (*it)->getComponentID() << "\n";
-            
-            //   removeChildComponent( *it );
-
+            Rectangle<int> compBounds = (*it)->getBounds();
+//            printf("%i %i %i %i\n", compBounds.getX(), compBounds.getY(), compBounds.getRight(), compBounds.getBottom() );
+            minx =  min( minx, compBounds.getX() );
+            miny =  min( miny, compBounds.getY() );
+            maxx =  max( maxx, compBounds.getRight() );
+            maxy =  max( maxy, compBounds.getBottom() );
         }
-        
+
+        Rectangle<int> groupBounds( minx, miny, maxx-minx, maxy-miny );
+
+        group->setBounds( groupBounds );
         addScoreChildComponent( group );
         score_stack.emplace_back ( group );
-        
 
+
+        for( auto it = selected_items.begin(); it != selected_items.end(); it++ )
+        {
+            std::cout << (*it)->getComponentID() << "\n";
+
+            Rectangle<int> compBounds = (*it)->getBounds();
+            group->addAndMakeVisible( *it );
+            (*it)->setBounds(   compBounds.getX() - groupBounds.getX(),
+                                compBounds.getY() - groupBounds.getY(),
+                                compBounds.getWidth(), compBounds.getHeight() );
+        }
+        
+        group->select();
         
     }
     

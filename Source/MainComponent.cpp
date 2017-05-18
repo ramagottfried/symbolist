@@ -1,5 +1,6 @@
 
 #include "MainComponent.h"
+#include "MainWindow.h"
 
 
 MainComponent::MainComponent()
@@ -36,7 +37,6 @@ MainComponent::MainComponent()
 MainComponent::MainComponent( Score *s )
 {
     // setup score components here
-
     setSize (600, 400);
     
     // will populate scoreGUI
@@ -46,9 +46,8 @@ MainComponent::MainComponent( Score *s )
     
 }
 
-MainComponent::~MainComponent()
-{
-}
+MainComponent::~MainComponent() {}
+
 
 void MainComponent::paint (Graphics& g)
 {
@@ -61,38 +60,52 @@ void MainComponent::resized()
 }
 
 
+//=================================
+// CONTROLLER FUNCTIONS (INTERFACE DATA<=>VIEW)
+//=================================
+
+
+//=================================
+// MODIFY VIEW FROM DATA
+//=================================
+
+void MainComponent::clearScore()
+{
+    scoreGUI.deleteAllChildren();
+}
+
 
 BaseComponent* MainComponent::makeComponentFromSymbol(Symbol* s) {
-
+    
     //BaseComponent *c;
     float x = 0.0;
     float y = 0.0;
     float size = 10.0;
-
+    
     int xMessagePos = s->getOSCMessagePos("/x");
     int yMessagePos = s->getOSCMessagePos("/y");
     int sizeMessagePos = s->getOSCMessagePos("/size");
     int typeMessagePos = s->getOSCMessagePos("/type");
-
+    
     if (xMessagePos != -1) x = s->getOSCMessageValue(xMessagePos).getFloat32();
     if (yMessagePos != -1) y = s->getOSCMessageValue(yMessagePos).getFloat32();
     if (sizeMessagePos != -1) size = s->getOSCMessageValue(sizeMessagePos).getFloat32();
-
+    
     
     if ( typeMessagePos == -1 ) {
-    
+        
         return NULL;
-    
+        
     } else {
         
         String typeStr = s->getOSCMessageValue(typeMessagePos).getString();
         
         if (typeStr.equalsIgnoreCase(String("circle"))) {
-        
+            
             CircleComponent *c = new CircleComponent( x, y, size);
             c->setSymbol(s);
             return c;
-    
+            
         } else {
             
             return NULL;
@@ -101,19 +114,32 @@ BaseComponent* MainComponent::makeComponentFromSymbol(Symbol* s) {
     }
 }
 
-void MainComponent::clearScore()
-{
-    scoreGUI.deleteAllChildren();
-}
-
 void MainComponent::setContentFromScore ( Score* s ){
     
     for (int i = 0; i < s->getSize(); i++)
     {
-        BaseComponent *c = makeComponentFromSymbol(s->getSymbol(i));
+        BaseComponent *c = MainComponent::makeComponentFromSymbol(s->getSymbol(i));
         if ( c != NULL ) scoreGUI.addScoreChildComponent(c);
     }
 }
 
+//=================================
+// MODIFY DATA FROM VIEW
+//=================================
+
+Symbol* MainComponent::makeSymbolFromComponent(BaseComponent *c)
+{
+    return new Symbol(OSCBundle());
+}
+
+void MainComponent::handleNewComponent ( BaseComponent* c )
+{
+    Symbol* s = makeSymbolFromComponent(c);
+    SymbolistMainWindow* win = static_cast<SymbolistMainWindow*>(getParentComponent());
+    
+    c->setSymbol(s);
+    win->getScore()->addSymbol(s);
+    win->notifyUpdate();
+}
 
 

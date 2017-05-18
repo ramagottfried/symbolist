@@ -47,8 +47,7 @@ public:
     void select();
     
     void deselect();
-      
-    // add osc score w/r here?
+    
     
 protected:
     // parameters

@@ -14,7 +14,7 @@
 struct odot_bundle
 {
     long len;
-    char *data;
+    char* data;
 };
 
 struct t_rect
@@ -25,7 +25,7 @@ struct t_rect
 
 
 typedef void (*symbolistCloseCallback)( void * win);
-typedef void (*symbolistUpdateCallback)( void * win, int n, void** bundle_array);
+typedef void (*symbolistUpdateCallback)( void * win, int n, odot_bundle** bundle_array);
 
 
 

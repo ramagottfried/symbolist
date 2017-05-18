@@ -52,7 +52,12 @@ public:
     void mouseDrag ( const MouseEvent& event ) override;
     void mouseUp ( const MouseEvent& event ) override;
     
+    // call this when the score has been modified
+    // in order to notify and update the host environment
+    void scoreModified ();
+    
     void addScoreChildComponent( BaseComponent *c );
+    void addSymboltoScoreData(Symbol *s);
     
     inline Point<float> getScoreMouseDown(){ return m_down; }
     

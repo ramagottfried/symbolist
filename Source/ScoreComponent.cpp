@@ -19,6 +19,17 @@ ScoreComponent::~ScoreComponent()
     
 }
 
+
+void ScoreComponent::addScoreChildComponent( BaseComponent *c )
+{
+    c->attachScoreView ( this );
+    addAndMakeVisible ( c );
+    c->addMouseListener(this, false);
+    
+    // selected_items.addChangeListener(c);
+}
+
+
 void ScoreComponent::paint (Graphics& g)
 {
     g.fillAll ( Colours::white );
@@ -45,19 +56,6 @@ void ScoreComponent::mouseMove ( const MouseEvent& event )
      */
 }
 
-void ScoreComponent::addScoreChildComponent( BaseComponent *c )
-{
-    c->attachScoreView ( this );
-    addAndMakeVisible ( c );
-    c->addMouseListener(this, false);
-    
-//    selected_items.addChangeListener(c);
-    // add to score here
-    
-    // notify to host environment
-    SymbolistMainWindow *w = static_cast<SymbolistMainWindow*>( getTopLevelComponent() );
-    w->notifyUpdate();
-}
 
 void ScoreComponent::findLassoItemsInArea (Array <BaseComponent*>& results, const Rectangle<int>& area)
 {
@@ -73,17 +71,32 @@ void ScoreComponent::findLassoItemsInArea (Array <BaseComponent*>& results, cons
 
 SelectedItemSet<BaseComponent*> & ScoreComponent::getLassoSelection()
 {
-    /// todo need to be completed
-//    printf("num selected %i\n", selected_items.getNumSelected() );
+    // todo need to be completed
+    // printf("num selected %i\n", selected_items.getNumSelected() );
 
-/*
+    /*
     for (auto it = selected_items.begin(); it != selected_items.end(); it++ )
     {
         
     }
-  */
+    */
     return selected_items;
 }
+
+
+void ScoreComponent::scoreModified ()
+{
+    static_cast<SymbolistMainWindow*>( getTopLevelComponent() )->notifyUpdate();
+}
+
+
+
+void ScoreComponent::addSymboltoScoreData(Symbol *s)
+{
+   
+    scoreModified();
+}
+
 
 void ScoreComponent::mouseDown ( const MouseEvent& event )
 {
@@ -100,6 +113,10 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
             CircleComponent *circle = new CircleComponent( event.position.getX(), event.position.getY() );
             
             addScoreChildComponent( circle );
+            
+            
+            // will update data and notify to host environment
+            static_cast<MainComponent*>(getParentComponent())->handleNewComponent( circle );
             
             score_stack.emplace_back ( circle );
             

@@ -3,6 +3,41 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PrimitiveIncludes.h"
 
+
+class ScoreSelectedItemSet : public SelectedItemSet<BaseComponent *>
+{
+public:
+    ScoreSelectedItemSet(){};
+    ~ScoreSelectedItemSet(){};
+    
+    virtual void itemSelected (BaseComponent *c) override
+    {
+//        printf("sel %p \n", c);
+    //    c->select();
+
+        /*
+        if ( c )
+        {
+        }
+         */
+    }
+    
+    virtual void itemDeselected (BaseComponent *c) override
+    {
+        /*
+        if ( c )
+        {
+            printf("desel %p \n", c);
+    //        c->deselect();
+        }*/
+    }
+    
+private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScoreSelectedItemSet)
+
+};
+
+
 class ScoreComponent : public Component, public LassoSource<BaseComponent *>
 {
 public:
@@ -21,17 +56,18 @@ public:
     
     inline Point<float> getScoreMouseDown(){ return m_down; }
     
+    // selection
+    
     void findLassoItemsInArea (Array < BaseComponent *>& results, const Rectangle<int>& area) override;
     SelectedItemSet< BaseComponent *>& getLassoSelection() override;
-    
+        
 private:
-    Point<float> m_down;
+    Point<float>                        m_down;
     
-    std::vector<BaseComponent *> score_stack;
+    std::vector<BaseComponent *>        score_stack;
     
-    LassoComponent< BaseComponent * > lassoSelector;
-    SelectedItemSet<BaseComponent *> selected_items;
-    
+    LassoComponent< BaseComponent * >   lassoSelector;
+    ScoreSelectedItemSet                selected_items;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScoreComponent)

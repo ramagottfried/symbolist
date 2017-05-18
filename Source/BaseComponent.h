@@ -22,6 +22,8 @@ public:
     void mouseExit( const MouseEvent& event ) override;
     void mouseDoubleClick( const MouseEvent& event ) override;
 
+//    void changeListenerCallback (ChangeBroadcaster* source) override;
+    
     
     // subroutine in derived class, maybe return bool to trigger repaint
     virtual void symbol_paint ( Graphics& g ){}
@@ -36,19 +38,16 @@ public:
     virtual void symbol_mouseDoubleClick( const MouseEvent& event ){}
 
 
-    
     inline void attachScore(Component *s){ the_score = s; };
     inline Component *getScore(){ return the_score; };
     inline void setSymbol(Symbol *s){ score_symbol = s; };
     
+    
+    
     void select();
     
-    void unselect()
-    {
-        is_selected = false;
-        resizableBorder->setVisible(0);
-    }
-    
+    void deselect();
+      
     // add osc score w/r here?
     
 protected:
@@ -64,7 +63,6 @@ protected:
     ScopedPointer<ResizableBorderComponent> resizableBorder;
     
     
-    bool            is_selected = false;
     int             resize_mode = 0; // 0 = scale symbol to bounds, 1 = scale spacing (not resizing)
     
     
@@ -82,6 +80,8 @@ protected:
      */
     
 private:
+    bool            is_selected = false;
+
     Component *the_score;
     Symbol *score_symbol;
     

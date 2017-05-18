@@ -66,6 +66,7 @@ public:
 
         void closeButtonPressed() override
         {
+            
             JUCEApplication::getInstance()->systemRequestedQuit();
         }
 

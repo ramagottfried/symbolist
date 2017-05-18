@@ -2,14 +2,21 @@
 
 
 ScoreComponent::ScoreComponent()
-{}
+{
+    addChildComponent( lassoSelector );
+    getLookAndFeel().setColour( lassoSelector.lassoFillColourId, Colours::transparentWhite );
+    getLookAndFeel().setColour( lassoSelector.lassoOutlineColourId, Colour::fromFloatRGBA(0, 0, 0, 0.2) );
+}
 
 ScoreComponent::~ScoreComponent()
 {
+    removeAllChildren();
+
     for ( int i = 0; i < score_stack.size(); i++ )
     {
         delete score_stack[i];
     }
+    
 }
 
 void ScoreComponent::paint (Graphics& g)
@@ -43,7 +50,8 @@ void ScoreComponent::addScoreChildComponent( BaseComponent *c )
     c->attachScore ( this );
     addAndMakeVisible ( c );
     c->addMouseListener(this, false);
-    
+//    selected_items.addChangeListener(c);
+
     // add to score here
 }
 
@@ -62,8 +70,8 @@ void ScoreComponent::findLassoItemsInArea (Array <BaseComponent*>& results, cons
 SelectedItemSet<BaseComponent*> & ScoreComponent::getLassoSelection()
 {
     /// todo need to be completed
-    
-    printf("num selected %i\n", selected_items.getNumSelected() );
+//    printf("num selected %i\n", selected_items.getNumSelected() );
+
 /*
     for (auto it = selected_items.begin(); it != selected_items.end(); it++ )
     {
@@ -93,9 +101,6 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
         }
         else
         {
-            addChildComponent( lassoSelector );
-            getLookAndFeel().setColour( lassoSelector.lassoFillColourId, Colour::fromFloatRGBA(0.5, 0.5, 0., 0.1) );
-            getLookAndFeel().setColour( lassoSelector.lassoOutlineColourId, Colour::fromFloatRGBA(0.5, 0.5, 0., 1.) );
             lassoSelector.beginLasso( event, this );
         }
     }

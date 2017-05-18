@@ -6,11 +6,14 @@ BaseComponent::BaseComponent()
 
 BaseComponent::~BaseComponent(){}
 
+
 void BaseComponent::select()
 {
-    
+    printf("selected\n" );
+
     is_selected = true;
     
+    /*
     if( !resizableBorder )
     {
         addChildComponent( resizableBorder = new ResizableBorderComponent(this, nullptr) );
@@ -19,8 +22,16 @@ void BaseComponent::select()
     }
     
     resizableBorder->setVisible(1);
-    
+     */
 }
+
+
+void BaseComponent::deselect()
+{
+    is_selected = false;
+    resizableBorder->setVisible(0);
+}
+
 
 void BaseComponent::moved ()
 {

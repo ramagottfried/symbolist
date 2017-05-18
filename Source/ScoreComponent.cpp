@@ -1,5 +1,5 @@
 #include "ScoreComponent.h"
-
+#include "MainWindow.h"
 
 ScoreComponent::ScoreComponent()
 {
@@ -10,7 +10,7 @@ ScoreComponent::ScoreComponent()
 
 ScoreComponent::~ScoreComponent()
 {
-    removeAllChildren();
+//    removeAllChildren();
 
     for ( int i = 0; i < score_stack.size(); i++ )
     {
@@ -47,12 +47,16 @@ void ScoreComponent::mouseMove ( const MouseEvent& event )
 
 void ScoreComponent::addScoreChildComponent( BaseComponent *c )
 {
-    c->attachScore ( this );
+    c->attachScoreView ( this );
     addAndMakeVisible ( c );
     c->addMouseListener(this, false);
+    
 //    selected_items.addChangeListener(c);
-
     // add to score here
+    
+    // notify to host environment
+    SymbolistMainWindow *w = static_cast<SymbolistMainWindow*>( getTopLevelComponent() );
+    w->notifyUpdate();
 }
 
 void ScoreComponent::findLassoItemsInArea (Array <BaseComponent*>& results, const Rectangle<int>& area)
@@ -98,6 +102,7 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
             addScoreChildComponent( circle );
             
             score_stack.emplace_back ( circle );
+            
         }
         else
         {

@@ -101,6 +101,10 @@ BaseComponent* MainComponent::makeComponentFromSymbol(Symbol* s) {
     }
 }
 
+void MainComponent::clearScore()
+{
+    scoreGUI.deleteAllChildren();
+}
 
 void MainComponent::setContentFromScore ( Score* s ){
     

@@ -83,9 +83,11 @@
 (defmethod update-to-editor ((self sym-editor) (from t)) 
   (when (symbolist-window self)
     (symbolist::symbolistWindowSetName (symbolist-window self) (editor-window-title self))
-    ;; update the data
-    )
-  )
+    (symbolist::symbolistwindowupdatesymbols 
+     (symbolist-window self) 
+     (length (symbols (object-value self))) 
+     (score-pointer (object-value self)))
+    ))
 
 (defun symbolist::symbolist-handle-close-callback (win-ptr)
   (let ((ed (find win-ptr *symbolist-editors* :key 'symbolist-window :test 'om-pointer-equal)))
@@ -95,10 +97,10 @@
           (setf *symbolist-editors* (remove ed *symbolist-editors*)))
       (om-print "window-close callback : editor not found" "SYMBOLIST"))))
 
-(defun symbolist::symbolist-handle-update-callback (win-ptr bundle-array-ptr) 
+(defun symbolist::symbolist-handle-update-callback (win-ptr n-bundles bundle-array-ptr) 
   (let ((ed (find win-ptr *symbolist-editors* :key 'symbolist-window :test 'om-pointer-equal)))
     (if ed
         (let ()
-          ;;; process the new data
+          (om-print-format "received ~D bundles" (list n-bundles) "SYMBOLIST") 
           )
       (om-print "update callback : editor not found" "SYMBOLIST"))))

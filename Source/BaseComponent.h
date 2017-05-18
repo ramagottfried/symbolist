@@ -38,8 +38,8 @@ public:
     virtual void symbol_mouseDoubleClick( const MouseEvent& event ){}
 
 
-    inline void attachScore(Component *s){ the_score = s; };
-    inline Component *getScore(){ return the_score; };
+    inline void attachScoreView(Component *c){ score_view = c; };
+    inline Component *getScoreView(){ return score_view; };
     inline void setSymbol(Symbol *s){ score_symbol = s; };
     
     
@@ -80,10 +80,9 @@ protected:
      */
     
 private:
-    bool            is_selected = false;
-
-    Component *the_score;
-    Symbol *score_symbol;
+    bool        is_selected = false;
+    Component   *score_view;
+    Symbol      *score_symbol;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BaseComponent)

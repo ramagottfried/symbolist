@@ -94,7 +94,7 @@ void BaseComponent::mouseDown( const MouseEvent& event )
 void BaseComponent::mouseDrag( const MouseEvent& event )
 {
     
-    Component *score = this->getScore();
+    Component *score = this->getScoreView();
     MouseEvent scoreEvent = event.getEventRelativeTo ( score );
     
     Point<float> mouseoffset = scoreEvent.position - m_down;

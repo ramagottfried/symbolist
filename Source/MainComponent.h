@@ -27,7 +27,7 @@ public:
     
     // set the contents of scoreGUI from s
     void setContentFromScore ( Score* s ) ;
-    
+    void clearScore();
     
     // toDo : create a Symbol from c and add it to parent Windows's score
     void addInScore ( BaseComponent* c ) {} ;

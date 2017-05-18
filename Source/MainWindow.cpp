@@ -42,4 +42,8 @@ void SymbolistEditorWindow::closeButtonPressed()
     delete this;
 }
 
+void SymbolistEditorWindow::notifyUpdate ( )
+{
+    if (myUpdateCallback) { myUpdateCallback( this, score->getSize(), NULL ); }
+}
 

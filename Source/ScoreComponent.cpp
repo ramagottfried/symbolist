@@ -1,5 +1,5 @@
 #include "ScoreComponent.h"
-
+#include "MainWindow.h"
 
 ScoreComponent::ScoreComponent()
 {}
@@ -44,7 +44,12 @@ void ScoreComponent::addScoreChildComponent( BaseComponent *c )
     addAndMakeVisible ( c );
     c->addMouseListener(this, false);
     
+    cout << "ADDED NEW SYMBOL !!" << endl;
     // add to score here
+    
+    // notify to host environment
+    SymbolistMainWindow *w = static_cast<SymbolistMainWindow*>( getTopLevelComponent() );
+    w->notifyUpdate();
 }
 
 void ScoreComponent::findLassoItemsInArea (Array <BaseComponent*>& results, const Rectangle<int>& area)
@@ -90,6 +95,7 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
             addScoreChildComponent( circle );
             
             score_stack.emplace_back ( circle );
+            
         }
         else
         {

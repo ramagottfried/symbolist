@@ -97,10 +97,10 @@
           (setf *symbolist-editors* (remove ed *symbolist-editors*)))
       (om-print "window-close callback : editor not found" "SYMBOLIST"))))
 
-(defun symbolist::symbolist-handle-update-callback (win-ptr bundle-array-ptr) 
+(defun symbolist::symbolist-handle-update-callback (win-ptr n-bundles bundle-array-ptr) 
   (let ((ed (find win-ptr *symbolist-editors* :key 'symbolist-window :test 'om-pointer-equal)))
     (if ed
         (let ()
-          ;;; process the new data
+          (om-print-format "received ~D bundles" (list n-bundles) "SYMBOLIST") 
           )
       (om-print "update callback : editor not found" "SYMBOLIST"))))

@@ -33,6 +33,6 @@
   (print "symbolist close callback undefined"))
 
 ;;; to be redefined
-(defun symbolist-handle-update-callback (win-ptr bundle-array-ptr) 
-  (declare (ignore win-ptr bundle-array-ptr))
+(defun symbolist-handle-update-callback (win-ptr n-bundles bundle-array-ptr) 
+  (declare (ignore win-ptr n-bundles bundle-array-ptr))
   (print "symbolist update callback undefined"))

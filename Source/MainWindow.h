@@ -21,9 +21,9 @@ public:
     ~SymbolistMainWindow ();
     
     void updateSymbols( Score *s);
-
+    void notifyUpdate() {}; // do nothing
     
-private:
+protected:
 
     MainComponent *comp;
     Score *score;
@@ -48,6 +48,7 @@ public:
     void closeButtonPressed() override;
     void registerCloseCallback(symbolistCloseCallback c);
     void registerUpdateCallback(symbolistUpdateCallback c);
+    void notifyUpdate();
     
 private:
   

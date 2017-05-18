@@ -3,9 +3,11 @@
 
 ScoreComponent::ScoreComponent()
 {
-//    selected_items = new ScoreSelectedItemSet;
-    setName("ScoreComponent");
+    setComponentID("ScoreComponent");
+    
     addChildComponent( lassoSelector );
+    lassoSelector.setComponentID("lasso");
+    
     getLookAndFeel().setColour( lassoSelector.lassoFillColourId, Colours::transparentWhite );
     getLookAndFeel().setColour( lassoSelector.lassoOutlineColourId, Colour::fromFloatRGBA(0, 0, 0, 0.2) );
     
@@ -29,7 +31,7 @@ void ScoreComponent::groupSymbols()
     printf("grouping\n");
     for( auto it = selected_items.begin(); it != selected_items.end(); it++ )
     {
-        std::cout << (*it)->getName() << "\n";
+        std::cout << (*it)->getComponentID() << "\n";
     }
 }
 
@@ -57,8 +59,7 @@ void ScoreComponent::addScoreChildComponent( BaseComponent *c )
     c->attachScoreView ( this );
     addAndMakeVisible ( c );
     c->addMouseListener(this, false);
-    
-//    selected_items.addChangeListener(c);
+
     // add to score here
     
     // notify to host environment
@@ -68,15 +69,16 @@ void ScoreComponent::addScoreChildComponent( BaseComponent *c )
 
 void ScoreComponent::findLassoItemsInArea (Array <BaseComponent*>& results, const Rectangle<int>& area)
 {
-    
     for (int i = 0; i < getNumChildComponents(); ++i)
     {
-        BaseComponent *c = (BaseComponent *)getChildComponent (i);
+        Component *cc = getChildComponent(i);
         
-//        std::cout << "lasso name " << c->getName() << "\n";
-        
-        if (c->getBounds().intersects (area))
-            results.add (c);
+        if( &lassoSelector != (LassoComponent< BaseComponent * > *)cc )
+        {
+            BaseComponent *c = (BaseComponent *)cc;
+            if (c->getBounds().intersects (area))
+                results.add (c);
+        }
     }
 }
 

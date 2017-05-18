@@ -4,7 +4,7 @@
 
 MainComponent::MainComponent()
 {
-    setName("MainComponent");
+    setComponentID("MainComponent");
     setSize (600, 400);
     addAndMakeVisible(scoreGUI);
 }
@@ -14,7 +14,7 @@ MainComponent::MainComponent( Score *s )
 {
     // setup score components here
 
-    setName("MainComponent");
+    setComponentID("MainComponent");
     setSize (600, 400);
     
     // will populate scoreGUI

@@ -51,8 +51,9 @@
   (setf (symbols self)
         (loop for i from 0 to (1- n) collect
               (let* ((ptr (fli:dereference bundle-array-ptr :index i :type :pointer))
-                     (messages (om::decode-bundle-s-pointer-data ptr))) 
-                (print messages)
+                     ;(messages (om::decode-bundle-s-pointer-data ptr))
+                     ) 
+                ;(print messages)
                 (make-instance 'osc-bundle) ; :messages messages)
                 ))
         ))

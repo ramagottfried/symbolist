@@ -5,14 +5,11 @@
 
 #include "ScoreData.h"
 
-class BaseComponent : public Component
+class SymbolComponent : public Component
 {
 public:
-    BaseComponent();
-    ~BaseComponent();
-    
-    void select();
-    void deselect();
+    SymbolComponent();
+    ~SymbolComponent();
     
     void paint ( Graphics& g ) override;
     void moved () override;
@@ -25,6 +22,9 @@ public:
     void mouseExit( const MouseEvent& event ) override;
     void mouseDoubleClick( const MouseEvent& event ) override;
     
+    //    void changeListenerCallback (ChangeBroadcaster* source) override;
+    
+    
     // subroutine in derived class, maybe return bool to trigger repaint
     virtual void symbol_paint ( Graphics& g ){}
     virtual void symbol_moved (){}
@@ -36,22 +36,30 @@ public:
     virtual void symbol_mouseDrag( const MouseEvent& event ){}
     virtual void symbol_mouseExit( const MouseEvent& event ){}
     virtual void symbol_mouseDoubleClick( const MouseEvent& event ){}
-
-
+    
+    
     inline void attachScoreView(Component *c){ score_view = c; };
     inline Component *getScoreView(){ return score_view; };
     inline void setSymbol(Symbol *s){ score_symbol = s; };
- 
+    
+    
+    
+    void select();
+    
+    void deselect();
+    
+    // add osc score w/r here?
     
 protected:
     // parameters
+    Rectangle<int>  bounds;
     float           strokeWeight = 1;
     Colour          sym_color = Colours::black;
     
     // interaction
     Point<float>    m_down;
     Colour          current_color = Colours::black;
-
+    
     ScopedPointer<ResizableBorderComponent> resizableBorder;
     
     
@@ -66,8 +74,8 @@ protected:
     /*
      
      to do: setup selection system:
-        if selected and in the score context, then create handles for resizing (if it makes sense for the mode)
-        if selected and in the palette context, highlight and set type for drawing
+     if selected and in the score context, then create handles for resizing (if it makes sense for the mode)
+     if selected and in the palette context, highlight and set type for drawing
      
      */
     
@@ -77,7 +85,7 @@ private:
     Symbol      *score_symbol;
     
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BaseComponent)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolComponent)
     
 };
 

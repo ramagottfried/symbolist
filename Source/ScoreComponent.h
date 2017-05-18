@@ -13,23 +13,13 @@ public:
     virtual void itemSelected (BaseComponent *c) override
     {
 //        printf("sel %p \n", c);
-    //    c->select();
-
-        /*
-        if ( c )
-        {
-        }
-         */
+        c->select();
     }
     
     virtual void itemDeselected (BaseComponent *c) override
     {
-        /*
-        if ( c )
-        {
-            printf("desel %p \n", c);
-    //        c->deselect();
-        }*/
+//        printf("desel %p \n", c);
+        c->deselect();
     }
     
 private:
@@ -57,19 +47,21 @@ public:
     void scoreModified ();
     
     void addScoreChildComponent( BaseComponent *c );
-    void addSymboltoScoreData(Symbol *s);
-    
+
+
     inline Point<float> getScoreMouseDown(){ return m_down; }
     
     // selection
-    
     void findLassoItemsInArea (Array < BaseComponent *>& results, const Rectangle<int>& area) override;
     SelectedItemSet< BaseComponent *>& getLassoSelection() override;
-        
+    
+    void groupSymbols();
+
+    
 private:
     Point<float>                        m_down;
     
-    std::vector<BaseComponent *>        score_stack;
+    std::vector< BaseComponent * >      score_stack;
     
     LassoComponent< BaseComponent * >   lassoSelector;
     ScoreSelectedItemSet                selected_items;

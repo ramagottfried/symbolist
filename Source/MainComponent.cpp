@@ -5,45 +5,26 @@
 
 MainComponent::MainComponent()
 {
-    // here there is no preexisiting score
+    setComponentID("MainComponent");
     setSize (600, 400);
     addAndMakeVisible(scoreGUI);
-   
-//    addAndMakeVisible(palette);
-    
-    /*
-    dbutton = new DrawableButton("Button 2", DrawableButton::ImageFitted);
-    
-    DrawablePath normal;
-    
-    {
-        Path p;
-        p.addStar (Point<float>(), 5, 20.0f, 50.0f, 0.2f);
-        normal.setPath (p);
-        normal.setFill ( Colours::black );
-    }
-    
-    dbutton->setImages (&normal, &normal, &normal);
-    dbutton->setClickingTogglesState (true);
-    dbutton->setBounds (0, 0, 20, 20);
-    dbutton->setTooltip ("This is an image-only DrawableButton");
-    dbutton->addListener ( this );
-
-    addAndMakeVisible(dbutton);
-*/
 }
 
 
 MainComponent::MainComponent( Score *s )
 {
     // setup score components here
+
+    setComponentID("MainComponent");
     setSize (600, 400);
     
     // will populate scoreGUI
     setContentFromScore(s);
     
     addAndMakeVisible(scoreGUI);
-    
+
+    setWantsKeyboardFocus(true);
+    addKeyListener(this);
 }
 
 MainComponent::~MainComponent() {}
@@ -60,6 +41,7 @@ void MainComponent::resized()
 }
 
 
+
 //=================================
 // CONTROLLER FUNCTIONS (INTERFACE DATA<=>VIEW)
 //=================================
@@ -69,9 +51,16 @@ void MainComponent::resized()
 // MODIFY VIEW FROM DATA
 //=================================
 
-void MainComponent::clearScore()
+
+bool MainComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
 {
-    scoreGUI.deleteAllChildren();
+    // std::cout << "key " << key.getTextDescription() << "\n";
+    
+    if( key.getTextDescription() == "command + G" )
+        scoreGUI.groupSymbols();
+    
+    return false;
+
 }
 
 
@@ -114,12 +103,18 @@ BaseComponent* MainComponent::makeComponentFromSymbol(Symbol* s) {
     }
 }
 
-void MainComponent::setContentFromScore ( Score* s ){
-    
+
+void MainComponent::clearScore()
+{
+    scoreGUI.deleteAllChildren();
+}
+
+void MainComponent::setContentFromScore ( Score* s )
+{
     for (int i = 0; i < s->getSize(); i++)
     {
-        BaseComponent *c = MainComponent::makeComponentFromSymbol(s->getSymbol(i));
-        if ( c != NULL ) scoreGUI.addScoreChildComponent(c);
+        BaseComponent *c = makeComponentFromSymbol( s->getSymbol(i) );
+        if ( c != NULL ) scoreGUI.addScoreChildComponent( c );
     }
 }
 

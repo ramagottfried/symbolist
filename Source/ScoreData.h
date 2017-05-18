@@ -19,7 +19,7 @@ class Symbol {
     
         int getOSCMessagePos(const char* address);
         OSCArgument getOSCMessageValue(int pos);
-
+        odot_bundle* exportToOSC();
     
     private:
         
@@ -46,11 +46,10 @@ class Score {
     
         void addSymbol(Symbol *s);
     
-        void importScoreFromOSC(int n, odot_bundle** bundle_array);
+        void importScoreFromOSC( int n, odot_bundle** bundle_array );
         void updateScoreFromOSC( int n, odot_bundle** bundle_array ) ;
-        odot_bundle** exportScoreToOSC();
     
-        static void deleteOdotBundleArray(odot_bundle** bundle_array, int size);
+        // static void deleteOdotBundleArray(odot_bundle** bundle_array, int size);
     
     private:
     

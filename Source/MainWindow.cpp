@@ -24,7 +24,7 @@ SymbolistMainWindow::~SymbolistMainWindow() {}
 
 void SymbolistMainWindow::registerUpdateCallback(symbolistUpdateCallback c) { myUpdateCallback = c; }
 
-void SymbolistMainWindow::updateSymbols( Score *s )
+void SymbolistMainWindow::setSymbols( Score *s )
 {
     delete score ;
     score = s ;
@@ -35,16 +35,17 @@ void SymbolistMainWindow::updateSymbols( Score *s )
 
 void SymbolistMainWindow::notifyUpdate ( )
 {
-    if (myUpdateCallback)
-    {
-        int scoreSize =  static_cast<int>( score->getSize() );
-        cout << "update" << scoreSize << " symbols" << endl;
-        odot_bundle **bundle_array = score->exportScoreToOSC();
-        cout << "exported" << endl;
-        myUpdateCallback( this, scoreSize, bundle_array );
-        Score::deleteOdotBundleArray(bundle_array,scoreSize);
-        cout << "deleted !" << endl;
-    }
+    if (myUpdateCallback) { myUpdateCallback( this, -1 ); }
+    
+    /*
+    int scoreSize =  static_cast<int>( score->getSize() );
+    cout << "update" << scoreSize << " symbols" << endl;
+    odot_bundle **bundle_array = score->exportScoreToOSC();
+    cout << "exported" << endl;
+    myUpdateCallback( this, scoreSize );
+    Score::deleteOdotBundleArray(bundle_array,scoreSize);
+    cout << "deleted !" << endl;
+    */
 }
 
 

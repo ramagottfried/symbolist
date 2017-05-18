@@ -40,7 +40,9 @@ SYMBOLIST_API void symbolistRegisterUpdateCallback(void* window, symbolistUpdate
 SYMBOLIST_API void symbolistWindowToFront(void* window);
 SYMBOLIST_API void symbolistWindowSetName(void* window, char *name);
 
-SYMBOLIST_API void symbolistWindowUpdateSymbols(void* window, int n, odot_bundle **bundle_array);
+SYMBOLIST_API void symbolistSetSymbols(void* window, int n, odot_bundle **bundle_array);
+SYMBOLIST_API int  symbolistGetNumSymbols(void* window);
+SYMBOLIST_API odot_bundle* symbolistGetSymbol(void* window, int n);
 
 
 #endif /* symbolist_hpp */

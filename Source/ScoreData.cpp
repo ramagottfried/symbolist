@@ -31,9 +31,23 @@ int Symbol::getOSCMessagePos(const char* address)
 
 OSCArgument Symbol::getOSCMessageValue(int pos)
 {
-    OSCBundle::Element e = getOSCBundle().operator[](pos);
+    OSCBundle::Element e = osc_bundle.operator[](pos);
     return e.getMessage().operator[](0);
 }
+
+
+odot_bundle* Symbol::exportToOSC()
+{
+    OSCWriter w ;
+    w.writeBundle( osc_bundle );
+    odot_bundle *ob = new odot_bundle;
+    ob->len = static_cast<long>(w.getDataSize());
+    ob->data = new char[w.getDataSize()];
+    std::strcpy(ob->data,static_cast<const char*>(w.getData()));
+    std::cout << "encoding " << ob->len << " bytes : " << ob->data << std::endl;
+    return ob;
+}
+
 
 
 //===============================================================
@@ -108,26 +122,8 @@ void Score::updateScoreFromOSC( int n, odot_bundle** bundle_array )
     importScoreFromOSC( n, bundle_array );
 }
 
-odot_bundle** Score::exportScoreToOSC()
-{
-    int size = static_cast<int>( symbols.size() );
-    cout << "export " << size << " symbols" << endl;
 
-    odot_bundle** bundle_array = new odot_bundle*[size];
-    for (int i = 0; i < size; i++)
-    {
-        OSCWriter w ;
-        w.writeBundle( symbols.operator[](i)->getOSCBundle() );
-        odot_bundle *ob = new odot_bundle;
-        ob->len = static_cast<long>(w.getDataSize());
-        ob->data = new char[w.getDataSize()];
-        std::strcpy(ob->data,static_cast<const char*>(w.getData()));
-        std::cout << "encoding " << ob->len << " bytes : " << ob->data << std::endl;
-        bundle_array[i] = ob;
-    }
-    return bundle_array;
-}
-
+/*
 void Score::deleteOdotBundleArray(odot_bundle** bundle_array, int size)
 {
     for (int i = 0; i < size; i++)
@@ -137,6 +133,7 @@ void Score::deleteOdotBundleArray(odot_bundle** bundle_array, int size)
     }
     delete bundle_array ;
 }
+*/
 
 
 

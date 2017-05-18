@@ -11,6 +11,9 @@ public:
     BaseComponent();
     ~BaseComponent();
     
+    void select();
+    void deselect();
+    
     void paint ( Graphics& g ) override;
     void moved () override;
     void resized () override;
@@ -21,9 +24,6 @@ public:
     void mouseDrag( const MouseEvent& event ) override;
     void mouseExit( const MouseEvent& event ) override;
     void mouseDoubleClick( const MouseEvent& event ) override;
-
-//    void changeListenerCallback (ChangeBroadcaster* source) override;
-    
     
     // subroutine in derived class, maybe return bool to trigger repaint
     virtual void symbol_paint ( Graphics& g ){}
@@ -41,18 +41,11 @@ public:
     inline void attachScoreView(Component *c){ score_view = c; };
     inline Component *getScoreView(){ return score_view; };
     inline void setSymbol(Symbol *s){ score_symbol = s; };
-    
-    
-    
-    void select();
-    
-    void deselect();
-      
+
     // add osc score w/r here?
     
 protected:
     // parameters
-    Rectangle<int>  bounds;
     float           strokeWeight = 1;
     Colour          sym_color = Colours::black;
     

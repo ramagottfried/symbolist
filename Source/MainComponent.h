@@ -7,7 +7,7 @@
 #include "PaletteComponent.h"
 
 
-class MainComponent   : public Component
+class MainComponent : public Component, public KeyListener
 {
 public:
     //==============================================================================
@@ -18,13 +18,9 @@ public:
 
     void paint (Graphics&) override;
     void resized() override;
+    
+    bool keyPressed (const KeyPress& key, Component* originatingComponent) override;
 
-    void buttonCallback(MouseEvent *event, int type)
-    {
-        std::cout << event->eventComponent->getName() << type << std::endl;
-    }
-    
-    
     // set the contents of scoreGUI from s
     void setContentFromScore ( Score* s ) ;
     void clearScore();

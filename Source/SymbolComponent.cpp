@@ -9,9 +9,7 @@ SymbolComponent::SymbolComponent()
     
 }
 
-SymbolComponent::~SymbolComponent()
-{}
-
+SymbolComponent::~SymbolComponent() {}
 
 void SymbolComponent::select()
 {
@@ -45,9 +43,7 @@ void SymbolComponent::paint ( Graphics& g )
     current_color = is_selected ? sel_color : sym_color;
     
     symbol_paint( g );
-    
-    // all child components get painted 
-    
+        
 }
 
 void SymbolComponent::mouseEnter( const MouseEvent& event )

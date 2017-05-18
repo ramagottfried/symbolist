@@ -23,21 +23,8 @@ public:
     
     
 private:
-    // local parameters for this shape:
-    //    none
-
+    // no local variables here
     
-    // bounds are determined by binding box, the symbol is abstract and normalized to the size of the box
-    /*
-     inherited:
-        
-     bounds (x,y,w,h)
-     sel_color
-     strokeweight
-     
-     */
-    
-
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CircleComponent)
 };

@@ -43,15 +43,15 @@ public:
     void mouseUp ( const MouseEvent& event ) override;
     
     void addScoreChildComponent( BaseComponent *c );
-    
     inline Point<float> getScoreMouseDown(){ return m_down; }
     
     // selection
-    
     void findLassoItemsInArea (Array < BaseComponent *>& results, const Rectangle<int>& area) override;
     SelectedItemSet< BaseComponent *>& getLassoSelection() override;
     
-        
+    void groupSymbols();
+
+    
 private:
     Point<float>                        m_down;
     

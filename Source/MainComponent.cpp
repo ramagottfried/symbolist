@@ -4,32 +4,9 @@
 
 MainComponent::MainComponent()
 {
-    // here there is no preexisiting score
+    setName("MainComponent");
     setSize (600, 400);
     addAndMakeVisible(scoreGUI);
-   
-//    addAndMakeVisible(palette);
-    
-    /*
-    dbutton = new DrawableButton("Button 2", DrawableButton::ImageFitted);
-    
-    DrawablePath normal;
-    
-    {
-        Path p;
-        p.addStar (Point<float>(), 5, 20.0f, 50.0f, 0.2f);
-        normal.setPath (p);
-        normal.setFill ( Colours::black );
-    }
-    
-    dbutton->setImages (&normal, &normal, &normal);
-    dbutton->setClickingTogglesState (true);
-    dbutton->setBounds (0, 0, 20, 20);
-    dbutton->setTooltip ("This is an image-only DrawableButton");
-    dbutton->addListener ( this );
-
-    addAndMakeVisible(dbutton);
-*/
 }
 
 
@@ -37,13 +14,16 @@ MainComponent::MainComponent( Score *s )
 {
     // setup score components here
 
+    setName("MainComponent");
     setSize (600, 400);
     
     // will populate scoreGUI
     setContentFromScore(s);
     
     addAndMakeVisible(scoreGUI);
-    
+
+    setWantsKeyboardFocus(true);
+    addKeyListener(this);
 }
 
 MainComponent::~MainComponent()
@@ -60,7 +40,15 @@ void MainComponent::resized()
     scoreGUI.setBounds( 50, 50, getWidth()-100, getHeight()-100 );
 }
 
-
+bool MainComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
+{
+    // std::cout << "key " << key.getTextDescription() << "\n";
+    
+    if( key.getTextDescription() == "command + G" )
+        scoreGUI.groupSymbols();
+    
+    return false;
+}
 
 BaseComponent* MainComponent::makeComponentFromSymbol(Symbol* s) {
 

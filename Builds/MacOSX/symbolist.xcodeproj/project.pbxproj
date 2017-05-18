@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1144DE821ECDD7650035CE6C /* SymbolComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1144DE801ECDD7650035CE6C /* SymbolComponent.cpp */; };
+		1144DE831ECDD7650035CE6C /* SymbolComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1144DE801ECDD7650035CE6C /* SymbolComponent.cpp */; };
 		118C38DE1EC5BC4F006FF4A1 /* ScoreData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38DC1EC5BC4F006FF4A1 /* ScoreData.cpp */; };
 		118C38DF1EC5BC4F006FF4A1 /* ScoreData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38DC1EC5BC4F006FF4A1 /* ScoreData.cpp */; };
 		118C38E31EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */; };
@@ -54,6 +56,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1144DE801ECDD7650035CE6C /* SymbolComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolComponent.cpp; path = ../../Source/SymbolComponent.cpp; sourceTree = "<group>"; };
+		1144DE811ECDD7650035CE6C /* SymbolComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SymbolComponent.h; path = ../../Source/SymbolComponent.h; sourceTree = "<group>"; };
 		118C38DC1EC5BC4F006FF4A1 /* ScoreData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreData.cpp; path = ../../Source/ScoreData.cpp; sourceTree = "<group>"; };
 		118C38DD1EC5BC4F006FF4A1 /* ScoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreData.h; path = ../../Source/ScoreData.h; sourceTree = "<group>"; };
 		118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BaseComponent.cpp; path = ../../Source/BaseComponent.cpp; sourceTree = "<group>"; };
@@ -179,6 +183,8 @@
 				11CE00611EC4B5A900E4F624 /* CircleComponent.h */,
 				118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */,
 				11CE00651EC4B90700E4F624 /* BaseComponent.h */,
+				1144DE801ECDD7650035CE6C /* SymbolComponent.cpp */,
+				1144DE811ECDD7650035CE6C /* SymbolComponent.h */,
 			);
 			name = "gui-primitives";
 			sourceTree = "<group>";
@@ -371,6 +377,7 @@
 				118C38E41EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */,
 				44CFE03C1EC3789C009135F8 /* include_juce_events.mm in Sources */,
 				118C38DF1EC5BC4F006FF4A1 /* ScoreData.cpp in Sources */,
+				1144DE831ECDD7650035CE6C /* SymbolComponent.cpp in Sources */,
 				11CE00631EC4B5A900E4F624 /* CircleComponent.cpp in Sources */,
 				44CFE03E1EC3789C009135F8 /* include_juce_gui_basics.mm in Sources */,
 				44C0729F1EC4AF8C0028D5F8 /* include_juce_osc.cpp in Sources */,
@@ -394,6 +401,7 @@
 				118C38E31EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */,
 				8D57C4E2ADEA2935AAB91AAC /* include_juce_graphics.mm in Sources */,
 				118C38DE1EC5BC4F006FF4A1 /* ScoreData.cpp in Sources */,
+				1144DE821ECDD7650035CE6C /* SymbolComponent.cpp in Sources */,
 				11CE00621EC4B5A900E4F624 /* CircleComponent.cpp in Sources */,
 				41C3942D9A94933B560F98F2 /* include_juce_gui_basics.mm in Sources */,
 				44C0729E1EC4AF870028D5F8 /* include_juce_osc.cpp in Sources */,

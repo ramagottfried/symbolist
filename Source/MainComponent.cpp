@@ -106,12 +106,12 @@ void MainComponent::clearScore()
     scoreGUI.deleteAllChildren();
 }
 
-void MainComponent::setContentFromScore ( Score* s ){
-    
+void MainComponent::setContentFromScore ( Score* s )
+{
     for (int i = 0; i < s->getSize(); i++)
     {
-        BaseComponent *c = makeComponentFromSymbol(s->getSymbol(i));
-        if ( c != NULL ) scoreGUI.addScoreChildComponent(c);
+        BaseComponent *c = makeComponentFromSymbol( s->getSymbol(i) );
+        if ( c != NULL ) scoreGUI.addScoreChildComponent( c );
     }
 }
 

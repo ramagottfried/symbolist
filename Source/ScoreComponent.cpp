@@ -3,6 +3,8 @@
 
 ScoreComponent::ScoreComponent()
 {
+//    selected_items = new ScoreSelectedItemSet;
+    
     addChildComponent( lassoSelector );
     getLookAndFeel().setColour( lassoSelector.lassoFillColourId, Colours::transparentWhite );
     getLookAndFeel().setColour( lassoSelector.lassoOutlineColourId, Colour::fromFloatRGBA(0, 0, 0, 0.2) );
@@ -10,10 +12,11 @@ ScoreComponent::ScoreComponent()
 
 ScoreComponent::~ScoreComponent()
 {
-//    removeAllChildren();
-
+    selected_items.deselectAll(); //<< required to avoid callback after deleting components
+    
     for ( int i = 0; i < score_stack.size(); i++ )
     {
+        removeChildComponent(score_stack[i]);
         delete score_stack[i];
     }
     
@@ -73,15 +76,6 @@ void ScoreComponent::findLassoItemsInArea (Array <BaseComponent*>& results, cons
 
 SelectedItemSet<BaseComponent*> & ScoreComponent::getLassoSelection()
 {
-    /// todo need to be completed
-//    printf("num selected %i\n", selected_items.getNumSelected() );
-
-/*
-    for (auto it = selected_items.begin(); it != selected_items.end(); it++ )
-    {
-        
-    }
-  */
     return selected_items;
 }
 
@@ -90,7 +84,7 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
     
     if( event.eventComponent != this )
     {
-        ((BaseComponent *)event.eventComponent)->select();
+        selected_items.addToSelection( (BaseComponent *)event.eventComponent );
     }
     else
     {

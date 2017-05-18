@@ -2,34 +2,26 @@
 #include "BaseComponent.h"
 
 BaseComponent::BaseComponent()
-{}
+{
+    addChildComponent( resizableBorder = new ResizableBorderComponent(this, nullptr) );
+    resizableBorder->setBounds( getLocalBounds() );
+    resizableBorder->setBorderThickness( BorderSize<int>(1) );
 
-BaseComponent::~BaseComponent(){}
+}
+
+BaseComponent::~BaseComponent()
+{}
 
 
 void BaseComponent::select()
 {
-    printf("selected\n" );
-
     is_selected = true;
-    
-    /*
-    if( !resizableBorder )
-    {
-        addChildComponent( resizableBorder = new ResizableBorderComponent(this, nullptr) );
-        resizableBorder->setBounds( getLocalBounds() );
-        resizableBorder->setBorderThickness( BorderSize<int>(1) );
-    }
-    
-    resizableBorder->setVisible(1);
-     */
 }
 
 
 void BaseComponent::deselect()
 {
     is_selected = false;
-    resizableBorder->setVisible(0);
 }
 
 
@@ -55,6 +47,10 @@ void BaseComponent::paint ( Graphics& g )
         const Rectangle<float> l_bounds = getLocalBounds().toFloat().reduced( bb_strokeWeight-1 );
         g.drawRect ( 0.0, 0.0, l_bounds.getWidth(), l_bounds.getHeight()  );
     }
+    
+    resizableBorder->setVisible(is_selected);
+    
+    current_color = is_selected ? sel_color : sym_color;
     
     symbol_paint( g );
     

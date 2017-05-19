@@ -33,6 +33,7 @@ SYMBOLIST_API int symbolistExit();
 
 SYMBOLIST_API void* symbolistNewWindow();
 SYMBOLIST_API void* symbolistNewWindowWithSymbols(int n, odot_bundle **bundle_array);
+SYMBOLIST_API void symbolistCloseWindow(void* window);
 
 SYMBOLIST_API void symbolistRegisterCloseCallback(void* window, symbolistCloseCallback callback);
 SYMBOLIST_API void symbolistRegisterUpdateCallback(void* window, symbolistUpdateCallback callback);

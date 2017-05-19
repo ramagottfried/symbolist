@@ -79,6 +79,11 @@
       t
       )))
         
+(defmethod editor-close ((self sym-editor))
+  (symbolist::symbolistCloseWindow (symbolist-window self))
+  (setf (symbolist-window self) nil)
+  (setf *symbolist-editors* (remove self *symbolist-editors*))
+  (call-next-method)) 
 
 (defun symbolist::symbolist-handle-close-callback (win-ptr)
   (let ((ed (find win-ptr *symbolist-editors* :key 'symbolist-window :test 'om-pointer-equal)))

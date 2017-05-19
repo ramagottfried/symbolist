@@ -46,8 +46,7 @@ odot_bundle* Symbol::exportToOSC()
     bundle->len = static_cast<long>(size);
     bundle->data = new char[size];
     std::memcpy(bundle->data, w.getData() ,size );
-    std::cout << "encoded " << bundle->len << " bytes : " << bundle->data << std::endl;
-    
+    //std::cout << "encoded " << bundle->len << " bytes : " << bundle->data << std::endl;
     //for (int c = 0; c < bundle->len; c++) { cout << bundle->data[c] << "|"; }
     //cout << endl;
     
@@ -57,7 +56,7 @@ odot_bundle* Symbol::exportToOSC()
 void Symbol::importFromOSC(odot_bundle *bundle)
 {
     OSCReader r ( bundle->data, bundle->len );
-    std::cout << "decoding " << bundle->len << " bytes : " << bundle->data << std::endl;
+    //std::cout << "decoding " << bundle->len << " bytes : " << bundle->data << std::endl;
     //for (int c = 0; c < bundle->len; c++) { cout << bundle->data[c] << "|"; }
     //cout << endl;
     osc_bundle = r.readBundle();

@@ -28,6 +28,11 @@ void *symbolistNewWindowWithSymbols(int n, odot_bundle **bundle_array)
     return new SymbolistEditorWindow( new Score( n, bundle_array) );
 }
 
+void symbolistCloseWindow(void* window)
+{
+    delete static_cast<SymbolistEditorWindow*>(window);
+}
+
 void symbolistRegisterCloseCallback(void* window, symbolistCloseCallback callback)
 {
     static_cast<SymbolistEditorWindow*>(window)->registerCloseCallback(callback);
@@ -61,11 +66,8 @@ odot_bundle* symbolistGetSymbol(void* window, int n)
 void symbolistSetSymbols(void* window, int n, odot_bundle **bundle_array)
 {
     SymbolistEditorWindow* w = static_cast<SymbolistEditorWindow*>(window);
-    cout << "clear..." << endl;
     w->clearViewer();
-    cout << "import..." << endl;
     w->getScore()->importScoreFromOSC(n, bundle_array);
-    cout << "update..." << endl;
     w->updateViewer();
 }
 

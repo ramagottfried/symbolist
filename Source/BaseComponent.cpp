@@ -69,8 +69,7 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
 {
     if( is_selected )
     {
-        Component *score = this->getScoreView();
-        Point<float> mouseoffset = event.getEventRelativeTo(score).position - m_down;
+        Point<float> mouseoffset = event.getEventRelativeTo( getParentComponent() ).position - m_down;
         setBounds ( mouseoffset.getX(), mouseoffset.getY(), getWidth(), getHeight() );
     }
     

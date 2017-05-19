@@ -25,7 +25,8 @@ struct t_rect
 
 
 typedef void (*symbolistCloseCallback)( void * win);
-typedef void (*symbolistUpdateCallback)( void * win, int n, odot_bundle** bundle_array);
+//typedef void (*symbolistUpdateCallback)( void * win, int n, odot_bundle** bundle_array);
+typedef void (*symbolistUpdateCallback)( void * win, int n );
 
 
 

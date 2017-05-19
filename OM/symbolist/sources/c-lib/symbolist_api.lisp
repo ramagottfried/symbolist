@@ -9,7 +9,10 @@
 (cffi:defcfun ("symbolistNewWindowWithSymbols" symbolistNewWindowWithSymbols) :pointer (n-symbols :int) (bundle-array :pointer))
 (cffi:defcfun ("symbolistWindowToFront" symbolistWindowToFront) :void (win :pointer))
 (cffi:defcfun ("symbolistWindowSetName" symbolistWindowSetName) :void (win :pointer) (name :string))
-(cffi:defcfun ("symbolistWindowUpdateSymbols" symbolistWindowUpdateSymbols) :void (win :pointer) (n-symbols :int) (bundle-array :pointer))
+(cffi:defcfun ("symbolistSetSymbols" symbolistSetSymbols) :void (win :pointer) (n-symbols :int) (bundle-array :pointer))
+(cffi:defcfun ("symbolistGetNumSymbols" symbolistGetNumSymbols) :int (win :pointer))
+(cffi:defcfun ("symbolistGetSymbol" symbolistGetSymbol) :pointer (win :pointer) (n :int))
+(cffi:defcfun ("symbolistGetAllSymbols" symbolistGetAllSymbols) :pointer (win :pointer))
 (cffi:defcfun ("symbolistRegisterCloseCallback" symbolistRegisterCloseCallback) :void (win :pointer) (callback :pointer))
 (cffi:defcfun ("symbolistRegisterUpdateCallback" symbolistRegisterUpdateCallback) :void (win :pointer) (callback :pointer))
 
@@ -17,9 +20,9 @@
   (handler-bind ((error #'(lambda (e) (print (format nil "ERROR IN SYMBOLIST CLOSE CALLBACK: ~% ~A" e)))))
     (symbolist-handle-close-callback win)))
 
-(cffi::defcallback symbolist-update-callback :void ((win :pointer) (n_bundles :int) (bundle_array :pointer))
+(cffi::defcallback symbolist-update-callback :void ((win :pointer) (n :int))
   (handler-bind ((error #'(lambda (e) (print (format nil "ERROR IN SYMBOLIST UPDATE CALLBACK: ~% ~A" e)))))
-    (symbolist-handle-update-callback win n_bundles bundle_array)))
+    (symbolist-handle-update-callback win n)))
 
 
 ;; call this to enable callbacks
@@ -33,6 +36,6 @@
   (print "symbolist close callback undefined"))
 
 ;;; to be redefined
-(defun symbolist-handle-update-callback (win-ptr n-bundles bundle-array-ptr) 
-  (declare (ignore win-ptr n-bundles bundle-array-ptr))
+(defun symbolist-handle-update-callback (win-ptr n) 
+  (declare (ignore win-ptr n))
   (print "symbolist update callback undefined"))

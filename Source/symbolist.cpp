@@ -29,8 +29,7 @@ void *symbolistNewWindow()
 
 void *symbolistNewWindowWithSymbols(int n, odot_bundle **bundle_array)
 {
-    Score *s = new Score( n, bundle_array) ;
-    return new SymbolistEditorWindow( s );
+    return new SymbolistEditorWindow( new Score( n, bundle_array) );
 }
 
 void symbolistRegisterCloseCallback(void* window, symbolistCloseCallback callback)
@@ -53,11 +52,21 @@ void symbolistWindowSetName(void* window, char *name)
     static_cast<SymbolistEditorWindow*>(window)->setName(String(name));
 }
 
-void symbolistWindowUpdateSymbols(void* window, int n, odot_bundle **bundle_array){
-    SymbolistEditorWindow* w = static_cast<SymbolistEditorWindow*>(window);
-    Score *s = new Score( n, bundle_array) ;
-    w->updateSymbols( s );
+void symbolistSetSymbols(void* window, int n, odot_bundle **bundle_array)
+{
+    static_cast<SymbolistEditorWindow*>(window)->setSymbols( new Score( n, bundle_array) );
 }
+
+int symbolistGetNumSymbols(void* window)
+{
+    return static_cast<SymbolistEditorWindow*>(window)->getScore()->getSize();
+}
+
+odot_bundle* symbolistGetSymbol(void* window, int n)
+{
+    return static_cast<SymbolistEditorWindow*>(window)->getScore()->getSymbol(n)->exportToOSC();
+}
+
 
 
 

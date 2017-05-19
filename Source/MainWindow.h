@@ -23,7 +23,7 @@ public:
     void registerUpdateCallback(symbolistUpdateCallback c);
     
     Score* getScore() { return score; }
-    void updateSymbols( Score *s);
+    void setSymbols( Score *s );
     void notifyUpdate();
     
 protected:

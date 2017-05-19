@@ -24,14 +24,15 @@ SymbolistMainWindow::~SymbolistMainWindow() {}
 
 void SymbolistMainWindow::registerUpdateCallback(symbolistUpdateCallback c) { myUpdateCallback = c; }
 
-void SymbolistMainWindow::setSymbols( Score *s )
+void SymbolistMainWindow::clearViewer()
 {
-    delete score ;
-    score = s ;
-    comp->clearScore();
-    comp->setContentFromScore(score);
+    comp->clearScoreView();
 }
 
+void SymbolistMainWindow::updateViewer()
+{
+    comp->setContentFromScore(score);
+}
 
 void SymbolistMainWindow::notifyUpdate ( )
 {

@@ -75,8 +75,10 @@
   (when (symbolist-window self)
     (let ((ptr (sym-score-make-score-pointer (object-value self))))
       (symbolist::symbolistWindowSetName (symbolist-window self) (editor-window-title self))
-      (symbolist::symbolistwindowupdatesymbols (symbolist-window self) (length (symbols (object-value self))) ptr)
+      (symbolist::symbolistSetSymbols (symbolist-window self) (length (symbols (object-value self))) ptr)
+      t
       )))
+        
 
 (defun symbolist::symbolist-handle-close-callback (win-ptr)
   (let ((ed (find win-ptr *symbolist-editors* :key 'symbolist-window :test 'om-pointer-equal)))

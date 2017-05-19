@@ -13,6 +13,8 @@ using namespace std;
 class Symbol {
     
     public:
+    
+        Symbol();
         Symbol(OSCBundle b);
     
         OSCBundle getOSCBundle () { return osc_bundle; }
@@ -20,6 +22,7 @@ class Symbol {
         int getOSCMessagePos(const char* address);
         OSCArgument getOSCMessageValue(int pos);
         odot_bundle* exportToOSC();
+        void importFromOSC(odot_bundle *bundle);
     
     private:
         
@@ -45,11 +48,9 @@ class Score {
         Symbol *getSymbol(int n);
     
         void addSymbol(Symbol *s);
+        void removeAllSymbols();
     
         void importScoreFromOSC( int n, odot_bundle** bundle_array );
-        void updateScoreFromOSC( int n, odot_bundle** bundle_array ) ;
-    
-        // static void deleteOdotBundleArray(odot_bundle** bundle_array, int size);
     
     private:
     

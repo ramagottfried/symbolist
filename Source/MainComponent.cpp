@@ -14,7 +14,6 @@ MainComponent::MainComponent()
 MainComponent::MainComponent( Score *s )
 {
     // setup score components here
-
     setComponentID("MainComponent");
     setSize (600, 400);
     
@@ -22,7 +21,6 @@ MainComponent::MainComponent( Score *s )
     setContentFromScore(s);
     
     addAndMakeVisible(scoreGUI);
-
     setWantsKeyboardFocus(true);
     addKeyListener(this);
 }
@@ -40,6 +38,25 @@ void MainComponent::resized()
     scoreGUI.setBounds( 50, 50, getWidth()-100, getHeight()-100 );
 }
 
+Component* MainComponent::getWindow ()
+{
+    return getParentComponent();
+}
+
+
+bool MainComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
+{
+    // std::cout << "key " << key.getTextDescription() << "\n";
+    
+    if( key.getTextDescription() == "command + G" ) {
+        scoreGUI.groupSymbols();
+    } else if ( key.getTextDescription() == "command + Z" ) {
+        clearScoreView();
+    }
+    return false;
+    
+}
+
 
 
 //=================================
@@ -52,20 +69,8 @@ void MainComponent::resized()
 //=================================
 
 
-bool MainComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
+BaseComponent* MainComponent::makeComponentFromSymbol(Symbol* s)
 {
-    // std::cout << "key " << key.getTextDescription() << "\n";
-    
-    if( key.getTextDescription() == "command + G" )
-        scoreGUI.groupSymbols();
-    
-    return false;
-
-}
-
-
-BaseComponent* MainComponent::makeComponentFromSymbol(Symbol* s) {
-    
     //BaseComponent *c;
     float x = 0.0;
     float y = 0.0;
@@ -91,7 +96,7 @@ BaseComponent* MainComponent::makeComponentFromSymbol(Symbol* s) {
         
         if (typeStr.equalsIgnoreCase(String("circle"))) {
             
-            CircleComponent *c = new CircleComponent( x, y, size);
+            CircleComponent *c = new CircleComponent( x, y, (size * .5) );
             c->setSymbol(s);
             return c;
             
@@ -104,9 +109,9 @@ BaseComponent* MainComponent::makeComponentFromSymbol(Symbol* s) {
 }
 
 
-void MainComponent::clearScore()
+void MainComponent::clearScoreView()
 {
-    scoreGUI.deleteAllChildren();
+    scoreGUI.removeAllChildren();
 }
 
 void MainComponent::setContentFromScore ( Score* s )
@@ -124,15 +129,26 @@ void MainComponent::setContentFromScore ( Score* s )
 
 Symbol* MainComponent::makeSymbolFromComponent(BaseComponent *c)
 {
-    return new Symbol(OSCBundle());
+    OSCBundle b;
+    OSCMessage typeMessage = OSCMessage(OSCAddressPattern("/type"), String("circle"));
+    OSCMessage sizeMessage = OSCMessage(OSCAddressPattern("/size"), static_cast<float>(c->getWidth()));
+    OSCMessage xMessage = OSCMessage(OSCAddressPattern("/x"), static_cast<float>(c->getX()));
+    OSCMessage yMessage = OSCMessage(OSCAddressPattern("/y"), static_cast<float>(c->getY()));
+    b.addElement(typeMessage);
+    b.addElement(sizeMessage);
+    b.addElement(xMessage);
+    b.addElement(yMessage);
+    
+    Symbol* s = new Symbol(b);
+    c->setSymbol(s);
+    return s;
 }
 
 void MainComponent::handleNewComponent ( BaseComponent* c )
 {
     Symbol* s = makeSymbolFromComponent(c);
-    SymbolistMainWindow* win = static_cast<SymbolistMainWindow*>(getParentComponent());
+    SymbolistMainWindow* win = static_cast<SymbolistMainWindow*>( getWindow() );
     
-    c->setSymbol(s);
     win->getScore()->addSymbol(s);
     win->notifyUpdate();
 }

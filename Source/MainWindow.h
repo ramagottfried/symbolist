@@ -20,10 +20,11 @@ public:
     SymbolistMainWindow ();
     ~SymbolistMainWindow ();
     
-    void registerUpdateCallback(symbolistUpdateCallback c);
+    inline Score* getScore() { return score; }
+    void clearViewer();
+    void updateViewer();
     
-    Score* getScore() { return score; }
-    void setSymbols( Score *s );
+    void registerUpdateCallback(symbolistUpdateCallback c);
     void notifyUpdate();
     
 protected:
@@ -34,7 +35,6 @@ protected:
     symbolistUpdateCallback myUpdateCallback = NULL;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainWindow)
-
 };
 
 
@@ -58,5 +58,5 @@ private:
     symbolistCloseCallback myCloseCallback;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistEditorWindow)
-    
 };
+

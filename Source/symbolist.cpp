@@ -10,17 +10,13 @@
 #include "MainWindow.h"
 #include "ScoreData.h"
 
-const char* symbolistInfo() {
+const char* symbolistInfo()
+{
     return "symbolist v.0.1";
 }
 
-int symbolistInit() {
-    return 1; // went ok
-}
-
-int symbolistExit() {
-    return 1; // went ok
-}
+int symbolistInit() { return 1; }
+int symbolistExit() { return 0; }
 
 void *symbolistNewWindow()
 {
@@ -30,6 +26,11 @@ void *symbolistNewWindow()
 void *symbolistNewWindowWithSymbols(int n, odot_bundle **bundle_array)
 {
     return new SymbolistEditorWindow( new Score( n, bundle_array) );
+}
+
+void symbolistCloseWindow(void* window)
+{
+    delete static_cast<SymbolistEditorWindow*>(window);
 }
 
 void symbolistRegisterCloseCallback(void* window, symbolistCloseCallback callback)
@@ -52,11 +53,6 @@ void symbolistWindowSetName(void* window, char *name)
     static_cast<SymbolistEditorWindow*>(window)->setName(String(name));
 }
 
-void symbolistSetSymbols(void* window, int n, odot_bundle **bundle_array)
-{
-    static_cast<SymbolistEditorWindow*>(window)->setSymbols( new Score( n, bundle_array) );
-}
-
 int symbolistGetNumSymbols(void* window)
 {
     return static_cast<SymbolistEditorWindow*>(window)->getScore()->getSize();
@@ -67,7 +63,13 @@ odot_bundle* symbolistGetSymbol(void* window, int n)
     return static_cast<SymbolistEditorWindow*>(window)->getScore()->getSymbol(n)->exportToOSC();
 }
 
-
+void symbolistSetSymbols(void* window, int n, odot_bundle **bundle_array)
+{
+    SymbolistEditorWindow* w = static_cast<SymbolistEditorWindow*>(window);
+    w->clearViewer();
+    w->getScore()->importScoreFromOSC(n, bundle_array);
+    w->updateViewer();
+}
 
 
 

@@ -8,3 +8,4 @@ Builds/MacOSX/build/
 *.dll
 .DS_Store
 *.zip
+*.64xfasl

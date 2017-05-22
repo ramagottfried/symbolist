@@ -32,18 +32,18 @@ SYMBOLIST_API int symbolistInit();
 SYMBOLIST_API int symbolistExit();
 
 SYMBOLIST_API void* symbolistNewWindow();
-SYMBOLIST_API void* symbolistNewWindowWithSymbols(int n, odot_bundle **bundle_array);
-SYMBOLIST_API void symbolistCloseWindow(void* window);
+//SYMBOLIST_API void* symbolistNewWindowWithSymbols(int n, odot_bundle **bundle_array);
+SYMBOLIST_API void symbolistCloseWindow(void* maincomponent);
 
-SYMBOLIST_API void symbolistRegisterCloseCallback(void* window, symbolistCloseCallback callback);
-SYMBOLIST_API void symbolistRegisterUpdateCallback(void* window, symbolistUpdateCallback callback);
+SYMBOLIST_API void symbolistRegisterCloseCallback(void* maincomponent, symbolistCloseCallback callback);
+SYMBOLIST_API void symbolistRegisterUpdateCallback(void* maincomponent, symbolistUpdateCallback callback);
 
-SYMBOLIST_API void symbolistWindowToFront(void* window);
-SYMBOLIST_API void symbolistWindowSetName(void* window, char *name);
+SYMBOLIST_API void symbolistWindowToFront(void* maincomponent);
+SYMBOLIST_API void symbolistWindowSetName(void* maincomponent, char *name);
 
-SYMBOLIST_API int  symbolistGetNumSymbols(void* window);
-SYMBOLIST_API odot_bundle* symbolistGetSymbol(void* window, int n);
-SYMBOLIST_API void symbolistSetSymbols(void* window, int n, odot_bundle **bundle_array);
+SYMBOLIST_API int  symbolistGetNumSymbols(void* maincomponent);
+SYMBOLIST_API odot_bundle* symbolistGetSymbol(void* maincomponent, int n);
+SYMBOLIST_API void symbolistSetSymbols(void* maincomponent, int n, odot_bundle **bundle_array);
 
 
 #endif /* symbolist_hpp */

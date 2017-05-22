@@ -26,6 +26,25 @@ ScoreComponent::~ScoreComponent()
     
 }
 
+// MODOFICATIONS TO BE TRANSFERRED TO THE SCORE
+void ScoreComponent::scoreSymbolAdded ( BaseComponent* c )
+{
+    // will update data and notify to host environment
+    static_cast<SymbolistMainComponent*>(getParentComponent())->handleComponentAdded( c );
+}
+
+void ScoreComponent::scoreSymbolRemoved ( BaseComponent* c )
+{
+    // will update data and notify to host environment
+    static_cast<SymbolistMainComponent*>(getParentComponent())->handleComponentRemoved( c );
+}
+
+void ScoreComponent::scoreSymbolModified ( BaseComponent* c )
+{
+    // will update data and notify to host environment
+    static_cast<SymbolistMainComponent*>(getParentComponent())->handleComponentModified( c );
+}
+
 /*
  
 to do: check if score component still  
@@ -138,10 +157,6 @@ SelectedItemSet<BaseComponent*> & ScoreComponent::getLassoSelection()
 }
 
 
-
-
-
-
 void ScoreComponent::mouseDown ( const MouseEvent& event )
 {
     
@@ -156,11 +171,10 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
         {
             CircleComponent *circle = new CircleComponent( event.position.getX(), event.position.getY() );
             
+            // add in the view
             addScoreChildComponent( circle );
-            
-            
-            // will update data and notify to host environment
-            static_cast<MainComponent*>(getParentComponent())->handleNewComponent( circle );
+            // add in the score
+            scoreSymbolAdded( circle );
             
             score_stack.emplace_back ( circle );
             

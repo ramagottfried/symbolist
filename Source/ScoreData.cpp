@@ -97,6 +97,13 @@ void Score::addSymbol(Symbol *symbol)
     symbols.emplace_back(symbol);
 }
 
+/***********************************
+ * Removes a Symbol from the Score
+ ***********************************/
+void Score::removeSymbol(Symbol *symbol)
+{
+    //symbols. emplace_back(symbol);
+}
 
 /***********************************
  * Get the Nth Symbol of the Score

@@ -41,7 +41,7 @@ public:
     inline void attachScoreView(Component *c){ score_view = c; };
     inline Component *getScoreView(){ return score_view; };
     inline void setSymbol(Symbol *s){ score_symbol = s; };
- 
+    inline Symbol* getSymbol(){ return score_symbol; };
     
 protected:
     // parameters

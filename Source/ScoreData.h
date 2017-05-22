@@ -48,6 +48,7 @@ class Score {
         Symbol *getSymbol(int n);
     
         void addSymbol(Symbol *s);
+        void removeSymbol(Symbol *s);
         void removeAllSymbols();
     
         void importScoreFromOSC( int n, odot_bundle** bundle_array );

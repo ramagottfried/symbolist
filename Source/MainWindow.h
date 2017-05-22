@@ -16,24 +16,17 @@ class SymbolistMainWindow : public DocumentWindow {
     
 public:
 
-    SymbolistMainWindow ( Score *s );
     SymbolistMainWindow ();
     ~SymbolistMainWindow ();
     
-    inline Score* getScore() { return score; }
-    void clearViewer();
-    void updateViewer();
+    inline SymbolistMainComponent* getSymbolistMainComponent() { return main_component; }
     
-    void registerUpdateCallback(symbolistUpdateCallback c);
     void notifyUpdate();
     
 protected:
 
-    MainComponent *comp;
-    Score *score;
+    SymbolistMainComponent* main_component;
 
-    symbolistUpdateCallback myUpdateCallback = NULL;
-    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainWindow)
 };
 
@@ -46,17 +39,13 @@ class SymbolistEditorWindow : public SymbolistMainWindow {
     
 public:
     
-    SymbolistEditorWindow () : SymbolistMainWindow (new Score()) {} ; // {}
-    SymbolistEditorWindow (Score *s)  : SymbolistMainWindow ( s ) {} ;
-    ~SymbolistEditorWindow () {};
+    SymbolistEditorWindow () : SymbolistMainWindow () {} ;
+    //~SymbolistEditorWindow ();
     
     void closeButtonPressed() override;
-    void registerCloseCallback(symbolistCloseCallback c);
-    
+   
 private:
-  
-    symbolistCloseCallback myCloseCallback;
-    
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistEditorWindow)
 };
 

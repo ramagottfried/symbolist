@@ -3,73 +3,77 @@
 #include "MainWindow.h"
 
 
-MainComponent::MainComponent()
+SymbolistMainComponent::SymbolistMainComponent()
 {
+    score = new Score();
     setComponentID("MainComponent");
     setSize (600, 400);
-    addAndMakeVisible(scoreGUI);
-}
-
-
-MainComponent::MainComponent( Score *s )
-{
-    // setup score components here
-    setComponentID("MainComponent");
-    setSize (600, 400);
-    
-    // will populate scoreGUI
-    setContentFromScore(s);
-    
     addAndMakeVisible(scoreGUI);
     setWantsKeyboardFocus(true);
     addKeyListener(this);
 }
 
-MainComponent::~MainComponent() {}
+SymbolistMainComponent::~SymbolistMainComponent()
+{
+    delete score;
+}
 
 
-void MainComponent::paint (Graphics& g)
+void SymbolistMainComponent::paint (Graphics& g)
 {
     g.fillAll ( Colours::white );
 }
 
-void MainComponent::resized()
+void SymbolistMainComponent::resized()
 {
     scoreGUI.setBounds( 50, 50, getWidth()-100, getHeight()-100 );
 }
 
-Component* MainComponent::getWindow ()
+
+
+// CONTROLLER METHODS
+
+SymbolistMainComponent* SymbolistMainComponent::createWindow()
 {
-    return getParentComponent();
+    SymbolistEditorWindow *w = new SymbolistEditorWindow ();
+    return w->getSymbolistMainComponent();
+}
+
+Component* SymbolistMainComponent::getWindow () { return getParentComponent(); }
+void SymbolistMainComponent::windowToFront() { getWindow()->toFront(true); }
+void SymbolistMainComponent::windowSetName(String name) { getWindow()->setName(name); }
+
+void SymbolistMainComponent::registerUpdateCallback(symbolistUpdateCallback c) { myUpdateCallback = c; }
+void SymbolistMainComponent::registerCloseCallback(symbolistCloseCallback c) { myCloseCallback = c; }
+
+void SymbolistMainComponent::closeWindow()
+{
+    delete getWindow();
+    delete this;
+}
+
+void SymbolistMainComponent::executeCloseCallback()
+{
+    if (myCloseCallback) { myCloseCallback( this ); }
+}
+
+void SymbolistMainComponent::executeUpdateCallback(int arg)
+{
+    if (myUpdateCallback) { myUpdateCallback( this, arg ); }
 }
 
 
-bool MainComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
-{
-    // std::cout << "key " << key.getTextDescription() << "\n";
-    
-    if( key.getTextDescription() == "command + G" ) {
-        scoreGUI.groupSymbols();
-    } else if ( key.getTextDescription() == "command + Z" ) {
-        clearScoreView();
-    }
-    return false;
-    
-}
-
-
 
 //=================================
-// CONTROLLER FUNCTIONS (INTERFACE DATA<=>VIEW)
+// INTERFACE DATA<=>VIEW
+//=================================
+
+//=================================
+// => MODIFY VIEW FROM DATA
 //=================================
 
 
-//=================================
-// MODIFY VIEW FROM DATA
-//=================================
-
-
-BaseComponent* MainComponent::makeComponentFromSymbol(Symbol* s)
+BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(Symbol* s)
 {
     //BaseComponent *c;
     float x = 0.0;
@@ -109,25 +113,25 @@ BaseComponent* MainComponent::makeComponentFromSymbol(Symbol* s)
 }
 
 
-void MainComponent::clearScoreView()
+void SymbolistMainComponent::clearScoreView()
 {
     scoreGUI.removeAllChildren();
 }
 
-void MainComponent::setContentFromScore ( Score* s )
+void SymbolistMainComponent::setContentFromScore ()
 {
-    for (int i = 0; i < s->getSize(); i++)
+    for (int i = 0; i < score->getSize(); i++)
     {
-        BaseComponent *c = makeComponentFromSymbol( s->getSymbol(i) );
+        BaseComponent *c = makeComponentFromSymbol( score->getSymbol(i) );
         if ( c != NULL ) scoreGUI.addScoreChildComponent( c );
     }
 }
 
 //=================================
-// MODIFY DATA FROM VIEW
+// <= MODIFY DATA FROM VIEW
 //=================================
 
-Symbol* MainComponent::makeSymbolFromComponent(BaseComponent *c)
+Symbol* SymbolistMainComponent::makeSymbolFromComponent(BaseComponent *c)
 {
     OSCBundle b;
     OSCMessage typeMessage = OSCMessage(OSCAddressPattern("/type"), String("circle"));
@@ -144,13 +148,39 @@ Symbol* MainComponent::makeSymbolFromComponent(BaseComponent *c)
     return s;
 }
 
-void MainComponent::handleNewComponent ( BaseComponent* c )
+void SymbolistMainComponent::handleComponentAdded ( BaseComponent* c )
 {
-    Symbol* s = makeSymbolFromComponent(c);
-    SymbolistMainWindow* win = static_cast<SymbolistMainWindow*>( getWindow() );
-    
-    win->getScore()->addSymbol(s);
-    win->notifyUpdate();
+    score->addSymbol( makeSymbolFromComponent(c) );
+    executeUpdateCallback( -1 );
 }
+
+void SymbolistMainComponent::handleComponentRemoved ( BaseComponent* c )
+{
+    // ToDo
+}
+
+void SymbolistMainComponent::handleComponentModified ( BaseComponent* c )
+{
+    // ToDo
+}
+
+
+
+
+bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
+{
+    // std::cout << "key " << key.getTextDescription() << "\n";
+    
+    if( key.getTextDescription() == "command + G" ) {
+        scoreGUI.groupSymbols();
+    } else if ( key.getTextDescription() == "command + Z" ) {
+        clearScoreView();
+    }
+    return false;
+    
+}
+
+
+
 
 

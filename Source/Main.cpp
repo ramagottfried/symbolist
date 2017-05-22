@@ -62,7 +62,7 @@ public:
     {
     public:
         
-        AppMainWindow (String name)  : SymbolistMainWindow (new Score()) {}
+        AppMainWindow (String name)  : SymbolistMainWindow ( ) {}
 
         void closeButtonPressed() override
         {

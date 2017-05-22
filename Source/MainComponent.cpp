@@ -144,7 +144,7 @@ Symbol* MainComponent::makeSymbolFromComponent(BaseComponent *c)
     return s;
 }
 
-void MainComponent::handleNewComponent ( BaseComponent* c )
+void MainComponent::handleComponentAdded ( BaseComponent* c )
 {
     Symbol* s = makeSymbolFromComponent(c);
     SymbolistMainWindow* win = static_cast<SymbolistMainWindow*>( getWindow() );
@@ -153,4 +153,12 @@ void MainComponent::handleNewComponent ( BaseComponent* c )
     win->notifyUpdate();
 }
 
+void MainComponent::handleComponentRemoved ( BaseComponent* c )
+{
+    // ToDo
+}
 
+void MainComponent::handleComponentModified ( BaseComponent* c )
+{
+    // ToDo
+}

@@ -44,7 +44,6 @@ public:
     
     // call this when the score has been modified
     // in order to notify and update the host environment
-    void scoreModified ();
     
     void addScoreChildComponent( BaseComponent *c );
 
@@ -65,6 +64,10 @@ private:
     
     LassoComponent< BaseComponent * >   lassoSelector;
     ScoreSelectedItemSet                selected_items;
+    
+    void scoreSymbolAdded ( BaseComponent* c );
+    void scoreSymbolRemoved ( BaseComponent* c );
+    void scoreSymbolModified ( BaseComponent* c );
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScoreComponent)

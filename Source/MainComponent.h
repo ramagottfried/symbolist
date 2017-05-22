@@ -29,10 +29,11 @@ public:
     void clearScoreView();
     
     // create a Symbol from c and add it to parent Windows's score
-    void handleNewComponent ( BaseComponent* c ) ;
-    // toDo : removes the Symbol corresponding to c from parent Windows's score
-    void handleRemoveComponent ( BaseComponent* c ) {} ;
-    
+    void handleComponentAdded ( BaseComponent* c ) ;
+    // removes the Symbol corresponding to c from parent Windows's score
+    void handleComponentRemoved ( BaseComponent* c ) ;
+    // modified the Symbol corresponding to c from parent Windows's score
+    void handleComponentModified ( BaseComponent* c ) ;
     
 private:
     

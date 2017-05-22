@@ -96,15 +96,30 @@
 (defun symbolist::symbolist-handle-update-callback (win-ptr n) 
   (let ((ed (find win-ptr *symbolist-editors* :key 'symbolist-window :test 'om-pointer-equal)))
     (if ed
+        
         (let ((sscore (object-value ed))
               (n-symbols (symbolist::symbolistGetNumSymbols win-ptr)))
+          
           (om-print-format "received update callback : ~D" (list n) "SYMBOLIST") 
-          (setf (symbols sscore)
+          
+          (if (>= n 0)
+              
+              ;; update symnum no. n
+              (let ((osc_b (symbolist::symbolistGetSymbol win-ptr n)))
+                (unwind-protect 
+                    (setf (nth n (symbols sscore))
+                          (make-instance 'osc-bundle
+                                         :messages (om::decode-bundle-s-pointer-data osc_b)))
+                  (odot::osc_bundle_s_deepfree osc_b)))
+            
+              ;; else update all the symbols
+              (setf (symbols sscore)
                 (loop for i from 0 to (1- n-symbols) collect
                       (let ((osc_b (symbolist::symbolistGetSymbol win-ptr i)))
                         (unwind-protect 
                             (make-instance 'osc-bundle
                                            :messages (om::decode-bundle-s-pointer-data osc_b))
                           (odot::osc_bundle_s_deepfree osc_b)))))
+            )
           )
       (om-print "update callback : editor not found" "SYMBOLIST"))))

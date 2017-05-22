@@ -57,6 +57,8 @@ public:
     void groupSymbols();
     void deleteSelectedSymbols();
     
+    BaseComponent *getNthSymbolComponent (int n ) { return score_stack[n]; }
+    
 private:
     Point<float>                        m_down;
     

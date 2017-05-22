@@ -4,7 +4,8 @@
 
 
 #include <iostream>
-
+#include <algorithm>
+#include <vector>
 
 //===============================================================
 // SYMBOL
@@ -102,7 +103,8 @@ void Score::addSymbol(Symbol *symbol)
  ***********************************/
 void Score::removeSymbol(Symbol *symbol)
 {
-    //symbols. emplace_back(symbol);
+    std::vector<Symbol*>::iterator it = std::find(symbols.begin(), symbols.end(), symbol);
+    cout << "iterator " << *it << endl;
 }
 
 /***********************************
@@ -120,6 +122,16 @@ Symbol *Score::getSymbol(int n)
 size_t Score::getSize()
 {
     return symbols.size();
+}
+
+/***********************************
+ * Returns the position of a Symbol in the Score
+ ***********************************/
+int Score::getSymbolPosition(Symbol *s)
+{
+    std::vector<Symbol*>::iterator it = std::find(symbols.begin(), symbols.end(), s);
+    cout << "iterator " << *it << endl;
+    return 0;
 }
 
 /***********************************

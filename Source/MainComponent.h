@@ -65,7 +65,7 @@ private:
     Component* getWindow(); // will require static cast
     
     static BaseComponent* makeComponentFromSymbol(Symbol* s);
-    static Symbol* makeSymbolFromComponent(BaseComponent* s);
+    static void setComponentSymbol(BaseComponent* c);
     
     symbolistUpdateCallback myUpdateCallback = NULL;
     symbolistCloseCallback myCloseCallback = NULL;

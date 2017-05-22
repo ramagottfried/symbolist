@@ -17,7 +17,8 @@ class Symbol {
         Symbol();
         Symbol(OSCBundle b);
     
-        OSCBundle getOSCBundle () { return osc_bundle; }
+        OSCBundle   getOSCBundle () { return osc_bundle; }
+        void        setOSCBundle (OSCBundle b) { osc_bundle = b; }
     
         int getOSCMessagePos(const char* address);
         OSCArgument getOSCMessageValue(int pos);
@@ -46,6 +47,7 @@ class Score {
 
         size_t getSize();
         Symbol *getSymbol(int n);
+        int getSymbolPosition(Symbol* s);
     
         void addSymbol(Symbol *s);
         void removeSymbol(Symbol *s);

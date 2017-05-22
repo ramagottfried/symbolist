@@ -139,7 +139,7 @@ void SymbolistMainComponent::setContentFromScore ()
 // <= MODIFY DATA FROM VIEW
 //=================================
 
-Symbol* SymbolistMainComponent::makeSymbolFromComponent(BaseComponent *c)
+void SymbolistMainComponent::setComponentSymbol( BaseComponent *c )
 {
     OSCBundle b;
     OSCMessage typeMessage = OSCMessage(OSCAddressPattern("/type"), String("circle"));
@@ -151,25 +151,28 @@ Symbol* SymbolistMainComponent::makeSymbolFromComponent(BaseComponent *c)
     b.addElement(xMessage);
     b.addElement(yMessage);
     
-    Symbol* s = new Symbol(b);
-    c->setSymbol(s);
-    return s;
+    c->getSymbol()->setOSCBundle(b);
 }
 
 void SymbolistMainComponent::handleComponentAdded ( BaseComponent* c )
 {
-    score->addSymbol( makeSymbolFromComponent(c) );
+    Symbol *s = new Symbol();
+    c->setSymbol( s );
+    setComponentSymbol( c );
+    score->addSymbol( s );
     executeUpdateCallback( -1 );
 }
 
 void SymbolistMainComponent::handleComponentRemoved ( BaseComponent* c )
 {
-    // ToDo
+    score->removeSymbol( c->getSymbol() );
+    executeUpdateCallback( -1 );
 }
 
 void SymbolistMainComponent::handleComponentModified ( BaseComponent* c )
 {
-    // ToDo
+    setComponentSymbol( c );
+    executeUpdateCallback( score->getSymbolPosition( c->getSymbol() ) );
 }
 
 
@@ -177,19 +180,16 @@ void SymbolistMainComponent::handleComponentModified ( BaseComponent* c )
 
 bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
 {
-    std::cout << "key " << key.getTextDescription() << "\n";
-    
+    //std::cout << "key " << key.getTextDescription() << "\n";
     String desc = key.getTextDescription();
-    
     if( desc            == "command + G" ) {
         scoreGUI.groupSymbols();
-    } else if ( desc    == "command + Z" ) {
-        clearScoreView();
     } else if ( desc    == "backspace" ) {
         scoreGUI.deleteSelectedSymbols();
+        //BaseComponent *selected_comp = scoreGUI.getNthSymbolComponent(0);
+        //handleComponentRemoved( selected_comp );
     }
     return false;
-    
 }
 
 

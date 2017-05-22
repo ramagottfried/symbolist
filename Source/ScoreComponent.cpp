@@ -106,6 +106,20 @@ void ScoreComponent::groupSymbols()
     
 }
 
+void ScoreComponent::deleteSelectedSymbols()
+{
+    for( BaseComponent *c : selected_items )
+    {
+        removeChildComponent(c);
+        
+        auto rem = std::remove( score_stack.begin(),
+                                score_stack.end(),
+                                c );
+        score_stack.erase( rem, score_stack.end() );
+        delete c;
+        
+    }
+}
 
 void ScoreComponent::paint (Graphics& g)
 {

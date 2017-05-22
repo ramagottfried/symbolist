@@ -55,7 +55,7 @@ public:
     SelectedItemSet< BaseComponent *>& getLassoSelection() override;
     
     void groupSymbols();
-
+    void deleteSelectedSymbols();
     
 private:
     Point<float>                        m_down;

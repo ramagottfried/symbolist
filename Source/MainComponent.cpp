@@ -177,12 +177,16 @@ void SymbolistMainComponent::handleComponentModified ( BaseComponent* c )
 
 bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
 {
-    // std::cout << "key " << key.getTextDescription() << "\n";
+    std::cout << "key " << key.getTextDescription() << "\n";
     
-    if( key.getTextDescription() == "command + G" ) {
+    String desc = key.getTextDescription();
+    
+    if( desc            == "command + G" ) {
         scoreGUI.groupSymbols();
-    } else if ( key.getTextDescription() == "command + Z" ) {
+    } else if ( desc    == "command + Z" ) {
         clearScoreView();
+    } else if ( desc    == "backspace" ) {
+        scoreGUI.deleteSelectedSymbols();
     }
     return false;
     

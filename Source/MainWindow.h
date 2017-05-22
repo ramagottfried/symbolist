@@ -16,7 +16,6 @@ class SymbolistMainWindow : public DocumentWindow {
     
 public:
 
-    SymbolistMainWindow ( Score *s );
     SymbolistMainWindow ();
     ~SymbolistMainWindow ();
     
@@ -40,14 +39,12 @@ class SymbolistEditorWindow : public SymbolistMainWindow {
     
 public:
     
-    SymbolistEditorWindow () : SymbolistMainWindow (new Score()) {} ; // {}
+    SymbolistEditorWindow () : SymbolistMainWindow () {} ;
     //~SymbolistEditorWindow ();
     
     void closeButtonPressed() override;
-
-    
+   
 private:
-  
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistEditorWindow)
 };

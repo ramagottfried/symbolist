@@ -244,11 +244,11 @@
 				44A3C1ED1EC317BE00C4AD14 /* symbolist.hpp */,
 				44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */,
 				446363961EC8EF9C0054CB6D /* types.h */,
+				11CE00531EC328EC00E4F624 /* MainComponent.cpp */,
+				44CFE0411EC37BA5009135F8 /* MainComponent.h */,
 				118C38E11EC5C39F006FF4A1 /* score */,
 				11CE00151EC3231E00E4F624 /* gui-primitives */,
 				44DFA0951ED2C96600A6847A /* window-components */,
-				11CE00531EC328EC00E4F624 /* MainComponent.cpp */,
-				44CFE0411EC37BA5009135F8 /* MainComponent.h */,
 				11CE00431EC3275500E4F624 /* test-app */,
 			);
 			name = Source;

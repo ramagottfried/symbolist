@@ -6,7 +6,7 @@
  * SHARED BY THE LIBRARY AND THE STANDALONE APP
  ************************************************/
 
-SymbolistMainWindow::SymbolistMainWindow ( Score *s ): DocumentWindow ( "symbolist",
+SymbolistMainWindow::SymbolistMainWindow () : DocumentWindow ( "symbolist",
                                                                 Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId),
                                                                 DocumentWindow::allButtons)
 {
@@ -18,7 +18,6 @@ SymbolistMainWindow::SymbolistMainWindow ( Score *s ): DocumentWindow ( "symboli
     setResizable(true, true);
 }
 
-SymbolistMainWindow::SymbolistMainWindow () : SymbolistMainWindow( new Score () ) {}
 SymbolistMainWindow::~SymbolistMainWindow() {}
 
 

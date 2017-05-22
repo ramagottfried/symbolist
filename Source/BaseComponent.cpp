@@ -4,9 +4,6 @@
 
 BaseComponent::BaseComponent()
 {
-    addChildComponent( resizableBorder = new ResizableBorderComponent(this, nullptr) );
-    resizableBorder->setBounds( getLocalBounds() );
-    resizableBorder->setBorderThickness( BorderSize<int>(1) );
 }
 
 
@@ -33,8 +30,18 @@ void BaseComponent::resized ()
 {
     symbol_resized();
     
+
     if( resizableBorder )
+    {
         resizableBorder->setBounds( getLocalBounds() );
+    }
+    else
+    {
+        addChildComponent( resizableBorder = new ResizableBorderComponent(this, nullptr) );
+        resizableBorder->setBounds( getLocalBounds() );
+        resizableBorder->setBorderThickness( BorderSize<int>(1) );
+    }
+    
 
 }
 

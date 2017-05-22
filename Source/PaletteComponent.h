@@ -18,20 +18,10 @@ public:
     PaletteComponent();
     ~PaletteComponent();
     
-    void addSymbolButton(BaseComponent *c)
-    {
-        palette.add(c);
-        addAndMakeVisible(c);
-        addMouseListener(this, true);
-    }
+    void addSymbolButton(BaseComponent *c);
+    void paint (Graphics& g) override;
     
-    void paint (Graphics& g) override
-    {
-    
-    }
-    
-    void resized () override
-    {}
+    void resized () override;
     
     void mouseMove ( const MouseEvent& event ) override
     {}
@@ -44,7 +34,7 @@ public:
     
     
 private:
-    OwnedArray<BaseComponent> palette;
+    OwnedArray<BaseComponent>   m_palette;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PaletteComponent)
 

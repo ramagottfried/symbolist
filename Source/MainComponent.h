@@ -5,6 +5,7 @@
 
 #include "ScoreData.h"
 #include "ScoreComponent.h"
+#include "PaletteComponent.h"
 
 
 /*
@@ -73,7 +74,7 @@ private:
     //DrawableButton *dbutton = NULL;
     //PaletteComponent palette{this};
     
-    OwnedArray<Component> palette; // << this should be dynamically expandable 
+    PaletteComponent palette; // << this should be dynamically expandable
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainComponent)

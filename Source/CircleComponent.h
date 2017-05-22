@@ -10,7 +10,7 @@ public:
     
     ~CircleComponent()
     {
-        printf("freeing circle\n");
+        printf("freeing circle %p\n", this);
     }
     
     void symbol_paint ( Graphics& g ) override;

@@ -6,11 +6,16 @@
 SymbolistMainComponent::SymbolistMainComponent()
 {
     score = new Score();
+    
     setComponentID("MainComponent");
     setSize (600, 400);
+    
     addAndMakeVisible(scoreGUI);
+    addAndMakeVisible(palette);
+    
     setWantsKeyboardFocus(true);
     addKeyListener(this);
+    
 }
 
 SymbolistMainComponent::~SymbolistMainComponent()
@@ -27,6 +32,9 @@ void SymbolistMainComponent::paint (Graphics& g)
 void SymbolistMainComponent::resized()
 {
     scoreGUI.setBounds( 50, 50, getWidth()-100, getHeight()-100 );
+    palette.setBounds( 0, 0, 50, getHeight() );
+    
+    printf("main resized\n");
 }
 
 

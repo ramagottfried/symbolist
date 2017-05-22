@@ -10,10 +10,9 @@ SymbolistMainWindow::SymbolistMainWindow ( Score *s ): DocumentWindow ( "symboli
                                                                 Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId),
                                                                 DocumentWindow::allButtons)
 {
-    score = s;
-    comp = new MainComponent( score );
+    main_component = new SymbolistMainComponent();
     setUsingNativeTitleBar (true);
-    setContentOwned (comp , true );
+    setContentOwned (main_component , true );
     centreWithSize (getWidth(), getHeight());
     setVisible (true);
     setResizable(true, true);
@@ -22,43 +21,14 @@ SymbolistMainWindow::SymbolistMainWindow ( Score *s ): DocumentWindow ( "symboli
 SymbolistMainWindow::SymbolistMainWindow () : SymbolistMainWindow( new Score () ) {}
 SymbolistMainWindow::~SymbolistMainWindow() {}
 
-void SymbolistMainWindow::registerUpdateCallback(symbolistUpdateCallback c) { myUpdateCallback = c; }
-
-void SymbolistMainWindow::clearViewer()
-{
-    comp->clearScoreView();
-}
-
-void SymbolistMainWindow::updateViewer()
-{
-    comp->setContentFromScore(score);
-}
-
-void SymbolistMainWindow::notifyUpdate ( )
-{
-    if (myUpdateCallback) { myUpdateCallback( this, -1 ); }
-    
-    /*
-    int scoreSize =  static_cast<int>( score->getSize() );
-    cout << "update" << scoreSize << " symbols" << endl;
-    odot_bundle **bundle_array = score->exportScoreToOSC();
-    cout << "exported" << endl;
-    myUpdateCallback( this, scoreSize );
-    Score::deleteOdotBundleArray(bundle_array,scoreSize);
-    cout << "deleted !" << endl;
-    */
-}
-
 
 /***********************************
  * SPECIFIC FOR THE LIBRARY
  ***********************************/
 
-void SymbolistEditorWindow::registerCloseCallback(symbolistCloseCallback c) { myCloseCallback = c; }
-
 void SymbolistEditorWindow::closeButtonPressed()
 {
-    if (myCloseCallback) { myCloseCallback( this ); }
+    main_component->executeCloseCallback();
     delete this;
 }
 

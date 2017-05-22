@@ -149,21 +149,6 @@
 			name = "Juce Library Code";
 			sourceTree = "<group>";
 		};
-		118C38E01EC5C372006FF4A1 /* main-window */ = {
-			isa = PBXGroup;
-			children = (
-				118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */,
-				118C38EE1EC61404006FF4A1 /* PaletteComponent.h */,
-				11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */,
-				11CE005D1EC4B31200E4F624 /* ScoreComponent.h */,
-				11CE00531EC328EC00E4F624 /* MainComponent.cpp */,
-				44CFE0411EC37BA5009135F8 /* MainComponent.h */,
-				446388D41EC34DC90038CFCB /* MainWindow.cpp */,
-				44CFE0421EC37BA5009135F8 /* MainWindow.h */,
-			);
-			name = "main-window";
-			sourceTree = "<group>";
-		};
 		118C38E11EC5C39F006FF4A1 /* score */ = {
 			isa = PBXGroup;
 			children = (
@@ -195,6 +180,19 @@
 				11CE00511EC328DE00E4F624 /* Main.cpp */,
 			);
 			name = "test-app";
+			sourceTree = "<group>";
+		};
+		44DFA0951ED2C96600A6847A /* window-components */ = {
+			isa = PBXGroup;
+			children = (
+				118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */,
+				118C38EE1EC61404006FF4A1 /* PaletteComponent.h */,
+				11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */,
+				11CE005D1EC4B31200E4F624 /* ScoreComponent.h */,
+				446388D41EC34DC90038CFCB /* MainWindow.cpp */,
+				44CFE0421EC37BA5009135F8 /* MainWindow.h */,
+			);
+			name = "window-components";
 			sourceTree = "<group>";
 		};
 		5BA2DB05C7718E6A683CC674 /* symbolist */ = {
@@ -248,7 +246,9 @@
 				446363961EC8EF9C0054CB6D /* types.h */,
 				118C38E11EC5C39F006FF4A1 /* score */,
 				11CE00151EC3231E00E4F624 /* gui-primitives */,
-				118C38E01EC5C372006FF4A1 /* main-window */,
+				44DFA0951ED2C96600A6847A /* window-components */,
+				11CE00531EC328EC00E4F624 /* MainComponent.cpp */,
+				44CFE0411EC37BA5009135F8 /* MainComponent.h */,
 				11CE00431EC3275500E4F624 /* test-app */,
 			);
 			name = Source;

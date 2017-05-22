@@ -30,19 +30,19 @@ ScoreComponent::~ScoreComponent()
 void ScoreComponent::scoreSymbolAdded ( BaseComponent* c )
 {
     // will update data and notify to host environment
-    static_cast<MainComponent*>(getParentComponent())->handleComponentAdded( c );
+    static_cast<SymbolistMainComponent*>(getParentComponent())->handleComponentAdded( c );
 }
 
 void ScoreComponent::scoreSymbolRemoved ( BaseComponent* c )
 {
     // will update data and notify to host environment
-    static_cast<MainComponent*>(getParentComponent())->handleComponentRemoved( c );
+    static_cast<SymbolistMainComponent*>(getParentComponent())->handleComponentRemoved( c );
 }
 
 void ScoreComponent::scoreSymbolModified ( BaseComponent* c )
 {
     // will update data and notify to host environment
-    static_cast<MainComponent*>(getParentComponent())->handleComponentModified( c );
+    static_cast<SymbolistMainComponent*>(getParentComponent())->handleComponentModified( c );
 }
 
 /*

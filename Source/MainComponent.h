@@ -3,30 +3,41 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-#include "ScoreComponent.h"
 #include "ScoreData.h"
-#include "PaletteComponent.h"
+#include "ScoreComponent.h"
 
 
-class MainComponent : public Component, public KeyListener
+/*
+ * SymbolistMainComponent is the main controller of the application
+ * managing the connevtion between data (score) and visualization/editing.
+ * It is also the node and pointyer for interaction with the library
+ */
+
+class SymbolistMainComponent : public Component, public KeyListener
 {
 public:
-    //==============================================================================
-    MainComponent();
-    MainComponent( Score *s );
     
-    ~MainComponent();
+    SymbolistMainComponent();
+    ~SymbolistMainComponent();
 
-    void paint (Graphics&) override;
-    void resized() override;
+    inline Score* getScore() { return score; }
+
+    // CONTROLLER METHODS
+    static SymbolistMainComponent* createWindow();
+    void closeWindow();
+    void windowToFront();
+    void windowSetName(String name);
     
-
     
-    bool keyPressed (const KeyPress& key, Component* originatingComponent) override;
-
     // set the contents of scoreGUI from s
-    void setContentFromScore ( Score* s ) ;
+    void setContentFromScore() ;
     void clearScoreView();
+    
+    void registerUpdateCallback(symbolistUpdateCallback c);
+    void registerCloseCallback(symbolistCloseCallback c);
+    void executeUpdateCallback(int arg);
+    void executeCloseCallback();
+    
     
     // create a Symbol from c and add it to parent Windows's score
     void handleComponentAdded ( BaseComponent* c ) ;
@@ -35,8 +46,19 @@ public:
     // modified the Symbol corresponding to c from parent Windows's score
     void handleComponentModified ( BaseComponent* c ) ;
     
+    
+    
+    // NORMAL COMPOENENT METHODS
+    void paint (Graphics&) override;
+    void resized() override;
+
+    
+    bool keyPressed (const KeyPress& key, Component* originatingComponent) override;
+
+    
 private:
     
+    Score *score;
     ScoreComponent scoreGUI;
     
     Component* getWindow(); // will require static cast
@@ -44,11 +66,15 @@ private:
     static BaseComponent* makeComponentFromSymbol(Symbol* s);
     static Symbol* makeSymbolFromComponent(BaseComponent* s);
     
+    symbolistUpdateCallback myUpdateCallback = NULL;
+    symbolistCloseCallback myCloseCallback = NULL;
+
+    
     //DrawableButton *dbutton = NULL;
     //PaletteComponent palette{this};
     
     OwnedArray<Component> palette; // << this should be dynamically expandable 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainComponent)
 };

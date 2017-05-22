@@ -159,7 +159,7 @@ SelectedItemSet<BaseComponent*> & ScoreComponent::getLassoSelection()
 
 void ScoreComponent::mouseDown ( const MouseEvent& event )
 {
-    
+        
     if( event.eventComponent != this )
     {
         selected_items.addToSelection( (BaseComponent *)event.eventComponent );

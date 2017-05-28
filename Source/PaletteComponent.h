@@ -11,7 +11,7 @@
  */
 
 
-class PaletteComponent : public Component
+class PaletteComponent : public SymbolistComponent
 {
     
 public:

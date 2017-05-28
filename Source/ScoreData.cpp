@@ -42,11 +42,13 @@ odot_bundle* Symbol::exportToOSC()
 {
     OSCWriter w ;
     w.writeBundle( osc_bundle );
+    //cout << "BUNDLE WRITING: " << write_result << endl;
     size_t size = w.getDataSize();
     odot_bundle *bundle = new odot_bundle;
     bundle->len = static_cast<long>(size);
     bundle->data = new char[size];
     std::memcpy(bundle->data, w.getData() ,size );
+    
     //std::cout << "encoded " << bundle->len << " bytes : " << bundle->data << std::endl;
     //for (int c = 0; c < bundle->len; c++) { cout << bundle->data[c] << "|"; }
     //cout << endl;
@@ -130,8 +132,9 @@ size_t Score::getSize()
 int Score::getSymbolPosition(Symbol *s)
 {
     std::vector<Symbol*>::iterator it = std::find(symbols.begin(), symbols.end(), s);
-    cout << "iterator " << *it << endl;
-    return 0;
+    // cout << "iterator " << it - symbols.begin() << endl;
+    if (it >= symbols.end()) return -1;
+    else return static_cast<int>( it - symbols.begin() );
 }
 
 /***********************************
@@ -147,7 +150,7 @@ void Score::importScoreFromOSC(int n, odot_bundle **bundle_array)
         s->importFromOSC( bundle_array[i] );
         addSymbol(s);
     }
-    std::cout << "import OK !" << std::endl;
+    std::cout << "OSC import done" << std::endl;
 }
 
 

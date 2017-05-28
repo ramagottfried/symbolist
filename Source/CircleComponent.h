@@ -6,7 +6,7 @@ class CircleComponent : public BaseComponent
 {
 public:
     CircleComponent();
-    CircleComponent( float x, float y, float radius = 10, float stroke = 2, Colour color = Colours::black );
+    CircleComponent( float center_x, float center_y, float w = 10, float h = 10, float stroke = 2, Colour color = Colours::black );
     
     ~CircleComponent()
     {
@@ -14,8 +14,10 @@ public:
     }
     
     void symbol_paint ( Graphics& g ) override;
-    void symbol_moved () override {}
-    void symbol_resized () override {}
+    
+    float symbol_getX() override { return getX() + ( getWidth() * .5) ; }
+    float symbol_getY() override { return getY() + ( getHeight() * .5) ; }
+
     
     void symbol_mouseEnter( const MouseEvent& event ) override {}
     void symbol_mouseMove( const MouseEvent& event ) override {}
@@ -23,6 +25,7 @@ public:
     void symbol_mouseDrag( const MouseEvent& event ) override {}
     void symbol_mouseExit( const MouseEvent& event ) override {}
     void symbol_mouseDoubleClick( const MouseEvent& event ) override {}
+    
     
     
 private:

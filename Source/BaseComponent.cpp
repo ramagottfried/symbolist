@@ -1,13 +1,17 @@
 
 #include "BaseComponent.h"
+#include "ScoreComponent.h"
 
 
-BaseComponent::BaseComponent()
+BaseComponent::BaseComponent(String s)
 {
+    symbol_type = s;
 }
 
+BaseComponent::BaseComponent() : BaseComponent("symbol") {}
 
 BaseComponent::~BaseComponent() {}
+
 
 void BaseComponent::select()
 {
@@ -41,9 +45,23 @@ void BaseComponent::resized ()
         resizableBorder->setBounds( getLocalBounds() );
         resizableBorder->setBorderThickness( BorderSize<int>(1) );
     }
-    
-
 }
+
+void BaseComponent::symbol_moved ()
+{
+    ScoreComponent* sc = static_cast<ScoreComponent*>( getTPLScoreComponent() );
+    // sc can be null if the symbol is moved when not yet on screen
+    // best would be to call this from the moving action
+    if (sc != NULL) { sc->scoreSymbolModified( this ); }
+}
+
+void BaseComponent::symbol_resized ()
+{
+    ScoreComponent* sc = static_cast<ScoreComponent*>( getTPLScoreComponent() );
+    if (sc != NULL) { sc->scoreSymbolModified( this ); }
+}
+
+
 
 void BaseComponent::paint ( Graphics& g )
 {

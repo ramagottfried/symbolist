@@ -340,6 +340,7 @@ class OSCWriter
     
     bool writeAddressPattern (const OSCAddressPattern& ap)
     {
+        //std::cout << "writing message: " << ap.toString() << std::endl;
         return writeString (ap.toString());
     }
     
@@ -401,6 +402,8 @@ class OSCWriter
     bool writeBundleElement (const OSCBundle::Element& element)
     {
         const int64 startPos = output.getPosition();
+        
+        //std::cout << "writing bundle element..." << std::endl;
         
         if (! writeInt32 (0))   // writing dummy value for element size
             return false;

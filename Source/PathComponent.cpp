@@ -78,7 +78,7 @@ void PathComponent::symbol_mouseDown( const MouseEvent& event )
     int count = 0;
     while( it.next() )
     {
-        
+        count++;
     }
 }
 
@@ -91,8 +91,6 @@ void PathComponent::symbol_mouseDrag( const MouseEvent& event )
         
         {
             Path p;
-            //            PathStrokeType strokeType(1.0);
-            
             
             // paths are relative to the z
             Point<float> zeroPt = {0.0, 0.0};
@@ -105,16 +103,12 @@ void PathComponent::symbol_mouseDrag( const MouseEvent& event )
             Rectangle<float> pathBounds = p.getBounds();
             printRect( pathBounds, "path bounds");
             
-            //                std::cout << newB.getX() << " " << newB.getY() << " " << newB.getWidth() << " " << newB.getHeight() << "\n";
-            
-            
             setBounds( m_down.getX() + pathBounds.getX(), m_down.getY() + pathBounds.getY(), pathBounds.getWidth(), pathBounds.getHeight() );
             
             // printf("test %f %f %f %f\n", m_down.getX() + pathBounds.getX(), m_down.getY() + pathBounds.getY(), pathBounds.getWidth(), pathBounds.getHeight() );
             
             m_path.swapWithPath( p );
-            
-            
+
             
         }
     }

@@ -28,6 +28,7 @@ private:
 
 };
 
+
 class ScoreComponent : public SymbolistComponent, public LassoSource<BaseComponent *>
 {
 public:
@@ -50,9 +51,9 @@ public:
     // in order to notify and update the host environment
     
     void addScoreChildComponent( BaseComponent *c );
-
-
+    
     inline Point<float> getScoreMouseDown(){ return m_down; }
+    inline void setMouseMode( UI_MouseMode m ){ mouse_mode = m; std::cout<< mouse_mode << std::endl; repaint();}
     
     // selection
     void findLassoItemsInArea (Array < BaseComponent *>& results, const Rectangle<int>& area) override;
@@ -68,8 +69,9 @@ public:
     void scoreSymbolRemoved ( BaseComponent* c );
     void scoreSymbolModified ( BaseComponent* c );
     
+    
 private:
-    bool                                edit_mode = false;
+    bool                                currently_editing = false;
     
     Point<float>                        m_down;
     
@@ -78,7 +80,7 @@ private:
     LassoComponent< BaseComponent * >   lassoSelector;
     ScoreSelectedItemSet                selected_items;
     
-
+    UI_MouseMode                        mouse_mode = edit;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScoreComponent)

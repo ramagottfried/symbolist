@@ -29,11 +29,19 @@ void BaseComponent::deselect()
 
 void BaseComponent::moved ()
 {
+    ScoreComponent* sc = static_cast<ScoreComponent*>( getTPLScoreComponent() );
+    // sc can be null if the symbol is moved when not yet on screen
+    // best would be to call this from the moving action
+    if (sc != NULL) { sc->scoreSymbolModified( this ); }
+    
     symbol_moved();
 }
 
 void BaseComponent::resized ()
 {
+    ScoreComponent* sc = static_cast<ScoreComponent*>( getTPLScoreComponent() );
+    if (sc != NULL) { sc->scoreSymbolModified( this ); }
+    
     symbol_resized();
 
     if( !resizableBorder )
@@ -42,25 +50,10 @@ void BaseComponent::resized ()
         resizableBorder->setBorderThickness( BorderSize<int>(1) );
     }
     
-    printRect( getLocalBounds(), "resizableBorder" );
+//    printRect( getLocalBounds(), "resizableBorder" );
     
     resizableBorder->setBounds( getLocalBounds() );
 }
-
-void BaseComponent::symbol_moved ()
-{
-    ScoreComponent* sc = static_cast<ScoreComponent*>( getTPLScoreComponent() );
-    // sc can be null if the symbol is moved when not yet on screen
-    // best would be to call this from the moving action
-    if (sc != NULL) { sc->scoreSymbolModified( this ); }
-}
-
-void BaseComponent::symbol_resized ()
-{
-    ScoreComponent* sc = static_cast<ScoreComponent*>( getTPLScoreComponent() );
-    if (sc != NULL) { sc->scoreSymbolModified( this ); }
-}
-
 
 
 void BaseComponent::paint ( Graphics& g )
@@ -98,11 +91,22 @@ void BaseComponent::mouseDown( const MouseEvent& event )
 
 }
 
+template <typename T>
+void printPoint(Point<T> point, String name = "point" )
+{
+    std::cout << name << " " << point.getX() << " " << point.getY() << "\n";
+}
+
 void BaseComponent::mouseDrag( const MouseEvent& event )
 {
     if( is_selected && !is_being_edited )
     {
         Point<float> mouseoffset = event.getEventRelativeTo( getParentComponent() ).position - m_down;
+        
+        printPoint<float>(m_down, "mdrag m_down");
+        printPoint<float>(event.position, "mdrag event");
+        printPoint<float>(mouseoffset, "mdrag offset");
+
         setBounds ( mouseoffset.getX(), mouseoffset.getY(), getWidth(), getHeight() );
     }
 

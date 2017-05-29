@@ -95,12 +95,8 @@ void ScoreComponent::addScoreChildComponent( BaseComponent *c )
     c->addMouseListener(this, false);
     
     score_stack.emplace_back ( c );
+//    selected_items.addToSelection( c );
     
-    
-    
-    selected_items.addToSelection( c );
-    
-    edit_mode = true;
     c->setEditMode( true );
     addMouseListener(c, false);
 
@@ -171,7 +167,22 @@ void ScoreComponent::paint (Graphics& g)
     
     g.setFont (Font (16.0f));
     g.setColour (Colours::grey);
-    g.drawText ("shift: new line | alt: resize", getLocalBounds(), Justification::centred, true);
+    
+    String msg = "";
+    switch (mouse_mode)
+    {
+        case edit:
+            msg = "[E] select to edit objects, [P] path, [C] circle";
+            break;
+        case path:
+            msg = "[P] click and drag to draw path, [E] edit, [C] circle";
+            break;
+        case circle:
+            msg = "[C] click to draw circle, [P] path, [E] edit";
+            break;
+    }
+    g.drawText (msg, getLocalBounds(), Justification::bottom, false);
+    
 }
 
 void ScoreComponent::resized ()
@@ -212,39 +223,44 @@ SelectedItemSet<BaseComponent*> & ScoreComponent::getLassoSelection()
 void ScoreComponent::mouseDown ( const MouseEvent& event )
 {
     
-    if( event.eventComponent != this )
+    if( mouse_mode == edit)
     {
-        selected_items.addToSelection( (BaseComponent *)event.eventComponent );
-    }
-    else
-    {
-        
-        if ( event.mods.isShiftDown() )
-        {
-            CircleComponent *obj = new CircleComponent( event.position.getX(), event.position.getY() );
-            
-            printf("%f %f \n", event.position.getX(), event.position.getY() );
-//            PathComponent *obj = new PathComponent( event.position );
-            // add in the view
-            addScoreChildComponent( obj );
-            // add in the score
-            scoreSymbolAdded( obj );
 
-            // set default bounds
-            //obj->setBounds( event.position.getX(), event.position.getY(), 20, 20 );
-          
+        if (event.eventComponent != this )
+        {
+            selected_items.addToSelection( (BaseComponent *)event.eventComponent );
         }
         else
         {
             lassoSelector.beginLasso( event, this );
         }
     }
+    else if (mouse_mode == circle )
+    {
+        CircleComponent *obj = new CircleComponent( event.position.getX(), event.position.getY() );
+        // add in the view
+        addScoreChildComponent( obj );
+        // add in the score
+        scoreSymbolAdded( obj );
+        
+        currently_editing = true;
+    }
+    else if (mouse_mode == path )
+    {
+        PathComponent *obj = new PathComponent( event.position );
+        // add in the view
+        addScoreChildComponent( obj );
+        // add in the score
+        scoreSymbolAdded( obj );
+        
+        currently_editing = true;
+    }
     
 }
 
 void ScoreComponent::mouseDrag ( const MouseEvent& event )
 {
-    if( !edit_mode )
+    if( mouse_mode == edit )
     {
         lassoSelector.dragLasso(event);
     }
@@ -253,12 +269,14 @@ void ScoreComponent::mouseDrag ( const MouseEvent& event )
 
 void ScoreComponent::mouseUp ( const MouseEvent& event )
 {
-    if( edit_mode )
+    if( mouse_mode == edit  )
     {
-        removeMouseListener( score_stack.back() );
-        score_stack.back()->setEditMode( false );
-        
-        edit_mode = false;
+        if( currently_editing && score_stack.back() )
+        {
+            removeMouseListener( score_stack.back() );
+            score_stack.back()->setEditMode( false );
+        }
+        currently_editing = false;
     }
     
     lassoSelector.endLasso();

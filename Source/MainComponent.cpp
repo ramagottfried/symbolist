@@ -15,6 +15,7 @@ SymbolistMainComponent::SymbolistMainComponent()
     
     setWantsKeyboardFocus(true);
     addKeyListener(this);
+    palette.addKeyListener(this);
     
 }
 
@@ -199,19 +200,22 @@ void SymbolistMainComponent::handleComponentModified ( BaseComponent* c )
 }
 
 
-
-
 bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
 {
-    //std::cout << "key " << key.getTextDescription() << "\n";
+//    std::cout << "key " << key.getTextDescription() << "\n";
     String desc = key.getTextDescription();
     if( desc            == "command + G" ) {
         scoreGUI.groupSymbols();
     } else if ( desc    == "backspace" ) {
         scoreGUI.deleteSelectedSymbolComponents();
-        //BaseComponent *selected_comp = scoreGUI.getNthSymbolComponent(0);
-        //handleComponentRemoved( selected_comp );
+    } else if ( desc    == "shift + C") {
+        scoreGUI.setMouseMode( scoreGUI.UI_MouseMode::circle );
+    } else if ( desc    == "shift + E") {
+        scoreGUI.setMouseMode( scoreGUI.UI_MouseMode::edit );
+    } else if ( desc    == "shift + P") {
+        scoreGUI.setMouseMode( scoreGUI.UI_MouseMode::path );
     }
+    
     return false;
 }
 

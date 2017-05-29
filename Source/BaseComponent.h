@@ -4,6 +4,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 #include "ScoreData.h"
+#include "SymbolistComponent.h"
 
 template <typename T>
 void printRect( Rectangle<T> rect, String name = "rect" )
@@ -11,11 +12,12 @@ void printRect( Rectangle<T> rect, String name = "rect" )
     std::cout << name << " " << rect.getX() << " " << rect.getY() << " " << rect.getWidth() << " " << rect.getHeight() << "\n";
 }
 
-class BaseComponent : public Component
+class BaseComponent : public SymbolistComponent
 {
 public:
     BaseComponent();
-    BaseComponent( Point<float> startPt );
+    BaseComponent( String type, Point<float> pos );
+
     ~BaseComponent();
     
     void select();
@@ -36,8 +38,13 @@ public:
     
     // subroutine in derived class, maybe return bool to trigger repaint
     virtual void symbol_paint ( Graphics& g ){}
-    virtual void symbol_moved (){}
-    virtual void symbol_resized (){}
+
+    virtual void symbol_moved ();
+    virtual void symbol_resized ();
+    
+    virtual float symbol_getX(){ return getX(); }
+    virtual float symbol_getY(){ return getY(); }
+    
     
     virtual void symbol_mouseEnter( const MouseEvent& event ){}
     virtual void symbol_mouseMove( const MouseEvent& event ){}
@@ -47,10 +54,17 @@ public:
     virtual void symbol_mouseExit( const MouseEvent& event ){}
     virtual void symbol_mouseDoubleClick( const MouseEvent& event ){}
 
-    inline void attachScoreView(Component *c){ score_view = c; };
+
+    inline void attachScoreView(Component *view){ score_view = view; };
+    
     inline Component *getScoreView(){ return score_view; };
     inline void setSymbol(Symbol *s){ score_symbol = s; };
     inline Symbol* getSymbol(){ return score_symbol; };
+    inline String getSymbolType(){ return symbol_type ; };
+    inline size_t getNumSubcomponents(){ return subcomponents.size() ; };
+    inline BaseComponent* getSubcomponent(int i){ return subcomponents.at(i) ; };
+    inline void addSubcomponent(BaseComponent *c ){ return subcomponents.emplace_back(c) ; };
+    
     
     inline void setSymbolStrokeWeight( float s ){ strokeWeight = s; }
     inline void setSymbolColor( Colour c ){ sym_color = c; }
@@ -61,12 +75,14 @@ protected:
     // parameters
     float           strokeWeight = 1;
     Colour          sym_color = Colours::black;
+    String          symbol_type = String("symbol");
     
     // interaction
     Point<float>    m_down;
     Colour          current_color = Colours::black;
 
     ScopedPointer<ResizableBorderComponent> resizableBorder;
+    vector<BaseComponent*> subcomponents;
     
     
     int             resize_mode = 0; // 0 = scale symbol to bounds, 1 = scale spacing (not resizing)

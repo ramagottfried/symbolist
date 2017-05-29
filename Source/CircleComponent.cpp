@@ -4,21 +4,21 @@
 CircleComponent::CircleComponent()
 {
     setComponentID ( "Circle" );
-    // should this constructor exist?
+    // should this constructor exist? => probably not, or to set default values
 }
 
-CircleComponent::CircleComponent( Point<float> startPT ) : BaseComponent(startPT)
+CircleComponent::CircleComponent( Point<float> pt ) : BaseComponent("circle", pt )
 {
     setComponentID ( "Circle" );    
 }
 
-CircleComponent::CircleComponent( float x, float y, float radius, float stroke, Colour color )
+CircleComponent::CircleComponent( float center_x, float center_y, float w, float h, float stroke, Colour color )
 {
     setComponentID ( "Circle" );
-    setBounds ( x-radius, y-radius, radius+radius, radius+radius );
+    setBounds( center_x - (w * .5), center_y - (h * .5), w , h);
     strokeWeight = stroke;
     sym_color = color;
-    
+    symbol_type = String("circle");
 }
 
 

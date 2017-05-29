@@ -26,6 +26,42 @@ ScoreComponent::~ScoreComponent()
     
 }
 
+SymbolistComponent* ScoreComponent::getTPLScoreComponent()
+{
+    return this ;
+}
+
+
+void ScoreComponent::removeAllSymbolComponents()
+{
+    for ( int i = 0; i < score_stack.size(); i++ )
+    {
+        removeChildComponent(score_stack[i]);
+
+    }
+    score_stack.clear();
+}
+
+void ScoreComponent::deleteSelectedSymbolComponents()
+{
+    for( BaseComponent *c : selected_items )
+    {
+        removeChildComponent(c);
+        
+        auto rem = std::remove(score_stack.begin(),
+                               score_stack.end(),
+                               c );
+        score_stack.erase ( rem, score_stack.end() );
+        
+        scoreSymbolRemoved( c );
+        
+        delete c;
+        
+    }
+}
+
+
+
 // MODOFICATIONS TO BE TRANSFERRED TO THE SCORE
 void ScoreComponent::scoreSymbolAdded ( BaseComponent* c )
 {
@@ -42,20 +78,32 @@ void ScoreComponent::scoreSymbolRemoved ( BaseComponent* c )
 void ScoreComponent::scoreSymbolModified ( BaseComponent* c )
 {
     // will update data and notify to host environment
-    static_cast<SymbolistMainComponent*>(getParentComponent())->handleComponentModified( c );
+    auto smc = getParentComponent();
+    if ( smc != NULL )
+    {
+        static_cast<SymbolistMainComponent*>(smc)->handleComponentModified( c );
+
+    }
 }
 
-/*
- 
-to do: check if score component still  
- 
- */
+
 
 void ScoreComponent::addScoreChildComponent( BaseComponent *c )
 {
     c->attachScoreView ( this );
     addAndMakeVisible ( c );
     c->addMouseListener(this, false);
+    
+    score_stack.emplace_back ( c );
+    
+    
+    
+    selected_items.addToSelection( c );
+    
+    edit_mode = true;
+    c->setEditMode( true );
+    addMouseListener(c, false);
+
     
     // selected_items.addChangeListener(c);
 }
@@ -66,10 +114,7 @@ void ScoreComponent::groupSymbols()
     
     if ( selected_items.getNumSelected() > 1 )
     {
-        BaseComponent *group = new BaseComponent;
-        group->setComponentID("group");
-        
-       
+
         int minx = getWidth(), maxx = 0, miny = getHeight(), maxy = 0;
         
         for( auto it = selected_items.begin(); it != selected_items.end(); it++ )
@@ -84,9 +129,12 @@ void ScoreComponent::groupSymbols()
 
         Rectangle<int> groupBounds( minx, miny, maxx-minx, maxy-miny );
 
+        BaseComponent *group = new BaseComponent( "group", Point<float>(minx, miny) );
+        group->setComponentID("group");
+        
         group->setBounds( groupBounds );
+        
         addScoreChildComponent( group );
-        score_stack.emplace_back ( group );
 
 
         for( auto it = selected_items.begin(); it != selected_items.end(); it++ )
@@ -94,32 +142,26 @@ void ScoreComponent::groupSymbols()
             std::cout << (*it)->getComponentID() << "\n";
 
             Rectangle<int> compBounds = (*it)->getBounds();
+
             group->addAndMakeVisible( *it );
+            group->addSubcomponent( *it );
+            // DOES THIS REMOVES THE COMPONENT FROM ITS ORIGINAL CONTAINER ??
+            
             (*it)->setBounds(   compBounds.getX() - groupBounds.getX(),
                                 compBounds.getY() - groupBounds.getY(),
                                 compBounds.getWidth(), compBounds.getHeight() );
+            
+            scoreSymbolRemoved( *it );
         }
         
+        scoreSymbolAdded( group );
         group->select();
         
     }
     
 }
 
-void ScoreComponent::deleteSelectedSymbols()
-{
-    for( BaseComponent *c : selected_items )
-    {
-        removeChildComponent(c);
-        
-        auto rem = std::remove( score_stack.begin(),
-                                score_stack.end(),
-                                c );
-        score_stack.erase( rem, score_stack.end() );
-        delete c;
-        
-    }
-}
+
 
 void ScoreComponent::paint (Graphics& g)
 {
@@ -179,19 +221,18 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
         
         if ( event.mods.isShiftDown() )
         {
-//            CircleComponent *circle = new CircleComponent( event.position.getX(), event.position.getY() );
-            PathComponent *obj = new PathComponent( event.position );
+            CircleComponent *obj = new CircleComponent( event.position.getX(), event.position.getY() );
+            
+            printf("%f %f \n", event.position.getX(), event.position.getY() );
+//            PathComponent *obj = new PathComponent( event.position );
             // add in the view
             addScoreChildComponent( obj );
             // add in the score
             scoreSymbolAdded( obj );
-            
-            score_stack.emplace_back ( obj );
-            selected_items.addToSelection( obj );
 
-            edit_mode = true;
-            obj->setEditMode( true );
-            addMouseListener(obj, false);
+            // set default bounds
+            //obj->setBounds( event.position.getX(), event.position.getY(), 20, 20 );
+          
         }
         else
         {

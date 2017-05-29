@@ -2,6 +2,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PrimitiveIncludes.h"
+#include "SymbolistComponent.h"
 
 
 class ScoreSelectedItemSet : public SelectedItemSet<BaseComponent *>
@@ -27,8 +28,7 @@ private:
 
 };
 
-
-class ScoreComponent : public Component, public LassoSource<BaseComponent *>
+class ScoreComponent : public SymbolistComponent, public LassoSource<BaseComponent *>
 {
 public:
     ScoreComponent();
@@ -41,6 +41,10 @@ public:
     void mouseDown ( const MouseEvent& event ) override;
     void mouseDrag ( const MouseEvent& event ) override;
     void mouseUp ( const MouseEvent& event ) override;
+    
+    SymbolistComponent* getTPLScoreComponent() override;
+    
+    
     
     // call this when the score has been modified
     // in order to notify and update the host environment
@@ -55,9 +59,14 @@ public:
     SelectedItemSet< BaseComponent *>& getLassoSelection() override;
     
     void groupSymbols();
-    void deleteSelectedSymbols();
+    void deleteSelectedSymbolComponents();
+    void removeAllSymbolComponents();
     
     BaseComponent *getNthSymbolComponent (int n ) { return score_stack[n]; }
+    
+    void scoreSymbolAdded ( BaseComponent* c );
+    void scoreSymbolRemoved ( BaseComponent* c );
+    void scoreSymbolModified ( BaseComponent* c );
     
 private:
     bool                                edit_mode = false;
@@ -69,9 +78,7 @@ private:
     LassoComponent< BaseComponent * >   lassoSelector;
     ScoreSelectedItemSet                selected_items;
     
-    void scoreSymbolAdded ( BaseComponent* c );
-    void scoreSymbolRemoved ( BaseComponent* c );
-    void scoreSymbolModified ( BaseComponent* c );
+
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScoreComponent)

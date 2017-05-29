@@ -79,6 +79,7 @@
 		31AA60335333AFCFC2C433D3 /* symbolist.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = symbolist.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		34B8AF3D31715BC6E31E4944 /* juce_data_structures */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_data_structures; path = ../../../JUCE/modules/juce_data_structures; sourceTree = SOURCE_ROOT; };
 		3FAB00DCF22EB4922567B583 /* include_juce_core.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_core.mm; path = ../../JuceLibraryCode/include_juce_core.mm; sourceTree = SOURCE_ROOT; };
+		445A661F1EDABDED00E2ADA2 /* SymbolistComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SymbolistComponent.h; path = ../../Source/SymbolistComponent.h; sourceTree = "<group>"; };
 		446363931EC6F4960054CB6D /* OSCIO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OSCIO.cpp; path = ../../Source/OSCIO.cpp; sourceTree = "<group>"; };
 		446363961EC8EF9C0054CB6D /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = types.h; path = ../../Source/types.h; sourceTree = "<group>"; };
 		446388D41EC34DC90038CFCB /* MainWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainWindow.cpp; path = ../../Source/MainWindow.cpp; sourceTree = "<group>"; };
@@ -200,6 +201,7 @@
 				118C38EE1EC61404006FF4A1 /* PaletteComponent.h */,
 				11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */,
 				11CE005D1EC4B31200E4F624 /* ScoreComponent.h */,
+				445A661F1EDABDED00E2ADA2 /* SymbolistComponent.h */,
 			);
 			name = "window-components";
 			sourceTree = "<group>";

@@ -30,7 +30,7 @@ public:
     void windowSetName(String name);
     
     
-    // set the contents of scoreGUI from s
+    // set the contents of scoreGUI from score
     void setContentFromScore() ;
     void clearScoreView();
     
@@ -66,6 +66,8 @@ private:
     
     static BaseComponent* makeComponentFromSymbol(Symbol* s);
     static void setComponentSymbol(BaseComponent* c);
+    static int addSymbolMessages( BaseComponent *c, OSCBundle *b, String base_address );
+    //static int addSymbolMessages( CircleComponent *c, OSCBundle b, String base_address );
     
     symbolistUpdateCallback myUpdateCallback = NULL;
     symbolistCloseCallback myCloseCallback = NULL;

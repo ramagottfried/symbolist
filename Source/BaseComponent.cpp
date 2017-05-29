@@ -1,19 +1,18 @@
 
 #include "BaseComponent.h"
+#include "ScoreComponent.h"
 
 
-BaseComponent::BaseComponent() {}
-
-BaseComponent::BaseComponent( Point<float> startPt )
+BaseComponent::BaseComponent(String type, Point<float> pos )
 {
-    m_down = startPt;
-    setBounds( startPt.getX(), startPt.getY(), 10, 10 );
-    
-//    setCentrePosition( centerPt.toInt() );
+    symbol_type = type;
+    m_down = pos;
 }
 
+BaseComponent::BaseComponent() : BaseComponent("symbol", Point<float>(10 , 10)) {}
 
 BaseComponent::~BaseComponent() {}
+
 
 void BaseComponent::select()
 {
@@ -46,8 +45,23 @@ void BaseComponent::resized ()
     printRect( getLocalBounds(), "resizableBorder" );
     
     resizableBorder->setBounds( getLocalBounds() );
-
 }
+
+void BaseComponent::symbol_moved ()
+{
+    ScoreComponent* sc = static_cast<ScoreComponent*>( getTPLScoreComponent() );
+    // sc can be null if the symbol is moved when not yet on screen
+    // best would be to call this from the moving action
+    if (sc != NULL) { sc->scoreSymbolModified( this ); }
+}
+
+void BaseComponent::symbol_resized ()
+{
+    ScoreComponent* sc = static_cast<ScoreComponent*>( getTPLScoreComponent() );
+    if (sc != NULL) { sc->scoreSymbolModified( this ); }
+}
+
+
 
 void BaseComponent::paint ( Graphics& g )
 {
@@ -86,7 +100,7 @@ void BaseComponent::mouseDown( const MouseEvent& event )
 
 void BaseComponent::mouseDrag( const MouseEvent& event )
 {
-    if( is_selected )
+    if( is_selected && !is_being_edited )
     {
         Point<float> mouseoffset = event.getEventRelativeTo( getParentComponent() ).position - m_down;
         setBounds ( mouseoffset.getX(), mouseoffset.getY(), getWidth(), getHeight() );

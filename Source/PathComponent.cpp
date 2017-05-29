@@ -6,7 +6,7 @@ PathComponent::PathComponent() : strokeType(1.0)
     setComponentID ( "Path" );
 }
 
-PathComponent::PathComponent( Point<float> startPT ) : BaseComponent(startPT), strokeType(1.0)
+PathComponent::PathComponent( Point<float> startPT ) : BaseComponent("path", startPT), strokeType(1.0)
 {
     setComponentID ( "Path" );
 }

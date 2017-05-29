@@ -87,16 +87,19 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(Symbol* s)
     //BaseComponent *c;
     float x = 0.0;
     float y = 0.0;
-    float size = 10.0;
+    float w = 10.0;
+    float h = 10.0;
     
     int xMessagePos = s->getOSCMessagePos("/x");
     int yMessagePos = s->getOSCMessagePos("/y");
-    int sizeMessagePos = s->getOSCMessagePos("/size");
+    int wMessagePos = s->getOSCMessagePos("/w");
+    int hMessagePos = s->getOSCMessagePos("/h");
     int typeMessagePos = s->getOSCMessagePos("/type");
     
     if (xMessagePos != -1) x = s->getOSCMessageValue(xMessagePos).getFloat32();
     if (yMessagePos != -1) y = s->getOSCMessageValue(yMessagePos).getFloat32();
-    if (sizeMessagePos != -1) size = s->getOSCMessageValue(sizeMessagePos).getFloat32();
+    if (wMessagePos != -1) w = s->getOSCMessageValue(wMessagePos).getFloat32();
+    if (hMessagePos != -1) h = s->getOSCMessageValue(hMessagePos).getFloat32();
     
     
     if ( typeMessagePos == -1 ) {
@@ -109,7 +112,7 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(Symbol* s)
         
         if (typeStr.equalsIgnoreCase(String("circle"))) {
             
-            CircleComponent *c = new CircleComponent( x, y, (size * .5) );
+            CircleComponent *c = new CircleComponent( x, y, w, h );
             c->setSymbol(s);
             return c;
             
@@ -124,14 +127,16 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(Symbol* s)
 
 void SymbolistMainComponent::clearScoreView()
 {
-    scoreGUI.removeAllChildren();
+    scoreGUI.removeAllSymbolComponents();
 }
 
 void SymbolistMainComponent::setContentFromScore ()
 {
     for (int i = 0; i < score->getSize(); i++)
     {
+        //cout << "Symbol: " << i << endl;
         BaseComponent *c = makeComponentFromSymbol( score->getSymbol(i) );
+        //cout << "Component: " << c << endl;
         if ( c != NULL ) scoreGUI.addScoreChildComponent( c );
     }
 }
@@ -140,18 +145,35 @@ void SymbolistMainComponent::setContentFromScore ()
 // <= MODIFY DATA FROM VIEW
 //=================================
 
+// can be overriden / completed by class-specific messages
+int SymbolistMainComponent::addSymbolMessages( BaseComponent *c, OSCBundle *b, String base_address)
+{
+    int messages_added = 0;
+    OSCMessage typeMessage = OSCMessage(OSCAddressPattern( String(base_address) += "/type" ), c->getSymbolType());
+    OSCMessage xMessage = OSCMessage(OSCAddressPattern( String(base_address) += "/x"), static_cast<float>(c->symbol_getX()));
+    OSCMessage yMessage = OSCMessage(OSCAddressPattern( String(base_address) += "/y"), static_cast<float>(c->symbol_getY()));
+    OSCMessage wMessage = OSCMessage(OSCAddressPattern( String(base_address) += "/w"), static_cast<float>(c->getWidth()));
+    OSCMessage hMessage = OSCMessage(OSCAddressPattern( String(base_address) += "/h"), static_cast<float>(c->getHeight()));
+    b->addElement(typeMessage);
+    b->addElement(xMessage);
+    b->addElement(yMessage);
+    b->addElement(wMessage);
+    b->addElement(hMessage);
+    messages_added += 5;
+    
+    for (int i = 0; i < c->getNumSubcomponents(); i++)
+    {
+        String base = base_address << "/sub_" << String(i) ;
+        messages_added += addSymbolMessages( c->getSubcomponent(i), b, base);
+    }
+    
+    return messages_added;
+}
+
 void SymbolistMainComponent::setComponentSymbol( BaseComponent *c )
 {
     OSCBundle b;
-    OSCMessage typeMessage = OSCMessage(OSCAddressPattern("/type"), String("circle"));
-    OSCMessage sizeMessage = OSCMessage(OSCAddressPattern("/size"), static_cast<float>(c->getWidth()));
-    OSCMessage xMessage = OSCMessage(OSCAddressPattern("/x"), static_cast<float>(c->getX()));
-    OSCMessage yMessage = OSCMessage(OSCAddressPattern("/y"), static_cast<float>(c->getY()));
-    b.addElement(typeMessage);
-    b.addElement(sizeMessage);
-    b.addElement(xMessage);
-    b.addElement(yMessage);
-    
+    addSymbolMessages( c , &b , String("") );
     c->getSymbol()->setOSCBundle(b);
 }
 
@@ -186,7 +208,7 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
     if( desc            == "command + G" ) {
         scoreGUI.groupSymbols();
     } else if ( desc    == "backspace" ) {
-        scoreGUI.deleteSelectedSymbols();
+        scoreGUI.deleteSelectedSymbolComponents();
         //BaseComponent *selected_comp = scoreGUI.getNthSymbolComponent(0);
         //handleComponentRemoved( selected_comp );
     }

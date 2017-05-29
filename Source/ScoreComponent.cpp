@@ -124,12 +124,12 @@ void ScoreComponent::deleteSelectedSymbols()
 void ScoreComponent::paint (Graphics& g)
 {
     g.fillAll ( Colours::white );
-    g.setColour( Colours::black );
-    g.drawRect( getLocalBounds() );
+//    g.setColour( Colours::black );
+//    g.drawRect( getLocalBounds() );
     
     g.setFont (Font (16.0f));
     g.setColour (Colours::grey);
-    g.drawText ("shift to make new circle", getLocalBounds(), Justification::centred, true);
+    g.drawText ("shift: new line | alt: resize", getLocalBounds(), Justification::centred, true);
 }
 
 void ScoreComponent::resized ()
@@ -150,23 +150,19 @@ void ScoreComponent::findLassoItemsInArea (Array <BaseComponent*>& results, cons
         if( &lassoSelector != (LassoComponent< BaseComponent * > *)cc )
         {
             BaseComponent *c = (BaseComponent *)cc;
+            
+            // this needs to change to look for intersection with path
             if (c->getBounds().intersects (area))
+            {
                 results.add (c);
+            }
+            
         }
     }
 }
 
 SelectedItemSet<BaseComponent*> & ScoreComponent::getLassoSelection()
 {
-    // todo need to be completed
-    // printf("num selected %i\n", selected_items.getNumSelected() );
-
-    /*
-    for (auto it = selected_items.begin(); it != selected_items.end(); it++ )
-    {
-        
-    }
-    */
     return selected_items;
 }
 
@@ -183,16 +179,19 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
         
         if ( event.mods.isShiftDown() )
         {
-            CircleComponent *circle = new CircleComponent( event.position.getX(), event.position.getY() );
-            
+//            CircleComponent *circle = new CircleComponent( event.position.getX(), event.position.getY() );
+            PathComponent *obj = new PathComponent( event.position );
             // add in the view
-            addScoreChildComponent( circle );
+            addScoreChildComponent( obj );
             // add in the score
-            scoreSymbolAdded( circle );
+            scoreSymbolAdded( obj );
             
-            score_stack.emplace_back ( circle );
-            
-            
+            score_stack.emplace_back ( obj );
+            selected_items.addToSelection( obj );
+
+            edit_mode = true;
+            obj->setEditMode( true );
+            addMouseListener(obj, false);
         }
         else
         {
@@ -204,12 +203,25 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
 
 void ScoreComponent::mouseDrag ( const MouseEvent& event )
 {
-    lassoSelector.dragLasso(event);
+    if( !edit_mode )
+    {
+        lassoSelector.dragLasso(event);
+    }
+    
 }
 
 void ScoreComponent::mouseUp ( const MouseEvent& event )
 {
+    if( edit_mode )
+    {
+        removeMouseListener( score_stack.back() );
+        score_stack.back()->setEditMode( false );
+        
+        edit_mode = false;
+    }
+    
     lassoSelector.endLasso();
+    
 }
 
 

@@ -5,10 +5,17 @@
 
 #include "ScoreData.h"
 
+template <typename T>
+void printRect( Rectangle<T> rect, String name = "rect" )
+{
+    std::cout << name << " " << rect.getX() << " " << rect.getY() << " " << rect.getWidth() << " " << rect.getHeight() << "\n";
+}
+
 class BaseComponent : public Component
 {
 public:
     BaseComponent();
+    BaseComponent( Point<float> startPt );
     ~BaseComponent();
     
     void select();
@@ -22,6 +29,8 @@ public:
     void mouseMove( const MouseEvent& event ) override;
     void mouseDown( const MouseEvent& event ) override;
     void mouseDrag( const MouseEvent& event ) override;
+    void mouseUp( const MouseEvent& event ) override;
+
     void mouseExit( const MouseEvent& event ) override;
     void mouseDoubleClick( const MouseEvent& event ) override;
     
@@ -34,14 +43,19 @@ public:
     virtual void symbol_mouseMove( const MouseEvent& event ){}
     virtual void symbol_mouseDown( const MouseEvent& event ){}
     virtual void symbol_mouseDrag( const MouseEvent& event ){}
+    virtual void symbol_mouseUp( const MouseEvent& event ){}
     virtual void symbol_mouseExit( const MouseEvent& event ){}
     virtual void symbol_mouseDoubleClick( const MouseEvent& event ){}
-
 
     inline void attachScoreView(Component *c){ score_view = c; };
     inline Component *getScoreView(){ return score_view; };
     inline void setSymbol(Symbol *s){ score_symbol = s; };
     inline Symbol* getSymbol(){ return score_symbol; };
+    
+    inline void setSymbolStrokeWeight( float s ){ strokeWeight = s; }
+    inline void setSymbolColor( Colour c ){ sym_color = c; }
+    
+    inline void setEditMode( bool e ){ is_being_edited = e; }
     
 protected:
     // parameters
@@ -66,13 +80,18 @@ protected:
     /*
      
      to do: setup selection system:
-        if selected and in the score context, then create handles for resizing (if it makes sense for the mode)
+        if selected and in the score context, 
+        if clicked after selected (? or if it's the only selection) 
+            then create handles for resizing (if it makes sense for the mode)
         if selected and in the palette context, highlight and set type for drawing
      
      */
+
+    bool        is_being_edited = true;
+    bool        is_selected = false;
     
 private:
-    bool        is_selected = false;
+
     Component   *score_view;
     Symbol      *score_symbol;
     

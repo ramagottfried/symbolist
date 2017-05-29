@@ -60,6 +60,8 @@ public:
     BaseComponent *getNthSymbolComponent (int n ) { return score_stack[n]; }
     
 private:
+    bool                                edit_mode = false;
+    
     Point<float>                        m_down;
     
     std::vector< BaseComponent * >      score_stack;

@@ -18,17 +18,25 @@ PaletteComponent::~PaletteComponent(){}
 
 void PaletteComponent::addSymbolButton(BaseComponent *c)
 {
-    m_palette.add(c);
+    m_palette_symbol.add(c);
     addAndMakeVisible(c);
     addMouseListener(this, true);
 }
 
 void PaletteComponent::paint (Graphics& g)
 {
-    g.fillAll ( Colours::grey );
-    
+    g.fillAll ( Colours::white );
     g.setColour( Colours::black );
-    g.drawRect( getLocalBounds().toFloat().reduced( 1 ) );
+    
+    Path p, _p;
+    PathStrokeType strokeType(0.5);
+    float dashes[] = {1.0, 2.0};
+    
+    p.startNewSubPath( getWidth(), 0 );
+    p.lineTo(getWidth(), getHeight() );
+    
+    strokeType.createDashedStroke(p, p, dashes, 2 );
+    g.strokePath(p, strokeType );
     
 }
 
@@ -37,7 +45,7 @@ void PaletteComponent::resized ()
     Rectangle<int> pallete_bounds = getBoundsInParent();
 //    printf("%i %i %i %i\n", pallete_bounds.getX(), pallete_bounds.getY(), pallete_bounds.getWidth(), pallete_bounds.getHeight() );
 
-    for(BaseComponent* c : m_palette )
+    for(BaseComponent* c : m_palette_symbol )
     {
         c->setBounds( pallete_bounds.getX(), pallete_bounds.getY(), pallete_bounds.getWidth(), 20) ;
     }

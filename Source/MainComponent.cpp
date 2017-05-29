@@ -31,7 +31,8 @@ void SymbolistMainComponent::paint (Graphics& g)
 
 void SymbolistMainComponent::resized()
 {
-    scoreGUI.setBounds( 50, 50, getWidth()-100, getHeight()-100 );
+//    scoreGUI.setBounds( 50, 50, getWidth()-100, getHeight()-100 );
+    scoreGUI.setBounds( 50, 0, getWidth(), getHeight() );
     palette.setBounds( 0, 0, 50, getHeight() );
     
     printf("main resized\n");

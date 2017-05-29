@@ -34,7 +34,8 @@ public:
     
     
 private:
-    OwnedArray<BaseComponent>   m_palette;
+    OwnedArray<BaseComponent>   m_palette_symbol;
+    OwnedArray<Component>       m_palette_box;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PaletteComponent)
 

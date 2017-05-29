@@ -6,6 +6,7 @@ class CircleComponent : public BaseComponent
 {
 public:
     CircleComponent();
+    CircleComponent( Point<float> startPT );
     CircleComponent( float x, float y, float radius = 10, float stroke = 2, Colour color = Colours::black );
     
     ~CircleComponent()
@@ -18,12 +19,23 @@ public:
     void symbol_resized () override {}
     
     void symbol_mouseEnter( const MouseEvent& event ) override {}
-    void symbol_mouseMove( const MouseEvent& event ) override {}
+    void symbol_mouseMove( const MouseEvent& event ) override
+    {
+    }
+    
+    
     void symbol_mouseDown( const MouseEvent& event ) override {}
-    void symbol_mouseDrag( const MouseEvent& event ) override {}
+    void symbol_mouseDrag( const MouseEvent& event ) override
+    {
+    }
+    
     void symbol_mouseExit( const MouseEvent& event ) override {}
     void symbol_mouseDoubleClick( const MouseEvent& event ) override {}
     
+    void symbol_mouseEdit( const MouseEvent& event )
+    {
+        
+    }
     
 private:
     // no local variables here

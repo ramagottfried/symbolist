@@ -7,6 +7,11 @@ CircleComponent::CircleComponent()
     // should this constructor exist?
 }
 
+CircleComponent::CircleComponent( Point<float> startPT ) : BaseComponent(startPT)
+{
+    setComponentID ( "Circle" );    
+}
+
 CircleComponent::CircleComponent( float x, float y, float radius, float stroke, Colour color )
 {
     setComponentID ( "Circle" );

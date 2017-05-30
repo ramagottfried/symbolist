@@ -72,7 +72,7 @@ void BaseComponent::mouseEnter( const MouseEvent& event )
 
 void BaseComponent::mouseMove( const MouseEvent& event )
 {
-    resizableBorder->setVisible( is_selected && !is_being_edited && event.mods.isAltDown() );
+    resizableBorder->setVisible( is_selected && !is_being_edited );
 
     symbol_mouseMove(event);
 }
@@ -115,7 +115,7 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
 
 void BaseComponent::mouseExit( const MouseEvent& event )
 {
-    resizableBorder->setVisible( is_selected && !is_being_edited && event.mods.isAltDown() );
+    resizableBorder->setVisible( is_selected && !is_being_edited  );
 
     symbol_mouseExit(event);
 }

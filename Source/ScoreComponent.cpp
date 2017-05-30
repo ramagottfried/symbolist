@@ -172,13 +172,13 @@ void ScoreComponent::paint (Graphics& g)
     switch (mouse_mode)
     {
         case edit:
-            msg = "[E] select to edit objects, [P] path, [C] circle";
+            msg = "[e] select to edit objects, [p] path, [c] circle";
             break;
         case path:
-            msg = "[P] click and drag to draw path, [E] edit, [C] circle";
+            msg = "[p] click and drag to draw path, [e] edit, [c] circle";
             break;
         case circle:
-            msg = "[C] click to draw circle, [P] path, [E] edit";
+            msg = "[c] click to draw circle, [p] path, [e] edit";
             break;
     }
     g.drawText (msg, getLocalBounds(), Justification::bottom, false);

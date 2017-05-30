@@ -208,11 +208,11 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
         scoreGUI.groupSymbols();
     } else if ( desc    == "backspace" ) {
         scoreGUI.deleteSelectedSymbolComponents();
-    } else if ( desc    == "shift + C") {
+    } else if ( desc    == "C") {
         scoreGUI.setMouseMode( scoreGUI.UI_MouseMode::circle );
-    } else if ( desc    == "shift + E") {
+    } else if ( desc    == "E") {
         scoreGUI.setMouseMode( scoreGUI.UI_MouseMode::edit );
-    } else if ( desc    == "shift + P") {
+    } else if ( desc    == "P") {
         scoreGUI.setMouseMode( scoreGUI.UI_MouseMode::path );
     }
     

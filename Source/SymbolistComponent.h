@@ -30,7 +30,7 @@ public:
     
     virtual SymbolistComponent* getMainComponent();
     
-    UI_EditMode getMainEditMode();
+    UI_EditType getMainEditMode();
 };
 
 #endif /* SymbolistComponent_hpp */

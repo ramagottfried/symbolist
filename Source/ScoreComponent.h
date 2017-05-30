@@ -54,7 +54,7 @@ public:
     void addScoreChildComponent( BaseComponent* c );
     
     inline Point<float> getScoreMouseDown(){ return m_down; }
-    void setEditMode( UI_EditMode m );
+    void setEditMode( UI_EditType m );
     
     // selection
     void findLassoItemsInArea (Array < BaseComponent *>& results, const Rectangle<int>& area) override;
@@ -72,7 +72,7 @@ public:
     
     
 private:
-    bool                                currently_editing = false;
+    bool                                draw_mode = false;
     
     Point<float>                        m_down;
     

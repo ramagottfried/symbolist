@@ -130,8 +130,9 @@ void ScoreComponent::groupSymbols()
 
             group->addAndMakeVisible( *it );
             group->addSubcomponent( *it );
-            // DOES THIS REMOVES THE COMPONENT FROM ITS ORIGINAL CONTAINER ??
-            
+            // j: DOES THIS REMOVES THE COMPONENT FROM ITS ORIGINAL CONTAINER ??
+            // r: no I don't think so, the memory is still in the score_stack
+
             (*it)->setBounds(   compBounds.getX() - groupBounds.getX(),
                                 compBounds.getY() - groupBounds.getY(),
                                 compBounds.getWidth(), compBounds.getHeight() );
@@ -158,16 +159,17 @@ void ScoreComponent::paint (Graphics& g)
     g.setColour (Colours::grey);
     
     String msg = "";
+    
     switch ( getMainEditMode() )
     {
         case edit:
-            msg = "[e] select to edit objects, [p] path, [c] circle";
+            msg = "select/transform mode";
             break;
         case path:
-            msg = "[p] click and drag to draw path, [e] edit, [c] circle";
+            msg = "path mode";
             break;
         case circle:
-            msg = "[c] click to draw circle, [p] path, [e] edit";
+            msg = "circle mode";
             break;
     }
     g.drawText (msg, getLocalBounds(), Justification::bottom, false);
@@ -212,9 +214,9 @@ SelectedItemSet<BaseComponent*> & ScoreComponent::getLassoSelection()
 void ScoreComponent::mouseDown ( const MouseEvent& event )
 {
     
-    UI_EditMode ed = getMainEditMode();
+    UI_EditType ed = getMainEditMode();
     
-    if( ed == edit)
+    if( ed == edit )
     {
 
         if (event.eventComponent != this )
@@ -234,7 +236,7 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
         // add in the score
         scoreSymbolAdded( obj );
         
-        currently_editing = true;
+        draw_mode = true;
         obj->setEditMode( true );
         addMouseListener(obj, false);
     }
@@ -246,7 +248,7 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
         // add in the score
         scoreSymbolAdded( obj );
         
-        currently_editing = true;
+        draw_mode = true;
         obj->setEditMode( true );
         addMouseListener(obj, false);
     }
@@ -255,8 +257,7 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
 
 void ScoreComponent::mouseDrag ( const MouseEvent& event )
 {
-    UI_EditMode ed = getMainEditMode();
-    if( ed == edit )
+    if( getMainEditMode() == edit )
     {
         lassoSelector.dragLasso(event);
     }
@@ -265,15 +266,14 @@ void ScoreComponent::mouseDrag ( const MouseEvent& event )
 
 void ScoreComponent::mouseUp ( const MouseEvent& event )
 {
-    UI_EditMode ed = getMainEditMode();
-    if( ed == edit  )
+//    if( !event.mods.isCommandDown()  )
     {
-        if( currently_editing && score_stack.back() )
+        if( score_stack.size() > 0 )
         {
             removeMouseListener( score_stack.back() );
             score_stack.back()->setEditMode( false );
         }
-        currently_editing = false;
+        draw_mode = false;
     }
     
     lassoSelector.endLasso();

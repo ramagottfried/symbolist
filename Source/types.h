@@ -31,7 +31,7 @@ typedef void (*symbolistCloseCallback)( void * win);
 typedef void (*symbolistUpdateCallback)( void * win, int n );
 
 
-enum UI_EditMode
+enum UI_EditType
 {
     edit,
     path,

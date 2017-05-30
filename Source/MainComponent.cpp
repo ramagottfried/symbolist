@@ -29,32 +29,42 @@ void SymbolistMainComponent::resized()
 
 bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
 {
-    //    std::cout << "key " << key.getTextDescription() << "\n";
+    std::cout << "key " << key.getTextDescription() << "\n";
     String desc = key.getTextDescription();
     if( desc            == "command + G" ) {
         scoreGUI.groupSymbols();
     } else if ( desc    == "backspace" ) {
         scoreGUI.deleteSelectedSymbolComponents();
     } else if ( desc    == "C") {
-        setEditMode( UI_EditMode::circle );
-    } else if ( desc    == "E") {
-        setEditMode( UI_EditMode::edit );
+        draw_type = UI_EditType::circle;
     } else if ( desc    == "P") {
-        setEditMode( UI_EditMode::path );
+        draw_type = UI_EditType::path;
     }
     
     return false;
 }
 
+void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
+{
+    if ( !modifiers.isCommandDown() )
+    {
+        setEditMode( UI_EditType::edit );
+    }
+    else if( mouse_mode != draw_type)
+    {
+       setEditMode( draw_type );
+    }
+}
 
-void SymbolistMainComponent::setEditMode( UI_EditMode m )
+
+void SymbolistMainComponent::setEditMode( UI_EditType m )
 {
     mouse_mode = m;
     //std::cout<< mouse_mode << std::endl;
     scoreGUI.repaint();
 }
 
-UI_EditMode SymbolistMainComponent::getEditMode()
+UI_EditType SymbolistMainComponent::getEditMode()
 {
     return mouse_mode ;
 }

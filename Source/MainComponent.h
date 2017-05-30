@@ -60,9 +60,10 @@ public:
     //void paint (Graphics&) override;
     void resized() override;
     bool keyPressed (const KeyPress& key, Component* originatingComponent) override;
+    void modifierKeysChanged (const ModifierKeys& modifiers) override;
 
-    void setEditMode( UI_EditMode m );
-    UI_EditMode getEditMode();
+    void setEditMode( UI_EditType m );
+    UI_EditType getEditMode();
 
     // Redefine these from SymbolistComponent
     inline SymbolistComponent* getScoreComponent() override { return &scoreGUI; }
@@ -83,7 +84,8 @@ private:
     //DrawableButton *dbutton = NULL;
     //PaletteComponent palette{this};
     PaletteComponent palette; // << this should be dynamically expandable
-    UI_EditMode     mouse_mode = edit;
+    UI_EditType     mouse_mode = edit;
+    UI_EditType     draw_type = circle;
 
     // callbacks to the host environment
     symbolistUpdateCallback myUpdateCallback = NULL;

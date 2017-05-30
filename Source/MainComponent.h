@@ -3,10 +3,11 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-#include "ScoreData.h"
+#include "Score.h"
+#include "Symbol.h"
 #include "ScoreComponent.h"
 #include "PaletteComponent.h"
-
+#
 
 /*
  * SymbolistMainComponent is the main controller of the application
@@ -14,31 +15,34 @@
  * It is also the node and pointyer for interaction with the library
  */
 
-class SymbolistMainComponent : public Component, public KeyListener
+class SymbolistMainComponent : public SymbolistComponent, public KeyListener
 {
 public:
     
     SymbolistMainComponent();
-    ~SymbolistMainComponent();
+    ~SymbolistMainComponent(){}
 
-    inline Score* getScore() { return score; }
-
-    // CONTROLLER METHODS
-    static SymbolistMainComponent* createWindow();
-    void closeWindow();
-    void windowToFront();
-    void windowSetName(String name);
+    /*********************************************
+     * CONTROLLER METHODS CALLED FROM THE LIB API
+     *********************************************/
+    static SymbolistMainComponent* symbolistAPI_createWindow();
+    void symbolistAPI_closeWindow();
+    void symbolistAPI_windowToFront();
+    void symbolistAPI_windowSetName(String name);
+    void symbolistAPI_registerUpdateCallback(symbolistUpdateCallback c);
+    void symbolistAPI_registerCloseCallback(symbolistCloseCallback c);
+    int symbolistAPI_getNumSymbols();
+    odot_bundle* symbolistAPI_getSymbol(int n);
+    void symbolistAPI_setSymbols(int n, odot_bundle **bundle_array);
     
     
-    // set the contents of scoreGUI from score
-    void setContentFromScore() ;
-    void clearScoreView();
     
-    void registerUpdateCallback(symbolistUpdateCallback c);
-    void registerCloseCallback(symbolistCloseCallback c);
+    /*********************************************
+     * CONTROLLER METHODS CALLED FROM THE GUI
+     *********************************************/
+    
     void executeUpdateCallback(int arg);
     void executeCloseCallback();
-    
     
     // create a Symbol from c and add it to parent Windows's score
     void handleComponentAdded ( BaseComponent* c ) ;
@@ -48,36 +52,51 @@ public:
     void handleComponentModified ( BaseComponent* c ) ;
     
     
+    /*********************************************
+     * STANDARD GUI FUNCTIONALITY AND TOOLS
+     *********************************************/
     
-    // NORMAL COMPOENENT METHODS
-    void paint (Graphics&) override;
+    // Redefinition of methods from Juce::Component
+    //void paint (Graphics&) override;
     void resized() override;
-
-    
     bool keyPressed (const KeyPress& key, Component* originatingComponent) override;
+
+    void setEditMode( UI_EditMode m );
+    UI_EditMode getEditMode();
+
+    // Redefine these from SymbolistComponent
+    inline SymbolistComponent* getScoreComponent() override { return &scoreGUI; }
+    inline SymbolistComponent* getMainComponent() override { return this; }
 
     
 private:
     
-    Score *score;
-    ScoreComponent scoreGUI;
-    
-    Component* getWindow(); // will require static cast
-    
-    static BaseComponent* makeComponentFromSymbol(Symbol* s);
-    static void setComponentSymbol(BaseComponent* c);
-    static int addSymbolMessages( BaseComponent *c, OSCBundle *b, String base_address );
-    //static int addSymbolMessages( CircleComponent *c, OSCBundle b, String base_address );
-    
-    symbolistUpdateCallback myUpdateCallback = NULL;
-    symbolistCloseCallback myCloseCallback = NULL;
+    // the score data (model)
+    //std::unique_ptr<Score> score ;
+    //inline Score* getScore() { return score.get(); }
+    Score score ;
+    inline Score* getScore() { return &score; }
 
+    // the score view
+    ScoreComponent scoreGUI;
     
     //DrawableButton *dbutton = NULL;
     //PaletteComponent palette{this};
-    
     PaletteComponent palette; // << this should be dynamically expandable
+    UI_EditMode     mouse_mode = edit;
 
+    // callbacks to the host environment
+    symbolistUpdateCallback myUpdateCallback = NULL;
+    symbolistCloseCallback myCloseCallback = NULL;
+
+    // static methos to generate components from symbols / update symbols from componants
+    //static std::unique_ptr<BaseComponent>
+    static BaseComponent* makeComponentFromSymbol(Symbol *s);
+    static void updateComponentSymbol(BaseComponent* c);
+    static int addSymbolMessages( BaseComponent *c, OSCBundle *b, String base_address );
+    
+    
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainComponent)
 };

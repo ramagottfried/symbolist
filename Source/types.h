@@ -11,22 +11,32 @@
 
 #include <vector>
 
+// the interchange structure used for OSC bundles
+// compatible with odot 'bundle_s' struct
 struct odot_bundle
 {
     long len;
     char* data;
 };
 
+// a rectangle
 struct t_rect
 {
     std::vector<float> pos;
     float w, h;
 };
 
-
+// type for callbacks to the host environment
 typedef void (*symbolistCloseCallback)( void * win);
 typedef void (*symbolistUpdateCallback)( void * win, int n );
 
+
+enum UI_EditMode
+{
+    edit,
+    path,
+    circle
+};
 
 #endif
 

@@ -29,7 +29,7 @@ void BaseComponent::deselect()
 
 void BaseComponent::moved ()
 {
-    ScoreComponent* sc = static_cast<ScoreComponent*>( getTPLScoreComponent() );
+    ScoreComponent* sc = static_cast<ScoreComponent*>( getScoreComponent() );
     // sc can be null if the symbol is moved when not yet on screen
     // best would be to call this from the moving action
     if (sc != NULL) { sc->scoreSymbolModified( this ); }
@@ -39,7 +39,7 @@ void BaseComponent::moved ()
 
 void BaseComponent::resized ()
 {
-    ScoreComponent* sc = static_cast<ScoreComponent*>( getTPLScoreComponent() );
+    ScoreComponent* sc = static_cast<ScoreComponent*>( getScoreComponent() );
     if (sc != NULL) { sc->scoreSymbolModified( this ); }
     
     symbol_resized();

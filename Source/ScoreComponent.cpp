@@ -1,5 +1,5 @@
 #include "ScoreComponent.h"
-#include "MainWindow.h"
+#include "MainComponent.h"
 
 ScoreComponent::ScoreComponent()
 {
@@ -23,12 +23,6 @@ ScoreComponent::~ScoreComponent()
         removeChildComponent(score_stack[i]);
         delete score_stack[i];
     }
-    
-}
-
-SymbolistComponent* ScoreComponent::getTPLScoreComponent()
-{
-    return this ;
 }
 
 
@@ -37,7 +31,7 @@ void ScoreComponent::removeAllSymbolComponents()
     for ( int i = 0; i < score_stack.size(); i++ )
     {
         removeChildComponent(score_stack[i]);
-
+        delete score_stack[i];
     }
     score_stack.clear();
 }
@@ -47,7 +41,7 @@ void ScoreComponent::deleteSelectedSymbolComponents()
     for( BaseComponent *c : selected_items )
     {
         removeChildComponent(c);
-        
+
         auto rem = std::remove(score_stack.begin(),
                                score_stack.end(),
                                c );
@@ -85,9 +79,7 @@ void ScoreComponent::scoreSymbolModified ( BaseComponent* c )
 
     }
 }
-
-
-
+    
 void ScoreComponent::addScoreChildComponent( BaseComponent *c )
 {
     c->attachScoreView ( this );
@@ -97,10 +89,7 @@ void ScoreComponent::addScoreChildComponent( BaseComponent *c )
     score_stack.emplace_back ( c );
 //    selected_items.addToSelection( c );
     
-    c->setEditMode( true );
-    addMouseListener(c, false);
 
-    
     // selected_items.addChangeListener(c);
 }
 
@@ -169,7 +158,7 @@ void ScoreComponent::paint (Graphics& g)
     g.setColour (Colours::grey);
     
     String msg = "";
-    switch (mouse_mode)
+    switch ( getMainEditMode() )
     {
         case edit:
             msg = "[e] select to edit objects, [p] path, [c] circle";
@@ -223,7 +212,9 @@ SelectedItemSet<BaseComponent*> & ScoreComponent::getLassoSelection()
 void ScoreComponent::mouseDown ( const MouseEvent& event )
 {
     
-    if( mouse_mode == edit)
+    UI_EditMode ed = getMainEditMode();
+    
+    if( ed == edit)
     {
 
         if (event.eventComponent != this )
@@ -235,7 +226,7 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
             lassoSelector.beginLasso( event, this );
         }
     }
-    else if (mouse_mode == circle )
+    else if ( ed == circle )
     {
         CircleComponent *obj = new CircleComponent( event.position.getX(), event.position.getY() );
         // add in the view
@@ -244,8 +235,10 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
         scoreSymbolAdded( obj );
         
         currently_editing = true;
+        obj->setEditMode( true );
+        addMouseListener(obj, false);
     }
-    else if (mouse_mode == path )
+    else if ( ed == path )
     {
         PathComponent *obj = new PathComponent( event.position );
         // add in the view
@@ -254,13 +247,16 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
         scoreSymbolAdded( obj );
         
         currently_editing = true;
+        obj->setEditMode( true );
+        addMouseListener(obj, false);
     }
     
 }
 
 void ScoreComponent::mouseDrag ( const MouseEvent& event )
 {
-    if( mouse_mode == edit )
+    UI_EditMode ed = getMainEditMode();
+    if( ed == edit )
     {
         lassoSelector.dragLasso(event);
     }
@@ -269,7 +265,8 @@ void ScoreComponent::mouseDrag ( const MouseEvent& event )
 
 void ScoreComponent::mouseUp ( const MouseEvent& event )
 {
-    if( mouse_mode == edit  )
+    UI_EditMode ed = getMainEditMode();
+    if( ed == edit  )
     {
         if( currently_editing && score_stack.back() )
         {

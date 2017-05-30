@@ -16,7 +16,6 @@
            `((:macosx ,libpath)
              (:windows ,(om-fi::om-foreign-library-pathname "symbolist.dll"))
              (t (:default "symbolist")))))
-    (symbolist::symbolistInit)
     (print (symbolist::symbolistInfo))
     ))
 

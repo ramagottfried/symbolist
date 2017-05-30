@@ -19,6 +19,7 @@ PathComponent::~PathComponent()
 
 void PathComponent::printPath( Path p )
 {
+ 
     Path::Iterator it(p);
     int count = 0;
     while( it.next() )

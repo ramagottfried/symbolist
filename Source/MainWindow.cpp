@@ -10,15 +10,13 @@ SymbolistMainWindow::SymbolistMainWindow () : DocumentWindow ( "symbolist",
                                                                 Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId),
                                                                 DocumentWindow::allButtons)
 {
-    main_component = new SymbolistMainComponent();
+    // default stuff copied from Juce
     setUsingNativeTitleBar (true);
-    setContentOwned (main_component , true );
+    setContentOwned (&main_component , true );
     centreWithSize (getWidth(), getHeight());
     setVisible (true);
     setResizable(true, true);
 }
-
-SymbolistMainWindow::~SymbolistMainWindow() {}
 
 
 /***********************************
@@ -27,7 +25,7 @@ SymbolistMainWindow::~SymbolistMainWindow() {}
 
 void SymbolistEditorWindow::closeButtonPressed()
 {
-    main_component->executeCloseCallback();
+    main_component.executeCloseCallback();
     delete this;
 }
 

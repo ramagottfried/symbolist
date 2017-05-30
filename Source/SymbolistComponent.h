@@ -6,29 +6,31 @@
 //
 //
 
-#ifndef SymbolistComponent_hpp
-#define SymbolistComponent_hpp
+#ifndef SymbolistComponent_h
+#define SymbolistComponent_h
 
+#include "../JuceLibraryCode/JuceHeader.h"
+#include "types.h"
 
 class SymbolistComponent : public Component
 {
 public:
-    virtual SymbolistComponent* getTPLScoreComponent() {
+    
+    virtual SymbolistComponent* getScoreComponent();
+     /*
+      virtual SymbolistComponent* getScoreComponent() {
         auto p = static_cast<SymbolistComponent*>( getParentComponent() );
         if (p == NULL) {
             return p;
         }
-        else return p->getTPLScoreComponent();
+        else return p->getScoreComponent();
         
     }
-
-    enum UI_MouseMode
-    {
-        edit,
-        path,
-        circle
-    };
+      */
     
+    virtual SymbolistComponent* getMainComponent();
+    
+    UI_EditMode getMainEditMode();
 };
 
 #endif /* SymbolistComponent_hpp */

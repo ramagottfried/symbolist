@@ -2,11 +2,8 @@
 
 (in-package :symbolist)
 
-(cffi:defcfun ("symbolistInit" symbolistInit) :int)
-(cffi:defcfun ("symbolistExit" symbolistExit) :int)
 (cffi:defcfun ("symbolistInfo" symbolistInfo) :string)
 (cffi:defcfun ("symbolistNewWindow" symbolistNewWindow) :pointer)
-;;(cffi:defcfun ("symbolistNewWindowWithSymbols" symbolistNewWindowWithSymbols) :pointer (n-symbols :int) (bundle-array :pointer))
 (cffi:defcfun ("symbolistCloseWindow" symbolistCloseWindow) :void (s-comp :pointer))
 (cffi:defcfun ("symbolistWindowToFront" symbolistWindowToFront) :void (s-comp :pointer))
 (cffi:defcfun ("symbolistWindowSetName" symbolistWindowSetName) :void (s-comp :pointer) (name :string))

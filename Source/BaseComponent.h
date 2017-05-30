@@ -3,7 +3,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-#include "ScoreData.h"
+#include "Symbol.h"
 #include "SymbolistComponent.h"
 
 template <typename T>
@@ -82,7 +82,7 @@ protected:
     Colour          current_color = Colours::black;
 
     ScopedPointer<ResizableBorderComponent> resizableBorder;
-    vector<BaseComponent*> subcomponents;
+    std::vector<BaseComponent*> subcomponents;
     
     
     int             resize_mode = 0; // 0 = scale symbol to bounds, 1 = scale spacing (not resizing)

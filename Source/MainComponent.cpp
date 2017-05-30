@@ -1,11 +1,12 @@
 
 #include "MainComponent.h"
 #include "MainWindow.h"
+#include "ScoreComponent.h"
 
 
 SymbolistMainComponent::SymbolistMainComponent()
 {
-    score = new Score();
+    // score = std::unique_ptr<Score>(new Score());
     
     setComponentID("MainComponent");
     setSize (600, 400);
@@ -16,52 +17,115 @@ SymbolistMainComponent::SymbolistMainComponent()
     setWantsKeyboardFocus(true);
     addKeyListener(this);
     palette.addKeyListener(this);
-    
 }
 
-SymbolistMainComponent::~SymbolistMainComponent()
-{
-    delete score;
-}
-
-
-void SymbolistMainComponent::paint (Graphics& g)
-{
-    g.fillAll ( Colours::white );
-}
 
 void SymbolistMainComponent::resized()
 {
-//    scoreGUI.setBounds( 50, 50, getWidth()-100, getHeight()-100 );
     scoreGUI.setBounds( 50, 0, getWidth(), getHeight() );
     palette.setBounds( 0, 0, 50, getHeight() );
+    // printf("main resized\n");
+}
+
+bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
+{
+    //    std::cout << "key " << key.getTextDescription() << "\n";
+    String desc = key.getTextDescription();
+    if( desc            == "command + G" ) {
+        scoreGUI.groupSymbols();
+    } else if ( desc    == "backspace" ) {
+        scoreGUI.deleteSelectedSymbolComponents();
+    } else if ( desc    == "C") {
+        setEditMode( UI_EditMode::circle );
+    } else if ( desc    == "E") {
+        setEditMode( UI_EditMode::edit );
+    } else if ( desc    == "P") {
+        setEditMode( UI_EditMode::path );
+    }
     
-    printf("main resized\n");
+    return false;
 }
 
 
+void SymbolistMainComponent::setEditMode( UI_EditMode m )
+{
+    mouse_mode = m;
+    //std::cout<< mouse_mode << std::endl;
+    scoreGUI.repaint();
+}
 
-// CONTROLLER METHODS
+UI_EditMode SymbolistMainComponent::getEditMode()
+{
+    return mouse_mode ;
+}
 
-SymbolistMainComponent* SymbolistMainComponent::createWindow()
+
+/*********************************************
+ * CONTROLLER METHODS CALLED FROM THE LIB API
+ *********************************************/
+
+// This is a static method called to create a window
+// return the new SymbolistMainComponent within this window
+SymbolistMainComponent* SymbolistMainComponent::symbolistAPI_createWindow()
 {
     SymbolistEditorWindow *w = new SymbolistEditorWindow ();
     return w->getSymbolistMainComponent();
 }
 
-Component* SymbolistMainComponent::getWindow () { return getParentComponent(); }
-void SymbolistMainComponent::windowToFront() { getWindow()->toFront(true); }
-void SymbolistMainComponent::windowSetName(String name) { getWindow()->setName(name); }
-
-void SymbolistMainComponent::registerUpdateCallback(symbolistUpdateCallback c) { myUpdateCallback = c; }
-void SymbolistMainComponent::registerCloseCallback(symbolistCloseCallback c) { myCloseCallback = c; }
-
-void SymbolistMainComponent::closeWindow()
+void SymbolistMainComponent::symbolistAPI_closeWindow()
 {
-    delete getWindow();
+    delete this->getTopLevelComponent(); // = the window
     delete this;
 }
 
+void SymbolistMainComponent::symbolistAPI_windowToFront()
+{
+    getTopLevelComponent()->toFront(true);
+}
+
+void SymbolistMainComponent::symbolistAPI_windowSetName(String name)
+{
+    getTopLevelComponent()->setName(name);
+}
+
+void SymbolistMainComponent::symbolistAPI_registerUpdateCallback(symbolistUpdateCallback c)
+{
+    myUpdateCallback = c;
+}
+
+void SymbolistMainComponent::symbolistAPI_registerCloseCallback(symbolistCloseCallback c)
+{
+    myCloseCallback = c;
+}
+
+int SymbolistMainComponent::symbolistAPI_getNumSymbols()
+{
+    return static_cast<int>( getScore()->getSize() );
+}
+
+odot_bundle* SymbolistMainComponent::symbolistAPI_getSymbol(int n)
+{
+    return getScore()->getSymbol(n)->exportToOSC();
+}
+
+void SymbolistMainComponent::symbolistAPI_setSymbols(int n, odot_bundle **bundle_array)
+{
+    
+    // Will lock the MainLoop until out of scope..
+    const MessageManagerLock mmLock;
+    
+    // clear the view
+    scoreGUI.removeAllSymbolComponents();
+    // update score
+    getScore()->importScoreFromOSC(n, bundle_array);
+    // recreate and add components from score symbols
+    for (int i = 0; i < score.getSize(); i++)
+    {
+        scoreGUI.addScoreChildComponent( makeComponentFromSymbol( score.getSymbol(i) ) ) ; //.get() );
+    }
+}
+
+// these two methods shall be called from symbolist to notify the host environment
 void SymbolistMainComponent::executeCloseCallback()
 {
     if (myCloseCallback) { myCloseCallback( this ); }
@@ -74,6 +138,7 @@ void SymbolistMainComponent::executeUpdateCallback(int arg)
 
 
 
+
 //=================================
 // INTERFACE DATA<=>VIEW
 //=================================
@@ -83,9 +148,10 @@ void SymbolistMainComponent::executeUpdateCallback(int arg)
 //=================================
 
 
-BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(Symbol* s)
+//std::unique_ptr<BaseComponent>
+BaseComponent*
+SymbolistMainComponent::makeComponentFromSymbol(Symbol* s)
 {
-    //BaseComponent *c;
     float x = 0.0;
     float y = 0.0;
     float w = 10.0;
@@ -110,37 +176,22 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(Symbol* s)
     } else {
         
         String typeStr = s->getOSCMessageValue(typeMessagePos).getString();
-        
+        BaseComponent *c;
+
         if (typeStr.equalsIgnoreCase(String("circle"))) {
-            
-            CircleComponent *c = new CircleComponent( x, y, w, h );
-            c->setSymbol(s);
-            return c;
-            
+            c = new CircleComponent( x, y, w, h );
+        } else if (typeStr.equalsIgnoreCase(String("path"))) {
+            c = new PathComponent( Point<float>(x, y) );
         } else {
-            
-            return NULL;
-            
+            c = new BaseComponent(typeStr, Point<float>(x, y) );
         }
+        
+        c->setSymbol(s);
+        //return std::unique_ptr<BaseComponent>(c);
+        return c;
     }
 }
 
-
-void SymbolistMainComponent::clearScoreView()
-{
-    scoreGUI.removeAllSymbolComponents();
-}
-
-void SymbolistMainComponent::setContentFromScore ()
-{
-    for (int i = 0; i < score->getSize(); i++)
-    {
-        //cout << "Symbol: " << i << endl;
-        BaseComponent *c = makeComponentFromSymbol( score->getSymbol(i) );
-        //cout << "Component: " << c << endl;
-        if ( c != NULL ) scoreGUI.addScoreChildComponent( c );
-    }
-}
 
 //=================================
 // <= MODIFY DATA FROM VIEW
@@ -171,53 +222,40 @@ int SymbolistMainComponent::addSymbolMessages( BaseComponent *c, OSCBundle *b, S
     return messages_added;
 }
 
-void SymbolistMainComponent::setComponentSymbol( BaseComponent *c )
+void SymbolistMainComponent::updateComponentSymbol( BaseComponent *c )
 {
     OSCBundle b;
     addSymbolMessages( c , &b , String("") );
     c->getSymbol()->setOSCBundle(b);
 }
 
+/********************************
+ * CALLBACKS FROM USER ACTIONS
+ ********************************/
+
 void SymbolistMainComponent::handleComponentAdded ( BaseComponent* c )
 {
     Symbol *s = new Symbol();
     c->setSymbol( s );
-    setComponentSymbol( c );
-    score->addSymbol( s );
+    updateComponentSymbol( c );
+    score.addSymbol( s );
     executeUpdateCallback( -1 );
 }
 
 void SymbolistMainComponent::handleComponentRemoved ( BaseComponent* c )
 {
-    score->removeSymbol( c->getSymbol() );
+    score.removeSymbol( c->getSymbol() );
     executeUpdateCallback( -1 );
 }
 
 void SymbolistMainComponent::handleComponentModified ( BaseComponent* c )
 {
-    setComponentSymbol( c );
-    executeUpdateCallback( score->getSymbolPosition( c->getSymbol() ) );
+    updateComponentSymbol( c );
+    executeUpdateCallback( score.getSymbolPosition( c->getSymbol() ) );
 }
 
 
-bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
-{
-//    std::cout << "key " << key.getTextDescription() << "\n";
-    String desc = key.getTextDescription();
-    if( desc            == "command + G" ) {
-        scoreGUI.groupSymbols();
-    } else if ( desc    == "backspace" ) {
-        scoreGUI.deleteSelectedSymbolComponents();
-    } else if ( desc    == "C") {
-        scoreGUI.setMouseMode( scoreGUI.UI_MouseMode::circle );
-    } else if ( desc    == "E") {
-        scoreGUI.setMouseMode( scoreGUI.UI_MouseMode::edit );
-    } else if ( desc    == "P") {
-        scoreGUI.setMouseMode( scoreGUI.UI_MouseMode::path );
-    }
-    
-    return false;
-}
+
 
 
 

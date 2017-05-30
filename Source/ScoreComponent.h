@@ -4,7 +4,6 @@
 #include "PrimitiveIncludes.h"
 #include "SymbolistComponent.h"
 
-
 class ScoreSelectedItemSet : public SelectedItemSet<BaseComponent *>
 {
 public:
@@ -43,17 +42,19 @@ public:
     void mouseDrag ( const MouseEvent& event ) override;
     void mouseUp ( const MouseEvent& event ) override;
     
-    SymbolistComponent* getTPLScoreComponent() override;
+
     
+    // Redefine this from SymbolistComponent
+    inline SymbolistComponent* getScoreComponent() override { return this; };
     
     
     // call this when the score has been modified
     // in order to notify and update the host environment
     
-    void addScoreChildComponent( BaseComponent *c );
+    void addScoreChildComponent( BaseComponent* c );
     
     inline Point<float> getScoreMouseDown(){ return m_down; }
-    inline void setMouseMode( UI_MouseMode m ){ mouse_mode = m; std::cout<< mouse_mode << std::endl; repaint();}
+    void setEditMode( UI_EditMode m );
     
     // selection
     void findLassoItemsInArea (Array < BaseComponent *>& results, const Rectangle<int>& area) override;
@@ -80,8 +81,7 @@ private:
     LassoComponent< BaseComponent * >   lassoSelector;
     ScoreSelectedItemSet                selected_items;
     
-    UI_MouseMode                        mouse_mode = edit;
-    
+        
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScoreComponent)
 };

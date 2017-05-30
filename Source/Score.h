@@ -3,34 +3,10 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include <vector>
 #include "types.h"
+#include "Symbol.h"
+
 
 using namespace std;
-
-//============================
-// SYMBOL
-//============================
-
-class Symbol {
-    
-    public:
-    
-        Symbol();
-        Symbol(OSCBundle b);
-    
-        OSCBundle   getOSCBundle () { return osc_bundle; }
-        void        setOSCBundle (OSCBundle b) { osc_bundle = b; }
-    
-        int getOSCMessagePos(const char* address);
-        OSCArgument getOSCMessageValue(int pos);
-        odot_bundle* exportToOSC();
-        void importFromOSC(odot_bundle *bundle);
-    
-    private:
-        
-        OSCBundle osc_bundle;
-        t_rect m_rect;
-};
-
 
 
 //============================

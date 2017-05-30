@@ -5,7 +5,6 @@
 #include "types.h"
 
 #include "MainComponent.h"
-#include "ScoreData.h"
 
 
 /************************************************
@@ -17,16 +16,14 @@ class SymbolistMainWindow : public DocumentWindow {
 public:
 
     SymbolistMainWindow ();
-    ~SymbolistMainWindow ();
+    ~SymbolistMainWindow () {}
     
-    inline SymbolistMainComponent* getSymbolistMainComponent() { return main_component; }
-    
-    void notifyUpdate();
+    inline SymbolistMainComponent* getSymbolistMainComponent() { return &main_component; }
     
 protected:
 
-    SymbolistMainComponent* main_component;
-
+    SymbolistMainComponent main_component;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainWindow)
 };
 
@@ -39,8 +36,8 @@ class SymbolistEditorWindow : public SymbolistMainWindow {
     
 public:
     
-    SymbolistEditorWindow () : SymbolistMainWindow () {} ;
-    //~SymbolistEditorWindow ();
+    SymbolistEditorWindow () : SymbolistMainWindow () {}
+    ~SymbolistEditorWindow () {}
     
     void closeButtonPressed() override;
    

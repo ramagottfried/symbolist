@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ScoreComponent_h
+#define ScoreComponent_h
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PrimitiveIncludes.h"
@@ -42,7 +43,15 @@ public:
     void mouseDrag ( const MouseEvent& event ) override;
     void mouseUp ( const MouseEvent& event ) override;
     
-
+    
+    void translateSelected( Point<int> delta_xy )
+    {
+        for( auto c : selected_items )
+        {
+            auto b = c->getBounds();
+            c->setTopLeftPosition( b.getPosition() + delta_xy );
+        }
+    }
     
     // Redefine this from SymbolistComponent
     inline SymbolistComponent* getScoreComponent() override { return this; };
@@ -54,7 +63,7 @@ public:
     void addScoreChildComponent( BaseComponent* c );
     
     inline Point<float> getScoreMouseDown(){ return m_down; }
-    void setEditMode( UI_EditType m );
+//    void setEditMode( UI_EditType m );
     
     // selection
     void findLassoItemsInArea (Array < BaseComponent *>& results, const Rectangle<int>& area) override;
@@ -85,3 +94,5 @@ private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScoreComponent)
 };
+
+#endif

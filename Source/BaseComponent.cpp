@@ -1,6 +1,7 @@
 
 #include "BaseComponent.h"
 #include "ScoreComponent.h"
+#include "MainComponent.h"
 
 
 BaseComponent::BaseComponent(String type, Point<float> pos )
@@ -24,6 +25,7 @@ void BaseComponent::deselect()
 {
     is_selected = false;
     is_being_edited = false;
+        
     repaint();
 }
 
@@ -72,7 +74,7 @@ void BaseComponent::mouseEnter( const MouseEvent& event )
 
 void BaseComponent::mouseMove( const MouseEvent& event )
 {
-    resizableBorder->setVisible( is_selected && !is_being_edited );
+//    resizableBorder->setVisible( is_selected && !is_being_edited );
 
     symbol_mouseMove(event);
 }
@@ -83,11 +85,6 @@ void BaseComponent::mouseDown( const MouseEvent& event )
 
     symbol_mouseDown(event);
     
-    if( is_selected )
-    {
-        is_being_edited = true;
-        repaint();
-    }
 
 }
 
@@ -99,15 +96,10 @@ void printPoint(Point<T> point, String name = "point" )
 
 void BaseComponent::mouseDrag( const MouseEvent& event )
 {
-    if( is_selected && !is_being_edited )
+    if( is_selected )
     {
-        Point<float> mouseoffset = event.getEventRelativeTo( getParentComponent() ).position - m_down;
-        
-        printPoint<float>(m_down, "mdrag m_down");
-        printPoint<float>(event.position, "mdrag event");
-        printPoint<float>(mouseoffset, "mdrag offset");
-
-        setBounds ( mouseoffset.getX(), mouseoffset.getY(), getWidth(), getHeight() );
+        ScoreComponent* sc = static_cast<ScoreComponent*>( getScoreComponent() );
+        sc->translateSelected( (event.position - m_down).toInt() );
     }
 
     symbol_mouseDrag(event);
@@ -115,14 +107,21 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
 
 void BaseComponent::mouseExit( const MouseEvent& event )
 {
-    resizableBorder->setVisible( is_selected && !is_being_edited  );
-
     symbol_mouseExit(event);
 }
 
 void BaseComponent::mouseUp( const MouseEvent& event )
 {
+    
     symbol_mouseUp(event);
+
+    if( is_selected )
+    {
+        is_being_edited = true;
+        resizableBorder->setVisible( true );
+
+        repaint();
+    }
 }
 
 

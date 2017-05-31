@@ -10,21 +10,30 @@
 ;;; link the C library
 (fli:register-module 
    "symbolist" 
-   :real-name (namestring (make-pathname :directory (append (butlast (pathname-directory *load-pathname*))
-                                                            #+macosx (list "Builds" "MacOSX" "build" "Debug")
-    							    #+linux (list "Builds" "Linux" "build")
-    							    #+windows (list "Builds" "VisualStudio2015" "Release")
+   :real-name (namestring (make-pathname :directory (append (butlast (pathname-directory *load-pathname*) 3)
+                                                            #+macosx '("Builds" "MacOSX" "build" "Debug")
+    							    #+linux '("Builds" "Linux" "build")
+    							    #+windows '("Builds" "VisualStudio2015" "Release")
     							    )
     					 :name "symbolist" 
                                          :type #+macosx "dylib" #+linux "so" #+windows "dll"))
    :connection-style :immediate)
 
+(defpackage :symbolist)
+
+;;; will require CFFI
+
 ;;; load the bindings
-(load (merge-pathnames "symbolist_api.lisp" *load-pathname*))
+(load 
+ (make-pathname :directory (append (butlast (pathname-directory *load-pathname*))
+                                   '("sources" "c-lib"))
+                :name "symbolist_api" 
+                :type "lisp")
+ )
+
 
 
 (defun symbolist-test ()
-  (symbolist::symbolistInit)
   (print (symbolist::symbolistInfo))
   (symbolist::symbolistNewWindow))
 

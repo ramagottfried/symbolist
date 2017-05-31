@@ -31,12 +31,7 @@ typedef void (*symbolistCloseCallback)( void * win);
 typedef void (*symbolistUpdateCallback)( void * win, int n );
 
 
-enum UI_EditType
-{
-    edit,
-    path,
-    circle
-};
+enum UI_EditType { edit, draw };
 
 #endif
 

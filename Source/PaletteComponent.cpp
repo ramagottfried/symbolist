@@ -1,3 +1,4 @@
+
 #include "PaletteComponent.h"
 
 using namespace std ;
@@ -16,12 +17,17 @@ void PaletteButton::paint (Graphics& g)
 {
     if (selected) g.fillAll( Colours::grey );
     else g.fillAll( Colours::lightgrey );
+    
+    auto symbol_template = static_cast<PaletteComponent*>( getParentComponent() )->getPaletteItem(button_id);
+    g.setOrigin(symbol_template->getX(), symbol_template->getY());
+    symbol_template->symbol_paint(g);
+    //cout << symbol_template->getSymbolType() << endl ;
 }
 
 void PaletteButton::mouseDown ( const MouseEvent& event )
 {
-    cout << button_id << endl;
-    static_cast<PaletteComponent*>( getParentComponent() )->selectPaletteButton(button_id);
+    PaletteComponent* pv = static_cast<PaletteComponent*>( getParentComponent() );
+    pv->selectPaletteButton(button_id);
 }
 
 
@@ -36,10 +42,12 @@ PaletteComponent::~PaletteComponent()
     deleteAllChildren();
 }
 
-void PaletteComponent::buildFromPalette(std::vector<std::shared_ptr<BaseComponent>> palette)
+void PaletteComponent::buildFromPalette(SymbolistPalette* palette)
 {
-    for (int i = 0 ; i < palette.size(); i++ ) {
-        
+    palette_pointer = palette;
+    
+    for (int i = 0 ; i < palette->getPaletteNumItems() ; i++ )
+    {
         PaletteButton *pb = new PaletteButton(i);
         pb->setTopLeftPosition(5, 5 + (i * 45));
         pb->setSize(40 , 40);
@@ -47,12 +55,20 @@ void PaletteComponent::buildFromPalette(std::vector<std::shared_ptr<BaseComponen
     }
 }
 
-void PaletteComponent::selectPaletteButton(int i){
-    for (int b = 0; b < getNumChildComponents(); b ++) {
+BaseComponent* PaletteComponent::getPaletteItem(int i)
+{
+    return palette_pointer->getPaletteItem(i);
+}
+
+void PaletteComponent::selectPaletteButton(int i)
+{
+    for (int b = 0; b < getNumChildComponents(); b ++)
+    {
         PaletteButton *button = static_cast<PaletteButton*>( getChildComponent(b) );
         if (b == i) button->setSelected(true);
         else button->setSelected(false);
     }
+    palette_pointer->setSelectedItem(i);
     repaint();
 }
 

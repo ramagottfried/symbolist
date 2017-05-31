@@ -17,17 +17,6 @@ class SymbolistComponent : public Component
 public:
     
     virtual SymbolistComponent* getScoreComponent();
-     /*
-      virtual SymbolistComponent* getScoreComponent() {
-        auto p = static_cast<SymbolistComponent*>( getParentComponent() );
-        if (p == NULL) {
-            return p;
-        }
-        else return p->getScoreComponent();
-        
-    }
-      */
-    
     virtual SymbolistComponent* getMainComponent();
     
     UI_EditType getMainEditMode();

@@ -63,7 +63,6 @@ public:
     void addScoreChildComponent( BaseComponent* c );
     
     inline Point<float> getScoreMouseDown(){ return m_down; }
-//    void setEditMode( UI_EditType m );
     
     // selection
     void findLassoItemsInArea (Array < BaseComponent *>& results, const Rectangle<int>& area) override;

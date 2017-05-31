@@ -81,7 +81,6 @@ void ScoreComponent::scoreSymbolModified ( BaseComponent* c )
     
 void ScoreComponent::addScoreChildComponent( BaseComponent *c )
 {
-    c->attachScoreView ( this );
     addAndMakeVisible ( c );
     c->addMouseListener(this, false);
     
@@ -162,16 +161,14 @@ void ScoreComponent::paint (Graphics& g)
     switch ( getMainEditMode() )
     {
         case edit:
-            msg = "select/transform mode";
+            msg += " select/transform mode" ;
             break;
-        case path:
-            msg = "path mode";
-            break;
-        case circle:
-            msg = "circle mode";
+        case draw:
+            msg += " draw mode: " ;
+            msg += static_cast<SymbolistMainComponent*>( getMainComponent() )->getCurrentSymbol()->getSymbolType();
             break;
     }
-    g.drawText (msg, getLocalBounds(), Justification::bottom, false);
+    g.drawText (msg, getLocalBounds() , Justification::bottom, false);
     
 }
 
@@ -226,32 +223,22 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
         {
             lassoSelector.beginLasso( event, this );
         }
-    }
-    else if ( ed == circle )
-    {
-        CircleComponent *obj = new CircleComponent( event.position.getX(), event.position.getY() );
+        
+    } else {
+        
+        // would be much simpler with a proper copy-contructor..
+        // or in Lisp :(
+        // BaseComponent *symbol_template = static_cast<SymbolistMainComponent*>( getMainComponent() )->getCurrentSymbol();
+        BaseComponent *obj = new CircleComponent( event.position.getX(), event.position.getY() );
         // add in the view
         addScoreChildComponent( obj );
         // add in the score
         scoreSymbolAdded( obj );
         
         draw_mode = true;
-        obj->setEditMode( true );
+        obj->setEditState( true );
         addMouseListener(obj, false);
     }
-    else if ( ed == path )
-    {
-        PathComponent *obj = new PathComponent( event.position );
-        // add in the view
-        addScoreChildComponent( obj );
-        // add in the score
-        scoreSymbolAdded( obj );
-        
-        draw_mode = true;
-        obj->setEditMode( true );
-        addMouseListener(obj, false);
-    }
-    
 }
 
 void ScoreComponent::mouseDrag ( const MouseEvent& event )
@@ -270,7 +257,7 @@ void ScoreComponent::mouseUp ( const MouseEvent& event )
         if( score_stack.size() > 0 )
         {
             removeMouseListener( score_stack.back() );
-            score_stack.back()->setEditMode( false );
+            score_stack.back()->setEditState( false );
         }
         draw_mode = false;
     }

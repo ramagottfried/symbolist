@@ -1,5 +1,6 @@
 
-#pragma once
+#ifndef BaseComponent_h
+#define BaseComponent_h
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
@@ -16,6 +17,7 @@ class BaseComponent : public SymbolistComponent
 {
 public:
     BaseComponent();
+    //BaseComponent(const BaseComponent& c); // can't get to compile this copy-constructor ???
     BaseComponent( String type, Point<float> pos );
     ~BaseComponent();
     
@@ -36,7 +38,7 @@ public:
     void mouseDoubleClick( const MouseEvent& event ) override;
     
     // subroutine in derived class, maybe return bool to trigger repaint
-    virtual void symbol_paint ( Graphics& g ){}
+    virtual void symbol_paint ( Graphics& g ){ std::cout << "symbol pain" << std::endl; }
 
     virtual void symbol_select () {}
     virtual void symbol_deselect () {}
@@ -56,10 +58,6 @@ public:
     virtual void symbol_mouseExit( const MouseEvent& event ){}
     virtual void symbol_mouseDoubleClick( const MouseEvent& event ){}
 
-
-    inline void attachScoreView(Component *view){ score_view = view; };
-    
-    inline Component *getScoreView(){ return score_view; };
     inline void setSymbol(Symbol *s){ score_symbol = s; };
     inline Symbol* getSymbol(){ return score_symbol; };
     inline String getSymbolType(){ return symbol_type ; };
@@ -71,7 +69,8 @@ public:
     inline void setSymbolStrokeWeight( float s ){ strokeWeight = s; }
     inline void setSymbolColor( Colour c ){ sym_color = c; }
     
-    inline void setEditMode( bool e ){ is_being_edited = e; }
+    inline void setEditState( bool e ){ is_being_edited = e; }
+    
     
 protected:
     // parameters
@@ -110,7 +109,6 @@ protected:
     
 private:
 
-    Component   *score_view;
     Symbol      *score_symbol;
     
     //==============================================================================
@@ -118,7 +116,7 @@ private:
     
 };
 
-
+#endif
 
 // all parameters that might be used for performance should be stored in the score,
 // separate from the graphic component class, if possible, generalize the stored parameter namespace here so that

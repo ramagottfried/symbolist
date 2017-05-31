@@ -16,13 +16,15 @@ SymbolistComponent* SymbolistComponent::getScoreComponent()
 {
     auto p = static_cast<SymbolistComponent*>( getParentComponent() );
     if (p == NULL) return p;
-    else return p->getScoreComponent();
+    else return p->getScoreComponent(); // SymbolistMainComponent and ScoreComponent will return the actual ScoreComponent
 }
 
 
 SymbolistComponent* SymbolistComponent::getMainComponent()
 {
-    return static_cast<SymbolistComponent*>( getScoreComponent()->getParentComponent() ) ;
+    auto p = static_cast<SymbolistComponent*>( getParentComponent() );
+    if (p == NULL) return p;
+    else return p->getMainComponent(); // only a SymbolistMainComponent will return 'this'
 }
 
 

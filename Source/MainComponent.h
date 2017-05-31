@@ -64,30 +64,31 @@ public:
 
     void setEditMode( UI_EditType m );
     UI_EditType getEditMode();
-
+    
+    void setCurrentSymbol(int n);
+    int getCurrentSymbolIndex();
+    BaseComponent* getCurrentSymbol();
+    
     // Redefine these from SymbolistComponent
     inline SymbolistComponent* getScoreComponent() override { return &scoreGUI; }
     inline SymbolistComponent* getMainComponent() override { return this; }
-
     
 private:
     
     // the score data (model)
     Score score ;
     inline Score* getScore() { return &score; }
-
     // the score view
     ScoreComponent scoreGUI;
    
     // the palette is an array of symbol 'templates'
     //OwnedArray<BaseComponent> palette;
-    std::vector<std::shared_ptr<BaseComponent>> palette;
+    SymbolistPalette palette;
     PaletteComponent paletteView ;
     
     
     UI_EditType     mouse_mode = edit;
-    UI_EditType     draw_type = circle;
-
+    
     // callbacks to the host environment
     symbolistUpdateCallback myUpdateCallback = NULL;
     symbolistCloseCallback myCloseCallback = NULL;

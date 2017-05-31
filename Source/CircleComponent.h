@@ -8,7 +8,6 @@ public:
     CircleComponent();
     CircleComponent( Point<float> pt );
     CircleComponent( float center_x, float center_y, float w = 10, float h = 10, float stroke = 2, Colour color = Colours::black );
-
     
     ~CircleComponent()
     {

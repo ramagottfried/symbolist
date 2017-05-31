@@ -12,10 +12,10 @@ SymbolistMainComponent::SymbolistMainComponent()
     setSize (600, 400);
     
     // create two default items
-    palette.emplace_back(make_shared<CircleComponent>());
-    palette.emplace_back(make_shared<PathComponent>());
+    palette.addPaletteItem(new CircleComponent(20, 20, 30, 30 , 3 , Colours::darkgreen ));
+    palette.addPaletteItem(new PathComponent());
     
-    paletteView.buildFromPalette(palette);
+    paletteView.buildFromPalette(&palette);
     paletteView.selectPaletteButton(0);
     
     addAndMakeVisible(scoreGUI);
@@ -40,6 +40,35 @@ void SymbolistMainComponent::resized()
 }
 
 
+void SymbolistMainComponent::setCurrentSymbol(int n)
+{
+    palette.setSelectedItem(n);
+    paletteView.selectPaletteButton(n);
+}
+
+int SymbolistMainComponent::getCurrentSymbolIndex()
+{
+    return palette.getSelectedItem();
+}
+
+BaseComponent* SymbolistMainComponent::getCurrentSymbol()
+{
+    return palette.getPaletteItem(palette.getSelectedItem());
+}
+
+void SymbolistMainComponent::setEditMode( UI_EditType m )
+{
+    mouse_mode = m;
+    scoreGUI.repaint();
+}
+
+UI_EditType SymbolistMainComponent::getEditMode()
+{
+    return mouse_mode ;
+}
+
+
+
 bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
 {
     std::cout << "key " << key.getTextDescription() << "\n";
@@ -49,9 +78,9 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
     } else if ( desc    == "backspace" ) {
         scoreGUI.deleteSelectedSymbolComponents();
     } else if ( desc    == "C") {
-        draw_type = UI_EditType::circle;
+        setCurrentSymbol(0);
     } else if ( desc    == "P") {
-        draw_type = UI_EditType::path;
+        setCurrentSymbol(1);
     }
     
     return true;
@@ -59,28 +88,16 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
 
 void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
 {
-    if ( !modifiers.isCommandDown() )
+    if ( modifiers.isCommandDown() )
     {
+        setEditMode( UI_EditType::draw );
+    } else {
         setEditMode( UI_EditType::edit );
     }
-    else if( mouse_mode != draw_type)
-    {
-       setEditMode( draw_type );
-    }
 }
 
 
-void SymbolistMainComponent::setEditMode( UI_EditType m )
-{
-    mouse_mode = m;
-    //std::cout<< mouse_mode << std::endl;
-    scoreGUI.repaint();
-}
 
-UI_EditType SymbolistMainComponent::getEditMode()
-{
-    return mouse_mode ;
-}
 
 
 /*********************************************

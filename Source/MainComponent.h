@@ -67,11 +67,16 @@ public:
     
     void setCurrentSymbol(int n);
     int getCurrentSymbolIndex();
-    BaseComponent* getCurrentSymbol();
+    Symbol* getCurrentSymbol();
+    static BaseComponent* makeComponentFromSymbol(Symbol *s);
+    
     
     // Redefine these from SymbolistComponent
     inline SymbolistComponent* getScoreComponent() override { return &scoreGUI; }
     inline SymbolistComponent* getMainComponent() override { return this; }
+    
+    
+    
     
 private:
     
@@ -95,7 +100,6 @@ private:
 
     // static methos to generate components from symbols / update symbols from componants
     //static std::unique_ptr<BaseComponent>
-    static BaseComponent* makeComponentFromSymbol(Symbol *s);
     static void updateComponentSymbol(BaseComponent* c);
     static int addSymbolMessages( BaseComponent *c, OSCBundle *b, String base_address );
     

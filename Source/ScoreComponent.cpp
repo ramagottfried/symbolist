@@ -165,7 +165,8 @@ void ScoreComponent::paint (Graphics& g)
             break;
         case draw:
             msg += " draw mode: " ;
-            msg += static_cast<SymbolistMainComponent*>( getMainComponent() )->getCurrentSymbol()->getSymbolType();
+            Symbol *s = static_cast<SymbolistMainComponent*>( getMainComponent() )->getCurrentSymbol();
+            msg += s->getOSCMessageValue(s->getOSCMessagePos("/type")).getString();
             break;
     }
     g.drawText (msg, getLocalBounds() , Justification::bottom, false);

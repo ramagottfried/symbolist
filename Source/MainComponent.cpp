@@ -11,9 +11,24 @@ SymbolistMainComponent::SymbolistMainComponent()
     setComponentID("MainComponent");
     setSize (600, 400);
     
+    
+    
     // create two default items
-    palette.addPaletteItem(new CircleComponent(20, 20, 30, 30 , 3 , Colours::darkgreen ));
-    palette.addPaletteItem(new PathComponent());
+    OSCBundle b1,b2;
+    float symbol_size = 30.0;
+    b1.addElement(OSCMessage(OSCAddressPattern("/type"), String("circle")));
+    b1.addElement(OSCMessage(OSCAddressPattern("/w"), symbol_size));
+    b1.addElement(OSCMessage(OSCAddressPattern("/h"), symbol_size));
+    b1.addElement(OSCMessage(OSCAddressPattern("/x"), float(20.0)));
+    b1.addElement(OSCMessage(OSCAddressPattern("/y"), float(20.0)));
+    
+    
+    b2.addElement(OSCMessage(OSCAddressPattern("/type"), String("path")));
+    b2.addElement(OSCMessage(OSCAddressPattern("/w"), symbol_size));
+    b2.addElement(OSCMessage(OSCAddressPattern("/h"), symbol_size));
+    
+    palette.addPaletteItem(new Symbol(b1));
+    palette.addPaletteItem(new Symbol(b2));
     
     paletteView.buildFromPalette(&palette);
     paletteView.selectPaletteButton(0);
@@ -51,7 +66,7 @@ int SymbolistMainComponent::getCurrentSymbolIndex()
     return palette.getSelectedItem();
 }
 
-BaseComponent* SymbolistMainComponent::getCurrentSymbol()
+Symbol* SymbolistMainComponent::getCurrentSymbol()
 {
     return palette.getPaletteItem(palette.getSelectedItem());
 }
@@ -187,10 +202,7 @@ void SymbolistMainComponent::executeUpdateCallback(int arg)
 // => MODIFY VIEW FROM DATA
 //=================================
 
-
-//std::unique_ptr<BaseComponent>
-BaseComponent*
-SymbolistMainComponent::makeComponentFromSymbol(Symbol* s)
+BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(Symbol* s)
 {
     float x = 0.0;
     float y = 0.0;

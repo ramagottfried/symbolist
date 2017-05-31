@@ -1,5 +1,7 @@
 
 #include "PaletteComponent.h"
+#include "MainComponent.h"
+
 
 using namespace std ;
 
@@ -7,6 +9,18 @@ using namespace std ;
 /********************
  * ONE BUTTON
  ********************/
+
+PaletteButton::PaletteButton( int i, Symbol *s)
+{
+    button_id = i;
+    graphic_comp = SymbolistMainComponent::makeComponentFromSymbol(s);
+}
+
+PaletteButton::~PaletteButton()
+{
+    delete graphic_comp;
+}
+
 
 void PaletteButton::setSelected(bool sel)
 {
@@ -17,11 +31,8 @@ void PaletteButton::paint (Graphics& g)
 {
     if (selected) g.fillAll( Colours::grey );
     else g.fillAll( Colours::lightgrey );
-    
-    auto symbol_template = static_cast<PaletteComponent*>( getParentComponent() )->getPaletteItem(button_id);
-    g.setOrigin(symbol_template->getX(), symbol_template->getY());
-    symbol_template->symbol_paint(g);
-    //cout << symbol_template->getSymbolType() << endl ;
+    g.setOrigin(graphic_comp->getX(), graphic_comp->getY());
+    graphic_comp->symbol_paint(g);
 }
 
 void PaletteButton::mouseDown ( const MouseEvent& event )
@@ -48,17 +59,19 @@ void PaletteComponent::buildFromPalette(SymbolistPalette* palette)
     
     for (int i = 0 ; i < palette->getPaletteNumItems() ; i++ )
     {
-        PaletteButton *pb = new PaletteButton(i);
+        PaletteButton *pb = new PaletteButton(i, palette->getPaletteItem(i));
         pb->setTopLeftPosition(5, 5 + (i * 45));
         pb->setSize(40 , 40);
         addAndMakeVisible(pb);
     }
 }
 
-BaseComponent* PaletteComponent::getPaletteItem(int i)
+/*
+ BaseComponent* PaletteComponent::getPaletteItem(int i)
 {
     return palette_pointer->getPaletteItem(i);
 }
+*/
 
 void PaletteComponent::selectPaletteButton(int i)
 {

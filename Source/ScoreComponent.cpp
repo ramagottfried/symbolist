@@ -11,7 +11,6 @@ ScoreComponent::ScoreComponent()
     getLookAndFeel().setColour( lassoSelector.lassoFillColourId, Colours::transparentWhite );
     getLookAndFeel().setColour( lassoSelector.lassoOutlineColourId, Colour::fromFloatRGBA(0, 0, 0, 0.2) );
     
-    addKeyListener( (KeyListener *)getParentComponent() );
 }
 
 ScoreComponent::~ScoreComponent()

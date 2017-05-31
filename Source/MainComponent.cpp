@@ -11,21 +11,34 @@ SymbolistMainComponent::SymbolistMainComponent()
     setComponentID("MainComponent");
     setSize (600, 400);
     
-    addAndMakeVisible(scoreGUI);
-    addAndMakeVisible(palette);
+    // create two default items
+    palette.emplace_back(make_shared<CircleComponent>());
+    palette.emplace_back(make_shared<PathComponent>());
     
+    paletteView.buildFromPalette(palette);
+    paletteView.selectPaletteButton(0);
+    
+    addAndMakeVisible(scoreGUI);
+    addAndMakeVisible(paletteView);
+    
+    // the main component will receive key events from the subviews
+    paletteView.addKeyListener(this);
+    scoreGUI.addKeyListener(this);
     setWantsKeyboardFocus(true);
     addKeyListener(this);
-    palette.addKeyListener(this);
 }
+
+
+SymbolistMainComponent::~SymbolistMainComponent() { }
 
 
 void SymbolistMainComponent::resized()
 {
     scoreGUI.setBounds( 50, 0, getWidth(), getHeight() );
-    palette.setBounds( 0, 0, 50, getHeight() );
+    paletteView.setBounds( 0, 0, 50, getHeight() );
     // printf("main resized\n");
 }
+
 
 bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
 {
@@ -41,7 +54,7 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
         draw_type = UI_EditType::path;
     }
     
-    return false;
+    return true;
 }
 
 void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
@@ -120,18 +133,18 @@ odot_bundle* SymbolistMainComponent::symbolistAPI_getSymbol(int n)
 
 void SymbolistMainComponent::symbolistAPI_setSymbols(int n, odot_bundle **bundle_array)
 {
-    
     // Will lock the MainLoop until out of scope..
     const MessageManagerLock mmLock;
     
     // clear the view
     scoreGUI.removeAllSymbolComponents();
+    
     // update score
     getScore()->importScoreFromOSC(n, bundle_array);
+    
     // recreate and add components from score symbols
-    for (int i = 0; i < score.getSize(); i++)
-    {
-        scoreGUI.addScoreChildComponent( makeComponentFromSymbol( score.getSymbol(i) ) ) ; //.get() );
+    for (int i = 0; i < score.getSize(); i++) {
+        scoreGUI.addScoreChildComponent( makeComponentFromSymbol( score.getSymbol(i) ) ) ;
     }
 }
 

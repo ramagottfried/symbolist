@@ -183,7 +183,7 @@
 			name = score;
 			sourceTree = "<group>";
 		};
-		11CE00151EC3231E00E4F624 /* gui-primitives */ = {
+		11CE00151EC3231E00E4F624 /* symbol-components */ = {
 			isa = PBXGroup;
 			children = (
 				11CE00661EC4BA3100E4F624 /* PrimitiveIncludes.h */,
@@ -194,7 +194,7 @@
 				11CE00651EC4B90700E4F624 /* BaseComponent.h */,
 				118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */,
 			);
-			name = "gui-primitives";
+			name = "symbol-components";
 			sourceTree = "<group>";
 		};
 		11CE00431EC3275500E4F624 /* test-app */ = {
@@ -266,7 +266,7 @@
 				44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */,
 				446363961EC8EF9C0054CB6D /* types.h */,
 				118C38E11EC5C39F006FF4A1 /* score */,
-				11CE00151EC3231E00E4F624 /* gui-primitives */,
+				11CE00151EC3231E00E4F624 /* symbol-components */,
 				44DFA0951ED2C96600A6847A /* window-components */,
 				117556381ED30F0F00203B67 /* main */,
 				11CE00431EC3275500E4F624 /* test-app */,

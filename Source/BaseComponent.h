@@ -17,7 +17,6 @@ class BaseComponent : public SymbolistComponent
 public:
     BaseComponent();
     BaseComponent( String type, Point<float> pos );
-
     ~BaseComponent();
     
     void select();

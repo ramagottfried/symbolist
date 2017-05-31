@@ -1,53 +1,73 @@
 #include "PaletteComponent.h"
 
+using namespace std ;
 
 
-PaletteComponent::PaletteComponent()
+/********************
+ * ONE BUTTON
+ ********************/
+
+void PaletteButton::setSelected(bool sel)
 {
-    setComponentID("PaletteComponent");
-    // if this will be user definable this should be a reference to the symbol
-    // buttons are really just regular components, so we can just ignore the button class (as suggested in the JUCE h files)
-    
-    addSymbolButton(new CircleComponent( 0, 0 ) );
-    
+    selected = sel;
+}
+
+void PaletteButton::paint (Graphics& g)
+{
+    if (selected) g.fillAll( Colours::grey );
+    else g.fillAll( Colours::lightgrey );
+}
+
+void PaletteButton::mouseDown ( const MouseEvent& event )
+{
+    cout << button_id << endl;
+    static_cast<PaletteComponent*>( getParentComponent() )->selectPaletteButton(button_id);
 }
 
 
-PaletteComponent::~PaletteComponent(){}
+/********************
+ * PALETTE VIEW
+ ********************/
 
+PaletteComponent::PaletteComponent() {}
 
-void PaletteComponent::addSymbolButton(BaseComponent *c)
+PaletteComponent::~PaletteComponent()
 {
-    m_palette_symbol.add(c);
-    addAndMakeVisible(c);
-    addMouseListener(this, true);
+    deleteAllChildren();
 }
+
+void PaletteComponent::buildFromPalette(std::vector<std::shared_ptr<BaseComponent>> palette)
+{
+    for (int i = 0 ; i < palette.size(); i++ ) {
+        
+        PaletteButton *pb = new PaletteButton(i);
+        pb->setTopLeftPosition(5, 5 + (i * 45));
+        pb->setSize(40 , 40);
+        addAndMakeVisible(pb);
+    }
+}
+
+void PaletteComponent::selectPaletteButton(int i){
+    for (int b = 0; b < getNumChildComponents(); b ++) {
+        PaletteButton *button = static_cast<PaletteButton*>( getChildComponent(b) );
+        if (b == i) button->setSelected(true);
+        else button->setSelected(false);
+    }
+    repaint();
+}
+
 
 void PaletteComponent::paint (Graphics& g)
 {
-    g.fillAll ( Colours::white );
+    /*
+    // all this is just to draw a vertical line ?? ;-p
     g.setColour( Colours::black );
-    
     Path p, _p;
     PathStrokeType strokeType(0.5);
     float dashes[] = {1.0, 2.0};
-    
     p.startNewSubPath( getWidth(), 0 );
     p.lineTo(getWidth(), getHeight() );
-    
     strokeType.createDashedStroke(p, p, dashes, 2 );
     g.strokePath(p, strokeType );
-    
-}
-
-void PaletteComponent::resized ()
-{
-    Rectangle<int> pallete_bounds = getBoundsInParent();
-//    printf("%i %i %i %i\n", pallete_bounds.getX(), pallete_bounds.getY(), pallete_bounds.getWidth(), pallete_bounds.getHeight() );
-
-    for(BaseComponent* c : m_palette_symbol )
-    {
-        c->setBounds( pallete_bounds.getX(), pallete_bounds.getY(), pallete_bounds.getWidth(), 20) ;
-    }
-
+    */
 }

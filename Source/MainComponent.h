@@ -20,7 +20,7 @@ class SymbolistMainComponent : public SymbolistComponent, public KeyListener
 public:
     
     SymbolistMainComponent();
-    ~SymbolistMainComponent(){}
+    ~SymbolistMainComponent();
 
     /*********************************************
      * CONTROLLER METHODS CALLED FROM THE LIB API
@@ -73,17 +73,18 @@ public:
 private:
     
     // the score data (model)
-    //std::unique_ptr<Score> score ;
-    //inline Score* getScore() { return score.get(); }
     Score score ;
     inline Score* getScore() { return &score; }
 
     // the score view
     ScoreComponent scoreGUI;
+   
+    // the palette is an array of symbol 'templates'
+    //OwnedArray<BaseComponent> palette;
+    std::vector<std::shared_ptr<BaseComponent>> palette;
+    PaletteComponent paletteView ;
     
-    //DrawableButton *dbutton = NULL;
-    //PaletteComponent palette{this};
-    PaletteComponent palette; // << this should be dynamically expandable
+    
     UI_EditType     mouse_mode = edit;
     UI_EditType     draw_type = circle;
 

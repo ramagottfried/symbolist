@@ -18,6 +18,7 @@ BaseComponent::~BaseComponent() {}
 void BaseComponent::select()
 {
     is_selected = true;
+    symbol_select();
     repaint();
 }
 
@@ -25,7 +26,7 @@ void BaseComponent::deselect()
 {
     is_selected = false;
     is_being_edited = false;
-        
+    symbol_deselect();
     repaint();
 }
 

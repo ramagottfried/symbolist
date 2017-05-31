@@ -39,6 +39,9 @@ public:
     // subroutine in derived class, maybe return bool to trigger repaint
     virtual void symbol_paint ( Graphics& g ){}
 
+    virtual void symbol_select () {}
+    virtual void symbol_deselect () {}
+    
     virtual void symbol_moved () {}
     virtual void symbol_resized () {}
     

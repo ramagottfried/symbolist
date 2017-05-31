@@ -14,6 +14,8 @@ PathComponent::PathComponent( Point<float> startPT ) : BaseComponent("path", sta
 PathComponent::~PathComponent()
 {
     printf("freeing Path %p\n", this);
+    removeHandles();
+
 }
 
 
@@ -73,16 +75,51 @@ void PathComponent::symbol_resized ()
 
 void PathComponent::symbol_mouseEnter( const MouseEvent& event )  {}
 void PathComponent::symbol_mouseMove( const MouseEvent& event )  {}
+
+void PathComponent::addHandle( float x, float y)
+{
+    PathHandle *h = new PathHandle( x, y );
+    addAndMakeVisible( h );
+    path_handles.emplace_back( h );
+}
+
 void PathComponent::symbol_mouseDown( const MouseEvent& event )
 {
-    Path::Iterator it( m_path );
-    int count = 0;
-    while( it.next() )
+    if( is_selected && path_handles.size() == 0 )
     {
-        count++;
+        Path::Iterator it( m_path );
+        while( it.next() )
+        {
+            if (it.elementType == it.startNewSubPath)
+            {
+                printf("start\n");
+                addHandle( it.x1, it.y1 );
+            }
+            else if (it.elementType == it.cubicTo)
+            {
+                printf("cubic\n");
+                addHandle( it.x1, it.y1 );
+                addHandle( it.x2, it.y2 );
+                addHandle( it.x3, it.y3 );
+            }
+        }
     }
 }
 
+void PathComponent::removeHandles()
+{
+    for ( int i = 0; i < path_handles.size(); i++ )
+    {
+        removeChildComponent(path_handles[i]);
+        delete path_handles[i];
+    }
+    path_handles.clear();
+}
+
+void PathComponent::symbol_deselect ()
+{
+    removeHandles();
+}
 
 void PathComponent::symbol_mouseDrag( const MouseEvent& event )
 {

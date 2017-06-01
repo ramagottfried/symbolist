@@ -14,21 +14,35 @@ SymbolistMainComponent::SymbolistMainComponent()
     
     
     // create two default items
-    OSCBundle b1,b2;
+    Symbol* s1 = new Symbol();
+    Symbol* s2 = new Symbol();
+    
     float symbol_size = 30.0;
-    b1.addElement(OSCMessage(OSCAddressPattern("/type"), String("circle")));
-    b1.addElement(OSCMessage(OSCAddressPattern("/w"), symbol_size));
-    b1.addElement(OSCMessage(OSCAddressPattern("/h"), symbol_size));
-    b1.addElement(OSCMessage(OSCAddressPattern("/x"), float(20.0)));
-    b1.addElement(OSCMessage(OSCAddressPattern("/y"), float(20.0)));
+    
+    s1->addOSCMessage( String("/type"), String("circle"));
     
     
-    b2.addElement(OSCMessage(OSCAddressPattern("/type"), String("path")));
-    b2.addElement(OSCMessage(OSCAddressPattern("/w"), symbol_size));
-    b2.addElement(OSCMessage(OSCAddressPattern("/h"), symbol_size));
+    s1->addOSCMessage(String("/w"), symbol_size);
+    s1->addOSCMessage(String("/h"), symbol_size);
+    s1->addOSCMessage(String("/x"), float(20.0));
+    s1->addOSCMessage(String("/y"), float(20.0));
     
-    palette.addPaletteItem(new Symbol(b1));
-    palette.addPaletteItem(new Symbol(b2));
+    
+    s2->addOSCMessage(String("/type"), String("path"));
+    s2->addOSCMessage(String("/w"), symbol_size);
+    s2->addOSCMessage(String("/h"), symbol_size);
+    
+    palette.addPaletteItem(s1);
+    palette.addPaletteItem(s2);
+    
+    
+    cout << "SIZE1 " << s1->getOSCBundle().size() << endl;
+    cout << "SIZE2 " << s2->getOSCBundle().size() << endl;
+    
+    
+    //delete s1;
+    //delete s2;
+    
     
     paletteView.buildFromPalette(&palette);
     paletteView.selectPaletteButton(0);
@@ -106,9 +120,14 @@ void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
     if ( modifiers.isCommandDown() )
     {
         setEditMode( UI_EditType::draw );
-    } else {
+    }
+        else
+    {
         setEditMode( UI_EditType::edit );
     }
+    
+    // todo : better way to deal with modiyer keys
+    shift_down = modifiers.isShiftDown() ;
 }
 
 
@@ -169,16 +188,17 @@ void SymbolistMainComponent::symbolistAPI_setSymbols(int n, odot_bundle **bundle
     const MessageManagerLock mmLock;
     
     // clear the view
-    scoreGUI.removeAllSymbolComponents();
+    scoreGUI.clearAllSymbolComponents();
     
     // update score
     getScore()->importScoreFromOSC(n, bundle_array);
     
     // recreate and add components from score symbols
     for (int i = 0; i < score.getSize(); i++) {
-        scoreGUI.addScoreChildComponent( makeComponentFromSymbol( score.getSymbol(i) ) ) ;
+        scoreGUI.addChildToScoreComponent( makeComponentFromSymbol( score.getSymbol(i) ) ) ;
     }
 }
+
 
 // these two methods shall be called from symbolist to notify the host environment
 void SymbolistMainComponent::executeCloseCallback()
@@ -223,6 +243,7 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(Symbol* s)
     
     if ( typeMessagePos == -1 ) {
         
+        cout << "Could not find '/type' message in OSC Bundle.. (size=" << s->getOSCBundle().size() << ")" << endl;
         return NULL;
         
     } else {
@@ -278,7 +299,7 @@ void SymbolistMainComponent::updateComponentSymbol( BaseComponent *c )
 {
     OSCBundle b;
     addSymbolMessages( c , &b , String("") );
-    c->getSymbol()->setOSCBundle(b);
+    c->getSymbol()->setOSCBundle(&b);
 }
 
 /********************************
@@ -296,7 +317,9 @@ void SymbolistMainComponent::handleComponentAdded ( BaseComponent* c )
 
 void SymbolistMainComponent::handleComponentRemoved ( BaseComponent* c )
 {
-    score.removeSymbol( c->getSymbol() );
+    Symbol* s = c->getSymbol();
+    //cout << s << endl ;
+    score.removeSymbol( s );
     executeUpdateCallback( -1 );
 }
 

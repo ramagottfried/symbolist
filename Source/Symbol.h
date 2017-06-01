@@ -21,21 +21,27 @@ class Symbol {
     
 public:
     
-    Symbol();
-    Symbol(OSCBundle b);
+    Symbol() = default;
+    Symbol(const Symbol& other) = default;
+    ~Symbol() = default;
     
     OSCBundle   getOSCBundle () { return osc_bundle; }
-    void        setOSCBundle (OSCBundle b) { osc_bundle = b; }
+    void        setOSCBundle (OSCBundle *b) { osc_bundle = *b; }
     
-    int getOSCMessagePos(const char* address);
-    OSCArgument getOSCMessageValue(int pos);
+    int         getOSCMessagePos(const String &address);
+    OSCArgument getOSCMessageValue(const int pos);
+    OSCArgument getOSCMessageValue(const String &address);
+    void addOSCMessage( const String &address, const float value);
+    void addOSCMessage( const String &address, const int value);
+    void addOSCMessage( const String &address, const String &value);
+    
     odot_bundle* exportToOSC();
-    void importFromOSC(odot_bundle *bundle);
+    
+    void        importFromOSC(odot_bundle *bundle);
     
 private:
     
-    OSCBundle osc_bundle;
-    t_rect m_rect;
+    OSCBundle   osc_bundle;
 };
 
 

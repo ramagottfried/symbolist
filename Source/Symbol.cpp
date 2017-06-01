@@ -9,19 +9,11 @@
 #include "Symbol.h"
 
 
-Symbol::Symbol() : Symbol( OSCBundle() ) {};
-
-Symbol::Symbol(OSCBundle b)
+int Symbol::getOSCMessagePos(const String &address)
 {
-    osc_bundle = b;
-}
-
-int Symbol::getOSCMessagePos(const char* address)
-{
-    String addr(address);
     for (int i = 0; (i < osc_bundle.size()) ; i++)
     {
-        if ( osc_bundle.operator[](i).getMessage().getAddressPattern().toString().equalsIgnoreCase(addr) )
+        if ( osc_bundle[i].getMessage().getAddressPattern().toString().equalsIgnoreCase(address) )
         {
             return i;
         }
@@ -29,11 +21,36 @@ int Symbol::getOSCMessagePos(const char* address)
     return -1;
 }
 
-OSCArgument Symbol::getOSCMessageValue(int pos)
+OSCArgument Symbol::getOSCMessageValue(const int pos)
 {
-    OSCBundle::Element e = osc_bundle.operator[](pos);
-    return e.getMessage().operator[](0);
+    OSCBundle::Element e = osc_bundle[pos];
+    return e.getMessage()[0];
 }
+
+OSCArgument Symbol::getOSCMessageValue(const String &address)
+{
+    int pos = getOSCMessagePos(address);
+    if (pos >= 0) return getOSCMessageValue(pos);
+    else return OSCArgument(0); // should raise or print an error
+}
+
+
+
+void Symbol::addOSCMessage( const String &address, const float value)
+{
+    osc_bundle.addElement(OSCBundle::Element(OSCMessage(OSCAddressPattern(address), value)));
+}
+
+void Symbol::addOSCMessage( const String &address, const int value)
+{
+    osc_bundle.addElement(OSCBundle::Element(OSCMessage(OSCAddressPattern(address), value)));
+}
+
+void Symbol::addOSCMessage( const String &address, const String &value)
+{
+    osc_bundle.addElement(OSCBundle::Element(OSCMessage(OSCAddressPattern(address), value)));
+}
+
 
 
 odot_bundle* Symbol::exportToOSC()

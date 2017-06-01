@@ -19,17 +19,9 @@ struct odot_bundle
     char* data;
 };
 
-// a rectangle
-struct t_rect
-{
-    std::vector<float> pos;
-    float w, h;
-};
-
 // type for callbacks to the host environment
 typedef void (*symbolistCloseCallback)( void * win);
 typedef void (*symbolistUpdateCallback)( void * win, int n );
-
 
 enum UI_EditType { edit, draw };
 

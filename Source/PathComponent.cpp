@@ -116,10 +116,19 @@ void PathComponent::removeHandles()
     path_handles.clear();
 }
 
-void PathComponent::symbol_deselect ()
+/*
+ void PathComponent::symbol_deselect ()
 {
     removeHandles();
 }
+*/
+
+void PathComponent::deselectComponent()
+{
+    removeHandles();
+    BaseComponent::deselectComponent();
+}
+
 
 void PathComponent::symbol_mouseDrag( const MouseEvent& event )
 {

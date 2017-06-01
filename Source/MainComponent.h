@@ -75,7 +75,8 @@ public:
     inline SymbolistComponent* getScoreComponent() override { return &scoreGUI; }
     inline SymbolistComponent* getMainComponent() override { return this; }
     
-    
+    // temporary 
+    bool shift_down = false;
     
     
 private:
@@ -93,6 +94,7 @@ private:
     
     
     UI_EditType     mouse_mode = edit;
+   
     
     // callbacks to the host environment
     symbolistUpdateCallback myUpdateCallback = NULL;

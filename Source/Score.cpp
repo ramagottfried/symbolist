@@ -42,8 +42,19 @@ void Score::addSymbol(Symbol *symbol)
  ***********************************/
 void Score::removeSymbol(Symbol *symbol)
 {
-    std::vector<Symbol*>::iterator it = std::find(symbols.begin(), symbols.end(), symbol);
-    cout << "iterator " << *it << endl;
+    assert( symbols.empty() == false ); ///< what do you want to remove ?
+    
+    for( std::size_t i = 0; i < symbols.size(); i++ )
+    {
+        if( symbol == symbols[i] )
+        {
+            symbols.erase( symbols.begin() + i );
+            delete symbol;
+            return;
+        }
+    }
+    
+    assert( false );    ///< not found
 }
 
 /***********************************

@@ -11,30 +11,51 @@ public:
     ScoreSelectedItemSet(){};
     ~ScoreSelectedItemSet(){};
     
-    virtual void itemSelected (BaseComponent *c) override
-    {
-//        printf("sel %p \n", c);
-        c->select();
-    }
-    
-    virtual void itemDeselected (BaseComponent *c) override
-    {
-//        printf("desel %p \n", c);
-        c->deselect();
-    }
+    virtual void itemSelected (BaseComponent *c) override { c->selectComponent(); }
+    virtual void itemDeselected (BaseComponent *c) override { c->deselectComponent(); }
     
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScoreSelectedItemSet)
-
 };
+
 
 
 class ScoreComponent : public SymbolistComponent, public LassoSource<BaseComponent *>
 {
 public:
+    
     ScoreComponent();
     ~ScoreComponent();
     
+    // Redefine this from SymbolistComponent
+    inline SymbolistComponent* getScoreComponent() override { return this; };
+    
+    BaseComponent *getNthSymbolComponent (int n ) { return score_stack[n]; }
+    
+
+    void addChildToScoreComponent( BaseComponent* c );
+    void removeChildFromScoreComponent( BaseComponent* c );
+    void deleteSelectedSymbolComponents();
+    void clearAllSymbolComponents();
+
+    // call this when the score has been modified
+    // in order to notify and update the host environment
+    void addSymbolToScore ( BaseComponent* c );
+    void removeSymbolFromScore ( BaseComponent* c );
+    void modifySymbolInScore ( BaseComponent* c );
+    
+    // from mouse down
+    void userAddSymbolAt ( Point<float> p );
+    
+    void groupSymbols();
+
+    // selection
+    void findLassoItemsInArea (Array < BaseComponent *>& results, const Rectangle<int>& area) override;
+    SelectedItemSet< BaseComponent *>& getLassoSelection() override;
+    void translateSelected( Point<int> delta_xy );
+    
+    
+    // Juce Calbacks
     void paint (Graphics& g) override;
     void resized () override;
     
@@ -42,54 +63,19 @@ public:
     void mouseDown ( const MouseEvent& event ) override;
     void mouseDrag ( const MouseEvent& event ) override;
     void mouseUp ( const MouseEvent& event ) override;
-    
-    
-    void translateSelected( Point<int> delta_xy )
-    {
-        for( auto c : selected_items )
-        {
-            auto b = c->getBounds();
-            c->setTopLeftPosition( b.getPosition() + delta_xy );
-        }
-    }
-    
-    // Redefine this from SymbolistComponent
-    inline SymbolistComponent* getScoreComponent() override { return this; };
-    
-    
-    // call this when the score has been modified
-    // in order to notify and update the host environment
-    
-    void addScoreChildComponent( BaseComponent* c );
-    
-    inline Point<float> getScoreMouseDown(){ return m_down; }
-    
-    // selection
-    void findLassoItemsInArea (Array < BaseComponent *>& results, const Rectangle<int>& area) override;
-    SelectedItemSet< BaseComponent *>& getLassoSelection() override;
-    
-    void groupSymbols();
-    void deleteSelectedSymbolComponents();
-    void removeAllSymbolComponents();
-    
-    BaseComponent *getNthSymbolComponent (int n ) { return score_stack[n]; }
-    
-    void scoreSymbolAdded ( BaseComponent* c );
-    void scoreSymbolRemoved ( BaseComponent* c );
-    void scoreSymbolModified ( BaseComponent* c );
-    
+
     
 private:
-    bool                                draw_mode = false;
     
-    Point<float>                        m_down;
     
     std::vector< BaseComponent * >      score_stack;
     
+    bool                                draw_mode = false;
     LassoComponent< BaseComponent * >   lassoSelector;
     ScoreSelectedItemSet                selected_items;
+    std::vector< BaseComponent * >      selected_items_2;
     
-        
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScoreComponent)
 };

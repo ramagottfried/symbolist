@@ -58,8 +58,11 @@ public:
     void addHandle( float x, float y);
     void removeHandles();
     
-    void symbol_select () override {}
-    void symbol_deselect () override;
+    //void symbol_select () override {}
+    //void symbol_deselect () override;
+    
+    void deselectComponent () override;
+    
     
     void symbol_paint ( Graphics& g ) override;
     

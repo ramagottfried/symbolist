@@ -4,28 +4,70 @@
 ScoreComponent::ScoreComponent()
 {
     setComponentID("ScoreComponent");
-    
     addChildComponent( lassoSelector );
     lassoSelector.setComponentID("lasso");
-    
     getLookAndFeel().setColour( lassoSelector.lassoFillColourId, Colours::transparentWhite );
     getLookAndFeel().setColour( lassoSelector.lassoOutlineColourId, Colour::fromFloatRGBA(0, 0, 0, 0.2) );
-    
 }
 
 ScoreComponent::~ScoreComponent()
 {
     selected_items.deselectAll(); //<< required to avoid callback after deleting components
-    
-    for ( int i = 0; i < score_stack.size(); i++ )
-    {
-        removeChildComponent(score_stack[i]);
-        delete score_stack[i];
-    }
+    clearAllSymbolComponents();
 }
 
 
-void ScoreComponent::removeAllSymbolComponents()
+/***************************************************/
+/* MODIFICATIONS TO BE TRANSFERRED TO THE SCORE    */
+/* will update data and notify to host environment */
+/***************************************************/
+
+void ScoreComponent::addSymbolToScore ( BaseComponent* c )
+{
+    static_cast<SymbolistMainComponent*>(getParentComponent())->handleComponentAdded( c );
+}
+
+void ScoreComponent::removeSymbolFromScore ( BaseComponent* c )
+{
+    static_cast<SymbolistMainComponent*>(getParentComponent())->handleComponentRemoved( c );
+}
+
+void ScoreComponent::modifySymbolInScore( BaseComponent* c )
+{
+    auto smc = getParentComponent();
+    if ( smc != NULL ) static_cast<SymbolistMainComponent*>(smc)->handleComponentModified( c );
+}
+
+
+/***************************************************/
+/***************************************************/
+
+
+/**************************/
+/* Add/remove operations  */
+/**************************/
+
+/* modifies the view (not the score) */
+void ScoreComponent::addChildToScoreComponent( BaseComponent *c )
+{
+    addAndMakeVisible ( c );
+    c->addMouseListener(this, false);
+    score_stack.emplace_back ( c );
+    // selected_items.addToSelection( c );
+    // selected_items.addChangeListener(c);
+}
+
+/* modifies the view (not the score) */
+void ScoreComponent::removeChildFromScoreComponent( BaseComponent *c )
+{
+    removeChildComponent(c);
+    score_stack.erase ( std::remove(score_stack.begin(),score_stack.end(), c) ,
+                        score_stack.end() );
+    delete c;
+}
+
+/* modifies the view (not the score) */
+void ScoreComponent::clearAllSymbolComponents()
 {
     for ( int i = 0; i < score_stack.size(); i++ )
     {
@@ -35,61 +77,57 @@ void ScoreComponent::removeAllSymbolComponents()
     score_stack.clear();
 }
 
+
+
+
+/* modifies the view AND the score */
+void ScoreComponent::userAddSymbolAt ( Point<float> p )
+{
+    // would be much simpler with a proper copy-contructor..
+    // or in Lisp :(
+    
+    const Symbol* symbol_template = static_cast< SymbolistMainComponent * >( getMainComponent() )->getCurrentSymbol();
+    
+    // create a new component from the cureent selected symbol of the thesis
+    BaseComponent *obj = SymbolistMainComponent::makeComponentFromSymbol( new Symbol( *symbol_template ));
+    //set the symbol at the click position
+    obj->setCentrePosition( p.getX(), p.getY() );
+    
+    // add component in the view
+    addChildToScoreComponent( obj );
+    // create symbol and add it in the score
+    addSymbolToScore( obj );
+    
+    draw_mode = true;
+    obj->setEditState( true );
+    addMouseListener(obj, false);
+}
+
+
+/* modifies the view AND the score */
 void ScoreComponent::deleteSelectedSymbolComponents()
 {
-    for( BaseComponent *c : selected_items )
+    vector< BaseComponent *> items;
+    
+    for( BaseComponent *c : selected_items ) // there's probably a better way to copy a vector's contents :)
     {
-        removeChildComponent(c);
-
-        auto rem = std::remove(score_stack.begin(),
-                               score_stack.end(),
-                               c );
-        score_stack.erase ( rem, score_stack.end() );
-        
-        scoreSymbolRemoved( c );
-        
-        delete c;
-        
+        items.push_back(c);
+    }
+    
+    selected_items.deselectAll();
+    
+    for( BaseComponent *c : items )
+    {
+        removeChildFromScoreComponent(c);
+        removeSymbolFromScore(c);
     }
 }
 
 
 
-// MODOFICATIONS TO BE TRANSFERRED TO THE SCORE
-void ScoreComponent::scoreSymbolAdded ( BaseComponent* c )
-{
-    // will update data and notify to host environment
-    static_cast<SymbolistMainComponent*>(getParentComponent())->handleComponentAdded( c );
-}
-
-void ScoreComponent::scoreSymbolRemoved ( BaseComponent* c )
-{
-    // will update data and notify to host environment
-    static_cast<SymbolistMainComponent*>(getParentComponent())->handleComponentRemoved( c );
-}
-
-void ScoreComponent::scoreSymbolModified ( BaseComponent* c )
-{
-    // will update data and notify to host environment
-    auto smc = getParentComponent();
-    if ( smc != NULL )
-    {
-        static_cast<SymbolistMainComponent*>(smc)->handleComponentModified( c );
-
-    }
-}
-    
-void ScoreComponent::addScoreChildComponent( BaseComponent *c )
-{
-    addAndMakeVisible ( c );
-    c->addMouseListener(this, false);
-    
-    score_stack.emplace_back ( c );
-//    selected_items.addToSelection( c );
-    
-
-    // selected_items.addChangeListener(c);
-}
+/************************/
+/* Grouping             */
+/************************/
 
 void ScoreComponent::groupSymbols()
 {
@@ -117,7 +155,7 @@ void ScoreComponent::groupSymbols()
         
         group->setBounds( groupBounds );
         
-        addScoreChildComponent( group );
+        addChildToScoreComponent( group );
 
 
         for( auto it = selected_items.begin(); it != selected_items.end(); it++ )
@@ -135,23 +173,142 @@ void ScoreComponent::groupSymbols()
                                 compBounds.getY() - groupBounds.getY(),
                                 compBounds.getWidth(), compBounds.getHeight() );
             
-            scoreSymbolRemoved( *it );
+            removeSymbolFromScore( *it );
         }
         
-        scoreSymbolAdded( group );
-        group->select();
+        addSymbolToScore( group );
+        group->selectComponent();
         
     }
     
 }
 
 
+/************************/
+/* Selection / "Lasso"  */
+/************************/
+
+
+void ScoreComponent::findLassoItemsInArea (Array <BaseComponent*>& results, const Rectangle<int>& area)
+{
+    for (int i = 0; i < getNumChildComponents(); ++i)
+    {
+        Component *cc = getChildComponent(i);
+        
+        if( &lassoSelector != (LassoComponent< BaseComponent * > *)cc )
+        {
+            BaseComponent *c = (BaseComponent *)cc;
+            
+            // this needs to change to look for intersection with path
+            if (c->getBounds().intersects (area))
+            {
+                results.add (c);
+            }
+        }
+    }
+}
+
+
+SelectedItemSet<BaseComponent*> & ScoreComponent::getLassoSelection()
+{
+    return selected_items;
+}
+
+
+void ScoreComponent::translateSelected( Point<int> delta_xy )
+{
+    for ( auto c : selected_items )
+    {
+        auto b = c->getBounds();
+        
+        c->setTopLeftPosition( b.getPosition() + delta_xy );
+    }
+}
+
+
+/***************************/
+/* UI callbacks from Juce  */
+/***************************/
+
+void ScoreComponent::mouseDown ( const MouseEvent& event )
+{
+    UI_EditType ed = getMainEditMode();
+    
+    BaseComponent *c = (BaseComponent *) event.eventComponent;
+    SymbolistMainComponent* smc = (SymbolistMainComponent *) getMainComponent();
+    
+    if( ed == edit )
+    {
+        if (event.eventComponent != this ) // we're on a symbol
+        {
+            if ( smc->shift_down )
+            {
+                // shift-down performs multiple selection
+                if ( selected_items.isSelected( c ) )
+                {   // remove if already in
+                    selected_items.deselect( c );
+                }
+                else
+                {   // add otherwise
+                    selected_items.addToSelection( c );
+                }
+            } else {
+                // no-shitf = single selection
+                // selected_items.deselectAll();
+                selected_items.addToSelection( c );
+            }
+        }
+        else
+        {
+            lassoSelector.beginLasso( event, this );
+        }
+    }
+    else
+    { // => draw mode
+        userAddSymbolAt( event.position );
+    }
+}
+
+
+void ScoreComponent::mouseDrag ( const MouseEvent& event )
+{
+    if( getMainEditMode() == edit )
+    {
+        lassoSelector.dragLasso(event);
+    }
+    
+}
+
+void ScoreComponent::mouseUp ( const MouseEvent& event )
+{
+    //    if( !event.mods.isCommandDown()  )
+    { // what is this for ?
+        if( score_stack.size() > 0 )
+        {
+            removeMouseListener( score_stack.back() );
+            score_stack.back()->setEditState( false );
+        }
+        draw_mode = false;
+    }
+    
+    lassoSelector.endLasso();
+}
+
+
+void ScoreComponent::resized () {}
+
+void ScoreComponent::mouseMove ( const MouseEvent& event ) {}
+
+
+/************************/
+/* Draws the score page */
+/************************/
 
 void ScoreComponent::paint (Graphics& g)
 {
     g.fillAll ( Colours::white );
-//    g.setColour( Colours::black );
-//    g.drawRect( getLocalBounds() );
+    //    g.setColour( Colours::black );
+    //    g.drawRect( getLocalBounds() );
     
     g.setFont (Font (16.0f));
     g.setColour (Colours::grey);
@@ -170,101 +327,7 @@ void ScoreComponent::paint (Graphics& g)
             break;
     }
     g.drawText (msg, getLocalBounds() , Justification::bottom, false);
-    
 }
 
-void ScoreComponent::resized ()
-{
-}
-
-void ScoreComponent::mouseMove ( const MouseEvent& event )
-{
-}
-
-
-void ScoreComponent::findLassoItemsInArea (Array <BaseComponent*>& results, const Rectangle<int>& area)
-{
-    for (int i = 0; i < getNumChildComponents(); ++i)
-    {
-        Component *cc = getChildComponent(i);
-        
-        if( &lassoSelector != (LassoComponent< BaseComponent * > *)cc )
-        {
-            BaseComponent *c = (BaseComponent *)cc;
-            
-            // this needs to change to look for intersection with path
-            if (c->getBounds().intersects (area))
-            {
-                results.add (c);
-            }
-            
-        }
-    }
-}
-
-SelectedItemSet<BaseComponent*> & ScoreComponent::getLassoSelection()
-{
-    return selected_items;
-}
-
-
-void ScoreComponent::mouseDown ( const MouseEvent& event )
-{
-    
-    UI_EditType ed = getMainEditMode();
-    
-    if( ed == edit )
-    {
-
-        if (event.eventComponent != this )
-        {
-            selected_items.addToSelection( (BaseComponent *)event.eventComponent );
-        }
-        else
-        {
-            lassoSelector.beginLasso( event, this );
-        }
-        
-    } else {
-        
-        // would be much simpler with a proper copy-contructor..
-        // or in Lisp :(
-        // BaseComponent *symbol_template = static_cast<SymbolistMainComponent*>( getMainComponent() )->getCurrentSymbol();
-        BaseComponent *obj = new CircleComponent( event.position.getX(), event.position.getY() );
-        // add in the view
-        addScoreChildComponent( obj );
-        // add in the score
-        scoreSymbolAdded( obj );
-        
-        draw_mode = true;
-        obj->setEditState( true );
-        addMouseListener(obj, false);
-    }
-}
-
-void ScoreComponent::mouseDrag ( const MouseEvent& event )
-{
-    if( getMainEditMode() == edit )
-    {
-        lassoSelector.dragLasso(event);
-    }
-    
-}
-
-void ScoreComponent::mouseUp ( const MouseEvent& event )
-{
-//    if( !event.mods.isCommandDown()  )
-    {
-        if( score_stack.size() > 0 )
-        {
-            removeMouseListener( score_stack.back() );
-            score_stack.back()->setEditState( false );
-        }
-        draw_mode = false;
-    }
-    
-    lassoSelector.endLasso();
-    
-}
 
 

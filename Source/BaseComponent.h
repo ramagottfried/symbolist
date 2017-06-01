@@ -8,25 +8,39 @@
 #include "SymbolistComponent.h"
 
 template <typename T>
-void printRect( Rectangle<T> rect, String name = "rect" )
+void printRect( const Rectangle<T> &rect, const String &name = "rect" )
 {
-    std::cout << name << " " << rect.getX() << " " << rect.getY() << " " << rect.getWidth() << " " << rect.getHeight() << "\n";
+    std::cout << name << " " << rect.getX() << " " << rect.getY() << " " << rect.getWidth() << " " << rect.getHeight() << std::endl ;
 }
+
 
 class BaseComponent : public SymbolistComponent
 {
 public:
+    
     BaseComponent();
     //BaseComponent(const BaseComponent& c); // can't get to compile this copy-constructor ???
-    BaseComponent( String type, Point<float> pos );
+    BaseComponent( const String &type, const Point<float> &pos );
     ~BaseComponent();
     
-    void select();
-    void deselect();
+    // main operations in score management
+    inline void setSymbol(Symbol *s){ score_symbol = s; };
+    inline Symbol* getSymbol(){ return score_symbol; };
+    inline String getSymbolType(){ return symbol_type ; };
+    inline size_t getNumSubcomponents(){ return subcomponents.size() ; };
+    inline BaseComponent* getSubcomponent(int i){ return subcomponents.at(i) ; };
+    inline void addSubcomponent(BaseComponent *c ){ return subcomponents.emplace_back(c) ; };
     
+    
+    // Called from the Juce::SelectedItemSet subclass in ScoreComponent
+    virtual void selectComponent();
+    virtual void deselectComponent();
+    
+    // callbacks redefinitions from Juce::Component
     void paint ( Graphics& g ) override;
     void moved () override;
     void resized () override;
+    
     
     void mouseEnter( const MouseEvent& event ) override;
     void mouseMove( const MouseEvent& event ) override;
@@ -37,11 +51,12 @@ public:
     void mouseExit( const MouseEvent& event ) override;
     void mouseDoubleClick( const MouseEvent& event ) override;
     
+    
     // subroutine in derived class, maybe return bool to trigger repaint
-    virtual void symbol_paint ( Graphics& g ){ std::cout << "symbol pain" << std::endl; }
+    virtual void symbol_paint ( Graphics& g ) { std::cout << "symbol pain" << std::endl; }
 
-    virtual void symbol_select () {}
-    virtual void symbol_deselect () {}
+    //virtual void symbol_select () {}
+    //virtual void symbol_deselect () {}
     
     virtual void symbol_moved () {}
     virtual void symbol_resized () {}
@@ -58,12 +73,7 @@ public:
     virtual void symbol_mouseExit( const MouseEvent& event ){}
     virtual void symbol_mouseDoubleClick( const MouseEvent& event ){}
 
-    inline void setSymbol(Symbol *s){ score_symbol = s; };
-    inline Symbol* getSymbol(){ return score_symbol; };
-    inline String getSymbolType(){ return symbol_type ; };
-    inline size_t getNumSubcomponents(){ return subcomponents.size() ; };
-    inline BaseComponent* getSubcomponent(int i){ return subcomponents.at(i) ; };
-    inline void addSubcomponent(BaseComponent *c ){ return subcomponents.emplace_back(c) ; };
+
     
     
     inline void setSymbolStrokeWeight( float s ){ strokeWeight = s; }
@@ -73,21 +83,22 @@ public:
     
     
 protected:
+    
+    // score structure
+    Symbol                          *score_symbol;
+    String                          symbol_type = String("symbol");
+    std::vector<BaseComponent*>     subcomponents;
+    
     // parameters
     float           strokeWeight = 1;
     Colour          sym_color = Colours::black;
-    String          symbol_type = String("symbol");
-    
     // interaction
     Point<float>    m_down;
     Colour          current_color = Colours::black;
 
     ScopedPointer<ResizableBorderComponent> resizableBorder;
-    std::vector<BaseComponent*> subcomponents;
-    
     
     int             resize_mode = 0; // 0 = scale symbol to bounds, 1 = scale spacing (not resizing)
-    
     
     bool            showBoundingBox = false;
     float           bb_strokeWeight = 1;
@@ -108,8 +119,6 @@ protected:
     bool        is_selected = false;
     
 private:
-
-    Symbol      *score_symbol;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BaseComponent)

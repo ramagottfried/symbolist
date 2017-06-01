@@ -4,7 +4,7 @@
 #include "MainComponent.h"
 
 
-BaseComponent::BaseComponent(String type, Point<float> pos )
+BaseComponent::BaseComponent(const String &type, const Point<float> & pos )
 {
     symbol_type = type;
     m_down = pos;
@@ -15,18 +15,20 @@ BaseComponent::BaseComponent() : BaseComponent("symbol", Point<float>(10 , 10)) 
 BaseComponent::~BaseComponent() {}
 
 
-void BaseComponent::select()
+void BaseComponent::selectComponent()
 {
     is_selected = true;
-    symbol_select();
+    //symbol_select();
     repaint();
 }
 
-void BaseComponent::deselect()
+void BaseComponent::deselectComponent()
 {
     is_selected = false;
     is_being_edited = false;
-    symbol_deselect();
+    resizableBorder->setVisible( false );
+
+    //symbol_deselect();
     repaint();
 }
 
@@ -35,7 +37,7 @@ void BaseComponent::moved ()
     ScoreComponent* sc = static_cast<ScoreComponent*>( getScoreComponent() );
     // sc can be null if the symbol is moved when not yet on screen
     // best would be to call this from the moving action
-    if (sc != NULL) { sc->scoreSymbolModified( this ); }
+    if (sc != NULL) { sc->modifySymbolInScore( this ); }
     
     symbol_moved();
 }
@@ -43,7 +45,7 @@ void BaseComponent::moved ()
 void BaseComponent::resized ()
 {
     ScoreComponent* sc = static_cast<ScoreComponent*>( getScoreComponent() );
-    if (sc != NULL) { sc->scoreSymbolModified( this ); }
+    if (sc != NULL) { sc->modifySymbolInScore( this ); }
     
     symbol_resized();
 

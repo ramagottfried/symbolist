@@ -43,7 +43,9 @@ public:
     ~PathComponent();
     
     void printPath( Path p );
-    
+    int addSymbolMessages( String base_address) override;
+    void importFromSymbol() override;
+
     void addHandle( float x, float y);
     void removeHandles();
     
@@ -53,6 +55,7 @@ public:
     
     void mouseDown( const MouseEvent& event ) override;
     void mouseDrag( const MouseEvent& event ) override;
+    void mouseUp( const MouseEvent& event ) override;
 
     
 private:

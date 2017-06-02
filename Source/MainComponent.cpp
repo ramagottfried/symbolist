@@ -11,8 +11,6 @@ SymbolistMainComponent::SymbolistMainComponent()
     setComponentID("MainComponent");
     setSize (600, 400);
     
-    
-    
     // create two default items
     Symbol* s1 = new Symbol();
     Symbol* s2 = new Symbol();
@@ -32,17 +30,25 @@ SymbolistMainComponent::SymbolistMainComponent()
     s2->addOSCMessage(String("/w"), symbol_size);
     s2->addOSCMessage(String("/h"), symbol_size);
     
+    OSCMessage x_mess("/x-points");
+    OSCMessage y_mess("/y-points");
+    
+    x_mess.addFloat32( 0.0 );
+    y_mess.addFloat32( 2.0 );
+    x_mess.addFloat32( 1.5 );
+    y_mess.addFloat32( 0.0 );
+    x_mess.addFloat32( 3.0 );
+    y_mess.addFloat32( 1.5 );
+    x_mess.addFloat32( 3.5 );
+    y_mess.addFloat32( 0.5 );
+    x_mess.addFloat32( 5.0 );
+    y_mess.addFloat32( 2.0 );
+    
+    s2->addOSCMessage(x_mess);
+    s2->addOSCMessage(y_mess);
+
     palette.addPaletteItem(s1);
     palette.addPaletteItem(s2);
-    
-    
-    cout << "SIZE1 " << s1->getOSCBundle().size() << endl;
-    cout << "SIZE2 " << s2->getOSCBundle().size() << endl;
-    
-    
-    //delete s1;
-    //delete s2;
-    
     
     paletteView.buildFromPalette(&palette);
     paletteView.selectPaletteButton(0);
@@ -260,46 +266,22 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(Symbol* s)
         }
         
         c->setSymbol(s);
-        //return std::unique_ptr<BaseComponent>(c);
+        c->importFromSymbol();
         return c;
     }
 }
+
+//
 
 
 //=================================
 // <= MODIFY DATA FROM VIEW
 //=================================
 
-// can be overriden / completed by class-specific messages
-int SymbolistMainComponent::addSymbolMessages( BaseComponent *c, OSCBundle *b, String base_address)
-{
-    int messages_added = 0;
-    OSCMessage typeMessage = OSCMessage(OSCAddressPattern( String(base_address) += "/type" ), c->getSymbolType());
-    OSCMessage xMessage = OSCMessage(OSCAddressPattern( String(base_address) += "/x"), static_cast<float>(c->symbol_getX()));
-    OSCMessage yMessage = OSCMessage(OSCAddressPattern( String(base_address) += "/y"), static_cast<float>(c->symbol_getY()));
-    OSCMessage wMessage = OSCMessage(OSCAddressPattern( String(base_address) += "/w"), static_cast<float>(c->getWidth()));
-    OSCMessage hMessage = OSCMessage(OSCAddressPattern( String(base_address) += "/h"), static_cast<float>(c->getHeight()));
-    b->addElement(typeMessage);
-    b->addElement(xMessage);
-    b->addElement(yMessage);
-    b->addElement(wMessage);
-    b->addElement(hMessage);
-    messages_added += 5;
-    
-    for (int i = 0; i < c->getNumSubcomponents(); i++)
-    {
-        String base = base_address << "/sub_" << String(i) ;
-        messages_added += addSymbolMessages( c->getSubcomponent(i), b, base);
-    }
-    
-    return messages_added;
-}
-
 void SymbolistMainComponent::updateComponentSymbol( BaseComponent *c )
 {
-    OSCBundle b;
-    addSymbolMessages( c , &b , String("") );
-    c->getSymbol()->setOSCBundle(&b);
+    c->getSymbol()->clearOSCBundle();
+    c->addSymbolMessages( String("") );
 }
 
 /********************************

@@ -27,13 +27,16 @@ public:
     
     OSCBundle   getOSCBundle () { return osc_bundle; }
     void        setOSCBundle (OSCBundle *b) { osc_bundle = *b; }
+    void        clearOSCBundle () { osc_bundle = OSCBundle(); }
     
     int         getOSCMessagePos(const String &address);
     OSCArgument getOSCMessageValue(const int pos);
     OSCArgument getOSCMessageValue(const String &address);
-    void addOSCMessage( const String &address, const float value);
-    void addOSCMessage( const String &address, const int value);
-    void addOSCMessage( const String &address, const String &value);
+    void addOSCMessage( const String &address );
+    void addOSCMessage( const OSCMessage m );
+    void addOSCMessage( const String &address, const float value );
+    void addOSCMessage( const String &address, const int value );
+    void addOSCMessage( const String &address, const String &value );
     
     odot_bundle* exportToOSC();
     void        importFromOSC(odot_bundle *bundle);

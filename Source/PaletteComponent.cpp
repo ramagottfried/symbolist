@@ -14,6 +14,7 @@ PaletteButton::PaletteButton( int i, Symbol *s)
 {
     button_id = i;
     graphic_comp = SymbolistMainComponent::makeComponentFromSymbol(s);
+    
 }
 
 PaletteButton::~PaletteButton()
@@ -27,6 +28,11 @@ void PaletteButton::setSelected(bool sel)
     selected = sel;
 }
 
+void PaletteButton::resized()
+{
+    graphic_comp->setBounds( 8 , 8 , getWidth()-16 , getHeight()-16 );
+}
+
 void PaletteButton::paint (Graphics& g)
 {
     if (selected) g.fillAll( Colours::grey );
@@ -37,7 +43,7 @@ void PaletteButton::paint (Graphics& g)
 
 void PaletteButton::mouseDown ( const MouseEvent& event )
 {
-    PaletteComponent* pv = static_cast<PaletteComponent*>( getParentComponent() );
+    PaletteComponent* pv = (PaletteComponent*) getParentComponent();
     pv->selectPaletteButton(button_id);
 }
 
@@ -66,18 +72,12 @@ void PaletteComponent::buildFromPalette(SymbolistPalette* palette)
     }
 }
 
-/*
- BaseComponent* PaletteComponent::getPaletteItem(int i)
-{
-    return palette_pointer->getPaletteItem(i);
-}
-*/
 
 void PaletteComponent::selectPaletteButton(int i)
 {
     for (int b = 0; b < getNumChildComponents(); b ++)
     {
-        PaletteButton *button = static_cast<PaletteButton*>( getChildComponent(b) );
+        PaletteButton *button = (PaletteButton*) getChildComponent(b);
         if (b == i) button->setSelected(true);
         else button->setSelected(false);
     }
@@ -85,18 +85,3 @@ void PaletteComponent::selectPaletteButton(int i)
     repaint();
 }
 
-
-void PaletteComponent::paint (Graphics& g)
-{
-    /*
-    // all this is just to draw a vertical line ?? ;-p
-    g.setColour( Colours::black );
-    Path p, _p;
-    PathStrokeType strokeType(0.5);
-    float dashes[] = {1.0, 2.0};
-    p.startNewSubPath( getWidth(), 0 );
-    p.lineTo(getWidth(), getHeight() );
-    strokeType.createDashedStroke(p, p, dashes, 2 );
-    g.strokePath(p, strokeType );
-    */
-}

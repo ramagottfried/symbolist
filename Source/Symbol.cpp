@@ -13,7 +13,7 @@ int Symbol::getOSCMessagePos(const String &address)
 {
     for (int i = 0; (i < osc_bundle.size()) ; i++)
     {
-        if ( osc_bundle[i].getMessage().getAddressPattern().toString().equalsIgnoreCase(address) )
+        if ( osc_bundle[i].getMessage().getAddressPattern().toString().equalsIgnoreCase( address ) )
         {
             return i;
         }
@@ -35,6 +35,16 @@ OSCArgument Symbol::getOSCMessageValue(const String &address)
 }
 
 
+
+void Symbol::addOSCMessage( const String &address )
+{
+    osc_bundle.addElement(OSCBundle::Element(OSCMessage(OSCAddressPattern(address))));
+}
+
+void Symbol::addOSCMessage( const OSCMessage m )
+{
+    osc_bundle.addElement(m);
+}
 
 void Symbol::addOSCMessage( const String &address, const float value)
 {

@@ -30,6 +30,9 @@ public:
     inline BaseComponent* getSubcomponent(int i){ return subcomponents.at(i) ; };
     inline void addSubcomponent(BaseComponent *c ){ return subcomponents.emplace_back(c) ; };
     
+    virtual int addSymbolMessages( String base_address);
+    virtual void importFromSymbol() {};
+
     
     // Called from the Juce::SelectedItemSet subclass in ScoreComponent
     // specific methd defined not to mess with existing select system

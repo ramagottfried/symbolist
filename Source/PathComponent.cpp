@@ -11,14 +11,13 @@ PathComponent::PathComponent() : PathComponent( Point<float>(0,0) ) {}
 
 PathComponent::~PathComponent()
 {
-    printf("freeing Path %p\n", this);
+    printf("freeing path %p\n", this);
     removeHandles();
 }
 
 
 void PathComponent::printPath( Path p )
 {
- 
     Path::Iterator it(p);
     int count = 0;
     while( it.next() )
@@ -46,22 +45,71 @@ void PathComponent::printPath( Path p )
     }
 }
 
+
+int PathComponent::addSymbolMessages( String base_address)
+{
+    int messages_added = BaseComponent::addSymbolMessages(base_address);
+    
+    String x_address = String(base_address) += "/x-points" ;
+    String y_address = String(base_address) += "/y-points" ;
+    
+    OSCMessage x_mess(x_address);
+    OSCMessage y_mess(y_address);
+    
+    Path::Iterator it(m_path);
+    while( it.next() ) {
+        if ( it.elementType != it.closePath )
+        {
+            x_mess.addFloat32( it.x1 );
+            y_mess.addFloat32( it.y1 );
+        }
+    }
+    
+    getSymbol()->addOSCMessage(x_mess);
+    getSymbol()->addOSCMessage(y_mess);
+    messages_added += 2;
+
+    return messages_added;
+}
+
+
+void PathComponent::importFromSymbol()
+{
+    BaseComponent::importFromSymbol(); // do nothing special
+    // import the points
+    int xp = getSymbol()->getOSCMessagePos("/x-points");
+    int yp = getSymbol()->getOSCMessagePos("/y-points");
+   
+    
+    if ( xp >= 0 && yp >= 0 )
+    {
+        OSCMessage xm = getSymbol()->getOSCBundle()[xp].getMessage();
+        OSCMessage ym = getSymbol()->getOSCBundle()[yp].getMessage();
+    
+        m_path.clear();
+        m_path.startNewSubPath( xm[0].getFloat32() , ym[0].getFloat32() );
+        
+        for (int i = 1; i < xm.size(); i++) {
+            m_path.lineTo( xm[i].getFloat32() , ym[i].getFloat32() );
+        }
+    }
+}
+
+
+
 void PathComponent::symbol_paint ( Graphics& g )
 {
     g.setColour( current_color );
-    
+   
     auto localB = getLocalBounds();
-    
     m_path.scaleToFit( localB.getX(), localB.getY(), localB.getWidth(), localB.getHeight(), false );
-    /*
-     float dashes[] = {1.0, 2.0};
-     strokeType.createDashedStroke(p, p, dashes, 2 );
-     */
     
+    //float dashes[] = {1.0, 2.0};
+    //strokeType.createDashedStroke(p, p, dashes, 2 );
+   
     g.strokePath(m_path, strokeType );
     
 }
-
 
 
 void PathComponent::addHandle( float x, float y)
@@ -117,36 +165,37 @@ void PathComponent::mouseDown( const MouseEvent& event )
 
 void PathComponent::mouseDrag( const MouseEvent& event )
 {
-    
     BaseComponent::mouseDrag(event);
     
     if( is_being_edited )
     {
         m_drag = event.position;
         
-        {
-            Path p;
+        Path p;
+        // paths are relative to the z
+        Point<float> zeroPt = {0.0, 0.0};
+        
+        p.startNewSubPath( zeroPt );
+        Point<float> endPt = m_drag - m_down;
+        p.cubicTo( zeroPt, endPt, endPt );
             
-            // paths are relative to the z
-            Point<float> zeroPt = {0.0, 0.0};
-            p.startNewSubPath( zeroPt  );
+        Rectangle<float> pathBounds = p.getBounds();
+        printRect( pathBounds, "path bounds");
+        
+        setBounds( m_down.getX() + pathBounds.getX(), m_down.getY() + pathBounds.getY(), pathBounds.getWidth(), pathBounds.getHeight() );
             
-            Point<float> endPt = m_drag - m_down;
-            
-            p.cubicTo(zeroPt, endPt, endPt );
-            
-            Rectangle<float> pathBounds = p.getBounds();
-            printRect( pathBounds, "path bounds");
-            
-            setBounds( m_down.getX() + pathBounds.getX(), m_down.getY() + pathBounds.getY(), pathBounds.getWidth(), pathBounds.getHeight() );
-            
-            // printf("test %f %f %f %f\n", m_down.getX() + pathBounds.getX(), m_down.getY() + pathBounds.getY(), pathBounds.getWidth(), pathBounds.getHeight() );
-            
-            m_path.swapWithPath( p );
-
-            
-        }
+        // printf("test %f %f %f %f\n", m_down.getX() + pathBounds.getX(), m_down.getY() + pathBounds.getY(), pathBounds.getWidth(), pathBounds.getHeight() );
+        
+        m_path.swapWithPath( p );
+        //printPath( m_path );
+        
+        
     }
+}
+
+void PathComponent::mouseUp( const MouseEvent& event )
+{
+    std::cout << "mouse up on path" << std::endl;
 }
 
  

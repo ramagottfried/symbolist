@@ -103,7 +103,10 @@ private:
     // static methos to generate components from symbols / update symbols from componants
     //static std::unique_ptr<BaseComponent>
     static void updateComponentSymbol(BaseComponent* c);
-    static int addSymbolMessages( BaseComponent *c, OSCBundle *b, String base_address );
+    
+    // handles different types of components
+    static int addSymbolMessages( BaseComponent *c, String base_address );
+    static int addSymbolMessages( PathComponent *c, String base_address );
     
     
     

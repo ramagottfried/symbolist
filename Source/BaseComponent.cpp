@@ -23,6 +23,29 @@ BaseComponent::BaseComponent() : BaseComponent("symbol", Point<float>(10 , 10)) 
 BaseComponent::~BaseComponent() {}
 
 
+// can be overriden / completed by class-specific messages
+int BaseComponent::addSymbolMessages( String base_address )
+{
+    int messages_added = 0;
+
+    getSymbol()->addOSCMessage ((String(base_address) += "/type") , getSymbolType());
+    getSymbol()->addOSCMessage ((String(base_address) += "/x") , symbol_getX());
+    getSymbol()->addOSCMessage ((String(base_address) += "/y") , symbol_getY());
+    getSymbol()->addOSCMessage ((String(base_address) += "/w") , getWidth());
+    getSymbol()->addOSCMessage ((String(base_address) += "/h") , getHeight());
+    messages_added += 5;
+    
+    for (int i = 0; i < getNumSubcomponents(); i++)
+    {
+        String base = base_address << "/sub_" << String(i) ;
+        messages_added += getSubcomponent(i)->addSymbolMessages( base );
+    }
+    
+    return messages_added;
+}
+
+
+
 void BaseComponent::selectComponent()
 {
     is_selected = true;

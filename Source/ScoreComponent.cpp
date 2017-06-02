@@ -86,10 +86,11 @@ void ScoreComponent::userAddSymbolAt ( Point<float> p )
     // would be much simpler with a proper copy-contructor..
     // or in Lisp :(
     
-    const Symbol* symbol_template = static_cast< SymbolistMainComponent * >( getMainComponent() )->getCurrentSymbol();
+    const Symbol* symbol_template = ((SymbolistMainComponent*) getMainComponent())->getCurrentSymbol();
     
     // create a new component from the cureent selected symbol of the thesis
-    BaseComponent *obj = SymbolistMainComponent::makeComponentFromSymbol( new Symbol( *symbol_template ));
+    // BaseComponent *obj = SymbolistMainComponent::makeComponentFromSymbol( new Symbol( *symbol_template ));
+    BaseComponent *obj = new CircleComponent( 0, 0, 40, 40 );
     //set the symbol at the click position
     obj->setCentrePosition( p.getX(), p.getY() );
     
@@ -259,13 +260,13 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
             }
         }
         else
-        {
+        {   // we're on the score
             lassoSelector.beginLasso( event, this );
         }
     }
     else
     { // => draw mode
-        userAddSymbolAt( event.position );
+        userAddSymbolAt( event.position ); // positionshoudl be in the score referential : pb in clicked on top of anothe symbol
     }
 }
 
@@ -281,7 +282,10 @@ void ScoreComponent::mouseDrag ( const MouseEvent& event )
 
 void ScoreComponent::mouseUp ( const MouseEvent& event )
 {
-    //    if( !event.mods.isCommandDown()  )
+    
+    cout << "mouse up on score" << endl;
+    
+    //if( !event.mods.isCommandDown()  )
     { // what is this for ?
         if( score_stack.size() > 0 )
         {
@@ -296,7 +300,6 @@ void ScoreComponent::mouseUp ( const MouseEvent& event )
 
 
 void ScoreComponent::resized () {}
-
 void ScoreComponent::mouseMove ( const MouseEvent& event ) {}
 
 

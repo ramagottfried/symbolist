@@ -1,21 +1,18 @@
 
 #include "PathComponent.h"
 
-PathComponent::PathComponent() : strokeType(1.0)
-{
-    setComponentID ( "Path" );
-}
 
 PathComponent::PathComponent( Point<float> startPT ) : BaseComponent("path", startPT), strokeType(1.0)
 {
     setComponentID ( "Path" );
 }
 
+PathComponent::PathComponent() : PathComponent( Point<float>(0,0) ) {}
+
 PathComponent::~PathComponent()
 {
     printf("freeing Path %p\n", this);
     removeHandles();
-
 }
 
 
@@ -47,7 +44,6 @@ void PathComponent::printPath( Path p )
             std::cout << count++ << " " << "close path\n";
         }
     }
-    
 }
 
 void PathComponent::symbol_paint ( Graphics& g )
@@ -62,19 +58,11 @@ void PathComponent::symbol_paint ( Graphics& g )
      strokeType.createDashedStroke(p, p, dashes, 2 );
      */
     
-    
     g.strokePath(m_path, strokeType );
     
 }
 
-void PathComponent::symbol_moved ()  {}
-void PathComponent::symbol_resized ()
-{
-    printPath(m_path);
-}
 
-void PathComponent::symbol_mouseEnter( const MouseEvent& event )  {}
-void PathComponent::symbol_mouseMove( const MouseEvent& event )  {}
 
 void PathComponent::addHandle( float x, float y)
 {
@@ -83,8 +71,28 @@ void PathComponent::addHandle( float x, float y)
     path_handles.emplace_back( h );
 }
 
-void PathComponent::symbol_mouseDown( const MouseEvent& event )
+void PathComponent::removeHandles()
 {
+    for ( int i = 0; i < path_handles.size(); i++ )
+    {
+        removeChildComponent(path_handles[i]);
+        delete path_handles[i];
+    }
+    path_handles.clear();
+}
+
+void PathComponent::deselectComponent()
+{
+    removeHandles();
+    BaseComponent::deselectComponent();
+}
+
+
+void PathComponent::mouseDown( const MouseEvent& event )
+{
+    
+    BaseComponent::mouseDown(event);
+    
     if( is_selected && path_handles.size() == 0 )
     {
         Path::Iterator it( m_path );
@@ -106,32 +114,12 @@ void PathComponent::symbol_mouseDown( const MouseEvent& event )
     }
 }
 
-void PathComponent::removeHandles()
-{
-    for ( int i = 0; i < path_handles.size(); i++ )
-    {
-        removeChildComponent(path_handles[i]);
-        delete path_handles[i];
-    }
-    path_handles.clear();
-}
 
-/*
- void PathComponent::symbol_deselect ()
+void PathComponent::mouseDrag( const MouseEvent& event )
 {
-    removeHandles();
-}
-*/
-
-void PathComponent::deselectComponent()
-{
-    removeHandles();
-    BaseComponent::deselectComponent();
-}
-
-
-void PathComponent::symbol_mouseDrag( const MouseEvent& event )
-{
+    
+    BaseComponent::mouseDrag(event);
+    
     if( is_being_edited )
     {
         m_drag = event.position;
@@ -161,7 +149,4 @@ void PathComponent::symbol_mouseDrag( const MouseEvent& event )
     }
 }
 
-void PathComponent::symbol_mouseUp( const MouseEvent& event ){}
-void PathComponent::symbol_mouseExit( const MouseEvent& event ) {}
-void PathComponent::symbol_mouseDoubleClick( const MouseEvent& event ) {}
-
+ 

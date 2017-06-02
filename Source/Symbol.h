@@ -36,7 +36,6 @@ public:
     void addOSCMessage( const String &address, const String &value);
     
     odot_bundle* exportToOSC();
-    
     void        importFromOSC(odot_bundle *bundle);
     
 private:

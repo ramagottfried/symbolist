@@ -4,6 +4,14 @@
 #include "MainComponent.h"
 
 
+// do we need this ?
+template <typename T> void printPoint(Point<T> point, String name = "point" )
+{
+    std::cout << name << " " << point.getX() << " " << point.getY() << "\n";
+}
+
+
+
 BaseComponent::BaseComponent(const String &type, const Point<float> & pos )
 {
     symbol_type = type;
@@ -18,7 +26,6 @@ BaseComponent::~BaseComponent() {}
 void BaseComponent::selectComponent()
 {
     is_selected = true;
-    //symbol_select();
     repaint();
 }
 
@@ -27,10 +34,20 @@ void BaseComponent::deselectComponent()
     is_selected = false;
     is_being_edited = false;
     resizableBorder->setVisible( false );
-
-    //symbol_deselect();
     repaint();
 }
+
+
+void BaseComponent::paint ( Graphics& g )
+{
+    current_color = is_selected ? sel_color : sym_color;
+    symbol_paint( g );
+}
+
+
+/************************
+ * Component modification callbacks
+ ************************/
 
 void BaseComponent::moved ()
 {
@@ -55,47 +72,24 @@ void BaseComponent::resized ()
         resizableBorder->setBorderThickness( BorderSize<int>(1) );
     }
     
-//    printRect( getLocalBounds(), "resizableBorder" );
-    
+    // printRect( getLocalBounds(), "resizableBorder" );
     resizableBorder->setBounds( getLocalBounds() );
 }
 
 
-void BaseComponent::paint ( Graphics& g )
-{
-    current_color = is_selected ? sel_color : sym_color;
-    
-    symbol_paint( g );
-    
-}
-
-
-void BaseComponent::mouseEnter( const MouseEvent& event )
-{
-    symbol_mouseEnter(event);
-}
-
+/************************
+ * MOUSE INTERACTIONS
+ ************************/
 void BaseComponent::mouseMove( const MouseEvent& event )
 {
-//    resizableBorder->setVisible( is_selected && !is_being_edited );
-
-    symbol_mouseMove(event);
+    // resizableBorder->setVisible( is_selected && !is_being_edited );
 }
 
 void BaseComponent::mouseDown( const MouseEvent& event )
 {
     m_down = event.position;
-
-    symbol_mouseDown(event);
-    
-
 }
 
-template <typename T>
-void printPoint(Point<T> point, String name = "point" )
-{
-    std::cout << name << " " << point.getX() << " " << point.getY() << "\n";
-}
 
 void BaseComponent::mouseDrag( const MouseEvent& event )
 {
@@ -104,20 +98,10 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
         ScoreComponent* sc = static_cast<ScoreComponent*>( getScoreComponent() );
         sc->translateSelected( (event.position - m_down).toInt() );
     }
-
-    symbol_mouseDrag(event);
-}
-
-void BaseComponent::mouseExit( const MouseEvent& event )
-{
-    symbol_mouseExit(event);
 }
 
 void BaseComponent::mouseUp( const MouseEvent& event )
 {
-    
-    symbol_mouseUp(event);
-
     if( is_selected )
     {
         is_being_edited = true;
@@ -128,7 +112,3 @@ void BaseComponent::mouseUp( const MouseEvent& event )
 }
 
 
-void BaseComponent::mouseDoubleClick( const MouseEvent& event )
-{
-    symbol_mouseDoubleClick(event);
-}

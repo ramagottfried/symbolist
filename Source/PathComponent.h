@@ -24,17 +24,6 @@ public:
         g.drawRect ( bounds, (float) strokeWeight );
     }
     
-    void symbol_moved () override {}
-    void symbol_resized () override {}
-    
-    void symbol_mouseEnter( const MouseEvent& event ) override {}
-    void symbol_mouseMove( const MouseEvent& event ) override {}
-    void symbol_mouseDown( const MouseEvent& event ) override {}
-    void symbol_mouseDrag( const MouseEvent& event ) override {}
-    void symbol_mouseUp( const MouseEvent& event ) override {}
-    
-    void symbol_mouseExit( const MouseEvent& event ) override {}
-    void symbol_mouseDoubleClick( const MouseEvent& event ) override {}
     
 private:
 
@@ -58,25 +47,13 @@ public:
     void addHandle( float x, float y);
     void removeHandles();
     
-    //void symbol_select () override {}
-    //void symbol_deselect () override;
-    
     void deselectComponent () override;
-    
     
     void symbol_paint ( Graphics& g ) override;
     
-    void symbol_moved () override;
-    void symbol_resized () override;
-    
-    void symbol_mouseEnter( const MouseEvent& event ) override;
-    void symbol_mouseMove( const MouseEvent& event ) override;
-    void symbol_mouseDown( const MouseEvent& event ) override;
-    void symbol_mouseDrag( const MouseEvent& event ) override;
-    void symbol_mouseUp( const MouseEvent& event ) override;
-            
-    void symbol_mouseExit( const MouseEvent& event ) override;
-    void symbol_mouseDoubleClick( const MouseEvent& event ) override;
+    void mouseDown( const MouseEvent& event ) override;
+    void mouseDrag( const MouseEvent& event ) override;
+
     
 private:
     

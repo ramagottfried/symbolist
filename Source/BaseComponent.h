@@ -19,7 +19,6 @@ class BaseComponent : public SymbolistComponent
 public:
     
     BaseComponent();
-    //BaseComponent(const BaseComponent& c); // can't get to compile this copy-constructor ???
     BaseComponent( const String &type, const Point<float> &pos );
     ~BaseComponent();
     
@@ -33,48 +32,34 @@ public:
     
     
     // Called from the Juce::SelectedItemSet subclass in ScoreComponent
+    // specific methd defined not to mess with existing select system
     virtual void selectComponent();
     virtual void deselectComponent();
     
     // callbacks redefinitions from Juce::Component
     void paint ( Graphics& g ) override;
+    // subroutine in derived class, maybe return bool to trigger repaint
+    virtual void symbol_paint ( Graphics& g ) {}
+
+    // these two modify the symbol
     void moved () override;
     void resized () override;
+    // subroutine in derived class
+    virtual void symbol_moved () {}
+    virtual void symbol_resized () {}
     
     
-    void mouseEnter( const MouseEvent& event ) override;
+    // these are stadard interactions
+    void mouseEnter( const MouseEvent& event ) override {};
+    void mouseExit( const MouseEvent& event ) override {};
     void mouseMove( const MouseEvent& event ) override;
     void mouseDown( const MouseEvent& event ) override;
     void mouseDrag( const MouseEvent& event ) override;
     void mouseUp( const MouseEvent& event ) override;
-
-    void mouseExit( const MouseEvent& event ) override;
-    void mouseDoubleClick( const MouseEvent& event ) override;
-    
-    
-    // subroutine in derived class, maybe return bool to trigger repaint
-    virtual void symbol_paint ( Graphics& g ) { std::cout << "symbol pain" << std::endl; }
-
-    //virtual void symbol_select () {}
-    //virtual void symbol_deselect () {}
-    
-    virtual void symbol_moved () {}
-    virtual void symbol_resized () {}
+    void mouseDoubleClick( const MouseEvent& event ) override {};
     
     virtual float symbol_getX(){ return getX(); }
     virtual float symbol_getY(){ return getY(); }
-    
-    
-    virtual void symbol_mouseEnter( const MouseEvent& event ){}
-    virtual void symbol_mouseMove( const MouseEvent& event ){}
-    virtual void symbol_mouseDown( const MouseEvent& event ){}
-    virtual void symbol_mouseDrag( const MouseEvent& event ){}
-    virtual void symbol_mouseUp( const MouseEvent& event ){}
-    virtual void symbol_mouseExit( const MouseEvent& event ){}
-    virtual void symbol_mouseDoubleClick( const MouseEvent& event ){}
-
-
-    
     
     inline void setSymbolStrokeWeight( float s ){ strokeWeight = s; }
     inline void setSymbolColor( Colour c ){ sym_color = c; }

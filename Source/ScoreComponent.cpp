@@ -89,14 +89,14 @@ void ScoreComponent::userAddSymbolAt ( Point<float> p )
     const Symbol* symbol_template = ((SymbolistMainComponent*) getMainComponent())->getCurrentSymbol();
     
     // create a new component from the cureent selected symbol of the thesis
-    // BaseComponent *obj = SymbolistMainComponent::makeComponentFromSymbol( new Symbol( *symbol_template ));
-    BaseComponent *obj = new CircleComponent( 0, 0, 40, 40 );
+    //BaseComponent *obj = new CircleComponent( 0, 0, 40, 40 );
+    BaseComponent *obj = SymbolistMainComponent::makeComponentFromSymbol( new Symbol( *symbol_template ));
     //set the symbol at the click position
     obj->setCentrePosition( p.getX(), p.getY() );
     
     // add component in the view
     addChildToScoreComponent( obj );
-    // create symbol and add it in the score
+    // add the created component's symbol in the score
     addSymbolToScore( obj );
     
     draw_mode = true;

@@ -290,18 +290,13 @@ void SymbolistMainComponent::updateComponentSymbol( BaseComponent *c )
 
 void SymbolistMainComponent::handleComponentAdded ( BaseComponent* c )
 {
-    Symbol *s = new Symbol();
-    c->setSymbol( s );
-    updateComponentSymbol( c );
-    score.addSymbol( s );
+    score.addSymbol( c->getSymbol() );
     executeUpdateCallback( -1 );
 }
 
 void SymbolistMainComponent::handleComponentRemoved ( BaseComponent* c )
 {
-    Symbol* s = c->getSymbol();
-    //cout << s << endl ;
-    score.removeSymbol( s );
+    score.removeSymbol( c->getSymbol() );
     executeUpdateCallback( -1 );
 }
 

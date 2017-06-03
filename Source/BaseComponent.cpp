@@ -10,20 +10,16 @@ template <typename T> void printPoint(Point<T> point, String name = "point" )
     std::cout << name << " " << point.getX() << " " << point.getY() << "\n";
 }
 
-
-
-BaseComponent::BaseComponent(const String &type, const Point<float> & pos )
-{
-    symbol_type = type;
-    m_down = pos;
-}
-
 BaseComponent::BaseComponent() : BaseComponent("symbol", Point<float>(10 , 10)) {}
-
+BaseComponent::BaseComponent(const String &type, const Point<float> & pos ) : symbol_type(type) , m_down(pos) {}
 BaseComponent::~BaseComponent() {}
 
 
-// can be overriden / completed by class-specific messages
+/******************
+ * Creates OSC Messages in the Symbol
+ * Can be overriden / completed by class-specific messages
+ *****************/
+
 int BaseComponent::addSymbolMessages( String base_address )
 {
     int messages_added = 0;
@@ -45,7 +41,15 @@ int BaseComponent::addSymbolMessages( String base_address )
 }
 
 
+/******************
+ * Imports components' data from teh symbol's OSC bundle
+ *****************/
+void BaseComponent::importFromSymbol() { }
 
+
+/******************
+ * Called by selection mechanism
+ *****************/
 void BaseComponent::selectComponent()
 {
     is_selected = true;
@@ -61,6 +65,9 @@ void BaseComponent::deselectComponent()
 }
 
 
+/******************
+ * Paint callback: calls a symbol-specific suroutine
+ *****************/
 void BaseComponent::paint ( Graphics& g )
 {
     current_color = is_selected ? sel_color : sym_color;
@@ -103,6 +110,7 @@ void BaseComponent::resized ()
 /************************
  * MOUSE INTERACTIONS
  ************************/
+
 void BaseComponent::mouseMove( const MouseEvent& event )
 {
     // resizableBorder->setVisible( is_selected && !is_being_edited );

@@ -46,8 +46,14 @@ void PathComponent::printPath( Path p )
 }
 
 
+/******************
+ * Creates OSC Messages in the Symbol
+ * Can be overriden / completed by class-specific messages
+ *****************/
+
 int PathComponent::addSymbolMessages( String base_address)
 {
+    // adds the basic messages
     int messages_added = BaseComponent::addSymbolMessages(base_address);
     
     String x_address = String(base_address) += "/x-points" ;
@@ -73,6 +79,10 @@ int PathComponent::addSymbolMessages( String base_address)
 }
 
 
+/******************
+ * Imports components' data from the symbol's OSC bundle
+ *****************/
+
 void PathComponent::importFromSymbol()
 {
     BaseComponent::importFromSymbol(); // do nothing special
@@ -96,6 +106,9 @@ void PathComponent::importFromSymbol()
 }
 
 
+/******************
+ * Paint callback subroutine
+ *****************/
 
 void PathComponent::symbol_paint ( Graphics& g )
 {
@@ -111,6 +124,11 @@ void PathComponent::symbol_paint ( Graphics& g )
     
 }
 
+
+
+/******************
+ * MOUSE INTERACTIONS
+ *****************/
 
 void PathComponent::addHandle( float x, float y)
 {

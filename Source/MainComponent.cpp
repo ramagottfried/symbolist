@@ -235,6 +235,7 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(Symbol* s)
     float w = 10.0;
     float h = 10.0;
     
+    // most of thos shpuld be in importFromSymbol methods
     int xMessagePos = s->getOSCMessagePos("/x");
     int yMessagePos = s->getOSCMessagePos("/y");
     int wMessagePos = s->getOSCMessagePos("/w");

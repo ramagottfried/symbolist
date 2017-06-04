@@ -55,7 +55,7 @@ public:
     
     ~PathHandle()
     {
-        printf("freeing Path %p\n", this);
+        std::cout << "freeing " << symbol_type << " " << this << "\n";
     }
     
     void symbol_paint ( Graphics& g ) override

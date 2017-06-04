@@ -120,8 +120,11 @@ void ScoreComponent::deleteSelectedSymbols()
     
     for( BaseComponent *c : items )
     {
-        removeChildFromScoreComponent(c);
-        removeSymbolFromScore(c);
+        if( c->getSymbolType() != "UI_only") // UI only elements are bound to a component
+        {
+            removeChildFromScoreComponent(c);
+            removeSymbolFromScore(c);
+        }
     }
 }
 

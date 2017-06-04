@@ -16,7 +16,7 @@ class SymbolistComponent : public Component
 {
 public:
     
-    virtual SymbolistComponent* getScoreComponent();
+    virtual SymbolistComponent* getPageComponent();
     virtual SymbolistComponent* getMainComponent();
     
     UI_EditType getMainEditMode();

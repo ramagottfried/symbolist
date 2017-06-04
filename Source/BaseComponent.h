@@ -5,7 +5,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 #include "Symbol.h"
-#include "SymbolistComponent.h"
+#include "ScoreComponent.h"
 
 template <typename T>
 void printRect( const Rectangle<T> &rect, const String &name = "rect" )
@@ -13,28 +13,30 @@ void printRect( const Rectangle<T> &rect, const String &name = "rect" )
     std::cout << name << " " << rect.getX() << " " << rect.getY() << " " << rect.getWidth() << " " << rect.getHeight() << std::endl ;
 }
 
-
 class BaseComponent : public SymbolistComponent
 {
 public:
     
-    BaseComponent();
-    BaseComponent( const String &type, const Point<float> &pos );
+    BaseComponent(const String &type,
+                  float center_x, float center_y,
+                  float w = 10, float h = 10,
+                  float stroke = 2,
+                  Colour color = Colours::black  );
+    
     ~BaseComponent();
     
     // main operations in score management
     inline void setSymbol(Symbol *s){ score_symbol = s; };
     inline Symbol* getSymbol(){ return score_symbol; };
     inline String getSymbolType(){ return symbol_type ; };
-    inline size_t getNumSubcomponents(){ return subcomponents.size() ; };
-    inline BaseComponent* getSubcomponent(int i){ return subcomponents.at(i) ; };
-    inline void addSubcomponent(BaseComponent *c ){ return subcomponents.emplace_back(c) ; };
     
-    virtual int addSymbolMessages( String base_address);
+    bool isTopLevelComponent();
+    
+    virtual int addSymbolMessages( const String &base_address);
     virtual void importFromSymbol();
 
     
-    // Called from the Juce::SelectedItemSet subclass in ScoreComponent
+    // Called from the Juce::SelectedItemSet subclass in PageComponent
     // specific methd defined not to mess with existing select system
     virtual void selectComponent();
     virtual void deselectComponent();
@@ -52,7 +54,7 @@ public:
     virtual void symbol_resized () {}
     
     
-    // these are stadard interactions
+    // these are standard interactions
     void mouseEnter( const MouseEvent& event ) override {};
     void mouseExit( const MouseEvent& event ) override {};
     void mouseMove( const MouseEvent& event ) override;
@@ -73,8 +75,8 @@ protected:
     
     // score structure
     Symbol                          *score_symbol;
+    Symbol                          internal_symbol;
     String                          symbol_type = String("symbol");
-    std::vector<BaseComponent*>     subcomponents;
     
     // parameters
     float           strokeWeight = 1;

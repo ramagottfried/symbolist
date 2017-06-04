@@ -5,20 +5,24 @@
 class CircleComponent : public BaseComponent
 {
 public:
-    CircleComponent();
-    CircleComponent( Point<float> pt );
-    CircleComponent( float center_x, float center_y, float w = 10, float h = 10, float stroke = 2, Colour color = Colours::black );
+
+    CircleComponent(float x, float y,
+                    float w = 10, float h = 10,
+                    float stroke = 2,
+                    Colour color = Colours::black ) :
+        BaseComponent("circle" , x - (w * .5), y - (h * .5), w , h, stroke, color ) {};
+
     
     ~CircleComponent()
     {
         printf("freeing circle %p\n", this);
     }
     
-    void symbol_paint ( Graphics& g ) override;
-    
     float symbol_getX() override { return getX() + ( getWidth() * .5) ; }
     float symbol_getY() override { return getY() + ( getHeight() * .5) ; }
-    
+
+    void symbol_paint ( Graphics& g ) override;
+
     
 private:
     

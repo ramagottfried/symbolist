@@ -1,12 +1,33 @@
 
 #include "BaseComponent.h"
-#include "ScoreComponent.h"
+#include "PageComponent.h"
 #include "MainComponent.h"
 
+// do we need this ?
+template <typename T> void printPoint(Point<T> point, String name = "point" )
+{
+    std::cout << name << " " << point.getX() << " " << point.getY() << "\n";
+}
 
-BaseComponent::BaseComponent() : BaseComponent("symbol", Point<float>(10 , 10)) {}
-BaseComponent::BaseComponent(const String &type, const Point<float> & pos ) : symbol_type(type) , m_down(pos) {}
+BaseComponent::BaseComponent(const String &type,
+                             float x, float y, float w, float h,
+                             float stroke,
+                             Colour color) :
+                    symbol_type(type),
+                    strokeWeight(stroke),
+                    sym_color(color),
+                    m_down(Point<float>(x,y))
+{
+    setBounds( x , y , w , h);
+}
+
 BaseComponent::~BaseComponent() {}
+
+
+bool BaseComponent::isTopLevelComponent()
+{
+    return ( getParentComponent() == getPageComponent() );
+}
 
 
 /******************
@@ -14,7 +35,7 @@ BaseComponent::~BaseComponent() {}
  * Can be overriden / completed by class-specific messages
  *****************/
 
-int BaseComponent::addSymbolMessages( String base_address )
+int BaseComponent::addSymbolMessages( const String &base_address )
 {
     int messages_added = 0;
 
@@ -24,12 +45,6 @@ int BaseComponent::addSymbolMessages( String base_address )
     getSymbol()->addOSCMessage ((String(base_address) += "/w") , getWidth());
     getSymbol()->addOSCMessage ((String(base_address) += "/h") , getHeight());
     messages_added += 5;
-    
-    for (int i = 0; i < getNumSubcomponents(); i++)
-    {
-        String base = base_address << "/sub_" << String(i) ;
-        messages_added += getSubcomponent(i)->addSymbolMessages( base );
-    }
     
     return messages_added;
 }
@@ -75,18 +90,17 @@ void BaseComponent::paint ( Graphics& g )
 
 void BaseComponent::moved ()
 {
-    ScoreComponent* sc = static_cast<ScoreComponent*>( getScoreComponent() );
+    PageComponent* p = static_cast<PageComponent*>( getPageComponent() );
     // sc can be null if the symbol is moved when not yet on screen
     // best would be to call this from the moving action
-    if (sc != NULL && symbol_type != "UI_only") { sc->modifySymbolInScore( this ); }
-    
+    if (p != NULL && symbol_type != "UI_only") { p->modifySymbolInScore( this ); }
     symbol_moved();
 }
 
 void BaseComponent::resized ()
 {
-    ScoreComponent* sc = static_cast<ScoreComponent*>( getScoreComponent() );
-    if (sc != NULL && symbol_type != "UI_only") { sc->modifySymbolInScore( this ); }
+    PageComponent* p = static_cast<PageComponent*>( getPageComponent() );
+    if (p != NULL && symbol_type != "UI_only") { p->modifySymbolInScore( this ); }
     
     symbol_resized();
 
@@ -120,8 +134,8 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
 {
     if( is_selected )
     {
-        ScoreComponent* sc = static_cast<ScoreComponent*>( getScoreComponent() );
-        sc->translateSelected( (event.position - m_down).toInt() );
+        PageComponent* p = static_cast<PageComponent*>( getPageComponent() );
+        p->translateSelected( (event.position - m_down).toInt() );
     }
 }
 

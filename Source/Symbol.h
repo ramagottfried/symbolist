@@ -21,7 +21,8 @@ class Symbol {
     
 public:
     
-    Symbol() = default;
+    Symbol();
+    Symbol(const String &type, float x, float y, float w, float h );
     Symbol(const Symbol& other) = default;
     ~Symbol() = default;
     
@@ -38,12 +39,13 @@ public:
     void addOSCMessage( const String &address, const int value );
     void addOSCMessage( const String &address, const String &value );
     
-    odot_bundle* exportToOSC();
-    void        importFromOSC(odot_bundle *bundle);
+    odot_bundle*    exportToOSC();
+    void            importFromOSC(odot_bundle *bundle);
     
 private:
     
     OSCBundle   osc_bundle;
+
 };
 
 

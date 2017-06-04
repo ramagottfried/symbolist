@@ -38,6 +38,10 @@ public:
     void deleteSelectedSymbolComponents();
     void clearAllSymbolComponents();
 
+    void addItemToSelection(BaseComponent *c);
+    void deselectAllSelected();
+
+    
     // call this when the score has been modified
     // in order to notify and update the host environment
     void addSymbolToScore ( BaseComponent* c );
@@ -53,7 +57,6 @@ public:
     void findLassoItemsInArea (Array < BaseComponent *>& results, const Rectangle<int>& area) override;
     SelectedItemSet< BaseComponent *>& getLassoSelection() override;
     void translateSelected( Point<int> delta_xy );
-    
     
     // Juce Calbacks
     void paint (Graphics& g) override;

@@ -69,7 +69,6 @@ public:
     
     inline void setEditState( bool e ){ is_being_edited = e; }
     
-    
 protected:
     
     // score structure
@@ -105,6 +104,14 @@ protected:
 
     bool        is_being_edited = true;
     bool        is_selected = false;
+    
+    // utility for printing point regardless of type
+    template <typename T>
+    inline void printPoint(Point<T> point, String name = "point" )
+    {
+        std::cout << name << " " << point.getX() << " " << point.getY() << "\n";
+    }
+
     
 private:
     

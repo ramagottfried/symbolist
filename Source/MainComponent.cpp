@@ -127,7 +127,7 @@ void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
     {
         setEditMode( UI_EditType::draw );
     }
-        else
+    else
     {
         setEditMode( UI_EditType::edit );
     }

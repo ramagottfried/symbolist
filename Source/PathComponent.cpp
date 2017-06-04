@@ -1,5 +1,6 @@
 
 #include "PathComponent.h"
+#include "ScoreComponent.h"
 
 
 PathComponent::PathComponent( Point<float> startPT ) : BaseComponent("path", startPT), strokeType(1.0)
@@ -130,21 +131,86 @@ void PathComponent::symbol_paint ( Graphics& g )
  * MOUSE INTERACTIONS
  *****************/
 
-void PathComponent::addHandle( float x, float y)
+void PathComponent::addHandle( float x, float y, int index)
 {
-    PathHandle *h = new PathHandle( x, y );
-    addAndMakeVisible( h );
+    PathHandle *h = new PathHandle( x + getX(), y + getY(), this );
+    auto *sc = static_cast<ScoreComponent*>( getScoreComponent() ) ;
+    sc->addAndMakeVisible( h );
+    sc->addItemToSelection( h );
     path_handles.emplace_back( h );
+}
+
+
+void PathComponent::makeHandles()
+{
+    if( is_selected && path_handles.size() == 0 )
+    {
+        //        ScoreComponent *sc = static_cast<ScoreComponent*>( getScoreComponent() );
+        //        sc->deselectAllSelected();
+        //        is_selected = false;
+        
+        int count = 0;
+        Path::Iterator it( m_path );
+        while( it.next() )
+        {
+            if (it.elementType == it.startNewSubPath)
+            {
+                printf("start\n");
+                addHandle( it.x1, it.y1, count++ );
+            }
+            else if (it.elementType == it.cubicTo)
+            {
+                printf("cubic\n");
+                addHandle( it.x1, it.y1, count++ );
+                addHandle( it.x2, it.y2, count++ );
+                addHandle( it.x3, it.y3, count++ );
+            }
+        }
+    }
 }
 
 void PathComponent::removeHandles()
 {
+    auto *sc = getScoreComponent();
+
     for ( int i = 0; i < path_handles.size(); i++ )
     {
-        removeChildComponent(path_handles[i]);
+        if( sc )
+            sc->removeChildComponent(path_handles[i]);
+        
         delete path_handles[i];
     }
     path_handles.clear();
+}
+
+void PathComponent::updatePathPoints()
+{
+    Path p;
+    auto handle = path_handles.begin();
+    Point<float> offset( (*handle)->getWidth() / 2., (*handle)->getHeight() / 2. );
+
+    Path::Iterator it( m_path );
+    while( it.next() )
+    {
+        if (it.elementType == it.startNewSubPath)
+        {
+            p.startNewSubPath( (*(handle++))->getPosition().toFloat() + offset);
+        }
+        else if (it.elementType == it.cubicTo)
+        {
+            p.cubicTo((*(handle++))->getPosition().toFloat() + offset,
+                      (*(handle++))->getPosition().toFloat() + offset,
+                      (*(handle++))->getPosition().toFloat() + offset );
+        }
+    }
+    
+    Rectangle<float> pathBounds = p.getBounds();
+    setBounds( pathBounds.getX(), pathBounds.getY(), pathBounds.getWidth(), pathBounds.getHeight() );
+    
+    m_path.swapWithPath( p );
+    
+    // might be able to not repaint if setBounds is different than last time
+    repaint();
 }
 
 void PathComponent::deselectComponent()
@@ -156,28 +222,7 @@ void PathComponent::deselectComponent()
 
 void PathComponent::mouseDown( const MouseEvent& event )
 {
-    
     BaseComponent::mouseDown(event);
-    
-    if( is_selected && path_handles.size() == 0 )
-    {
-        Path::Iterator it( m_path );
-        while( it.next() )
-        {
-            if (it.elementType == it.startNewSubPath)
-            {
-                printf("start\n");
-                addHandle( it.x1, it.y1 );
-            }
-            else if (it.elementType == it.cubicTo)
-            {
-                printf("cubic\n");
-                addHandle( it.x1, it.y1 );
-                addHandle( it.x2, it.y2 );
-                addHandle( it.x3, it.y3 );
-            }
-        }
-    }
 }
 
 
@@ -195,7 +240,9 @@ void PathComponent::mouseDrag( const MouseEvent& event )
         
         p.startNewSubPath( zeroPt );
         Point<float> endPt = m_drag - m_down;
-        p.cubicTo( zeroPt, endPt, endPt );
+        
+        
+        p.cubicTo( endPt * 0.3 , endPt * 0.6, endPt );
             
         Rectangle<float> pathBounds = p.getBounds();
         printRect( pathBounds, "path bounds");
@@ -213,7 +260,7 @@ void PathComponent::mouseDrag( const MouseEvent& event )
 
 void PathComponent::mouseUp( const MouseEvent& event )
 {
-    std::cout << "mouse up on path" << std::endl;
+    makeHandles();
 }
 
  

@@ -4,12 +4,6 @@
 #include "MainComponent.h"
 
 
-// do we need this ?
-template <typename T> void printPoint(Point<T> point, String name = "point" )
-{
-    std::cout << name << " " << point.getX() << " " << point.getY() << "\n";
-}
-
 BaseComponent::BaseComponent() : BaseComponent("symbol", Point<float>(10 , 10)) {}
 BaseComponent::BaseComponent(const String &type, const Point<float> & pos ) : symbol_type(type) , m_down(pos) {}
 BaseComponent::~BaseComponent() {}
@@ -84,7 +78,7 @@ void BaseComponent::moved ()
     ScoreComponent* sc = static_cast<ScoreComponent*>( getScoreComponent() );
     // sc can be null if the symbol is moved when not yet on screen
     // best would be to call this from the moving action
-    if (sc != NULL) { sc->modifySymbolInScore( this ); }
+    if (sc != NULL && symbol_type != "UI_only") { sc->modifySymbolInScore( this ); }
     
     symbol_moved();
 }
@@ -92,7 +86,7 @@ void BaseComponent::moved ()
 void BaseComponent::resized ()
 {
     ScoreComponent* sc = static_cast<ScoreComponent*>( getScoreComponent() );
-    if (sc != NULL) { sc->modifySymbolInScore( this ); }
+    if (sc != NULL && symbol_type != "UI_only") { sc->modifySymbolInScore( this ); }
     
     symbol_resized();
 

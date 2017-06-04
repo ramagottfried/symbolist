@@ -209,6 +209,10 @@ void ScoreComponent::findLassoItemsInArea (Array <BaseComponent*>& results, cons
     }
 }
 
+void ScoreComponent::addItemToSelection(BaseComponent *c)
+{
+    selected_items.addToSelection(c);
+}
 
 SelectedItemSet<BaseComponent*> & ScoreComponent::getLassoSelection()
 {
@@ -226,6 +230,11 @@ void ScoreComponent::translateSelected( Point<int> delta_xy )
     }
 }
 
+void ScoreComponent::deselectAllSelected()
+{
+    selected_items.deselectAll();
+    repaint();
+}
 
 /***************************/
 /* UI callbacks from Juce  */
@@ -256,6 +265,7 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
             } else {
                 // no-shitf = single selection
                 // selected_items.deselectAll();
+                printf("check\n");
                 selected_items.addToSelection( c );
             }
         }

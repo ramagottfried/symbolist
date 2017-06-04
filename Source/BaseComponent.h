@@ -5,7 +5,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 #include "Symbol.h"
-#include "ScoreComponent.h"
+#include "SymbolistComponent.h"
 
 template <typename T>
 void printRect( const Rectangle<T> &rect, const String &name = "rect" )

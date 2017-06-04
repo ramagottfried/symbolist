@@ -170,7 +170,7 @@ void PathComponent::removeHandles()
     for ( int i = 0; i < path_handles.size(); i++ )
     {
         if( sc )
-            sc->removeChildComponent(path_handles[i]);
+            sc->removeChildComponent( path_handles[i] );
         
         delete path_handles[i];
     }

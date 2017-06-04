@@ -36,8 +36,6 @@ class SymbolGroupComponent : public ScoreComponent, public BaseComponent
 
     private :
     
-    std::vector<BaseComponent*>     subcomponents;
-    
 } ;
 
 

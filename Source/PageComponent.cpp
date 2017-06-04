@@ -49,47 +49,6 @@ void PageComponent::modifySymbolInScore( BaseComponent* c )
 
 
 
-
-/**************************/
-/* Add/remove operations on View only */
-/**************************/
-
-/* modifies the view (not the score) */
-void PageComponent::addChildToScoreComponent( BaseComponent *c )
-{
-    addAndMakeVisible ( c );
-    c->addMouseListener(this, false);
-    score_stack.emplace_back ( c );
-    
-    // the default Component ID is type_posInScore
-    c->setComponentID(String(String(c->getSymbolType()) += String("_") += String(score_stack.size())));
-    
-    // selected_items.addToSelection( c );
-    // selected_items.addChangeListener(c);
-}
-
-
-/* modifies the view (not the score) */
-void PageComponent::removeChildFromScoreComponent( BaseComponent *c , bool delete_it)
-{
-    removeChildComponent(c);
-    score_stack.erase ( std::remove(score_stack.begin(),score_stack.end(), c) ,
-                       score_stack.end() );
-    if (delete_it ) delete c;
-}
-
-/* modifies the view (not the score) */
-void PageComponent::clearAllSymbolComponents()
-{
-    for ( int i = 0; i < score_stack.size(); i++ )
-    {
-        removeChildComponent(score_stack[i]);
-        delete score_stack[i];
-    }
-    score_stack.clear();
-}
-
-
 /**************************/
 /* Add/remove operations on Score AND View */
 /**************************/
@@ -356,10 +315,10 @@ void PageComponent::mouseUp ( const MouseEvent& event )
     
     //if( !event.mods.isCommandDown()  )
     { // what is this for ?
-        if( score_stack.size() > 0 )
+        if( subcomponents.size() > 0 )
         {
-            removeMouseListener( score_stack.back() );
-            score_stack.back()->setEditState( false );
+            removeMouseListener( subcomponents.back() );
+            subcomponents.back()->setEditState( false );
         }
         draw_mode = false;
     }

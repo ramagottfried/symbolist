@@ -38,13 +38,6 @@ public:
     // Redefine this from SymbolistComponent
     inline SymbolistComponent* getPageComponent() override { return this; };
     
-    BaseComponent *getNthSymbolComponent (int n ) { return score_stack[n]; }
-    
-    
-    void addChildToScoreComponent( BaseComponent* c );
-    void removeChildFromScoreComponent( BaseComponent* c , bool delete_it);
-    void clearAllSymbolComponents();
-    
     void addItemToSelection(BaseComponent *c);
     void deselectAllSelected();
     void deleteSelectedSymbols();
@@ -76,9 +69,6 @@ public:
     
     
 private:
-    
-    
-    std::vector< BaseComponent * >      score_stack;
     
     bool                                draw_mode = false;
     LassoComponent< BaseComponent * >   lassoSelector;

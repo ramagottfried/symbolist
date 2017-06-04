@@ -178,7 +178,7 @@ void SymbolistMainComponent::symbolistAPI_setSymbols(int n, odot_bundle **bundle
     const MessageManagerLock mmLock;
     
     // clear the view
-    scoreGUI.clearAllSymbolComponents();
+    scoreGUI.clearAllSubComponents();
     
     // update score
     getScore()->importScoreFromOSC(n, bundle_array);
@@ -200,7 +200,6 @@ void SymbolistMainComponent::executeUpdateCallback(int arg)
 {
     if (myUpdateCallback) { myUpdateCallback( this, arg ); }
 }
-
 
 
 

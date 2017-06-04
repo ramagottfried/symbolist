@@ -19,7 +19,7 @@ public:
     
     void addChildToScoreComponent( BaseComponent* c );
     void removeChildFromScoreComponent( BaseComponent* c , bool delete_it);
-    void clearAllSymbolComponents();
+    void clearAllSubComponents();
     
     
     //void deleteSelectedSymbols();

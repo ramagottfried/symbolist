@@ -32,7 +32,7 @@ void ScoreComponent::removeChildFromScoreComponent( BaseComponent *c , bool dele
 }
 
 /* modifies the view (not the score) */
-void ScoreComponent::clearAllSymbolComponents()
+void ScoreComponent::clearAllSubComponents()
 {
     for ( int i = 0; i < subcomponents.size(); i++ )
     {

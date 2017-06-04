@@ -22,7 +22,7 @@ PageComponent::PageComponent()
 PageComponent::~PageComponent()
 {
     selected_items.deselectAll(); //<< required to avoid callback after deleting components
-    clearAllSymbolComponents();
+    clearAllSubComponents();
 }
 
 

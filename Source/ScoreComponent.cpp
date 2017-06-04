@@ -39,12 +39,10 @@ void ScoreComponent::modifySymbolInScore( BaseComponent* c )
 }
 
 
-/***************************************************/
-/***************************************************/
 
 
 /**************************/
-/* Add/remove operations  */
+/* Add/remove operations on View only */
 /**************************/
 
 /* modifies the view (not the score) */
@@ -78,10 +76,13 @@ void ScoreComponent::clearAllSymbolComponents()
 }
 
 
+/**************************/
+/* Add/remove operations on Score AND View */
+/**************************/
 
 
 /* modifies the view AND the score */
-void ScoreComponent::userAddSymbolAt ( Point<float> p )
+void ScoreComponent::addSymbolAt ( Point<float> p )
 {
     // would be much simpler with a proper copy-contructor..
     // or in Lisp :(
@@ -106,7 +107,7 @@ void ScoreComponent::userAddSymbolAt ( Point<float> p )
 
 
 /* modifies the view AND the score */
-void ScoreComponent::deleteSelectedSymbolComponents()
+void ScoreComponent::deleteSelectedSymbols()
 {
     vector< BaseComponent *> items;
     
@@ -266,7 +267,7 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
     }
     else
     { // => draw mode
-        userAddSymbolAt( event.position ); // positionshoudl be in the score referential : pb in clicked on top of anothe symbol
+        addSymbolAt( event.position ); // positionshoudl be in the score referential : pb in clicked on top of anothe symbol
     }
 }
 

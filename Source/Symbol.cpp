@@ -30,8 +30,15 @@ OSCArgument Symbol::getOSCMessageValue(const int pos)
 OSCArgument Symbol::getOSCMessageValue(const String &address)
 {
     int pos = getOSCMessagePos(address);
-    if (pos >= 0) return getOSCMessageValue(pos);
-    else return OSCArgument(0); // should raise or print an error
+    
+    if (pos >= 0) {
+    
+        return getOSCMessageValue(pos);
+    
+    } else {
+        std::cout << "Error could not find OSC message with address = " << address << std::endl;
+        return OSCArgument(-1); // should raise or print an error
+    }
 }
 
 

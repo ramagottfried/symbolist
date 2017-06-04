@@ -18,21 +18,22 @@ SymbolistMainComponent::SymbolistMainComponent()
     float symbol_size = 30.0;
     
     s1->addOSCMessage( String("/type"), String("circle"));
-    
-    
-    s1->addOSCMessage(String("/w"), symbol_size);
-    s1->addOSCMessage(String("/h"), symbol_size);
     s1->addOSCMessage(String("/x"), float(20.0));
     s1->addOSCMessage(String("/y"), float(20.0));
+    s1->addOSCMessage(String("/w"), symbol_size);
+    s1->addOSCMessage(String("/h"), symbol_size);
+    
+    palette.addPaletteItem(s1);
     
     
     s2->addOSCMessage(String("/type"), String("path"));
+    s2->addOSCMessage(String("/x"), float(20.0));
+    s2->addOSCMessage(String("/y"), float(20.0));
     s2->addOSCMessage(String("/w"), symbol_size);
     s2->addOSCMessage(String("/h"), symbol_size);
     
     OSCMessage x_mess("/x-points");
     OSCMessage y_mess("/y-points");
-    
     x_mess.addFloat32( 0.0 );
     y_mess.addFloat32( 2.0 );
     x_mess.addFloat32( 1.5 );
@@ -43,11 +44,9 @@ SymbolistMainComponent::SymbolistMainComponent()
     y_mess.addFloat32( 0.5 );
     x_mess.addFloat32( 5.0 );
     y_mess.addFloat32( 2.0 );
-    
     s2->addOSCMessage(x_mess);
     s2->addOSCMessage(y_mess);
-
-    palette.addPaletteItem(s1);
+    
     palette.addPaletteItem(s2);
     
     paletteView.buildFromPalette(&palette);
@@ -71,7 +70,6 @@ void SymbolistMainComponent::resized()
 {
     scoreGUI.setBounds( 50, 0, getWidth(), getHeight() );
     paletteView.setBounds( 0, 0, 50, getHeight() );
-    // printf("main resized\n");
 }
 
 
@@ -106,20 +104,20 @@ UI_EditType SymbolistMainComponent::getEditMode()
 
 bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
 {
-    std::cout << "key " << key.getTextDescription() << "\n";
     String desc = key.getTextDescription();
+    std::cout << "key " << desc << "\n";
     if( desc            == "command + G" ) {
         scoreGUI.groupSymbols();
     } else if ( desc    == "backspace" ) {
-        scoreGUI.deleteSelectedSymbolComponents();
+        scoreGUI.deleteSelectedSymbols();
     } else if ( desc    == "C") {
         setCurrentSymbol(0);
     } else if ( desc    == "P") {
         setCurrentSymbol(1);
     }
-    
     return true;
 }
+
 
 void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
 {
@@ -230,24 +228,9 @@ void SymbolistMainComponent::executeUpdateCallback(int arg)
 
 BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(Symbol* s)
 {
-    float x = 0.0;
-    float y = 0.0;
-    float w = 10.0;
-    float h = 10.0;
     
-    // most of thos shpuld be in importFromSymbol methods
-    int xMessagePos = s->getOSCMessagePos("/x");
-    int yMessagePos = s->getOSCMessagePos("/y");
-    int wMessagePos = s->getOSCMessagePos("/w");
-    int hMessagePos = s->getOSCMessagePos("/h");
     int typeMessagePos = s->getOSCMessagePos("/type");
-    
-    if (xMessagePos != -1) x = s->getOSCMessageValue(xMessagePos).getFloat32();
-    if (yMessagePos != -1) y = s->getOSCMessageValue(yMessagePos).getFloat32();
-    if (wMessagePos != -1) w = s->getOSCMessageValue(wMessagePos).getFloat32();
-    if (hMessagePos != -1) h = s->getOSCMessageValue(hMessagePos).getFloat32();
-    
-    
+
     if ( typeMessagePos == -1 ) {
         
         cout << "Could not find '/type' message in OSC Bundle.. (size=" << s->getOSCBundle().size() << ")" << endl;
@@ -256,6 +239,12 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(Symbol* s)
     } else {
         
         String typeStr = s->getOSCMessageValue(typeMessagePos).getString();
+        
+        float x = s->getOSCMessageValue("/x").getFloat32();
+        float y = s->getOSCMessageValue("/y").getFloat32();;
+        float w = s->getOSCMessageValue("/w").getFloat32();
+        float h = s->getOSCMessageValue("/h").getFloat32();
+        
         BaseComponent *c;
 
         if (typeStr.equalsIgnoreCase(String("circle"))) {
@@ -271,8 +260,6 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(Symbol* s)
         return c;
     }
 }
-
-//
 
 
 //=================================

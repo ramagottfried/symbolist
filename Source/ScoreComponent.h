@@ -35,12 +35,13 @@ public:
 
     void addChildToScoreComponent( BaseComponent* c );
     void removeChildFromScoreComponent( BaseComponent* c );
-    void deleteSelectedSymbolComponents();
     void clearAllSymbolComponents();
+
 
     void addItemToSelection(BaseComponent *c);
     void deselectAllSelected();
-
+    void deleteSelectedSymbols();
+    void addSymbolAt ( Point<float> p );
     
     // call this when the score has been modified
     // in order to notify and update the host environment
@@ -48,8 +49,6 @@ public:
     void removeSymbolFromScore ( BaseComponent* c );
     void modifySymbolInScore ( BaseComponent* c );
     
-    // from mouse down
-    void userAddSymbolAt ( Point<float> p );
     
     void groupSymbols();
 

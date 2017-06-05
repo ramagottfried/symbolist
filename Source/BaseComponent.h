@@ -77,7 +77,7 @@ protected:
     std::vector<BaseComponent*>     subcomponents;
     
     // parameters
-    float           strokeWeight = 1;
+    float           strokeWeight = 2;
     Colour          sym_color = Colours::black;
     // interaction
     Point<float>    m_down;

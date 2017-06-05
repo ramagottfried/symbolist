@@ -3,7 +3,7 @@
 #include "ScoreComponent.h"
 
 
-PathComponent::PathComponent( Point<float> startPT ) : BaseComponent("path", startPT), strokeType(1.0)
+PathComponent::PathComponent( Point<float> startPT ) : BaseComponent("path", startPT), strokeType( strokeWeight )
 {
     setComponentID ( "Path" );
 }
@@ -121,6 +121,7 @@ void PathComponent::symbol_paint ( Graphics& g )
     //float dashes[] = {1.0, 2.0};
     //strokeType.createDashedStroke(p, p, dashes, 2 );
    
+    strokeType.setStrokeThickness( strokeWeight );
     g.strokePath(m_path, strokeType );
     
 }
@@ -241,19 +242,15 @@ void PathComponent::mouseDrag( const MouseEvent& event )
         p.startNewSubPath( zeroPt );
         Point<float> endPt = m_drag - m_down;
         
-        
         p.cubicTo( endPt * 0.3 , endPt * 0.6, endPt );
             
         Rectangle<float> pathBounds = p.getBounds();
-        printRect( pathBounds, "path bounds");
+//        printRect( pathBounds, "path bounds");
         
         setBounds( m_down.getX() + pathBounds.getX(), m_down.getY() + pathBounds.getY(), pathBounds.getWidth(), pathBounds.getHeight() );
-            
-        // printf("test %f %f %f %f\n", m_down.getX() + pathBounds.getX(), m_down.getY() + pathBounds.getY(), pathBounds.getWidth(), pathBounds.getHeight() );
         
         m_path.swapWithPath( p );
         //printPath( m_path );
-        
         
     }
 }

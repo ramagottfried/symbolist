@@ -51,6 +51,7 @@ public:
         setComponentID("handle");
         float halfsize = m_size * 0.5;
         setBounds( x-halfsize, y-halfsize, m_size, m_size);
+        strokeWeight = 1;
     }
     
     ~PathHandle()

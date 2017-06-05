@@ -269,7 +269,6 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
             } else {
                 // no-shitf = single selection
                 // selected_items.deselectAll();
-                printf("check\n");
                 selected_items.addToSelection( c );
             }
         }

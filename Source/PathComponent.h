@@ -4,16 +4,25 @@
 
 class PathHandle;
 
+
 class PathComponent : public BaseComponent
 {
 public:
-    PathComponent();
     
-    PathComponent( Point<float> startPT );
+    PathComponent(  float x, float y,
+                    float w = 10, float h = 10,
+                    float stroke = 2,
+                    Colour color = Colours::black ) :
+        BaseComponent("path" , x , y , w , h, stroke, color ),
+        strokeType(1.0)
+        {};
+    
     ~PathComponent();
     
     void printPath( Path p );
-    int addSymbolMessages( String base_address) override;
+    
+    int addSymbolMessages(const String &base_address) override;
+    
     void importFromSymbol() override;
 
     void addHandle( float x, float y, int index);
@@ -45,7 +54,7 @@ private:
 class PathHandle : public BaseComponent
 {
 public:
-    PathHandle( float x, float y, PathComponent *pc ) : BaseComponent("UI_only", Point<float>(x, y) )
+    PathHandle( float x, float y, PathComponent *pc ) : BaseComponent("UI_only", x, y )
     {
         m_path = pc;
         setComponentID("handle");
@@ -75,7 +84,7 @@ public:
     {
         
         // not sure why I need to make this relative, it was jumping back and forth between being relative to the score and then to the component. is it possibe that it has an extra mouselistener somewhere?
-        Point<int> draggy = event.getEventRelativeTo( getScoreComponent() ).getPosition();
+        Point<int> draggy = event.getEventRelativeTo( getPageComponent() ).getPosition();
         setTopLeftPosition ( draggy - (m_down).toInt() );
         m_path->updatePathPoints();
     }

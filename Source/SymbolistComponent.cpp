@@ -11,12 +11,12 @@
 
 // recursive methods for easy access to the top-level sore and main component
 // from anywhere in the GUI
-// redefined in ScoreComponent and MAincomponent
-SymbolistComponent* SymbolistComponent::getScoreComponent()
+// redefined in PageComponent and MAincomponent
+SymbolistComponent* SymbolistComponent::getPageComponent()
 {
     auto p = static_cast<SymbolistComponent*>( getParentComponent() );
     if (p == NULL) return p;
-    else return p->getScoreComponent(); // SymbolistMainComponent and ScoreComponent will return the actual ScoreComponent
+    else return p->getPageComponent(); // SymbolistMainComponent and PageComponent will return the actual PageComponent
 }
 
 

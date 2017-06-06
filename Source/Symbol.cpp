@@ -8,6 +8,16 @@
 
 #include "Symbol.h"
 
+Symbol::Symbol () : Symbol ("undefined", 0.0, 0.0, 10.0, 10.0) {};
+
+Symbol::Symbol (const String & type, float x, float y, float w, float h)
+{
+    addOSCMessage(String("/type"), type);
+    addOSCMessage(String("/x"), x);
+    addOSCMessage(String("/y"), y);
+    addOSCMessage(String("/w"), w);
+    addOSCMessage(String("/h"), h);
+}
 
 int Symbol::getOSCMessagePos(const String &address)
 {

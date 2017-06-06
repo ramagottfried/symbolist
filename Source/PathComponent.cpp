@@ -1,14 +1,15 @@
 
 #include "PathComponent.h"
-#include "ScoreComponent.h"
+#include "PageComponent.h"
 
-
+/*
 PathComponent::PathComponent( Point<float> startPT ) : BaseComponent("path", startPT), strokeType( strokeWeight )
 {
     setComponentID ( "Path" );
 }
 
 PathComponent::PathComponent() : PathComponent( Point<float>(0,0) ) {}
+*/
 
 PathComponent::~PathComponent()
 {
@@ -52,7 +53,7 @@ void PathComponent::printPath( Path p )
  * Can be overriden / completed by class-specific messages
  *****************/
 
-int PathComponent::addSymbolMessages( String base_address)
+int PathComponent::addSymbolMessages(const String &base_address)
 {
     // adds the basic messages
     int messages_added = BaseComponent::addSymbolMessages(base_address);
@@ -135,9 +136,9 @@ void PathComponent::symbol_paint ( Graphics& g )
 void PathComponent::addHandle( float x, float y, int index)
 {
     PathHandle *h = new PathHandle( x + getX(), y + getY(), this );
-    auto *sc = static_cast<ScoreComponent*>( getScoreComponent() ) ;
-    sc->addAndMakeVisible( h );
-    sc->addItemToSelection( h );
+    auto *p = static_cast<PageComponent*>( getPageComponent() ) ;
+    p->addAndMakeVisible( h );
+    p->addItemToSelection( h );
     path_handles.emplace_back( h );
 }
 
@@ -172,7 +173,7 @@ void PathComponent::makeHandles()
 
 void PathComponent::removeHandles()
 {
-    auto *sc = getScoreComponent();
+    auto *sc = getPageComponent();
 
     for ( int i = 0; i < path_handles.size(); i++ )
     {

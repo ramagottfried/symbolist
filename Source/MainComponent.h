@@ -5,14 +5,14 @@
 
 #include "Score.h"
 #include "Symbol.h"
-#include "ScoreComponent.h"
+#include "PageComponent.h"
 #include "PaletteComponent.h"
 #
 
 /*
  * SymbolistMainComponent is the main controller of the application
- * managing the connevtion between data (score) and visualization/editing.
- * It is also the node and pointyer for interaction with the library
+ * managing the connection between data (score) and visualization/editing.
+ * It is also the node and pointer for interaction with the library
  */
 
 class SymbolistMainComponent : public SymbolistComponent, public KeyListener
@@ -45,11 +45,11 @@ public:
     void executeCloseCallback();
     
     // create a Symbol from c and add it to parent Windows's score
-    void handleComponentAdded ( BaseComponent* c ) ;
+    void handleComponentAdded ( BaseComponent* c , bool notify = true) ;
     // removes the Symbol corresponding to c from parent Windows's score
-    void handleComponentRemoved ( BaseComponent* c ) ;
+    void handleComponentRemoved ( BaseComponent* c , bool notify = true) ;
     // modified the Symbol corresponding to c from parent Windows's score
-    void handleComponentModified ( BaseComponent* c ) ;
+    void handleComponentModified ( BaseComponent* c , bool notify = true) ;
     
     
     /*********************************************
@@ -72,7 +72,7 @@ public:
     
     
     // Redefine these from SymbolistComponent
-    inline SymbolistComponent* getScoreComponent() override { return &scoreGUI; }
+    inline SymbolistComponent* getPageComponent() override { return &scoreGUI; }
     inline SymbolistComponent* getMainComponent() override { return this; }
     
     // temporary 
@@ -85,7 +85,7 @@ private:
     Score score ;
     inline Score* getScore() { return &score; }
     // the score view
-    ScoreComponent scoreGUI;
+    PageComponent scoreGUI;
    
     // the palette is an array of symbol 'templates'
     //OwnedArray<BaseComponent> palette;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "PrimitiveIncludes.h"
+#include "BaseComponent.h"
 #include "SymbolistComponent.h"
 #include "Score.h"
 

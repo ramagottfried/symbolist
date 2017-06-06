@@ -1,7 +1,8 @@
 
 #include "MainComponent.h"
 #include "MainWindow.h"
-#include "ScoreComponent.h"
+#include "PageComponent.h"
+#include "SymbolGroupComponent.h"
 
 
 SymbolistMainComponent::SymbolistMainComponent()
@@ -12,26 +13,12 @@ SymbolistMainComponent::SymbolistMainComponent()
     setSize (600, 400);
     
     // create two default items
-    Symbol* s1 = new Symbol();
-    Symbol* s2 = new Symbol();
-    
     float symbol_size = 30.0;
     
-    s1->addOSCMessage( String("/type"), String("circle"));
-    s1->addOSCMessage(String("/x"), float(20.0));
-    s1->addOSCMessage(String("/y"), float(20.0));
-    s1->addOSCMessage(String("/w"), symbol_size);
-    s1->addOSCMessage(String("/h"), symbol_size);
-    
+    Symbol* s1 = new Symbol("circle", 20.0, 20.0, symbol_size, symbol_size);
     palette.addPaletteItem(s1);
     
-    
-    s2->addOSCMessage(String("/type"), String("path"));
-    s2->addOSCMessage(String("/x"), float(20.0));
-    s2->addOSCMessage(String("/y"), float(20.0));
-    s2->addOSCMessage(String("/w"), symbol_size);
-    s2->addOSCMessage(String("/h"), symbol_size);
-    
+    Symbol* s2 = new Symbol("path", 20.0, 20.0, symbol_size, symbol_size);
     OSCMessage x_mess("/x-points");
     OSCMessage y_mess("/y-points");
     x_mess.addFloat32( 0.0 );
@@ -46,7 +33,6 @@ SymbolistMainComponent::SymbolistMainComponent()
     y_mess.addFloat32( 2.0 );
     s2->addOSCMessage(x_mess);
     s2->addOSCMessage(y_mess);
-    
     palette.addPaletteItem(s2);
     
     paletteView.buildFromPalette(&palette);
@@ -192,7 +178,7 @@ void SymbolistMainComponent::symbolistAPI_setSymbols(int n, odot_bundle **bundle
     const MessageManagerLock mmLock;
     
     // clear the view
-    scoreGUI.clearAllSymbolComponents();
+    scoreGUI.clearAllSubComponents();
     
     // update score
     getScore()->importScoreFromOSC(n, bundle_array);
@@ -214,7 +200,6 @@ void SymbolistMainComponent::executeUpdateCallback(int arg)
 {
     if (myUpdateCallback) { myUpdateCallback( this, arg ); }
 }
-
 
 
 
@@ -250,9 +235,11 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(Symbol* s)
         if (typeStr.equalsIgnoreCase(String("circle"))) {
             c = new CircleComponent( x, y, w, h );
         } else if (typeStr.equalsIgnoreCase(String("path"))) {
-            c = new PathComponent( Point<float>(x, y) );
+            c = new PathComponent( x, y );
+        } else if (typeStr.equalsIgnoreCase(String("group"))) {
+            c = new SymbolGroupComponent( x, y, w, h );
         } else {
-            c = new BaseComponent(typeStr, Point<float>(x, y) );
+            c = new BaseComponent(typeStr, x, y );
         }
         
         c->setSymbol(s);
@@ -276,22 +263,22 @@ void SymbolistMainComponent::updateComponentSymbol( BaseComponent *c )
  * CALLBACKS FROM USER ACTIONS
  ********************************/
 
-void SymbolistMainComponent::handleComponentAdded ( BaseComponent* c )
+void SymbolistMainComponent::handleComponentAdded ( BaseComponent* c , bool notify )
 {
     score.addSymbol( c->getSymbol() );
-    executeUpdateCallback( -1 );
+    if ( notify ) executeUpdateCallback( -1 );
 }
 
-void SymbolistMainComponent::handleComponentRemoved ( BaseComponent* c )
+void SymbolistMainComponent::handleComponentRemoved ( BaseComponent* c , bool notify )
 {
     score.removeSymbol( c->getSymbol() );
-    executeUpdateCallback( -1 );
+    if ( notify )executeUpdateCallback( -1 );
 }
 
-void SymbolistMainComponent::handleComponentModified ( BaseComponent* c )
+void SymbolistMainComponent::handleComponentModified ( BaseComponent* c , bool notify )
 {
     updateComponentSymbol( c );
-    executeUpdateCallback( score.getSymbolPosition( c->getSymbol() ) );
+    if ( notify ) executeUpdateCallback( score.getSymbolPosition( c->getSymbol() ) );
 }
 
 

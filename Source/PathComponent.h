@@ -15,9 +15,13 @@ public:
                     Colour color = Colours::black ) :
         BaseComponent("path" , x , y , w , h, stroke, color ),
         strokeType(1.0)
-        {};
+    {}
     
-    ~PathComponent();
+    ~PathComponent()
+    {
+        printf("freeing path %p\n", this);
+        removeHandles();
+    }
     
     void printPath( Path p );
     
@@ -33,8 +37,10 @@ public:
     void deselectComponent () override;
     
     void symbol_paint ( Graphics& g ) override;
-    
+
     void mouseDown( const MouseEvent& event ) override;
+    
+    void mouseMove( const MouseEvent& event ) override;
     void mouseDrag( const MouseEvent& event ) override;
     void mouseUp( const MouseEvent& event ) override;
     
@@ -43,6 +49,8 @@ private:
     Point<float>    m_drag;
     PathStrokeType  strokeType;
     Path            m_path;
+    Path            m_preview_path;
+
     
     std::vector<PathHandle*> path_handles;
     
@@ -51,16 +59,17 @@ private:
 };
 
 
-class PathHandle : public BaseComponent
+class PathHandle : public Component
 {
 public:
-    PathHandle( float x, float y, PathComponent *pc ) : BaseComponent("UI_only", x, y )
+    PathHandle( float x, float y, PathComponent *pc) : symbol_type("UI_only")
     {
         m_path = pc;
         setComponentID("handle");
         float halfsize = m_size * 0.5;
         setBounds( x-halfsize, y-halfsize, m_size, m_size);
-        strokeWeight = 1;
+        std::cout << "new " << symbol_type << " " << this << "\n";
+
     }
     
     ~PathHandle()
@@ -68,23 +77,23 @@ public:
         std::cout << "freeing " << symbol_type << " " << this << "\n";
     }
     
-    void symbol_paint ( Graphics& g ) override
+    void paint ( Graphics& g ) override
     {
-        g.setColour ( current_color );
-        const Rectangle<float> bounds = getLocalBounds().toFloat().reduced( strokeWeight );
-        g.drawRect ( bounds, (float) strokeWeight );
+        g.setColour ( Colours::cornflowerblue );
+        const Rectangle<float> bounds = getLocalBounds().toFloat().reduced( m_strokeweight );
+        g.drawRect ( bounds, (float) m_strokeweight );
     }
     
     void mouseDown( const MouseEvent& event ) override
     {
-        BaseComponent::mouseDown(event);
+        m_down = event.position;
     }
     
     void mouseDrag( const MouseEvent& event ) override
     {
         
         // not sure why I need to make this relative, it was jumping back and forth between being relative to the score and then to the component. is it possibe that it has an extra mouselistener somewhere?
-        Point<int> draggy = event.getEventRelativeTo( getPageComponent() ).getPosition();
+        Point<int> draggy = event.getEventRelativeTo(  m_path->getParentComponent() ).getPosition();
         setTopLeftPosition ( draggy - (m_down).toInt() );
         m_path->updatePathPoints();
     }
@@ -92,9 +101,13 @@ public:
     {}
     
 private:
-    
+    Point<float>    m_down;
+
     PathComponent   *m_path;
     float           m_size = 10;
+    float           m_strokeweight = 1;
+    String          symbol_type;
+
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PathHandle)

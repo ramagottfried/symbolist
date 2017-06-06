@@ -264,28 +264,13 @@ void PageComponent::mouseDown ( const MouseEvent& event )
     UI_EditType ed = getMainEditMode();
     
     BaseComponent *c = (BaseComponent *) event.eventComponent;
-    SymbolistMainComponent* smc = (SymbolistMainComponent *) getMainComponent();
+//    SymbolistMainComponent* smc = (SymbolistMainComponent *) getMainComponent();
     
     if( ed == edit )
     {
         if (event.eventComponent != this ) // we're on a symbol
         {
-            if ( smc->shift_down )
-            {
-                // shift-down performs multiple selection
-                if ( selected_items.isSelected( c ) )
-                {   // remove if already in
-                    selected_items.deselect( c );
-                }
-                else
-                {   // add otherwise
-                    selected_items.addToSelection( c );
-                }
-            } else {
-                // no-shitf = single selection
-                // selected_items.deselectAll();
-                selected_items.addToSelection( c );
-            }
+            selected_items.addToSelectionBasedOnModifiers( c, event.mods );
         }
         else
         {   // we're on the score
@@ -328,7 +313,13 @@ void PageComponent::mouseUp ( const MouseEvent& event )
 
 
 void PageComponent::resized () {}
-void PageComponent::mouseMove ( const MouseEvent& event ) {}
+void PageComponent::mouseMove ( const MouseEvent& event )
+{
+    if( getMainEditMode() == draw )
+    {
+        
+    }
+}
 
 
 /************************/

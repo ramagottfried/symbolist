@@ -10,7 +10,8 @@ public:
                     float w = 10, float h = 10,
                     float stroke = 2,
                     Colour color = Colours::black ) :
-        BaseComponent("circle" , x - (w * .5), y - (h * .5), w , h, stroke, color ) {};
+        BaseComponent("circle" , x - (w * .5), y - (h * .5), w , h, stroke, color )
+    {}
 
     
     ~CircleComponent()

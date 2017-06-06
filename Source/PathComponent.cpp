@@ -2,21 +2,6 @@
 #include "PathComponent.h"
 #include "PageComponent.h"
 
-/*
-PathComponent::PathComponent( Point<float> startPT ) : BaseComponent("path", startPT), strokeType( strokeWeight )
-{
-    setComponentID ( "Path" );
-}
-
-PathComponent::PathComponent() : PathComponent( Point<float>(0,0) ) {}
-*/
-
-PathComponent::~PathComponent()
-{
-    printf("freeing path %p\n", this);
-    removeHandles();
-}
-
 
 void PathComponent::printPath( Path p )
 {
@@ -125,6 +110,21 @@ void PathComponent::symbol_paint ( Graphics& g )
     strokeType.setStrokeThickness( strokeWeight );
     g.strokePath(m_path, strokeType );
     
+    
+    for (auto it = path_handles.begin(); it != path_handles.end(); it++ )
+    {
+        Point<float> start = getLocalPoint( getParentComponent(), (*it++)->getBounds().getCentre().toFloat() );
+        Point<float> end = getLocalPoint( getParentComponent(), (*it)->getBounds().getCentre().toFloat() );
+        Line<float> linea( start, end );
+        g.drawLine( linea, 1 );
+    }
+    
+    if( !m_preview_path.isEmpty() && getMainEditMode() == draw && is_selected )
+    {
+        g.setColour( Colours::blue );
+        g.strokePath(m_preview_path, strokeType );
+    }
+    
 }
 
 
@@ -138,13 +138,16 @@ void PathComponent::addHandle( float x, float y, int index)
     PathHandle *h = new PathHandle( x + getX(), y + getY(), this );
     auto *p = static_cast<PageComponent*>( getPageComponent() ) ;
     p->addAndMakeVisible( h );
-    p->addItemToSelection( h );
+//    p->addItemToSelection( h );
     path_handles.emplace_back( h );
 }
 
 
 void PathComponent::makeHandles()
 {
+    
+    std::cout << is_selected << " " << (path_handles.size() == 0) << "\n";
+    
     if( is_selected && path_handles.size() == 0 )
     {
         //        ScoreComponent *sc = static_cast<ScoreComponent*>( getScoreComponent() );
@@ -174,8 +177,8 @@ void PathComponent::makeHandles()
 void PathComponent::removeHandles()
 {
     auto *sc = getPageComponent();
-
-    for ( int i = 0; i < path_handles.size(); i++ )
+    
+    for ( size_t i = 0; i < path_handles.size(); i++ )
     {
         if( sc )
             sc->removeChildComponent( path_handles[i] );
@@ -189,20 +192,19 @@ void PathComponent::updatePathPoints()
 {
     Path p;
     auto handle = path_handles.begin();
-    Point<float> offset( (*handle)->getWidth() / 2., (*handle)->getHeight() / 2. );
 
     Path::Iterator it( m_path );
     while( it.next() )
     {
         if (it.elementType == it.startNewSubPath)
         {
-            p.startNewSubPath( (*(handle++))->getPosition().toFloat() + offset);
+            p.startNewSubPath( (*(handle++))->getBounds().getCentre().toFloat() );
         }
         else if (it.elementType == it.cubicTo)
         {
-            p.cubicTo((*(handle++))->getPosition().toFloat() + offset,
-                      (*(handle++))->getPosition().toFloat() + offset,
-                      (*(handle++))->getPosition().toFloat() + offset );
+            p.cubicTo((*(handle++))->getBounds().getCentre().toFloat(),
+                      (*(handle++))->getBounds().getCentre().toFloat(),
+                      (*(handle++))->getBounds().getCentre().toFloat() );
         }
     }
     
@@ -225,14 +227,35 @@ void PathComponent::deselectComponent()
 void PathComponent::mouseDown( const MouseEvent& event )
 {
     BaseComponent::mouseDown(event);
+    std::cout << is_selected << " " << (path_handles.size() == 0) << "\n";
+
 }
 
+void PathComponent::mouseMove( const MouseEvent& event )
+{
+    /*
+    printf("check mouse move\n");
+    if( getMainEditMode() == draw )
+    {
+        m_preview_path.clear();
+        
+        m_preview_path.startNewSubPath( m_path.getCurrentPosition() );
+        m_preview_path.cubicTo( event.position * 0.3 , event.position * 0.6, event.position );
+
+        Rectangle<int> pathBounds = m_preview_path.getBounds().toNearestInt();
+
+        setBounds( pathBounds.getUnion( getBounds() ) );
+        printRect( pathBounds.getUnion( getBounds() ) );
+    }
+     */
+}
 
 void PathComponent::mouseDrag( const MouseEvent& event )
 {
     BaseComponent::mouseDrag(event);
     
-    if( is_being_edited )
+    UI_EditType edit_mode = getMainEditMode();
+    if(  edit_mode == draw )
     {
         m_drag = event.position;
         
@@ -246,13 +269,17 @@ void PathComponent::mouseDrag( const MouseEvent& event )
         p.cubicTo( endPt * 0.3 , endPt * 0.6, endPt );
             
         Rectangle<float> pathBounds = p.getBounds();
-//        printRect( pathBounds, "path bounds");
-        
         setBounds( m_down.getX() + pathBounds.getX(), m_down.getY() + pathBounds.getY(), pathBounds.getWidth(), pathBounds.getHeight() );
         
         m_path.swapWithPath( p );
-        //printPath( m_path );
         
+    }
+    else if ( edit_mode == edit && path_handles.size() > 0 )
+    {
+        for (auto h : path_handles )
+        {
+            h->setTopLeftPosition ( h->getPosition() + (event.position - m_down).toInt() );
+        }
     }
 }
 

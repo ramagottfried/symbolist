@@ -19,7 +19,7 @@ Symbol::Symbol (const String & type, float x, float y, float w, float h)
     addOSCMessage(String("/h"), h);
 }
 
-int Symbol::getOSCMessagePos(const String &address)
+int Symbol::getOSCMessagePos(const String &address) const
 {
     for (int i = 0; (i < osc_bundle.size()) ; i++)
     {
@@ -31,13 +31,13 @@ int Symbol::getOSCMessagePos(const String &address)
     return -1;
 }
 
-OSCArgument Symbol::getOSCMessageValue(const int pos)
+OSCArgument Symbol::getOSCMessageValue(const int pos) const
 {
     OSCBundle::Element e = osc_bundle[pos];
     return e.getMessage()[0];
 }
 
-OSCArgument Symbol::getOSCMessageValue(const String &address)
+OSCArgument Symbol::getOSCMessageValue(const String &address) const
 {
     int pos = getOSCMessagePos(address);
     

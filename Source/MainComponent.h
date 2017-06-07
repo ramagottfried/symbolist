@@ -68,7 +68,7 @@ public:
     void setCurrentSymbol(int n);
     int getCurrentSymbolIndex();
     Symbol* getCurrentSymbol();
-    static BaseComponent* makeComponentFromSymbol(Symbol *s);
+    static BaseComponent* makeComponentFromSymbol(const Symbol *s);
     
     
     // Redefine these from SymbolistComponent

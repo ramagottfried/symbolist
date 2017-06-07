@@ -73,9 +73,7 @@ private:
     bool                                draw_mode = false;
     LassoComponent< BaseComponent * >   lassoSelector;
     ScoreSelectedItemSet                selected_items;
-    std::vector< BaseComponent * >      selected_items_2;
-    
-    
+        
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PageComponent)
 };

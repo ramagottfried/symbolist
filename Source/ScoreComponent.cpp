@@ -2,34 +2,39 @@
 
 #include "ScoreComponent.h"
 
+/*****************************
+ * Management of sucomponents
+ * Add/remove operations apply on views only
+ *****************************/
 
-/**************************/
-/* Add/remove operations on View only */
-/**************************/
-
-/* modifies the view (not the score) */
-void ScoreComponent::addChildToScoreComponent( BaseComponent *c )
+size_t ScoreComponent::getNumSubcomponents()
 {
-    addAndMakeVisible ( c );
-    c->addMouseListener(this, false);
-    subcomponents.emplace_back ( c );
-    
-    // the default Component ID is type_posInScore
-    c->setComponentID(String(String(c->getSymbolType()) += String("_") += String(subcomponents.size())));
-    
-    // selected_items.addToSelection( c );
-    // selected_items.addChangeListener(c);
+    return subcomponents.size() ;
 }
 
-void ScoreComponent::removeChildFromScoreComponent( BaseComponent *c , bool delete_it)
+BaseComponent* ScoreComponent::getSubcomponent( int i )
+{
+    return subcomponents.at(i) ;
+}
+
+void ScoreComponent::addSubcomponent( BaseComponent *c )
+{
+    subcomponents.emplace_back( c ) ;
+    
+    c->setComponentID(String(String(c->getSymbolType()) += String("_") += String(subcomponents.size())));
+
+    ScoreComponent::addAndMakeVisible( c );
+    c->addMouseListener(this, false);
+}
+
+void ScoreComponent::removeSubcomponent( BaseComponent *c , bool delete_it)
 {
     removeChildComponent(c);
-    subcomponents.erase ( std::remove(subcomponents.begin(),subcomponents.end(), c) ,
-                       subcomponents.end() );
-    if (delete_it ) delete c;
+    subcomponents.erase ( std::remove(subcomponents.begin(),subcomponents.end(), c) , subcomponents.end() );
+    if ( delete_it ) delete c;
 }
 
-void ScoreComponent::clearAllSubComponents()
+void ScoreComponent::clearAllSubcomponents()
 {
     for ( int i = 0; i < subcomponents.size(); i++ )
     {

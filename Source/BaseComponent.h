@@ -25,13 +25,13 @@ public:
     
     ~BaseComponent();
     
-    // main operations in score management
-    inline void setSymbol(Symbol *s){ score_symbol = s; };
-    inline Symbol* getSymbol(){ return score_symbol; };
     inline String getSymbolType(){ return symbol_type ; };
     
-    bool isTopLevelComponent();
+    void setSymbol(Symbol s);
+    Symbol* getSymbol();
+
     
+    bool isTopLevelComponent();
     virtual int addSymbolMessages( const String &base_address);
     virtual void importFromSymbol();
 

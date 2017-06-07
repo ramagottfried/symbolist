@@ -22,7 +22,7 @@ PageComponent::PageComponent()
 PageComponent::~PageComponent()
 {
     selected_items.deselectAll(); //<< required to avoid callback after deleting components
-    clearAllSubComponents();
+    clearAllSubcomponents();
 }
 
 
@@ -60,13 +60,13 @@ void PageComponent::addSymbolAt ( Point<float> p )
     const Symbol* symbol_template = ((SymbolistMainComponent*) getMainComponent())->getCurrentSymbol();
     
     // create a new component from the cureent selected symbol of the thesis
-    Symbol* s = new Symbol( *symbol_template ) ;
-    BaseComponent *obj = SymbolistMainComponent::makeComponentFromSymbol( s );
+    //Symbol* s = new Symbol( *symbol_template ) ;
+    BaseComponent *obj = SymbolistMainComponent::makeComponentFromSymbol( symbol_template );
     //set the symbol at the click position
     obj->setCentrePosition( p.getX(), p.getY() );
     
     // add component in the view
-    addChildToScoreComponent( obj );
+    addSubcomponent( obj );
     
     // add the created component's symbol in the score
     addSymbolToScore( obj );
@@ -93,7 +93,7 @@ void PageComponent::deleteSelectedSymbols()
     {
         if( c->getSymbolType() != "UI_only") // UI only elements are bound to a component
         {
-            removeChildFromScoreComponent(c, true);
+            removeSubcomponent(c, true);
             removeSymbolFromScore(c);
         }
     }
@@ -135,73 +135,36 @@ void PageComponent::groupSymbols()
         
         // create a list from selected items
         vector< BaseComponent *> items;
-        for( BaseComponent *c : selected_items ) // there's probably a better way to copy a vector's contents :)
-        {
-            items.push_back(c);
-        }
+        for( BaseComponent *c : selected_items ) { items.push_back(c); }
         selected_items.deselectAll();
         
-        for( auto it = items.begin(); it != items.end(); it++ )
+        for ( auto it = items.begin(); it != items.end(); it++ )
         {
-            std::cout << "grouping: " << (*it)->getComponentID() << std::endl;
+            BaseComponent *c = *it ;
+            std::cout << "grouping: " << c->getComponentID() << std::endl;
             
-            removeChildFromScoreComponent( *it, false );
-            removeSymbolFromScore(*it);
+            removeSubcomponent( c , false );
+            if ( c->isTopLevelComponent() ) { removeSymbolFromScore( c ); }
             
             // sets the position now relative to the group
-            Rectangle<int> compBounds = (*it)->getBounds();
+            Rectangle<int> compBounds = c->getBounds();
+            c->setBounds(compBounds.getX() - groupBounds.getX(),
+                         compBounds.getY() - groupBounds.getY(),
+                         compBounds.getWidth(), compBounds.getHeight());
             
-            (*it)->setBounds(compBounds.getX() - groupBounds.getX(),
-                             compBounds.getY() - groupBounds.getY(),
-                             compBounds.getWidth(), compBounds.getHeight());
-            
-            group->addSubcomponent( *it );
+            group->addSubcomponent( c );
         }
         
-        addChildToScoreComponent( group );
-        addSymbolToScore( group );
+        addSubcomponent( group );
+        if ( group->isTopLevelComponent() ) { addSymbolToScore( group ); }
+        
         group->selectComponent();
         
     }
     
 }
 
-/*
- Rectangle<int> groupBounds( minx, miny, maxx-minx, maxy-miny );
- BaseComponent *group = new BaseComponent( "group", Point<float>(minx, miny) );
- group->setBounds( groupBounds );
- 
- // create a list from selected items
- vector< BaseComponent *> items;
- for( BaseComponent *c : selected_items ) // there's probably a better way to copy a vector's contents :)
- {
- items.push_back(c);
- }
- selected_items.deselectAll();
- 
- for( auto it = items.begin(); it != items.end(); it++ )
- {
- std::cout << "grouping: " << (*it)->getComponentID() << std::endl;
- 
- removeChildFromScoreComponent( *it, false );
- removeSymbolFromScore(*it);
- 
- // sets the position now relative to the group
- Rectangle<int> compBounds = (*it)->getBounds();
- 
- (*it)->setBounds(   compBounds.getX() - groupBounds.getX(),
- compBounds.getY() - groupBounds.getY(),
- compBounds.getWidth(), compBounds.getHeight() );
- 
- group->addSubcomponent( *it );
- group->addAndMakeVisible( *it );
- }
- 
- addChildToScoreComponent( group );
- addSymbolToScore( group );
- group->selectComponent();
- 
- */
+
 
 /************************/
 /* Selection / "Lasso"  */
@@ -329,9 +292,7 @@ void PageComponent::mouseMove ( const MouseEvent& event )
 void PageComponent::paint (Graphics& g)
 {
     g.fillAll ( Colours::white );
-    //    g.setColour( Colours::black );
-    //    g.drawRect( getLocalBounds() );
-    
+
     g.setFont (Font (16.0f));
     g.setColour (Colours::grey);
     

@@ -178,14 +178,14 @@ void SymbolistMainComponent::symbolistAPI_setSymbols(int n, odot_bundle **bundle
     const MessageManagerLock mmLock;
     
     // clear the view
-    scoreGUI.clearAllSubComponents();
+    scoreGUI.clearAllSubcomponents();
     
     // update score
     getScore()->importScoreFromOSC(n, bundle_array);
     
     // recreate and add components from score symbols
     for (int i = 0; i < score.getSize(); i++) {
-        scoreGUI.addChildToScoreComponent( makeComponentFromSymbol( score.getSymbol(i) ) ) ;
+        scoreGUI.addSubcomponent( makeComponentFromSymbol( score.getSymbol(i) ) ) ;
     }
 }
 
@@ -211,7 +211,7 @@ void SymbolistMainComponent::executeUpdateCallback(int arg)
 // => MODIFY VIEW FROM DATA
 //=================================
 
-BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(Symbol* s)
+BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
 {
     
     int typeMessagePos = s->getOSCMessagePos("/type");

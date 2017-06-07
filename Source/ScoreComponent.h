@@ -17,10 +17,11 @@ public:
     ScoreComponent() = default;
     ~ScoreComponent() = default;
     
-    void addChildToScoreComponent( BaseComponent* c );
-    void removeChildFromScoreComponent( BaseComponent* c , bool delete_it);
-    void clearAllSubComponents();
-    
+    size_t          getNumSubcomponents( );
+    BaseComponent*  getSubcomponent( int i );
+    void            addSubcomponent( BaseComponent *c );
+    void            removeSubcomponent( BaseComponent* c , bool delete_it);
+    void            clearAllSubcomponents();
     
     //void deleteSelectedSymbols();
     //void addSymbolAt ( Point<float> p );

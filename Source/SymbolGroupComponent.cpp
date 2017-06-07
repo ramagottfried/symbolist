@@ -8,25 +8,20 @@
 
 #include "SymbolGroupComponent.h"
 
-/******************
- * Management of sucomponents
- *****************/
 
-void SymbolGroupComponent::addSubcomponent( BaseComponent *c )
+
+void SymbolGroupComponent::paint ( Graphics& g )
 {
-    subcomponents.emplace_back( c ) ;
-    ScoreComponent::addAndMakeVisible( c );
+    g.setColour( current_color );
+    const Rectangle<int> b = ((BaseComponent*) this)->getLocalBounds();
+    const float dashLength[2] = {3.0 , 6.0};
+    int ndashLengths = 2;
+    g.drawDashedLine(Line<float>( b.getX(), b.getY(), b.getX() + b.getWidth(), b.getY() ), dashLength , ndashLengths );
+    g.drawDashedLine(Line<float>( b.getX() + b.getWidth(), b.getY(), b.getX() + b.getWidth(), b.getY() + b. getHeight() ), dashLength , ndashLengths );
+    g.drawDashedLine(Line<float>( b.getX() + b.getWidth() , b.getY() + b.getHeight() , b.getX() , b.getY() + b. getHeight() ), dashLength , ndashLengths );
+    g.drawDashedLine(Line<float>( b.getX() , b.getY() + b.getHeight() , b.getX() , b.getY()), dashLength , ndashLengths );
 }
 
-size_t SymbolGroupComponent::getNumSubcomponents()
-{
-    return subcomponents.size() ;
-}
-
-BaseComponent* SymbolGroupComponent::getSubcomponent( int i )
-{
-    return subcomponents.at(i) ;
-}
 
 
 
@@ -36,7 +31,7 @@ int SymbolGroupComponent::addSymbolMessages( const String &base_address )
     
     for (int i = 0; i < getNumSubcomponents(); i++)
     {
-        String base = String(base_address) += String("/sub_") += String(i) ;
+        String base = String(base_address) += String("/subsymbol/") += String(i) ;
         messages_added += getSubcomponent(i)->addSymbolMessages( base );
     }
     

@@ -203,8 +203,8 @@
 				11CE00601EC4B5A900E4F624 /* CircleComponent.cpp */,
 				11CE00651EC4B90700E4F624 /* BaseComponent.h */,
 				118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */,
-				444C43A31EE4A748000C6F69 /* SymbolGroupComponent.cpp */,
 				444C43A41EE4A748000C6F69 /* SymbolGroupComponent.h */,
+				444C43A31EE4A748000C6F69 /* SymbolGroupComponent.cpp */,
 			);
 			name = "symbol-components";
 			sourceTree = "<group>";
@@ -222,8 +222,8 @@
 			children = (
 				118C38EE1EC61404006FF4A1 /* PaletteComponent.h */,
 				118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */,
-				444C439F1EE4A2E4000C6F69 /* PageComponent.cpp */,
 				444C43A01EE4A2E4000C6F69 /* PageComponent.h */,
+				444C439F1EE4A2E4000C6F69 /* PageComponent.cpp */,
 			);
 			name = "window-components";
 			sourceTree = "<group>";

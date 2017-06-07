@@ -30,6 +30,18 @@ bool BaseComponent::isTopLevelComponent()
 }
 
 
+void BaseComponent::setSymbol(Symbol s)
+{
+    // score_symbol = s;
+    internal_symbol = s;
+}
+
+Symbol* BaseComponent::getSymbol()
+{
+    return &internal_symbol ;
+}
+
+
 /******************
  * Creates OSC Messages in the Symbol
  * Can be overriden / completed by class-specific messages
@@ -51,9 +63,11 @@ int BaseComponent::addSymbolMessages( const String &base_address )
 
 
 /******************
- * Imports components' data from teh symbol's OSC bundle
+ * Imports components' data from the symbol's OSC bundle
  *****************/
 void BaseComponent::importFromSymbol() { }
+
+
 
 
 /******************

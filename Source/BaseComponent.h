@@ -27,8 +27,8 @@ public:
     
     inline String getSymbolType(){ return symbol_type ; };
     
-    void setSymbol(Symbol s);
-    Symbol* getSymbol();
+    void setInternalSymbol(Symbol s);
+    Symbol* getInternalSymbol();
 
     
     bool isTopLevelComponent();
@@ -49,10 +49,7 @@ public:
     // these two modify the symbol
     void moved () override;
     void resized () override;
-    // subroutine in derived class
-    virtual void symbol_moved () {}
-    virtual void symbol_resized () {}
-    
+
     
     // these are standard interactions
     void mouseEnter( const MouseEvent& event ) override {};

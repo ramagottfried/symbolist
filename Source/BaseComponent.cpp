@@ -30,13 +30,13 @@ bool BaseComponent::isTopLevelComponent()
 }
 
 
-void BaseComponent::setSymbol(Symbol s)
+void BaseComponent::setInternalSymbol(Symbol s)
 {
-    // score_symbol = s;
+    //score_symbol = s;
     internal_symbol = s;
 }
 
-Symbol* BaseComponent::getSymbol()
+Symbol* BaseComponent::getInternalSymbol()
 {
     return &internal_symbol ;
 }
@@ -51,7 +51,7 @@ int BaseComponent::addSymbolMessages( const String &base_address )
 {
     int messages_added = 0;
 
-    getSymbol()->addOSCMessage ((String(base_address) += "/type") , getSymbolType());
+    addOSCMessage ((String(base_address) += "/type") , getSymbolType());
     getSymbol()->addOSCMessage ((String(base_address) += "/x") , symbol_getX());
     getSymbol()->addOSCMessage ((String(base_address) += "/y") , symbol_getY());
     getSymbol()->addOSCMessage ((String(base_address) += "/w") , (float) getWidth());
@@ -108,15 +108,12 @@ void BaseComponent::moved ()
     // sc can be null if the symbol is moved when not yet on screen
     // best would be to call this from the moving action
     if (p != NULL && symbol_type != "UI_only") { p->modifySymbolInScore( this ); }
-    symbol_moved();
 }
 
 void BaseComponent::resized ()
 {
     PageComponent* p = static_cast<PageComponent*>( getPageComponent() );
     if (p != NULL && symbol_type != "UI_only") { p->modifySymbolInScore( this ); }
-    
-    symbol_resized();
 
     if( !resizableBorder )
     {

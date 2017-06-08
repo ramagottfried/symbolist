@@ -91,105 +91,59 @@ void PathComponent::importFromSymbol()
         }
     }
 }
-
-
-/******************
- * Paint callback subroutine
- *****************/
-
-void PathComponent::symbol_paint ( Graphics& g )
-{
-    g.setColour( current_color );
-   
-    auto localB = getLocalBounds();
-    m_path.scaleToFit( localB.getX(), localB.getY(), localB.getWidth(), localB.getHeight(), false );
-    
-    //float dashes[] = {1.0, 2.0};
-    //strokeType.createDashedStroke(p, p, dashes, 2 );
-   
-    strokeType.setStrokeThickness( strokeWeight );
-    g.strokePath(m_path, strokeType );
-    
-    
-    for (auto it = path_handles.begin(); it != path_handles.end(); it++ )
-    {
-        Point<float> start = getLocalPoint( getParentComponent(), (*it++)->getBounds().getCentre().toFloat() );
-        Point<float> end = getLocalPoint( getParentComponent(), (*it)->getBounds().getCentre().toFloat() );
-        Line<float> linea( start, end );
-        g.drawLine( linea, 1 );
-    }
-    
-    if( !m_preview_path.isEmpty() && getMainEditMode() == draw && is_selected )
-    {
-        g.setColour( Colours::blue );
-        g.strokePath(m_preview_path, strokeType );
-    }
-    
-}
-
-
-
 /******************
  * MOUSE INTERACTIONS
  *****************/
 
-void PathComponent::addHandle( float x, float y, int index)
+void PathComponent::addHandle( float x, float y )
 {
     PathHandle *h = new PathHandle( x + getX(), y + getY(), this );
     auto *p = static_cast<PageComponent*>( getPageComponent() ) ;
     p->addAndMakeVisible( h );
-//    p->addItemToSelection( h );
     path_handles.emplace_back( h );
 }
 
 
 void PathComponent::makeHandles()
 {
-    
-    std::cout << is_selected << " " << (path_handles.size() == 0) << "\n";
-    
     if( is_selected && path_handles.size() == 0 )
     {
-        //        ScoreComponent *sc = static_cast<ScoreComponent*>( getScoreComponent() );
-        //        sc->deselectAllSelected();
-        //        is_selected = false;
-        
-        int count = 0;
         Path::Iterator it( m_path );
         while( it.next() )
         {
             if (it.elementType == it.startNewSubPath)
             {
-                printf("start\n");
-                addHandle( it.x1, it.y1, count++ );
+                addHandle( it.x1, it.y1 );
             }
             else if (it.elementType == it.cubicTo)
             {
-                printf("cubic\n");
-                addHandle( it.x1, it.y1, count++ );
-                addHandle( it.x2, it.y2, count++ );
-                addHandle( it.x3, it.y3, count++ );
+                addHandle( it.x1, it.y1 );
+                addHandle( it.x2, it.y2 );
+                addHandle( it.x3, it.y3 );
             }
         }
     }
+    repaint();
 }
 
 void PathComponent::removeHandles()
 {
     auto *sc = getPageComponent();
     
-    for ( size_t i = 0; i < path_handles.size(); i++ )
+    for ( auto h : path_handles )
     {
         if( sc )
-            sc->removeChildComponent( path_handles[i] );
+            sc->removeChildComponent( h );
         
-        delete path_handles[i];
+        delete h;
     }
     path_handles.clear();
 }
 
 void PathComponent::updatePathPoints()
 {
+    auto position = getPosition().toFloat();
+    
     Path p;
     auto handle = path_handles.begin();
 
@@ -198,22 +152,28 @@ void PathComponent::updatePathPoints()
     {
         if (it.elementType == it.startNewSubPath)
         {
-            p.startNewSubPath( (*(handle++))->getBounds().getCentre().toFloat() );
+            p.startNewSubPath( (*(handle++))->getBounds().toFloat().getCentre() - position );
         }
         else if (it.elementType == it.cubicTo)
         {
-            p.cubicTo((*(handle++))->getBounds().getCentre().toFloat(),
-                      (*(handle++))->getBounds().getCentre().toFloat(),
-                      (*(handle++))->getBounds().getCentre().toFloat() );
+            p.cubicTo((*(handle++))->getBounds().toFloat().getCentre() - position,
+                      (*(handle++))->getBounds().toFloat().getCentre() - position,
+                      (*(handle++))->getBounds().toFloat().getCentre() - position );
         }
     }
     
-    Rectangle<float> pathBounds = p.getBounds();
-    setBounds( pathBounds.getX(), pathBounds.getY(), pathBounds.getWidth(), pathBounds.getHeight() );
+    // not sure if this offset stuff is necessary, the jumping problem is still there...
+
+    Rectangle<float> testBounds = p.getBounds();
+    float offsetx = ( testBounds.getX() < 0 ) ? -testBounds.getX() : 0;
+    float offsety = ( testBounds.getY() < 0 ) ? -testBounds.getY() : 0;
+    p.applyTransform( AffineTransform().translated(offsetx, offsety) );
+    
+    Rectangle<float> pathBounds = ( p.getBounds() - Point<float>(offsetx, offsety) ).expanded( strokeType.getStrokeThickness() * 0.5 );
     
     m_path.swapWithPath( p );
     
-    // might be able to not repaint if setBounds is different than last time
+    setBoundsFloatRect( pathBounds + position );
     repaint();
 }
 
@@ -227,8 +187,6 @@ void PathComponent::deselectComponent()
 void PathComponent::mouseDown( const MouseEvent& event )
 {
     BaseComponent::mouseDown(event);
-    std::cout << is_selected << " " << (path_handles.size() == 0) << "\n";
-
 }
 
 void PathComponent::mouseMove( const MouseEvent& event )
@@ -252,27 +210,32 @@ void PathComponent::mouseMove( const MouseEvent& event )
 
 void PathComponent::mouseDrag( const MouseEvent& event )
 {
+    symbol_debug_function(__func__);
+
     BaseComponent::mouseDrag(event);
     
     UI_EditType edit_mode = getMainEditMode();
     if(  edit_mode == draw )
     {
-        m_drag = event.position;
+        m_drag = event.position; //Point<float>(event.position.getX(), m_down.getY());
         
         Path p;
-        // paths are relative to the z
-        Point<float> zeroPt = {0.0, 0.0};
         
+        float strokeOffset = strokeType.getStrokeThickness() * 0.5;
+        Point<float> zeroPt(0, 0);
         p.startNewSubPath( zeroPt );
-        Point<float> endPt = m_drag - m_down;
         
-        p.cubicTo( endPt * 0.3 , endPt * 0.6, endPt );
-            
-        Rectangle<float> pathBounds = p.getBounds();
-        setBounds( m_down.getX() + pathBounds.getX(), m_down.getY() + pathBounds.getY(), pathBounds.getWidth(), pathBounds.getHeight() );
+        Point<float> endPt = m_drag - m_down + zeroPt;
+        p.cubicTo( endPt * 0.25 , endPt * 0.75, endPt );
         
         m_path.swapWithPath( p );
+        m_path.applyTransform( AffineTransform().translated (strokeOffset, strokeOffset) );
         
+        Rectangle<float> bb = (m_path.getBounds() + m_down).expanded( strokeOffset ) ;
+        setBoundsFloatRect( bb );
+        
+        
+
     }
     else if ( edit_mode == edit && path_handles.size() > 0 )
     {
@@ -289,3 +252,45 @@ void PathComponent::mouseUp( const MouseEvent& event )
 }
 
  
+
+
+/******************
+ * Paint callback subroutine
+ *****************/
+
+void PathComponent::symbol_paint ( Graphics& g )
+{
+    g.setColour( current_color );
+    
+    // to do: add other stroke options
+    //float dashes[] = {1.0, 2.0};
+    //strokeType.createDashedStroke(p, p, dashes, 2 );
+    
+    strokeType.setStrokeThickness( strokeWeight );
+    
+    g.strokePath(m_path, strokeType );
+    
+//    g.setColour( Colours::red );
+    
+//    float strokeOffset = strokeType.getStrokeThickness() * 0.5;
+//    Point<float> zeroPt(strokeOffset, strokeOffset);
+//    g.drawLine( Line<float>(m_down - m_down + zeroPt, m_drag - m_down + zeroPt) );
+    
+    g.setColour( current_color );
+    for (auto it = path_handles.begin(); it != path_handles.end(); it++ )
+    {
+        Point<float> start = getLocalPoint( getParentComponent(), (*it++)->getBounds().getCentre().toFloat() );
+        Point<float> end = getLocalPoint( getParentComponent(), (*it)->getBounds().getCentre().toFloat() );
+        
+        Line<float> linea( start, end );
+        g.drawLine( linea, 1 );
+    }
+    
+    if( !m_preview_path.isEmpty() && getMainEditMode() == draw && is_selected )
+    {
+        g.setColour( Colours::blue );
+        g.strokePath(m_preview_path, strokeType );
+    }
+    
+}
+

@@ -91,11 +91,8 @@ void PageComponent::deleteSelectedSymbols()
     
     for( BaseComponent *c : items )
     {
-        if( c->getSymbolType() != "UI_only") // UI only elements are bound to a component
-        {
-            removeChildFromScoreComponent(c, true);
-            removeSymbolFromScore(c);
-        }
+        removeChildFromScoreComponent(c, true);
+        removeSymbolFromScore(c);
     }
 }
 

@@ -4,7 +4,6 @@
 
 class PathHandle;
 
-
 class PathComponent : public BaseComponent
 {
 public:
@@ -14,7 +13,7 @@ public:
                     float stroke = 2,
                     Colour color = Colours::black ) :
         BaseComponent("path" , x , y , w , h, stroke, color ),
-        strokeType(1.0)
+        strokeType(stroke)
     {}
     
     ~PathComponent()
@@ -29,7 +28,7 @@ public:
     
     void importFromSymbol() override;
 
-    void addHandle( float x, float y, int index);
+    void addHandle( float x, float y );
     void makeHandles();
     void removeHandles();
     void updatePathPoints();
@@ -62,19 +61,17 @@ private:
 class PathHandle : public Component
 {
 public:
-    PathHandle( float x, float y, PathComponent *pc) : symbol_type("UI_only")
+    PathHandle( float x, float y, PathComponent *pc)
     {
         m_path = pc;
-        setComponentID("handle");
+        setComponentID("path_handle");
         float halfsize = m_size * 0.5;
         setBounds( x-halfsize, y-halfsize, m_size, m_size);
-        std::cout << "new " << symbol_type << " " << this << "\n";
-
     }
     
     ~PathHandle()
     {
-        std::cout << "freeing " << symbol_type << " " << this << "\n";
+//        std::cout << "freeing " << getComponentID() << " " << this << "\n";
     }
     
     void paint ( Graphics& g ) override
@@ -93,7 +90,7 @@ public:
     {
         
         // not sure why I need to make this relative, it was jumping back and forth between being relative to the score and then to the component. is it possibe that it has an extra mouselistener somewhere?
-        Point<int> draggy = event.getEventRelativeTo(  m_path->getParentComponent() ).getPosition();
+        Point<int> draggy = event.getEventRelativeTo( m_path->getParentComponent() ).getPosition();
         setTopLeftPosition ( draggy - (m_down).toInt() );
         m_path->updatePathPoints();
     }
@@ -106,8 +103,6 @@ private:
     PathComponent   *m_path;
     float           m_size = 10;
     float           m_strokeweight = 1;
-    String          symbol_type;
-
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PathHandle)

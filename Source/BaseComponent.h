@@ -13,6 +13,19 @@ void printRect( const Rectangle<T> &rect, const String &name = "rect" )
     std::cout << name << " " << rect.getX() << " " << rect.getY() << " " << rect.getWidth() << " " << rect.getHeight() << std::endl ;
 }
 
+template <typename T>
+void printPoint(Point<T> point, const String &name = "point" )
+{
+    std::cout << name << " " << point.getX() << " " << point.getY() << "\n";
+}
+
+template <typename T>
+Rectangle<T> rectangle_stretch(Rectangle<T> r, T w, T h)
+{
+    return r.withSize( r.getWidth() + w, r.getHeight() + h );
+}
+
+
 class BaseComponent : public SymbolistComponent
 {
 public:
@@ -107,13 +120,17 @@ protected:
     bool        is_being_edited = true;
     bool        is_selected = false;
     
-    // utility for printing point regardless of type
-    template <typename T>
-    inline void printPoint(Point<T> point, String name = "point" )
+    
+    inline void setBoundsFloatRect( Rectangle<float> r )
     {
-        std::cout << name << " " << point.getX() << " " << point.getY() << "\n";
+        setBounds( r.getX(), r.getY(), r.getWidth(), r.getHeight() );
     }
-
+    
+   
+    inline void symbol_debug_function(const char* func)
+    {
+        std::cout << juce::Time::currentTimeMillis() << " " << symbol_type << " " << this << " " << func << std::endl;
+    }
     
 private:
     

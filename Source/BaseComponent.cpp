@@ -93,14 +93,14 @@ void BaseComponent::moved ()
     PageComponent* p = static_cast<PageComponent*>( getPageComponent() );
     // sc can be null if the symbol is moved when not yet on screen
     // best would be to call this from the moving action
-    if (p != NULL && symbol_type != "UI_only") { p->modifySymbolInScore( this ); }
+    if (p != NULL ) { p->modifySymbolInScore( this ); }
     symbol_moved();
 }
 
 void BaseComponent::resized ()
 {
     PageComponent* p = static_cast<PageComponent*>( getPageComponent() );
-    if (p != NULL && symbol_type != "UI_only") { p->modifySymbolInScore( this ); }
+    if (p != NULL ) { p->modifySymbolInScore( this ); }
     
     symbol_resized();
 

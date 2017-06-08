@@ -25,7 +25,7 @@ public:
     
     void printPath( Path p );
     
-    int addSymbolMessages(const String &base_address) override;
+    int addSymbolMessages(Symbol* s, const String &base_address) override;
     
     void importFromSymbol() override;
 
@@ -62,19 +62,19 @@ private:
 class PathHandle : public Component
 {
 public:
-    PathHandle( float x, float y, PathComponent *pc) : symbol_type("UI_only")
+    PathHandle( float x, float y, PathComponent *pc)
     {
         m_path = pc;
         setComponentID("handle");
         float halfsize = m_size * 0.5;
         setBounds( x-halfsize, y-halfsize, m_size, m_size);
-        std::cout << "new " << symbol_type << " " << this << "\n";
+        std::cout << "new handle " << this << "\n";
 
     }
     
     ~PathHandle()
     {
-        std::cout << "freeing " << symbol_type << " " << this << "\n";
+        std::cout << "freeing handle " << this << "\n";
     }
     
     void paint ( Graphics& g ) override
@@ -101,14 +101,13 @@ public:
     {}
     
 private:
+    
     Point<float>    m_down;
 
     PathComponent   *m_path;
     float           m_size = 10;
     float           m_strokeweight = 1;
-    String          symbol_type;
 
-    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PathHandle)
     

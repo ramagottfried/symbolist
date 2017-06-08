@@ -38,10 +38,10 @@ void PathComponent::printPath( Path p )
  * Can be overriden / completed by class-specific messages
  *****************/
 
-int PathComponent::addSymbolMessages(const String &base_address)
+int PathComponent::addSymbolMessages( Symbol* s, const String &base_address )
 {
     // adds the basic messages
-    int messages_added = BaseComponent::addSymbolMessages(base_address);
+    int messages_added = BaseComponent::addSymbolMessages(s, base_address);
     
     String x_address = String(base_address) += "/x-points" ;
     String y_address = String(base_address) += "/y-points" ;
@@ -58,8 +58,8 @@ int PathComponent::addSymbolMessages(const String &base_address)
         }
     }
     
-    getSymbol()->addOSCMessage(x_mess);
-    getSymbol()->addOSCMessage(y_mess);
+    internal_symbol.addOSCMessage(x_mess);
+    internal_symbol.addOSCMessage(y_mess);
     messages_added += 2;
 
     return messages_added;
@@ -74,14 +74,14 @@ void PathComponent::importFromSymbol()
 {
     BaseComponent::importFromSymbol(); // do nothing special
     // import the points
-    int xp = getSymbol()->getOSCMessagePos("/x-points");
-    int yp = getSymbol()->getOSCMessagePos("/y-points");
+    int xp = internal_symbol.getOSCMessagePos("/x-points");
+    int yp = internal_symbol.getOSCMessagePos("/y-points");
    
     
     if ( xp >= 0 && yp >= 0 )
     {
-        OSCMessage xm = getSymbol()->getOSCBundle()[xp].getMessage();
-        OSCMessage ym = getSymbol()->getOSCBundle()[yp].getMessage();
+        OSCMessage xm = internal_symbol.getOSCBundle()[xp].getMessage();
+        OSCMessage ym = internal_symbol.getOSCBundle()[yp].getMessage();
     
         m_path.clear();
         m_path.startNewSubPath( xm[0].getFloat32() , ym[0].getFloat32() );

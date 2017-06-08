@@ -18,25 +18,62 @@ BaseComponent::BaseComponent(const String &type,
                     sym_color(color),
                     m_down(Point<float>(x,y))
 {
+    internal_symbol = Symbol();
     setBounds( x , y , w , h);
 }
+
 
 BaseComponent::~BaseComponent() {}
 
 
+String BaseComponent::getSymbolType()
+{
+    return internal_symbol.getOSCMessageValue( String("/type") ).getString() ;
+}
+
+
+void BaseComponent::updateInternalSymbol()
+{
+    internal_symbol.clearOSCBundle();
+    addSymbolMessages( &internal_symbol, String("") );
+    
+    if ( getParentComponent() != NULL ) // we're in the score..
+    {
+        if ( isTopLevelComponent() )
+        {
+            assert(score_symbol != NULL);
+            score_symbol->clearOSCBundle();
+            addSymbolMessages( score_symbol , String("") );
+            ((SymbolistMainComponent*) getMainComponent())->notifySymbolChange( score_symbol );
+        }
+        else
+        {
+            ((BaseComponent*) getParentComponent())->updateInternalSymbol() ;
+        }
+    }
+}
+
+
+void BaseComponent::addSymbolToScore ()
+{
+    score_symbol = new Symbol(internal_symbol);
+    ((SymbolistMainComponent*) getMainComponent())->notifyNewSymbol( score_symbol );
+}
+
+void BaseComponent::removeSymbolFromScore ()
+{
+   ((SymbolistMainComponent*) getMainComponent())->notifySymbolRemoved( score_symbol );
+}
+
+
+
 bool BaseComponent::isTopLevelComponent()
 {
-    return ( getParentComponent() == getPageComponent() );
+    return ( getParentComponent() != NULL && getParentComponent() == getPageComponent() );
 }
 
 
-void BaseComponent::setInternalSymbol(Symbol s)
-{
-    //score_symbol = s;
-    internal_symbol = s;
-}
-
-Symbol* BaseComponent::getInternalSymbol()
+Symbol* BaseComponent::getInternalSymbol( )
 {
     return &internal_symbol ;
 }
@@ -47,15 +84,15 @@ Symbol* BaseComponent::getInternalSymbol()
  * Can be overriden / completed by class-specific messages
  *****************/
 
-int BaseComponent::addSymbolMessages( const String &base_address )
+int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
 {
     int messages_added = 0;
-
-    addOSCMessage ((String(base_address) += "/type") , getSymbolType());
-    getSymbol()->addOSCMessage ((String(base_address) += "/x") , symbol_getX());
-    getSymbol()->addOSCMessage ((String(base_address) += "/y") , symbol_getY());
-    getSymbol()->addOSCMessage ((String(base_address) += "/w") , (float) getWidth());
-    getSymbol()->addOSCMessage ((String(base_address) += "/h") , (float) getHeight());
+    
+    s->addOSCMessage ("/type" , symbol_type);
+    s->addOSCMessage ((String(base_address) += "/x") , symbol_getX());
+    s->addOSCMessage ((String(base_address) += "/y") , symbol_getY());
+    s->addOSCMessage ((String(base_address) += "/w") , (float) getWidth());
+    s->addOSCMessage ((String(base_address) += "/h") , (float) getHeight());
     messages_added += 5;
     
     return messages_added;
@@ -104,16 +141,13 @@ void BaseComponent::paint ( Graphics& g )
 
 void BaseComponent::moved ()
 {
-    PageComponent* p = static_cast<PageComponent*>( getPageComponent() );
-    // sc can be null if the symbol is moved when not yet on screen
-    // best would be to call this from the moving action
-    if (p != NULL && symbol_type != "UI_only") { p->modifySymbolInScore( this ); }
+    updateInternalSymbol();
 }
+
 
 void BaseComponent::resized ()
 {
-    PageComponent* p = static_cast<PageComponent*>( getPageComponent() );
-    if (p != NULL && symbol_type != "UI_only") { p->modifySymbolInScore( this ); }
+    updateInternalSymbol();
 
     if( !resizableBorder )
     {

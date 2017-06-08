@@ -44,20 +44,16 @@ public:
     void executeUpdateCallback(int arg);
     void executeCloseCallback();
     
-    // create a Symbol from c and add it to parent Windows's score
-    void handleComponentAdded ( BaseComponent* c , bool notify = true) ;
-    // removes the Symbol corresponding to c from parent Windows's score
-    void handleComponentRemoved ( BaseComponent* c , bool notify = true) ;
-    // modified the Symbol corresponding to c from parent Windows's score
-    void handleComponentModified ( BaseComponent* c , bool notify = true) ;
-    
+    // functions modifying the parent Windows's score
+    void notifyNewSymbol ( Symbol* s ) ;
+    void notifySymbolRemoved ( Symbol* s ) ;
+    void notifySymbolChange ( Symbol* s ) ;
     
     /*********************************************
      * STANDARD GUI FUNCTIONALITY AND TOOLS
      *********************************************/
     
     // Redefinition of methods from Juce::Component
-    //void paint (Graphics&) override;
     void resized() override;
     bool keyPressed (const KeyPress& key, Component* originatingComponent) override;
     void modifierKeysChanged (const ModifierKeys& modifiers) override;
@@ -69,7 +65,6 @@ public:
     int getCurrentSymbolIndex();
     Symbol* getCurrentSymbol();
     static BaseComponent* makeComponentFromSymbol(const Symbol *s);
-    
     
     // Redefine these from SymbolistComponent
     inline SymbolistComponent* getPageComponent() override { return &scoreGUI; }
@@ -92,23 +87,11 @@ private:
     SymbolistPalette palette;
     PaletteComponent paletteView ;
     
-    
     UI_EditType     mouse_mode = edit;
-   
     
     // callbacks to the host environment
     symbolistUpdateCallback myUpdateCallback = NULL;
     symbolistCloseCallback myCloseCallback = NULL;
-
-    // static methos to generate components from symbols / update symbols from componants
-    //static std::unique_ptr<BaseComponent>
-    static void updateComponentSymbol(BaseComponent* c);
-    
-    // handles different types of components
-    static int addSymbolMessages( BaseComponent *c, String base_address );
-    static int addSymbolMessages( PathComponent *c, String base_address );
-    
-    
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainComponent)

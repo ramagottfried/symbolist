@@ -25,14 +25,16 @@ public:
     
     ~BaseComponent();
     
-    inline String getSymbolType(){ return symbol_type ; };
-    
-    void setInternalSymbol(Symbol s);
+    String getSymbolType();
     Symbol* getInternalSymbol();
-
     
     bool isTopLevelComponent();
-    virtual int addSymbolMessages( const String &base_address);
+
+    void updateInternalSymbol();
+    void addSymbolToScore();
+    void removeSymbolFromScore();
+    
+    virtual int addSymbolMessages( Symbol* s, const String &base_address );
     virtual void importFromSymbol();
 
     
@@ -63,6 +65,7 @@ public:
     virtual float symbol_getX(){ return getX(); }
     virtual float symbol_getY(){ return getY(); }
     
+    // not very happy with therm "Symbol" here
     inline void setSymbolStrokeWeight( float s ){ strokeWeight = s; }
     inline void setSymbolColor( Colour c ){ sym_color = c; }
     
@@ -73,8 +76,9 @@ protected:
     // score structure
     Symbol                          *score_symbol;
     Symbol                          internal_symbol;
-    String                          symbol_type = String("symbol");
     
+    String                          symbol_type;
+
     // parameters
     float           strokeWeight = 2;
     Colour          sym_color = Colours::black;

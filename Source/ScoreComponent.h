@@ -6,30 +6,66 @@
 #include "SymbolistComponent.h"
 #include "BaseComponent.h"
 
+
+
+class ScoreSelectedItemSet : public SelectedItemSet<BaseComponent *>
+{
+public:
+    ScoreSelectedItemSet() = default ;
+    ~ScoreSelectedItemSet() = default;
+    
+    virtual void itemSelected (BaseComponent *c) override { c->selectComponent(); }
+    virtual void itemDeselected (BaseComponent *c) override { c->deselectComponent(); }
+    
+private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScoreSelectedItemSet)
+};
+
+
+
 /*
  * Superclass for score-editable containers : PageComponent or SymbolGroupComponent
  * sharing a number of user interactions wrt. editing contents
  */
-class ScoreComponent : public SymbolistComponent
+class ScoreComponent : public SymbolistComponent, public LassoSource<BaseComponent *>
 {
 public:
     
     ScoreComponent() = default;
-    ~ScoreComponent() = default;
+    ~ScoreComponent();
     
     size_t          getNumSubcomponents( );
     BaseComponent*  getSubcomponent( int i );
-    void            addSubcomponent( BaseComponent *c );
-    void            removeSubcomponent( BaseComponent* c , bool delete_it);
+    virtual void    addSubcomponent( BaseComponent *c );
+    virtual void    removeSubcomponent( BaseComponent* c , bool delete_it);
     void            clearAllSubcomponents();
     
-    //void deleteSelectedSymbols();
-    //void addSymbolAt ( Point<float> p );
-
+    BaseComponent* addSymbolAt ( Point<float> p );
+    
+    // selection
+    void findLassoItemsInArea (Array < BaseComponent *>& results, const Rectangle<int>& area) override;
+    SelectedItemSet< BaseComponent *>& getLassoSelection() override;
+    void translateSelected( Point<int> delta_xy );
+    
+    void addItemToSelection(BaseComponent *c);
+    void deleteSelectedSymbols();
+    void deselectAllSelected();
+    void groupSelectedSymbols();
+    
+    void mouseDown ( const MouseEvent& event ) override;
+    void mouseDrag ( const MouseEvent& event ) override;
+    void mouseUp ( const MouseEvent& event ) override;
+    void resized () override;
+    
 protected:
 
     std::vector<BaseComponent*>     subcomponents;
     
+    bool                            draw_mode = false;
+
+    LassoComponent<BaseComponent*>  lassoSelector;
+    ScoreSelectedItemSet            selected_items;
+
 };
 
 

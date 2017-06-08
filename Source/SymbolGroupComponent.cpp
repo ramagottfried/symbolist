@@ -25,15 +25,28 @@ void SymbolGroupComponent::paint ( Graphics& g )
 
 
 
-int SymbolGroupComponent::addSymbolMessages( const String &base_address )
+int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_address )
 {
-    int messages_added = BaseComponent::addSymbolMessages(base_address);
+    int messages_added = BaseComponent::addSymbolMessages( s, base_address );
     
     for (int i = 0; i < getNumSubcomponents(); i++)
     {
         String base = String(base_address) += String("/subsymbol/") += String(i) ;
-        messages_added += getSubcomponent(i)->addSymbolMessages( base );
+        messages_added += getSubcomponent(i)->addSymbolMessages( s, base );
     }
     
     return messages_added;
 }
+
+
+
+void SymbolGroupComponent::importFromSymbol()
+{
+    BaseComponent::importFromSymbol(); // do nothing special
+    
+    // deal with subcomponents here with
+    // makeComponentFromSymbol(const Symbol* s)
+    // and c->addSubcomponent
+    
+}
+

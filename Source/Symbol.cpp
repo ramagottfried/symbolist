@@ -8,7 +8,8 @@
 
 #include "Symbol.h"
 
-Symbol::Symbol () : Symbol ("undefined", 0.0, 0.0, 10.0, 10.0) {};
+//: Symbol ("undefined", 0.0, 0.0, 10.0, 10.0)
+Symbol::Symbol () {};
 
 Symbol::Symbol (const String & type, float x, float y, float w, float h)
 {

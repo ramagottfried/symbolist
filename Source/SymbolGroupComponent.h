@@ -29,7 +29,8 @@ class SymbolGroupComponent : public ScoreComponent, public BaseComponent
     
     void paint ( Graphics& g ) override;
 
-    int addSymbolMessages(const String &base_address ) override ;
+    int addSymbolMessages(Symbol* s, const String &base_address ) override ;
+    void importFromSymbol() override;
 
     private :
     

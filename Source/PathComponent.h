@@ -10,7 +10,7 @@ public:
     
     PathComponent(  float x, float y,
                     float w = 10, float h = 10,
-                    float stroke = 2,
+                    float stroke = 10,
                     Colour color = Colours::black ) :
         BaseComponent("path" , x , y , w , h, stroke, color ),
         strokeType(stroke)
@@ -38,10 +38,14 @@ public:
     void symbol_paint ( Graphics& g ) override;
 
     void mouseDown( const MouseEvent& event ) override;
-    
     void mouseMove( const MouseEvent& event ) override;
     void mouseDrag( const MouseEvent& event ) override;
     void mouseUp( const MouseEvent& event ) override;
+    
+    bool hitTest (int x, int y) override
+    {
+        return m_path.intersectsLine( Line<float>( x - 5, y - 5, x + 5, y + 5) ) || m_path.intersectsLine( Line<float>( x + 5, y - 5, x - 5, y + 5) );
+    }
     
 private:
     
@@ -49,6 +53,10 @@ private:
     PathStrokeType  strokeType;
     Path            m_path;
     Path            m_preview_path;
+
+    float           pi     = 3.141592653589793;
+    float           half_pi = 3.141592653589793 / 2.0;
+    float           quarter_pi  = 3.141592653589793 / 4.0;
 
     
     std::vector<PathHandle*> path_handles;

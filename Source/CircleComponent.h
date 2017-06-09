@@ -9,10 +9,8 @@ public:
     CircleComponent(float x, float y,
                     float w = 10, float h = 10,
                     float stroke = 2,
-                    Colour color = Colours::black ) :
-        BaseComponent("circle" , x - (w * .5), y - (h * .5), w , h, stroke, color )
-    {}
-
+                    Colour color = Colours::black );
+    
     
     ~CircleComponent()
     {
@@ -24,8 +22,11 @@ public:
 
     void symbol_paint ( Graphics& g ) override;
 
+    void symbol_resized() override;
     
 private:
+    Path            m_path;
+    PathStrokeType  strokeType;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CircleComponent)

@@ -6,8 +6,7 @@
 class LinePathComponent : public PathBaseComponent
 {
 public:
-    LinePathComponent(float x, float y) : PathBaseComponent(x,y)
-    {}
+    LinePathComponent(const Symbol &s) : PathBaseComponent( s ) { std::cout << "LINE" << std::endl; }
     
     void mouseDrag(const MouseEvent& event) override;
     

@@ -1,13 +1,9 @@
 
 #include "CircleComponent.h"
 
-CircleComponent::CircleComponent(float x, float y,
-                float w, float h,
-                float stroke,
-                Colour color ) :
-    BaseComponent("circle" , x - (w * .5), y - (h * .5), w , h, stroke, color ),
-    strokeType(stroke)
+CircleComponent::CircleComponent(const Symbol &s) : BaseComponent( s )
 {
+<<<<<<< Updated upstream
     
     auto area = getLocalBounds().toFloat().reduced( strokeWeight );;
     auto hw = area.getWidth() * 0.5f;
@@ -23,6 +19,13 @@ CircleComponent::CircleComponent(float x, float y,
     m_path.cubicTo (cx - hw55, cy + hh, cx - hw, cy + hh55, cx - hw, cy);
     m_path.cubicTo (cx - hw, cy - hh55, cx - hw55, cy - hh, cx, cy - hh);
     m_path.closeSubPath();
+=======
+    symbol_type = "circle";
+    auto area = getLocalBounds().toFloat().reduced( strokeWeight );;
+    m_path.addEllipse (area.expanded (2 * 0.5f));
+    m_path.addEllipse (area.reduced  (2 * 0.5f));
+    m_path.setUsingNonZeroWinding (false);
+>>>>>>> Stashed changes
 }
 
 void CircleComponent::paint ( Graphics& g )
@@ -38,3 +41,12 @@ void CircleComponent::resized()
     m_path.scaleToFit( b.getX(), b.getY(), b.getWidth(), b.getHeight(), false );
 }
 
+<<<<<<< Updated upstream
+=======
+
+void CircleComponent::importFromSymbol()
+{
+    BaseComponent::importFromSymbol();
+    setTopLeftPosition( getX() - ( getWidth() * 0.5 ), getY() - ( getHeight() * 0.5 ) ) ;
+}
+>>>>>>> Stashed changes

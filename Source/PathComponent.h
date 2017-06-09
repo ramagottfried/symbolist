@@ -8,13 +8,7 @@ class PathComponent : public BaseComponent
 {
 public:
     
-    PathComponent(  float x, float y,
-                    float w = 10, float h = 10,
-                    float stroke = 2,
-                    Colour color = Colours::black ) :
-        BaseComponent("path" , x , y , w , h, stroke, color ),
-        strokeType(stroke)
-    {}
+    PathComponent(  const Symbol& s ) : BaseComponent( s ) { symbol_type = "path"; }
     
     ~PathComponent()
     {
@@ -50,9 +44,13 @@ public:
 private:
     
     Point<float>    m_drag;
+<<<<<<< Updated upstream
     PathStrokeType  strokeType;
     
     
+=======
+    PathStrokeType  strokeType = PathStrokeType(2.0);
+>>>>>>> Stashed changes
     Path            m_path;
     Path            m_preview_path;
 

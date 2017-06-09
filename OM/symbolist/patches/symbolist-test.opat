@@ -5,7 +5,7 @@
  (:doc "")
  (:info
   (:created "2017/05/12 11:19:12")
-  (:modified "2017/05/28 19:19:23"))
+  (:modified "2017/06/09 17:13:24"))
  (:window (:size (892 968)) (:position (946 173)))
  (:boxes
   (:box
@@ -14,7 +14,7 @@
    (:type :object)
    (:group-id nil)
    (:name nil)
-   (:x 271)
+   (:x 270)
    (:y 158)
    (:w 232)
    (:h 64)
@@ -50,18 +50,8 @@
       ((:action nil)
        (:onset 0)
        (:time-types
-        (:list
-         :master
-         22432.666
-         26233.493
-         32465.008
-         34516.227
-         38574.864
-         45031.2
-         48263.02
-         53841.14
-         :master))
-       (:duration 58700.48)
+        (:list :master 0 0 0 0 0 :master 32465.008 45031.2 :master))
+       (:duration 48263.02)
        (:interpol nil)
        (:interpol-time 50)
        (:default-frame-type osc-bundle)
@@ -71,22 +61,6 @@
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 4681.4775)
-            (:item-type :master)
-            (:date 4681.4775)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 1)
-              (:list "/type" "circle")
-              (:list "/x" 262.99692)
-              (:list "/y" 297.4026)
-              (:list "/w" 14.472523)
-              (:list "/h" 17.226393))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
             (:item-internal-time nil)
             (:item-type nil)
             (:date 0)
@@ -117,22 +91,6 @@
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 32465.008)
-            (:item-type 32465.008)
-            (:date 32465.008)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 1)
-              (:list "/type" "circle")
-              (:list "/x" 135.30457)
-              (:list "/y" 0.077962876)
-              (:list "/w" 26.82737)
-              (:list "/h" 13.752659))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
             (:item-internal-time nil)
             (:item-type nil)
             (:date 0)
@@ -140,8 +98,8 @@
             (:messages
              (:list
               (:list "/type" "circle")
-              (:list "/x" 114.5)
-              (:list "/y" 78.5)
+              (:list "/x" 120.5)
+              (:list "/y" 100.5)
               (:list "/w" 19.0)
               (:list "/h" 77.0))))))
          (:object
@@ -163,38 +121,6 @@
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 45031.2)
-            (:item-type 45031.2)
-            (:date 45031.2)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 1)
-              (:list "/type" "circle")
-              (:list "/x" 297.6763)
-              (:list "/y" 193.69751)
-              (:list "/w" 13.12278)
-              (:list "/h" 21.023957))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 48263.02)
-            (:item-type 48263.02)
-            (:date 48263.02)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "circle")
-              (:list "/x" 292.28268)
-              (:list "/y" 69.60429)
-              (:list "/w" 15.798116)
-              (:list "/h" 13.659611))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
             (:item-internal-time nil)
             (:item-type nil)
             (:date 0)
@@ -202,8 +128,8 @@
             (:messages
              (:list
               (:list "/type" "circle")
-              (:list "/x" 97.0)
-              (:list "/y" 134.0)
+              (:list "/x" 110.0)
+              (:list "/y" 148.0)
               (:list "/w" 78.0)
               (:list "/h" 60.0))))))
          (:object
@@ -217,32 +143,48 @@
             (:messages
              (:list
               (:list "/type" "circle")
-              (:list "/x" 75.0)
-              (:list "/y" 71.0)
+              (:list "/x" 79.0)
+              (:list "/y" 90.0)
               (:list "/w" 24.0)
-              (:list "/h" 100.0))))))))
+              (:list "/h" 100.0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time nil)
+            (:item-type nil)
+            (:date 0)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 1)
+              (:list "/type" "circle")
+              (:list "/x" 262.99692)
+              (:list "/y" 297.4026)
+              (:list "/w" 14.472523)
+              (:list "/h" 17.226393))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time nil)
+            (:item-type nil)
+            (:date 0)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 1)
+              (:list "/type" "circle")
+              (:list "/x" 135.30457)
+              (:list "/y" 0.077962876)
+              (:list "/w" 26.82737)
+              (:list "/h" 13.752659))))))))
        (:symbols
         (:list
          (:object
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 4681.4775)
-            (:item-type :master)
-            (:date 4681.4775)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 1)
-              (:list "/type" "circle")
-              (:list "/x" 262.99692)
-              (:list "/y" 297.4026)
-              (:list "/w" 14.472523)
-              (:list "/h" 17.226393))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
             (:item-internal-time nil)
             (:item-type nil)
             (:date 0)
@@ -273,22 +215,6 @@
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 32465.008)
-            (:item-type 32465.008)
-            (:date 32465.008)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 1)
-              (:list "/type" "circle")
-              (:list "/x" 135.30457)
-              (:list "/y" 0.077962876)
-              (:list "/w" 26.82737)
-              (:list "/h" 13.752659))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
             (:item-internal-time nil)
             (:item-type nil)
             (:date 0)
@@ -296,8 +222,8 @@
             (:messages
              (:list
               (:list "/type" "circle")
-              (:list "/x" 114.5)
-              (:list "/y" 78.5)
+              (:list "/x" 120.5)
+              (:list "/y" 100.5)
               (:list "/w" 19.0)
               (:list "/h" 77.0))))))
          (:object
@@ -319,38 +245,6 @@
           (:class osc-bundle)
           (:slots
            ((:item-time nil)
-            (:item-internal-time 45031.2)
-            (:item-type 45031.2)
-            (:date 45031.2)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 1)
-              (:list "/type" "circle")
-              (:list "/x" 297.6763)
-              (:list "/y" 193.69751)
-              (:list "/w" 13.12278)
-              (:list "/h" 21.023957))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
-            (:item-internal-time 48263.02)
-            (:item-type 48263.02)
-            (:date 48263.02)
-            (:attributes nil)
-            (:messages
-             (:list
-              (:list "/staff" 2)
-              (:list "/type" "circle")
-              (:list "/x" 292.28268)
-              (:list "/y" 69.60429)
-              (:list "/w" 15.798116)
-              (:list "/h" 13.659611))))))
-         (:object
-          (:class osc-bundle)
-          (:slots
-           ((:item-time nil)
             (:item-internal-time nil)
             (:item-type nil)
             (:date 0)
@@ -358,8 +252,8 @@
             (:messages
              (:list
               (:list "/type" "circle")
-              (:list "/x" 97.0)
-              (:list "/y" 134.0)
+              (:list "/x" 110.0)
+              (:list "/y" 148.0)
               (:list "/w" 78.0)
               (:list "/h" 60.0))))))
          (:object
@@ -373,10 +267,42 @@
             (:messages
              (:list
               (:list "/type" "circle")
-              (:list "/x" 75.0)
-              (:list "/y" 71.0)
+              (:list "/x" 79.0)
+              (:list "/y" 90.0)
               (:list "/w" 24.0)
-              (:list "/h" 100.0))))))))))))
+              (:list "/h" 100.0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time nil)
+            (:item-type nil)
+            (:date 0)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 1)
+              (:list "/type" "circle")
+              (:list "/x" 262.99692)
+              (:list "/y" 297.4026)
+              (:list "/w" 14.472523)
+              (:list "/h" 17.226393))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time nil)
+            (:item-type nil)
+            (:date 0)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/staff" 1)
+              (:list "/type" "circle")
+              (:list "/x" 135.30457)
+              (:list "/y" 0.077962876)
+              (:list "/w" 26.82737)
+              (:list "/h" 13.752659))))))))))))
    (:id 0))
   (:box
    (:reference gen-score-symbols)

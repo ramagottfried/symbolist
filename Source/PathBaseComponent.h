@@ -9,14 +9,11 @@ class PathBaseComponent : public BaseComponent
 {
 public:
     
-    PathBaseComponent(  float x, float y,
-                  float w = 10, float h = 10,
-                  float stroke = 2,
-                  Colour color = Colours::black ) :
-    BaseComponent("path" , x , y , w , h, stroke, color ),
-    strokeType(stroke)
-    {}
-    
+    PathBaseComponent(  const Symbol& s ) : BaseComponent( s )
+    {
+        symbol_type = "path";
+        std::cout << "PATH" << std::endl;
+    }
     ~PathBaseComponent()
     {
         printf("freeing path %p\n", this);
@@ -27,7 +24,7 @@ public:
     
     int addSymbolMessages(Symbol* s, const String &base_address) override;
     
-    void importFromSymbol( const Symbol* s ) override;
+    void importFromSymbol() override;
     
     void addHandle( float x, float y );
     void makeHandles();
@@ -52,7 +49,7 @@ public:
 protected:
     
     Point<float>    m_drag;
-    PathStrokeType  strokeType;
+    PathStrokeType  strokeType = PathStrokeType(2.0) ;
     
     
     Path            m_path;

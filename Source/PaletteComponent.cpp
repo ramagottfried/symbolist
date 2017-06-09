@@ -14,7 +14,6 @@ PaletteButton::PaletteButton( int i, Symbol *s)
 {
     button_id = i;
     graphic_comp = SymbolistMainComponent::makeComponentFromSymbol(s);
-    
 }
 
 PaletteButton::~PaletteButton()

@@ -12,6 +12,8 @@ void SymbolGroupComponent::paint ( Graphics& g )
     g.drawDashedLine(Line<float>( b.getX() + b.getWidth(), b.getY(), b.getX() + b.getWidth(), b.getY() + b. getHeight() ), dashLength , ndashLengths );
     g.drawDashedLine(Line<float>( b.getX() + b.getWidth() , b.getY() + b.getHeight() , b.getX() , b.getY() + b. getHeight() ), dashLength , ndashLengths );
     g.drawDashedLine(Line<float>( b.getX() , b.getY() + b.getHeight() , b.getX() , b.getY()), dashLength , ndashLengths );
+
+    std::cout << "Group " << this << " childs: " << getNumSubcomponents() << std::endl;
 }
 
 int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_address )
@@ -27,13 +29,12 @@ int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_addre
     return messages_added;
 }
 
-void SymbolGroupComponent::importFromSymbol( const Symbol* s )
+void SymbolGroupComponent::importFromSymbol( )
 {
-    BaseComponent::importFromSymbol( s ); // do nothing special
+    BaseComponent::importFromSymbol( ); // do nothing special
     
     // deal with subcomponents here with
     // makeComponentFromSymbol(const Symbol* s)
     // and c->addSubcomponent
-    
 }
 

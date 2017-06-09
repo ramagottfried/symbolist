@@ -32,9 +32,10 @@ void ScoreComponent::addSubcomponent( BaseComponent *c )
     subcomponents.emplace_back( c ) ;
     
     c->setComponentID(String(String(c->getSymbolType()) += String("_") += String(subcomponents.size())));
-
+    
     addAndMakeVisible( c );
     c->addMouseListener(this, false);
+    
 }
 
 void ScoreComponent::removeSubcomponent( BaseComponent *c )
@@ -61,6 +62,7 @@ void ScoreComponent::clearAllSubcomponents()
 void ScoreComponent::addSymbolComponent ( BaseComponent* c )
 {
     addSubcomponent( c );
+    std::cout << "SC ADD SYMBOL_COMPONENT2 " << c << " to " << this << " childcomponents: " << ((BaseComponent*) this)->getNumChildComponents() << std::endl;
 }
 
 void ScoreComponent::removeSymbolComponent( BaseComponent* c )
@@ -137,17 +139,26 @@ void ScoreComponent::groupSelectedSymbols()
                          compBounds.getY() - groupBounds.getY(),
                          compBounds.getWidth(), compBounds.getHeight());
                         
-            this->removeSubcomponent( c );
+            //this->removeSubcomponent( c );
             group->addSymbolComponent( c );
-            
-            //group->addSubcomponent( SymbolistMainComponent::makeComponentFromSymbol( c->getInternalSymbol() ) );
-            //this->removeSubcomponent( c ); delete c;
+            std::cout << "SC ADD SYMBOL_COMPONENT AFTER " << c << " to " << group << " childcomponents: " << ((BaseComponent*) group)->getNumChildComponents() << std::endl;
+
+            //std::cout << "Group " << group << " childs: " << group->getNumSubcomponents() << std::endl;
+            std::cout << "Group " << group << " childcomponents: " << ((BaseComponent*) group)->getNumChildComponents() << std::endl;
+            //std::cout << "Group child #1: " << group->getSubcomponent(0)->getSymbolType() << std::endl;
+
+        
         }
         
         // will add the symbol to the score if this is a PageComponent
         this->addSymbolComponent( group );
-        
+         
         group->selectComponent();
+        std::cout << "Group DONE" << group << " childcomponents: " << ((BaseComponent*) group)->getNumChildComponents() << std::endl;
+        //std::cout << "Group " << group << " childs: " << group->getNumSubcomponents() << std::endl;
+        //std::cout << "Group child #1: " << group->getSubcomponent(0)->getSymbolType() << std::endl;
+
+        
     }
 }
 

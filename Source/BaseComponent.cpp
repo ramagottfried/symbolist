@@ -9,16 +9,11 @@ template <typename T> void printPoint(Point<T> point, String name = "point" )
     std::cout << name << " " << point.getX() << " " << point.getY() << "\n";
 }
 
-BaseComponent::BaseComponent(const String &type,
-                             float x, float y, float w, float h,
-                             float stroke,
-                             Colour color) :
-                    symbol_type(type),
-                    strokeWeight(stroke),
-                    sym_color(color),
-                    m_down(Point<float>(x,y))
+BaseComponent::BaseComponent(const Symbol &s)
 {
-    setBounds( x , y , w , h);
+    std::cout << "BASE" << std::endl;
+    internal_symbol = s ;
+    importFromSymbol() ;
 }
 
 
@@ -53,9 +48,14 @@ void BaseComponent::updateInternalSymbol()
 }
 
 
+void BaseComponent::setScoreSymbolPointer (Symbol* s)
+{
+    score_symbol = s;
+}
+
 void BaseComponent::addSymbolToScore ()
 {
-    score_symbol = new Symbol(internal_symbol);
+    setScoreSymbolPointer( new Symbol(internal_symbol) );
     ((SymbolistMainComponent*) getMainComponent())->notifyNewSymbol( score_symbol );
 }
 
@@ -65,17 +65,11 @@ void BaseComponent::removeSymbolFromScore ()
 }
 
 
-
 bool BaseComponent::isTopLevelComponent()
 {
     return ( getParentComponent() != NULL && getParentComponent() == getPageComponent() );
 }
 
-
-Symbol* BaseComponent::getInternalSymbol( )
-{
-    return &internal_symbol ;
-}
 
 
 /******************
@@ -101,7 +95,26 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
 /******************
  * Imports components' data from the symbol's OSC bundle
  *****************/
-void BaseComponent::importFromSymbol( const Symbol* s) {}
+void BaseComponent::importFromSymbol()
+{
+    int typeMessagePos = internal_symbol.getOSCMessagePos("/type");
+    
+    if ( typeMessagePos == -1 ) {
+        
+        cout << "Could not find '/type' message in OSC Bundle.. (size=" << internal_symbol.getOSCBundle().size() << ")" << endl;
+        
+    } else {
+        
+        String typeStr = internal_symbol.getOSCMessageValue(typeMessagePos).getString();
+        cout << "Importing component from Symbol: " << typeStr << endl;
+        
+        float x = internal_symbol.getOSCMessageValue("/x").getFloat32();
+        float y = internal_symbol.getOSCMessageValue("/y").getFloat32();;
+        float w = internal_symbol.getOSCMessageValue("/w").getFloat32();
+        float h = internal_symbol.getOSCMessageValue("/h").getFloat32();
+        setBounds( x , y , w , h);
+    }
+}
 
 
 /******************

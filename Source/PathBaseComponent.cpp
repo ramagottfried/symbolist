@@ -67,10 +67,19 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
  * Imports components' data from the symbol's OSC bundle
  *****************/
 
-void PathBaseComponent::importFromSymbol( const Symbol* s )
+void PathBaseComponent::importFromSymbol( )
 {
+    
+    BaseComponent::importFromSymbol();
+    
+    Symbol *s = &internal_symbol;
+    
+    std::cout << "IMPORT PATH BASE" << std::endl;
+    std::cout << s->getOSCMessageValue(String("/type")).getString() << std::endl;
+    
     int num_pos = s->getOSCMessagePos("/numSegments");
     if( symbol_parse_error( num_pos, "/numSegments" ) ) return;
+    
     
     OSCBundle b = s->getOSCBundle();
     

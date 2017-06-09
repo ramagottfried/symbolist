@@ -6,12 +6,7 @@ class CircleComponent : public BaseComponent
 {
 public:
 
-    CircleComponent(float x, float y,
-                    float w = 10, float h = 10,
-                    float stroke = 2,
-                    Colour color = Colours::black );
-    
-    
+    CircleComponent(const Symbol &s);
     ~CircleComponent()
     {
         printf("freeing circle %p\n", this);
@@ -23,6 +18,7 @@ public:
     void paint ( Graphics& g ) override;
     void resized() override;
     
+<<<<<<< Updated upstream
     void addHandle( float x, float y );
     void makeHandles();
     void removeHandles();
@@ -33,10 +29,14 @@ public:
     void mouseDown( const MouseEvent& event ) override;
     void mouseUp( const MouseEvent& event ) override;
     
+=======
+    void importFromSymbol() override;
+
+>>>>>>> Stashed changes
     
 private:
     Path            m_path;
-    PathStrokeType  strokeType;
+    PathStrokeType  strokeType = PathStrokeType (2.0);
     
     std::vector<PathHandle*> path_handles;
 

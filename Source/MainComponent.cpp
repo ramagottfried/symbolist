@@ -108,7 +108,9 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
     String desc = key.getTextDescription();
     std::cout << "key " << desc << "\n";
     if( desc            == "command + G" ) {
+        
         scoreGUI.groupSelectedSymbols();
+        
     } else if ( desc    == "backspace" ) {
         scoreGUI.deleteSelectedSymbols();
     } else if ( desc    == "C") {
@@ -198,7 +200,9 @@ void SymbolistMainComponent::symbolistAPI_setSymbols(int n, odot_bundle **bundle
     
     // recreate and add components from score symbols
     for (int i = 0; i < score.getSize(); i++) {
-        BaseComponent* c = makeComponentFromSymbol( score.getSymbol(i) );
+        Symbol *s = score.getSymbol(i);
+        BaseComponent* c = makeComponentFromSymbol( s );
+        c->setScoreSymbolPointer( s );
         scoreGUI.addSubcomponent( c ) ;
     }
 }
@@ -240,27 +244,18 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
         String typeStr = s->getOSCMessageValue(typeMessagePos).getString();
         cout << "Creating component from Symbol: " << typeStr << endl;
         
-        float x = s->getOSCMessageValue("/x").getFloat32();
-        float y = s->getOSCMessageValue("/y").getFloat32();;
-        float w = s->getOSCMessageValue("/w").getFloat32();
-        float h = s->getOSCMessageValue("/h").getFloat32();
-
         BaseComponent *c;
 
         if (typeStr.equalsIgnoreCase(String("circle"))) {
-            c = new CirclePathComponent( x, y, w, h );
+            c = new CirclePathComponent( *s );
         } else if (typeStr.equalsIgnoreCase(String("path"))) {
-            c = new LinePathComponent( x, y );
+            c = new LinePathComponent( *s );
         } else if (typeStr.equalsIgnoreCase(String("group"))) {
-            c = new SymbolGroupComponent( x, y, w, h );
+            c = new SymbolGroupComponent( *s );
         } else {
             // ??
-            c = new BaseComponent(typeStr, x, y );
+            c = new BaseComponent( *s );
         }
-
-        // probably should just send the OSC symbol into the constructor and then get the x,y,w,h,etc. from inside the component
-        c->importFromSymbol( s );
-        
         return c;
     }
 }

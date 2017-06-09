@@ -24,17 +24,13 @@ class BaseComponent : public SymbolistComponent
 {
 public:
     
-    BaseComponent(const String &type,
-                  float center_x, float center_y,
-                  float w = 10, float h = 10,
-                  float stroke = 2,
-                  Colour color = Colours::black  );
-    
+    BaseComponent(const Symbol &s);
     ~BaseComponent();
     
     String getSymbolType();
-    Symbol* getInternalSymbol();
-    
+
+    void setScoreSymbolPointer (Symbol* s); 
+        
     bool isTopLevelComponent();
 
     void updateInternalSymbol();
@@ -42,7 +38,7 @@ public:
     void removeSymbolFromScore();
     
     virtual int addSymbolMessages( Symbol* s, const String &base_address );
-    virtual void importFromSymbol( const Symbol* s );
+    virtual void importFromSymbol();
 
     
     // Called from the Juce::SelectedItemSet subclass in PageComponent
@@ -81,7 +77,7 @@ protected:
     Symbol                          *score_symbol;
     Symbol                          internal_symbol;
     
-    String                          symbol_type;
+    String                          symbol_type = "symbol" ;
 
     // parameters
     float           strokeWeight = 2;

@@ -17,11 +17,7 @@ class SymbolGroupComponent : public ScoreComponent, public BaseComponent
     
 public:
     
-    SymbolGroupComponent(float x, float y,
-                         float w = 10, float h = 10 ) :
-        BaseComponent("group" , x , y , w , h )
-    {}
-    
+    SymbolGroupComponent( const Symbol& s ) : BaseComponent( s ) {}
     ~SymbolGroupComponent()
     {
         printf("freeing group %p\n", this);
@@ -30,7 +26,7 @@ public:
     void paint ( Graphics& g ) override;
 
     int addSymbolMessages(Symbol* s, const String &base_address ) override ;
-    void importFromSymbol(const Symbol* s) override;
+    void importFromSymbol( ) override;
 
 private :
     

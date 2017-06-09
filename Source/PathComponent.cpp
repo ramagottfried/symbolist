@@ -128,21 +128,28 @@ void PathComponent::importFromSymbol( const Symbol* s )
         float y0 = getFloatValue(ym[0]);
         
         if( x0 != prev_x || y0 != prev_y )
+        {
             m_path.startNewSubPath( x0, y0 );
-
+        }
+        
         if( seg_type == "line" && xm.size() == 2 )
         {
             m_path.lineTo( getFloatValue(xm[1]), getFloatValue(ym[1]) );
+            prev_x = getFloatValue(xm[1]);
+            prev_y = getFloatValue(ym[1]);
         }
-        else if( seg_type == "cubic" && xm.size() == 3 )
+        else if( seg_type == "cubic" && xm.size() == 4 )
         {
-            m_path.cubicTo( getFloatValue(xm[0]), getFloatValue(ym[0]), getFloatValue(xm[1]), getFloatValue(ym[1]), getFloatValue(xm[2]), getFloatValue(ym[2]) );
+            m_path.cubicTo( getFloatValue(xm[1]), getFloatValue(ym[1]), getFloatValue(xm[2]), getFloatValue(ym[2]), getFloatValue(xm[3]), getFloatValue(ym[3]) );
+            prev_x = getFloatValue(xm[3]);
+            prev_y = getFloatValue(ym[3]);
         }
-        
-        repaint();
     }
     
+    // force repaint ?
+    
 }
+
 /******************
  * MOUSE INTERACTIONS
  *****************/

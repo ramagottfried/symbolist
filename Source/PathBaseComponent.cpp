@@ -1,8 +1,7 @@
 
-#include "PathComponent.h"
-#include "PageComponent.h"
+#include "PathBaseComponent.h"
 
-void PathComponent::printPath( Path p )
+void PathBaseComponent::printPath( Path p )
 {
     Path::Iterator it(p);
     int count = 0;
@@ -36,7 +35,7 @@ void PathComponent::printPath( Path p )
  * Can be overriden / completed by class-specific messages
  *****************/
 
-int PathComponent::addSymbolMessages( Symbol* s, const String &base_address )
+int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
 {
     // adds the basic messages
     int messages_added = BaseComponent::addSymbolMessages(s, base_address);
@@ -59,7 +58,7 @@ int PathComponent::addSymbolMessages( Symbol* s, const String &base_address )
     internal_symbol.addOSCMessage(x_mess);
     internal_symbol.addOSCMessage(y_mess);
     messages_added += 2;
-
+    
     return messages_added;
 }
 
@@ -68,7 +67,7 @@ int PathComponent::addSymbolMessages( Symbol* s, const String &base_address )
  * Imports components' data from the symbol's OSC bundle
  *****************/
 
-void PathComponent::importFromSymbol( const Symbol* s )
+void PathBaseComponent::importFromSymbol( const Symbol* s )
 {
     int num_pos = s->getOSCMessagePos("/numSegments");
     if( symbol_parse_error( num_pos, "/numSegments" ) ) return;
@@ -85,7 +84,7 @@ void PathComponent::importFromSymbol( const Symbol* s )
         const String type_addr = base_addr + "/type";
         int type_pos = s->getOSCMessagePos( type_addr );
         if( symbol_parse_error( type_pos, type_addr ) ) return;
-
+        
         const String x_addr = base_addr + "/x_points";
         int xp = s->getOSCMessagePos( x_addr );
         if( symbol_parse_error( xp, x_addr ) ) return;
@@ -140,16 +139,16 @@ void PathComponent::importFromSymbol( const Symbol* s )
  * MOUSE INTERACTIONS
  *****************/
 
-void PathComponent::addHandle( float x, float y )
+void PathBaseComponent::addHandle( float x, float y )
 {
     PathHandle *h = new PathHandle( x + getX(), y + getY(), this );
-    auto *p = static_cast<PageComponent*>( getPageComponent() ) ;
+    auto *p = static_cast<Component*>( getPageComponent() ) ;
     p->addAndMakeVisible( h );
     path_handles.emplace_back( h );
 }
 
 
-void PathComponent::makeHandles()
+void PathBaseComponent::makeHandles()
 {
     if( is_selected && path_handles.size() == 0 )
     {
@@ -171,7 +170,7 @@ void PathComponent::makeHandles()
     repaint();
 }
 
-void PathComponent::removeHandles()
+void PathBaseComponent::removeHandles()
 {
     auto *sc = getPageComponent();
     
@@ -185,13 +184,13 @@ void PathComponent::removeHandles()
     path_handles.clear();
 }
 
-void PathComponent::updatePathPoints()
+void PathBaseComponent::updatePathPoints()
 {
     auto position = getPosition().toFloat();
     
     Path p;
     auto handle = path_handles.begin();
-
+    
     Path::Iterator it( m_path );
     while( it.next() )
     {
@@ -208,7 +207,7 @@ void PathComponent::updatePathPoints()
     }
     
     // not sure if this offset stuff is necessary, the jumping problem is still there...
-
+    
     Rectangle<float> testBounds = p.getBounds();
     float offsetx = ( testBounds.getX() < 0 ) ? -testBounds.getX() : 0;
     float offsety = ( testBounds.getY() < 0 ) ? -testBounds.getY() : 0;
@@ -225,47 +224,46 @@ void PathComponent::updatePathPoints()
     repaint();
 }
 
-void PathComponent::deselectComponent()
+void PathBaseComponent::deselectComponent()
 {
     removeHandles();
     BaseComponent::deselectComponent();
 }
 
 
-void PathComponent::mouseDown( const MouseEvent& event )
+void PathBaseComponent::mouseDown( const MouseEvent& event )
 {
     BaseComponent::mouseDown(event);
 }
 
-void PathComponent::mouseMove( const MouseEvent& event )
+void PathBaseComponent::mouseMove( const MouseEvent& event )
 {
     
     /*
-    UI_EditType edit_mode = getMainEditMode();
-    if( edit_mode == draw )
-    {
-        Path p;
-
-        float strokeOffset = strokeType.getStrokeThickness() * 0.5;
-        Point<float> zeroPt(0, 0);
-        p.startNewSubPath( zeroPt );
-
-        Point<float> endPt = event.position - m_down + zeroPt;
-        p.cubicTo( endPt * 0.25 , endPt * 0.75, endPt );
-
-        m_path.swapWithPath( p );
-        m_path.applyTransform( AffineTransform().translated (strokeOffset, strokeOffset) );
-
-        Rectangle<float> bb = (m_path.getBounds() + m_down).expanded( strokeOffset ) ;
-        setBoundsFloatRect( bb );
-    }
-    */
+     UI_EditType edit_mode = getMainEditMode();
+     if( edit_mode == draw )
+     {
+     Path p;
+     
+     float strokeOffset = strokeType.getStrokeThickness() * 0.5;
+     Point<float> zeroPt(0, 0);
+     p.startNewSubPath( zeroPt );
+     
+     Point<float> endPt = event.position - m_down + zeroPt;
+     p.cubicTo( endPt * 0.25 , endPt * 0.75, endPt );
+     
+     m_path.swapWithPath( p );
+     m_path.applyTransform( AffineTransform().translated (strokeOffset, strokeOffset) );
+     
+     Rectangle<float> bb = (m_path.getBounds() + m_down).expanded( strokeOffset ) ;
+     setBoundsFloatRect( bb );
+     }
+     */
 }
 
-void PathComponent::mouseDrag( const MouseEvent& event )
+void PathBaseComponent::mouseDrag( const MouseEvent& event )
 {
-    symbol_debug_function(__func__);
-
+    
     BaseComponent::mouseDrag(event);
     
     UI_EditType edit_mode = getMainEditMode();
@@ -281,27 +279,9 @@ void PathComponent::mouseDrag( const MouseEvent& event )
         }
         else
             m_drag = event.position;
-
-        //Point<float>(event.position.getX(), m_down.getY());
         
-        Path p;
-        float strokeOffset = strokeType.getStrokeThickness() * 0.5;
-        Point<float> zeroPt(0, 0);
-        p.startNewSubPath( zeroPt );
         
-        Point<float> endPt = m_drag - m_down + zeroPt;
-        p.cubicTo( endPt * 0.25 , endPt * 0.75, endPt );
-        
-        Rectangle<float> testBounds = p.getBounds();
-        float offsetx = ( testBounds.getX() < 0 ) ? -testBounds.getX() : 0;
-        float offsety = ( testBounds.getY() < 0 ) ? -testBounds.getY() : 0;
-        p.applyTransform( AffineTransform().translated(offsetx + strokeOffset, offsety + strokeOffset) );
-        
-        Rectangle<float> pathBounds = ( p.getBounds() - Point<float>(offsetx, offsety) ).expanded( strokeOffset );
-        
-        m_path.swapWithPath( p );
-        setBoundsFloatRect( pathBounds + m_down );
-      
+               
     }
     else if ( edit_mode == edit && path_handles.size() > 0 )
     {
@@ -312,19 +292,54 @@ void PathComponent::mouseDrag( const MouseEvent& event )
     }
 }
 
-void PathComponent::mouseUp( const MouseEvent& event )
+void PathBaseComponent::mouseUp( const MouseEvent& event )
 {
     makeHandles();
 }
 
- 
 
+void PathBaseComponent::drawHandles( Graphics& g)
+{
+    float ax = -1, ay = -1;
+    Path::Iterator it(m_path);
+    while( it.next() )
+    {
+        if (it.elementType == it.startNewSubPath)
+        {
+            ax = it.x1;
+            ay = it.y1;
+        }
+        else if (it.elementType == it.lineTo)
+        {
+            ax = it.x1;
+            ay = it.y1;
+        }
+        else if (it.elementType == it.quadraticTo)
+        {
+            g.drawLine(ax, ay, it.x1, it.y1);
+            ax = it.x2;
+            ay = it.y2;
+        }
+        else if (it.elementType == it.cubicTo)
+        {
+            g.drawLine(ax, ay, it.x1, it.y1);
+            g.drawLine(it.x2, it.y2, it.x3, it.y3);
+            ax = it.x3;
+            ay = it.y3;
+        }
+        else if (it.elementType == it.closePath)
+        {
+
+        }
+    }
+
+}
 
 /******************
  * Paint callback subroutine
  *****************/
 
-void PathComponent::symbol_paint ( Graphics& g )
+void PathBaseComponent::paint ( Graphics& g )
 {
     g.setColour( getCurrentColor() );
     
@@ -334,28 +349,9 @@ void PathComponent::symbol_paint ( Graphics& g )
     
     strokeType.setStrokeThickness( strokeWeight );
     g.strokePath(m_path, strokeType );
-    
-    /* test
-     g.setColour( Colours::red );
-     float strokeOffset = strokeType.getStrokeThickness() * 0.5;
-     Point<float> zeroPt(strokeOffset, strokeOffset);
-     g.drawLine( Line<float>(m_down - m_down + zeroPt, m_drag - m_down + zeroPt) );
-    */
-    
-    for (auto it = path_handles.begin(); it != path_handles.end(); it++ )
-    {
-        Point<float> start = getLocalPoint( getParentComponent(), (*it++)->getBounds().getCentre().toFloat() );
-        Point<float> end = getLocalPoint( getParentComponent(), (*it)->getBounds().getCentre().toFloat() );
-        
-        Line<float> linea( start, end );
-        g.drawLine( linea, 1 );
-    }
-    /*
-    if( !m_preview_path.isEmpty() && getMainEditMode() == draw && is_selected )
-    {
-        g.setColour( Colours::blue );
-        g.strokePath(m_preview_path, strokeType );
-    }*/
+   
+    if( is_selected && path_handles.size() > 0)
+        drawHandles(g);
     
 }
 

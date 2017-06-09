@@ -121,17 +121,6 @@ void BaseComponent::deselectComponent()
     repaint();
 }
 
-
-/******************
- * Paint callback: calls a symbol-specific suroutine
- *****************/
-void BaseComponent::paint ( Graphics& g )
-{
-    current_color = is_selected ? sel_color : sym_color;
-    symbol_paint( g );
-}
-
-
 /************************
  * Component modification callbacks
  ************************/

@@ -38,7 +38,7 @@ void PaletteButton::paint (Graphics& g)
     if (selected) g.fillAll( Colours::grey );
     else g.fillAll( Colours::lightgrey );
     g.setOrigin(graphic_comp->getX(), graphic_comp->getY());
-    graphic_comp->symbol_paint(g);
+    graphic_comp->paint(g);
 }
 
 void PaletteButton::mouseDown ( const MouseEvent& event )

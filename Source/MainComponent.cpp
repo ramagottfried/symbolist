@@ -248,9 +248,9 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
         BaseComponent *c;
 
         if (typeStr.equalsIgnoreCase(String("circle"))) {
-            c = new CircleComponent( x, y, w, h );
+            c = new CirclePathComponent( x, y, w, h );
         } else if (typeStr.equalsIgnoreCase(String("path"))) {
-            c = new PathComponent( x, y );
+            c = new LinePathComponent( x, y );
         } else if (typeStr.equalsIgnoreCase(String("group"))) {
             c = new SymbolGroupComponent( x, y, w, h );
         } else {

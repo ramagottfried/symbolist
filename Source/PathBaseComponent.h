@@ -1,22 +1,23 @@
+
 #pragma once
 
 #include "BaseComponent.h"
 
 class PathHandle;
 
-class PathComponent : public BaseComponent
+class PathBaseComponent : public BaseComponent
 {
 public:
     
-    PathComponent(  float x, float y,
-                    float w = 10, float h = 10,
-                    float stroke = 2,
-                    Colour color = Colours::black ) :
-        BaseComponent("path" , x , y , w , h, stroke, color ),
-        strokeType(stroke)
+    PathBaseComponent(  float x, float y,
+                  float w = 10, float h = 10,
+                  float stroke = 2,
+                  Colour color = Colours::black ) :
+    BaseComponent("path" , x , y , w , h, stroke, color ),
+    strokeType(stroke)
     {}
     
-    ~PathComponent()
+    ~PathBaseComponent()
     {
         printf("freeing path %p\n", this);
         removeHandles();
@@ -27,16 +28,17 @@ public:
     int addSymbolMessages(Symbol* s, const String &base_address) override;
     
     void importFromSymbol( const Symbol* s ) override;
-
+    
     void addHandle( float x, float y );
     void makeHandles();
     void removeHandles();
     void updatePathPoints();
+    void drawHandles( Graphics& g);
     
     void deselectComponent () override;
     
     void paint ( Graphics& g ) override;
-
+    
     void mouseDown( const MouseEvent& event ) override;
     void mouseMove( const MouseEvent& event ) override;
     void mouseDrag( const MouseEvent& event ) override;
@@ -47,7 +49,7 @@ public:
         return m_path.intersectsLine( Line<float>( x - 5, y - 5, x + 5, y + 5) ) || m_path.intersectsLine( Line<float>( x + 5, y - 5, x - 5, y + 5) );
     }
     
-private:
+protected:
     
     Point<float>    m_drag;
     PathStrokeType  strokeType;
@@ -55,22 +57,20 @@ private:
     
     Path            m_path;
     Path            m_preview_path;
-
+    
     float           quarter_pi = 0.78539816339745;
-
-
     
     std::vector<PathHandle*> path_handles;
     
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PathComponent)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PathBaseComponent)
 };
 
 
 class PathHandle : public Component
 {
 public:
-    PathHandle( float x, float y, PathComponent *pc)
+    PathHandle( float x, float y, PathBaseComponent *pc)
     {
         m_path = pc;
         setComponentID("path_handle");
@@ -80,8 +80,8 @@ public:
     
     ~PathHandle()
     {
-
-//        std::cout << "freeing " << getComponentID() << " " << this << "\n";
+        
+        //        std::cout << "freeing " << getComponentID() << " " << this << "\n";
     }
     
     void paint ( Graphics& g ) override
@@ -110,11 +110,11 @@ public:
 private:
     
     Point<float>    m_down;
-
-    PathComponent   *m_path;
+    
+    PathBaseComponent   *m_path;
     float           m_size = 10;
     float           m_strokeweight = 1;
-
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PathHandle)
     

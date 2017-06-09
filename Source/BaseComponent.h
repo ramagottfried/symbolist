@@ -19,11 +19,6 @@ void printPoint(Point<T> point, const String &name = "point" )
     std::cout << name << " " << point.getX() << " " << point.getY() << "\n";
 }
 
-template <typename T>
-Rectangle<T> rectangle_stretch(Rectangle<T> r, T w, T h)
-{
-    return r.withSize( r.getWidth() + w, r.getHeight() + h );
-}
 
 class BaseComponent : public SymbolistComponent
 {
@@ -55,10 +50,7 @@ public:
     virtual void selectComponent();
     virtual void deselectComponent();
     
-    // callbacks redefinitions from Juce::Component
-    void paint ( Graphics& g ) override;
-    // subroutine in derived class, maybe return bool to trigger repaint
-    virtual void symbol_paint ( Graphics& g ) {}
+    inline const Colour getCurrentColor(){ return is_selected ? sel_color : sym_color; }
 
     // these two modify the symbol
     void moved () override;
@@ -140,16 +132,6 @@ protected:
             return true; // there is an error
         }
         return false;
-    }
-    
-    float getFloatValue(OSCArgument a)
-    {
-        if( a.isFloat32() )
-            return a.getFloat32();
-        else if( a.isInt32() )
-            return (float)a.getInt32();
-        else
-            return 0.0f;
     }
     
 private:

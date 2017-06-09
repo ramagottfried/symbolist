@@ -93,7 +93,7 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
     String desc = key.getTextDescription();
     std::cout << "key " << desc << "\n";
     if( desc            == "command + G" ) {
-        scoreGUI.groupSymbols();
+        scoreGUI.groupSelectedSymbols();
     } else if ( desc    == "backspace" ) {
         scoreGUI.deleteSelectedSymbols();
     } else if ( desc    == "C") {
@@ -119,8 +119,6 @@ void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
     // todo : better way to deal with modiyer keys
     shift_down = modifiers.isShiftDown() ;
 }
-
-
 
 
 
@@ -174,18 +172,19 @@ odot_bundle* SymbolistMainComponent::symbolistAPI_getSymbol(int n)
 
 void SymbolistMainComponent::symbolistAPI_setSymbols(int n, odot_bundle **bundle_array)
 {
-    // Will lock the MainLoop until out of scope..
+    // Will lock the MainLoop until out of scope
     const MessageManagerLock mmLock;
     
     // clear the view
-    scoreGUI.clearAllSubComponents();
+    scoreGUI.clearAllSubcomponents();
     
     // update score
     getScore()->importScoreFromOSC(n, bundle_array);
     
     // recreate and add components from score symbols
     for (int i = 0; i < score.getSize(); i++) {
-        scoreGUI.addChildToScoreComponent( makeComponentFromSymbol( score.getSymbol(i) ) ) ;
+        BaseComponent* c = makeComponentFromSymbol( score.getSymbol(i) );
+        scoreGUI.addSubcomponent( c ) ;
     }
 }
 
@@ -211,7 +210,7 @@ void SymbolistMainComponent::executeUpdateCallback(int arg)
 // => MODIFY VIEW FROM DATA
 //=================================
 
-BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(Symbol* s)
+BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
 {
     
     int typeMessagePos = s->getOSCMessagePos("/type");
@@ -224,6 +223,7 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(Symbol* s)
     } else {
         
         String typeStr = s->getOSCMessageValue(typeMessagePos).getString();
+        cout << "Creating component from Symbol: " << typeStr << endl;
         
         float x = s->getOSCMessageValue("/x").getFloat32();
         float y = s->getOSCMessageValue("/y").getFloat32();;
@@ -239,46 +239,37 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(Symbol* s)
         } else if (typeStr.equalsIgnoreCase(String("group"))) {
             c = new SymbolGroupComponent( x, y, w, h );
         } else {
+            // ??
             c = new BaseComponent(typeStr, x, y );
         }
         
-        c->setSymbol(s);
         c->importFromSymbol();
+        
         return c;
     }
 }
 
 
-//=================================
-// <= MODIFY DATA FROM VIEW
-//=================================
-
-void SymbolistMainComponent::updateComponentSymbol( BaseComponent *c )
-{
-    c->getSymbol()->clearOSCBundle();
-    c->addSymbolMessages( String("") );
-}
-
-/********************************
+/*=================================
+ *  MODIFY DATA FROM VIEW
  * CALLBACKS FROM USER ACTIONS
  ********************************/
 
-void SymbolistMainComponent::handleComponentAdded ( BaseComponent* c , bool notify )
+void SymbolistMainComponent::notifyNewSymbol ( Symbol* s )
 {
-    score.addSymbol( c->getSymbol() );
-    if ( notify ) executeUpdateCallback( -1 );
+    score.addSymbol( s );
+    executeUpdateCallback( -1 );
 }
 
-void SymbolistMainComponent::handleComponentRemoved ( BaseComponent* c , bool notify )
+void SymbolistMainComponent::notifySymbolRemoved ( Symbol* s )
 {
-    score.removeSymbol( c->getSymbol() );
-    if ( notify )executeUpdateCallback( -1 );
+    score.removeSymbol( s );
+    executeUpdateCallback( -1 );
 }
 
-void SymbolistMainComponent::handleComponentModified ( BaseComponent* c , bool notify )
+void SymbolistMainComponent::notifySymbolChange ( Symbol* s )
 {
-    updateComponentSymbol( c );
-    if ( notify ) executeUpdateCallback( score.getSymbolPosition( c->getSymbol() ) );
+    executeUpdateCallback( score.getSymbolPosition( s ) );
 }
 
 

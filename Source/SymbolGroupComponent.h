@@ -27,12 +27,10 @@ class SymbolGroupComponent : public ScoreComponent, public BaseComponent
         printf("freeing group %p\n", this);
     }
     
+    void paint ( Graphics& g ) override;
 
-    size_t          getNumSubcomponents( );
-    BaseComponent*  getSubcomponent( int i );
-    void            addSubcomponent( BaseComponent *c );
-
-    int addSymbolMessages(const String &base_address ) override ;
+    int addSymbolMessages(Symbol* s, const String &base_address ) override ;
+    void importFromSymbol() override;
 
     private :
     

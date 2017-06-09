@@ -38,14 +38,16 @@ public:
     
     ~BaseComponent();
     
-    // main operations in score management
-    inline void setSymbol(Symbol *s){ score_symbol = s; };
-    inline Symbol* getSymbol(){ return score_symbol; };
-    inline String getSymbolType(){ return symbol_type ; };
+    String getSymbolType();
+    Symbol* getInternalSymbol();
     
     bool isTopLevelComponent();
+
+    void updateInternalSymbol();
+    void addSymbolToScore();
+    void removeSymbolFromScore();
     
-    virtual int addSymbolMessages( const String &base_address);
+    virtual int addSymbolMessages( Symbol* s, const String &base_address );
     virtual void importFromSymbol();
 
     
@@ -62,10 +64,7 @@ public:
     // these two modify the symbol
     void moved () override;
     void resized () override;
-    // subroutine in derived class
-    virtual void symbol_moved () {}
-    virtual void symbol_resized () {}
-    
+
     
     // these are standard interactions
     void mouseEnter( const MouseEvent& event ) override {};
@@ -79,6 +78,7 @@ public:
     virtual float symbol_getX(){ return getX(); }
     virtual float symbol_getY(){ return getY(); }
     
+    // not very happy with therm "Symbol" here
     inline void setSymbolStrokeWeight( float s ){ strokeWeight = s; }
     inline void setSymbolColor( Colour c ){ sym_color = c; }
     
@@ -89,8 +89,9 @@ protected:
     // score structure
     Symbol                          *score_symbol;
     Symbol                          internal_symbol;
-    String                          symbol_type = String("symbol");
     
+    String                          symbol_type;
+
     // parameters
     float           strokeWeight = 2;
     Colour          sym_color = Colours::black;

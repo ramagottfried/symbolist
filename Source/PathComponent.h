@@ -24,7 +24,7 @@ public:
     
     void printPath( Path p );
     
-    int addSymbolMessages(const String &base_address) override;
+    int addSymbolMessages(Symbol* s, const String &base_address) override;
     
     void importFromSymbol() override;
 
@@ -79,6 +79,7 @@ public:
     
     ~PathHandle()
     {
+
 //        std::cout << "freeing " << getComponentID() << " " << this << "\n";
     }
     
@@ -106,12 +107,13 @@ public:
     {}
     
 private:
+    
     Point<float>    m_down;
 
     PathComponent   *m_path;
     float           m_size = 10;
     float           m_strokeweight = 1;
-    
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PathHandle)
     

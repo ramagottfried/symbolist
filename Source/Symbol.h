@@ -26,13 +26,14 @@ public:
     Symbol(const Symbol& other) = default;
     ~Symbol() = default;
     
-    OSCBundle   getOSCBundle () { return osc_bundle; }
+    OSCBundle   getOSCBundle () const { return osc_bundle; }
     void        setOSCBundle (OSCBundle *b) { osc_bundle = *b; }
     void        clearOSCBundle () { osc_bundle = OSCBundle(); }
     
-    int         getOSCMessagePos(const String &address);
-    OSCArgument getOSCMessageValue(const int pos);
-    OSCArgument getOSCMessageValue(const String &address);
+    int         getOSCMessagePos(const String &address) const;
+    OSCArgument getOSCMessageValue(const int pos) const;
+    OSCArgument getOSCMessageValue(const String &address) const;
+    
     void addOSCMessage( const String &address );
     void addOSCMessage( const OSCMessage m );
     void addOSCMessage( const String &address, const float value );

@@ -20,8 +20,9 @@ void CircleComponent::symbol_paint ( Graphics& g )
     g.fillPath (m_path);
 }
 
-void CircleComponent::symbol_resized()
+void CircleComponent::resized()
 {
+    BaseComponent::resized();
     auto b = getLocalBounds().toFloat().reduced( strokeWeight );;
     m_path.scaleToFit( b.getX(), b.getY(), b.getWidth(), b.getHeight(), false );
 }

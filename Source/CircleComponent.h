@@ -22,7 +22,7 @@ public:
 
     void symbol_paint ( Graphics& g ) override;
 
-    void symbol_resized() override;
+    void resized() override;
     
 private:
     Path            m_path;

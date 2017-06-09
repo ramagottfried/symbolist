@@ -78,6 +78,15 @@ bool symbol_parse_error( int p, const String& address )
     return false;
 }
 
+float getFloatValue(OSCArgument a)
+{
+    if( a.isFloat32() )
+        return a.getFloat32();
+    else if( a.isInt32() )
+        return (float)a.getInt32();
+    else
+        return 0.0f;
+}
 
 void PathComponent::importFromSymbol( const Symbol* s )
 {
@@ -85,6 +94,9 @@ void PathComponent::importFromSymbol( const Symbol* s )
     if( symbol_parse_error( num_pos, "/numSegments" ) ) return;
     
     OSCBundle b = s->getOSCBundle();
+    
+    float prev_x = -1111, prev_y = -1111;
+    m_path.clear();
     
     for( int i = 0; i < b[num_pos].getMessage()[0].getInt32(); i++ )
     {
@@ -112,17 +124,22 @@ void PathComponent::importFromSymbol( const Symbol* s )
             return;
         }
         
-        if( i == 0 )
+        float x0 = getFloatValue(xm[0]);
+        float y0 = getFloatValue(ym[0]);
+        
+        if( x0 != prev_x || y0 != prev_y )
+            m_path.startNewSubPath( x0, y0 );
+
+        if( seg_type == "line" && xm.size() == 2 )
         {
-            m_path.clear();
-            m_path.startNewSubPath( xm[0].getFloat32() , ym[0].getFloat32() );
+            m_path.lineTo( getFloatValue(xm[1]), getFloatValue(ym[1]) );
+        }
+        else if( seg_type == "cubic" && xm.size() == 3 )
+        {
+            m_path.cubicTo( getFloatValue(xm[0]), getFloatValue(ym[0]), getFloatValue(xm[1]), getFloatValue(ym[1]), getFloatValue(xm[2]), getFloatValue(ym[2]) );
         }
         
-        if( seg_type == "line" && xm.size() == 2 )
-            m_path.lineTo( xm[1].getFloat32() , ym[1].getFloat32() );
-        else if( seg_type == "cubic" && xm.size() == 3 )
-            m_path.cubicTo( xm[0].getFloat32(), ym[0].getFloat32(), xm[1].getFloat32(), ym[1].getFloat32(), xm[2].getFloat32(), ym[2].getFloat32() );
-        
+        repaint();
     }
     
 }

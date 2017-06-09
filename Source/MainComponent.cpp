@@ -25,17 +25,17 @@ SymbolistMainComponent::SymbolistMainComponent()
     
     OSCMessage numSeg_mess( "/numSegments",         (int32)3 );
 
-    OSCMessage type_mess0(  "/segment/0/type",      (String)"line"                      );
-    OSCMessage x_mess0(     "/segment/0/x_points",  (float)0., (float)10.               );
-    OSCMessage y_mess0(     "/segment/0/y_points",  (float)10., (float)0.               );
+    OSCMessage type_mess0(  "/segment/0/type",      (String)"line"                                  );
+    OSCMessage x_mess0(     "/segment/0/x_points",  (float)0.,  (float)20                           );
+    OSCMessage y_mess0(     "/segment/0/y_points",  (float)0,   (float)20.                          );
     
-    OSCMessage type_mess1(  "/segment/0/type",      (String)"cubic"                     );
-    OSCMessage x_mess1(     "/segment/0/x_points",  (float)10., (float)15., (float)20.  );
-    OSCMessage y_mess1(     "/segment/0/y_points",  (float)0.,  (float)5.,  (float)10.  );
+    OSCMessage type_mess1(  "/segment/1/type",      (String)"cubic"                                 );
+    OSCMessage x_mess1(     "/segment/1/x_points",  (float)20., (float)7., (float)15.,  (float)20   );
+    OSCMessage y_mess1(     "/segment/1/y_points",  (float)20., (float)5.,  (float)5.,  (float)0    );
 
-    OSCMessage type_mess2(  "/segment/0/type",      (String)"line"                      );
-    OSCMessage x_mess2(     "/segment/0/x_points",  (float)20., (float)20.              );
-    OSCMessage y_mess2(     "/segment/0/y_points",  (float)10., (float)30.              );
+    OSCMessage type_mess2(  "/segment/2/type",      (String)"line"                                  );
+    OSCMessage x_mess2(     "/segment/2/x_points",  (float)20,  (float)10.                          );
+    OSCMessage y_mess2(     "/segment/2/y_points",  (float)00., (float)5                            );
 
     s2->addOSCMessage(numSeg_mess);
     s2->addOSCMessage(type_mess0);

@@ -18,21 +18,36 @@ SymbolistMainComponent::SymbolistMainComponent()
     Symbol* s1 = new Symbol("circle", 20.0, 20.0, symbol_size, symbol_size);
     palette.addPaletteItem(s1);
     
+    Symbol* s3 = new Symbol("circle", 20.0, 20.0, symbol_size/2, symbol_size);
+    palette.addPaletteItem(s3);
+    
     Symbol* s2 = new Symbol("path", 20.0, 20.0, symbol_size, symbol_size);
-    OSCMessage x_mess("/x-points");
-    OSCMessage y_mess("/y-points");
-    x_mess.addFloat32( 0.0 );
-    y_mess.addFloat32( 2.0 );
-    x_mess.addFloat32( 1.5 );
-    y_mess.addFloat32( 0.0 );
-    x_mess.addFloat32( 3.0 );
-    y_mess.addFloat32( 1.5 );
-    x_mess.addFloat32( 3.5 );
-    y_mess.addFloat32( 0.5 );
-    x_mess.addFloat32( 5.0 );
-    y_mess.addFloat32( 2.0 );
-    s2->addOSCMessage(x_mess);
-    s2->addOSCMessage(y_mess);
+    
+    OSCMessage numSeg_mess( "/numSegments",         (int32)3 );
+
+    OSCMessage type_mess0(  "/segment/0/type",      (String)"line"                      );
+    OSCMessage x_mess0(     "/segment/0/x_points",  (float)0., (float)10.               );
+    OSCMessage y_mess0(     "/segment/0/y_points",  (float)10., (float)0.               );
+    
+    OSCMessage type_mess1(  "/segment/0/type",      (String)"cubic"                     );
+    OSCMessage x_mess1(     "/segment/0/x_points",  (float)10., (float)15., (float)20.  );
+    OSCMessage y_mess1(     "/segment/0/y_points",  (float)0.,  (float)5.,  (float)10.  );
+
+    OSCMessage type_mess2(  "/segment/0/type",      (String)"line"                      );
+    OSCMessage x_mess2(     "/segment/0/x_points",  (float)20., (float)20.              );
+    OSCMessage y_mess2(     "/segment/0/y_points",  (float)10., (float)30.              );
+
+    s2->addOSCMessage(numSeg_mess);
+    s2->addOSCMessage(type_mess0);
+    s2->addOSCMessage(x_mess0);
+    s2->addOSCMessage(y_mess0);
+    s2->addOSCMessage(type_mess1);
+    s2->addOSCMessage(x_mess1);
+    s2->addOSCMessage(y_mess1);
+    s2->addOSCMessage(type_mess2);
+    s2->addOSCMessage(x_mess2);
+    s2->addOSCMessage(y_mess2);
+    
     palette.addPaletteItem(s2);
     
     paletteView.buildFromPalette(&palette);
@@ -229,7 +244,7 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
         float y = s->getOSCMessageValue("/y").getFloat32();;
         float w = s->getOSCMessageValue("/w").getFloat32();
         float h = s->getOSCMessageValue("/h").getFloat32();
-        
+
         BaseComponent *c;
 
         if (typeStr.equalsIgnoreCase(String("circle"))) {
@@ -242,8 +257,9 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
             // ??
             c = new BaseComponent(typeStr, x, y );
         }
-        
-        c->importFromSymbol();
+
+        // probably should just send the OSC symbol into the constructor and then get the x,y,w,h,etc. from inside the component
+        c->importFromSymbol( s );
         
         return c;
     }

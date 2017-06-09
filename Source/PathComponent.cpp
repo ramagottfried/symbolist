@@ -68,26 +68,63 @@ int PathComponent::addSymbolMessages( Symbol* s, const String &base_address )
  * Imports components' data from the symbol's OSC bundle
  *****************/
 
-void PathComponent::importFromSymbol()
+bool symbol_parse_error( int p, const String& address )
 {
-    BaseComponent::importFromSymbol(); // do nothing special
-    // import the points
-    int xp = internal_symbol.getOSCMessagePos("/x-points");
-    int yp = internal_symbol.getOSCMessagePos("/y-points");
-   
-    
-    if ( xp >= 0 && yp >= 0 )
+    if( p == -1 )
     {
-        OSCMessage xm = internal_symbol.getOSCBundle()[xp].getMessage();
-        OSCMessage ym = internal_symbol.getOSCBundle()[yp].getMessage();
-    
-        m_path.clear();
-        m_path.startNewSubPath( xm[0].getFloat32() , ym[0].getFloat32() );
-        
-        for (int i = 1; i < xm.size(); i++) {
-            m_path.lineTo( xm[i].getFloat32() , ym[i].getFloat32() );
-        }
+        std::cout << "failed to parse symbol:\t" << address << std::endl;
+        return true; // there is an error
     }
+    return false;
+}
+
+
+void PathComponent::importFromSymbol( const Symbol* s )
+{
+    int num_pos = s->getOSCMessagePos("/numSegments");
+    if( symbol_parse_error( num_pos, "/numSegments" ) ) return;
+    
+    OSCBundle b = s->getOSCBundle();
+    
+    for( int i = 0; i < b[num_pos].getMessage()[0].getInt32(); i++ )
+    {
+        const String base_addr = "/segment/" + std::to_string(i);
+        
+        const String type_addr = base_addr + "/type";
+        int type_pos = s->getOSCMessagePos( type_addr );
+        if( symbol_parse_error( type_pos, type_addr ) ) return;
+
+        const String x_addr = base_addr + "/x_points";
+        int xp = s->getOSCMessagePos( x_addr );
+        if( symbol_parse_error( xp, x_addr ) ) return;
+        
+        const String y_addr = base_addr + "/y_points";
+        int yp = s->getOSCMessagePos( y_addr );
+        if( symbol_parse_error( yp, y_addr ) ) return;
+        
+        String seg_type = b[type_pos].getMessage()[0].getString();
+        OSCMessage xm = b[xp].getMessage();
+        OSCMessage ym = b[yp].getMessage();
+        
+        if (xm.size() != ym.size() )
+        {
+            std::cout << "x and y point lists must be the same length!\n";
+            return;
+        }
+        
+        if( i == 0 )
+        {
+            m_path.clear();
+            m_path.startNewSubPath( xm[0].getFloat32() , ym[0].getFloat32() );
+        }
+        
+        if( seg_type == "line" && xm.size() == 2 )
+            m_path.lineTo( xm[1].getFloat32() , ym[1].getFloat32() );
+        else if( seg_type == "cubic" && xm.size() == 3 )
+            m_path.cubicTo( xm[0].getFloat32(), ym[0].getFloat32(), xm[1].getFloat32(), ym[1].getFloat32(), xm[2].getFloat32(), ym[2].getFloat32() );
+        
+    }
+    
 }
 /******************
  * MOUSE INTERACTIONS

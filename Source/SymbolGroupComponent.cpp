@@ -27,9 +27,9 @@ int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_addre
     return messages_added;
 }
 
-void SymbolGroupComponent::importFromSymbol()
+void SymbolGroupComponent::importFromSymbol( const Symbol* s )
 {
-    BaseComponent::importFromSymbol(); // do nothing special
+    BaseComponent::importFromSymbol( s ); // do nothing special
     
     // deal with subcomponents here with
     // makeComponentFromSymbol(const Symbol* s)

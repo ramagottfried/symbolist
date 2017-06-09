@@ -30,7 +30,7 @@ public:
     void paint ( Graphics& g ) override;
 
     int addSymbolMessages(Symbol* s, const String &base_address ) override ;
-    void importFromSymbol() override;
+    void importFromSymbol(const Symbol* s) override;
 
 private :
     

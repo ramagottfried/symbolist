@@ -18,7 +18,6 @@ BaseComponent::BaseComponent(const String &type,
                     sym_color(color),
                     m_down(Point<float>(x,y))
 {
-    internal_symbol = Symbol();
     setBounds( x , y , w , h);
 }
 
@@ -102,9 +101,7 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
 /******************
  * Imports components' data from the symbol's OSC bundle
  *****************/
-void BaseComponent::importFromSymbol() { }
-
-
+void BaseComponent::importFromSymbol( const Symbol* s) {}
 
 
 /******************

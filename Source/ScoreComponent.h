@@ -36,9 +36,12 @@ public:
     
     size_t          getNumSubcomponents( );
     BaseComponent*  getSubcomponent( int i );
-    virtual void    addSubcomponent( BaseComponent *c );
-    virtual void    removeSubcomponent( BaseComponent* c , bool delete_it);
+    void    addSubcomponent( BaseComponent *c );
+    void    removeSubcomponent( BaseComponent* c );
     void            clearAllSubcomponents();
+    
+    virtual void   addSymbolComponent( BaseComponent *c );
+    virtual void   removeSymbolComponent( BaseComponent *c );
     
     BaseComponent* addSymbolAt ( Point<float> p );
     

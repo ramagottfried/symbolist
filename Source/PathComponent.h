@@ -10,7 +10,7 @@ public:
     
     PathComponent(  float x, float y,
                     float w = 10, float h = 10,
-                    float stroke = 10,
+                    float stroke = 2,
                     Colour color = Colours::black ) :
         BaseComponent("path" , x , y , w , h, stroke, color ),
         strokeType(stroke)

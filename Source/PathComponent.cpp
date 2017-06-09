@@ -288,9 +288,6 @@ void PathComponent::symbol_paint ( Graphics& g )
     strokeType.setStrokeThickness( strokeWeight );
     g.strokePath(m_path, strokeType );
     
-    g.setColour( Colours::red );
-    g.drawRect( getLocalBounds() );
-    
     /* test
      g.setColour( Colours::red );
      float strokeOffset = strokeType.getStrokeThickness() * 0.5;

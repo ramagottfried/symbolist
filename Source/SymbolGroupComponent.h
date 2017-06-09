@@ -15,12 +15,12 @@
 class SymbolGroupComponent : public ScoreComponent, public BaseComponent
 {
     
-    public:
+public:
     
     SymbolGroupComponent(float x, float y,
                          float w = 10, float h = 10 ) :
-        BaseComponent("group" , x , y , w , h ) {};
-    
+        BaseComponent("group" , x , y , w , h )
+    {}
     
     ~SymbolGroupComponent()
     {
@@ -32,9 +32,9 @@ class SymbolGroupComponent : public ScoreComponent, public BaseComponent
     int addSymbolMessages(Symbol* s, const String &base_address ) override ;
     void importFromSymbol() override;
 
-    private :
+private :
     
-} ;
+};
 
 
 #endif

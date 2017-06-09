@@ -21,7 +21,6 @@ public:
     float symbol_getY() override { return getY() + ( getHeight() * .5) ; }
 
     void symbol_paint ( Graphics& g ) override;
-
     void resized() override;
     
 private:

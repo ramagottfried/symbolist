@@ -199,7 +199,7 @@ void ScoreComponent::groupSelectedSymbols()
             c->setBounds(compBounds.getX() - groupBounds.getX(),
                          compBounds.getY() - groupBounds.getY(),
                          compBounds.getWidth(), compBounds.getHeight());
-            
+                        
             this->removeSubcomponent( c , false );
             group->addSubcomponent( c );
             

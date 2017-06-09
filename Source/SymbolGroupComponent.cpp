@@ -1,13 +1,5 @@
-//
-//  GroupComponent.cpp
-//  symbolist
-//
-//  Created by Jean Bresson on 04/06/2017.
-//
-//
 
 #include "SymbolGroupComponent.h"
-
 
 
 void SymbolGroupComponent::paint ( Graphics& g )
@@ -22,9 +14,6 @@ void SymbolGroupComponent::paint ( Graphics& g )
     g.drawDashedLine(Line<float>( b.getX() , b.getY() + b.getHeight() , b.getX() , b.getY()), dashLength , ndashLengths );
 }
 
-
-
-
 int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_address )
 {
     int messages_added = BaseComponent::addSymbolMessages( s, base_address );
@@ -37,8 +26,6 @@ int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_addre
     
     return messages_added;
 }
-
-
 
 void SymbolGroupComponent::importFromSymbol()
 {

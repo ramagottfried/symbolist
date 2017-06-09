@@ -68,26 +68,6 @@ int PathComponent::addSymbolMessages( Symbol* s, const String &base_address )
  * Imports components' data from the symbol's OSC bundle
  *****************/
 
-bool symbol_parse_error( int p, const String& address )
-{
-    if( p == -1 )
-    {
-        std::cout << "failed to parse symbol:\t" << address << std::endl;
-        return true; // there is an error
-    }
-    return false;
-}
-
-float getFloatValue(OSCArgument a)
-{
-    if( a.isFloat32() )
-        return a.getFloat32();
-    else if( a.isInt32() )
-        return (float)a.getInt32();
-    else
-        return 0.0f;
-}
-
 void PathComponent::importFromSymbol( const Symbol* s )
 {
     int num_pos = s->getOSCMessagePos("/numSegments");

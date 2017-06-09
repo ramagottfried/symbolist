@@ -25,7 +25,6 @@ Rectangle<T> rectangle_stretch(Rectangle<T> r, T w, T h)
     return r.withSize( r.getWidth() + w, r.getHeight() + h );
 }
 
-
 class BaseComponent : public SymbolistComponent
 {
 public:
@@ -131,6 +130,26 @@ protected:
     inline void symbol_debug_function(const char* func)
     {
         std::cout << juce::Time::currentTimeMillis() << " " << symbol_type << " " << this << " " << func << std::endl;
+    }
+    
+    bool symbol_parse_error( int p, const String& address )
+    {
+        if( p == -1 )
+        {
+            std::cout << "failed to parse symbol:\t" << address << std::endl;
+            return true; // there is an error
+        }
+        return false;
+    }
+    
+    float getFloatValue(OSCArgument a)
+    {
+        if( a.isFloat32() )
+            return a.getFloat32();
+        else if( a.isInt32() )
+            return (float)a.getInt32();
+        else
+            return 0.0f;
     }
     
 private:

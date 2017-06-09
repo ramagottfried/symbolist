@@ -24,8 +24,8 @@ public:
     inline SymbolistComponent* getPageComponent() override { return this; };
     
     // redefine from ScoreComponents for special actions (update the score)
-    void    addSubcomponent( BaseComponent *c ) override;
-    void    removeSubcomponent( BaseComponent* c , bool delete_it) override;
+    void    addSymbolComponent ( BaseComponent *c ) override;
+    void    removeSymbolComponent( BaseComponent* c ) override;
     
     // Juce Callbacks
     void paint (Graphics& g) override;

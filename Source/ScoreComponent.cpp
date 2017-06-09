@@ -37,17 +37,11 @@ void ScoreComponent::addSubcomponent( BaseComponent *c )
     c->addMouseListener(this, false);
 }
 
-void ScoreComponent::removeSubcomponent( BaseComponent *c , bool delete_it)
+void ScoreComponent::removeSubcomponent( BaseComponent *c )
 {
     removeChildComponent(c);
     subcomponents.erase ( std::remove(subcomponents.begin(),subcomponents.end(), c) , subcomponents.end() );
-    if ( delete_it ) delete c;
 }
-
-
-/**************************
- * CleanUp util (clears the view only -- not the score)
- **************************/
 
 void ScoreComponent::clearAllSubcomponents()
 {
@@ -61,28 +55,23 @@ void ScoreComponent::clearAllSubcomponents()
 
 
 /**************************
- * UI callbacks
+ * Apply on the view but except for PageComponent subclass => propagates to the Score
  **************************/
 
-BaseComponent* ScoreComponent::addSymbolAt ( Point<float> p )
+void ScoreComponent::addSymbolComponent ( BaseComponent* c )
 {
-    const Symbol* symbol_template = ((SymbolistMainComponent*) getMainComponent())->getCurrentSymbol();
-    
-    // create a new component from the current selected symbol of the palette
-    BaseComponent *c = SymbolistMainComponent::makeComponentFromSymbol( symbol_template );
-    //set the symbol center at the click position
-    // (will probably trigger a move + callbacks etc.)
-    c->setCentrePosition( p.getX(), p.getY() );
-    
-    // add component in the view
     addSubcomponent( c );
-    
-    c->setEditState( true );
-    addMouseListener(c, false);
-    
-    return c;
 }
 
+void ScoreComponent::removeSymbolComponent( BaseComponent* c )
+{
+    removeSubcomponent( c );
+}
+
+
+/**************************
+ * UI callbacks
+ **************************/
 
 void ScoreComponent::deleteSelectedSymbols()
 {
@@ -97,61 +86,9 @@ void ScoreComponent::deleteSelectedSymbols()
     
     for( BaseComponent *c : items )
     {
-        removeSubcomponent(c, true);
+        removeSymbolComponent( c );
+        delete c;
     }
-}
-
-
-
-/************************/
-/* Selection / "Lasso"  */
-/************************/
-
-
-void ScoreComponent::findLassoItemsInArea (Array <BaseComponent*>& results, const Rectangle<int>& area)
-{
-    for (int i = 0; i < getNumChildComponents(); ++i)
-    {
-        Component *cc = getChildComponent(i);
-        
-        if( &lassoSelector != (LassoComponent< BaseComponent * > *)cc )
-        {
-            BaseComponent *c = (BaseComponent *)cc;
-            
-            // this needs to change to look for intersection with path
-            if (c->getBounds().intersects (area))
-            {
-                results.add (c);
-            }
-        }
-    }
-}
-
-void ScoreComponent::addItemToSelection(BaseComponent *c)
-{
-    selected_items.addToSelection(c);
-}
-
-SelectedItemSet<BaseComponent*> & ScoreComponent::getLassoSelection()
-{
-    return selected_items;
-}
-
-
-void ScoreComponent::translateSelected( Point<int> delta_xy )
-{
-    for ( auto c : selected_items )
-    {
-        auto b = c->getBounds();
-        
-        c->setTopLeftPosition( b.getPosition() + delta_xy );
-    }
-}
-
-void ScoreComponent::deselectAllSelected()
-{
-    selected_items.deselectAll();
-    repaint();
 }
 
 
@@ -177,10 +114,10 @@ void ScoreComponent::groupSelectedSymbols()
         }
         
         // create a symbol with these bounds
-        Symbol* s = new Symbol ("group", minx, miny, maxx-minx, maxy-miny);
+        Symbol s ("group", minx, miny, maxx-minx, maxy-miny);
         
         Rectangle<int> groupBounds( minx, miny, maxx-minx, maxy-miny );
-        SymbolGroupComponent *group = (SymbolGroupComponent*) SymbolistMainComponent::makeComponentFromSymbol( s );
+        SymbolGroupComponent *group = (SymbolGroupComponent*) SymbolistMainComponent::makeComponentFromSymbol( &s );
         
         // create a list from selected items
         vector< BaseComponent *> items;
@@ -200,23 +137,45 @@ void ScoreComponent::groupSelectedSymbols()
                          compBounds.getY() - groupBounds.getY(),
                          compBounds.getWidth(), compBounds.getHeight());
                         
-            this->removeSubcomponent( c , false );
-            group->addSubcomponent( c );
+            this->removeSubcomponent( c );
+            group->addSymbolComponent( c );
             
             //group->addSubcomponent( SymbolistMainComponent::makeComponentFromSymbol( c->getInternalSymbol() ) );
-            //this->removeSubcomponent( c , true );
+            //this->removeSubcomponent( c ); delete c;
         }
         
         // will add the symbol to the score if this is a PageComponent
-        this->addSubcomponent( group );
+        this->addSymbolComponent( group );
         
         group->selectComponent();
     }
 }
 
+
 /***************************/
 /* UI callbacks from Juce  */
 /***************************/
+
+BaseComponent* ScoreComponent::addSymbolAt ( Point<float> p )
+{
+    const Symbol* symbol_template = ((SymbolistMainComponent*) getMainComponent())->getCurrentSymbol();
+    
+    // create a new component from the current selected symbol of the palette
+    BaseComponent *c = SymbolistMainComponent::makeComponentFromSymbol( symbol_template );
+    //set the symbol center at the click position
+    // (will probably trigger a move + callbacks etc.)
+    c->setCentrePosition( p.getX(), p.getY() );
+    
+    // add component in the view
+    addSymbolComponent( c );
+    
+    c->setEditState( true );
+    addMouseListener(c, false);
+    draw_mode = true;
+    
+    return c;
+}
+
 
 void ScoreComponent::mouseDown ( const MouseEvent& event )
 {
@@ -272,6 +231,56 @@ void ScoreComponent::mouseUp ( const MouseEvent& event )
 void ScoreComponent::resized () {}
 
 
+
+/************************/
+/* Selection / "Lasso"  */
+/************************/
+
+void ScoreComponent::findLassoItemsInArea (Array <BaseComponent*>& results, const Rectangle<int>& area)
+{
+    for (int i = 0; i < getNumChildComponents(); ++i)
+    {
+        Component *cc = getChildComponent(i);
+        
+        if( &lassoSelector != (LassoComponent< BaseComponent * > *)cc )
+        {
+            BaseComponent *c = (BaseComponent *)cc;
+            
+            // this needs to change to look for intersection with path
+            if (c->getBounds().intersects (area))
+            {
+                results.add (c);
+            }
+        }
+    }
+}
+
+void ScoreComponent::addItemToSelection(BaseComponent *c)
+{
+    selected_items.addToSelection(c);
+}
+
+SelectedItemSet<BaseComponent*> & ScoreComponent::getLassoSelection()
+{
+    return selected_items;
+}
+
+
+void ScoreComponent::translateSelected( Point<int> delta_xy )
+{
+    for ( auto c : selected_items )
+    {
+        auto b = c->getBounds();
+        
+        c->setTopLeftPosition( b.getPosition() + delta_xy );
+    }
+}
+
+void ScoreComponent::deselectAllSelected()
+{
+    selected_items.deselectAll();
+    repaint();
+}
 
 
 

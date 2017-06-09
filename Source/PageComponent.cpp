@@ -25,18 +25,17 @@ PageComponent::PageComponent()
 /* will update the data (score) and notify to host environment */
 /***************************************************/
 
-void PageComponent::addSubcomponent( BaseComponent *c )
+void PageComponent::addSymbolComponent( BaseComponent *c )
 {
-    ScoreComponent::addSubcomponent( c );
+    ScoreComponent::addSymbolComponent( c );
     c->addSymbolToScore();
-    draw_mode = true;
 }
 
 
-void PageComponent::removeSubcomponent( BaseComponent *c , bool delete_it)
+void PageComponent::removeSymbolComponent( BaseComponent *c )
 {
     c->removeSymbolFromScore();
-    ScoreComponent::removeSubcomponent( c , delete_it );
+    ScoreComponent::removeSymbolComponent( c );
 }
 
 

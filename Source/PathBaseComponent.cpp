@@ -40,24 +40,63 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
     // adds the basic messages
     int messages_added = BaseComponent::addSymbolMessages(s, base_address);
     
-    String x_address = String(base_address) += "/x-points" ;
-    String y_address = String(base_address) += "/y-points" ;
+    float ax = -111, ay = -111;
     
-    OSCMessage x_mess(x_address);
-    OSCMessage y_mess(y_address);
-    
+    int count = 0;
     Path::Iterator it(m_path);
-    while( it.next() ) {
-        if ( it.elementType != it.closePath )
+    
+    const String seg_baseaddr = base_address + "/segment/";
+    
+    while( it.next() )
+    {
+        const String seg_addr = seg_baseaddr + String(count);
+        
+        if (it.elementType == it.startNewSubPath)
         {
-            x_mess.addFloat32( it.x1 );
-            y_mess.addFloat32( it.y1 );
+            ax = it.x1;
+            ay = it.y1;
         }
+        else if (it.elementType == it.lineTo)
+        {
+            internal_symbol.addOSCMessage( OSCMessage( seg_addr + "/type",      (String)"line" ) );
+            internal_symbol.addOSCMessage( OSCMessage( seg_addr + "/x_points",  ax,  it.x1 ) );
+            internal_symbol.addOSCMessage( OSCMessage( seg_addr + "/y_points",  ay,  it.y1 ) );
+            messages_added += 3;
+
+            ax = it.x1;
+            ay = it.y1;
+        }
+        else if (it.elementType == it.quadraticTo)
+        {
+            internal_symbol.addOSCMessage( OSCMessage( seg_addr + "/type",      (String)"quadratic" ) );
+            internal_symbol.addOSCMessage( OSCMessage( seg_addr + "/x_points",  ax,  it.x1, it.x2 ) );
+            internal_symbol.addOSCMessage( OSCMessage( seg_addr + "/y_points",  ay,  it.y1, it.y2 ) );
+            messages_added += 3;
+            
+            ax = it.x2;
+            ay = it.y2;
+            
+        }
+        else if (it.elementType == it.cubicTo)
+        {
+            internal_symbol.addOSCMessage( OSCMessage( seg_addr + "/type",      (String)"cubic" ) );
+            internal_symbol.addOSCMessage( OSCMessage( seg_addr + "/x_points",  ax,  it.x1, it.x2, it.x3 ) );
+            internal_symbol.addOSCMessage( OSCMessage( seg_addr + "/y_points",  ay,  it.y1, it.y2, it.y3 ) );
+            messages_added += 3;
+            
+            ax = it.x3;
+            ay = it.y3;
+        }
+        else if (it.elementType == it.closePath)
+        {
+            std::cout << count++ << " " << "close path\n";
+        }
+
+        count++;
     }
     
-    internal_symbol.addOSCMessage(x_mess);
-    internal_symbol.addOSCMessage(y_mess);
-    messages_added += 2;
+    internal_symbol.addOSCMessage( OSCMessage("/numSegments", count ) );
+    messages_added += 1;
     
     return messages_added;
 }
@@ -67,15 +106,14 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
  * Imports components' data from the symbol's OSC bundle
  *****************/
 
-void PathBaseComponent::importFromSymbol( )
+void PathBaseComponent::parseSymbolPath()
 {
-    
-    BaseComponent::importFromSymbol();
-    
     Symbol *s = &internal_symbol;
     
     std::cout << "IMPORT PATH BASE" << std::endl;
     std::cout << s->getOSCMessageValue(String("/type")).getString() << std::endl;
+    std::cout << internal_symbol.getOSCMessageValue(String("/type")).getString() << std::endl;
+
     
     int num_pos = s->getOSCMessagePos("/numSegments");
     if( symbol_parse_error( num_pos, "/numSegments" ) ) return;
@@ -139,7 +177,6 @@ void PathBaseComponent::importFromSymbol( )
             prev_y = s->getFloatValue(ym[3]);
         }
     }
-    
     // force repaint ?
     
 }

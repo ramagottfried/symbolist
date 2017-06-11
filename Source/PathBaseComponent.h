@@ -13,6 +13,7 @@ public:
     {
         symbol_type = "path";
         std::cout << "PATH" << std::endl;
+        parseSymbolPath();
     }
     ~PathBaseComponent()
     {
@@ -24,7 +25,7 @@ public:
     
     int addSymbolMessages(Symbol* s, const String &base_address) override;
     
-    void importFromSymbol() override;
+    void parseSymbolPath();
     
     void addHandle( float x, float y );
     void makeHandles();

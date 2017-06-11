@@ -38,7 +38,7 @@ public:
     void removeSymbolFromScore();
     
     virtual int addSymbolMessages( Symbol* s, const String &base_address );
-    virtual void importFromSymbol();
+    void importFromSymbol();
 
     
     // Called from the Juce::SelectedItemSet subclass in PageComponent

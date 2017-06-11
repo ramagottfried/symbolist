@@ -11,11 +11,9 @@ template <typename T> void printPoint(Point<T> point, String name = "point" )
 
 BaseComponent::BaseComponent(const Symbol &s)
 {
-    std::cout << "BASE" << std::endl;
     internal_symbol = s ;
     importFromSymbol() ;
 }
-
 
 BaseComponent::~BaseComponent() {}
 

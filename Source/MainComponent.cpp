@@ -108,9 +108,7 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
     String desc = key.getTextDescription();
     std::cout << "key " << desc << "\n";
     if( desc            == "command + G" ) {
-        
         scoreGUI.groupSelectedSymbols();
-        
     } else if ( desc    == "backspace" ) {
         scoreGUI.deleteSelectedSymbols();
     } else if ( desc    == "C") {
@@ -126,11 +124,18 @@ void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
 {
     if ( modifiers.isCommandDown() )
     {
-        setEditMode( UI_EditType::draw );
+        if( modifiers.isAltDown() )
+            setEditMode( UI_EditType::draw_alt_mode );
+        else
+            setEditMode( UI_EditType::draw_mode );
+        
     }
     else
     {
-        setEditMode( UI_EditType::edit );
+        if( modifiers.isAltDown() )
+            setEditMode( UI_EditType::select_alt_mode );
+        else
+            setEditMode( UI_EditType::select_mode );
     }
     
     // todo : better way to deal with modiyer keys

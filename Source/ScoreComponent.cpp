@@ -176,13 +176,13 @@ BaseComponent* ScoreComponent::addSymbolAt ( Point<float> p )
     //set the symbol center at the click position
     // (will probably trigger a move + callbacks etc.)
     c->setCentrePosition( p.getX(), p.getY() );
+//    c->setTopLeftPosition(p.getX(), p.getY() );
     
     // add component in the view
     addSymbolComponent( c );
-    
-    c->setEditState( true );
-    addMouseListener(c, false);
-    draw_mode = true;
+    selected_items.deselectAll();
+    selected_items.addToSelection( c );
+//    addMouseListener(c, false);
     
     return c;
 }
@@ -195,7 +195,7 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
     BaseComponent *c = (BaseComponent *) event.eventComponent;
     //    SymbolistMainComponent* smc = (SymbolistMainComponent *) getMainComponent();
     
-    if( ed == edit )
+    if( ed == select_mode )
     {
         if (event.eventComponent != this ) // we're on a symbol
         {
@@ -208,34 +208,64 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
     }
     else
     { // => draw mode
-        addSymbolAt( event.position ); // positionshoudl be in the score referential : pb in clicked on top of anothe symbol
+        if( selected_items.getNumSelected() == 1 )
+        { // if only one item is selected, pass the mouse information to it to be handled locally
+            std::cout << "draw mode mouse down passing event\n";
+            selected_items.getSelectedItem(0)->mouseDown( event );
+        }
+        else
+        {// otherwise, add a new symbol
+            std::cout << "draw mode mouse down creating new symbol\n";
+            printPoint(event.position, "should be this");
+            addSymbolAt( event.position ); // positionshould be in the score referential : pb in clicked on top of another symbol
+        }
+
     }
 }
 
 
 void ScoreComponent::mouseDrag ( const MouseEvent& event )
 {
-    if( getMainEditMode() == edit )
+    if( getMainEditMode() == select_mode )
     {
         lassoSelector.dragLasso(event);
     }
-    
+    else
+    {// => draw mode
+        if( selected_items.getNumSelected() == 1 )
+        { // if only one item is selected, pass the mouse information to it to be handled locally
+            selected_items.getSelectedItem(0)->mouseDrag( event );
+        }
+    }
+}
+
+void ScoreComponent::mouseMove ( const MouseEvent& event )
+{
+    if( getMainEditMode() == draw_mode )
+    {
+        if( selected_items.getNumSelected() == 1 )
+        { // if only one item is selected, pass the mouse information to it to be handled locally
+            selected_items.getSelectedItem(0)->mouseMove( event );
+        }
+    }
+    m_current_position = event.position;
 }
 
 void ScoreComponent::mouseUp ( const MouseEvent& event )
 {
     
-    //if( !event.mods.isCommandDown()  )
-    { // what is this for ?
-        if( subcomponents.size() > 0 )
-        {
-            removeMouseListener( subcomponents.back() );
-            subcomponents.back()->setEditState( false );
+    if( getMainEditMode() == select_mode )
+    {
+        lassoSelector.endLasso();
+    }
+    else
+    {// => draw mode
+        if( selected_items.getNumSelected() == 1 )
+        { // if only one item is selected, pass the mouse information to it to be handled locally
+            selected_items.getSelectedItem(0)->mouseUp( event );
         }
-        draw_mode = false;
     }
     
-    lassoSelector.endLasso();
 }
 
 

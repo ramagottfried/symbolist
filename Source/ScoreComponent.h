@@ -31,7 +31,7 @@ class ScoreComponent : public SymbolistComponent, public LassoSource<BaseCompone
 {
 public:
     
-    ScoreComponent() = default;
+    ScoreComponent(){}
     ~ScoreComponent();
     
     size_t          getNumSubcomponents( );
@@ -56,6 +56,7 @@ public:
     void groupSelectedSymbols();
     
     void mouseDown ( const MouseEvent& event ) override;
+    void mouseMove ( const MouseEvent& event ) override;
     void mouseDrag ( const MouseEvent& event ) override;
     void mouseUp ( const MouseEvent& event ) override;
     void resized () override;
@@ -64,11 +65,10 @@ protected:
 
     std::vector<BaseComponent*>     subcomponents;
     
-    bool                            draw_mode = false;
-
     LassoComponent<BaseComponent*>  lassoSelector;
     ScoreSelectedItemSet            selected_items;
 
+    Point<float>                    m_current_position;
 };
 
 

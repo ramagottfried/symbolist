@@ -69,8 +69,6 @@ public:
     inline void setSymbolStrokeWeight( float s ){ strokeWeight = s; }
     inline void setSymbolColor( Colour c ){ sym_color = c; }
     
-    inline void setEditState( bool e ){ is_being_edited = e; }
-    
 protected:
     
     // score structure
@@ -105,7 +103,6 @@ protected:
      
      */
 
-    bool        is_being_edited = true;
     bool        is_selected = false;
     
     

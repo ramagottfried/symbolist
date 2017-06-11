@@ -11,7 +11,9 @@ public:
         std::cout << "CIRCLE" << std::endl;
 
         // x - (w * .5), y - (h * .5)
-        auto area = getLocalBounds().toFloat().reduced( strokeWeight );;
+        auto area = getLocalBounds().toFloat().reduced( strokeWeight );
+        printRect(area, "area");
+        
         auto hw = area.getWidth() * 0.5f;
         auto hw55 = hw * 0.55f;
         auto hh = area.getHeight() * 0.5f;
@@ -25,7 +27,6 @@ public:
         m_path.cubicTo (cx - hw55, cy + hh, cx - hw, cy + hh55, cx - hw, cy);
         m_path.cubicTo (cx - hw, cy - hh55, cx - hw55, cy - hh, cx, cy - hh);
         m_path.closeSubPath();
-        
     }
         
 };

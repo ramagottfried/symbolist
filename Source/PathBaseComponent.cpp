@@ -40,7 +40,7 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
     // adds the basic messages
     int messages_added = BaseComponent::addSymbolMessages(s, base_address);
     
-    float ax = -111, ay = -111;
+    float ax = -111, ay = -111, startx = -111, starty = -111;
     
     int count = 0;
     Path::Iterator it(m_path);
@@ -55,6 +55,8 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
         {
             ax = it.x1;
             ay = it.y1;
+            startx = ax;
+            starty = ay;
         }
         else if (it.elementType == it.lineTo)
         {
@@ -62,9 +64,11 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
             internal_symbol.addOSCMessage( OSCMessage( seg_addr + "/x_points",  ax,  it.x1 ) );
             internal_symbol.addOSCMessage( OSCMessage( seg_addr + "/y_points",  ay,  it.y1 ) );
             messages_added += 3;
+            count++;
 
             ax = it.x1;
             ay = it.y1;
+
         }
         else if (it.elementType == it.quadraticTo)
         {
@@ -72,10 +76,11 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
             internal_symbol.addOSCMessage( OSCMessage( seg_addr + "/x_points",  ax,  it.x1, it.x2 ) );
             internal_symbol.addOSCMessage( OSCMessage( seg_addr + "/y_points",  ay,  it.y1, it.y2 ) );
             messages_added += 3;
-            
+            count++;
+
             ax = it.x2;
             ay = it.y2;
-            
+
         }
         else if (it.elementType == it.cubicTo)
         {
@@ -83,21 +88,29 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
             internal_symbol.addOSCMessage( OSCMessage( seg_addr + "/x_points",  ax,  it.x1, it.x2, it.x3 ) );
             internal_symbol.addOSCMessage( OSCMessage( seg_addr + "/y_points",  ay,  it.y1, it.y2, it.y3 ) );
             messages_added += 3;
-            
+            count++;
+
             ax = it.x3;
             ay = it.y3;
         }
         else if (it.elementType == it.closePath)
         {
-            std::cout << count++ << " " << "close path\n";
+            internal_symbol.addOSCMessage( OSCMessage( seg_addr + "/type",      (String)"close" ) );
+            internal_symbol.addOSCMessage( OSCMessage( seg_addr + "/x_points",  ax,  startx ) );
+            internal_symbol.addOSCMessage( OSCMessage( seg_addr + "/y_points",  ay,  starty ) );
+            messages_added += 3;
+            count++;
+
+            ax = startx;
+            ay = starty;
         }
 
-        count++;
     }
     
     internal_symbol.addOSCMessage( OSCMessage("/numSegments", count ) );
     messages_added += 1;
-    
+ 
+    internal_symbol.printBundle();
     return messages_added;
 }
 
@@ -284,7 +297,7 @@ void PathBaseComponent::mouseDown( const MouseEvent& event )
 
 void PathBaseComponent::mouseMove( const MouseEvent& event )
 {
-    
+///    printPoint(event.position, "PathBaseComponent::mouseMove" );
     /*
      UI_EditType edit_mode = getMainEditMode();
      if( edit_mode == draw )
@@ -313,7 +326,7 @@ void PathBaseComponent::mouseDrag( const MouseEvent& event )
     BaseComponent::mouseDrag(event);
     
     UI_EditType edit_mode = getMainEditMode();
-    if(  edit_mode == draw )
+    if(  edit_mode == draw_mode )
     {
         if( event.mods.isShiftDown() )
         {
@@ -329,7 +342,7 @@ void PathBaseComponent::mouseDrag( const MouseEvent& event )
         
                
     }
-    else if ( edit_mode == edit && path_handles.size() > 0 )
+    else if ( edit_mode == select_mode && path_handles.size() > 0 )
     {
         for (auto h : path_handles )
         {
@@ -340,7 +353,6 @@ void PathBaseComponent::mouseDrag( const MouseEvent& event )
 
 void PathBaseComponent::mouseUp( const MouseEvent& event )
 {
-    makeHandles();
 }
 
 
@@ -387,6 +399,8 @@ void PathBaseComponent::drawHandles( Graphics& g)
 
 void PathBaseComponent::paint ( Graphics& g )
 {
+    
+    printRect(getBounds(), "check "+symbol_type);
     g.setColour( getCurrentColor() );
     
     // to do: add other stroke options
@@ -394,10 +408,24 @@ void PathBaseComponent::paint ( Graphics& g )
     //strokeType.createDashedStroke(p, p, dashes, 2 );
     
     strokeType.setStrokeThickness( strokeWeight );
-    g.strokePath(m_path, strokeType );
-   
-    if( is_selected && path_handles.size() > 0)
-        drawHandles(g);
     
+    if(!m_preview_path.isEmpty() )
+    {
+        g.strokePath(m_preview_path, strokeType );
+    }
+    else
+    {
+        g.strokePath(m_path, strokeType );
+    }
+    
+    if( is_selected && getMainEditMode() == select_alt_mode )
+    {
+        if( path_handles.size() == 0)
+            makeHandles();
+        
+        drawHandles(g);
+    }
+    else if (path_handles.size() > 0 )
+        removeHandles();
 }
 

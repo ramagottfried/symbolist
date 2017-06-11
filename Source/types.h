@@ -23,7 +23,7 @@ struct odot_bundle
 typedef void (*symbolistCloseCallback)( void * win);
 typedef void (*symbolistUpdateCallback)( void * win, int n );
 
-enum UI_EditType { edit, draw };
+enum UI_EditType { select_mode, select_alt_mode, draw_mode, draw_alt_mode };
 
 #endif
 

@@ -55,14 +55,26 @@ void PageComponent::paint (Graphics& g)
     
     switch ( getMainEditMode() )
     {
-        case edit:
-            msg += " select/transform mode" ;
+        case UI_EditType::select_mode:
+            msg += " select / group / mode" ;
             break;
-        case draw:
+        case UI_EditType::select_alt_mode:
+            msg += " select / resize mode: " ;
+            break;
+        case UI_EditType::draw_mode:
+        {
             msg += " draw mode: " ;
             Symbol *s = static_cast<SymbolistMainComponent*>( getMainComponent() )->getCurrentSymbol();
             msg += s->getOSCMessageValue(s->getOSCMessagePos("/type")).getString();
             break;
+        }
+        case UI_EditType::draw_alt_mode:
+        {
+            msg += " draw alter: " ;
+            Symbol *s = static_cast<SymbolistMainComponent*>( getMainComponent() )->getCurrentSymbol();
+            msg += s->getOSCMessageValue(s->getOSCMessagePos("/type")).getString();
+            break;
+        }
     }
     g.drawText (msg, getLocalBounds() , Justification::bottom, false);
 }

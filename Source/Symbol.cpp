@@ -87,7 +87,28 @@ void Symbol::addOSCMessage( const String &address, const String &value)
     osc_bundle.addElement(OSCBundle::Element(OSCMessage(OSCAddressPattern(address), value)));
 }
 
-
+void Symbol::printBundle()
+{
+    for (auto osc : osc_bundle )
+    {
+        OSCMessage msg = osc.getMessage();
+        std::cout << msg.getAddressPattern().toString();
+        
+        for (auto arg : msg )
+        {
+            if( arg.isString() )
+                std::cout << " " << arg.getString();
+            else if( arg.isFloat32() )
+                std::cout << " " << (String)arg.getFloat32();
+            else if( arg.isInt32() )
+                std::cout << " " << (String)arg.getInt32();
+            else if( arg.isBlob() )
+                std::cout << " " << "blob";
+        }
+        
+        std::cout << std::endl;
+    }
+}
 
 odot_bundle* Symbol::exportToOSC()
 {

@@ -87,7 +87,7 @@ private:
     SymbolistPalette palette;
     PaletteComponent paletteView ;
     
-    UI_EditType     mouse_mode = edit;
+    UI_EditType     mouse_mode = select_mode;
     
     // callbacks to the host environment
     symbolistUpdateCallback myUpdateCallback = NULL;

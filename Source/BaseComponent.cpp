@@ -13,6 +13,8 @@ BaseComponent::BaseComponent(const Symbol &s)
 {
     internal_symbol = s ;
     importFromSymbol() ;
+    printRect(getBounds(), "base construction" );
+
 }
 
 BaseComponent::~BaseComponent() {}
@@ -26,6 +28,8 @@ String BaseComponent::getSymbolType()
 
 void BaseComponent::updateInternalSymbol()
 {
+    symbol_debug_function(__func__);
+    
     internal_symbol.clearOSCBundle();
     addSymbolMessages( &internal_symbol, String("") );
     
@@ -111,6 +115,8 @@ void BaseComponent::importFromSymbol()
         float w = internal_symbol.getOSCMessageValue("/w").getFloat32();
         float h = internal_symbol.getOSCMessageValue("/h").getFloat32();
         setBounds( x , y , w , h);
+        
+        printRect(getBounds(), "import from symbol "+ symbol_type );
     }
 }
 
@@ -127,7 +133,6 @@ void BaseComponent::selectComponent()
 void BaseComponent::deselectComponent()
 {
     is_selected = false;
-    is_being_edited = false;
     resizableBorder->setVisible( false );
     repaint();
 }
@@ -163,7 +168,6 @@ void BaseComponent::resized ()
 
 void BaseComponent::mouseMove( const MouseEvent& event )
 {
-    // resizableBorder->setVisible( is_selected && !is_being_edited );
 }
 
 void BaseComponent::mouseDown( const MouseEvent& event )
@@ -185,9 +189,7 @@ void BaseComponent::mouseUp( const MouseEvent& event )
 {
     if( is_selected )
     {
-        is_being_edited = true;
         resizableBorder->setVisible( true );
-
         repaint();
     }
 }

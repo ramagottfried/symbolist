@@ -1,6 +1,6 @@
 
 #include "SymbolGroupComponent.h"
-
+#include "MainComponent.h"
 
 SymbolGroupComponent::SymbolGroupComponent( const Symbol& s ) : BaseComponent( s )
 {
@@ -46,10 +46,16 @@ void SymbolGroupComponent::importGroupFromSymbol( const Symbol &s )
 {
     int n = s.getOSCMessageValue("/numsymbols").getInt32();
     
+    for (int i = 1; i <= n; i++ )
+    {
+        String filter = "/subsymbol/" + String(i) ;
+        Symbol sub_s = s.makeSubSymbol( filter );
+        addSubcomponent( SymbolistMainComponent::makeComponentFromSymbol( &sub_s ) );
+    }
     // BaseComponent::importFromSymbol( s ); // do nothing special
     
     // deal with subcomponents here with
-    // makeComponentFromSymbol(const Symbol* s)
+    //
     // and c->addSubcomponent
 }
 

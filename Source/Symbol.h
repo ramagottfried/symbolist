@@ -47,6 +47,8 @@ public:
     odot_bundle*    exportToOSC();
     void            importFromOSC(odot_bundle *bundle);
     
+    Symbol makeSubSymbol( const String &base_address ) const;
+    
 private:
     
     OSCBundle   osc_bundle;

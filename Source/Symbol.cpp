@@ -20,6 +20,16 @@ Symbol::Symbol (const String & type, float x, float y, float w, float h)
     addOSCMessage(String("/h"), h);
 }
 
+
+// todo : filter the symbol from base_address
+Symbol Symbol::makeSubSymbol( const String &base_address ) const
+{
+    Symbol s;
+    
+    return s;
+}
+
+
 int Symbol::getOSCMessagePos(const String &address) const
 {
     for (int i = 0; (i < osc_bundle.size()) ; i++)

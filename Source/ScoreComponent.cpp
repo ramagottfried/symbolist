@@ -164,6 +164,7 @@ BaseComponent* ScoreComponent::addSymbolAt ( Point<float> p )
     BaseComponent *c = SymbolistMainComponent::makeComponentFromSymbol( symbol_template );
     //set the symbol center at the click position
     // (will probably trigger a move + callbacks etc.)
+    // (will not update the symbol: the component is not yet on the page)
     c->setCentrePosition( p.getX(), p.getY() );
     //c->setTopLeftPosition(p.getX(), p.getY() );
     
@@ -217,7 +218,6 @@ void ScoreComponent::mouseMove ( const MouseEvent& event )
 
 void ScoreComponent::mouseUp ( const MouseEvent& event )
 {
-    
     lassoSelector.endLasso();
 }
 

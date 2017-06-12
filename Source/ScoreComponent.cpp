@@ -207,7 +207,7 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
     else
     { // => draw mode
         
-        if( ed == draw_mode )
+        if( ed == draw_mode && !component_grabbing_mouse )
         {
             addSymbolAt( event.position ); // positionshould be in the score referential : pb in clicked on top of another symbol
         }

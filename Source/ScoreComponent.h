@@ -61,12 +61,17 @@ public:
     void mouseUp ( const MouseEvent& event ) override;
     void resized () override;
     
+    inline void stealMouse(){ component_grabbing_mouse = true; }
+    inline void giveBackMouse(){ component_grabbing_mouse = false; }
+    
 protected:
 
     std::vector<BaseComponent*>     subcomponents;
     
     LassoComponent<BaseComponent*>  lassoSelector;
     ScoreSelectedItemSet            selected_items;
+    
+    bool                            component_grabbing_mouse = false;
 
 };
 

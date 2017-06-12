@@ -1,5 +1,6 @@
 
 #include "LinePathComponent.h"
+#include "PageComponent.h"
 
 LinePathComponent::LinePathComponent(const Symbol &s) : PathBaseComponent( s )
 {
@@ -8,21 +9,30 @@ LinePathComponent::LinePathComponent(const Symbol &s) : PathBaseComponent( s )
 void LinePathComponent::selectComponent ()
 {
     PathBaseComponent::selectComponent();
-    getPageComponent()->addMouseListener(this, false);
+    auto pc = static_cast<PageComponent*>( getPageComponent() );
+    
+    if( getMainEditMode() == draw_mode )
+    {
+        pc->stealMouse();
+        pc->addMouseListener(this, false);
+    }
     
 }
 
 void LinePathComponent::deselectComponent ()
 {
     PathBaseComponent::deselectComponent();
-    getPageComponent()->removeMouseListener(this);
+
+    auto pc = static_cast<PageComponent*>( getPageComponent() );
+    pc->removeMouseListener(this);
+    pc->giveBackMouse();
 }
 
 void LinePathComponent::mouseDrag( const MouseEvent& event )
 {
-    /*
+
     PathBaseComponent::mouseDrag(event);
-    
+     /*
     UI_EditType edit_mode = getMainEditMode();
     if(  edit_mode == draw_mode )
     {

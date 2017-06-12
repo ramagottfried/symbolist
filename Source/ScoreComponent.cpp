@@ -176,7 +176,7 @@ BaseComponent* ScoreComponent::addSymbolAt ( Point<float> p )
     //set the symbol center at the click position
     // (will probably trigger a move + callbacks etc.)
     c->setCentrePosition( p.getX(), p.getY() );
-//    c->setTopLeftPosition(p.getX(), p.getY() );
+    //c->setTopLeftPosition(p.getX(), p.getY() );
     
     // add component in the view
     addSymbolComponent( c );
@@ -234,7 +234,8 @@ void ScoreComponent::mouseDrag ( const MouseEvent& event )
     {// => draw mode
         if( selected_items.getNumSelected() == 1 )
         { // if only one item is selected, pass the mouse information to it to be handled locally
-            selected_items.getSelectedItem(0)->mouseDrag( event );
+            
+            selected_items.getSelectedItem(0)->mouseDrag( event.getEventRelativeTo(selected_items.getSelectedItem(0)) );
         }
     }
 }

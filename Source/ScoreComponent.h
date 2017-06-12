@@ -68,7 +68,6 @@ protected:
     LassoComponent<BaseComponent*>  lassoSelector;
     ScoreSelectedItemSet            selected_items;
 
-    Point<float>                    m_current_position;
 };
 
 

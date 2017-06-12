@@ -41,7 +41,7 @@ public:
     void importFromSymbol();
 
     
-    // Called from the Juce::SelectedItemSet subclass in PageComponent
+    // Called from the Juce::SelectedItemSet subclass in ScoreComponent
     // specific methd defined not to mess with existing select system
     virtual void selectComponent();
     virtual void deselectComponent();

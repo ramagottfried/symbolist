@@ -110,7 +110,7 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
     internal_symbol.addOSCMessage( OSCMessage("/numSegments", count ) );
     messages_added += 1;
  
-    internal_symbol.printBundle();
+//    internal_symbol.printBundle();
     return messages_added;
 }
 
@@ -288,7 +288,6 @@ void PathBaseComponent::deselectComponent()
     removeHandles();
     BaseComponent::deselectComponent();
 }
-
 
 void PathBaseComponent::mouseDown( const MouseEvent& event )
 {

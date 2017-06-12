@@ -1,6 +1,23 @@
 
 #include "LinePathComponent.h"
 
+LinePathComponent::LinePathComponent(const Symbol &s) : PathBaseComponent( s )
+{
+}
+
+void LinePathComponent::selectComponent ()
+{
+    PathBaseComponent::selectComponent();
+    getPageComponent()->addMouseListener(this, false);
+    
+}
+
+void LinePathComponent::deselectComponent ()
+{
+    PathBaseComponent::deselectComponent();
+    getPageComponent()->removeMouseListener(this);
+}
+
 void LinePathComponent::mouseDrag( const MouseEvent& event )
 {
     /*
@@ -37,8 +54,10 @@ void LinePathComponent::mouseMove( const MouseEvent& event )
 //    printPoint( event.position - m_down, "LinePathComponent::mouseMove" );
 //    printPoint( getPosition(), "position" );
 
-    UI_EditType edit_mode = getMainEditMode();
-    if(  edit_mode == draw_mode )
+    printPoint(event.position, event.originalComponent->getComponentID() );
+    
+    UI_EditType mouse_mode = getMainEditMode();
+    if(  mouse_mode == draw_mode )
     {
         Path p;
         float strokeOffset = strokeType.getStrokeThickness() * 0.5;

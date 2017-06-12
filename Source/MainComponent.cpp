@@ -115,10 +115,28 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
         setCurrentSymbol(0);
     } else if ( desc    == "P") {
         setCurrentSymbol(1);
+    } else if ( desc    == "spacebar") {
+        start_stop_rendering();
+    } else if ( desc    == "escape") {
+        start_stop_rendering();
+        current_time = 0;
+        scoreGUI.repaint();
     }
-    return true;
+return true;
 }
 
+
+void SymbolistMainComponent::start_stop_rendering()
+{
+    if (current_time == 0)
+    {
+        cout << "start" << endl;
+        executeTransportCallback(1); // = start
+    } else {
+        cout << "stop" << endl;
+        executeTransportCallback(0); // = stop        
+    }
+}
 
 void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
 {
@@ -182,6 +200,13 @@ void SymbolistMainComponent::symbolistAPI_registerCloseCallback(symbolistCloseCa
     myCloseCallback = c;
 }
 
+void SymbolistMainComponent::symbolistAPI_registerTransportCallback(symbolistTransportCallback c)
+{
+    myTransportCallback = c;
+}
+
+
+
 int SymbolistMainComponent::symbolistAPI_getNumSymbols()
 {
     return static_cast<int>( getScore()->getSize() );
@@ -212,6 +237,12 @@ void SymbolistMainComponent::symbolistAPI_setSymbols(int n, odot_bundle **bundle
     }
 }
 
+void SymbolistMainComponent::symbolistAPI_setTime(int time_ms)
+{
+    current_time = time_ms;
+    scoreGUI.repaint();
+}
+
 
 // these two methods shall be called from symbolist to notify the host environment
 void SymbolistMainComponent::executeCloseCallback()
@@ -224,6 +255,10 @@ void SymbolistMainComponent::executeUpdateCallback(int arg)
     if (myUpdateCallback) { myUpdateCallback( this, arg ); }
 }
 
+void SymbolistMainComponent::executeTransportCallback(int arg)
+{
+    if (myTransportCallback) { myTransportCallback( this, arg ); }
+}
 
 
 //=================================

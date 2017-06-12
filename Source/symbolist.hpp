@@ -34,6 +34,7 @@ SYMBOLIST_API void symbolistCloseWindow(void* maincomponent);
 
 SYMBOLIST_API void symbolistRegisterCloseCallback(void* maincomponent, symbolistCloseCallback callback);
 SYMBOLIST_API void symbolistRegisterUpdateCallback(void* maincomponent, symbolistUpdateCallback callback);
+SYMBOLIST_API void symbolistRegisterTransportCallback(void* maincomponent, symbolistTransportCallback callback);
 
 SYMBOLIST_API void symbolistWindowToFront(void* maincomponent);
 SYMBOLIST_API void symbolistWindowSetName(void* maincomponent, char *name);
@@ -41,6 +42,7 @@ SYMBOLIST_API void symbolistWindowSetName(void* maincomponent, char *name);
 SYMBOLIST_API int  symbolistGetNumSymbols(void* maincomponent);
 SYMBOLIST_API odot_bundle* symbolistGetSymbol(void* maincomponent, int n);
 SYMBOLIST_API void symbolistSetSymbols(void* maincomponent, int n, odot_bundle **bundle_array);
+SYMBOLIST_API void symbolistSetTime(void* maincomponent, int time_ms);
 
 
 #endif /* symbolist_hpp */

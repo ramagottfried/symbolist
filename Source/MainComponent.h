@@ -31,9 +31,11 @@ public:
     void symbolistAPI_windowSetName(String name);
     void symbolistAPI_registerUpdateCallback(symbolistUpdateCallback c);
     void symbolistAPI_registerCloseCallback(symbolistCloseCallback c);
+    void symbolistAPI_registerTransportCallback(symbolistTransportCallback c);
     int symbolistAPI_getNumSymbols();
     odot_bundle* symbolistAPI_getSymbol(int n);
     void symbolistAPI_setSymbols(int n, odot_bundle **bundle_array);
+    void symbolistAPI_setTime(int time_ms);
     
     
     
@@ -43,6 +45,7 @@ public:
     
     void executeUpdateCallback(int arg);
     void executeCloseCallback();
+    void executeTransportCallback(int arg);
     
     // functions modifying the parent Windows's score
     void notifyNewSymbol ( Symbol* s ) ;
@@ -73,6 +76,8 @@ public:
     // temporary 
     bool shift_down = false;
     
+    int getCurrentTime() { return current_time; }
+    void start_stop_rendering();
     
 private:
     
@@ -89,9 +94,12 @@ private:
     
     UI_EditType     mouse_mode = select_mode;
     
+    int current_time = 0; // the current play-time in ms (change for float or long_int?)
+    
     // callbacks to the host environment
     symbolistUpdateCallback myUpdateCallback = NULL;
     symbolistCloseCallback myCloseCallback = NULL;
+    symbolistTransportCallback myTransportCallback = NULL;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainComponent)

@@ -44,6 +44,11 @@ void symbolistRegisterUpdateCallback(void* maincomponent, symbolistUpdateCallbac
     static_cast<SymbolistMainComponent*>(maincomponent)->symbolistAPI_registerUpdateCallback(callback);
 }
 
+void symbolistRegisterTransportCallback(void* maincomponent, symbolistTransportCallback callback)
+{
+    static_cast<SymbolistMainComponent*>(maincomponent)->symbolistAPI_registerTransportCallback(callback);
+}
+
 int symbolistGetNumSymbols(void* maincomponent)
 {
     return static_cast<SymbolistMainComponent*>(maincomponent)->symbolistAPI_getNumSymbols();
@@ -57,6 +62,11 @@ odot_bundle* symbolistGetSymbol(void* maincomponent, int n)
 void symbolistSetSymbols(void* maincomponent, int n, odot_bundle **bundle_array)
 {
     static_cast<SymbolistMainComponent*>(maincomponent)->symbolistAPI_setSymbols(n, bundle_array);
+}
+
+void symbolistSetTime(void* maincomponent, int time_ms)
+{
+    static_cast<SymbolistMainComponent*>(maincomponent)->symbolistAPI_setTime(time_ms);
 }
 
 

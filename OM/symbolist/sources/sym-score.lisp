@@ -19,13 +19,30 @@
                                          
                                          
 (defclass! sym-score (data-stream named-object schedulable-object object-with-action)
-  ((symbols :accessor symbols :initarg :symbols :initform '() :documentation "a list of symbols (OSC bundles)"))
+  ((symbols :accessor symbols :initarg :symbols :initform '() :documentation "a list of symbols (OSC bundles)")
+   (refresh-rate :accessor refresh-rate :initarg :refresh-rate :initform 100 :documentation "a refresh-rate for time in the symbolist editor (ms)"))
   (:default-initargs :default-frame-type 'osc-bundle))
 
 (defmethod play-obj? ((self sym-score)) t)
 
 (defmethod data-stream-frames-slot ((self sym-score)) 'symbols)
 
+
+(defmethod get-action-list-for-play ((self sym-score) interval &optional parent)
+  ;;; add some symboist time-updates
+  (let ((ed (find self *symbolist-editors* :key 'object-value)))
+    (if (and ed (symbolist-window ed))
+        (sort 
+         (append (call-next-method)
+                 (loop for time from (car interval) to (cadr interval) by (refresh-rate self)
+                       collect (let ((tt time))
+                                 (list 
+                                  tt
+                                  #'(lambda ()
+                                      (symbolist::symbolistSetTime (symbolist-window ed) tt))))))
+         '< :key 'car)
+      (call-next-method))))
+  
 (defmethod sym-score-make-score-pointer ((self sym-score))
   (let ((ptr (fli:allocate-foreign-object :type :pointer :nelems (length (symbols self)))))
     (om-print-dbg "allocate pointer ~A for ~A (~D symbols)" 
@@ -127,3 +144,15 @@
           (report-modifications ed)
           )
       (om-print "update callback : editor not found" "SYMBOLIST"))))
+
+
+
+(defun symbolist::symbolist-handle-transport-callback (win-ptr command)
+  (let ((ed (find win-ptr *symbolist-editors* :key 'symbolist-window :test 'om-pointer-equal)))
+    (if ed
+        (let ((box (object ed)))
+          (if (= command 0) (stop-boxes (list box))
+            (play-boxes (list box))))
+    (om-print "transport callback : editor not found" "SYMBOLIST"))))
+
+

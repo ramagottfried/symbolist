@@ -52,6 +52,8 @@ void PageComponent::paint (Graphics& g)
     g.setColour (Colours::grey);
     
     String msg = "";
+    String timestr = "t = ";
+    timestr += ((String) ((SymbolistMainComponent*) (getMainComponent()))->getCurrentTime()) ;
     
     switch ( getMainEditMode() )
     {
@@ -76,5 +78,8 @@ void PageComponent::paint (Graphics& g)
             break;
         }
     }
+    
     g.drawText (msg, getLocalBounds() , Justification::bottom, false);
+    g.drawText (timestr, getLocalBounds() , Justification::topLeft, false);
+  
 }

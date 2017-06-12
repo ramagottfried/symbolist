@@ -28,7 +28,7 @@ public:
     BaseComponent(const Symbol &s);
     ~BaseComponent();
     
-    String getSymbolTypeStr() const { return "symbol"; }
+    virtual String getSymbolTypeStr() const { return "symbol"; }
 
     void paint ( Graphics& g ) override {
         std::cout << "basic paint" << std::endl;

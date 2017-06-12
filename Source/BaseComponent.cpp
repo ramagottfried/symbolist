@@ -54,7 +54,7 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
 {
     int messages_added = 0;
     
-    s->addOSCMessage ("/type" , getSymbolTypeStr());
+    s->addOSCMessage ((String(base_address) += "/type") , getSymbolTypeStr());
     s->addOSCMessage ((String(base_address) += "/x") , symbol_getX());
     s->addOSCMessage ((String(base_address) += "/y") , symbol_getY());
     s->addOSCMessage ((String(base_address) += "/w") , (float) getWidth());

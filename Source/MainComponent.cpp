@@ -261,6 +261,7 @@ void SymbolistMainComponent::executeTransportCallback(int arg)
 // MODIFY VIEW FROM DATA
 //=================================
 
+// Component factory
 BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
 {
     

@@ -12,7 +12,7 @@ public:
     PathBaseComponent(  const Symbol& s );
     ~PathBaseComponent() ;
     
-    String getSymbolTypeStr() const { return "path"; }
+    String getSymbolTypeStr() const override { return "path"; }
 
     void printPath( Path p );
     

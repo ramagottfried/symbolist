@@ -52,7 +52,7 @@ OSCArgument Symbol::getOSCMessageValue(const String &address) const
     }
 }
 
-float Symbol::getFloatValue(OSCArgument a)
+float Symbol::getOSCValueAsFloat(OSCArgument a)
 {
     if( a.isFloat32() )
         return a.getFloat32();

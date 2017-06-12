@@ -17,7 +17,7 @@ ScoreComponent::~ScoreComponent()
  * Add/remove operations apply on views only
  *****************************/
 
-size_t ScoreComponent::getNumSubcomponents()
+const size_t ScoreComponent::getNumSubcomponents()
 {
     return subcomponents.size() ;
 }
@@ -31,7 +31,7 @@ void ScoreComponent::addSubcomponent( BaseComponent *c )
 {
     subcomponents.emplace_back( c ) ;
     
-    c->setComponentID(String(String(c->getSymbolType()) += String("_") += String(subcomponents.size())));
+    c->setComponentID(String(String(c->getSymbolTypeStr()) += String("_") += String(subcomponents.size())));
     addAndMakeVisible( c );
     
     c->addMouseListener(this, false);
@@ -62,7 +62,7 @@ void ScoreComponent::clearAllSubcomponents()
 void ScoreComponent::addSymbolComponent ( BaseComponent* c )
 {
     addSubcomponent( c );
-    std::cout << "SC ADD SYMBOL_COMPONENT2 " << c << " to " << this << " childcomponents: " << ((BaseComponent*) this)->getNumChildComponents() << std::endl;
+    std::cout << "ScoreComponent::addSymbolComponent " << c << " to " << this << " childcomponents: " << ((Component*) this)->getNumChildComponents() << std::endl;
 }
 
 void ScoreComponent::removeSymbolComponent( BaseComponent* c )
@@ -141,24 +141,13 @@ void ScoreComponent::groupSelectedSymbols()
                         
             //this->removeSubcomponent( c );
             group->addSymbolComponent( c );
-            std::cout << "SC ADD SYMBOL_COMPONENT AFTER " << c << " to " << group << " childcomponents: " << ((BaseComponent*) group)->getNumChildComponents() << std::endl;
-
-            //std::cout << "Group " << group << " childs: " << group->getNumSubcomponents() << std::endl;
-            std::cout << "Group " << group << " childcomponents: " << ((BaseComponent*) group)->getNumChildComponents() << std::endl;
-            //std::cout << "Group child #1: " << group->getSubcomponent(0)->getSymbolType() << std::endl;
-
-        
+            std::cout << "ScoreComponent::groupSelectedSymbols " << c << " to " << group << " childcomponents: " << ((ScoreComponent*) group)->getNumChildComponents() << std::endl;
         }
         
         // will add the symbol to the score if this is a PageComponent
         this->addSymbolComponent( group );
          
         group->selectComponent();
-        std::cout << "Group DONE" << group << " childcomponents: " << ((BaseComponent*) group)->getNumChildComponents() << std::endl;
-        //std::cout << "Group " << group << " childs: " << group->getNumSubcomponents() << std::endl;
-        //std::cout << "Group child #1: " << group->getSubcomponent(0)->getSymbolType() << std::endl;
-
-        
     }
 }
 

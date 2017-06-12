@@ -9,23 +9,16 @@ class PathBaseComponent : public BaseComponent
 {
 public:
     
-    PathBaseComponent(  const Symbol& s ) : BaseComponent( s )
-    {
-        symbol_type = "path";
-        std::cout << "PATH" << std::endl;
-        parseSymbolPath();
-    }
-    ~PathBaseComponent()
-    {
-        printf("freeing path %p\n", this);
-        removeHandles();
-    }
+    PathBaseComponent(  const Symbol& s );
+    ~PathBaseComponent() ;
     
+    String getSymbolTypeStr() const { return "path"; }
+
     void printPath( Path p );
     
     int addSymbolMessages(Symbol* s, const String &base_address) override;
     
-    void parseSymbolPath();
+    void importPathFromSymbol(const Symbol &s) ;
     
     void addHandle( float x, float y );
     void makeHandles();

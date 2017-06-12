@@ -11,65 +11,36 @@ template <typename T> void printPoint(Point<T> point, String name = "point" )
 
 BaseComponent::BaseComponent(const Symbol &s)
 {
-    internal_symbol = s ;
-    importFromSymbol() ;
-    printRect(getBounds(), "base construction" );
-
+    importFromSymbol( s ) ;
 }
 
 BaseComponent::~BaseComponent() {}
 
 
-String BaseComponent::getSymbolType()
+bool BaseComponent::isTopLevelComponent()
 {
-    return internal_symbol.getOSCMessageValue( String("/type") ).getString() ;
+    return ( getParentComponent() != NULL && getParentComponent() == getPageComponent() );
 }
 
 
-void BaseComponent::updateInternalSymbol()
+
+// This is the function to call when we want to update the score after a modification
+void BaseComponent::reportModification()
 {
-    symbol_debug_function(__func__);
-    
-    internal_symbol.clearOSCBundle();
-    addSymbolMessages( &internal_symbol, String("") );
+    //symbol_debug_function(__func__);
     
     if ( getParentComponent() != NULL ) // we're in the score..
     {
         if ( isTopLevelComponent() )
         {
-            assert(score_symbol != NULL);
-            score_symbol->clearOSCBundle();
-            addSymbolMessages( score_symbol , String("") );
-            ((SymbolistMainComponent*) getMainComponent())->notifySymbolChange( score_symbol );
+            ((SymbolistMainComponent*) getMainComponent())->modifySymbolInScore( this );
         }
         else
         {
-            ((BaseComponent*) getParentComponent())->updateInternalSymbol() ;
+            ((BaseComponent*) getParentComponent())->reportModification() ;
         }
     }
-}
-
-
-void BaseComponent::setScoreSymbolPointer (Symbol* s)
-{
-    score_symbol = s;
-}
-
-void BaseComponent::addSymbolToScore ()
-{
-    setScoreSymbolPointer( new Symbol(internal_symbol) );
-    ((SymbolistMainComponent*) getMainComponent())->notifyNewSymbol( score_symbol );
-}
-
-void BaseComponent::removeSymbolFromScore ()
-{
-   ((SymbolistMainComponent*) getMainComponent())->notifySymbolRemoved( score_symbol );
-}
-
-
-bool BaseComponent::isTopLevelComponent()
-{
-    return ( getParentComponent() != NULL && getParentComponent() == getPageComponent() );
+    
 }
 
 
@@ -83,7 +54,7 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
 {
     int messages_added = 0;
     
-    s->addOSCMessage ("/type" , symbol_type);
+    s->addOSCMessage ("/type" , getSymbolTypeStr());
     s->addOSCMessage ((String(base_address) += "/x") , symbol_getX());
     s->addOSCMessage ((String(base_address) += "/y") , symbol_getY());
     s->addOSCMessage ((String(base_address) += "/w") , (float) getWidth());
@@ -97,26 +68,27 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
 /******************
  * Imports components' data from the symbol's OSC bundle
  *****************/
-void BaseComponent::importFromSymbol()
+void BaseComponent::importFromSymbol( const Symbol &s )
 {
-    int typeMessagePos = internal_symbol.getOSCMessagePos("/type");
+    std::cout << "IMPORT BASE" << std::endl;
+    int typeMessagePos = s.getOSCMessagePos("/type");
     
     if ( typeMessagePos == -1 ) {
         
-        cout << "Could not find '/type' message in OSC Bundle.. (size=" << internal_symbol.getOSCBundle().size() << ")" << endl;
+        cout << "Could not find '/type' message in OSC Bundle.. (size=" << s.getOSCBundle().size() << ")" << endl;
         
     } else {
         
-        String typeStr = internal_symbol.getOSCMessageValue(typeMessagePos).getString();
+        String typeStr = s.getOSCMessageValue(typeMessagePos).getString();
         cout << "Importing component from Symbol: " << typeStr << endl;
         
-        float x = internal_symbol.getOSCMessageValue("/x").getFloat32();
-        float y = internal_symbol.getOSCMessageValue("/y").getFloat32();;
-        float w = internal_symbol.getOSCMessageValue("/w").getFloat32();
-        float h = internal_symbol.getOSCMessageValue("/h").getFloat32();
+        float x = s.getOSCMessageValue("/x").getFloat32();
+        float y = s.getOSCMessageValue("/y").getFloat32();;
+        float w = s.getOSCMessageValue("/w").getFloat32();
+        float h = s.getOSCMessageValue("/h").getFloat32();
         setBounds( x , y , w , h);
         
-        printRect(getBounds(), "import from symbol "+ symbol_type );
+        //printRect(getBounds(), "import from symbol "+ getSymbolTypeStr() );
     }
 }
 
@@ -143,13 +115,13 @@ void BaseComponent::deselectComponent()
 
 void BaseComponent::moved ()
 {
-    updateInternalSymbol();
+    reportModification(); // shoudl be smarter : call this when the move is over (mouse up)
 }
 
 
 void BaseComponent::resized ()
 {
-    updateInternalSymbol();
+    reportModification(); // shoudl be smarter : call this when the move is over (mouse up)
 
     if( !resizableBorder )
     {
@@ -180,7 +152,7 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
 {
     if( is_selected )
     {
-        PageComponent* p = static_cast<PageComponent*>( getPageComponent() );
+        PageComponent* p = ( (PageComponent*) getPageComponent() );
         p->translateSelected( (event.position - m_down).toInt() );
     }
 }

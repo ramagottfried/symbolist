@@ -17,16 +17,15 @@ class SymbolGroupComponent : public ScoreComponent, public BaseComponent
     
 public:
     
-    SymbolGroupComponent( const Symbol& s ) : BaseComponent( s ) {}
-    ~SymbolGroupComponent()
-    {
-        printf("freeing group %p\n", this);
-    }
+    SymbolGroupComponent( const Symbol& s );
+    ~SymbolGroupComponent();
     
+    String getSymbolTypeStr() const { return "group"; }
+
     void paint ( Graphics& g ) override;
 
     int addSymbolMessages(Symbol* s, const String &base_address ) override ;
-    void importFromSymbol( ) ;
+    void importGroupFromSymbol( const Symbol &s ) ;
 
 private :
     

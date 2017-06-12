@@ -27,20 +27,17 @@ public:
     BaseComponent(const Symbol &s);
     ~BaseComponent();
     
-    String getSymbolType();
+    String getSymbolTypeStr() const { return "symbol"; }
 
-    void setScoreSymbolPointer (Symbol* s); 
-        
+    void setScoreSymbolPointer (Symbol* s) { score_symbol = s; }
+    Symbol* getScoreSymbolPointer () { return score_symbol; }
+    
     bool isTopLevelComponent();
-
-    void updateInternalSymbol();
-    void addSymbolToScore();
-    void removeSymbolFromScore();
+    void reportModification();
     
     virtual int addSymbolMessages( Symbol* s, const String &base_address );
-    void importFromSymbol();
+    void importFromSymbol( const Symbol &s );
 
-    
     // Called from the Juce::SelectedItemSet subclass in ScoreComponent
     // specific methd defined not to mess with existing select system
     virtual void selectComponent();
@@ -72,11 +69,8 @@ public:
 protected:
     
     // score structure
-    Symbol                          *score_symbol;
-    Symbol                          internal_symbol;
+    Symbol*                         score_symbol;   // poiner to the score symbol (set when this is a topLevel symbol, NULL otherwise)
     
-    String                          symbol_type = "symbol" ;
-
     // parameters
     float           strokeWeight = 2;
     Colour          sym_color = Colours::black;
@@ -114,7 +108,7 @@ protected:
    
     inline void symbol_debug_function(const char* func)
     {
-        std::cout << juce::Time::currentTimeMillis() << " " << symbol_type << " " << this << " " << func << std::endl;
+        std::cout << juce::Time::currentTimeMillis() << " " << getSymbolTypeStr() << " " << this << " " << func << std::endl;
     }
     
     bool symbol_parse_error( int p, const String& address )

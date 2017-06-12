@@ -48,9 +48,9 @@ public:
     void executeTransportCallback(int arg);
     
     // functions modifying the parent Windows's score
-    void notifyNewSymbol ( Symbol* s ) ;
-    void notifySymbolRemoved ( Symbol* s ) ;
-    void notifySymbolChange ( Symbol* s ) ;
+    void addSymbolToScore ( BaseComponent* c ) ;
+    void removeSymbolFromScore ( BaseComponent* c ) ;
+    void modifySymbolInScore ( BaseComponent* c ) ;
     
     /*********************************************
      * STANDARD GUI FUNCTIONALITY AND TOOLS

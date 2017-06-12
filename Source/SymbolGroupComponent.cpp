@@ -2,6 +2,15 @@
 #include "SymbolGroupComponent.h"
 
 
+SymbolGroupComponent::SymbolGroupComponent( const Symbol& s ) : BaseComponent( s )
+{
+    importGroupFromSymbol( s ); // has its own method for that
+}
+
+SymbolGroupComponent::~SymbolGroupComponent() {}
+
+
+
 void SymbolGroupComponent::paint ( Graphics& g )
 {
     g.setColour( current_color );
@@ -16,9 +25,13 @@ void SymbolGroupComponent::paint ( Graphics& g )
     std::cout << "Group " << this << " childs: " << getNumSubcomponents() << std::endl;
 }
 
+
+
 int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_address )
 {
     int messages_added = BaseComponent::addSymbolMessages( s, base_address );
+    
+    s->addOSCMessage( (String(base_address) += "/numsymbols") , (int)getNumSubcomponents() );
     
     for (int i = 0; i < getNumSubcomponents(); i++)
     {
@@ -29,9 +42,11 @@ int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_addre
     return messages_added;
 }
 
-void SymbolGroupComponent::importFromSymbol( )
+void SymbolGroupComponent::importGroupFromSymbol( const Symbol &s )
 {
-    BaseComponent::importFromSymbol( ); // do nothing special
+    int n = s.getOSCMessageValue("/numsymbols").getInt32();
+    
+    // BaseComponent::importFromSymbol( s ); // do nothing special
     
     // deal with subcomponents here with
     // makeComponentFromSymbol(const Symbol* s)

@@ -34,7 +34,7 @@ public:
     ScoreComponent(){}
     ~ScoreComponent();
     
-    size_t          getNumSubcomponents( );
+    const size_t          getNumSubcomponents( );
     BaseComponent*  getSubcomponent( int i );
     void    addSubcomponent( BaseComponent *c );
     void    removeSubcomponent( BaseComponent* c );

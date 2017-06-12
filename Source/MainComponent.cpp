@@ -102,7 +102,6 @@ UI_EditType SymbolistMainComponent::getEditMode()
 }
 
 
-
 bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
 {
     String desc = key.getTextDescription();
@@ -161,7 +160,6 @@ void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
 }
 
 
-
 /*********************************************
  * CONTROLLER METHODS CALLED FROM THE LIB API
  *********************************************/
@@ -206,7 +204,6 @@ void SymbolistMainComponent::symbolistAPI_registerTransportCallback(symbolistTra
 }
 
 
-
 int SymbolistMainComponent::symbolistAPI_getNumSymbols()
 {
     return static_cast<int>( getScore()->getSize() );
@@ -243,7 +240,6 @@ void SymbolistMainComponent::symbolistAPI_setTime(int time_ms)
     scoreGUI.repaint();
 }
 
-
 // these two methods shall be called from symbolist to notify the host environment
 void SymbolistMainComponent::executeCloseCallback()
 {
@@ -262,11 +258,7 @@ void SymbolistMainComponent::executeTransportCallback(int arg)
 
 
 //=================================
-// INTERFACE DATA<=>VIEW
-//=================================
-
-//=================================
-// => MODIFY VIEW FROM DATA
+// MODIFY VIEW FROM DATA
 //=================================
 
 BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
@@ -300,32 +292,37 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
     }
 }
 
-
 /*=================================
- *  MODIFY DATA FROM VIEW
- * CALLBACKS FROM USER ACTIONS
+ * MODIFY DATA FROM VIEW
+ * (CALLBACKS FROM USER ACTIONS)
  ********************************/
 
-void SymbolistMainComponent::notifyNewSymbol ( Symbol* s )
+void SymbolistMainComponent::addSymbolToScore ( BaseComponent* c )
 {
+    Symbol *s = new Symbol();
+    c->addSymbolMessages( s , String("") );
+    c->setScoreSymbolPointer( s );
     score.addSymbol( s );
     executeUpdateCallback( -1 );
 }
 
-void SymbolistMainComponent::notifySymbolRemoved ( Symbol* s )
+
+void SymbolistMainComponent::removeSymbolFromScore ( BaseComponent* c )
 {
-    score.removeSymbol( s );
+    assert ( c->getScoreSymbolPointer() != NULL ) ;
+    score.removeSymbol( c->getScoreSymbolPointer() );
     executeUpdateCallback( -1 );
 }
 
-void SymbolistMainComponent::notifySymbolChange ( Symbol* s )
+
+void SymbolistMainComponent::modifySymbolInScore( BaseComponent* c )
 {
+    Symbol *s = c->getScoreSymbolPointer();
+    assert ( s != NULL ) ; // that's not normal
+    s->clearOSCBundle();
+    c->addSymbolMessages( s , String("") );
     executeUpdateCallback( score.getSymbolPosition( s ) );
 }
-
-
-
-
 
 
 

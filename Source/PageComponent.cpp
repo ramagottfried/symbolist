@@ -27,15 +27,15 @@ PageComponent::PageComponent()
 
 void PageComponent::addSymbolComponent( BaseComponent *c )
 {
-    std::cout << "PAGE " << this << " ADD " << c << std::endl;
     ScoreComponent::addSymbolComponent( c );
-    c->addSymbolToScore();
+    ((SymbolistMainComponent*) (getMainComponent()))->addSymbolToScore( c );
+    std::cout << "PageComponent::addSymbolComponent " << c << " to " << this << " childcomponents: " << ((Component*) this)->getNumChildComponents() << std::endl;
 }
 
 
 void PageComponent::removeSymbolComponent( BaseComponent *c )
 {
-    c->removeSymbolFromScore();
+    ((SymbolistMainComponent*) (getMainComponent()))->removeSymbolFromScore( c );
     ScoreComponent::removeSymbolComponent( c );
 }
 

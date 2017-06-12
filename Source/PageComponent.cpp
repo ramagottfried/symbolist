@@ -29,7 +29,6 @@ void PageComponent::addSymbolComponent( BaseComponent *c )
 {
     ScoreComponent::addSymbolComponent( c );
     ((SymbolistMainComponent*) (getMainComponent()))->addSymbolToScore( c );
-    std::cout << "PageComponent::addSymbolComponent " << c << " to " << this << " childcomponents: " << ((Component*) this)->getNumChildComponents() << std::endl;
 }
 
 

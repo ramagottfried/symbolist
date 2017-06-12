@@ -6,6 +6,7 @@
 
 #include "Symbol.h"
 #include "SymbolistComponent.h"
+#include "ScoreComponent.h"
 
 template <typename T>
 void printRect( const Rectangle<T> &rect, const String &name = "rect" )
@@ -20,7 +21,7 @@ void printPoint(Point<T> point, const String &name = "point" )
 }
 
 
-class BaseComponent : public SymbolistComponent
+class BaseComponent : public ScoreComponent
 {
 public:
     
@@ -29,6 +30,12 @@ public:
     
     String getSymbolTypeStr() const { return "symbol"; }
 
+    void paint ( Graphics& g ) override {
+        std::cout << "basic paint" << std::endl;
+        Component::paint(g);
+        }
+    
+    
     void setScoreSymbolPointer (Symbol* s) { score_symbol = s; }
     Symbol* getScoreSymbolPointer () { return score_symbol; }
     

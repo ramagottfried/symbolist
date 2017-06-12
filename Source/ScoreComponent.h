@@ -2,11 +2,9 @@
 #define ScoreComponent_h
 
 #include "../JuceLibraryCode/JuceHeader.h"
-
 #include "SymbolistComponent.h"
-#include "BaseComponent.h"
 
-
+class BaseComponent ;
 
 class ScoreSelectedItemSet : public SelectedItemSet<BaseComponent *>
 {
@@ -14,8 +12,8 @@ public:
     ScoreSelectedItemSet() = default ;
     ~ScoreSelectedItemSet() = default;
     
-    virtual void itemSelected (BaseComponent *c) override { c->selectComponent(); }
-    virtual void itemDeselected (BaseComponent *c) override { c->deselectComponent(); }
+    virtual void itemSelected (BaseComponent *c) override;
+    virtual void itemDeselected (BaseComponent *c) override;
     
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScoreSelectedItemSet)
@@ -37,7 +35,7 @@ public:
     const size_t          getNumSubcomponents( );
     BaseComponent*  getSubcomponent( int i );
     void    addSubcomponent( BaseComponent *c );
-    void    removeSubcomponent( BaseComponent* c );
+    void    removeSubcomponent( BaseComponent *c );
     void            clearAllSubcomponents();
     
     virtual void   addSymbolComponent( BaseComponent *c );

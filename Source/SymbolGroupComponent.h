@@ -12,7 +12,7 @@
 #include "ScoreComponent.h"
 #include "BaseComponent.h"
 
-class SymbolGroupComponent : public ScoreComponent, public BaseComponent
+class SymbolGroupComponent : public BaseComponent
 {
     
 public:

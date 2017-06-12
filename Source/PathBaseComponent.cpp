@@ -416,7 +416,7 @@ void PathBaseComponent::drawHandles( Graphics& g)
 void PathBaseComponent::paint ( Graphics& g )
 {
     
-    printRect(getBounds(), "check " + getSymbolTypeStr() );
+    //printRect(getBounds(), "paint " + getSymbolTypeStr() );
     g.setColour( getCurrentColor() );
     
     // to do: add other stroke options

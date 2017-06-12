@@ -21,10 +21,27 @@ Symbol::Symbol (const String & type, float x, float y, float w, float h)
 }
 
 
-// todo : filter the symbol from base_address
+// filter the symbol from base_address
 Symbol Symbol::makeSubSymbol( const String &base_address ) const
 {
     Symbol s;
+    
+    for (int i = 0; (i < osc_bundle.size()) ; i++)
+    {
+        String addr = osc_bundle[i].getMessage().getAddressPattern().toString() ;
+       
+        if ( addr.startsWith( base_address ) )
+        {
+            OSCMessage m (OSCAddressPattern(addr.substring(0, base_address.length())));
+
+            for (int mi = 0; mi < osc_bundle[i].getMessage().size(); mi++)
+            {
+                m.addArgument( osc_bundle[i].getMessage()[mi] );
+            }
+            
+            s.addOSCMessage(m);
+        }
+    }
     
     return s;
 }

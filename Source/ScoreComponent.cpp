@@ -7,6 +7,7 @@
 
 ScoreComponent::~ScoreComponent()
 {
+    std::cout << "ScoreComponent delete... " << this << std::endl;
     selected_items.deselectAll(); //<< required to avoid callback after deleting components
     clearAllSubcomponents();
 }
@@ -35,7 +36,6 @@ void ScoreComponent::addSubcomponent( BaseComponent *c )
     addAndMakeVisible( c );
     
     c->addMouseListener(this, false);
-    
 }
 
 void ScoreComponent::removeSubcomponent( BaseComponent *c )

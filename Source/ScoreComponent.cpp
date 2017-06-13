@@ -136,10 +136,10 @@ void ScoreComponent::groupSelectedSymbols()
             c->setBounds(compBounds.getX() - groupBounds.getX(),
                          compBounds.getY() - groupBounds.getY(),
                          compBounds.getWidth(), compBounds.getHeight());
-                        
+            
+            this->removeSymbolComponent( c );
             group->addSymbolComponent( c );
         }
-        
         // will add the symbol to the score if this is a PageComponent
         this->addSymbolComponent( group );
         group->selectComponent();

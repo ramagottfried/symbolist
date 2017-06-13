@@ -48,12 +48,7 @@ void ScoreComponent::clearAllSubcomponents()
 {
     for ( int i = 0; i < subcomponents.size(); i++ )
     {
-<<<<<<< HEAD
-        //removeChildComponent(subcomponents[i]);
-=======
         subcomponents[i]->clearAllSubcomponents();
-        removeChildComponent(subcomponents[i]);
->>>>>>> aef4be8994bf72e056a4a3809c014467bf8d99b5
         delete subcomponents[i];
     }
     subcomponents.clear();

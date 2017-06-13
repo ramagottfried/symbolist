@@ -178,24 +178,23 @@ void LinePathComponent::mouseMove( const MouseEvent& event )
     }
 }
 
+void LinePathComponent::updatePathFromPreivew()
+{
+    if( !m_preview_path.isEmpty() )
+    {
+        m_path.swapWithPath( m_preview_path );
+        m_preview_path.clear();
+        
+        Rectangle<float> pathBounds = applyTranformAndGetNewBounds( m_path );
+        setBoundsFloatRect( pathBounds + ref_point );
+    }
+}
+
 void LinePathComponent::mouseDown(const MouseEvent& event)
 {
     PathBaseComponent::mouseDown(event);
     
     ref_point = getPosition().toFloat();
-
-    printPoint( event.position, "LinePathComponent::mouseDown" );
-    printPath(m_preview_path);
     
-    
-    // new function:
-    // swap with preview, and set new bounds if needed
-    
-    if( m_path.isEmpty() )
-        m_path.swapWithPath( m_preview_path );
-    
-    std::cout << "m_path\n";
-    printPath(m_path);
-
-    m_preview_path.clear();
+    updatePathFromPreivew();
 }

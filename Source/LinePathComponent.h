@@ -24,6 +24,7 @@ public:
 
     Rectangle<float> applyTranformAndGetNewBounds( Path& p );
     
+    void updatePathFromPreivew();
 private:
     Point<float>  ref_point;
     

@@ -433,7 +433,7 @@ void PathBaseComponent::paint ( Graphics& g )
 
     // preview and handle routine (only if main component is constructed)
     
-    if( getMainComponent() == NULL )
+    if( getMainComponent() == NULL ) // workaround since we don't know which context we're in, draw and return if in palette
     {
         g.strokePath(m_path, strokeType );
         return;

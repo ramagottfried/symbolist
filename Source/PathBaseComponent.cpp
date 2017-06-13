@@ -7,7 +7,9 @@ PathBaseComponent::PathBaseComponent(  const Symbol& s ) : BaseComponent( s )
     // has its own method for that
     importPathFromSymbol( s );
     std::cout << this << " child of " << getParentComponent() << std::endl;
-
+    
+    m_path_origin = getPosition().toFloat();
+    printPoint(m_path_origin, "init path");
 }
 
 PathBaseComponent::~PathBaseComponent()
@@ -216,6 +218,171 @@ void PathBaseComponent::importPathFromSymbol(const Symbol &s)
  * MOUSE INTERACTIONS
  *****************/
 
+void PathBaseComponent::enterPathEdit ()
+{
+    m_path_origin = getPosition().toFloat();
+        
+    auto pc = static_cast<PageComponent*>( getPageComponent() );
+    setBounds( pc->getLocalBounds() );
+    pc->stealMouse();
+    
+    if( !m_path.isEmpty() )
+        m_path.applyTransform( AffineTransform().translated( m_path_origin ) );
+}
+
+void PathBaseComponent::deselectComponent()
+{
+    removeHandles();
+    BaseComponent::deselectComponent();
+}
+
+void PathBaseComponent::selectComponent()
+{
+    BaseComponent::selectComponent();
+    
+    if ( getMainEditMode() == draw_mode ) //<< this only happens when the path is frist created
+    {
+        enterPathEdit ();
+    }
+    
+    std::cout << "PathBaseComponent::selectComponent " << std::endl;
+}
+
+
+void PathBaseComponent::endPathDrawing ()
+{
+    printPoint(m_path_origin, __func__);
+    
+    // if path ended before mouse down, clear preview
+    // if no path was created, delete this symbol & component
+    
+    if( !m_preview_path.isEmpty() )
+        m_preview_path.clear();
+    
+    if( !m_path.isEmpty() )
+    {
+        Rectangle<float> pathBounds = tranformAndGetBoundsInParent( m_path );
+        setBoundsFloatRect( pathBounds );
+        ((PageComponent*)getPageComponent() )->giveBackMouse();
+    }
+    else
+    {
+        delete this;
+    }
+}
+
+void PathBaseComponent::updatePathFromPreivew()
+{
+    if( !m_preview_path.isEmpty() )
+    {
+        m_path.swapWithPath( m_preview_path );
+        m_preview_path.clear();
+    }
+}
+
+void PathBaseComponent::notifyEditModeChanged( UI_EditType current_mode )
+{
+    if( is_selected )
+    {
+        UI_EditType ed = getMainEditMode();
+        if( ed == draw_mode || ed == select_alt_mode )
+        {
+            m_path_origin = getPosition().toFloat();
+            
+            printPoint(m_path_origin, __func__);
+            auto pc = static_cast<PageComponent*>( getPageComponent() );
+            
+            if( !m_path.isEmpty() )
+            {
+                m_path.applyTransform( AffineTransform().translated( m_path_origin ) );
+            }
+            
+            setBounds( pc->getLocalBounds() );
+            pc->stealMouse();
+        }
+        else
+        {
+            endPathDrawing();
+        }
+    }
+}
+
+/******************
+ * Mouse interaction
+ *****************/
+
+void PathBaseComponent::mouseDown( const MouseEvent& event )
+{
+    BaseComponent::mouseDown(event);
+    std::cout << "PathBaseComponent::mouseDown " << std::endl;
+}
+
+void PathBaseComponent::mouseMove( const MouseEvent& event )
+{
+    std::cout << "PathBaseComponent::mouseMove " << std::endl;
+}
+
+void PathBaseComponent::mouseDrag( const MouseEvent& event )
+{
+    BaseComponent::mouseDrag(event);
+    
+    std::cout << "PathBaseComponent::mouseDrag " << std::endl;
+    
+    if ( getMainEditMode() == select_mode && path_handles.size() > 0 )
+    {
+        for (auto h : path_handles )
+        {
+            h->setTopLeftPosition ( h->getPosition() + (event.position - m_down).toInt() );
+        }
+    }
+}
+
+void PathBaseComponent::mouseUp( const MouseEvent& event )
+{
+    BaseComponent::mouseUp(event);
+}
+
+/******************
+ * preview routine
+ *****************/
+void PathBaseComponent::drawHandles( Graphics& g)
+{
+    float ax = -1, ay = -1;
+    Path::Iterator it( m_path );
+    while( it.next() )
+    {
+        if (it.elementType == it.startNewSubPath)
+        {
+            ax = it.x1;
+            ay = it.y1;
+        }
+        else if (it.elementType == it.lineTo)
+        {
+            ax = it.x1;
+            ay = it.y1;
+        }
+        else if (it.elementType == it.quadraticTo)
+        {
+            g.drawLine(ax, ay, it.x1, it.y1);
+            ax = it.x2;
+            ay = it.y2;
+        }
+        else if (it.elementType == it.cubicTo)
+        {
+            g.drawLine(ax, ay, it.x1, it.y1);
+            g.drawLine(it.x2, it.y2, it.x3, it.y3);
+            ax = it.x3;
+            ay = it.y3;
+        }
+        else if (it.elementType == it.closePath)
+        {
+
+        }
+    }
+}
+
+
+
 void PathBaseComponent::addHandle( float x, float y )
 {
     PathHandle *h = new PathHandle( x + getX(), y + getY(), this );
@@ -227,6 +394,9 @@ void PathBaseComponent::addHandle( float x, float y )
 
 void PathBaseComponent::makeHandles()
 {
+    // log origin before editing
+    m_path_origin = getPosition().toFloat();
+    
     if( is_selected && path_handles.size() == 0 )
     {
         Path::Iterator it( m_path );
@@ -271,28 +441,29 @@ void PathBaseComponent::removeHandles()
 }
 
 // NOT FUNCTIONAL PROGRAMMING, but oh well
-Rectangle<float> PathBaseComponent::applyTranformAndGetNewBounds( Path& p )
+Rectangle<float> PathBaseComponent::tranformAndGetBoundsInParent( Path& p )
 {
     symbol_debug_function(__func__);
     
     float strokeOffset = strokeType.getStrokeThickness() * 0.5;
     
-    Rectangle<float> testBounds = p.getBounds();
+    Rectangle<float> abs_bounds = p.getBounds();
+    p.applyTransform( AffineTransform().translated( -abs_bounds.getX() + strokeOffset, -abs_bounds.getY() + strokeOffset ) );
+    return abs_bounds.expanded( strokeOffset );
     
-    float offsetx = ( testBounds.getX() < 0 ) ? -testBounds.getX() : 0;
-    float offsety = ( testBounds.getY() < 0 ) ? -testBounds.getY() : 0;
-    
-    p.applyTransform( AffineTransform().translated(offsetx + strokeOffset, offsety + strokeOffset) );
-    
-    return ( p.getBounds() - Point<float>(offsetx, offsety) ).expanded( strokeOffset );
+    /*
+     Rectangle<float> testBounds = p.getBounds();
+     float offsetx = ( testBounds.getX() < 0 ) ? -testBounds.getX() : 0;
+     float offsety = ( testBounds.getY() < 0 ) ? -testBounds.getY() : 0;
+     p.applyTransform( AffineTransform().translated(offsetx + strokeOffset, offsety + strokeOffset) );
+     return ( p.getBounds() - Point<float>(offsetx, offsety) ).expanded( strokeOffset );
+     */
 }
 
 
 void PathBaseComponent::updatePathPoints()
 {
     std::cout << "PathBaseComponent::updatePathPoints" << std::endl;
-    
-    auto position = ref_point;
     
     Path p;
     auto handle = path_handles.begin();
@@ -302,123 +473,28 @@ void PathBaseComponent::updatePathPoints()
     {
         if (it.elementType == it.startNewSubPath)
         {
-            p.startNewSubPath( (*(handle++))->getBounds().toFloat().getCentre() - position );
+            p.startNewSubPath( (*(handle++))->getBounds().toFloat().getCentre() );
         }
         else if (it.elementType == it.lineTo)
         {
-            p.lineTo( (*(handle++))->getBounds().toFloat().getCentre() - position );
+            p.lineTo( (*(handle++))->getBounds().toFloat().getCentre() );
         }
         else if (it.elementType == it.quadraticTo)
         {
-            p.quadraticTo(  (*(handle++))->getBounds().toFloat().getCentre() - position,
-                            (*(handle++))->getBounds().toFloat().getCentre() - position );
+            p.quadraticTo(  (*(handle++))->getBounds().toFloat().getCentre() ,
+                          (*(handle++))->getBounds().toFloat().getCentre() );
         }
         else if (it.elementType == it.cubicTo)
         {
-            p.cubicTo((*(handle++))->getBounds().toFloat().getCentre() - position,
-                      (*(handle++))->getBounds().toFloat().getCentre() - position,
-                      (*(handle++))->getBounds().toFloat().getCentre() - position );
+            p.cubicTo((*(handle++))->getBounds().toFloat().getCentre(),
+                      (*(handle++))->getBounds().toFloat().getCentre(),
+                      (*(handle++))->getBounds().toFloat().getCentre() );
         }
     }
-    
-    printRect(p.getBounds(), "update points bounds");
-    
-    Rectangle<float> pathBounds = applyTranformAndGetNewBounds( p );
     
     m_path.swapWithPath( p );
-    setBoundsFloatRect( pathBounds + position );
-    
     repaint();
 }
-
-void PathBaseComponent::deselectComponent()
-{
-    removeHandles();
-    BaseComponent::deselectComponent();
-}
-
-void PathBaseComponent::selectComponent()
-{
-    BaseComponent::selectComponent();
-}
-
-void PathBaseComponent::mouseDown( const MouseEvent& event )
-{
-    BaseComponent::mouseDown(event);
-    
-    ref_point = getPosition().toFloat();
-}
-
-void PathBaseComponent::mouseMove( const MouseEvent& event )
-{}
-
-void PathBaseComponent::mouseDrag( const MouseEvent& event )
-{
-    
-    BaseComponent::mouseDrag(event);
-    
-    std::cout << "PathBaseComponent::mouseDrag " << std::endl;
-    
-    UI_EditType edit_mode = getMainEditMode();
-    
-    if ( edit_mode == select_mode && path_handles.size() > 0 )
-    {
-        for (auto h : path_handles )
-        {
-            h->setTopLeftPosition ( h->getPosition() + (event.position - m_down).toInt() );
-        }
-    }
-    
-
-}
-
-void PathBaseComponent::mouseUp( const MouseEvent& event )
-{
-    // probably update bounds here
-}
-
-
-void PathBaseComponent::drawHandles( Graphics& g)
-{
-    float ax = -1, ay = -1;
-    Path::Iterator it( m_path );
-    while( it.next() )
-    {
-        if (it.elementType == it.startNewSubPath)
-        {
-            ax = it.x1;
-            ay = it.y1;
-        }
-        else if (it.elementType == it.lineTo)
-        {
-            ax = it.x1;
-            ay = it.y1;
-        }
-        else if (it.elementType == it.quadraticTo)
-        {
-            g.drawLine(ax, ay, it.x1, it.y1);
-            ax = it.x2;
-            ay = it.y2;
-        }
-        else if (it.elementType == it.cubicTo)
-        {
-            g.drawLine(ax, ay, it.x1, it.y1);
-            g.drawLine(it.x2, it.y2, it.x3, it.y3);
-            ax = it.x3;
-            ay = it.y3;
-        }
-        else if (it.elementType == it.closePath)
-        {
-
-        }
-    }
-
-}
-
-/******************
- * preview routine
- *****************/
-
 
 
 /******************
@@ -429,7 +505,7 @@ void PathBaseComponent::paint ( Graphics& g )
 {
     int cur_t,local_t = 0;
     g.setColour( getCurrentColor() );
-    float strok = strokeWeight;
+    float strok = strokeType.getStrokeThickness();
     
     //printRect(getBounds(), "paint " + getSymbolTypeStr() );
     if ( isTopLevelComponent() )
@@ -448,7 +524,8 @@ void PathBaseComponent::paint ( Graphics& g )
     // to do: add other stroke options
     //float dashes[] = {1.0, 2.0};
     //strokeType.createDashedStroke(p, p, dashes, 2 );
-    strokeType.setStrokeThickness( strok );
+    
+    strokeType.setStrokeThickness( strokeType.getStrokeThickness() );
     
     if( getMainComponent() == NULL ) // workaround since we don't know which context we're in, draw and return if in palette
     {
@@ -456,17 +533,30 @@ void PathBaseComponent::paint ( Graphics& g )
         return;
     }
     
+    UI_EditType ed = getMainEditMode();
+
+    if( is_selected && (ed == draw_mode || ed == select_alt_mode) )
+    {
+        g.setColour( Colour::fromFloatRGBA(0.0f,0.0f,1.0f,0.2f)  );
+        g.fillRect( getLocalBounds() );
+
+    }
+
     
+    g.setColour( getCurrentColor() );
+
     if( !m_preview_path.isEmpty() )
     {
+        printPath(m_preview_path, "preview");
         g.strokePath(m_preview_path, strokeType );
     }
     else
     {
+        printPath(m_path, "m_path");
         g.strokePath(m_path, strokeType );
     }
 
-    if( is_selected && getMainEditMode() == select_alt_mode )
+    if( is_selected && ed == select_alt_mode )
     {
         if( path_handles.size() == 0)
             makeHandles();

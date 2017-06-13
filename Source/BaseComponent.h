@@ -30,10 +30,11 @@ public:
     
     virtual String getSymbolTypeStr() const { return "symbol"; }
 
-    void paint ( Graphics& g ) override {
+    void paint ( Graphics& g ) override
+    {
         std::cout << "basic paint" << std::endl;
         Component::paint(g);
-        }
+    }
     
     
     void setScoreSymbolPointer (Symbol* s) { score_symbol = s; }

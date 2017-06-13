@@ -27,6 +27,7 @@ public:
         m_path.cubicTo (cx - hw55, cy + hh, cx - hw, cy + hh55, cx - hw, cy);
         m_path.cubicTo (cx - hw, cy - hh55, cx - hw55, cy - hh, cx, cy - hh);
         m_path.closeSubPath();
+                
     }
     
     String getSymbolTypeStr() const override { return "circle"; }

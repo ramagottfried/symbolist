@@ -36,25 +36,30 @@ public:
     void mouseDrag( const MouseEvent& event ) override;
     void mouseUp( const MouseEvent& event ) override;
     
-    Rectangle<float> applyTranformAndGetNewBounds( Path& p );
+    Rectangle<float> tranformAndGetBoundsInParent( Path& p );
+    
+    void notifyEditModeChanged( UI_EditType current_mode ) override;
+    
+    void enterPathEdit ();
+    void endPathDrawing ();
+    void updatePathFromPreivew ();
     
     bool hitTest (int x, int y) override
     {
+        if( getMainEditMode() == draw_mode)
+            return true;
+        
         return m_path.intersectsLine( Line<float>( x - 5, y - 5, x + 5, y + 5) ) || m_path.intersectsLine( Line<float>( x + 5, y - 5, x - 5, y + 5) );
     }
-    
+
 protected:
-    
-    Point<float>    m_drag;
-    
-    Point<float>  ref_point;
-    
+        
     PathStrokeType  strokeType = PathStrokeType(2.0) ;
-    
     
     Path            m_path;
     Path            m_preview_path;
-    
+    Point<float>    m_path_origin;
+
     std::vector<PathHandle*> path_handles;
     
     //==============================================================================

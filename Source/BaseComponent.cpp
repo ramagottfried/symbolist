@@ -44,9 +44,7 @@ void BaseComponent::reportModification()
             ((BaseComponent*) getParentComponent())->reportModification() ;
         }
     }
-    
 }
-
 
 
 /******************
@@ -158,7 +156,9 @@ Point<float> BaseComponent::shiftConstrainMouseAngle( const MouseEvent& event )
 }
 
 void BaseComponent::mouseMove( const MouseEvent& event )
-{}
+{
+    std::cout << "BaseComponent::mouseMove" << std::endl;
+}
 
 void BaseComponent::mouseDown( const MouseEvent& event )
 {
@@ -170,8 +170,6 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
 {
     if( is_selected && getMainEditMode() == select_mode )
     {
-        std::cout << "BaseComponent::mouseDrag " << std::endl;
-        
         PageComponent* p = ( (PageComponent*) getPageComponent() );
         p->translateSelected( (event.position - m_down).toInt() );
     }
@@ -179,7 +177,7 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
 
 void BaseComponent::mouseUp( const MouseEvent& event )
 {
-    if( is_selected )
+    if( is_selected && getMainEditMode() == select_mode )
     {
         resizableBorder->setVisible( true );
         repaint();

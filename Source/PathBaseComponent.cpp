@@ -121,7 +121,7 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
 
     }
     
-    s->addOSCMessage( OSCMessage("/numSegments", count ) );
+    s->addOSCMessage( OSCMessage(base_address + "/numSegments", count ) );
     messages_added += 1;
  
 //    internal_symbol.printBundle();

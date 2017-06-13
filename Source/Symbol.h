@@ -36,7 +36,7 @@ public:
     
     static float getOSCValueAsFloat(OSCArgument a) ;
     
-    void printBundle();
+    void printBundle() const;
     
     void addOSCMessage( const String &address );
     void addOSCMessage( const OSCMessage m );

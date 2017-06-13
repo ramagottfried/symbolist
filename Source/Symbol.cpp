@@ -32,7 +32,7 @@ Symbol Symbol::makeSubSymbol( const String &base_address ) const
        
         if ( addr.startsWith( base_address ) )
         {
-            OSCMessage m (OSCAddressPattern(addr.substring(0, base_address.length())));
+            OSCMessage m (OSCAddressPattern(addr.substring(base_address.length())));
 
             for (int mi = 0; mi < osc_bundle[i].getMessage().size(); mi++)
             {
@@ -114,8 +114,9 @@ void Symbol::addOSCMessage( const String &address, const String &value)
     osc_bundle.addElement(OSCBundle::Element(OSCMessage(OSCAddressPattern(address), value)));
 }
 
-void Symbol::printBundle()
+void Symbol::printBundle() const
 {
+    std::cout << "==== OSC BUNDLE ====" << std::endl;
     for (auto osc : osc_bundle )
     {
         OSCMessage msg = osc.getMessage();
@@ -135,6 +136,8 @@ void Symbol::printBundle()
         
         std::cout << std::endl;
     }
+    std::cout << "====-===-======-====" << std::endl;
+
 }
 
 odot_bundle* Symbol::exportToOSC()

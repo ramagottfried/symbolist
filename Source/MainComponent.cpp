@@ -105,7 +105,7 @@ UI_EditType SymbolistMainComponent::getEditMode()
 bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
 {
     String desc = key.getTextDescription();
-    std::cout << "key " << desc << "\n";
+    std::cout << "keyPressed: " << desc << std::endl;;
     if( desc            == "command + G" ) {
         scoreGUI.groupSelectedSymbols();
     } else if ( desc    == "backspace" ) {
@@ -265,6 +265,8 @@ void SymbolistMainComponent::executeTransportCallback(int arg)
 BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
 {
     
+    
+    
     int typeMessagePos = s->getOSCMessagePos("/type");
 
     if ( typeMessagePos == -1 ) {
@@ -276,6 +278,8 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
         
         String typeStr = s->getOSCMessageValue(typeMessagePos).getString();
         cout << "Creating component from Symbol: " << typeStr << endl;
+    
+        s->printBundle();
         
         BaseComponent *c;
 
@@ -310,8 +314,10 @@ void SymbolistMainComponent::addSymbolToScore ( BaseComponent* c )
 
 void SymbolistMainComponent::removeSymbolFromScore ( BaseComponent* c )
 {
+    //cout << "REMOVING SYMBOL OF " << c << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
     assert ( c->getScoreSymbolPointer() != NULL ) ;
     score.removeSymbol( c->getScoreSymbolPointer() );
+    c->setScoreSymbolPointer( NULL );
     executeUpdateCallback( -1 );
 }
 

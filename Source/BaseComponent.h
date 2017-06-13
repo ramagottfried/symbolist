@@ -65,6 +65,9 @@ public:
     void mouseDrag( const MouseEvent& event ) override;
     void mouseUp( const MouseEvent& event ) override;
     void mouseDoubleClick( const MouseEvent& event ) override {};
+        
+    Point<float> shiftConstrainMouseAngle( const MouseEvent& event );
+
     
     virtual float symbol_getX(){ return getX(); }
     virtual float symbol_getY(){ return getY(); }

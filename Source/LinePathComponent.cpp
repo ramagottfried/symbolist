@@ -104,9 +104,9 @@ void LinePathComponent::mouseDrag( const MouseEvent& event )
     
     Point<float> event_pos;
     if (event.originalComponent == this)
-        event_pos = event.getEventRelativeTo( getPageComponent() ).position;
+        event_pos = shiftConstrainMouseAngle( event.getEventRelativeTo( getPageComponent() ) );
     else
-        event_pos = event.position;
+        event_pos = shiftConstrainMouseAngle( event );
     
     if( is_selected && getMainEditMode() == draw_mode && event.getDistanceFromDragStart() > 10 )
     {
@@ -139,9 +139,9 @@ void LinePathComponent::mouseMove( const MouseEvent& event )
     {
         Point<float> event_pos;
         if (event.originalComponent == this)
-            event_pos = event.getEventRelativeTo( getParentComponent() ).position;
+            event_pos = shiftConstrainMouseAngle( event.getEventRelativeTo( getPageComponent() ) );
         else
-            event_pos = event.position;
+            event_pos = shiftConstrainMouseAngle( event );
         
         Path p;
         

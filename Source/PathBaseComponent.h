@@ -55,8 +55,6 @@ protected:
     Path            m_path;
     Path            m_preview_path;
     
-    float           quarter_pi = 0.78539816339745;
-    
     std::vector<PathHandle*> path_handles;
     
     //==============================================================================

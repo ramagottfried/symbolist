@@ -143,6 +143,20 @@ void BaseComponent::resized ()
  * MOUSE INTERACTIONS
  ************************/
 
+Point<float> BaseComponent::shiftConstrainMouseAngle( const MouseEvent& event )
+{
+    if( event.mods.isShiftDown() )
+    {
+        float angle = event.position.getAngleToPoint( m_down );
+        if( fabs(angle) < 0.78539816339745 ) // pi / 4
+            return Point<float>( m_down.getX(), event.position.getY() );
+        else
+            return Point<float>( event.position.getX(), m_down.getY() );
+    }
+    
+    return event.position;
+}
+
 void BaseComponent::mouseMove( const MouseEvent& event )
 {}
 

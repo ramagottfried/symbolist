@@ -360,23 +360,8 @@ void PathBaseComponent::mouseDrag( const MouseEvent& event )
     std::cout << "PathBaseComponent::mouseDrag " << std::endl;
     
     UI_EditType edit_mode = getMainEditMode();
-    if(  edit_mode == draw_mode )
-    {
-        if( event.mods.isShiftDown() )
-        {
-            float angle = event.position.getAngleToPoint( m_down );
-            if( fabs(angle) < quarter_pi )
-                m_drag = Point<float>( m_down.getX(), event.position.getY() );
-            else
-                m_drag = Point<float>( event.position.getX(), m_down.getY() );
-        }
-        else
-            m_drag = event.position;
-        
-        
-               
-    }
-    else if ( edit_mode == select_mode && path_handles.size() > 0 )
+    
+    if ( edit_mode == select_mode && path_handles.size() > 0 )
     {
         for (auto h : path_handles )
         {

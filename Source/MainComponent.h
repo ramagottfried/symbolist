@@ -84,6 +84,9 @@ private:
     // the score data (model)
     Score score ;
     inline Score* getScore() { return &score; }
+    
+    UI_EditType     mouse_mode = select_mode;
+    
     // the score view
     PageComponent scoreGUI;
    
@@ -91,8 +94,6 @@ private:
     //OwnedArray<BaseComponent> palette;
     SymbolistPalette palette;
     PaletteComponent paletteView ;
-    
-    UI_EditType     mouse_mode = select_mode;
     
     int current_time = 0; // the current play-time in ms (change for float or long_int?)
     

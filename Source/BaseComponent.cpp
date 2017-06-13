@@ -14,7 +14,14 @@ BaseComponent::BaseComponent(const Symbol &s)
     importFromSymbol( s ) ;
 }
 
-BaseComponent::~BaseComponent() {}
+BaseComponent::~BaseComponent()
+{
+    if ( getParentComponent() != NULL )
+    {
+        ((ScoreComponent*)getParentComponent())->deselectAllSelected();
+        ((ScoreComponent*)getParentComponent())->removeSymbolComponent(this);
+    }
+}
 
 
 bool BaseComponent::isTopLevelComponent()
@@ -23,12 +30,9 @@ bool BaseComponent::isTopLevelComponent()
 }
 
 
-
 // This is the function to call when we want to update the score after a modification
 void BaseComponent::reportModification()
 {
-    //symbol_debug_function(__func__);
-    
     if ( getParentComponent() != NULL ) // we're in the score..
     {
         if ( isTopLevelComponent() )

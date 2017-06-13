@@ -66,14 +66,38 @@ public:
     inline void setSymbolStrokeWeight( float s ){ strokeWeight = s; }
     inline void setSymbolColor( Colour c ){ sym_color = c; }
     
-protected:
+    virtual void notifyEditModeChanged( UI_EditType current_mode ){}
     
+    
+    // helper functions
+    inline void symbol_debug_function(const char* func)
+    {
+        std::cout << juce::Time::currentTimeMillis() << " " << getSymbolTypeStr() << " " << this << " " << func << std::endl;
+    }
+    
+    inline bool symbol_parse_error( int p, const String& address )
+    {
+        if( p == -1 )
+        {
+            std::cout << "failed to parse symbol:\t" << address << std::endl;
+            return true; // there is an error
+        }
+        return false;
+    }
+    
+    inline void setBoundsFloatRect( Rectangle<float> r )
+    {
+        setBounds( r.getX(), r.getY(), r.getWidth(), r.getHeight() );
+    }
+    
+protected:
     // score structure
-    Symbol*                         score_symbol;   // poiner to the score symbol (set when this is a topLevel symbol, NULL otherwise)
+    Symbol*         score_symbol;   // poiner to the score symbol (set when this is a topLevel symbol, NULL otherwise)
     
     // parameters
     float           strokeWeight = 2;
     Colour          sym_color = Colours::black;
+    
     // interaction
     Point<float>    m_down;
     Colour          current_color = Colours::black;
@@ -87,40 +111,8 @@ protected:
     Colour          bb_color = Colours::cornflowerblue;
     Colour          sel_color = Colours::cornflowerblue;
     
-    /*
-     
-     to do: setup selection system:
-        if selected and in the score context, 
-        if clicked after selected (? or if it's the only selection) 
-            then create handles for resizing (if it makes sense for the mode)
-        if selected and in the palette context, highlight and set type for drawing
-     
-     */
-
-    bool        is_selected = false;
-    
-    
-    inline void setBoundsFloatRect( Rectangle<float> r )
-    {
-        setBounds( r.getX(), r.getY(), r.getWidth(), r.getHeight() );
-    }
-    
-   
-    inline void symbol_debug_function(const char* func)
-    {
-        std::cout << juce::Time::currentTimeMillis() << " " << getSymbolTypeStr() << " " << this << " " << func << std::endl;
-    }
-    
-    bool symbol_parse_error( int p, const String& address )
-    {
-        if( p == -1 )
-        {
-            std::cout << "failed to parse symbol:\t" << address << std::endl;
-            return true; // there is an error
-        }
-        return false;
-    }
-    
+    bool            is_selected = false;
+        
 private:
     
     //==============================================================================

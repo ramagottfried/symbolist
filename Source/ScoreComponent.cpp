@@ -48,7 +48,7 @@ void ScoreComponent::clearAllSubcomponents()
 {
     for ( int i = 0; i < subcomponents.size(); i++ )
     {
-        removeChildComponent(subcomponents[i]);
+        //removeChildComponent(subcomponents[i]);
         delete subcomponents[i];
     }
     subcomponents.clear();
@@ -158,18 +158,18 @@ void ScoreComponent::groupSelectedSymbols()
 
 BaseComponent* ScoreComponent::addSymbolAt ( Point<float> p )
 {
-    const Symbol* symbol_template = ((SymbolistMainComponent*) getMainComponent())->getCurrentSymbol();
+    Symbol* symbol_template = ((SymbolistMainComponent*) getMainComponent())->getCurrentSymbol();
+    
+    // sets position in symbol before creation
+    // will need to make offset for center based symbols (circle, square, etc.)
+    symbol_template->setPosition( p );
     
     // create a new component from the current selected symbol of the palette
     BaseComponent *c = SymbolistMainComponent::makeComponentFromSymbol( symbol_template );
-    //set the symbol center at the click position
-    // (will probably trigger a move + callbacks etc.)
-    // (will not update the symbol: the component is not yet on the page)
-    c->setCentrePosition( p.getX(), p.getY() );
-    //c->setTopLeftPosition(p.getX(), p.getY() );
     
     // add component in the view
     addSymbolComponent( c );
+    // deselect other itams and select this one
     selected_items.deselectAll();
     selected_items.addToSelection( c );
     
@@ -277,4 +277,10 @@ void ScoreComponent::deselectAllSelected()
 }
 
 
-
+void ScoreComponent::notifyEditModeChanged( UI_EditType current_mode )
+{
+    for( auto s : selected_items )
+    {
+        s->notifyEditModeChanged( current_mode );
+    }
+}

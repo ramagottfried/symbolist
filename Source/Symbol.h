@@ -49,6 +49,8 @@ public:
     
     Symbol makeSubSymbol( const String &base_address ) const;
     
+    void setPosition( const Point<float> pos );
+    
 private:
     
     OSCBundle   osc_bundle;

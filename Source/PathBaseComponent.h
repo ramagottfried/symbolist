@@ -27,14 +27,15 @@ public:
     void drawHandles( Graphics& g);
     
     void deselectComponent () override;
-    
+    void selectComponent () override;
+
     void paint ( Graphics& g ) override;
     
     void mouseDown( const MouseEvent& event ) override;
     void mouseMove( const MouseEvent& event ) override;
     void mouseDrag( const MouseEvent& event ) override;
     void mouseUp( const MouseEvent& event ) override;
-    
+        
     bool hitTest (int x, int y) override
     {
         return m_path.intersectsLine( Line<float>( x - 5, y - 5, x + 5, y + 5) ) || m_path.intersectsLine( Line<float>( x + 5, y - 5, x - 5, y + 5) );

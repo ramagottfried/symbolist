@@ -31,7 +31,11 @@ class ScoreComponent : public SymbolistComponent, public LassoSource<BaseCompone
 {
 public:
     
-    ScoreComponent(){}
+    ScoreComponent()
+    {
+        setComponentID("ScoreComponent");
+    }
+    
     ~ScoreComponent();
     
     const size_t          getNumSubcomponents( );
@@ -63,6 +67,8 @@ public:
     
     inline void stealMouse(){ component_grabbing_mouse = true; }
     inline void giveBackMouse(){ component_grabbing_mouse = false; }
+    
+    void notifyEditModeChanged( UI_EditType current_mode );
     
 protected:
 

@@ -14,6 +14,7 @@ PaletteButton::PaletteButton( int i, Symbol *s)
 {
     button_id = i;
     graphic_comp = SymbolistMainComponent::makeComponentFromSymbol(s);
+    setComponentID("PaletteButton");
 }
 
 PaletteButton::~PaletteButton()
@@ -51,7 +52,12 @@ void PaletteButton::mouseDown ( const MouseEvent& event )
  * PALETTE VIEW
  ********************/
 
-PaletteComponent::PaletteComponent() {}
+PaletteComponent::PaletteComponent()
+{
+    setComponentID("PaletteComponent");
+    std::cout << "PaletteComponent " << this << std::endl;
+
+}
 
 PaletteComponent::~PaletteComponent()
 {

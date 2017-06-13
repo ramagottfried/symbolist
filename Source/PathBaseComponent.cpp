@@ -6,6 +6,8 @@ PathBaseComponent::PathBaseComponent(  const Symbol& s ) : BaseComponent( s )
 {
     // has its own method for that
     importPathFromSymbol( s );
+    std::cout << this << " child of " << getParentComponent() << std::endl;
+
 }
 
 PathBaseComponent::~PathBaseComponent()
@@ -13,7 +15,6 @@ PathBaseComponent::~PathBaseComponent()
     printf("freeing path %p\n", this);
     removeHandles();
 }
-
 
 void PathBaseComponent::printPath( Path p )
 {
@@ -294,9 +295,6 @@ void PathBaseComponent::updatePathPoints()
     m_path.swapWithPath( p );
     setBoundsFloatRect( pathBounds + position );
     
-    symbol_debug_function(__func__);
-    printPath(m_path);
-    
     repaint();
 }
 
@@ -304,6 +302,11 @@ void PathBaseComponent::deselectComponent()
 {
     removeHandles();
     BaseComponent::deselectComponent();
+}
+
+void PathBaseComponent::selectComponent()
+{
+    BaseComponent::selectComponent();
 }
 
 void PathBaseComponent::mouseDown( const MouseEvent& event )
@@ -410,30 +413,40 @@ void PathBaseComponent::drawHandles( Graphics& g)
 }
 
 /******************
+ * preview routine
+ *****************/
+
+
+
+/******************
  * Paint callback subroutine
  *****************/
 
 void PathBaseComponent::paint ( Graphics& g )
 {
-    
-    printRect(getBounds(), "check " + getSymbolTypeStr() );
-    g.setColour( getCurrentColor() );
-    
     // to do: add other stroke options
     //float dashes[] = {1.0, 2.0};
     //strokeType.createDashedStroke(p, p, dashes, 2 );
-    
+
+    g.setColour( getCurrentColor() );
     strokeType.setStrokeThickness( strokeWeight );
+
+    // preview and handle routine (only if main component is constructed)
     
-    if(!m_preview_path.isEmpty() )
+    if( getMainComponent() == NULL )
+    {
+        g.strokePath(m_path, strokeType );
+        return;
+    }
+    
+    if( !m_preview_path.isEmpty() )
     {
         g.strokePath(m_preview_path, strokeType );
     }
     else
-    {
         g.strokePath(m_path, strokeType );
-    }
-    
+
+
     if( is_selected && getMainEditMode() == select_alt_mode )
     {
         if( path_handles.size() == 0)

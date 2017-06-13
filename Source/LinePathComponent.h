@@ -16,4 +16,15 @@ public:
     
     void deselectComponent () override;
     void selectComponent () override;
+
+    void notifyEditModeChanged( UI_EditType current_mode ) override;
+    
+    void newPathDrawing ();
+    void endPathDrawing ();
+
+    Rectangle<float> applyTranformAndGetNewBounds( Path& p );
+    
+private:
+    Point<float>  ref_point;
+    
 };

@@ -1,6 +1,6 @@
 
 #include "PathBaseComponent.h"
-
+#include "MainComponent.h"
 
 PathBaseComponent::PathBaseComponent(  const Symbol& s ) : BaseComponent( s )
 {
@@ -122,7 +122,7 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
 
     }
     
-    s->addOSCMessage( OSCMessage("/numSegments", count ) );
+    s->addOSCMessage( OSCMessage(base_address + "/numSegments", count ) );
     messages_added += 1;
  
 //    internal_symbol.printBundle();
@@ -442,15 +442,28 @@ void PathBaseComponent::drawHandles( Graphics& g)
 
 void PathBaseComponent::paint ( Graphics& g )
 {
-
+    int cur_t,local_t = 0;
+    g.setColour( getCurrentColor() );
+    float strok = strokeWeight;
+    
+    //printRect(getBounds(), "paint " + getSymbolTypeStr() );
+    if ( isTopLevelComponent() )
+    {
+        cur_t = ((SymbolistMainComponent*)getMainComponent())->getCurrentTime();
+        local_t =  cur_t - getScoreSymbolPointer()->getTime() ;
+        
+        
+        if (local_t >= 0 && local_t <= getScoreSymbolPointer()->getDuration())
+        {
+            strok = strokeWeight * (1 + local_t) * 0.003;
+            g.setColour( Colours::indianred );
+        }
+    }
+    
     // to do: add other stroke options
     //float dashes[] = {1.0, 2.0};
     //strokeType.createDashedStroke(p, p, dashes, 2 );
-
-    g.setColour( getCurrentColor() );
-    strokeType.setStrokeThickness( strokeWeight );
-
-    // preview and handle routine (only if main component is constructed)
+    strokeType.setStrokeThickness( strok );
     
     if( getMainComponent() == NULL ) // workaround since we don't know which context we're in, draw and return if in palette
     {

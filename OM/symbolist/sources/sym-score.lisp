@@ -7,14 +7,18 @@
   (and n
        (sort 
         (loop for i from 1 to n collect 
-              (make-instance 'osc-bundle 
-                             :date (om-random 0.0 60000.0)
-                             :messages `(("/staff" ,(om-random 1 2))
-                                         ("/type" ,(nth-random '("circle"))) ; "square")))
-                                         ("/x" ,(om-random 0.0 300.0))
+              (let ((d (om-random 0.0 60000.0)))
+                (make-instance 'osc-bundle 
+                               :date d
+                               :messages `(("/staff" ,(om-random 1 2))
+                                           ("/type" ,(nth-random '("circle"))) ; "square")))
+                                           ("/x" ,(/ d 20.0))
                                          ("/y" ,(om-random 0.0 300.0))
                                          ("/w" ,(om-random 10.0 30.0))
-                                         ("/h" ,(om-random 10.0 30.0)))))
+                                         ("/h" ,(om-random 10.0 30.0))
+                                         ("/offset" ,(float d))
+                                         ("/duration" 1000.0)
+                                         ))))
         '< :key 'date)))
                                          
                                          
@@ -126,10 +130,9 @@
               ;; update symnum no. n
               (let ((osc_b (symbolist::symbolistGetSymbol win-ptr n)))
                 (unwind-protect 
-                    (print osc_b)
                     (setf (nth n (symbols sscore))
                           (make-instance 'osc-bundle
-                                         :messages (print (om::decode-bundle-s-pointer-data osc_b))))
+                                         :messages (om::decode-bundle-s-pointer-data osc_b)))
                   (odot::osc_bundle_s_deepfree osc_b)))
             
               ;; else update all the symbols

@@ -13,13 +13,26 @@ Symbol::Symbol () {};
 
 Symbol::Symbol (const String & type, float x, float y, float w, float h)
 {
-    addOSCMessage(String("/type"), type);
-    addOSCMessage(String("/x"), x);
-    addOSCMessage(String("/y"), y);
-    addOSCMessage(String("/w"), w);
-    addOSCMessage(String("/h"), h);
+    addOSCMessage("/type", type);
+    addOSCMessage("/x", x);
+    addOSCMessage("/y", y);
+    addOSCMessage("/w", w);
+    addOSCMessage("/h", h);
+    
+    addOSCMessage("/offset", x * 10.0f);
+    addOSCMessage("/duration", 500.0f);
+    
 }
 
+int Symbol::getTime() const
+{
+    return (int)getOSCMessageValue("/offset").getFloat32();
+}
+
+int Symbol::getDuration() const
+{
+    return (int)getOSCMessageValue("/duration").getFloat32();
+}
 
 // filter the symbol from base_address
 Symbol Symbol::makeSubSymbol( const String &base_address ) const
@@ -32,7 +45,7 @@ Symbol Symbol::makeSubSymbol( const String &base_address ) const
        
         if ( addr.startsWith( base_address ) )
         {
-            OSCMessage m (OSCAddressPattern(addr.substring(0, base_address.length())));
+            OSCMessage m (OSCAddressPattern(addr.substring(base_address.length())));
 
             for (int mi = 0; mi < osc_bundle[i].getMessage().size(); mi++)
             {
@@ -65,6 +78,9 @@ void Symbol::setPosition( const Point<float> pos )
     addOSCMessage(String("/x"), pos.getX() );
     addOSCMessage(String("/y"), pos.getY() );
 }
+
+
+
 
 
 int Symbol::getOSCMessagePos(const String &address) const
@@ -134,8 +150,9 @@ void Symbol::addOSCMessage( const String &address, const String &value)
     osc_bundle.addElement(OSCBundle::Element(OSCMessage(OSCAddressPattern(address), value)));
 }
 
-void Symbol::printBundle()
+void Symbol::printBundle() const
 {
+    std::cout << "==== OSC BUNDLE ====" << std::endl;
     for (auto osc : osc_bundle )
     {
         OSCMessage msg = osc.getMessage();
@@ -155,6 +172,8 @@ void Symbol::printBundle()
         
         std::cout << std::endl;
     }
+    std::cout << "====-===-======-====" << std::endl;
+
 }
 
 odot_bundle* Symbol::exportToOSC()

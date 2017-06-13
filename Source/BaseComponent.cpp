@@ -63,6 +63,10 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
     s->addOSCMessage ((String(base_address) += "/y") , symbol_getY());
     s->addOSCMessage ((String(base_address) += "/w") , (float) getWidth());
     s->addOSCMessage ((String(base_address) += "/h") , (float) getHeight());
+    
+    s->addOSCMessage ((String(base_address) += "/offset") , symbol_getX() * 10.0f);
+    s->addOSCMessage ((String(base_address) += "/duration") , 500.0f);
+    
     messages_added += 5;
     
     return messages_added;
@@ -74,25 +78,22 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
  *****************/
 void BaseComponent::importFromSymbol( const Symbol &s )
 {
-    std::cout << "IMPORT BASE" << std::endl;
     int typeMessagePos = s.getOSCMessagePos("/type");
     
     if ( typeMessagePos == -1 ) {
         
-        cout << "Could not find '/type' message in OSC Bundle.. (size=" << s.getOSCBundle().size() << ")" << endl;
+        cout << "BaseComponent import: Could not find '/type' message in OSC Bundle.. (size=" << s.getOSCBundle().size() << ")" << endl;
         
     } else {
         
         String typeStr = s.getOSCMessageValue(typeMessagePos).getString();
-        cout << "Importing component from Symbol: " << typeStr << endl;
+        cout << "Importing BaseComponent from Symbol: " << typeStr << endl;
         
         float x = s.getOSCMessageValue("/x").getFloat32();
         float y = s.getOSCMessageValue("/y").getFloat32();;
         float w = s.getOSCMessageValue("/w").getFloat32();
         float h = s.getOSCMessageValue("/h").getFloat32();
         setBounds( x , y , w , h);
-        
-        //printRect(getBounds(), "import from symbol "+ getSymbolTypeStr() );
     }
 }
 

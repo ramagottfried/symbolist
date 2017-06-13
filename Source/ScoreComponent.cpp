@@ -80,14 +80,17 @@ void ScoreComponent::deleteSelectedSymbols()
     
     for( BaseComponent *c : selected_items ) // there's probably a better way to copy a vector's contents :)
     {
+        std::cout << c << std::endl;
         items.push_back(c);
     }
     
     selected_items.deselectAll();
     
-    for( BaseComponent *c : items )
+    
+     for( BaseComponent *c : items )
     {
-        removeSymbolComponent( c );
+        ScoreComponent* parent = (ScoreComponent*) c->getParentComponent() ; // the selected_items are not necesarily direct children
+        parent->removeSymbolComponent( c );
         delete c;
     }
 }
@@ -136,7 +139,7 @@ void ScoreComponent::groupSelectedSymbols()
                          compBounds.getY() - groupBounds.getY(),
                          compBounds.getWidth(), compBounds.getHeight());
             
-            this->removeSymbolComponent( c );
+            ((ScoreComponent*)c->getParentComponent())->removeSymbolComponent( c ); // the parent is not necessarily 'this' (selected_items can be indirect children...)
             group->addSymbolComponent( c );
         }
         // will add the symbol to the score if this is a PageComponent
@@ -193,7 +196,7 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
         
         if( ed == draw_mode && !component_grabbing_mouse )
         {
-            addSymbolAt( event.position ); // positionshould be in the score referential : pb in clicked on top of another symbol
+            addSymbolAt( event.getEventRelativeTo(getPageComponent()).position ); // positionshould be in the score referential : pb in clicked on top of another symbol
         }
     }
 }

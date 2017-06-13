@@ -34,7 +34,7 @@ int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_addre
     
     for (int i = 0; i < getNumSubcomponents(); i++)
     {
-        String base = String(base_address) += String("/subsymbol/") += String(i) ;
+        String base = String(base_address) += String("/subsymbol/") += String(i+1) ; // we start at 1 .. (?)
         messages_added += getSubcomponent(i)->addSymbolMessages( s, base );
     }
     
@@ -44,12 +44,15 @@ int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_addre
 void SymbolGroupComponent::importGroupFromSymbol( const Symbol &s )
 {
     int n = s.getOSCMessageValue("/numsymbols").getInt32();
-    
-    for (int i = 1; i <= n; i++ )
+    std::cout << "Importing Group of " << n << " symbols..." << std::endl;
+    for (int i = 0; i < n; i++ )
     {
-        String filter = "/subsymbol/" + String(i) ;
+        String filter = "/subsymbol/" + String(i+1) ;   // we start at 1 .. (?)
+        cout << filter << endl;
         Symbol sub_s = s.makeSubSymbol( filter );
-        addSubcomponent( SymbolistMainComponent::makeComponentFromSymbol( &sub_s ) );
+        BaseComponent* c = SymbolistMainComponent::makeComponentFromSymbol( &sub_s );
+        if ( c != NULL) addSubcomponent( c );
+        else cout << "Error importing subsymbol #" << i << endl;
     }
 }
 

@@ -36,7 +36,7 @@ public:
     
     static float getOSCValueAsFloat(OSCArgument a) ;
     
-    void printBundle();
+    void printBundle() const;
     
     void addOSCMessage( const String &address );
     void addOSCMessage( const OSCMessage m );
@@ -48,6 +48,8 @@ public:
     void            importFromOSC(odot_bundle *bundle);
     
     Symbol makeSubSymbol( const String &base_address ) const;
+    int getTime() const ;
+    int getDuration() const ;
     
     void setPosition( const Point<float> pos );
     

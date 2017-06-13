@@ -236,6 +236,15 @@ void PathBaseComponent::makeHandles()
             {
                 addHandle( it.x1, it.y1 );
             }
+            else if (it.elementType == it.lineTo)
+            {
+                addHandle( it.x1, it.y1 );
+            }
+            else if (it.elementType == it.quadraticTo)
+            {
+                addHandle( it.x1, it.y1 );
+                addHandle( it.x2, it.y2 );
+            }
             else if (it.elementType == it.cubicTo)
             {
                 addHandle( it.x1, it.y1 );
@@ -261,9 +270,25 @@ void PathBaseComponent::removeHandles()
     path_handles.clear();
 }
 
+// NOT FUNCTIONAL PROGRAMMING, but oh well
+Rectangle<float> PathBaseComponent::applyTranformAndGetNewBounds( Path& p )
+{
+    float strokeOffset = strokeType.getStrokeThickness() * 0.5;
+    
+    Rectangle<float> testBounds = p.getBounds();
+    
+    float offsetx = ( testBounds.getX() < 0 ) ? -testBounds.getX() : 0;
+    float offsety = ( testBounds.getY() < 0 ) ? -testBounds.getY() : 0;
+    
+    p.applyTransform( AffineTransform().translated(offsetx + strokeOffset, offsety + strokeOffset) );
+    
+    return ( p.getBounds() - Point<float>(offsetx, offsety) ).expanded( strokeOffset );
+}
+
+
 void PathBaseComponent::updatePathPoints()
 {
-    auto position = getPosition().toFloat();
+    auto position = ref_point;
     
     Path p;
     auto handle = path_handles.begin();
@@ -275,6 +300,15 @@ void PathBaseComponent::updatePathPoints()
         {
             p.startNewSubPath( (*(handle++))->getBounds().toFloat().getCentre() - position );
         }
+        else if (it.elementType == it.lineTo)
+        {
+            p.lineTo( (*(handle++))->getBounds().toFloat().getCentre() - position );
+        }
+        else if (it.elementType == it.quadraticTo)
+        {
+            p.quadraticTo(  (*(handle++))->getBounds().toFloat().getCentre() - position,
+                            (*(handle++))->getBounds().toFloat().getCentre() - position );
+        }
         else if (it.elementType == it.cubicTo)
         {
             p.cubicTo((*(handle++))->getBounds().toFloat().getCentre() - position,
@@ -283,14 +317,8 @@ void PathBaseComponent::updatePathPoints()
         }
     }
     
-    // not sure if this offset stuff is necessary, the jumping problem is still there...
     
-    Rectangle<float> testBounds = p.getBounds();
-    float offsetx = ( testBounds.getX() < 0 ) ? -testBounds.getX() : 0;
-    float offsety = ( testBounds.getY() < 0 ) ? -testBounds.getY() : 0;
-    p.applyTransform( AffineTransform().translated(offsetx, offsety) );
-    
-    Rectangle<float> pathBounds = ( p.getBounds() - Point<float>(offsetx, offsety) ).expanded( strokeType.getStrokeThickness() * 0.5 );
+    Rectangle<float> pathBounds = applyTranformAndGetNewBounds( p );
     
     m_path.swapWithPath( p );
     setBoundsFloatRect( pathBounds + position );
@@ -312,32 +340,12 @@ void PathBaseComponent::selectComponent()
 void PathBaseComponent::mouseDown( const MouseEvent& event )
 {
     BaseComponent::mouseDown(event);
+    
+    ref_point = getPosition().toFloat();
 }
 
 void PathBaseComponent::mouseMove( const MouseEvent& event )
-{
-///    printPoint(event.position, "PathBaseComponent::mouseMove" );
-    /*
-     UI_EditType edit_mode = getMainEditMode();
-     if( edit_mode == draw )
-     {
-     Path p;
-     
-     float strokeOffset = strokeType.getStrokeThickness() * 0.5;
-     Point<float> zeroPt(0, 0);
-     p.startNewSubPath( zeroPt );
-     
-     Point<float> endPt = event.position - m_down + zeroPt;
-     p.cubicTo( endPt * 0.25 , endPt * 0.75, endPt );
-     
-     m_path.swapWithPath( p );
-     m_path.applyTransform( AffineTransform().translated (strokeOffset, strokeOffset) );
-     
-     Rectangle<float> bb = (m_path.getBounds() + m_down).expanded( strokeOffset ) ;
-     setBoundsFloatRect( bb );
-     }
-     */
-}
+{}
 
 void PathBaseComponent::mouseDrag( const MouseEvent& event )
 {
@@ -372,11 +380,13 @@ void PathBaseComponent::mouseDrag( const MouseEvent& event )
 
 void PathBaseComponent::mouseUp( const MouseEvent& event )
 {
+    // probably update bounds here
 }
 
 
 void PathBaseComponent::drawHandles( Graphics& g)
 {
+    symbol_debug_function(__func__);
     float ax = -1, ay = -1;
     Path::Iterator it(m_path);
     while( it.next() )
@@ -440,13 +450,15 @@ void PathBaseComponent::paint ( Graphics& g )
         return;
     }
     
+    
     if( !m_preview_path.isEmpty() )
     {
         g.strokePath(m_preview_path, strokeType );
     }
     else
+    {
         g.strokePath(m_path, strokeType );
-
+    }
 
     if( is_selected && getMainEditMode() == select_alt_mode )
     {
@@ -457,5 +469,6 @@ void PathBaseComponent::paint ( Graphics& g )
     }
     else if (path_handles.size() > 0 )
         removeHandles();
+    
 }
 

@@ -95,86 +95,69 @@ void LinePathComponent::notifyEditModeChanged( UI_EditType current_mode )
  *  MOUSE UI
  ************/
 
-
 void LinePathComponent::mouseDrag( const MouseEvent& event )
 {
-
     PathBaseComponent::mouseDrag(event);
-     /*
-    UI_EditType edit_mode = getMainEditMode();
-    if(  edit_mode == draw_mode )
+    
+    Point<float> event_pos;
+    if (event.originalComponent == this)
+        event_pos = event.getEventRelativeTo( getPageComponent() ).position;
+    else
+        event_pos = event.position;
+    
+//    printPoint(event_pos, __func__);
+    if( getMainEditMode() == draw_mode && event.getDistanceFromDragStart() > 10 )
     {
+
         Path p;
-        float strokeOffset = strokeType.getStrokeThickness() * 0.5;
-        Point<float> zeroPt(0, 0);
-        p.startNewSubPath( zeroPt );
         
-        Point<float> endPt = m_drag - m_down + zeroPt;
-        p.cubicTo( endPt * 0.25 , endPt * 0.75, endPt );
+        if( m_path.isEmpty() )
+            p.startNewSubPath( 0, 0 );
+        else
+            p = m_path;
+
+    
+        p.quadraticTo( event_pos - ref_point, m_down - ref_point );
         
-        Rectangle<float> testBounds = p.getBounds();
-        float offsetx = ( testBounds.getX() < 0 ) ? -testBounds.getX() : 0;
-        float offsety = ( testBounds.getY() < 0 ) ? -testBounds.getY() : 0;
-        p.applyTransform( AffineTransform().translated(offsetx + strokeOffset, offsety + strokeOffset) );
+        printRect(p.getBounds(), "pre bounds");
+        Rectangle<float> pathBounds = applyTranformAndGetNewBounds( p );
+        printRect(p.getBounds(), "post bounds");
         
-        Rectangle<float> pathBounds = ( p.getBounds() - Point<float>(offsetx, offsety) ).expanded( strokeOffset );
+        m_preview_path.swapWithPath( p );
         
-        m_path.swapWithPath( p );
-        setBoundsFloatRect( pathBounds + m_down );
-        
+        setBoundsFloatRect( pathBounds + ref_point );
+        repaint();
     }
-    */
+        
 }
-
-// NOT FUNCTIONAL PROGRAMMING, but oh well
-Rectangle<float> LinePathComponent::applyTranformAndGetNewBounds( Path& p )
-{
-    float strokeOffset = strokeType.getStrokeThickness() * 0.5;
-
-    Rectangle<float> testBounds = p.getBounds();
-    
-    float offsetx = ( testBounds.getX() < 0 ) ? -testBounds.getX() : 0;
-    float offsety = ( testBounds.getY() < 0 ) ? -testBounds.getY() : 0;
-    
-    p.applyTransform( AffineTransform().translated(offsetx + strokeOffset, offsety + strokeOffset) );
-    
-    return ( p.getBounds() - Point<float>(offsetx, offsety) ).expanded( strokeOffset );
-}
-
 
 void LinePathComponent::mouseMove( const MouseEvent& event )
 {
     PathBaseComponent::mouseMove( event );
     
-//    printPoint(event.position, event.originalComponent->getComponentID() );
-    printPoint(m_down, "m_down");
-    printPoint(getPosition(), "current pos");
-    
-    if(  getMainEditMode() == draw_mode )
+    if( getMainEditMode() == draw_mode )
     {
-        if (event.originalComponent == this) return;
+        Point<float> event_pos;
+        if (event.originalComponent == this)
+            event_pos = event.getEventRelativeTo( getParentComponent() ).position;
+        else
+            event_pos = event.position;
         
         Path p;
-
-        // if m_path : m_path.currentPosition() for last point
         
         if( m_path.isEmpty() )
             p.startNewSubPath( 0, 0 );
         else
             p = m_path;
         
-        Point<float> endPt = event.position - ref_point;
-        p.cubicTo( endPt * 0.25 , endPt * 0.75, endPt );
+        p.lineTo( event_pos - ref_point );
         
         Rectangle<float> pathBounds = applyTranformAndGetNewBounds( p );
-    
-        printRect(pathBounds + ref_point, "pathBounds");
-//        printRect( getBounds().toFloat().getUnion( pathBounds + getPosition().toFloat() ), "union");
-
         m_preview_path.swapWithPath( p );
         
         setBoundsFloatRect( pathBounds + ref_point );
-        
+        repaint();
+
     }
 }
 
@@ -187,14 +170,21 @@ void LinePathComponent::updatePathFromPreivew()
         
         Rectangle<float> pathBounds = applyTranformAndGetNewBounds( m_path );
         setBoundsFloatRect( pathBounds + ref_point );
+        
+        std::cout << "updated path" << std::endl;
     }
 }
 
 void LinePathComponent::mouseDown(const MouseEvent& event)
 {
     PathBaseComponent::mouseDown(event);
-    
-    ref_point = getPosition().toFloat();
-    
-    updatePathFromPreivew();
 }
+
+void LinePathComponent::mouseUp(const MouseEvent& event)
+{
+    PathBaseComponent::mouseUp(event);
+
+    updatePathFromPreivew();
+    
+}
+

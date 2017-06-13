@@ -13,6 +13,7 @@ public:
     void mouseDrag(const MouseEvent& event) override;
     void mouseMove(const MouseEvent& event) override;
     void mouseDown(const MouseEvent& event) override;
+    void mouseUp(const MouseEvent& event) override;
     
     void deselectComponent () override;
     void selectComponent () override;
@@ -21,11 +22,9 @@ public:
     
     void newPathDrawing ();
     void endPathDrawing ();
-
-    Rectangle<float> applyTranformAndGetNewBounds( Path& p );
     
     void updatePathFromPreivew();
+    
 private:
-    Point<float>  ref_point;
     
 };

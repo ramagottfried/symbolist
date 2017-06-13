@@ -21,6 +21,7 @@ LinePathComponent::LinePathComponent(const Symbol &s) : PathBaseComponent( s )
 void LinePathComponent::newPathDrawing ()
 {
     m_path.clear();
+    origin = getPosition().toFloat();
     
     auto pc = static_cast<PageComponent*>( getPageComponent() );
     pc->stealMouse();
@@ -99,30 +100,29 @@ void LinePathComponent::mouseDrag( const MouseEvent& event )
 {
     PathBaseComponent::mouseDrag(event);
     
+    std::cout << "LinePathComponent::mouseDrag " << std::endl;
+    
     Point<float> event_pos;
     if (event.originalComponent == this)
         event_pos = event.getEventRelativeTo( getPageComponent() ).position;
     else
         event_pos = event.position;
     
-//    printPoint(event_pos, __func__);
-    if( getMainEditMode() == draw_mode && event.getDistanceFromDragStart() > 10 )
+    if( is_selected && getMainEditMode() == draw_mode && event.getDistanceFromDragStart() > 10 )
     {
 
         Path p;
         
         if( m_path.isEmpty() )
-            p.startNewSubPath( 0, 0 );
+            p.startNewSubPath( origin - ref_point );
         else
             p = m_path;
 
     
         p.quadraticTo( event_pos - ref_point, m_down - ref_point );
-        
-        printRect(p.getBounds(), "pre bounds");
+
         Rectangle<float> pathBounds = applyTranformAndGetNewBounds( p );
-        printRect(p.getBounds(), "post bounds");
-        
+
         m_preview_path.swapWithPath( p );
         
         setBoundsFloatRect( pathBounds + ref_point );
@@ -135,7 +135,7 @@ void LinePathComponent::mouseMove( const MouseEvent& event )
 {
     PathBaseComponent::mouseMove( event );
     
-    if( getMainEditMode() == draw_mode )
+    if( is_selected && getMainEditMode() == draw_mode )
     {
         Point<float> event_pos;
         if (event.originalComponent == this)
@@ -146,7 +146,7 @@ void LinePathComponent::mouseMove( const MouseEvent& event )
         Path p;
         
         if( m_path.isEmpty() )
-            p.startNewSubPath( 0, 0 );
+            p.startNewSubPath( origin - ref_point );
         else
             p = m_path;
         

@@ -16,7 +16,7 @@ PathBaseComponent::~PathBaseComponent()
     removeHandles();
 }
 
-void PathBaseComponent::printPath( Path p )
+void PathBaseComponent::printPath( Path p, const char* name )
 {
     Path::Iterator it(p);
     int count = 0;
@@ -24,23 +24,23 @@ void PathBaseComponent::printPath( Path p )
     {
         if (it.elementType == it.startNewSubPath)
         {
-            std::cout << count++ << " " << "start point " << it.x1 << " " << it.y1 << "\n";
+            std::cout << name << " " << count++ << " " << "start point " << it.x1 << " " << it.y1 << "\n";
         }
         else if (it.elementType == it.lineTo)
         {
-            std::cout << count++ << " " << "line to " << it.x1 << " " << it.y1 << "\n";
+            std::cout << name << " " << count++ << " " << "line to " << it.x1 << " " << it.y1 << "\n";
         }
         else if (it.elementType == it.quadraticTo)
         {
-            std::cout << count++ << " " << "quadratic to " << it.x1 << " " << it.y1 << " " << it.x2 << " " << it.y2 << "\n";
+            std::cout << name << " " << count++ << " " << "quadratic to " << it.x1 << " " << it.y1 << " " << it.x2 << " " << it.y2 << "\n";
         }
         else if (it.elementType == it.cubicTo)
         {
-            std::cout << count++ << " " << "cubic to " << it.x1 << " " << it.y1 << " " << it.x2 << " " << it.y2 << " " << it.x3 << " " << it.y3 << "\n";
+            std::cout << name << " " << count++ << " " << "cubic to " << it.x1 << " " << it.y1 << " " << it.x2 << " " << it.y2 << " " << it.x3 << " " << it.y3 << "\n";
         }
         else if (it.elementType == it.closePath)
         {
-            std::cout << count++ << " " << "close path\n";
+            std::cout << name << " " << count++ << " " << "close path\n";
         }
     }
 }
@@ -273,6 +273,8 @@ void PathBaseComponent::removeHandles()
 // NOT FUNCTIONAL PROGRAMMING, but oh well
 Rectangle<float> PathBaseComponent::applyTranformAndGetNewBounds( Path& p )
 {
+    symbol_debug_function(__func__);
+    
     float strokeOffset = strokeType.getStrokeThickness() * 0.5;
     
     Rectangle<float> testBounds = p.getBounds();
@@ -288,6 +290,8 @@ Rectangle<float> PathBaseComponent::applyTranformAndGetNewBounds( Path& p )
 
 void PathBaseComponent::updatePathPoints()
 {
+    std::cout << "PathBaseComponent::updatePathPoints" << std::endl;
+    
     auto position = ref_point;
     
     Path p;
@@ -317,6 +321,7 @@ void PathBaseComponent::updatePathPoints()
         }
     }
     
+    printRect(p.getBounds(), "update points bounds");
     
     Rectangle<float> pathBounds = applyTranformAndGetNewBounds( p );
     
@@ -352,6 +357,8 @@ void PathBaseComponent::mouseDrag( const MouseEvent& event )
     
     BaseComponent::mouseDrag(event);
     
+    std::cout << "PathBaseComponent::mouseDrag " << std::endl;
+    
     UI_EditType edit_mode = getMainEditMode();
     if(  edit_mode == draw_mode )
     {
@@ -376,6 +383,8 @@ void PathBaseComponent::mouseDrag( const MouseEvent& event )
             h->setTopLeftPosition ( h->getPosition() + (event.position - m_down).toInt() );
         }
     }
+    
+
 }
 
 void PathBaseComponent::mouseUp( const MouseEvent& event )
@@ -386,9 +395,8 @@ void PathBaseComponent::mouseUp( const MouseEvent& event )
 
 void PathBaseComponent::drawHandles( Graphics& g)
 {
-    symbol_debug_function(__func__);
     float ax = -1, ay = -1;
-    Path::Iterator it(m_path);
+    Path::Iterator it( m_path );
     while( it.next() )
     {
         if (it.elementType == it.startNewSubPath)

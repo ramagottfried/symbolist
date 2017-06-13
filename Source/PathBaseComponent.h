@@ -14,7 +14,7 @@ public:
     
     String getSymbolTypeStr() const override { return "path"; }
 
-    void printPath( Path p );
+    void printPath( Path p, const char* name = "path" );
     
     int addSymbolMessages(Symbol* s, const String &base_address) override;
     
@@ -77,8 +77,7 @@ public:
     
     ~PathHandle()
     {
-        
-        //        std::cout << "freeing " << getComponentID() << " " << this << "\n";
+//        std::cout << "freeing " << getComponentID() << " " << this << "\n";
     }
     
     void paint ( Graphics& g ) override

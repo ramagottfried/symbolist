@@ -26,5 +26,5 @@ public:
     void updatePathFromPreivew();
     
 private:
-    
+    Point<float> origin;
 };

@@ -17,6 +17,9 @@ PageComponent::PageComponent()
     lassoSelector.setComponentID("lasso");
     getLookAndFeel().setColour( lassoSelector.lassoFillColourId, Colours::transparentWhite );
     getLookAndFeel().setColour( lassoSelector.lassoOutlineColourId, Colour::fromFloatRGBA(0, 0, 0, 0.2) );
+    
+    std::cout << "PageComponent " << this << std::endl;
+
 }
 
 

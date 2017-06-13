@@ -8,6 +8,7 @@
 SymbolistMainComponent::SymbolistMainComponent()
 {
     // score = std::unique_ptr<Score>(new Score());
+    std::cout << "MainComponent " << this << std::endl;
     
     setComponentID("MainComponent");
     setSize (600, 400);
@@ -93,6 +94,7 @@ Symbol* SymbolistMainComponent::getCurrentSymbol()
 void SymbolistMainComponent::setEditMode( UI_EditType m )
 {
     mouse_mode = m;
+    scoreGUI.notifyEditModeChanged( m );
     scoreGUI.repaint();
 }
 

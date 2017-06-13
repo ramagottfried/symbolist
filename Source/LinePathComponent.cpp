@@ -3,108 +3,188 @@
 #include "PageComponent.h"
 
 LinePathComponent::LinePathComponent(const Symbol &s) : PathBaseComponent( s )
+{}
+
+
+
+/*************
+ *  SELECT, AND MODE SETTING FOR MOUSE LISTENING
+ ************/
+
+/*  currently need to use the draw_mode selection actaion as the cue that this is a new path
+    this is a little kludgy, but AFAICT this is the only time this would happen (selection while in draw_mode)
+    better would be to signal that this is a new path in the constructor,
+    but we'd need to know that the symbol is in the page not the palette,
+    so would need to do the parent->ddChild inside this constructor
+*/
+
+void LinePathComponent::newPathDrawing ()
 {
+    m_path.clear();
+    
+    auto pc = static_cast<PageComponent*>( getPageComponent() );
+    pc->stealMouse();
+    pc->addMouseListener(this, false);
+    printf("********************************* added in %s\n", __func__);
+}
+
+
+void LinePathComponent::endPathDrawing ()
+{
+    
+    // if path ended before mouse down, clear preview
+    // if no path was created, delete this symbol & component
+    
+    if( !m_preview_path.isEmpty() )
+    {
+        m_preview_path.clear();
+        
+        auto pc = static_cast<PageComponent*>( getPageComponent() );
+        pc->removeMouseListener(this);
+        pc->giveBackMouse();
+        
+        if( !m_path.isEmpty() )
+        {
+//            reset bounds here
+        }
+        else
+        {
+            delete this;
+        }
+    }
 }
 
 void LinePathComponent::selectComponent ()
 {
     PathBaseComponent::selectComponent();
-    auto pc = static_cast<PageComponent*>( getPageComponent() );
     
-    if( getMainEditMode() == draw_mode )
+    if ( getMainEditMode() == draw_mode ) //<< this only happens when the path is frist created
     {
-        pc->stealMouse();
-        pc->addMouseListener(this, false);
+        newPathDrawing ();
     }
-    
 }
 
 void LinePathComponent::deselectComponent ()
 {
     PathBaseComponent::deselectComponent();
-
-    auto pc = static_cast<PageComponent*>( getPageComponent() );
-    pc->removeMouseListener(this);
-    pc->giveBackMouse();
+    
+    // might need to remove and give back mouse here? if deselect/cancel becomes a keyboard shortcut (esc)
 }
+
+void LinePathComponent::notifyEditModeChanged( UI_EditType current_mode )
+{
+    if( is_selected )
+    {
+        auto pc = static_cast<PageComponent*>( getPageComponent() );
+        
+        if( getMainEditMode() == draw_mode )
+        {
+            // in this case the m_path probably already exists, so we don't want to clear it
+            pc->stealMouse();
+            pc->addMouseListener(this, false);
+            printf("********************************* added in %s\n", __func__ );
+        }
+        else
+        {
+            endPathDrawing();
+        }
+    }
+}
+
+/*************
+ *  MOUSE UI
+ ************/
 
 void LinePathComponent::mouseDrag( const MouseEvent& event )
 {
-
     PathBaseComponent::mouseDrag(event);
-     /*
-    UI_EditType edit_mode = getMainEditMode();
-    if(  edit_mode == draw_mode )
+    
+    Point<float> event_pos;
+    if (event.originalComponent == this)
+        event_pos = event.getEventRelativeTo( getPageComponent() ).position;
+    else
+        event_pos = event.position;
+    
+//    printPoint(event_pos, __func__);
+    if( getMainEditMode() == draw_mode && event.getDistanceFromDragStart() > 10 )
     {
+
         Path p;
-        float strokeOffset = strokeType.getStrokeThickness() * 0.5;
-        Point<float> zeroPt(0, 0);
-        p.startNewSubPath( zeroPt );
         
-        Point<float> endPt = m_drag - m_down + zeroPt;
-        p.cubicTo( endPt * 0.25 , endPt * 0.75, endPt );
+        if( m_path.isEmpty() )
+            p.startNewSubPath( 0, 0 );
+        else
+            p = m_path;
+
+    
+        p.quadraticTo( event_pos - ref_point, m_down - ref_point );
         
-        Rectangle<float> testBounds = p.getBounds();
-        float offsetx = ( testBounds.getX() < 0 ) ? -testBounds.getX() : 0;
-        float offsety = ( testBounds.getY() < 0 ) ? -testBounds.getY() : 0;
-        p.applyTransform( AffineTransform().translated(offsetx + strokeOffset, offsety + strokeOffset) );
+        printRect(p.getBounds(), "pre bounds");
+        Rectangle<float> pathBounds = applyTranformAndGetNewBounds( p );
+        printRect(p.getBounds(), "post bounds");
         
-        Rectangle<float> pathBounds = ( p.getBounds() - Point<float>(offsetx, offsety) ).expanded( strokeOffset );
+        m_preview_path.swapWithPath( p );
         
-        m_path.swapWithPath( p );
-        setBoundsFloatRect( pathBounds + m_down );
-        
+        setBoundsFloatRect( pathBounds + ref_point );
+        repaint();
     }
-    */
+        
 }
 
 void LinePathComponent::mouseMove( const MouseEvent& event )
 {
     PathBaseComponent::mouseMove( event );
-//    printPoint( event.position - m_down, "LinePathComponent::mouseMove" );
-//    printPoint( getPosition(), "position" );
-
-    printPoint(event.position, event.originalComponent->getComponentID() );
     
-    UI_EditType mouse_mode = getMainEditMode();
-    if(  mouse_mode == draw_mode )
+    if( getMainEditMode() == draw_mode )
     {
+        Point<float> event_pos;
+        if (event.originalComponent == this)
+            event_pos = event.getEventRelativeTo( getParentComponent() ).position;
+        else
+            event_pos = event.position;
+        
         Path p;
-        float strokeOffset = strokeType.getStrokeThickness() * 0.5;
-
-        // if m_path : m_path.currentPosition() for last point
-        p.startNewSubPath( 0, 0 );
         
-        Point<float> endPt = event.position - m_down;
-        p.cubicTo( endPt * 0.25 , endPt * 0.75, endPt );
+        if( m_path.isEmpty() )
+            p.startNewSubPath( 0, 0 );
+        else
+            p = m_path;
         
-        Rectangle<float> testBounds = p.getBounds();
-        float offsetx = ( testBounds.getX() < 0 ) ? -testBounds.getX() : 0;
-        float offsety = ( testBounds.getY() < 0 ) ? -testBounds.getY() : 0;
-        p.applyTransform( AffineTransform().translated(offsetx + strokeOffset, offsety + strokeOffset) );
+        p.lineTo( event_pos - ref_point );
         
-        Rectangle<float> pathBounds = ( p.getBounds() - Point<float>(offsetx, offsety) ).expanded( strokeOffset );
-        
+        Rectangle<float> pathBounds = applyTranformAndGetNewBounds( p );
         m_preview_path.swapWithPath( p );
-        setBoundsFloatRect( pathBounds + m_down );
         
+        setBoundsFloatRect( pathBounds + ref_point );
+        repaint();
+
+    }
+}
+
+void LinePathComponent::updatePathFromPreivew()
+{
+    if( !m_preview_path.isEmpty() )
+    {
+        m_path.swapWithPath( m_preview_path );
+        m_preview_path.clear();
+        
+        Rectangle<float> pathBounds = applyTranformAndGetNewBounds( m_path );
+        setBoundsFloatRect( pathBounds + ref_point );
+        
+        std::cout << "updated path" << std::endl;
     }
 }
 
 void LinePathComponent::mouseDown(const MouseEvent& event)
 {
     PathBaseComponent::mouseDown(event);
-
-    printPoint( event.position, "LinePathComponent::mouseDown" );
-    printPath(m_preview_path);
-    
-    if( m_path.isEmpty() )
-        m_path.swapWithPath( m_preview_path );
-    else
-        m_path.addPath( m_preview_path );
-    
-    std::cout << "m_path\n";
-    printPath(m_path);
-
-    m_preview_path.clear();
 }
+
+void LinePathComponent::mouseUp(const MouseEvent& event)
+{
+    PathBaseComponent::mouseUp(event);
+
+    updatePathFromPreivew();
+    
+}
+

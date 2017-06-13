@@ -27,13 +27,16 @@ public:
     void drawHandles( Graphics& g);
     
     void deselectComponent () override;
-    
+    void selectComponent () override;
+
     void paint ( Graphics& g ) override;
     
     void mouseDown( const MouseEvent& event ) override;
     void mouseMove( const MouseEvent& event ) override;
     void mouseDrag( const MouseEvent& event ) override;
     void mouseUp( const MouseEvent& event ) override;
+    
+    Rectangle<float> applyTranformAndGetNewBounds( Path& p );
     
     bool hitTest (int x, int y) override
     {
@@ -43,6 +46,9 @@ public:
 protected:
     
     Point<float>    m_drag;
+    
+    Point<float>  ref_point;
+    
     PathStrokeType  strokeType = PathStrokeType(2.0) ;
     
     
@@ -91,7 +97,7 @@ public:
     {
         
         // not sure why I need to make this relative, it was jumping back and forth between being relative to the score and then to the component. is it possibe that it has an extra mouselistener somewhere?
-        Point<int> draggy = event.getEventRelativeTo( m_path->getParentComponent() ).getPosition();
+        Point<int> draggy = event.getEventRelativeTo( m_path->getPageComponent() ).getPosition();
         setTopLeftPosition ( draggy - (m_down).toInt() );
         m_path->updatePathPoints();
     }

@@ -14,7 +14,14 @@ BaseComponent::BaseComponent(const Symbol &s)
     importFromSymbol( s ) ;
 }
 
-BaseComponent::~BaseComponent() {}
+BaseComponent::~BaseComponent()
+{
+    if ( getParentComponent() != NULL )
+    {
+        ((ScoreComponent*)getParentComponent())->deselectAllSelected();
+        ((ScoreComponent*)getParentComponent())->removeSymbolComponent(this);
+    }
+}
 
 
 bool BaseComponent::isTopLevelComponent()
@@ -23,12 +30,9 @@ bool BaseComponent::isTopLevelComponent()
 }
 
 
-
 // This is the function to call when we want to update the score after a modification
 void BaseComponent::reportModification()
 {
-    //symbol_debug_function(__func__);
-    
     if ( getParentComponent() != NULL ) // we're in the score..
     {
         if ( isTopLevelComponent() )
@@ -140,8 +144,7 @@ void BaseComponent::resized ()
  ************************/
 
 void BaseComponent::mouseMove( const MouseEvent& event )
-{
-}
+{}
 
 void BaseComponent::mouseDown( const MouseEvent& event )
 {
@@ -151,7 +154,7 @@ void BaseComponent::mouseDown( const MouseEvent& event )
 
 void BaseComponent::mouseDrag( const MouseEvent& event )
 {
-    if( is_selected )
+    if( is_selected && getMainEditMode() == select_mode )
     {
         PageComponent* p = ( (PageComponent*) getPageComponent() );
         p->translateSelected( (event.position - m_down).toInt() );

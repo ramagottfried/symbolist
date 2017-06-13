@@ -59,6 +59,26 @@ Symbol Symbol::makeSubSymbol( const String &base_address ) const
     return s;
 }
 
+void Symbol::setPosition( const Point<float> pos )
+{
+    
+    OSCBundle new_bundle;
+    
+    for (auto osc : osc_bundle )
+    {
+        if( !osc.getMessage().getAddressPattern().toString().equalsIgnoreCase( "/x" ) &&
+           !osc.getMessage().getAddressPattern().toString().equalsIgnoreCase( "/y" ) )
+        {
+            new_bundle.addElement(osc);
+        }
+    }
+    
+    osc_bundle = new_bundle;
+    
+    addOSCMessage(String("/x"), pos.getX() );
+    addOSCMessage(String("/y"), pos.getY() );
+}
+
 
 
 

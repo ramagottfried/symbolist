@@ -51,6 +51,8 @@ public:
     int getTime() const ;
     int getDuration() const ;
     
+    void setPosition( const Point<float> pos );
+    
 private:
     
     OSCBundle   osc_bundle;

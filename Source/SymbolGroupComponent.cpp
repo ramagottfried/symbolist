@@ -13,17 +13,16 @@ SymbolGroupComponent::~SymbolGroupComponent() {}
 
 void SymbolGroupComponent::paint ( Graphics& g )
 {
-    g.setColour( current_color );
+    g.setColour( Colours::darkcyan );
     const Rectangle<int> b = ((BaseComponent*) this)->getLocalBounds();
-    const float dashLength[2] = {3.0 , 6.0};
+    const float dashLength[2] = {3.0 , 4.0};
     int ndashLengths = 2;
     g.drawDashedLine(Line<float>( b.getX(), b.getY(), b.getX() + b.getWidth(), b.getY() ), dashLength , ndashLengths );
     g.drawDashedLine(Line<float>( b.getX() + b.getWidth(), b.getY(), b.getX() + b.getWidth(), b.getY() + b. getHeight() ), dashLength , ndashLengths );
     g.drawDashedLine(Line<float>( b.getX() + b.getWidth() , b.getY() + b.getHeight() , b.getX() , b.getY() + b. getHeight() ), dashLength , ndashLengths );
     g.drawDashedLine(Line<float>( b.getX() , b.getY() + b.getHeight() , b.getX() , b.getY()), dashLength , ndashLengths );
-
-    std::cout << "Group " << this << " childs: " << getNumSubcomponents() << std::endl;
 }
+
 
 
 
@@ -52,10 +51,5 @@ void SymbolGroupComponent::importGroupFromSymbol( const Symbol &s )
         Symbol sub_s = s.makeSubSymbol( filter );
         addSubcomponent( SymbolistMainComponent::makeComponentFromSymbol( &sub_s ) );
     }
-    // BaseComponent::importFromSymbol( s ); // do nothing special
-    
-    // deal with subcomponents here with
-    //
-    // and c->addSubcomponent
 }
 

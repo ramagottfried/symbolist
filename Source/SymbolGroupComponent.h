@@ -12,7 +12,7 @@
 #include "ScoreComponent.h"
 #include "BaseComponent.h"
 
-class SymbolGroupComponent : public ScoreComponent, public BaseComponent
+class SymbolGroupComponent : public BaseComponent
 {
     
 public:
@@ -20,7 +20,7 @@ public:
     SymbolGroupComponent( const Symbol& s );
     ~SymbolGroupComponent();
     
-    String getSymbolTypeStr() const { return "group"; }
+    String getSymbolTypeStr() const override { return "group"; }
 
     void paint ( Graphics& g ) override;
 

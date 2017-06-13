@@ -424,6 +424,7 @@ void PathBaseComponent::drawHandles( Graphics& g)
 
 void PathBaseComponent::paint ( Graphics& g )
 {
+
     // to do: add other stroke options
     //float dashes[] = {1.0, 2.0};
     //strokeType.createDashedStroke(p, p, dashes, 2 );

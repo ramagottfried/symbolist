@@ -8,7 +8,7 @@ class LinePathComponent : public PathBaseComponent
 public:
     LinePathComponent(const Symbol &s);
     
-    String getSymbolTypeStr() const { return "line"; }
+    String getSymbolTypeStr() const override { return "line"; }
 
     void mouseDrag(const MouseEvent& event) override;
     void mouseMove(const MouseEvent& event) override;

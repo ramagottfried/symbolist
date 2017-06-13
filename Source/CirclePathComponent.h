@@ -29,7 +29,7 @@ public:
         m_path.closeSubPath();
     }
     
-    String getSymbolTypeStr() const { return "circle"; }
+    String getSymbolTypeStr() const override { return "circle"; }
 
         
 };

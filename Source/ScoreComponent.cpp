@@ -48,7 +48,12 @@ void ScoreComponent::clearAllSubcomponents()
 {
     for ( int i = 0; i < subcomponents.size(); i++ )
     {
+<<<<<<< HEAD
         //removeChildComponent(subcomponents[i]);
+=======
+        subcomponents[i]->clearAllSubcomponents();
+        removeChildComponent(subcomponents[i]);
+>>>>>>> aef4be8994bf72e056a4a3809c014467bf8d99b5
         delete subcomponents[i];
     }
     subcomponents.clear();
@@ -62,7 +67,6 @@ void ScoreComponent::clearAllSubcomponents()
 void ScoreComponent::addSymbolComponent ( BaseComponent* c )
 {
     addSubcomponent( c );
-    std::cout << "ScoreComponent::addSymbolComponent " << c << " to " << this << " childcomponents: " << ((Component*) this)->getNumChildComponents() << std::endl;
 }
 
 void ScoreComponent::removeSymbolComponent( BaseComponent* c )
@@ -100,8 +104,6 @@ void ScoreComponent::deleteSelectedSymbols()
 
 void ScoreComponent::groupSelectedSymbols()
 {
-    printf("grouping...\n");
-    
     if ( selected_items.getNumSelected() > 1 )
     {
         // get the position an bounds of the group
@@ -115,22 +117,22 @@ void ScoreComponent::groupSelectedSymbols()
             maxy =  max( maxy, compBounds.getBottom() );
         }
         
-        // create a symbol with these bounds
-        Symbol s ("group", minx, miny, maxx-minx, maxy-miny);
-        
-        Rectangle<int> groupBounds( minx, miny, maxx-minx, maxy-miny );
-        SymbolGroupComponent *group = (SymbolGroupComponent*) SymbolistMainComponent::makeComponentFromSymbol( &s );
-        
         // create a list from selected items
         vector< BaseComponent *> items;
         for( BaseComponent *c : selected_items ) { items.push_back(c); }
         selected_items.deselectAll();
         
+        // create a symbol with these bounds
+        Symbol s ("group", minx, miny, maxx-minx, maxy-miny);
+        s.addOSCMessage( "/numsymbols", 0 );
+        SymbolGroupComponent *group = (SymbolGroupComponent*) SymbolistMainComponent::makeComponentFromSymbol( &s );
+        
+        
+        Rectangle<int> groupBounds( minx, miny, maxx-minx, maxy-miny );
+        
         for ( auto it = items.begin(); it != items.end(); it++ )
         {
             BaseComponent *c = *it ;
-            std::cout << "grouping: " << c->getComponentID() << std::endl;
-            // will remove the symbol from score if this is a PageComponent
             
             // sets the position now relative to the group
             Rectangle<int> compBounds = c->getBounds();
@@ -138,15 +140,12 @@ void ScoreComponent::groupSelectedSymbols()
             c->setBounds(compBounds.getX() - groupBounds.getX(),
                          compBounds.getY() - groupBounds.getY(),
                          compBounds.getWidth(), compBounds.getHeight());
-                        
-            //this->removeSubcomponent( c );
+            
+            this->removeSymbolComponent( c );
             group->addSymbolComponent( c );
-            std::cout << "ScoreComponent::groupSelectedSymbols " << c << " to " << group << " childcomponents: " << ((ScoreComponent*) group)->getNumChildComponents() << std::endl;
         }
-        
         // will add the symbol to the score if this is a PageComponent
         this->addSymbolComponent( group );
-         
         group->selectComponent();
     }
 }
@@ -230,6 +229,10 @@ void ScoreComponent::resized () {}
 /* Selection / "Lasso"  */
 /************************/
 
+void ScoreSelectedItemSet::itemSelected (BaseComponent *c) { c->selectComponent(); }
+void ScoreSelectedItemSet::itemDeselected (BaseComponent *c) { c->deselectComponent(); }
+
+
 void ScoreComponent::findLassoItemsInArea (Array <BaseComponent*>& results, const Rectangle<int>& area)
 {
     for (int i = 0; i < getNumChildComponents(); ++i)
@@ -275,7 +278,6 @@ void ScoreComponent::deselectAllSelected()
     selected_items.deselectAll();
     repaint();
 }
-
 
 void ScoreComponent::notifyEditModeChanged( UI_EditType current_mode )
 {

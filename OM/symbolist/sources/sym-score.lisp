@@ -80,6 +80,11 @@
 
 (defvar *symbolist-editors* nil)
 
+(defun close-all-symbolist-windows ()
+  #'(lambda () (mapc '#(lambda (ed) (editor-close ed) sleep 1) *symbolist-editors*)))
+
+(add-om-exit-action 'close-all-symbolist-windows)
+
 (defmethod open-editor-window ((self sym-editor))
   (if (symbolist-window self)
       (symbolist::symbolistWindowToFront (symbolist-window self))

@@ -8,11 +8,10 @@ class CirclePathComponent : public PathBaseComponent
 public:
     CirclePathComponent(const Symbol &s) :  PathBaseComponent(s)
     {
-        std::cout << "CIRCLE" << std::endl;
-
+        
         // x - (w * .5), y - (h * .5)
         auto area = getLocalBounds().toFloat().reduced( strokeWeight );
-        printRect(area, "area");
+        //printRect(area, "CIRCLE: area");
         
         auto hw = area.getWidth() * 0.5f;
         auto hw55 = hw * 0.55f;

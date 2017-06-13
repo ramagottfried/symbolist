@@ -18,7 +18,7 @@ class PageComponent : public ScoreComponent
 public:
     
     PageComponent();
-    ~PageComponent() = default;
+    ~PageComponent() { std::cout << "PageComponent " << this << " (do nothing)" << std::endl; }
     
     // Redefine this from SymbolistComponent
     inline SymbolistComponent* getPageComponent() override { return this; };

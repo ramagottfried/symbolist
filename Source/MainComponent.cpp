@@ -176,8 +176,9 @@ SymbolistMainComponent* SymbolistMainComponent::symbolistAPI_createWindow()
 
 void SymbolistMainComponent::symbolistAPI_closeWindow()
 {
+    std::cout << "DELETE WINDOW: " << this << std::endl;
     delete this->getTopLevelComponent(); // = the window
-    delete this;
+    JUCEApplication::getInstance()->systemRequestedQuit();
 }
 
 void SymbolistMainComponent::symbolistAPI_windowToFront()
@@ -269,7 +270,9 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
 {
     
     
-    
+    cout << "Creating component from Symbol: " << endl;
+    s->printBundle();
+
     int typeMessagePos = s->getOSCMessagePos("/type");
 
     if ( typeMessagePos == -1 ) {
@@ -280,7 +283,7 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
     } else {
         
         String typeStr = s->getOSCMessageValue(typeMessagePos).getString();
-        cout << "Creating component from Symbol: " << typeStr << endl;
+        cout << "Symbol type: " << typeStr << endl;
     
         s->printBundle();
         

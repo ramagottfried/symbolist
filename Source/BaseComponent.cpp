@@ -59,6 +59,10 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
     s->addOSCMessage ((String(base_address) += "/y") , symbol_getY());
     s->addOSCMessage ((String(base_address) += "/w") , (float) getWidth());
     s->addOSCMessage ((String(base_address) += "/h") , (float) getHeight());
+    
+    s->addOSCMessage ((String(base_address) += "/offset") , symbol_getX() * 10.0f);
+    s->addOSCMessage ((String(base_address) += "/duration") , 500.0f);
+    
     messages_added += 5;
     
     return messages_added;

@@ -48,6 +48,8 @@ public:
     void            importFromOSC(odot_bundle *bundle);
     
     Symbol makeSubSymbol( const String &base_address ) const;
+    int getTime() const ;
+    int getDuration() const ;
     
 private:
     

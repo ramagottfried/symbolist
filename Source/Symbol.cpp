@@ -13,13 +13,26 @@ Symbol::Symbol () {};
 
 Symbol::Symbol (const String & type, float x, float y, float w, float h)
 {
-    addOSCMessage(String("/type"), type);
-    addOSCMessage(String("/x"), x);
-    addOSCMessage(String("/y"), y);
-    addOSCMessage(String("/w"), w);
-    addOSCMessage(String("/h"), h);
+    addOSCMessage("/type", type);
+    addOSCMessage("/x", x);
+    addOSCMessage("/y", y);
+    addOSCMessage("/w", w);
+    addOSCMessage("/h", h);
+    
+    addOSCMessage("/offset", x * 10.0f);
+    addOSCMessage("/duration", 500.0f);
+    
 }
 
+int Symbol::getTime() const
+{
+    return (int)getOSCMessageValue("/offset").getFloat32();
+}
+
+int Symbol::getDuration() const
+{
+    return (int)getOSCMessageValue("/duration").getFloat32();
+}
 
 // filter the symbol from base_address
 Symbol Symbol::makeSubSymbol( const String &base_address ) const
@@ -45,6 +58,9 @@ Symbol Symbol::makeSubSymbol( const String &base_address ) const
     
     return s;
 }
+
+
+
 
 
 int Symbol::getOSCMessagePos(const String &address) const

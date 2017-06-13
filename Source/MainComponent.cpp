@@ -236,6 +236,7 @@ void SymbolistMainComponent::symbolistAPI_setSymbols(int n, odot_bundle **bundle
 
 void SymbolistMainComponent::symbolistAPI_setTime(int time_ms)
 {
+    MessageManagerLock mmLock;
     current_time = time_ms;
     scoreGUI.repaint();
 }

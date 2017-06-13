@@ -1,6 +1,6 @@
 
 #include "PathBaseComponent.h"
-
+#include "MainComponent.h"
 
 PathBaseComponent::PathBaseComponent(  const Symbol& s ) : BaseComponent( s )
 {
@@ -416,14 +416,28 @@ void PathBaseComponent::drawHandles( Graphics& g)
 void PathBaseComponent::paint ( Graphics& g )
 {
     
-    //printRect(getBounds(), "paint " + getSymbolTypeStr() );
+    int cur_t,local_t = 0;
     g.setColour( getCurrentColor() );
+    float strok = strokeWeight;
+    
+    //printRect(getBounds(), "paint " + getSymbolTypeStr() );
+    if ( isTopLevelComponent() )
+    {
+        cur_t = ((SymbolistMainComponent*)getMainComponent())->getCurrentTime();
+        local_t =  cur_t - getScoreSymbolPointer()->getTime() ;
+        
+        
+        if (local_t >= 0 && local_t <= getScoreSymbolPointer()->getDuration())
+        {
+            strok = strokeWeight * (1 + local_t) * 0.003;
+            g.setColour( Colours::indianred );
+        }
+    }
     
     // to do: add other stroke options
     //float dashes[] = {1.0, 2.0};
     //strokeType.createDashedStroke(p, p, dashes, 2 );
-    
-    strokeType.setStrokeThickness( strokeWeight );
+    strokeType.setStrokeThickness( strok );
     
     if(!m_preview_path.isEmpty() )
     {

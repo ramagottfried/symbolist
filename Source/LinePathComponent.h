@@ -19,5 +19,7 @@ public:
     void selectComponent () override;
 
     void newPathDrawing ();
-    
+  
+    void componentCretated() override;
+
 };

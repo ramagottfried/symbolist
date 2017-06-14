@@ -18,21 +18,20 @@ LinePathComponent::LinePathComponent(const Symbol &s) : PathBaseComponent( s )
     so would need to do the parent->ddChild inside this constructor
 */
 
+void LinePathComponent::componentCretated()
+{
+    m_path.clear();
+    enterPathEdit();
+}
+
 void LinePathComponent::selectComponent ()
 {
-    if ( getMainEditMode() == draw_mode ) //<< this only happens when the path is frist created
-    {
-        m_path.clear();
-    }
-
     PathBaseComponent::selectComponent();
-
 }
 
 void LinePathComponent::deselectComponent ()
 {
     PathBaseComponent::deselectComponent();
-    
     // might need to remove and give back mouse here? if deselect/cancel becomes a keyboard shortcut (esc)
 }
 

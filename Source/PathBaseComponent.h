@@ -39,6 +39,7 @@ public:
     Rectangle<float> tranformAndGetBoundsInParent( Path& p );
     
     void notifyEditModeChanged( UI_EditType current_mode ) override;
+    virtual void componentCretated() override {}
     
     void enterPathEdit ();
     void endPathDrawing ();
@@ -54,13 +55,14 @@ public:
 
 protected:
         
-    PathStrokeType  strokeType = PathStrokeType(2.0) ;
-    
-    Path            m_path;
-    Path            m_preview_path;
-    Point<float>    m_path_origin;
+    PathStrokeType          strokeType = PathStrokeType(2.0) ;
+    Path                    m_path;
+    Path                    m_preview_path;
+    Point<float>            m_path_origin;
 
     std::vector<PathHandle*> path_handles;
+    
+    bool                    in_edit_mode = false;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PathBaseComponent)
@@ -108,11 +110,11 @@ public:
     
 private:
     
-    Point<float>    m_down;
+    Point<float>        m_down;
     
     PathBaseComponent   *m_path;
-    float           m_size = 10;
-    float           m_strokeweight = 1;
+    float               m_size = 10;
+    float               m_strokeweight = 1;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PathHandle)

@@ -153,7 +153,7 @@ void ScoreComponent::groupSelectedSymbols()
 /* UI callbacks from Juce  */
 /***************************/
 
-BaseComponent* ScoreComponent::addSymbolAt ( Point<float> p )
+BaseComponent* ScoreComponent::mouseAddSymbolAt ( Point<float> p )
 {
     Symbol* symbol_template = ((SymbolistMainComponent*) getMainComponent())->getCurrentSymbol();
     
@@ -163,12 +163,14 @@ BaseComponent* ScoreComponent::addSymbolAt ( Point<float> p )
     
     // create a new component from the current selected symbol of the palette
     BaseComponent *c = SymbolistMainComponent::makeComponentFromSymbol( symbol_template );
-    
+
     // add component in the view
     addSymbolComponent( c );
     // deselect other itams and select this one
     selected_items.deselectAll();
     selected_items.addToSelection( c );
+    
+    c->componentCretated();
     
     return c;
 }
@@ -196,7 +198,8 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
         
         if( ed == draw_mode && !component_grabbing_mouse )
         {
-            addSymbolAt( event.getEventRelativeTo(getPageComponent()).position ); // positionshould be in the score referential : pb in clicked on top of another symbol
+            mouseAddSymbolAt( event.getEventRelativeTo(getPageComponent()).position );
+            // positionshould be in the score referential : pb in clicked on top of another symbol
         }
     }
 }

@@ -6,7 +6,7 @@
 class CirclePathComponent : public PathBaseComponent
 {
 public:
-    CirclePathComponent(const Symbol &s) :  PathBaseComponent(s)
+    CirclePathComponent(const Symbol &s) : PathBaseComponent(s)
     {
         
         // x - (w * .5), y - (h * .5)

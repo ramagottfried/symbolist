@@ -36,16 +36,16 @@ public:
     
     ~ScoreComponent();
     
-    const size_t          getNumSubcomponents( );
+    const size_t    getNumSubcomponents( );
     BaseComponent*  getSubcomponent( int i );
-    void    addSubcomponent( BaseComponent *c );
-    void    removeSubcomponent( BaseComponent *c );
+    void            addSubcomponent( BaseComponent *c );
+    void            removeSubcomponent( BaseComponent *c );
     void            clearAllSubcomponents();
     
-    virtual void   addSymbolComponent( BaseComponent *c );
-    virtual void   removeSymbolComponent( BaseComponent *c );
+    virtual void    addSymbolComponent( BaseComponent *c );
+    virtual void    removeSymbolComponent( BaseComponent *c );
     
-    BaseComponent* addSymbolAt ( Point<float> p );
+    BaseComponent*  mouseAddSymbolAt ( Point<float> p );
     
     // selection
     void findLassoItemsInArea (Array < BaseComponent *>& results, const Rectangle<int>& area) override;

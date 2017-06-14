@@ -12,6 +12,7 @@ PathBaseComponent::PathBaseComponent(  const Symbol& s ) : BaseComponent( s )
     printPoint(m_path_origin, "init path");
 }
 
+
 PathBaseComponent::~PathBaseComponent()
 {
     printf("freeing path %p\n", this);
@@ -220,8 +221,10 @@ void PathBaseComponent::importPathFromSymbol(const Symbol &s)
 
 void PathBaseComponent::enterPathEdit ()
 {
+    in_edit_mode = true;
+    
     m_path_origin = getPosition().toFloat();
-        
+    
     auto pc = static_cast<PageComponent*>( getPageComponent() );
     setBounds( pc->getLocalBounds() );
     pc->stealMouse();
@@ -239,11 +242,6 @@ void PathBaseComponent::deselectComponent()
 void PathBaseComponent::selectComponent()
 {
     BaseComponent::selectComponent();
-    
-    if ( getMainEditMode() == draw_mode ) //<< this only happens when the path is frist created
-    {
-        enterPathEdit ();
-    }
     
     std::cout << "PathBaseComponent::selectComponent " << std::endl;
 }
@@ -269,6 +267,8 @@ void PathBaseComponent::endPathDrawing ()
     {
         delete this;
     }
+    
+    in_edit_mode = false;
 }
 
 void PathBaseComponent::updatePathFromPreivew()
@@ -285,24 +285,14 @@ void PathBaseComponent::notifyEditModeChanged( UI_EditType current_mode )
     if( is_selected )
     {
         UI_EditType ed = getMainEditMode();
-        if( ed == draw_mode || ed == select_alt_mode )
+        if( ed == draw_alt_mode || ed == select_alt_mode )
         {
-            m_path_origin = getPosition().toFloat();
-            
-            printPoint(m_path_origin, __func__);
-            auto pc = static_cast<PageComponent*>( getPageComponent() );
-            
-            if( !m_path.isEmpty() )
-            {
-                m_path.applyTransform( AffineTransform().translated( m_path_origin ) );
-            }
-            
-            setBounds( pc->getLocalBounds() );
-            pc->stealMouse();
+            enterPathEdit();
         }
         else
         {
-            endPathDrawing();
+            if( in_edit_mode )
+                endPathDrawing();
         }
     }
 }
@@ -537,7 +527,7 @@ void PathBaseComponent::paint ( Graphics& g )
 
     if( is_selected && (ed == draw_mode || ed == select_alt_mode) )
     {
-        g.setColour( Colour::fromFloatRGBA(0.0f,0.0f,1.0f,0.2f)  );
+        g.setColour( Colour::fromFloatRGBA(0.0f,0.0f,0.0f,0.2f)  );
         g.fillRect( getLocalBounds() );
 
     }

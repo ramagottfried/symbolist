@@ -4,7 +4,7 @@
 
 SymbolGroupComponent::SymbolGroupComponent( const Symbol& s ) : BaseComponent( s )
 {
-    importGroupFromSymbol( s ); // has its own method for that
+    //importGroupFromSymbol( s ); // has its own method for that
 }
 
 SymbolGroupComponent::~SymbolGroupComponent() {}
@@ -41,8 +41,11 @@ int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_addre
     return messages_added;
 }
 
-void SymbolGroupComponent::importGroupFromSymbol( const Symbol &s )
+void SymbolGroupComponent::importFromSymbol( const Symbol &s )
 {
+    
+    BaseComponent::importFromSymbol(s);
+    
     int n = s.getOSCMessageValue("/numsymbols").getInt32();
     std::cout << "Importing Group of " << n << " symbols..." << std::endl;
     for (int i = 0; i < n; i++ )

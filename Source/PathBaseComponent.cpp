@@ -4,7 +4,6 @@
 
 PathBaseComponent::PathBaseComponent(  const Symbol& s ) : BaseComponent( s )
 {
-    // has its own method for that
     importPathFromSymbol( s );
 }
 
@@ -457,6 +456,10 @@ void PathBaseComponent::updatePathPoints()
                       (*(handle++))->getBounds().toFloat().getCentre(),
                       (*(handle++))->getBounds().toFloat().getCentre() );
         }
+        else if( it.elementType == it.closePath )
+        {
+            p.closeSubPath();
+        }
     }
     
     m_path.swapWithPath( p );
@@ -509,16 +512,29 @@ void PathBaseComponent::paint ( Graphics& g )
 
     }
 
-    g.setColour( getCurrentColor() );
-
     if( !m_preview_path.isEmpty() )
     {
-        g.strokePath(m_preview_path, strokeType );
+        g.setColour( preview_stroke_color );
+        g.strokePath(m_preview_path, strokeType ); // different color for preview?
     }
     else
     {
+        g.setColour( getCurrentColor() );
         g.strokePath(m_path, strokeType );
+
     }
+    
+    if( fill ) // preview fill also?
+    {
+        // will need to check for selection color
+        
+        // getFillColor()
+        // getStrokeColor()
+        
+        //            g.setColour( fill_color );
+        g.fillPath(m_path);
+    }
+
 
     if( in_edit_mode && ed == select_alt_mode )
     {

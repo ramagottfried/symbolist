@@ -1,4 +1,4 @@
 #pragma once
 
-#include "CirclePathComponent.h"
+#include "BasicShapePathComponents.h"
 #include "LinePathComponent.h"

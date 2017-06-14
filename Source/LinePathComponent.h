@@ -8,8 +8,6 @@ class LinePathComponent : public PathBaseComponent
 public:
     LinePathComponent(const Symbol &s);
     
-    String getSymbolTypeStr() const override { return "line"; }
-
     void mouseDrag(const MouseEvent& event) override;
     void mouseMove(const MouseEvent& event) override;
     void mouseDown(const MouseEvent& event) override;
@@ -22,4 +20,10 @@ public:
   
     void componentCretated() override;
 
+    String getSymbolTypeStr() const override { return "line"; }
+
+private:
+    //==============================================================================
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LinePathComponent)
+    
 };

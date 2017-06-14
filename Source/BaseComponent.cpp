@@ -56,14 +56,14 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
 {
     int messages_added = 0;
     
-    s->addOSCMessage ((String(base_address) += "/type") , getSymbolTypeStr());
-    s->addOSCMessage ((String(base_address) += "/x") , symbol_getX());
-    s->addOSCMessage ((String(base_address) += "/y") , symbol_getY());
-    s->addOSCMessage ((String(base_address) += "/w") , (float) getWidth());
-    s->addOSCMessage ((String(base_address) += "/h") , (float) getHeight());
+    s->addOSCMessage ((String(base_address) += "/type") ,   getSymbolTypeStr());
+    s->addOSCMessage ((String(base_address) += "/x") ,      symbol_getX());
+    s->addOSCMessage ((String(base_address) += "/y") ,      symbol_getY());
+    s->addOSCMessage ((String(base_address) += "/w") ,      (float) getWidth());
+    s->addOSCMessage ((String(base_address) += "/h") ,      (float) getHeight());
     
     s->addOSCMessage ((String(base_address) += "/offset") , symbol_getX() * 10.0f);
-    s->addOSCMessage ((String(base_address) += "/duration") , 500.0f);
+    s->addOSCMessage ((String(base_address) += "/duration"), 500.0f);
     
     messages_added += 5;
     
@@ -87,10 +87,27 @@ void BaseComponent::importFromSymbol( const Symbol &s )
         String typeStr = s.getOSCMessageValue(typeMessagePos).getString();
         cout << "Importing BaseComponent from Symbol: " << typeStr << endl;
         
-        float x = s.getOSCMessageValue("/x").getFloat32();
-        float y = s.getOSCMessageValue("/y").getFloat32();;
+        int cx_pos = s.getOSCMessagePos("/center/x");
+        int cy_pos = s.getOSCMessagePos("/center/y");
+        
+        float x = 0, y = 0;
+        
         float w = s.getOSCMessageValue("/w").getFloat32();
         float h = s.getOSCMessageValue("/h").getFloat32();
+        
+        if( cx_pos > -1 && cy_pos > -1 )
+        {
+            x = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(cx_pos) ) - w * 0.5;
+            y = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(cy_pos) ) - h * 0.5;
+
+        }
+        else
+        {
+            x = Symbol::getOSCValueAsFloat( s.getOSCMessageValue("/x") );
+            y = Symbol::getOSCValueAsFloat( s.getOSCMessageValue("/y") );
+        }
+        
+       
         setBounds( x , y , w , h);
     }
 }

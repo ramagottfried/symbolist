@@ -54,16 +54,25 @@ public:
     }
 
 protected:
-        
-    PathStrokeType          strokeType = PathStrokeType(2.0) ;
+    
     Path                    m_path;
-    Path                    m_preview_path;
-    Point<float>            m_path_origin;
+    
+    bool                    fill = false;
+    Colour                  fill_color;
+    
+    PathStrokeType          strokeType = PathStrokeType(2.0) ;
+    Colour                  stroke_color;
+    
+    // editing objects
+    Path                        m_preview_path;
+    Colour                      preview_stroke_color = Colours::cornflowerblue ;
 
-    std::vector<PathHandle*> path_handles;
     
-    bool                    in_edit_mode = false;
+    Point<float>                m_path_origin;
+    std::vector<PathHandle*>    path_handles;
+    bool                        in_edit_mode = false;
     
+private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PathBaseComponent)
 };

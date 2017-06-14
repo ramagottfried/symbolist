@@ -21,8 +21,6 @@
 		11D86B881EEAEF2000681F6D /* LinePathComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D86B851EEAEF2000681F6D /* LinePathComponent.cpp */; };
 		11D86B8B1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */; };
 		11D86B8C1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */; };
-		11D86B901EEAF9FD00681F6D /* CirclePathComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D86B8E1EEAF9FD00681F6D /* CirclePathComponent.cpp */; };
-		11D86B911EEAF9FD00681F6D /* CirclePathComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D86B8E1EEAF9FD00681F6D /* CirclePathComponent.cpp */; };
 		27D1022754DD8B9BF3100BB7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A18855981466E65AB497B9D /* QuartzCore.framework */; };
 		41C3942D9A94933B560F98F2 /* include_juce_gui_basics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFC6EDE4A457A367163EEE /* include_juce_gui_basics.mm */; };
 		43C388A942D2F5ACD2A53FB6 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 981D2B1E1F9131A715FECA14 /* WebKit.framework */; };
@@ -82,8 +80,7 @@
 		11D86B861EEAEF2000681F6D /* LinePathComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LinePathComponent.h; path = ../../Source/LinePathComponent.h; sourceTree = "<group>"; };
 		11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PathBaseComponent.cpp; path = ../../Source/PathBaseComponent.cpp; sourceTree = "<group>"; };
 		11D86B8A1EEAEF7900681F6D /* PathBaseComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PathBaseComponent.h; path = ../../Source/PathBaseComponent.h; sourceTree = "<group>"; };
-		11D86B8E1EEAF9FD00681F6D /* CirclePathComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CirclePathComponent.cpp; path = ../../Source/CirclePathComponent.cpp; sourceTree = "<group>"; };
-		11D86B8F1EEAF9FD00681F6D /* CirclePathComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CirclePathComponent.h; path = ../../Source/CirclePathComponent.h; sourceTree = "<group>"; };
+		11D86B8F1EEAF9FD00681F6D /* BasicShapePathComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicShapePathComponents.h; path = ../../Source/BasicShapePathComponents.h; sourceTree = "<group>"; };
 		1345DFF5C1163A6CDA99FFDC /* JuceHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JuceHeader.h; path = ../../JuceLibraryCode/JuceHeader.h; sourceTree = SOURCE_ROOT; };
 		1FFFC6EDE4A457A367163EEE /* include_juce_gui_basics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_gui_basics.mm; path = ../../JuceLibraryCode/include_juce_gui_basics.mm; sourceTree = SOURCE_ROOT; };
 		26C36CB1C5754D666DE2579C /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -203,8 +200,7 @@
 				11CE00661EC4BA3100E4F624 /* PrimitiveIncludes.h */,
 				11D86B851EEAEF2000681F6D /* LinePathComponent.cpp */,
 				11D86B861EEAEF2000681F6D /* LinePathComponent.h */,
-				11D86B8E1EEAF9FD00681F6D /* CirclePathComponent.cpp */,
-				11D86B8F1EEAF9FD00681F6D /* CirclePathComponent.h */,
+				11D86B8F1EEAF9FD00681F6D /* BasicShapePathComponents.h */,
 				11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */,
 				11D86B8A1EEAEF7900681F6D /* PathBaseComponent.h */,
 				11CE00651EC4B90700E4F624 /* BaseComponent.h */,
@@ -405,7 +401,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11D86B911EEAF9FD00681F6D /* CirclePathComponent.cpp in Sources */,
 				446363951EC6F4960054CB6D /* OSCIO.cpp in Sources */,
 				11CE005F1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */,
 				44EE9BBE1EC37D3E0021C5A8 /* Main.cpp in Sources */,
@@ -434,7 +429,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11D86B901EEAF9FD00681F6D /* CirclePathComponent.cpp in Sources */,
 				446363941EC6F4960054CB6D /* OSCIO.cpp in Sources */,
 				11CE005E1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */,
 				AC7BC43E089630154F7F79D6 /* include_juce_core.mm in Sources */,

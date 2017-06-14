@@ -19,10 +19,13 @@ SymbolistMainComponent::SymbolistMainComponent()
     Symbol* s1 = new Symbol("circle", 20.0, 20.0, symbol_size, symbol_size);
     palette.addPaletteItem(s1);
     
-    Symbol* s3 = new Symbol("circle", 20.0, 20.0, symbol_size/2, symbol_size);
+    Symbol* s2 = new Symbol("rectangle", 20.0, 20.0, symbol_size, symbol_size);
+    palette.addPaletteItem(s2);
+
+    Symbol* s3 = new Symbol("triangle", 20.0, 20.0, symbol_size, symbol_size);
     palette.addPaletteItem(s3);
     
-    Symbol* s2 = new Symbol("path", 20.0, 20.0, symbol_size, symbol_size);
+    Symbol* s4 = new Symbol("path", 20.0, 20.0, symbol_size, symbol_size);
     
     OSCMessage numSeg_mess( "/numSegments",         (int32)3 );
 
@@ -38,18 +41,18 @@ SymbolistMainComponent::SymbolistMainComponent()
     OSCMessage x_mess2(     "/segment/2/x_points",  (float)20,  (float)10.                          );
     OSCMessage y_mess2(     "/segment/2/y_points",  (float)00., (float)5                            );
 
-    s2->addOSCMessage(numSeg_mess);
-    s2->addOSCMessage(type_mess0);
-    s2->addOSCMessage(x_mess0);
-    s2->addOSCMessage(y_mess0);
-    s2->addOSCMessage(type_mess1);
-    s2->addOSCMessage(x_mess1);
-    s2->addOSCMessage(y_mess1);
-    s2->addOSCMessage(type_mess2);
-    s2->addOSCMessage(x_mess2);
-    s2->addOSCMessage(y_mess2);
+    s4->addOSCMessage(numSeg_mess);
+    s4->addOSCMessage(type_mess0);
+    s4->addOSCMessage(x_mess0);
+    s4->addOSCMessage(y_mess0);
+    s4->addOSCMessage(type_mess1);
+    s4->addOSCMessage(x_mess1);
+    s4->addOSCMessage(y_mess1);
+    s4->addOSCMessage(type_mess2);
+    s4->addOSCMessage(x_mess2);
+    s4->addOSCMessage(y_mess2);
     
-    palette.addPaletteItem(s2);
+    palette.addPaletteItem(s4);
     
     paletteView.buildFromPalette(&palette);
     paletteView.selectPaletteButton(0);
@@ -291,6 +294,10 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
 
         if (typeStr.equalsIgnoreCase(String("circle"))) {
             c = new CirclePathComponent( *s );
+        } else if (typeStr.equalsIgnoreCase(String("rectangle"))) {
+            c = new RectanglePathComponent( *s );
+        } else if (typeStr.equalsIgnoreCase(String("triangle"))) {
+            c = new TrianglePathComponent( *s );
         } else if (typeStr.equalsIgnoreCase(String("path"))) {
             c = new LinePathComponent( *s );
         } else if (typeStr.equalsIgnoreCase(String("group"))) {

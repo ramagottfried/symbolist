@@ -227,7 +227,7 @@ void SymbolistMainComponent::symbolistAPI_setSymbols(int n, odot_bundle **bundle
 {
     // Will lock the MainLoop until out of scope
     const MessageManagerLock mmLock;
-    
+    std::cout << std::endl << std::endl << std::endl << std::endl << std::endl << std::endl;
     // clear the view
     scoreGUI.clearAllSubcomponents();
     
@@ -236,6 +236,7 @@ void SymbolistMainComponent::symbolistAPI_setSymbols(int n, odot_bundle **bundle
     
     // recreate and add components from score symbols
     for (int i = 0; i < score.getSize(); i++) {
+        std::cout << std::endl << std::endl ;
         Symbol *s = score.getSymbol(i);
         BaseComponent* c = makeComponentFromSymbol( s );
         c->setScoreSymbolPointer( s );
@@ -289,9 +290,6 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
     } else {
         
         String typeStr = s->getOSCMessageValue(typeMessagePos).getString();
-        cout << "Symbol type: " << typeStr << endl;
-    
-        s->printBundle();
         
         BaseComponent *c;
 
@@ -322,6 +320,7 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
 
 void SymbolistMainComponent::addSymbolToScore ( BaseComponent* c )
 {
+    cout << "REMOVING SYMBOL FOR " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
     Symbol *s = new Symbol();
     c->addSymbolMessages( s , String("") );
     c->setScoreSymbolPointer( s );
@@ -332,7 +331,7 @@ void SymbolistMainComponent::addSymbolToScore ( BaseComponent* c )
 
 void SymbolistMainComponent::removeSymbolFromScore ( BaseComponent* c )
 {
-    //cout << "REMOVING SYMBOL OF " << c << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
+    cout << "REMOVING SYMBOL OF " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
     assert ( c->getScoreSymbolPointer() != NULL ) ;
     score.removeSymbol( c->getScoreSymbolPointer() );
     c->setScoreSymbolPointer( NULL );

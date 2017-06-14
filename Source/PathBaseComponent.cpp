@@ -119,7 +119,7 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
 
     }
     
-    s->addOSCMessage( OSCMessage(base_address + "/numSegments", count ) );
+    s->addOSCMessage( OSCMessage(base_address + "/num_segments", count ) );
     messages_added += 1;
  
 //    internal_symbol.printBundle();
@@ -133,101 +133,77 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
 
 void PathBaseComponent::importFromSymbol(const Symbol &s)
 {
-    
-    int typeMessagePos = s.getOSCMessagePos("/type");
-    
-    if ( typeMessagePos == -1 ) {
-        
-        cout << "BaseComponent import: Could not find '/type' message in OSC Bundle.. (size=" << s.getOSCBundle().size() << ")" << endl;
-        
-    } else {
-        
-        String typeStr = s.getOSCMessageValue(typeMessagePos).getString();
-        cout << "Importing BaseComponent from Symbol: " << typeStr << endl;
-        
-        float x = s.getOSCMessageValue("/x").getFloat32();
-        float y = s.getOSCMessageValue("/y").getFloat32();
-        float w = s.getOSCMessageValue("/w").getFloat32();
-        float h = s.getOSCMessageValue("/h").getFloat32();
 
-        if (typeStr != "path" )
-            setBounds( x - (w * 0.5) , y - (h * 0.5), w , h);
-        else
+        std::cout << "IMPORT PATH" << std::endl;
+        std::cout << s.getOSCMessageValue(String("/type")).getString() << std::endl;
+        
+        int num_pos = s.getOSCMessagePos("/numSegments");
+        if( symbol_parse_error( num_pos, "/numSegments" ) ) return;
+        
+        
+        OSCBundle b = s.getOSCBundle();
+        
+        float prev_x = -1111, prev_y = -1111;
+        m_path.clear();
+        
+        for( int i = 0; i < b[num_pos].getMessage()[0].getInt32(); i++ )
         {
-            setBounds( x , y , w , h);
+            const String base_addr = "/segment/" + std::to_string(i);
             
-            std::cout << "IMPORT PATH" << std::endl;
-            std::cout << s.getOSCMessageValue(String("/type")).getString() << std::endl;
+            const String type_addr = base_addr + "/type";
+            int type_pos = s.getOSCMessagePos( type_addr );
+            if( symbol_parse_error( type_pos, type_addr ) ) return;
             
-            int num_pos = s.getOSCMessagePos("/numSegments");
-            if( symbol_parse_error( num_pos, "/numSegments" ) ) return;
+            const String x_addr = base_addr + "/x_points";
+            int xp = s.getOSCMessagePos( x_addr );
+            if( symbol_parse_error( xp, x_addr ) ) return;
             
+            const String y_addr = base_addr + "/y_points";
+            int yp = s.getOSCMessagePos( y_addr );
+            if( symbol_parse_error( yp, y_addr ) ) return;
             
-            OSCBundle b = s.getOSCBundle();
+            String seg_type = b[type_pos].getMessage()[0].getString();
+            OSCMessage xm = b[xp].getMessage();
+            OSCMessage ym = b[yp].getMessage();
             
-            float prev_x = -1111, prev_y = -1111;
-            m_path.clear();
-            
-            for( int i = 0; i < b[num_pos].getMessage()[0].getInt32(); i++ )
+            if (xm.size() != ym.size() )
             {
-                const String base_addr = "/segment/" + std::to_string(i);
-                
-                const String type_addr = base_addr + "/type";
-                int type_pos = s.getOSCMessagePos( type_addr );
-                if( symbol_parse_error( type_pos, type_addr ) ) return;
-                
-                const String x_addr = base_addr + "/x_points";
-                int xp = s.getOSCMessagePos( x_addr );
-                if( symbol_parse_error( xp, x_addr ) ) return;
-                
-                const String y_addr = base_addr + "/y_points";
-                int yp = s.getOSCMessagePos( y_addr );
-                if( symbol_parse_error( yp, y_addr ) ) return;
-                
-                String seg_type = b[type_pos].getMessage()[0].getString();
-                OSCMessage xm = b[xp].getMessage();
-                OSCMessage ym = b[yp].getMessage();
-                
-                if (xm.size() != ym.size() )
-                {
-                    std::cout << "x and y point lists must be the same length!\n";
-                    return;
-                }
-                
-                float x0 = Symbol::getOSCValueAsFloat(xm[0]);
-                float y0 = Symbol::getOSCValueAsFloat(ym[0]);
-                
-                if( x0 != prev_x || y0 != prev_y )
-                {
-                    m_path.startNewSubPath( x0, y0 );
-                }
-                
-                if( seg_type == "line" && xm.size() == 2 )
-                {
-                    m_path.lineTo( Symbol::getOSCValueAsFloat(xm[1]), Symbol::getOSCValueAsFloat(ym[1]) );
-                    prev_x = Symbol::getOSCValueAsFloat(xm[1]);
-                    prev_y = Symbol::getOSCValueAsFloat(ym[1]);
-                }
-                else if( seg_type == "quadratic" && xm.size() == 3 )
-                {
-                    m_path.quadraticTo( Symbol::getOSCValueAsFloat(xm[1]), Symbol::getOSCValueAsFloat(ym[1]),
-                                       Symbol::getOSCValueAsFloat(xm[2]), Symbol::getOSCValueAsFloat(ym[2]) );
-                    prev_x = Symbol::getOSCValueAsFloat(xm[2]);
-                    prev_y = Symbol::getOSCValueAsFloat(ym[2]);
-                }
-                else if( seg_type == "cubic" && xm.size() == 4 )
-                {
-                    m_path.cubicTo( Symbol::getOSCValueAsFloat(xm[1]), Symbol::getOSCValueAsFloat(ym[1]),
-                                   Symbol::getOSCValueAsFloat(xm[2]), Symbol::getOSCValueAsFloat(ym[2]),
-                                   Symbol::getOSCValueAsFloat(xm[3]), Symbol::getOSCValueAsFloat(ym[3]) );
-                    prev_x = Symbol::getOSCValueAsFloat(xm[3]);
-                    prev_y = Symbol::getOSCValueAsFloat(ym[3]);
-                }
+                std::cout << "x and y point lists must be the same length!\n";
+                return;
             }
             
+            float x0 = Symbol::getOSCValueAsFloat(xm[0]);
+            float y0 = Symbol::getOSCValueAsFloat(ym[0]);
+            
+            if( x0 != prev_x || y0 != prev_y )
+            {
+                m_path.startNewSubPath( x0, y0 );
+            }
+            
+            if( seg_type == "line" && xm.size() == 2 )
+            {
+                m_path.lineTo( Symbol::getOSCValueAsFloat(xm[1]), Symbol::getOSCValueAsFloat(ym[1]) );
+                prev_x = Symbol::getOSCValueAsFloat(xm[1]);
+                prev_y = Symbol::getOSCValueAsFloat(ym[1]);
+            }
+            else if( seg_type == "quadratic" && xm.size() == 3 )
+            {
+                m_path.quadraticTo( Symbol::getOSCValueAsFloat(xm[1]), Symbol::getOSCValueAsFloat(ym[1]),
+                                   Symbol::getOSCValueAsFloat(xm[2]), Symbol::getOSCValueAsFloat(ym[2]) );
+                prev_x = Symbol::getOSCValueAsFloat(xm[2]);
+                prev_y = Symbol::getOSCValueAsFloat(ym[2]);
+            }
+            else if( seg_type == "cubic" && xm.size() == 4 )
+            {
+                m_path.cubicTo( Symbol::getOSCValueAsFloat(xm[1]), Symbol::getOSCValueAsFloat(ym[1]),
+                               Symbol::getOSCValueAsFloat(xm[2]), Symbol::getOSCValueAsFloat(ym[2]),
+                               Symbol::getOSCValueAsFloat(xm[3]), Symbol::getOSCValueAsFloat(ym[3]) );
+                prev_x = Symbol::getOSCValueAsFloat(xm[3]);
+                prev_y = Symbol::getOSCValueAsFloat(ym[3]);
+            }
         }
+        
     }
-}
 
 /******************
  * MOUSE INTERACTIONS

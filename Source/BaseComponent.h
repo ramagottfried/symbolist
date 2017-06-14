@@ -76,6 +76,8 @@ public:
     virtual float symbol_getX(){ return getX(); }
     virtual float symbol_getY(){ return getY(); }
     
+    virtual void setBoundsFromSymbol( float x, float y , float w , float h);
+        
     // not very happy with therm "Symbol" here
     inline void setSymbolStrokeWeight( float s ){ strokeWeight = s; }
     inline void setSymbolColor( Colour c ){ sym_color = c; }

@@ -3,10 +3,24 @@
 
 #include "PathBaseComponent.h"
 
-class CirclePathComponent : public PathBaseComponent
+
+class BasicShapePathComponent : public PathBaseComponent
+{
+    public :
+    
+    BasicShapePathComponent(const Symbol &s) : PathBaseComponent(s) {};
+    
+    void setBoundsFromSymbol( float x, float y , float w , float h) override
+    {
+        std::cout << "set bounds for shape !!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+        setBounds( x - (w * 0.5) , y - (h * 0.5), w , h);
+    }
+};
+
+class CirclePathComponent : public BasicShapePathComponent
 {
 public:
-    CirclePathComponent(const Symbol &s) : PathBaseComponent(s)
+    CirclePathComponent(const Symbol &s) : BasicShapePathComponent(s)
     {
         auto area = getLocalBounds().toFloat().reduced( strokeWeight );
         m_path.addEllipse(area);
@@ -21,10 +35,10 @@ private:
 };
 
 
-class RectanglePathComponent : public PathBaseComponent
+class RectanglePathComponent : public BasicShapePathComponent
 {
 public:
-    RectanglePathComponent(const Symbol &s) : PathBaseComponent(s)
+    RectanglePathComponent(const Symbol &s) : BasicShapePathComponent(s)
     {
         auto area = getLocalBounds().toFloat().reduced( strokeWeight );
         m_path.addRectangle( area );
@@ -38,10 +52,10 @@ private:
 };
 
 
-class TrianglePathComponent : public PathBaseComponent
+class TrianglePathComponent : public BasicShapePathComponent
 {
 public:
-    TrianglePathComponent(const Symbol &s) : PathBaseComponent(s)
+    TrianglePathComponent(const Symbol &s) : BasicShapePathComponent(s)
     {
         auto area = getLocalBounds().toFloat().reduced( strokeWeight );
         m_path.addTriangle( area.getBottomLeft(), Point<float>(area.getCentreX(), area.getY()), area.getBottomRight());

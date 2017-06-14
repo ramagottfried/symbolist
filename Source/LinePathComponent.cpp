@@ -44,7 +44,7 @@ void LinePathComponent::mouseMove( const MouseEvent& event )
 {
     PathBaseComponent::mouseMove( event );
 
-    if( in_edit_mode && getMainEditMode() == draw_mode )
+    if( in_edit_mode && (getMainEditMode() == draw_mode ||  getMainEditMode() == draw_alt_mode) )
     {
         Path p;
         
@@ -65,7 +65,7 @@ void LinePathComponent::mouseDrag( const MouseEvent& event )
 {
     PathBaseComponent::mouseDrag( event );
 
-    if( in_edit_mode && getMainEditMode() == draw_mode && event.getDistanceFromDragStart() > 10 )
+    if( in_edit_mode && (getMainEditMode() == draw_mode ||  getMainEditMode() == draw_alt_mode) && event.getDistanceFromDragStart() > 10 )
     {
         Path p;
         

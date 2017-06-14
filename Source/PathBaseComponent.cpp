@@ -217,8 +217,8 @@ void PathBaseComponent::importPathFromSymbol(const Symbol &s)
 
 void PathBaseComponent::enterPathEdit ()
 {
-    in_edit_mode = true;
     
+    in_edit_mode = true;
     m_path_origin = getPosition().toFloat();
     
     auto pc = static_cast<PageComponent*>( getPageComponent() );
@@ -278,7 +278,7 @@ void PathBaseComponent::notifyEditModeChanged( UI_EditType current_mode )
     if( is_selected )
     {
         UI_EditType ed = getMainEditMode();
-        if( ed == draw_mode || ed == select_alt_mode )
+        if( ed == draw_alt_mode || ed == select_alt_mode )
         {
             enterPathEdit();
         }
@@ -300,8 +300,7 @@ void PathBaseComponent::mouseDown( const MouseEvent& event )
 }
 
 void PathBaseComponent::mouseMove( const MouseEvent& event )
-{
-}
+{}
 
 void PathBaseComponent::mouseDrag( const MouseEvent& event )
 {
@@ -419,12 +418,13 @@ void PathBaseComponent::removeHandles()
     path_handles.clear();
 }
 
-// NOT FUNCTIONAL PROGRAMMING, but oh well
 Rectangle<float> PathBaseComponent::tranformAndGetBoundsInParent( Path& p )
 {
     float strokeOffset = strokeType.getStrokeThickness() * 0.5;
     
     Rectangle<float> abs_bounds = p.getBounds();
+    
+    // NOT FUNCTIONAL PROGRAMMING, but oh well
     p.applyTransform( AffineTransform().translated( -abs_bounds.getX() + strokeOffset, -abs_bounds.getY() + strokeOffset ) );
     return abs_bounds.expanded( strokeOffset );
 }
@@ -502,14 +502,13 @@ void PathBaseComponent::paint ( Graphics& g )
     
     UI_EditType ed = getMainEditMode();
 
-    if( in_edit_mode && (ed == draw_mode || ed == select_alt_mode) )
+    if( in_edit_mode )
     {
         g.setColour( Colour::fromFloatRGBA(0.0f,0.0f,0.0f,0.2f)  );
         g.fillRect( getLocalBounds() );
 
     }
 
-    
     g.setColour( getCurrentColor() );
 
     if( !m_preview_path.isEmpty() )

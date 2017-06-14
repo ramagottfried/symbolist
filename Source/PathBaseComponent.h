@@ -47,7 +47,7 @@ public:
     
     bool hitTest (int x, int y) override
     {
-        if( getMainEditMode() == draw_mode)
+        if( in_edit_mode )
             return true;
         
         return m_path.intersectsLine( Line<float>( x - 5, y - 5, x + 5, y + 5) ) || m_path.intersectsLine( Line<float>( x + 5, y - 5, x - 5, y + 5) );

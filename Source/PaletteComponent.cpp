@@ -30,14 +30,15 @@ void PaletteButton::setSelected(bool sel)
 
 void PaletteButton::resized()
 {
-    graphic_comp->setBounds( 8 , 8 , getWidth()-16 , getHeight()-16 );
+    graphic_comp->setBounds( 0 , 0 , getWidth() , getHeight() );
 }
 
 void PaletteButton::paint (Graphics& g)
 {
     if (selected) g.fillAll( Colours::grey );
     else g.fillAll( Colours::lightgrey );
-    g.setOrigin(graphic_comp->getX(), graphic_comp->getY());
+    //g.setOrigin(getX()+((getWidth()-graphic_comp->getWidth())/2),
+    //            getY()+((getHeight()-graphic_comp->getHeight())/2));
     graphic_comp->paint(g);
 }
 

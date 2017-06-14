@@ -47,7 +47,7 @@ public:
     
     virtual int addSymbolMessages( Symbol* s, const String &base_address );
     
-    void importFromSymbol( const Symbol &s );
+    virtual void importFromSymbol( const Symbol &s );
 
     // Called from the Juce::SelectedItemSet subclass in ScoreComponent
     // specific methd defined not to mess with existing select system
@@ -75,8 +75,6 @@ public:
     
     virtual float symbol_getX(){ return getX(); }
     virtual float symbol_getY(){ return getY(); }
-    
-    virtual void setBoundsFromSymbol( float x, float y , float w , float h);
         
     // not very happy with therm "Symbol" here
     inline void setSymbolStrokeWeight( float s ){ strokeWeight = s; }
@@ -105,8 +103,11 @@ public:
     {
         setBounds( r.getX(), r.getY(), r.getWidth(), r.getHeight() );
     }
-    
+
+    virtual void setBoundsFromSymbol( float x, float y , float w , float h);
+
 protected:
+    
     // score structure
     Symbol*         score_symbol;   // poiner to the score symbol (set when this is a topLevel symbol, NULL otherwise)
     

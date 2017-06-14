@@ -15,17 +15,18 @@ SymbolistMainComponent::SymbolistMainComponent()
     
     // create two default items
     float symbol_size = 30.0;
+    float symbol_pos = 0.0;
     
-    Symbol* s1 = new Symbol("circle", 20.0, 20.0, symbol_size, symbol_size);
+    Symbol* s1 = new Symbol("circle", symbol_pos, symbol_pos, symbol_size, symbol_size);
     palette.addPaletteItem(s1);
     
-    Symbol* s2 = new Symbol("rectangle", 20.0, 20.0, symbol_size, symbol_size);
+    Symbol* s2 = new Symbol("rectangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
     palette.addPaletteItem(s2);
 
-    Symbol* s3 = new Symbol("triangle", 20.0, 20.0, symbol_size, symbol_size);
+    Symbol* s3 = new Symbol("triangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
     palette.addPaletteItem(s3);
     
-    Symbol* s4 = new Symbol("path", 20.0, 20.0, symbol_size, symbol_size);
+    Symbol* s4 = new Symbol("path", symbol_pos, symbol_pos, symbol_size, symbol_size);
     
     OSCMessage numSeg_mess( "/numSegments",         (int32)3 );
 
@@ -309,6 +310,7 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
             // ??
             c = new BaseComponent( *s );
         }
+        c->importFromSymbol( *s ) ;
         return c;
     }
 }

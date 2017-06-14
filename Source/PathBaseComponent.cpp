@@ -4,7 +4,7 @@
 
 PathBaseComponent::PathBaseComponent(  const Symbol& s ) : BaseComponent( s )
 {
-    importFromSymbol( s ) ;
+    //importFromSymbol( s ) ;
 }
 
 PathBaseComponent::~PathBaseComponent()
@@ -134,6 +134,8 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
 void PathBaseComponent::importFromSymbol(const Symbol &s)
 {
 
+        BaseComponent::importFromSymbol(s);
+    
         std::cout << "IMPORT PATH" << std::endl;
         std::cout << s.getOSCMessageValue(String("/type")).getString() << std::endl;
         

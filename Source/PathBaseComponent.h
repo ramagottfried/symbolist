@@ -42,7 +42,7 @@ public:
     virtual void componentCretated() override {}
     
     void enterPathEdit ();
-    void endPathDrawing ();
+    void exitPathEdit ();
     void updatePathFromPreivew ();
     
     bool hitTest (int x, int y) override

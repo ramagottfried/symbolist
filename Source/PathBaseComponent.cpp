@@ -6,10 +6,6 @@ PathBaseComponent::PathBaseComponent(  const Symbol& s ) : BaseComponent( s )
 {
     // has its own method for that
     importPathFromSymbol( s );
-    std::cout << this << " child of " << getParentComponent() << std::endl;
-    
-    m_path_origin = getPosition().toFloat();
-    printPoint(m_path_origin, "init path");
 }
 
 
@@ -231,29 +227,13 @@ void PathBaseComponent::enterPathEdit ()
     
     if( !m_path.isEmpty() )
         m_path.applyTransform( AffineTransform().translated( m_path_origin ) );
+    
+    if( getMainEditMode() == select_alt_mode && path_handles.size() == 0)
+        makeHandles();
 }
 
-void PathBaseComponent::deselectComponent()
+void PathBaseComponent::exitPathEdit ()
 {
-    removeHandles();
-    BaseComponent::deselectComponent();
-}
-
-void PathBaseComponent::selectComponent()
-{
-    BaseComponent::selectComponent();
-    
-    std::cout << "PathBaseComponent::selectComponent " << std::endl;
-}
-
-
-void PathBaseComponent::endPathDrawing ()
-{
-    printPoint(m_path_origin, __func__);
-    
-    // if path ended before mouse down, clear preview
-    // if no path was created, delete this symbol & component
-    
     if( !m_preview_path.isEmpty() )
         m_preview_path.clear();
     
@@ -268,7 +248,20 @@ void PathBaseComponent::endPathDrawing ()
         delete this;
     }
     
+    if (path_handles.size() > 0 )
+        removeHandles();
+    
     in_edit_mode = false;
+}
+
+void PathBaseComponent::deselectComponent()
+{
+    BaseComponent::deselectComponent();
+}
+
+void PathBaseComponent::selectComponent()
+{
+    BaseComponent::selectComponent();
 }
 
 void PathBaseComponent::updatePathFromPreivew()
@@ -285,14 +278,14 @@ void PathBaseComponent::notifyEditModeChanged( UI_EditType current_mode )
     if( is_selected )
     {
         UI_EditType ed = getMainEditMode();
-        if( ed == draw_alt_mode || ed == select_alt_mode )
+        if( ed == draw_mode || ed == select_alt_mode )
         {
             enterPathEdit();
         }
         else
         {
             if( in_edit_mode )
-                endPathDrawing();
+                exitPathEdit();
         }
     }
 }
@@ -304,19 +297,15 @@ void PathBaseComponent::notifyEditModeChanged( UI_EditType current_mode )
 void PathBaseComponent::mouseDown( const MouseEvent& event )
 {
     BaseComponent::mouseDown(event);
-    std::cout << "PathBaseComponent::mouseDown " << std::endl;
 }
 
 void PathBaseComponent::mouseMove( const MouseEvent& event )
 {
-    std::cout << "PathBaseComponent::mouseMove " << std::endl;
 }
 
 void PathBaseComponent::mouseDrag( const MouseEvent& event )
 {
     BaseComponent::mouseDrag(event);
-    
-    std::cout << "PathBaseComponent::mouseDrag " << std::endl;
     
     if ( getMainEditMode() == select_mode && path_handles.size() > 0 )
     {
@@ -433,28 +422,16 @@ void PathBaseComponent::removeHandles()
 // NOT FUNCTIONAL PROGRAMMING, but oh well
 Rectangle<float> PathBaseComponent::tranformAndGetBoundsInParent( Path& p )
 {
-    symbol_debug_function(__func__);
-    
     float strokeOffset = strokeType.getStrokeThickness() * 0.5;
     
     Rectangle<float> abs_bounds = p.getBounds();
     p.applyTransform( AffineTransform().translated( -abs_bounds.getX() + strokeOffset, -abs_bounds.getY() + strokeOffset ) );
     return abs_bounds.expanded( strokeOffset );
-    
-    /*
-     Rectangle<float> testBounds = p.getBounds();
-     float offsetx = ( testBounds.getX() < 0 ) ? -testBounds.getX() : 0;
-     float offsety = ( testBounds.getY() < 0 ) ? -testBounds.getY() : 0;
-     p.applyTransform( AffineTransform().translated(offsetx + strokeOffset, offsety + strokeOffset) );
-     return ( p.getBounds() - Point<float>(offsetx, offsety) ).expanded( strokeOffset );
-     */
 }
 
 
 void PathBaseComponent::updatePathPoints()
 {
-    std::cout << "PathBaseComponent::updatePathPoints" << std::endl;
-    
     Path p;
     auto handle = path_handles.begin();
     
@@ -525,7 +502,7 @@ void PathBaseComponent::paint ( Graphics& g )
     
     UI_EditType ed = getMainEditMode();
 
-    if( is_selected && (ed == draw_mode || ed == select_alt_mode) )
+    if( in_edit_mode && (ed == draw_mode || ed == select_alt_mode) )
     {
         g.setColour( Colour::fromFloatRGBA(0.0f,0.0f,0.0f,0.2f)  );
         g.fillRect( getLocalBounds() );
@@ -537,24 +514,17 @@ void PathBaseComponent::paint ( Graphics& g )
 
     if( !m_preview_path.isEmpty() )
     {
-        printPath(m_preview_path, "preview");
         g.strokePath(m_preview_path, strokeType );
     }
     else
     {
-        printPath(m_path, "m_path");
         g.strokePath(m_path, strokeType );
     }
 
-    if( is_selected && ed == select_alt_mode )
+    if( in_edit_mode && ed == select_alt_mode )
     {
-        if( path_handles.size() == 0)
-            makeHandles();
-        
         drawHandles(g);
     }
-    else if (path_handles.size() > 0 )
-        removeHandles();
     
 }
 

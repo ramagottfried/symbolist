@@ -54,6 +54,9 @@ SymbolistMainComponent::SymbolistMainComponent()
     
     palette.addPaletteItem(s4);
     
+    Symbol* s5 = new Symbol("text", 20.0, 20.0, symbol_size, symbol_size);
+    palette.addPaletteItem(s5);
+    
     paletteView.buildFromPalette(&palette);
     paletteView.selectPaletteButton(0);
     
@@ -300,6 +303,8 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
             c = new TrianglePathComponent( *s );
         } else if (typeStr.equalsIgnoreCase(String("path"))) {
             c = new LinePathComponent( *s );
+        } else if (typeStr.equalsIgnoreCase(String("text"))) {
+            c = new TextGlphComponent( *s );
         } else if (typeStr.equalsIgnoreCase(String("group"))) {
             c = new SymbolGroupComponent( *s );
         } else {

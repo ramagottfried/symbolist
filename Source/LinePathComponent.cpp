@@ -5,18 +5,9 @@
 LinePathComponent::LinePathComponent(const Symbol &s) : PathBaseComponent( s )
 {}
 
-
-
 /*************
  *  SELECT, AND MODE SETTING FOR MOUSE LISTENING
  ************/
-
-/*  currently need to use the draw_mode selection actaion as the cue that this is a new path
-    this is a little kludgy, but AFAICT this is the only time this would happen (selection while in draw_mode)
-    better would be to signal that this is a new path in the constructor,
-    but we'd need to know that the symbol is in the page not the palette,
-    so would need to do the parent->ddChild inside this constructor
-*/
 
 void LinePathComponent::componentCretated()
 {
@@ -34,7 +25,6 @@ void LinePathComponent::deselectComponent ()
     PathBaseComponent::deselectComponent();
     // might need to remove and give back mouse here? if deselect/cancel becomes a keyboard shortcut (esc)
 }
-
 
 /*************
  *  MOUSE UI

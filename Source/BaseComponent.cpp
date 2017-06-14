@@ -9,10 +9,7 @@ template <typename T> void printPoint(Point<T> point, String name = "point" )
     std::cout << name << " " << point.getX() << " " << point.getY() << "\n";
 }
 
-BaseComponent::BaseComponent(const Symbol &s)
-{
-    importFromSymbol( s ) ;
-}
+BaseComponent::BaseComponent(const Symbol &s) {}
 
 BaseComponent::~BaseComponent()
 {
@@ -72,8 +69,9 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
 
 
 /******************
- * Imports components' data from the symbol's OSC bundle
+ * Imports components' data from the symbol's OSC bundle (can be overriden by sub-class)
  *****************/
+
 void BaseComponent::importFromSymbol( const Symbol &s )
 {
     int typeMessagePos = s.getOSCMessagePos("/type");
@@ -87,27 +85,10 @@ void BaseComponent::importFromSymbol( const Symbol &s )
         String typeStr = s.getOSCMessageValue(typeMessagePos).getString();
         cout << "Importing BaseComponent from Symbol: " << typeStr << endl;
         
-        int cx_pos = s.getOSCMessagePos("/center/x");
-        int cy_pos = s.getOSCMessagePos("/center/y");
-        
-        float x = 0, y = 0;
-        
+        float x = s.getOSCMessageValue("/x").getFloat32();
+        float y = s.getOSCMessageValue("/y").getFloat32();
         float w = s.getOSCMessageValue("/w").getFloat32();
         float h = s.getOSCMessageValue("/h").getFloat32();
-        
-        if( cx_pos > -1 && cy_pos > -1 )
-        {
-            x = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(cx_pos) ) - w * 0.5;
-            y = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(cy_pos) ) - h * 0.5;
-
-        }
-        else
-        {
-            x = Symbol::getOSCValueAsFloat( s.getOSCMessageValue("/x") );
-            y = Symbol::getOSCValueAsFloat( s.getOSCMessageValue("/y") );
-        }
-        
-       
         setBounds( x , y , w , h);
     }
 }

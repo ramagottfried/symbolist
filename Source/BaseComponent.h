@@ -46,6 +46,7 @@ public:
     virtual void componentCretated() {}
     
     virtual int addSymbolMessages( Symbol* s, const String &base_address );
+    
     void importFromSymbol( const Symbol &s );
 
     // Called from the Juce::SelectedItemSet subclass in ScoreComponent

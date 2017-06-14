@@ -18,7 +18,7 @@ public:
     
     int addSymbolMessages(Symbol* s, const String &base_address) override;
     
-    void importPathFromSymbol(const Symbol &s) ;
+    void importFromSymbol(const Symbol &s) ;
     
     void addHandle( float x, float y );
     void makeHandles();

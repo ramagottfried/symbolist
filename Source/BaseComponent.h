@@ -73,8 +73,8 @@ public:
     Point<float> shiftConstrainMouseAngle( const MouseEvent& event );
 
     
-    virtual float symbol_getX(){ return getX(); }
-    virtual float symbol_getY(){ return getY(); }
+    virtual float symbol_export_X(){ return getX(); }
+    virtual float symbol_export_Y(){ return getY(); }
         
     // not very happy with therm "Symbol" here
     inline void setSymbolStrokeWeight( float s ){ strokeWeight = s; }

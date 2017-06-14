@@ -12,7 +12,7 @@
                                :date d
                                :messages `(("/staff" ,(om-random 1 2))
                                            ("/type" ,(nth-random '("circle"))) ; "square")))
-                                           ("/x" ,(/ d 20.0))
+                                           ("/x" ,(/ d 100.0))
                                          ("/y" ,(om-random 0.0 300.0))
                                          ("/w" ,(om-random 10.0 30.0))
                                          ("/h" ,(om-random 10.0 30.0))

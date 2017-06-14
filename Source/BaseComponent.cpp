@@ -9,7 +9,10 @@ template <typename T> void printPoint(Point<T> point, String name = "point" )
     std::cout << name << " " << point.getX() << " " << point.getY() << "\n";
 }
 
-BaseComponent::BaseComponent(const Symbol &s) {}
+BaseComponent::BaseComponent(const Symbol &s)
+{
+    importFromSymbol( s );
+}
 
 BaseComponent::~BaseComponent()
 {
@@ -89,9 +92,17 @@ void BaseComponent::importFromSymbol( const Symbol &s )
         float y = s.getOSCMessageValue("/y").getFloat32();
         float w = s.getOSCMessageValue("/w").getFloat32();
         float h = s.getOSCMessageValue("/h").getFloat32();
-        setBounds( x , y , w , h);
+        
+        this->setBoundsFromSymbol( x , y , w , h);
     }
 }
+
+void BaseComponent::setBoundsFromSymbol( float x, float y , float w , float h)
+{
+    std::cout << "set bounds for BASE !!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+    setBounds( x , y , w , h);
+}
+
 
 
 /******************

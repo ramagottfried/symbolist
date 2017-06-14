@@ -9,7 +9,7 @@ ScoreComponent::~ScoreComponent()
 {
     std::cout << "ScoreComponent delete... " << this << std::endl;
     selected_items.deselectAll(); //<< required to avoid callback after deleting components
-    clearAllSubcomponents();
+    //clearAllSubcomponents();
 }
 
 

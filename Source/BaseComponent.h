@@ -120,9 +120,11 @@ protected:
     Colour          current_color = Colours::black;
 
     ScopedPointer<ResizableBorderComponent> resizableBorder;
+    ComponentBoundsConstrainer              constrainer;
     
     int             resize_mode = 0; // 0 = scale symbol to bounds, 1 = scale spacing (not resizing)
-    
+    float           m_min_size = 5;
+        
     bool            showBoundingBox = false;
     float           bb_strokeWeight = 1;
     Colour          bb_color = Colours::cornflowerblue;

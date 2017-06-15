@@ -136,11 +136,11 @@ void BaseComponent::resized ()
 
     if( !resizableBorder )
     {
-        addChildComponent( resizableBorder = new ResizableBorderComponent(this, nullptr) );
+        constrainer.setMinimumSize ( m_min_size, m_min_size );
+        addChildComponent( resizableBorder = new ResizableBorderComponent(this, &constrainer) );
         resizableBorder->setBorderThickness( BorderSize<int>(1) );
     }
     
-    // printRect( getLocalBounds(), "resizableBorder" );
     resizableBorder->setBounds( getLocalBounds() );
 }
 

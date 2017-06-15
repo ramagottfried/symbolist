@@ -30,6 +30,7 @@ public:
     void selectComponent () override;
 
     void paint ( Graphics& g ) override;
+    void resized () override;
     
     void mouseDown( const MouseEvent& event ) override;
     void mouseMove( const MouseEvent& event ) override;
@@ -47,11 +48,12 @@ public:
     
     bool hitTest (int x, int y) override
     {
-        if( in_edit_mode )
+        if( in_edit_mode || is_selected )
             return true;
         
         return m_path.intersectsLine( Line<float>( x - 5, y - 5, x + 5, y + 5) ) || m_path.intersectsLine( Line<float>( x + 5, y - 5, x - 5, y + 5) );
     }
+
 
 protected:
     

@@ -316,6 +316,17 @@ void PathBaseComponent::mouseUp( const MouseEvent& event )
     BaseComponent::mouseUp(event);
 }
 
+void PathBaseComponent::resized()
+{
+    BaseComponent::resized();
+    
+    auto local = getLocalBounds().reduced( strokeType.getStrokeThickness() * 0.5 );
+    
+    if( !in_edit_mode && local.getWidth() > 0 && local.getHeight() > 0)
+        m_path.scaleToFit(local.getX(), local.getY(), local.getWidth(), local.getHeight(), false );
+    
+}
+
 /******************
  * preview routine
  *****************/
@@ -518,7 +529,6 @@ void PathBaseComponent::paint ( Graphics& g )
     {
         g.setColour( getCurrentColor() );
         g.strokePath(m_path, strokeType );
-
     }
     
     if( fill ) // preview fill also?

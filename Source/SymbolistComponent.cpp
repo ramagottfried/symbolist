@@ -30,5 +30,11 @@ SymbolistComponent* SymbolistComponent::getMainComponent()
 
 UI_EditType SymbolistComponent::getMainEditMode()
 {
-    return static_cast<SymbolistMainComponent*>(getMainComponent())->getEditMode() ;
+    SymbolistMainComponent* smc = (SymbolistMainComponent*)getMainComponent() ;
+    if ( smc != NULL)
+        return smc->getEditMode() ;
+    else {
+        std::cout << "Warning: trying to get the edit_mode => MainComponent not found.." << std::endl;
+        return UI_EditType::select_mode;
+    }
 }

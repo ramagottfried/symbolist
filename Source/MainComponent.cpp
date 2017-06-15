@@ -236,13 +236,14 @@ void SymbolistMainComponent::symbolistAPI_setSymbols(int n, odot_bundle **bundle
     getScore()->importScoreFromOSC(n, bundle_array);
     
     // recreate and add components from score symbols
-    for (int i = 0; i < score.getSize(); i++) {
+     for (int i = 0; i < score.getSize(); i++) {
         std::cout << std::endl << std::endl ;
         Symbol *s = score.getSymbol(i);
         BaseComponent* c = makeComponentFromSymbol( s );
         c->setScoreSymbolPointer( s );
         scoreGUI.addSubcomponent( c ) ;
     }
+    
 }
 
 void SymbolistMainComponent::symbolistAPI_setTime(int time_ms)
@@ -307,10 +308,10 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
         } else if (typeStr.equalsIgnoreCase(String("group"))) {
             c = new SymbolGroupComponent( *s );
         } else {
-            // ??
-            c = new BaseComponent( *s );
+            cout << "Unknown symbol type : " << typeStr << endl;
+            c = NULL;
         }
-        c->importFromSymbol( *s ) ;
+        if (c != NULL) c->importFromSymbol( *s ) ;
         return c;
     }
 }
@@ -322,7 +323,7 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
 
 void SymbolistMainComponent::addSymbolToScore ( BaseComponent* c )
 {
-    cout << "REMOVING SYMBOL FOR " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
+    cout << "ADDING SYMBOL FOR " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
     Symbol *s = new Symbol();
     c->addSymbolMessages( s , String("") );
     c->setScoreSymbolPointer( s );

@@ -1,6 +1,7 @@
 
 #include "PathBaseComponent.h"
 #include "MainComponent.h"
+#include "PathHandleComponent.h"
 
 PathBaseComponent::PathBaseComponent(  const Symbol& s ) : BaseComponent( s )
 {
@@ -293,6 +294,7 @@ void PathBaseComponent::notifyEditModeChanged( UI_EditType current_mode )
 void PathBaseComponent::mouseDown( const MouseEvent& event )
 {
     BaseComponent::mouseDown(event);
+    m_prev_drag = m_down;
 }
 
 void PathBaseComponent::mouseMove( const MouseEvent& event )
@@ -302,13 +304,20 @@ void PathBaseComponent::mouseDrag( const MouseEvent& event )
 {
     BaseComponent::mouseDrag(event);
     
-    if ( getMainEditMode() == select_mode && path_handles.size() > 0 )
+    if ( getMainEditMode() == select_alt_mode && path_handles.size() > 0 )
     {
+
         for (auto h : path_handles )
         {
             h->setTopLeftPosition ( h->getPosition() + (event.position - m_down).toInt() );
         }
+        
+        m_path.applyTransform( AffineTransform().translated( event.position - m_prev_drag ) );
+        setBounds( getPageComponent()->getLocalBounds() );
+        
     }
+    
+    m_prev_drag = event.position;
 }
 
 void PathBaseComponent::mouseUp( const MouseEvent& event )
@@ -356,47 +365,10 @@ void PathBaseComponent::v_flip()
 /******************
  * preview routine
  *****************/
-void PathBaseComponent::drawHandles( Graphics& g)
+
+void PathBaseComponent::addHandle( int type, float x, float y )
 {
-    float ax = -1, ay = -1;
-    Path::Iterator it( m_path );
-    while( it.next() )
-    {
-        if (it.elementType == it.startNewSubPath)
-        {
-            ax = it.x1;
-            ay = it.y1;
-        }
-        else if (it.elementType == it.lineTo)
-        {
-            ax = it.x1;
-            ay = it.y1;
-        }
-        else if (it.elementType == it.quadraticTo)
-        {
-            g.drawLine(ax, ay, it.x1, it.y1);
-            ax = it.x2;
-            ay = it.y2;
-        }
-        else if (it.elementType == it.cubicTo)
-        {
-            g.drawLine(ax, ay, it.x1, it.y1);
-            g.drawLine(it.x2, it.y2, it.x3, it.y3);
-            ax = it.x3;
-            ay = it.y3;
-        }
-        else if (it.elementType == it.closePath)
-        {
-
-        }
-    }
-}
-
-
-
-void PathBaseComponent::addHandle( float x, float y )
-{
-    PathHandle *h = new PathHandle( x + getX(), y + getY(), this );
+    PathHandle *h = new PathHandle( (PathHandle::handleType)type, x + getX(), y + getY(), this );
     auto *p = static_cast<Component*>( getPageComponent() ) ;
     p->addAndMakeVisible( h );
     path_handles.emplace_back( h );
@@ -413,25 +385,29 @@ void PathBaseComponent::makeHandles()
         {
             if (it.elementType == it.startNewSubPath)
             {
-                addHandle( it.x1, it.y1 );
+                addHandle( PathHandle::anchor, it.x1, it.y1 );
             }
             else if (it.elementType == it.lineTo)
             {
-                addHandle( it.x1, it.y1 );
+                addHandle( PathHandle::anchor, it.x1, it.y1 );
             }
             else if (it.elementType == it.quadraticTo)
             {
-                addHandle( it.x1, it.y1 );
-                addHandle( it.x2, it.y2 );
+                addHandle( PathHandle::curve_control, it.x1, it.y1 );
+                addHandle( PathHandle::anchor, it.x2, it.y2 );
             }
             else if (it.elementType == it.cubicTo)
             {
-                addHandle( it.x1, it.y1 );
-                addHandle( it.x2, it.y2 );
-                addHandle( it.x3, it.y3 );
+                addHandle( PathHandle::curve_control, it.x1, it.y1 );
+                addHandle( PathHandle::curve_control, it.x2, it.y2 );
+                addHandle( PathHandle::anchor, it.x3, it.y3 );
             }
         }
     }
+    
+    auto pbounds = m_path.getBounds();
+    addHandle( PathHandle::rotate, pbounds.getCentreX(), pbounds.getBottom() + 20 );
+
     repaint();
 }
 
@@ -448,6 +424,52 @@ void PathBaseComponent::removeHandles()
     }
     path_handles.clear();
 }
+
+void PathBaseComponent::drawHandles( Graphics& g)
+{
+    float ax = -1, ay = -1;
+    float dashes[2] = {2.0f, 2.0f};
+
+    Path::Iterator it( m_path );
+    while( it.next() )
+    {
+        if (it.elementType == it.startNewSubPath)
+        {
+            ax = it.x1;
+            ay = it.y1;
+        }
+        else if (it.elementType == it.lineTo)
+        {
+            ax = it.x1;
+            ay = it.y1;
+        }
+        else if (it.elementType == it.quadraticTo)
+        {
+            g.drawDashedLine(Line<float>(ax, ay, it.x1, it.y1), dashes, 2 );
+            ax = it.x2;
+            ay = it.y2;
+        }
+        else if (it.elementType == it.cubicTo)
+        {
+            g.drawDashedLine(Line<float>(ax, ay, it.x1, it.y1), dashes, 2 );
+            g.drawDashedLine(Line<float>(it.x2, it.y2, it.x3, it.y3), dashes, 2 );
+            ax = it.x3;
+            ay = it.y3;
+        }
+        else if (it.elementType == it.closePath)
+        {
+            
+        }
+    }
+    
+    auto pbounds = m_path.getBounds();
+    auto rot_handle = path_handles.back();
+    
+    auto ll = Line<float>(pbounds.getCentreX(), pbounds.getCentreY(), rot_handle->getBounds().getCentreX(), rot_handle->getBounds().getCentreY() );
+    g.drawDashedLine(ll, dashes, 2 );
+    
+}
+
 
 Rectangle<float> PathBaseComponent::tranformAndGetBoundsInParent( Path& p )
 {
@@ -493,6 +515,8 @@ void PathBaseComponent::updatePathPoints()
             p.closeSubPath();
         }
     }
+    
+//    m_path.applyTransform(<#const juce::AffineTransform &transform#>)
     
     m_path.swapWithPath( p );
     repaint();

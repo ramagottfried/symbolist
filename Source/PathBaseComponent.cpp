@@ -320,7 +320,7 @@ void PathBaseComponent::resized()
 {
     BaseComponent::resized();
     
-    auto local = getLocalBounds().reduced( strokeType.getStrokeThickness() * 0.5 );
+    auto local = getLocalBounds().reduced( strokeType.getStrokeThickness() );
     
     if( !in_edit_mode && local.getWidth() > 0 && local.getHeight() > 0)
         m_path.scaleToFit(local.getX(), local.getY(), local.getWidth(), local.getHeight(), false );

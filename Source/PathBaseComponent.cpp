@@ -327,6 +327,32 @@ void PathBaseComponent::resized()
     
 }
 
+void PathBaseComponent::h_flip()
+{
+    m_path.applyTransform( AffineTransform().rotated( float_Pi,
+                                                     m_path.getBounds().getCentreX(),
+                                                     m_path.getBounds().getCentreY()  ) );
+    
+    auto actualBounds = tranformAndGetBoundsInParent(m_path);
+    m_path.applyTransform( AffineTransform().verticalFlip( actualBounds.getHeight() ) );
+    m_path.applyTransform( AffineTransform().translated( m_path_origin ) );
+    
+    removeHandles();
+    makeHandles();
+}
+
+void PathBaseComponent::v_flip()
+{
+
+    auto actualBounds = tranformAndGetBoundsInParent(m_path);
+    m_path.applyTransform( AffineTransform().verticalFlip( actualBounds.getHeight() ) );
+    m_path.applyTransform( AffineTransform().translated( m_path_origin ) );
+    
+    removeHandles();
+    makeHandles();
+}
+
+
 /******************
  * preview routine
  *****************/
@@ -379,8 +405,6 @@ void PathBaseComponent::addHandle( float x, float y )
 
 void PathBaseComponent::makeHandles()
 {
-    // log origin before editing
-    m_path_origin = getPosition().toFloat();
     
     if( is_selected && path_handles.size() == 0 )
     {

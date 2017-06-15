@@ -123,6 +123,10 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
         setCurrentSymbol(0);
     } else if ( desc    == "P") {
         setCurrentSymbol(1);
+    } else if ( desc    == "option + V") {
+        scoreGUI.flipSelected(0);
+    } else if ( desc    == "option + H") {
+        scoreGUI.flipSelected(1);
     } else if ( desc    == "spacebar") {
         start_stop_rendering();
     } else if ( desc    == "escape") {

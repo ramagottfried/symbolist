@@ -50,12 +50,14 @@ public:
     // selection
     void findLassoItemsInArea (Array < BaseComponent *>& results, const Rectangle<int>& area) override;
     SelectedItemSet< BaseComponent *>& getLassoSelection() override;
-    void translateSelected( Point<int> delta_xy );
     
     void addItemToSelection(BaseComponent *c);
     void deleteSelectedSymbols();
     void deselectAllSelected();
     void groupSelectedSymbols();
+
+    void translateSelected( Point<int> delta_xy );
+    void flipSelected( int axis );
     
     void mouseDown ( const MouseEvent& event ) override;
     void mouseMove ( const MouseEvent& event ) override;

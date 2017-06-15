@@ -31,7 +31,9 @@ public:
 
     void paint ( Graphics& g ) override;
     void resized () override;
-    
+    void h_flip() override;
+    void v_flip() override;
+
     void mouseDown( const MouseEvent& event ) override;
     void mouseMove( const MouseEvent& event ) override;
     void mouseDrag( const MouseEvent& event ) override;

@@ -274,6 +274,17 @@ void ScoreComponent::translateSelected( Point<int> delta_xy )
     }
 }
 
+void ScoreComponent::flipSelected( int axis )
+{
+    for ( auto c : selected_items )
+    {
+        if( axis == 0)
+            c->v_flip();
+        else
+            c->h_flip();
+    }
+}
+
 void ScoreComponent::deselectAllSelected()
 {
     selected_items.deselectAll();

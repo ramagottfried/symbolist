@@ -13,6 +13,8 @@ SymbolGroupComponent::~SymbolGroupComponent() {}
 
 void SymbolGroupComponent::paint ( Graphics& g )
 {
+    BaseComponent::paint( g );
+    
     g.setColour( Colours::darkcyan );
     const Rectangle<int> b = ((BaseComponent*) this)->getLocalBounds();
     const float dashLength[2] = {3.0 , 4.0};
@@ -24,7 +26,68 @@ void SymbolGroupComponent::paint ( Graphics& g )
 }
 
 
+void SymbolGroupComponent::selectComponent()
+{
+    if ( ! in_edit_mode )
+    {
+        BaseComponent::selectComponent();
+        for (int i = 0; i < getNumSubcomponents(); i++ )
+        {
+            getSubcomponent(i)->selectComponent();
+        }
+    }
+}
 
+void SymbolGroupComponent::deselectComponent()
+{
+    BaseComponent::deselectComponent();
+    for (int i = 0; i < getNumSubcomponents(); i++ )
+    {
+        getSubcomponent(i)->deselectComponent();
+    }
+}
+
+
+void SymbolGroupComponent::mouseDoubleClick(const MouseEvent& event)
+{
+    std::cout << "db click in " << getComponentID() << std::endl;
+    ScoreComponent* pc = ((ScoreComponent*)getParentComponent());
+    
+    if ( ! in_edit_mode && ( isTopLevelComponent() || ! ((BaseComponent*)pc)->isInEditMode()) )
+    {
+        pc->deselectAllSelected();
+        PageComponent* pc = (PageComponent*)getPageComponent();
+        pc->enterEditMode( this );
+    }
+}
+
+void SymbolGroupComponent::mouseDown( const MouseEvent& event )
+{
+    BaseComponent::mouseDown(event);
+    if ( in_edit_mode ) ScoreComponent::mouseDown(event);
+}
+
+void SymbolGroupComponent::mouseUp( const MouseEvent& event )
+{
+    if ( in_edit_mode ) ScoreComponent::mouseUp(event);
+    else BaseComponent::mouseUp(event);
+}
+
+void SymbolGroupComponent::mouseDrag( const MouseEvent& event )
+{
+    std::cout << "Group mouseDrag " << getComponentID() << std::endl;
+    
+    if ( in_edit_mode )
+    {
+        std::cout << "=> editMode" << std::endl;
+        ScoreComponent::mouseDrag(event);
+    }
+    else BaseComponent::mouseDrag(event);
+}
+
+/*============================*
+ * SYMBOL MANAGEMENT
+ *============================*/
 
 int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_address )
 {
@@ -51,7 +114,7 @@ void SymbolGroupComponent::importFromSymbol( const Symbol &s )
     for (int i = 0; i < n; i++ )
     {
         String filter = "/subsymbol/" + String(i+1) ;   // we start at 1 .. (?)
-        cout << filter << endl;
+        cout << "IMPORT FROM: " << filter << endl;
         Symbol sub_s = s.makeSubSymbol( filter );
         BaseComponent* c = SymbolistMainComponent::makeComponentFromSymbol( &sub_s );
         if ( c != NULL) addSubcomponent( c );

@@ -4,15 +4,13 @@
 #include "BaseComponent.h"
 #include "PathHandleComponent.h"
 
-class PathBaseComponent : public BaseComponent
+class PathBaseComponent : public BaseComponent 
 {
 public:
     
     PathBaseComponent(  const Symbol& s );
     ~PathBaseComponent() ;
     
-    String getSymbolTypeStr() const override { return "path"; }
-
     void printPath( Path p, const char* name = "path" );
     
     int addSymbolMessages(Symbol* s, const String &base_address) override;
@@ -41,6 +39,8 @@ public:
     void mouseDrag( const MouseEvent& event ) override;
     void mouseUp( const MouseEvent& event ) override;
     
+    void setMinimalBounds () override;
+
     Rectangle<float> tranformAndGetBoundsInParent( Path& p );
     
     void notifyEditModeChanged( UI_EditType current_mode ) override;
@@ -76,7 +76,6 @@ protected:
     
     Point<float>                m_path_origin;
     std::vector<PathHandle*>    path_handles;
-    bool                        in_edit_mode = false;
     
     Point<float>                m_prev_drag;
     

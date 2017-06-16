@@ -27,12 +27,17 @@ public:
     void    addSymbolComponent ( BaseComponent *c ) override;
     void    removeSymbolComponent( BaseComponent* c ) override;
     
+    // single_component edit mode
+    void enterEditMode( BaseComponent* c );
+    void exitEditMode();
+    
     // Juce Callbacks
     void paint (Graphics& g) override;
     
 private:
     
-        
+    BaseComponent* edited_component;
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PageComponent)
 };

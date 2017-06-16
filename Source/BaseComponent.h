@@ -28,14 +28,9 @@ public:
     BaseComponent(const Symbol &s);
     ~BaseComponent();
     
-    virtual String getSymbolTypeStr() const { return "symbol"; }
+    virtual String getSymbolTypeStr() const = 0 ; // { return "symbol"; }
 
-    void paint ( Graphics& g ) override
-    {
-        std::cout << "basic paint" << std::endl;
-        Component::paint(g);
-    }
-    
+    void paint ( Graphics& g ) override;
     
     void setScoreSymbolPointer (Symbol* s) { score_symbol = s; }
     Symbol* getScoreSymbolPointer () { return score_symbol; }
@@ -71,6 +66,9 @@ public:
     void mouseUp( const MouseEvent& event ) override;
     void mouseDoubleClick( const MouseEvent& event ) override {};
         
+    void recursiveMaximizeBounds();
+    void recursiveShrinkBounds();
+                
     Point<float> shiftConstrainMouseAngle( const MouseEvent& event );
 
     
@@ -102,10 +100,16 @@ public:
     
     inline void setBoundsFloatRect( Rectangle<float> r )
     {
-        setBounds( r.getX(), r.getY(), r.getWidth(), r.getHeight() );
+        setBounds ( r.getX(), r.getY(), r.getWidth(), r.getHeight() );
     }
 
     virtual void setBoundsFromSymbol( float x, float y , float w , float h);
+        
+    virtual void setMinimalBounds ();
+    virtual void setMaximalBounds ();
+    
+    void setEditMode(bool val) { in_edit_mode = val; }
+    bool isInEditMode() { return in_edit_mode; }
 
 protected:
     
@@ -132,6 +136,8 @@ protected:
     Colour          sel_color = Colours::cornflowerblue;
     
     bool            is_selected = false;
+    bool            in_edit_mode = false;
+        
         
 private:
     

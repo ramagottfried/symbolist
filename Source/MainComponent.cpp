@@ -61,6 +61,9 @@ SymbolistMainComponent::SymbolistMainComponent()
     paletteView.buildFromPalette(&palette);
     paletteView.selectPaletteButton(0);
     
+    std::cout << "=======================================" << std::endl;
+    std::cout << "=======================================" << std::endl << std::endl << std::endl ;
+
     addAndMakeVisible(scoreGUI);
     addAndMakeVisible(paletteView);
     
@@ -128,27 +131,20 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
     } else if ( desc    == "option + H") {
         scoreGUI.flipSelected(1);
     } else if ( desc    == "spacebar") {
-        start_stop_rendering();
+        executeTransportCallback(1); // start
     } else if ( desc    == "escape") {
-        start_stop_rendering();
+        
+        executeTransportCallback(0); // = stop
         current_time = 0;
+        
+        scoreGUI.exitEditMode();
+        
         scoreGUI.repaint();
     }
 return true;
 }
 
 
-void SymbolistMainComponent::start_stop_rendering()
-{
-    if (current_time == 0)
-    {
-        cout << "start" << endl;
-        executeTransportCallback(1); // = start
-    } else {
-        cout << "stop" << endl;
-        executeTransportCallback(0); // = stop        
-    }
-}
 
 void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
 {

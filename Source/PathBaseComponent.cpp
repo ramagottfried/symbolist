@@ -347,8 +347,7 @@ void PathBaseComponent::h_flip()
     m_path.applyTransform( AffineTransform().verticalFlip( actualBounds.getHeight() ) );
     m_path.applyTransform( AffineTransform().translated( m_path_origin ) );
     
-    removeHandles();
-    makeHandles();
+    updateHandlePositions();
 }
 
 void PathBaseComponent::v_flip()
@@ -358,8 +357,7 @@ void PathBaseComponent::v_flip()
     m_path.applyTransform( AffineTransform().verticalFlip( actualBounds.getHeight() ) );
     m_path.applyTransform( AffineTransform().translated( m_path_origin ) );
     
-    removeHandles();
-    makeHandles();
+    updateHandlePositions();
 }
 
 

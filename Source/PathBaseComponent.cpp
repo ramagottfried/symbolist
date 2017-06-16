@@ -313,6 +313,7 @@ void PathBaseComponent::mouseDrag( const MouseEvent& event )
         setBounds( getPageComponent()->getLocalBounds() );
         
         updateHandlePositions();
+        repaint();
     }
     
     m_prev_drag = event.position;
@@ -337,6 +338,12 @@ void PathBaseComponent::resized()
     
 }
 
+Rectangle<float> PathBaseComponent::getPathBounds()
+{
+    auto cpy = m_path;
+    return tranformAndGetBoundsInParent( cpy );
+}
+
 void PathBaseComponent::h_flip()
 {
     m_path.applyTransform( AffineTransform().rotated( float_Pi,
@@ -348,6 +355,8 @@ void PathBaseComponent::h_flip()
     m_path.applyTransform( AffineTransform().translated( m_path_origin ) );
     
     updateHandlePositions();
+    repaint();
+    
 }
 
 void PathBaseComponent::v_flip()
@@ -358,6 +367,7 @@ void PathBaseComponent::v_flip()
     m_path.applyTransform( AffineTransform().translated( m_path_origin ) );
     
     updateHandlePositions();
+    repaint();
 }
 
 
@@ -403,8 +413,13 @@ void PathBaseComponent::makeHandles()
         }
     }
     
-    auto pbounds = m_path.getBounds();
-    addHandle( PathHandle::rotate, pbounds.getCentreX(), pbounds.getBottom() + 20 );
+    auto p_bounds = m_path.getBounds();
+    
+    float half_w = p_bounds.getWidth() * 0.5;
+    float half_h = p_bounds.getHeight() * 0.5;
+    auto length = sqrt( half_w * half_w + half_h * half_h ) ;
+    
+    addHandle( PathHandle::rotate, p_bounds.getCentreX(), p_bounds.getBottom() + length );
 
     repaint();
 }
@@ -514,8 +529,14 @@ void PathBaseComponent::updatePathPoints()
         }
     }
     
+    
+    auto cent = getPathBounds().getCentre();
+    p.applyTransform( AffineTransform().rotated( (*handle)->getThetaChange(), cent.getX(), cent.getY() ) );
+    
     m_path.swapWithPath( p );
-    repaint();
+    
+    updateHandlePositions();
+    
 }
 
 void PathBaseComponent::updateHandlePositions()
@@ -549,8 +570,6 @@ void PathBaseComponent::updateHandlePositions()
         {
         }
     }
-    
-    repaint();
 }
 
 /******************

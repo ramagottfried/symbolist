@@ -43,6 +43,8 @@ public:
     
     Rectangle<float> tranformAndGetBoundsInParent( Path& p );
     
+    Rectangle<float> getPathBounds();
+    
     void notifyEditModeChanged( UI_EditType current_mode ) override;
     virtual void componentCretated() override {}
     

@@ -281,8 +281,6 @@ void SymbolistMainComponent::executeTransportCallback(int arg)
 // Component factory
 BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
 {
-    
-    
     cout << "Creating component from Symbol: " << endl;
     s->printBundle();
 

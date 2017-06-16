@@ -42,20 +42,19 @@ Symbol Symbol::makeSubSymbol( const String &base_address ) const
     for (int i = 0; (i < osc_bundle.size()) ; i++)
     {
         String addr = osc_bundle[i].getMessage().getAddressPattern().toString() ;
-       
-        if ( addr.startsWith( base_address ) )
+        //std::cout << "message " << i << " : " << addr << std::endl;
+        if ( addr.startsWith( base_address ) && addr[base_address.length()] == '/' )
         {
+            //std::cout << "=> ADD IN SYB-SYMBOL: " << addr.substring(base_address.length()) << std::endl;
             OSCMessage m (OSCAddressPattern(addr.substring(base_address.length())));
 
             for (int mi = 0; mi < osc_bundle[i].getMessage().size(); mi++)
             {
                 m.addArgument( osc_bundle[i].getMessage()[mi] );
             }
-            
             s.addOSCMessage(m);
         }
     }
-    
     return s;
 }
 

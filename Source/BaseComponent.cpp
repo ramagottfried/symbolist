@@ -141,7 +141,7 @@ void BaseComponent::resized ()
 {
     reportModification(); // shoudl be smarter : call this when the move is over (mouse up)
 
-    if( !resizableBorder )
+    if( !resizableBorder ) // << probably better to initialize the resizable border somewhere else...
     {
         constrainer.setMinimumSize ( m_min_size, m_min_size );
         addChildComponent( resizableBorder = new ResizableBorderComponent(this, &constrainer) );
@@ -149,6 +149,7 @@ void BaseComponent::resized ()
     }
     
     resizableBorder->setBounds( getLocalBounds() );
+    
 }
 
 

@@ -6,7 +6,7 @@
 
 PathHandle::PathHandle( handleType type, float x, float y, Component *pc)
 {
-    setComponentID("control_handle");
+    setComponentID("path_handle");
     
     m_path = pc;
     h_type = type;
@@ -22,9 +22,9 @@ void PathHandle::mouseDown( const MouseEvent& event )
 
 void PathHandle::mouseDrag( const MouseEvent& event )
 {
-    // not sure why I need to make this relative, it was jumping back and forth between being relative to the score and then to the component. is it possibe that it has an extra mouselistener somewhere?
-    Point<int> draggy = event.getEventRelativeTo( static_cast<PathBaseComponent*>(m_path)->getPageComponent() ).getPosition();
-    setTopLeftPosition ( draggy - (m_down).toInt() );
+    Point<int> draggy = event.getEventRelativeTo( m_path ).getPosition();
+    setTopLeftPosition ( draggy - m_down.toInt() );
+    
     static_cast<PathBaseComponent*>(m_path)->updatePathPoints();
 }
 

@@ -22,8 +22,11 @@ public:
     void addHandle( int type, float x, float y );
     void makeHandles();
     void removeHandles();
+    void updateHandlePositions();
+
     void updatePathPoints();
-    void drawHandles( Graphics& g);
+
+    void drawHandlesLines( Graphics& g);
     
     void deselectComponent () override;
     void selectComponent () override;

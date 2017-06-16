@@ -223,7 +223,9 @@ void PathBaseComponent::enterPathEdit ()
     pc->stealMouse();
     
     if( !m_path.isEmpty() )
+    {
         m_path.applyTransform( AffineTransform().translated( m_path_origin ) );
+    }
     
     if( getMainEditMode() == select_alt_mode && path_handles.size() == 0)
         makeHandles();
@@ -307,15 +309,10 @@ void PathBaseComponent::mouseDrag( const MouseEvent& event )
     
     if ( getMainEditMode() == select_alt_mode && path_handles.size() > 0 )
     {
-
-        for (auto h : path_handles )
-        {
-            h->setTopLeftPosition ( h->getPosition() + (event.position - m_down).toInt() );
-        }
-        
         m_path.applyTransform( AffineTransform().translated( event.position - m_prev_drag ) );
         setBounds( getPageComponent()->getLocalBounds() );
         
+        updateHandlePositions();
     }
     
     m_prev_drag = event.position;
@@ -330,10 +327,13 @@ void PathBaseComponent::resized()
 {
     BaseComponent::resized();
     
-    auto local = getLocalBounds().reduced( strokeType.getStrokeThickness() );
+    if( !in_edit_mode )
+    {
+        auto local = getLocalBounds().reduced( strokeType.getStrokeThickness() );
     
-    if( !in_edit_mode && local.getWidth() > 0 && local.getHeight() > 0)
-        m_path.scaleToFit(local.getX(), local.getY(), local.getWidth(), local.getHeight(), false );
+        if( local.getWidth() > 0 && local.getHeight() > 0)
+            m_path.scaleToFit(local.getX(), local.getY(), local.getWidth(), local.getHeight(), false );
+    }
     
 }
 
@@ -370,8 +370,7 @@ void PathBaseComponent::v_flip()
 void PathBaseComponent::addHandle( int type, float x, float y )
 {
     PathHandle *h = new PathHandle( (PathHandle::handleType)type, x + getX(), y + getY(), this );
-    auto *p = static_cast<Component*>( getPageComponent() ) ;
-    p->addAndMakeVisible( h );
+    addAndMakeVisible( h );
     path_handles.emplace_back( h );
 }
 
@@ -426,7 +425,7 @@ void PathBaseComponent::removeHandles()
     path_handles.clear();
 }
 
-void PathBaseComponent::drawHandles( Graphics& g)
+void PathBaseComponent::drawHandlesLines( Graphics& g)
 {
     float ax = -1, ay = -1;
     float dashes[2] = {2.0f, 2.0f};
@@ -517,12 +516,44 @@ void PathBaseComponent::updatePathPoints()
         }
     }
     
-//    m_path.applyTransform(<#const juce::AffineTransform &transform#>)
-    
     m_path.swapWithPath( p );
     repaint();
 }
 
+void PathBaseComponent::updateHandlePositions()
+{
+    Path p;
+    auto handle = path_handles.begin();
+    
+    Path::Iterator it( m_path );
+    while( it.next() )
+    {
+        if (it.elementType == it.startNewSubPath)
+        {
+            (*(handle++))->setCentrePosition(it.x1, it.y1);
+        }
+        else if (it.elementType == it.lineTo)
+        {
+            (*(handle++))->setCentrePosition(it.x1, it.y1);
+        }
+        else if (it.elementType == it.quadraticTo)
+        {
+            (*(handle++))->setCentrePosition(it.x1, it.y1);
+            (*(handle++))->setCentrePosition(it.x2, it.y2);
+        }
+        else if (it.elementType == it.cubicTo)
+        {
+            (*(handle++))->setCentrePosition(it.x1, it.y1);
+            (*(handle++))->setCentrePosition(it.x2, it.y2);
+            (*(handle++))->setCentrePosition(it.x3, it.y3);
+        }
+        else if( it.elementType == it.closePath )
+        {
+        }
+    }
+    
+    repaint();
+}
 
 /******************
  * Paint callback subroutine
@@ -594,7 +625,7 @@ void PathBaseComponent::paint ( Graphics& g )
 
     if( in_edit_mode && ed == select_alt_mode )
     {
-        drawHandles(g);
+        drawHandlesLines(g);
     }
     
 }

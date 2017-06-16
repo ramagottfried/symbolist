@@ -20,7 +20,7 @@ public:
   
     void componentCretated() override;
 
-    String getSymbolTypeStr() const override { return "line"; }
+    String getSymbolTypeStr() const override { return "path"; }
 
 private:
     //==============================================================================

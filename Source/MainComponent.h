@@ -77,7 +77,6 @@ public:
     bool shift_down = false;
     
     int getCurrentTime() { return current_time; }
-    void start_stop_rendering();
     
 private:
     

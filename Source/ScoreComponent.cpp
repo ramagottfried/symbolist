@@ -7,10 +7,24 @@
 
 ScoreComponent::~ScoreComponent()
 {
-    std::cout << "ScoreComponent delete... " << this << std::endl;
-
+    //std::cout << "ScoreComponent delete... " << this << std::endl;
     selected_items.deselectAll();
     clearAllSubcomponents();
+}
+
+
+void ScoreComponent::deselectAllSelected()
+{
+    selected_items.deselectAll();
+    repaint();
+}
+
+void ScoreComponent::notifyEditModeChanged( UI_EditType current_mode )
+{
+    for( auto s : selected_items )
+    {
+        s->notifyEditModeChanged( current_mode );
+    }
 }
 
 
@@ -35,7 +49,7 @@ void ScoreComponent::addSubcomponent( BaseComponent *c )
     
     c->setComponentID(String(String(c->getSymbolTypeStr()) += String("_") += String(subcomponents.size())));
     addAndMakeVisible( c );
-    
+    //std::cout << "ADDING MOUSE LISTENER TO " << c->getSymbolTypeStr() << std::endl;
     c->addMouseListener(this, false);
 }
 
@@ -88,14 +102,14 @@ void ScoreComponent::deleteSelectedSymbols()
     
     selected_items.deselectAll();
     
-    
-     for( BaseComponent *c : items )
+    for( BaseComponent *c : items )
     {
         ScoreComponent* parent = (ScoreComponent*) c->getParentComponent() ; // the selected_items are not necesarily direct children
         parent->removeSymbolComponent( c );
         delete c;
     }
 }
+
 
 
 /************************/
@@ -236,11 +250,28 @@ void ScoreSelectedItemSet::itemSelected (BaseComponent *c) { c->selectComponent(
 void ScoreSelectedItemSet::itemDeselected (BaseComponent *c) { c->deselectComponent(); }
 
 
+void ScoreComponent::activateLasso()
+{
+    selected_items.deselectAll();
+    addChildComponent( lassoSelector );
+    lassoSelector.setComponentID("lasso");
+    getLookAndFeel().setColour( lassoSelector.lassoFillColourId, Colours::transparentWhite );
+    getLookAndFeel().setColour( lassoSelector.lassoOutlineColourId, Colour::fromFloatRGBA(0, 0, 0, 0.2) );
+}
+
+void ScoreComponent::deactivateLasso()
+{
+    removeChildComponent( &lassoSelector );
+    selected_items.deselectAll();
+}
+
+
 void ScoreComponent::findLassoItemsInArea (Array <BaseComponent*>& results, const Rectangle<int>& area)
 {
-    for (int i = 0; i < getNumChildComponents(); ++i)
+    std::cout << "lasso in " << getComponentID() << std::endl;
+    for (int i = 0; i < getNumSubcomponents(); ++i)
     {
-        Component *cc = getChildComponent(i);
+        Component *cc = getSubcomponent(i);
         
         if( &lassoSelector != (LassoComponent< BaseComponent * > *)cc )
         {
@@ -249,29 +280,28 @@ void ScoreComponent::findLassoItemsInArea (Array <BaseComponent*>& results, cons
             // this needs to change to look for intersection with path
             if (c->getBounds().intersects (area))
             {
+                std::cout << "=> select " << c->getComponentID() << std::endl;
+                for ( auto ccc : selected_items ) {
+                    std::cout << "=======> " << ccc->getComponentID() << std::endl;
+                }
                 results.add (c);
             }
         }
     }
 }
 
-void ScoreComponent::addItemToSelection(BaseComponent *c)
-{
-    selected_items.addToSelection(c);
-}
 
-SelectedItemSet<BaseComponent*> & ScoreComponent::getLassoSelection()
-{
-    return selected_items;
-}
-
+/*******************
+ * TRANSFORMATIONS
+ *******************/
 
 void ScoreComponent::translateSelected( Point<int> delta_xy )
 {
+    std::cout << "TRANSLATE IN " << getComponentID() << std::endl;
     for ( auto c : selected_items )
     {
         auto b = c->getBounds();
-        
+        std::cout << "translate " << c->getComponentID() << std::endl;
         c->setTopLeftPosition( b.getPosition() + delta_xy );
     }
 }
@@ -287,16 +317,4 @@ void ScoreComponent::flipSelected( int axis )
     }
 }
 
-void ScoreComponent::deselectAllSelected()
-{
-    selected_items.deselectAll();
-    repaint();
-}
 
-void ScoreComponent::notifyEditModeChanged( UI_EditType current_mode )
-{
-    for( auto s : selected_items )
-    {
-        s->notifyEditModeChanged( current_mode );
-    }
-}

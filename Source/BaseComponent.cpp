@@ -117,6 +117,7 @@ void BaseComponent::setBoundsFromSymbol( float x, float y , float w , float h)
 void BaseComponent::selectComponent()
 {
     is_selected = true;
+    //resizableBorder->setVisible( true ); // this makes the resizable border apera also in multiple selection
     repaint();
 }
 
@@ -127,25 +128,70 @@ void BaseComponent::deselectComponent()
     repaint();
 }
 
+/************************/
+/* Expanding/srinking   */
+/************************/
+
+void BaseComponent::setMinimalBounds () {
+    int minx = getWidth(), maxx = 0, miny = getHeight(), maxy = 0;
+    for( int i = 0; i < getNumSubcomponents(); i++)
+    {
+        Rectangle<int> compBounds = getSubcomponent(i)->getBounds();
+        minx =  min( minx, compBounds.getX() );
+        miny =  min( miny, compBounds.getY() );
+        maxx =  max( maxx, compBounds.getRight() );
+        maxy =  max( maxy, compBounds.getBottom() );
+    }
+    setBounds(minx, miny, maxx-minx, maxy-miny);
+    for( int i = 0; i < getNumSubcomponents(); i++)
+    {
+        BaseComponent* subcomp = getSubcomponent(i);
+        subcomp->setTopLeftPosition( subcomp->getX()-getX(), subcomp->getY()-getY() );
+    }
+}
+
+// Maximize I think is the same for everyone...
+void BaseComponent::setMaximalBounds ()
+{
+    for ( int i  = 0; i < getNumSubcomponents(); i++ )
+    {
+        BaseComponent* subcomp = getSubcomponent(i);
+        subcomp->setTopLeftPosition( getX()+subcomp->getX(), getY()+subcomp->getY() );
+    }
+    setBounds( 0, 0, getParentComponent()->getWidth(), getParentComponent()->getHeight());
+}
+
+void BaseComponent::recursiveMaximizeBounds()
+{
+    if ( ! isTopLevelComponent() )  ((BaseComponent*) getParentComponent())->recursiveMaximizeBounds();
+    setMaximalBounds();
+}
+
+void BaseComponent::recursiveShrinkBounds()
+{
+    setMinimalBounds();
+    if ( ! isTopLevelComponent() ) ((BaseComponent*) getParentComponent())->recursiveShrinkBounds();
+}
+
 /************************
  * Component modification callbacks
  ************************/
 
 void BaseComponent::moved ()
 {
-    reportModification(); // shoudl be smarter : call this when the move is over (mouse up)
+    //reportModification(); // shoudl be smarter : call this when the move is over (mouse up)
 }
 
 
 void BaseComponent::resized ()
 {
-    reportModification(); // shoudl be smarter : call this when the move is over (mouse up)
+    //reportModification(); // shoudl be smarter : call this when the move is over (mouse up)
 
     if( !resizableBorder ) // << probably better to initialize the resizable border somewhere else...
     {
         constrainer.setMinimumSize ( m_min_size, m_min_size );
         addChildComponent( resizableBorder = new ResizableBorderComponent(this, &constrainer) );
-        resizableBorder->setBorderThickness( BorderSize<int>(1) );
+        resizableBorder->setBorderThickness( BorderSize<int>(4) );
     }
     
     resizableBorder->setBounds( getLocalBounds() );
@@ -173,11 +219,15 @@ Point<float> BaseComponent::shiftConstrainMouseAngle( const MouseEvent& event )
 
 void BaseComponent::mouseMove( const MouseEvent& event )
 {
-    std::cout << "BaseComponent::mouseMove" << std::endl;
+    //std::cout << "BaseComponent::mouseMove" << std::endl;
 }
+
+
+
 
 void BaseComponent::mouseDown( const MouseEvent& event )
 {
+    //std::cout << "click " << getSymbolTypeStr() << std::endl;
     m_down = event.position;
 }
 
@@ -186,7 +236,7 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
 {
     if( is_selected && (getMainEditMode() == select_mode || getMainEditMode() == select_alt_mode) )
     {
-        PageComponent* p = ( (PageComponent*) getPageComponent() );
+        ScoreComponent* p = ( (ScoreComponent*) getParentComponent() );
         p->translateSelected( (event.position - m_down).toInt() );
     }
 }
@@ -195,9 +245,22 @@ void BaseComponent::mouseUp( const MouseEvent& event )
 {
     if( is_selected && getMainEditMode() == select_mode )
     {
-        resizableBorder->setVisible( true );
+        resizableBorder->setVisible( true ); // here instead of the select callback makes it only when the symbol is clicked alone
         repaint();
     }
+    reportModification();
 }
 
+
+
+void BaseComponent::paint ( Graphics& g )
+{
+    if( in_edit_mode )
+    {
+        g.setColour( Colour::fromFloatRGBA(1.0f,1.0f,1.0f,0.7f)  );
+        g.fillRect( getLocalBounds() );
+        g.setColour( Colour::fromFloatRGBA(0.8f,0.8f,0.8f,0.5f)  );
+        g.fillRect( getLocalBounds() );
+    }
+}
 

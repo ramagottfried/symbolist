@@ -13,13 +13,8 @@
 PageComponent::PageComponent()
 {
     setComponentID("PageComponent");
-    addChildComponent( lassoSelector );
-    lassoSelector.setComponentID("lasso");
-    getLookAndFeel().setColour( lassoSelector.lassoFillColourId, Colours::transparentWhite );
-    getLookAndFeel().setColour( lassoSelector.lassoOutlineColourId, Colour::fromFloatRGBA(0, 0, 0, 0.2) );
-    
-    std::cout << "PageComponent " << this << std::endl;
-
+    activateLasso();
+    //std::cout << "PageComponent " << this << std::endl;
 }
 
 
@@ -39,6 +34,30 @@ void PageComponent::removeSymbolComponent( BaseComponent *c )
 {
     ((SymbolistMainComponent*) (getMainComponent()))->removeSymbolFromScore( c );
     ScoreComponent::removeSymbolComponent( c );
+}
+
+
+void PageComponent::enterEditMode( BaseComponent* c )
+{
+    edited_component = c;
+    edited_component->toFront(true);
+    edited_component->setEditMode(true);
+    edited_component->recursiveMaximizeBounds();
+    this->deactivateLasso();
+    edited_component->activateLasso();
+    
+}
+
+void PageComponent::exitEditMode( )
+{
+    if ( edited_component != NULL )
+    {
+        edited_component->recursiveShrinkBounds();
+        edited_component->setEditMode(false);
+        edited_component->deactivateLasso();
+        this->activateLasso();
+        edited_component = NULL;
+    }
 }
 
 

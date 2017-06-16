@@ -137,13 +137,12 @@ void PathBaseComponent::importFromSymbol(const Symbol &s)
 
         BaseComponent::importFromSymbol(s);
     
-        std::cout << "IMPORT PATH" << std::endl;
-        std::cout << s.getOSCMessageValue(String("/type")).getString() << std::endl;
+        //std::cout << "IMPORT PATH" << std::endl;
+        //std::cout << s.getOSCMessageValue(String("/type")).getString() << std::endl;
         
         int num_pos = s.getOSCMessagePos("/numSegments");
         if( symbol_parse_error( num_pos, "/numSegments" ) ) return;
-        
-        
+    
         OSCBundle b = s.getOSCBundle();
         
         float prev_x = -1111, prev_y = -1111;
@@ -209,8 +208,15 @@ void PathBaseComponent::importFromSymbol(const Symbol &s)
     }
 
 /******************
- * MOUSE INTERACTIONS
+ * INTERACTIONS
  *****************/
+
+void PathBaseComponent::setMinimalBounds ()
+{
+    Rectangle<float> pathBounds = tranformAndGetBoundsInParent( m_path );
+    setBoundsFloatRect( pathBounds );
+}
+
 
 void PathBaseComponent::enterPathEdit ()
 {
@@ -278,6 +284,7 @@ void PathBaseComponent::notifyEditModeChanged( UI_EditType current_mode )
     if( is_selected )
     {
         UI_EditType ed = getMainEditMode();
+        
         if( ed == draw_alt_mode || ed == select_alt_mode )
         {
             enterPathEdit();
@@ -285,7 +292,9 @@ void PathBaseComponent::notifyEditModeChanged( UI_EditType current_mode )
         else
         {
             if( in_edit_mode )
-                exitPathEdit();
+            {
+            exitPathEdit();
+            }
         }
     }
 }
@@ -300,8 +309,7 @@ void PathBaseComponent::mouseDown( const MouseEvent& event )
     m_prev_drag = m_down;
 }
 
-void PathBaseComponent::mouseMove( const MouseEvent& event )
-{}
+void PathBaseComponent::mouseMove( const MouseEvent& event ) {}
 
 void PathBaseComponent::mouseDrag( const MouseEvent& event )
 {
@@ -587,6 +595,9 @@ void PathBaseComponent::updateHandlePositions()
 
 void PathBaseComponent::paint ( Graphics& g )
 {
+    
+    BaseComponent::paint(g);
+    
     int cur_t,local_t = 0;
     g.setColour( getCurrentColor() );
     float strok = strokeType.getStrokeThickness();
@@ -618,13 +629,6 @@ void PathBaseComponent::paint ( Graphics& g )
     }
     
     UI_EditType ed = getMainEditMode();
-
-    if( in_edit_mode )
-    {
-        g.setColour( Colour::fromFloatRGBA(0.0f,0.0f,0.0f,0.2f)  );
-        g.fillRect( getLocalBounds() );
-
-    }
 
     if( !m_preview_path.isEmpty() )
     {

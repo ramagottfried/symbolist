@@ -49,9 +49,8 @@ public:
     
     // selection
     void findLassoItemsInArea (Array < BaseComponent *>& results, const Rectangle<int>& area) override;
-    SelectedItemSet< BaseComponent *>& getLassoSelection() override;
+    SelectedItemSet< BaseComponent *>& getLassoSelection() override { return selected_items; };
     
-    void addItemToSelection(BaseComponent *c);
     void deleteSelectedSymbols();
     void deselectAllSelected();
     void groupSelectedSymbols();
@@ -69,6 +68,9 @@ public:
     inline void giveBackMouse(){ component_grabbing_mouse = false; }
     
     void notifyEditModeChanged( UI_EditType current_mode );
+    
+    void activateLasso();
+    void deactivateLasso();
     
 protected:
 

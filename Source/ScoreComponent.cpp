@@ -50,7 +50,7 @@ void ScoreComponent::addSubcomponent( BaseComponent *c )
     c->setComponentID(String(String(c->getSymbolTypeStr()) += String("_") += String(subcomponents.size())));
     addAndMakeVisible( c );
     //std::cout << "ADDING MOUSE LISTENER TO " << c->getSymbolTypeStr() << std::endl;
-    c->addMouseListener(this, false);
+    c->addMouseListener(this, false); // get rid of this ??
 }
 
 void ScoreComponent::removeSubcomponent( BaseComponent *c )

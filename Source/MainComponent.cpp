@@ -321,7 +321,7 @@ BaseComponent* SymbolistMainComponent::makeComponentFromSymbol(const Symbol* s)
 
 void SymbolistMainComponent::addSymbolToScore ( BaseComponent* c )
 {
-    cout << "ADDING SYMBOL FOR " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
+    //cout << "ADDING SYMBOL FOR " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
     Symbol *s = new Symbol();
     c->addSymbolMessages( s , String("") );
     c->setScoreSymbolPointer( s );
@@ -332,8 +332,8 @@ void SymbolistMainComponent::addSymbolToScore ( BaseComponent* c )
 
 void SymbolistMainComponent::removeSymbolFromScore ( BaseComponent* c )
 {
-//    cout << "REMOVING SYMBOL OF " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
     assert ( c->getScoreSymbolPointer() != NULL ) ;
+    //cout << "REMOVING SYMBOL OF " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
     score.removeSymbol( c->getScoreSymbolPointer() );
     c->setScoreSymbolPointer( NULL );
     executeUpdateCallback( -1 );

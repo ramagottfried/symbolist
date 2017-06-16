@@ -20,11 +20,6 @@ public:
     void mouseDown( const MouseEvent& event ) override;
     void mouseDrag( const MouseEvent& event ) override;
     
-    inline float getThetaChange()
-    {
-        return m_theta_change;
-    }
-    
 private:
     
     Point<float>        m_down;
@@ -36,8 +31,8 @@ private:
     handleType          h_type = anchor;
 
     float               m_prev_theta;
-    float               m_theta_change;
-
+    
+    Rectangle<float>    m_anchor_bounds;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PathHandle)

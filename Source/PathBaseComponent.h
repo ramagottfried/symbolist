@@ -42,8 +42,11 @@ public:
     void setMinimalBounds () override;
 
     Rectangle<float> tranformAndGetBoundsInParent( Path& p );
+
+    void rotatePath ( float theta );
     
     Rectangle<float> getPathBounds();
+    inline Point<float> getCentroid(){ return m_path_centroid; }
     
     void notifyEditModeChanged( UI_EditType current_mode ) override;
     virtual void componentCretated() override {}
@@ -80,6 +83,8 @@ protected:
     std::vector<PathHandle*>    path_handles;
     
     Point<float>                m_prev_drag;
+
+    Point<float>                m_path_centroid;
     
 private:
     //==============================================================================

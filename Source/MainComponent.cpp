@@ -332,7 +332,7 @@ void SymbolistMainComponent::addSymbolToScore ( BaseComponent* c )
 
 void SymbolistMainComponent::removeSymbolFromScore ( BaseComponent* c )
 {
-    cout << "REMOVING SYMBOL OF " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
+//    cout << "REMOVING SYMBOL OF " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
     assert ( c->getScoreSymbolPointer() != NULL ) ;
     score.removeSymbol( c->getScoreSymbolPointer() );
     c->setScoreSymbolPointer( NULL );

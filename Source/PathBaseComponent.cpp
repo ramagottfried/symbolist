@@ -234,7 +234,10 @@ void PathBaseComponent::enterPathEdit ()
     }
     
     if( getMainEditMode() == select_alt_mode && path_handles.size() == 0)
+    {
         makeHandles();
+        repaint();
+    }
 }
 
 void PathBaseComponent::exitPathEdit ()
@@ -314,7 +317,7 @@ void PathBaseComponent::mouseMove( const MouseEvent& event ) {}
 void PathBaseComponent::mouseDrag( const MouseEvent& event )
 {
     BaseComponent::mouseDrag(event);
-    
+
     if ( getMainEditMode() == select_alt_mode && path_handles.size() > 0 )
     {
         m_path.applyTransform( AffineTransform().translated( event.position - m_prev_drag ) );
@@ -323,7 +326,7 @@ void PathBaseComponent::mouseDrag( const MouseEvent& event )
         updateHandlePositions();
         repaint();
     }
-    
+
     m_prev_drag = event.position;
 }
 
@@ -379,6 +382,18 @@ void PathBaseComponent::v_flip()
 }
 
 
+void PathBaseComponent::rotatePath ( float theta )
+{
+    auto org_bounds = m_path.getBounds();
+    auto org_centre = m_path_centroid;
+    
+    m_path.applyTransform( AffineTransform().rotation( theta, org_centre.getX(), org_centre.getY()  ) );
+    
+    updateHandlePositions();
+    repaint(); 
+}
+
+
 /******************
  * preview routine
  *****************/
@@ -396,40 +411,57 @@ void PathBaseComponent::makeHandles()
     
     if( is_selected && path_handles.size() == 0 )
     {
+        
+        float sumx =0, sumy = 0;
+        int count = 0;
+        
         Path::Iterator it( m_path );
         while( it.next() )
         {
             if (it.elementType == it.startNewSubPath)
             {
                 addHandle( PathHandle::anchor, it.x1, it.y1 );
+                sumx += it.x1;
+                sumy += it.y1;
+                count++;
             }
             else if (it.elementType == it.lineTo)
             {
                 addHandle( PathHandle::anchor, it.x1, it.y1 );
+                sumx += it.x1;
+                sumy += it.y1;
+                count++;
             }
             else if (it.elementType == it.quadraticTo)
             {
                 addHandle( PathHandle::curve_control, it.x1, it.y1 );
                 addHandle( PathHandle::anchor, it.x2, it.y2 );
+                sumx += it.x1 + it.x2;
+                sumy += it.y1 + it.y2;
+                count += 2;
             }
             else if (it.elementType == it.cubicTo)
             {
                 addHandle( PathHandle::curve_control, it.x1, it.y1 );
                 addHandle( PathHandle::curve_control, it.x2, it.y2 );
                 addHandle( PathHandle::anchor, it.x3, it.y3 );
+                sumx += it.x1 + it.x2 + it.x3;
+                sumy += it.y1 + it.y2 + it.y3;
+                count += 3;
             }
         }
+        m_path_centroid.setXY( sumx / count, sumy / count );
+        
+        auto p_bounds = m_path.getBounds();
+        
+        float half_w = p_bounds.getWidth() * 0.5;
+        float half_h = p_bounds.getHeight() * 0.5;
+        auto length = sqrt( half_w * half_w + half_h * half_h ) ;
+        
+        addHandle( PathHandle::rotate, p_bounds.getCentreX(), p_bounds.getBottom() + length );
+
     }
     
-    auto p_bounds = m_path.getBounds();
-    
-    float half_w = p_bounds.getWidth() * 0.5;
-    float half_h = p_bounds.getHeight() * 0.5;
-    auto length = sqrt( half_w * half_w + half_h * half_h ) ;
-    
-    addHandle( PathHandle::rotate, p_bounds.getCentreX(), p_bounds.getBottom() + length );
-
-    repaint();
 }
 
 void PathBaseComponent::removeHandles()
@@ -483,12 +515,12 @@ void PathBaseComponent::drawHandlesLines( Graphics& g)
         }
     }
     
+    /*
     auto pbounds = m_path.getBounds();
     auto rot_handle = path_handles.back();
-    
     auto ll = Line<float>(pbounds.getCentreX(), pbounds.getCentreY(), rot_handle->getBounds().getCentreX(), rot_handle->getBounds().getCentreY() );
     g.drawDashedLine(ll, dashes, 2 );
-    
+    */
 }
 
 
@@ -503,51 +535,54 @@ Rectangle<float> PathBaseComponent::tranformAndGetBoundsInParent( Path& p )
     return abs_bounds.expanded( strokeOffset );
 }
 
-
 void PathBaseComponent::updatePathPoints()
 {
     Path p;
     auto handle = path_handles.begin();
-    
+
+    float sumx =0, sumy = 0;
+    int count = 0;
     Path::Iterator it( m_path );
     while( it.next() )
     {
         if (it.elementType == it.startNewSubPath)
         {
             p.startNewSubPath( (*(handle++))->getBounds().toFloat().getCentre() );
+            sumx += it.x1;
+            sumy += it.y1;
+            count++;
         }
         else if (it.elementType == it.lineTo)
         {
             p.lineTo( (*(handle++))->getBounds().toFloat().getCentre() );
+            sumx += it.x1;
+            sumy += it.y1;
+            count++;
         }
         else if (it.elementType == it.quadraticTo)
         {
             p.quadraticTo(  (*(handle++))->getBounds().toFloat().getCentre() ,
                           (*(handle++))->getBounds().toFloat().getCentre() );
+            sumx += it.x1 + it.x2;
+            sumy += it.y1 + it.y2;
+            count += 2;
         }
         else if (it.elementType == it.cubicTo)
         {
             p.cubicTo((*(handle++))->getBounds().toFloat().getCentre(),
                       (*(handle++))->getBounds().toFloat().getCentre(),
                       (*(handle++))->getBounds().toFloat().getCentre() );
+            sumx += it.x1 + it.x2 + it.x3;
+            sumy += it.y1 + it.y2 + it.y3;
+            count += 3;
         }
         else if( it.elementType == it.closePath )
         {
             p.closeSubPath();
         }
     }
-    
-    
-    auto org_bounds = p.getBounds();
-    auto org_centre = org_bounds.getCentre();
 
-    p.applyTransform( AffineTransform().translated(-org_bounds.getX(), -org_bounds.getY() ) );
-
-    p.applyTransform( AffineTransform().rotated( (*handle)->getThetaChange(), org_centre.getX(), org_centre.getY()  ) );
-    
-    auto new_bounds = p.getBounds();
-    auto half_newsize = Point<float>( new_bounds.getWidth(), new_bounds.getHeight()) * 0.5 ;
-    p.applyTransform( AffineTransform().translated( org_centre - half_newsize) );
+    m_path_centroid.setXY( sumx / count, sumy / count );
 
     m_path.swapWithPath( p );
     m_path_origin = m_path.getBounds().getPosition();
@@ -656,6 +691,7 @@ void PathBaseComponent::paint ( Graphics& g )
     if( in_edit_mode && ed == select_alt_mode )
     {
         drawHandlesLines(g);
+//        g.drawRect( m_path.getBounds() );
     }
     
 }

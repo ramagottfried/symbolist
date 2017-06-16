@@ -234,7 +234,7 @@ void BaseComponent::mouseDown( const MouseEvent& event )
 
 void BaseComponent::mouseDrag( const MouseEvent& event )
 {
-    if( is_selected && (getMainEditMode() == select_mode || getMainEditMode() == select_alt_mode) )
+    if( is_selected && (getMainEditMode() == select_mode ) )
     {
         ScoreComponent* p = ( (ScoreComponent*) getParentComponent() );
         p->translateSelected( (event.position - m_down).toInt() );

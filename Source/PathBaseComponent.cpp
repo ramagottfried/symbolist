@@ -340,8 +340,8 @@ void PathBaseComponent::resized()
 
 Rectangle<float> PathBaseComponent::getPathBounds()
 {
-    auto cpy = m_path;
-    return tranformAndGetBoundsInParent( cpy );
+    Path tmp = m_path;
+    return tranformAndGetBoundsInParent( tmp );
 }
 
 void PathBaseComponent::h_flip()
@@ -350,7 +350,7 @@ void PathBaseComponent::h_flip()
                                                      m_path.getBounds().getCentreX(),
                                                      m_path.getBounds().getCentreY()  ) );
     
-    auto actualBounds = tranformAndGetBoundsInParent(m_path);
+    auto actualBounds = tranformAndGetBoundsInParent( m_path );
     m_path.applyTransform( AffineTransform().verticalFlip( actualBounds.getHeight() ) );
     m_path.applyTransform( AffineTransform().translated( m_path_origin ) );
     
@@ -530,10 +530,19 @@ void PathBaseComponent::updatePathPoints()
     }
     
     
-    auto cent = getPathBounds().getCentre();
-    p.applyTransform( AffineTransform().rotated( (*handle)->getThetaChange(), cent.getX(), cent.getY() ) );
+    auto org_bounds = p.getBounds();
+    auto org_centre = org_bounds.getCentre();
+
+    p.applyTransform( AffineTransform().translated(-org_bounds.getX(), -org_bounds.getY() ) );
+
+    p.applyTransform( AffineTransform().rotated( (*handle)->getThetaChange(), org_centre.getX(), org_centre.getY()  ) );
     
+    auto new_bounds = p.getBounds();
+    auto half_newsize = Point<float>( new_bounds.getWidth(), new_bounds.getHeight()) * 0.5 ;
+    p.applyTransform( AffineTransform().translated( org_centre - half_newsize) );
+
     m_path.swapWithPath( p );
+    m_path_origin = m_path.getBounds().getPosition();
     
     updateHandlePositions();
     

@@ -231,6 +231,8 @@ void PathBaseComponent::enterPathEdit ()
 
 void PathBaseComponent::exitPathEdit ()
 {
+    ((PageComponent*)getPageComponent() )->giveBackMouse();
+    
     if( !m_preview_path.isEmpty() )
         m_preview_path.clear();
     
@@ -238,7 +240,6 @@ void PathBaseComponent::exitPathEdit ()
     {
         Rectangle<float> pathBounds = tranformAndGetBoundsInParent( m_path );
         setBoundsFloatRect( pathBounds );
-        ((PageComponent*)getPageComponent() )->giveBackMouse();
     }
     else
     {

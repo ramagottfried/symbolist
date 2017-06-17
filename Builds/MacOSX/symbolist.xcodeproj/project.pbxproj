@@ -11,6 +11,8 @@
 		1107B3DE1EF1751900E2DFA9 /* TextGlyphComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1107B3DB1EF1751900E2DFA9 /* TextGlyphComponent.cpp */; };
 		1107B3E11EF2D2BA00E2DFA9 /* PathHandleComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1107B3DF1EF2D2BA00E2DFA9 /* PathHandleComponent.cpp */; };
 		1107B3E21EF2D45500E2DFA9 /* PathHandleComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1107B3DF1EF2D2BA00E2DFA9 /* PathHandleComponent.cpp */; };
+		1107B3E91EF5388500E2DFA9 /* PathInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1107B3E71EF5388500E2DFA9 /* PathInfo.cpp */; };
+		1107B3EA1EF5388500E2DFA9 /* PathInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1107B3E71EF5388500E2DFA9 /* PathInfo.cpp */; };
 		118C38DE1EC5BC4F006FF4A1 /* Score.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38DC1EC5BC4F006FF4A1 /* Score.cpp */; };
 		118C38DF1EC5BC4F006FF4A1 /* Score.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38DC1EC5BC4F006FF4A1 /* Score.cpp */; };
 		118C38E31EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */; };
@@ -72,6 +74,8 @@
 		1107B3DC1EF1751900E2DFA9 /* TextGlyphComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextGlyphComponent.h; path = ../../Source/TextGlyphComponent.h; sourceTree = "<group>"; };
 		1107B3DF1EF2D2BA00E2DFA9 /* PathHandleComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PathHandleComponent.cpp; path = ../../Source/PathHandleComponent.cpp; sourceTree = "<group>"; };
 		1107B3E01EF2D2BA00E2DFA9 /* PathHandleComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PathHandleComponent.h; path = ../../Source/PathHandleComponent.h; sourceTree = "<group>"; };
+		1107B3E71EF5388500E2DFA9 /* PathInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PathInfo.cpp; path = ../../Source/PathInfo.cpp; sourceTree = "<group>"; };
+		1107B3E81EF5388500E2DFA9 /* PathInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PathInfo.h; path = ../../Source/PathInfo.h; sourceTree = "<group>"; };
 		118C38DC1EC5BC4F006FF4A1 /* Score.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Score.cpp; path = ../../Source/Score.cpp; sourceTree = "<group>"; };
 		118C38DD1EC5BC4F006FF4A1 /* Score.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Score.h; path = ../../Source/Score.h; sourceTree = "<group>"; };
 		118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BaseComponent.cpp; path = ../../Source/BaseComponent.cpp; sourceTree = "<group>"; };
@@ -211,6 +215,8 @@
 				11D86B851EEAEF2000681F6D /* LinePathComponent.cpp */,
 				11D86B861EEAEF2000681F6D /* LinePathComponent.h */,
 				11D86B8F1EEAF9FD00681F6D /* BasicShapePathComponents.h */,
+				1107B3E71EF5388500E2DFA9 /* PathInfo.cpp */,
+				1107B3E81EF5388500E2DFA9 /* PathInfo.h */,
 				1107B3E01EF2D2BA00E2DFA9 /* PathHandleComponent.h */,
 				1107B3DF1EF2D2BA00E2DFA9 /* PathHandleComponent.cpp */,
 				11D86B8A1EEAEF7900681F6D /* PathBaseComponent.h */,
@@ -427,6 +433,7 @@
 				118C38DF1EC5BC4F006FF4A1 /* Score.cpp in Sources */,
 				444CD9041EDDAF1B001AC03A /* SymbolistComponent.cpp in Sources */,
 				44CFE03E1EC3789C009135F8 /* include_juce_gui_basics.mm in Sources */,
+				1107B3EA1EF5388500E2DFA9 /* PathInfo.cpp in Sources */,
 				11D86B8C1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */,
 				44C0729F1EC4AF8C0028D5F8 /* include_juce_osc.cpp in Sources */,
 				11D86B881EEAEF2000681F6D /* LinePathComponent.cpp in Sources */,
@@ -457,6 +464,7 @@
 				118C38DE1EC5BC4F006FF4A1 /* Score.cpp in Sources */,
 				444CD9031EDDAF1B001AC03A /* SymbolistComponent.cpp in Sources */,
 				41C3942D9A94933B560F98F2 /* include_juce_gui_basics.mm in Sources */,
+				1107B3E91EF5388500E2DFA9 /* PathInfo.cpp in Sources */,
 				11D86B8B1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */,
 				44C0729E1EC4AF870028D5F8 /* include_juce_osc.cpp in Sources */,
 				11D86B871EEAEF2000681F6D /* LinePathComponent.cpp in Sources */,

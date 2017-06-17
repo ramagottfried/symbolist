@@ -19,6 +19,9 @@ void PathHandle::mouseDown( const MouseEvent& event )
 {
     m_down = event.position;
     m_prev_theta = -111;
+    auto parent_path = static_cast<PathBaseComponent*>( m_path );
+    m_anchor_bounds = parent_path->getPathBounds();
+
 }
 
 void PathHandle::mouseDrag( const MouseEvent& event )
@@ -30,24 +33,21 @@ void PathHandle::mouseDrag( const MouseEvent& event )
     
     if( h_type == rotate )
     {
-        auto bounds = parent_path->getPathBounds();
-/*
-        float half_w = bounds.getWidth() * 0.5;
-        float half_h = bounds.getHeight() * 0.5;
-        
-        auto length = sqrt( half_w * half_w + half_h * half_h ) + 20 ;
-*/
-        auto delta = parent_path->getCentroid() - getBounds().getCentre().toFloat();
+        auto centroid = parent_path->getCentroid();
+
+        auto delta = centroid - getBounds().getCentre().toFloat();
         auto dx = delta.getX(), dy = delta.getY();
-        
+
+        auto dist = max( m_anchor_bounds.getHeight(), m_anchor_bounds.getWidth() ) + 5;
         auto theta = atan2(dy, dx) - float_Pi;
+        
+        setCentrePosition( centroid.getX() + cos(theta) * dist, centroid.getY() + sin(theta) * dist );
         
         if( m_prev_theta == -111 ) m_prev_theta = theta;
         
         auto delta_rad = theta - m_prev_theta;
         m_prev_theta = theta;
         
-//        setCentrePosition( bounds.getX() + cos(theta) * length, bounds.getY() + sin(theta) * length);
         parent_path->rotatePath( delta_rad  );
 
     }

@@ -320,10 +320,23 @@ void PathBaseComponent::mouseDrag( const MouseEvent& event )
 
     if ( getMainEditMode() == select_alt_mode && path_handles.size() > 0 )
     {
-        m_path.applyTransform( AffineTransform().translated( event.position - m_prev_drag ) );
-        setBounds( getPageComponent()->getLocalBounds() );
+        auto delta = event.position - m_prev_drag;
+        
+        m_path.applyTransform( AffineTransform().translated( delta ) );
+        m_path_centroid += delta;
         
         updateHandlePositions();
+
+        /*  
+         // for translation, this should be enough rather than using updateHandlePositions()
+         // not sure why this doesn't work correcctly
+        for (auto h : path_handles)
+        {
+            auto b = h->getBounds();
+            h->setTopLeftPosition( (b.getPosition().toFloat() + delta).toInt() );
+        }
+         */
+        
         repaint();
     }
 
@@ -453,12 +466,9 @@ void PathBaseComponent::makeHandles()
         m_path_centroid.setXY( sumx / count, sumy / count );
         
         auto p_bounds = m_path.getBounds();
+        auto length = max( p_bounds.getHeight(), p_bounds.getWidth() ) + 5 ;
         
-        float half_w = p_bounds.getWidth() * 0.5;
-        float half_h = p_bounds.getHeight() * 0.5;
-        auto length = sqrt( half_w * half_w + half_h * half_h ) ;
-        
-        addHandle( PathHandle::rotate, p_bounds.getCentreX(), p_bounds.getBottom() + length );
+        addHandle( PathHandle::rotate, m_path_centroid.getX(), m_path_centroid.getY() + length );
 
     }
     
@@ -498,6 +508,10 @@ void PathBaseComponent::drawHandlesLines( Graphics& g)
         }
         else if (it.elementType == it.quadraticTo)
         {
+            
+            auto bounds = PathInfo::getBoundsQuadratic(ax, ay, it.x1, it.y1, it.x2, it.y2);
+            g.drawRect( bounds );
+            
             g.drawDashedLine(Line<float>(ax, ay, it.x1, it.y1), dashes, 2 );
             ax = it.x2;
             ay = it.y2;
@@ -515,12 +529,10 @@ void PathBaseComponent::drawHandlesLines( Graphics& g)
         }
     }
     
-    /*
-    auto pbounds = m_path.getBounds();
     auto rot_handle = path_handles.back();
-    auto ll = Line<float>(pbounds.getCentreX(), pbounds.getCentreY(), rot_handle->getBounds().getCentreX(), rot_handle->getBounds().getCentreY() );
+    auto ll = Line<float>( m_path_centroid.getX(), m_path_centroid.getY(), rot_handle->getBounds().getCentreX(), rot_handle->getBounds().getCentreY() );
     g.drawDashedLine(ll, dashes, 2 );
-    */
+
 }
 
 
@@ -622,6 +634,11 @@ void PathBaseComponent::updateHandlePositions()
         {
         }
     }
+    
+    auto rot_handle = path_handles.back();
+    auto ll = Line<float>( m_path_centroid.getX(), m_path_centroid.getY(), rot_handle->getBounds().getCentreX(), rot_handle->getBounds().getCentreY() );
+
+    
 }
 
 /******************
@@ -695,4 +712,3 @@ void PathBaseComponent::paint ( Graphics& g )
     }
     
 }
-

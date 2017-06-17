@@ -3,6 +3,7 @@
 
 #include "BaseComponent.h"
 #include "PathHandleComponent.h"
+#include "PathInfo.h"
 
 class PathBaseComponent : public BaseComponent 
 {

@@ -6,6 +6,18 @@
  * Utility functions
  **************/
 
+void PathInfo::accumPathBounds( Rectangle<float>& currentBounds, float x, float y )
+{
+    if (x < currentBounds.getX() )
+        currentBounds.setX(x);
+    else if ( x > currentBounds.getRight() )
+        currentBounds.setRight(x);
+        
+    if (y < currentBounds.getY() )
+        currentBounds.setY(y);
+    else if ( y > currentBounds.getBottom() )
+        currentBounds.setBottom(y);
+}
 
 
 
@@ -27,10 +39,11 @@ Point<float> PathInfo::calcBezier( float t, Point<float> a, Point<float> b, Poin
     return a*mt3 + 3.0f*b*mt2*t + 3.0f*c*mt*t2 + d*t3;
 }
 
+/*
 Point<float> pointAbsSqrt( Point<float> p )
 {
     return Point<float>( sqrtf( fabs(p.getX()) ), sqrtf( fabs(p.getY()) ) );
-}
+}*/
 
 // https://github.com/Pomax/bezierjs/blob/gh-pages/lib/utils.js#L377
 std::vector<Point<float> > PathInfo::quadroots( Point<float> a, Point<float> b, Point<float> c )

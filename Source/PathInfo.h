@@ -12,4 +12,7 @@ namespace PathInfo
  
     
     Rectangle<float> getBoundsQuadratic( float x1, float y1, float x2, float y2, float x3, float y3 );
+    
+    void accumPathBounds( Rectangle<float>& currentBounds, float x, float y);
+    
 }

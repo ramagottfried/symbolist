@@ -492,6 +492,8 @@ void PathBaseComponent::drawHandlesLines( Graphics& g)
 {
     float ax = -1, ay = -1;
     float dashes[2] = {2.0f, 2.0f};
+    
+    Rectangle<float> path_bounds( getWidth(), getHeight(), 0, 0);
 
     Path::Iterator it( m_path );
     while( it.next() )
@@ -500,17 +502,21 @@ void PathBaseComponent::drawHandlesLines( Graphics& g)
         {
             ax = it.x1;
             ay = it.y1;
+            PathInfo::accumPathBounds( path_bounds, ax, ay );
+
         }
         else if (it.elementType == it.lineTo)
         {
             ax = it.x1;
             ay = it.y1;
+            PathInfo::accumPathBounds( path_bounds, ax, ay );
+
         }
         else if (it.elementType == it.quadraticTo)
         {
             
             auto bounds = PathInfo::getBoundsQuadratic(ax, ay, it.x1, it.y1, it.x2, it.y2);
-            g.drawRect( bounds );
+            path_bounds = path_bounds.getUnion(bounds);
             
             g.drawDashedLine(Line<float>(ax, ay, it.x1, it.y1), dashes, 2 );
             ax = it.x2;
@@ -529,6 +535,10 @@ void PathBaseComponent::drawHandlesLines( Graphics& g)
         }
     }
     
+    g.drawRect( path_bounds );
+
+    m_path_centroid = path_bounds.getCentre();
+
     auto rot_handle = path_handles.back();
     auto ll = Line<float>( m_path_centroid.getX(), m_path_centroid.getY(), rot_handle->getBounds().getCentreX(), rot_handle->getBounds().getCentreY() );
     g.drawDashedLine(ll, dashes, 2 );

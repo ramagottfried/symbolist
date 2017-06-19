@@ -33,22 +33,22 @@ void PathHandle::mouseDrag( const MouseEvent& event )
     
     if( h_type == rotate )
     {
-        auto centroid = parent_path->getCentroid();
+        auto centre = m_anchor_bounds.getCentre();
 
-        auto delta = centroid - getBounds().getCentre().toFloat();
+        auto delta = centre - getBounds().getCentre().toFloat();
         auto dx = delta.getX(), dy = delta.getY();
 
-        auto dist = max( m_anchor_bounds.getHeight(), m_anchor_bounds.getWidth() ) + 5;
+        auto dist = max( m_anchor_bounds.getHeight(), m_anchor_bounds.getWidth() ) * 0.5 + 5;
         auto theta = atan2(dy, dx) - float_Pi;
         
-        setCentrePosition( centroid.getX() + cos(theta) * dist, centroid.getY() + sin(theta) * dist );
+        setCentrePosition( centre.getX() + cos(theta) * dist, centre.getY() + sin(theta) * dist );
         
         if( m_prev_theta == -111 ) m_prev_theta = theta;
         
         auto delta_rad = theta - m_prev_theta;
         m_prev_theta = theta;
         
-        parent_path->rotatePath( delta_rad  );
+        parent_path->rotatePath( delta_rad, centre.getX(), centre.getY()  );
 
     }
     else

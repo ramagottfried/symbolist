@@ -185,7 +185,7 @@ void SymbolistMainComponent::symbolistAPI_closeWindow()
 {
     std::cout << "DELETE WINDOW: " << this << std::endl;
     delete this->getTopLevelComponent(); // = the window
-    JUCEApplication::getInstance()->systemRequestedQuit();
+//    JUCEApplication::getInstance()->systemRequestedQuit();
 }
 
 void SymbolistMainComponent::symbolistAPI_windowToFront()

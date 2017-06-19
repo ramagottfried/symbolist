@@ -327,15 +327,11 @@ void PathBaseComponent::mouseDrag( const MouseEvent& event )
         
         updateHandlePositions();
 
-        /*  
-         // for translation, this should be enough rather than using updateHandlePositions()
-         // not sure why this doesn't work correcctly
-        for (auto h : path_handles)
-        {
-            auto b = h->getBounds();
-            h->setTopLeftPosition( (b.getPosition().toFloat() + delta).toInt() );
+        { // PUT THIS SOMEWHERE ELSE LATER
+            auto rot_handle = path_handles.back();
+            auto length = max( m_path_bounds.getHeight(), m_path_bounds.getWidth() ) * 0.5 + 5;
+            rot_handle->setCentrePosition( m_path_centroid.getX(), m_path_centroid.getY() + length );
         }
-         */
         
         repaint();
     }
@@ -360,12 +356,6 @@ void PathBaseComponent::resized()
             m_path.scaleToFit(local.getX(), local.getY(), local.getWidth(), local.getHeight(), false );
     }
     
-}
-
-Rectangle<float> PathBaseComponent::getPathBounds()
-{
-    Path tmp = m_path;
-    return tranformAndGetBoundsInParent( tmp );
 }
 
 void PathBaseComponent::h_flip()
@@ -395,13 +385,16 @@ void PathBaseComponent::v_flip()
 }
 
 
+void PathBaseComponent::rotatePath ( float theta, float ax, float ay )
+{
+    m_path.applyTransform( AffineTransform().rotation( theta, ax, ay ) );
+    updateHandlePositions();
+    repaint();
+}
+
 void PathBaseComponent::rotatePath ( float theta )
 {
-    auto org_bounds = m_path.getBounds();
-    auto org_centre = m_path_centroid;
-    
-    m_path.applyTransform( AffineTransform().rotation( theta, org_centre.getX(), org_centre.getY()  ) );
-    
+    m_path.applyTransform( AffineTransform().rotation( theta, m_path_centroid.getX(), m_path_centroid.getY()  ) );
     updateHandlePositions();
     repaint(); 
 }
@@ -468,7 +461,7 @@ void PathBaseComponent::makeHandles()
         
         m_path_centroid = m_path_bounds.getCentre();
         
-        auto length = max( m_path_bounds.getHeight(), m_path_bounds.getWidth() ) + 5 ;
+        auto length = max( m_path_bounds.getHeight(), m_path_bounds.getWidth() ) * 0.5 + 5;
         
         addHandle( PathHandle::rotate, m_path_centroid.getX(), m_path_centroid.getY() + length );
 
@@ -584,7 +577,7 @@ void PathBaseComponent::updatePathPoints()
     m_path_centroid = m_path_bounds.getCentre();
     
     m_path.swapWithPath( p );
-    m_path_origin = m_path.getBounds().getPosition();
+    m_path_origin = m_path_bounds.getPosition();
     
 }
 
@@ -634,11 +627,6 @@ void PathBaseComponent::updateHandlePositions()
     }
     
     m_path_centroid = m_path_bounds.getCentre();
-    
-    auto rot_handle = path_handles.back();
-    auto ll = Line<float>( m_path_centroid.getX(), m_path_centroid.getY(), rot_handle->getBounds().getCentreX(), rot_handle->getBounds().getCentreY() );
-
-    
 }
 
 /******************

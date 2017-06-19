@@ -32,22 +32,23 @@ public:
 
     void paint ( Graphics& g ) override;
     void resized () override;
-    void h_flip() override;
-    void v_flip() override;
-
+    
     void mouseDown( const MouseEvent& event ) override;
     void mouseMove( const MouseEvent& event ) override;
     void mouseDrag( const MouseEvent& event ) override;
     void mouseUp( const MouseEvent& event ) override;
     
+    void h_flip() override;
+    void v_flip() override;
+    void rotatePath ( float theta );
+    void rotatePath ( float theta, float ax, float ay );
+    
     void setMinimalBounds () override;
 
     Rectangle<float> tranformAndGetBoundsInParent( Path& p );
-
-    void rotatePath ( float theta );
     
-    Rectangle<float> getPathBounds();
     inline Point<float> getCentroid(){ return m_path_centroid; }
+    inline Rectangle<float> getPathBounds() { return m_path_bounds; }
     
     void notifyEditModeChanged( UI_EditType current_mode ) override;
     virtual void componentCretated() override {}

@@ -425,47 +425,50 @@ void PathBaseComponent::makeHandles()
     if( is_selected && path_handles.size() == 0 )
     {
         
-        float sumx =0, sumy = 0;
-        int count = 0;
-        
+        float ax =0, ay = 0;
+        Sym_PathBounds p_bounds;
+
         Path::Iterator it( m_path );
         while( it.next() )
         {
             if (it.elementType == it.startNewSubPath)
             {
                 addHandle( PathHandle::anchor, it.x1, it.y1 );
-                sumx += it.x1;
-                sumy += it.y1;
-                count++;
+                p_bounds.addSegment( it );
+                ax = it.x1;
+                ay = it.y1;
             }
             else if (it.elementType == it.lineTo)
             {
                 addHandle( PathHandle::anchor, it.x1, it.y1 );
-                sumx += it.x1;
-                sumy += it.y1;
-                count++;
+                p_bounds.addSegment( it );
+                ax = it.x1;
+                ay = it.y1;
+
             }
             else if (it.elementType == it.quadraticTo)
             {
                 addHandle( PathHandle::curve_control, it.x1, it.y1 );
                 addHandle( PathHandle::anchor, it.x2, it.y2 );
-                sumx += it.x1 + it.x2;
-                sumy += it.y1 + it.y2;
-                count += 2;
+                p_bounds.addSegment(it, ax, ay);
+                ax = it.x2;
+                ay = it.y2;
             }
             else if (it.elementType == it.cubicTo)
             {
                 addHandle( PathHandle::curve_control, it.x1, it.y1 );
                 addHandle( PathHandle::curve_control, it.x2, it.y2 );
                 addHandle( PathHandle::anchor, it.x3, it.y3 );
-                sumx += it.x1 + it.x2 + it.x3;
-                sumy += it.y1 + it.y2 + it.y3;
-                count += 3;
+
+                // addSegment() for cubic here
+                ax = it.x3;
+                ay = it.y3;
             }
         }
-        m_path_centroid.setXY( sumx / count, sumy / count );
         
-        auto p_bounds = m_path.getBounds();
+        m_path_bounds = p_bounds;
+        m_path_centroid = p_bounds.getCentre();
+        
         auto length = max( p_bounds.getHeight(), p_bounds.getWidth() ) + 5 ;
         
         addHandle( PathHandle::rotate, m_path_centroid.getX(), m_path_centroid.getY() + length );
@@ -493,8 +496,6 @@ void PathBaseComponent::drawHandlesLines( Graphics& g)
     float ax = -1, ay = -1;
     float dashes[2] = {2.0f, 2.0f};
     
-    Rectangle<float> path_bounds( getWidth(), getHeight(), 0, 0);
-
     Path::Iterator it( m_path );
     while( it.next() )
     {
@@ -502,22 +503,14 @@ void PathBaseComponent::drawHandlesLines( Graphics& g)
         {
             ax = it.x1;
             ay = it.y1;
-            PathInfo::accumPathBounds( path_bounds, ax, ay );
-
         }
         else if (it.elementType == it.lineTo)
         {
             ax = it.x1;
             ay = it.y1;
-            PathInfo::accumPathBounds( path_bounds, ax, ay );
-
         }
         else if (it.elementType == it.quadraticTo)
         {
-            
-            auto bounds = PathInfo::getBoundsQuadratic(ax, ay, it.x1, it.y1, it.x2, it.y2);
-            path_bounds = path_bounds.getUnion(bounds);
-            
             g.drawDashedLine(Line<float>(ax, ay, it.x1, it.y1), dashes, 2 );
             ax = it.x2;
             ay = it.y2;
@@ -535,9 +528,7 @@ void PathBaseComponent::drawHandlesLines( Graphics& g)
         }
     }
     
-    g.drawRect( path_bounds );
-
-    m_path_centroid = path_bounds.getCentre();
+    g.drawRect( m_path_bounds );
 
     auto rot_handle = path_handles.back();
     auto ll = Line<float>( m_path_centroid.getX(), m_path_centroid.getY(), rot_handle->getBounds().getCentreX(), rot_handle->getBounds().getCentreY() );
@@ -561,42 +552,27 @@ void PathBaseComponent::updatePathPoints()
 {
     Path p;
     auto handle = path_handles.begin();
-
-    float sumx =0, sumy = 0;
-    int count = 0;
     Path::Iterator it( m_path );
     while( it.next() )
     {
         if (it.elementType == it.startNewSubPath)
         {
             p.startNewSubPath( (*(handle++))->getBounds().toFloat().getCentre() );
-            sumx += it.x1;
-            sumy += it.y1;
-            count++;
         }
         else if (it.elementType == it.lineTo)
         {
             p.lineTo( (*(handle++))->getBounds().toFloat().getCentre() );
-            sumx += it.x1;
-            sumy += it.y1;
-            count++;
         }
         else if (it.elementType == it.quadraticTo)
         {
             p.quadraticTo(  (*(handle++))->getBounds().toFloat().getCentre() ,
                           (*(handle++))->getBounds().toFloat().getCentre() );
-            sumx += it.x1 + it.x2;
-            sumy += it.y1 + it.y2;
-            count += 2;
         }
         else if (it.elementType == it.cubicTo)
         {
             p.cubicTo((*(handle++))->getBounds().toFloat().getCentre(),
                       (*(handle++))->getBounds().toFloat().getCentre(),
                       (*(handle++))->getBounds().toFloat().getCentre() );
-            sumx += it.x1 + it.x2 + it.x3;
-            sumy += it.y1 + it.y2 + it.y3;
-            count += 3;
         }
         else if( it.elementType == it.closePath )
         {
@@ -604,12 +580,11 @@ void PathBaseComponent::updatePathPoints()
         }
     }
 
-    m_path_centroid.setXY( sumx / count, sumy / count );
-
+    m_path_bounds = Sym_PathBounds( p );
+    m_path_centroid = m_path_bounds.getCentre();
+    
     m_path.swapWithPath( p );
     m_path_origin = m_path.getBounds().getPosition();
-    
-    updateHandlePositions();
     
 }
 
@@ -617,6 +592,9 @@ void PathBaseComponent::updateHandlePositions()
 {
     Path p;
     auto handle = path_handles.begin();
+    Sym_PathBounds p_bounds;
+    
+    float ax = 0, ay = 0;
     
     Path::Iterator it( m_path );
     while( it.next() )
@@ -624,15 +602,24 @@ void PathBaseComponent::updateHandlePositions()
         if (it.elementType == it.startNewSubPath)
         {
             (*(handle++))->setCentrePosition(it.x1, it.y1);
+            p_bounds.addSegment( it );
+            ax = it.x1;
+            ay = it.y1;
         }
         else if (it.elementType == it.lineTo)
         {
             (*(handle++))->setCentrePosition(it.x1, it.y1);
+            p_bounds.addSegment( it );
+            ax = it.x1;
+            ay = it.y1;
         }
         else if (it.elementType == it.quadraticTo)
         {
             (*(handle++))->setCentrePosition(it.x1, it.y1);
             (*(handle++))->setCentrePosition(it.x2, it.y2);
+            p_bounds.addSegment( it, ax, ay );
+            ax = it.x2;
+            ay = it.y2;
         }
         else if (it.elementType == it.cubicTo)
         {
@@ -644,6 +631,9 @@ void PathBaseComponent::updateHandlePositions()
         {
         }
     }
+    
+    m_path_bounds = p_bounds;
+    m_path_centroid = p_bounds.getCentre();
     
     auto rot_handle = path_handles.back();
     auto ll = Line<float>( m_path_centroid.getX(), m_path_centroid.getY(), rot_handle->getBounds().getCentreX(), rot_handle->getBounds().getCentreY() );

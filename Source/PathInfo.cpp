@@ -1,6 +1,128 @@
 
 #include "PathInfo.h"
 
+void Sym_PathBounds::init()
+{
+    setSize(0, 0);
+    has_position = false;
+}
+
+void Sym_PathBounds::adjustWithPoint(float x, float y)
+{
+    if( isEmpty() )
+    {
+        if( !has_position )
+        {
+            setPosition(x, y);
+            has_position = true;
+        }
+        else
+        {
+            auto newX = jmin(x, getX());
+            auto newY = jmin(y, getY());
+            auto newW = jmax(x, getX()) - newX;
+            auto newH = jmax(y, getY()) - newY;
+            
+            setBounds( newX, newY, newW, newH );
+        }
+    }
+    else
+    {
+        auto newX = jmin(x, getX());
+        auto newY = jmin(y, getY());
+        auto newW = jmax(x, getRight()) - newX;
+        auto newH = jmax(y, getBottom()) - newY;
+        
+        setBounds( newX, newY, newW, newH );
+    }
+}
+
+void Sym_PathBounds::addQuadraticSegment( const Path::Iterator& it, const float ax, const float ay)
+{
+    
+    adjustWithPoint(ax, ay);
+    adjustWithPoint(it.x2, it.y2);
+    
+    auto a = Point<float>(ax, ay);
+    auto b = Point<float>(it.x1, it.y1);
+    auto c = Point<float>(it.x2, it.y2);
+    
+    auto pt = PathInfo::quadroots( a,b,c );
+    if( pt.size() > 0 )
+    {
+        auto q_r = pt.back();
+        auto x =  q_r.getX();
+        auto y =  q_r.getY();
+        
+        if( x >= 0 && x <= 1)
+        {
+            auto pt = PathInfo::calcBezier(x, a, b, c );
+            adjustWithPoint( pt.getX(), this->getY() );
+        }
+        
+        if( y >= 0 && y <= 1)
+        {
+            auto pt = PathInfo::calcBezier(y, a, b, c );
+            adjustWithPoint( this->getX(), pt.getY() );
+        }
+    }
+}
+
+
+void Sym_PathBounds::addSegment( const Path::Iterator& it, const float ax, const float ay)
+{
+    if ( it.elementType == it.startNewSubPath )
+    {
+        adjustWithPoint(it.x1, it.y1);
+    }
+    else if (it.elementType == it.lineTo)
+    {
+        adjustWithPoint(it.x1, it.y1);
+    }
+    else if (it.elementType == it.quadraticTo)
+    {
+        addQuadraticSegment(it, ax, ay);
+    }
+}
+
+Rectangle<float> Sym_PathBounds::getRealPathBounds( const Path &p )
+{
+    init();
+    
+    float ax =0, ay = 0;
+    Path::Iterator it( p );
+    while( it.next() )
+    {
+        if (it.elementType == it.startNewSubPath)
+        {
+            addSegment( it );
+            ax = it.x1;
+            ay = it.y1;
+        }
+        else if (it.elementType == it.lineTo)
+        {
+            addSegment( it );
+            ax = it.x1;
+            ay = it.y1;
+            
+        }
+        else if (it.elementType == it.quadraticTo)
+        {
+            addSegment(it, ax, ay);
+            ax = it.x2;
+            ay = it.y2;
+        }
+        else if (it.elementType == it.cubicTo)
+        {
+            // addSegment() for cubic here
+            ax = it.x3;
+            ay = it.y3;
+        }
+    }
+    return *this;
+}
+
+
 
 /***************
  * Utility functions

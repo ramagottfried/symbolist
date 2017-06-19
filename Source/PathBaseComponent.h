@@ -87,6 +87,8 @@ protected:
 
     Point<float>                m_path_centroid;
     
+    Rectangle<float>            m_path_bounds;
+    
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PathBaseComponent)

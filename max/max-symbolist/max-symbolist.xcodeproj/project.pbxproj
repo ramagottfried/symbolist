@@ -45,9 +45,9 @@
 		1186483D1EF7D7CC00904672 = {
 			isa = PBXGroup;
 			children = (
-				118648771EF7F6D200904672 /* Frameworks */,
 				118648681EF7DA7A00904672 /* symbolist.cpp */,
 				118648661EF7DA6100904672 /* Info.plist */,
+				118648771EF7F6D200904672 /* Frameworks */,
 				118648471EF7D7CC00904672 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -351,6 +351,7 @@
 				118648651EF7D84300904672 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

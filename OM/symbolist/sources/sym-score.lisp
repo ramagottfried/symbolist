@@ -90,8 +90,9 @@
       (symbolist::symbolistWindowToFront (symbolist-window self))
     (let* ((sscore (object-value self))
            (ptr (sym-score-make-score-pointer sscore))
-           (s-editor (symbolist::symbolistNewWindow)))
+           (s-editor (symbolist::symbolistNew)))
       (symbolist::symbolistsetsymbols s-editor (length (symbols sscore)) ptr)
+      (symbolist::symbolistopenwindow s-editor)
       (setf (symbolist-window self) s-editor)
       (push self *symbolist-editors*)
       (symbolist::symbolistWindowSetName s-editor (editor-window-title self))
@@ -109,6 +110,7 @@
         
 (defmethod editor-close ((self sym-editor))
   (symbolist::symbolistCloseWindow (symbolist-window self))
+  (symbolist::symbolistFree (symbolist-window self))
   (setf (symbolist-window self) nil)
   (setf *symbolist-editors* (remove self *symbolist-editors*))
   (call-next-method)) 

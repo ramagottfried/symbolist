@@ -6,9 +6,10 @@
  * SHARED BY THE LIBRARY AND THE STANDALONE APP
  ************************************************/
 
-SymbolistMainWindow::SymbolistMainWindow () : DocumentWindow ( "symbolist",
+SymbolistMainWindow::SymbolistMainWindow (SymbolistHandler *sh) : DocumentWindow ( "symbolist",
                                                                 Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId),
-                                                                DocumentWindow::allButtons)
+                                                                DocumentWindow::allButtons),
+                                            main_component(sh)
 {
     // default stuff copied from Juce
     setUsingNativeTitleBar (true);
@@ -18,14 +19,31 @@ SymbolistMainWindow::SymbolistMainWindow () : DocumentWindow ( "symbolist",
     setResizable(true, true);
 }
 
+void SymbolistMainWindow::closeButtonPressed()
+{
+    main_component.close();
+}
+
 
 /***********************************
  * SPECIFIC FOR THE LIBRARY
  ***********************************/
 
+
+
 void SymbolistEditorWindow::closeButtonPressed()
 {
-    main_component.executeCloseCallback();
+    SymbolistMainWindow::closeButtonPressed();
     delete this;
 }
 
+
+/***********************************
+ * SPECIFIC FOR THE STANDALONE APP
+ ***********************************/
+
+void AppMainWindow::closeButtonPressed()
+{
+    SymbolistMainWindow::closeButtonPressed();
+    JUCEApplication::getInstance()->systemRequestedQuit();
+}

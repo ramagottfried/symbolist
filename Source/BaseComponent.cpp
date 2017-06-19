@@ -2,7 +2,7 @@
 #include "BaseComponent.h"
 #include "PageComponent.h"
 #include "ScoreComponent.h"
-#include "MainComponent.h"
+#include "SymbolistMainComponent.h"
 
 // do we need this ?
 template <typename T> void printPoint(Point<T> point, String name = "point" )
@@ -43,7 +43,7 @@ void BaseComponent::reportModification()
     {
         if ( isTopLevelComponent() )
         {
-            ((SymbolistMainComponent*) getMainComponent())->modifySymbolInScore( this );
+            getSymbolistHandler()->modifySymbolInScore( this );
         }
         else
         {

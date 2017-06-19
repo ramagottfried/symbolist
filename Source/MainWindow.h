@@ -4,21 +4,24 @@
 
 #include "types.h"
 
-#include "MainComponent.h"
+#include "SymbolistMainComponent.h"
 
 
 /************************************************
  * SHARED BY THE LIBRARY AND THE STANDALONE APP
  ************************************************/
 
+
 class SymbolistMainWindow : public DocumentWindow {
     
 public:
 
-    SymbolistMainWindow ();
+    SymbolistMainWindow (SymbolistHandler *sh) ;
     ~SymbolistMainWindow () {}
     
-    inline SymbolistMainComponent* getSymbolistMainComponent() { return &main_component; }
+    inline SymbolistMainComponent* getMainComponent() { return &main_component; }
+    
+    void closeButtonPressed() override;
     
 protected:
 
@@ -36,7 +39,7 @@ class SymbolistEditorWindow : public SymbolistMainWindow {
     
 public:
     
-    SymbolistEditorWindow () : SymbolistMainWindow () {}
+    SymbolistEditorWindow (SymbolistHandler *sh) : SymbolistMainWindow (sh) {}
     ~SymbolistEditorWindow () {}
     
     void closeButtonPressed() override;
@@ -44,5 +47,24 @@ public:
 private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistEditorWindow)
+};
+
+
+
+//==============================================================================
+/*
+ This class implements the desktop window that contains an instance of
+ our MainContentComponent class.
+ */
+class AppMainWindow    : public SymbolistMainWindow
+{
+public:
+    
+    AppMainWindow (SymbolistHandler *sh)  : SymbolistMainWindow (sh) {}
+    
+    void closeButtonPressed() override;
+    
+private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AppMainWindow)
 };
 

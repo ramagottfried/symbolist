@@ -1,7 +1,7 @@
 
 
 #include "ScoreComponent.h"
-#include "MainComponent.h"
+#include "SymbolistMainComponent.h"
 #include "SymbolGroupComponent.h"
 
 
@@ -244,7 +244,7 @@ void ScoreComponent::groupSelectedSymbols()
         // create a symbol with these bounds
         Symbol s ("group", minx, miny, maxx-minx, maxy-miny);
         s.addOSCMessage( "/numsymbols", 0 );
-        SymbolGroupComponent *group = (SymbolGroupComponent*) SymbolistMainComponent::makeComponentFromSymbol( &s );
+        SymbolGroupComponent *group = (SymbolGroupComponent*) SymbolistHandler::makeComponentFromSymbol( &s );
         
         
         Rectangle<int> groupBounds( minx, miny, maxx-minx, maxy-miny );
@@ -302,14 +302,14 @@ void ScoreComponent::flipSelectedSymbols( int axis )
 
 BaseComponent* ScoreComponent::mouseAddSymbolAt ( Point<float> p )
 {
-    Symbol* symbol_template = ((SymbolistMainComponent*) getMainComponent())->getCurrentSymbol();
+    Symbol* symbol_template = getSymbolistHandler()->getCurrentSymbol();
     
     // sets position in symbol before creation
     // will need to make offset for center based symbols (circle, square, etc.)
     symbol_template->setPosition( p );
     
     // create a new component from the current selected symbol of the palette
-    BaseComponent *c = SymbolistMainComponent::makeComponentFromSymbol( symbol_template );
+    BaseComponent *c = SymbolistHandler::makeComponentFromSymbol( symbol_template );
 
     // add component in the view
     addSymbolComponent( c );

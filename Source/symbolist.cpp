@@ -7,66 +7,76 @@
  */
 /***************************************************/
 #include "symbolist.hpp"
-#include "MainComponent.h"
+#include "SymbolistHandler.h"
 
 const char* symbolistInfo()
 {
     return "symbolist v.0.1";
 }
 
-void *symbolistNewWindow()
+void* symbolistNew()
 {
-    return SymbolistMainComponent::symbolistAPI_createWindow();
+    return SymbolistHandler::symbolistAPI_newSymbolist();
 }
 
-void symbolistCloseWindow(void* maincomponent)
+void symbolistFree(void* symbolist_handler)
 {
-    static_cast<SymbolistMainComponent*>(maincomponent)->symbolistAPI_closeWindow();
+    static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_freeSymbolist();
 }
 
-void symbolistWindowToFront(void* maincomponent)
+void symbolistOpenWindow(void* symbolist_handler)
 {
-    static_cast<SymbolistMainComponent*>(maincomponent)->symbolistAPI_windowToFront();
+    static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_openWindow();
 }
 
-void symbolistWindowSetName(void* maincomponent, char *name)
+void symbolistCloseWindow(void* symbolist_handler)
 {
-    static_cast<SymbolistMainComponent*>(maincomponent)->symbolistAPI_windowSetName(String(name));
+    static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_closeWindow();
 }
 
-void symbolistRegisterCloseCallback(void* maincomponent, symbolistCloseCallback callback)
+void symbolistWindowToFront(void* symbolist_handler)
 {
-    static_cast<SymbolistMainComponent*>(maincomponent)->symbolistAPI_registerCloseCallback(callback);
+    static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_windowToFront();
 }
 
-void symbolistRegisterUpdateCallback(void* maincomponent, symbolistUpdateCallback callback)
+void symbolistWindowSetName(void* symbolist_handler, char *name)
 {
-    static_cast<SymbolistMainComponent*>(maincomponent)->symbolistAPI_registerUpdateCallback(callback);
+    static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_windowSetName(String(name));
 }
 
-void symbolistRegisterTransportCallback(void* maincomponent, symbolistTransportCallback callback)
+void symbolistRegisterCloseCallback(void* symbolist_handler, symbolistCloseCallback callback)
 {
-    static_cast<SymbolistMainComponent*>(maincomponent)->symbolistAPI_registerTransportCallback(callback);
+    static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_registerCloseCallback(callback);
 }
 
-int symbolistGetNumSymbols(void* maincomponent)
+void symbolistRegisterUpdateCallback(void* symbolist_handler, symbolistUpdateCallback callback)
 {
-    return static_cast<SymbolistMainComponent*>(maincomponent)->symbolistAPI_getNumSymbols();
+    static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_registerUpdateCallback(callback);
 }
 
-odot_bundle* symbolistGetSymbol(void* maincomponent, int n)
+void symbolistRegisterTransportCallback(void* symbolist_handler, symbolistTransportCallback callback)
 {
-    return static_cast<SymbolistMainComponent*>(maincomponent)->symbolistAPI_getSymbol(n);
+    static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_registerTransportCallback(callback);
 }
 
-void symbolistSetSymbols(void* maincomponent, int n, odot_bundle **bundle_array)
+int symbolistGetNumSymbols(void* symbolist_handler)
 {
-    static_cast<SymbolistMainComponent*>(maincomponent)->symbolistAPI_setSymbols(n, bundle_array);
+    return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getNumSymbols();
 }
 
-void symbolistSetTime(void* maincomponent, int time_ms)
+odot_bundle* symbolistGetSymbol(void* symbolist_handler, int n)
 {
-    static_cast<SymbolistMainComponent*>(maincomponent)->symbolistAPI_setTime(time_ms);
+    return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getSymbol(n);
+}
+
+void symbolistSetSymbols(void* symbolist_handler, int n, odot_bundle **bundle_array)
+{
+    static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setSymbols(n, bundle_array);
+}
+
+void symbolistSetTime(void* symbolist_handler, int time_ms)
+{
+    static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setTime(time_ms);
 }
 
 

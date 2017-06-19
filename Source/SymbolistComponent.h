@@ -11,13 +11,14 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "types.h"
+#include "SymbolistHandler.h"
 
 class SymbolistComponent : public Component
 {
 public:
     
     virtual SymbolistComponent* getPageComponent();
-    virtual SymbolistComponent* getMainComponent();
+    virtual SymbolistHandler* getSymbolistHandler();
     
     UI_EditType getMainEditMode();
 };

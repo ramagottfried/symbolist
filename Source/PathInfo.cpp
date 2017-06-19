@@ -69,6 +69,16 @@ void Sym_PathBounds::addQuadraticSegment( const Path::Iterator& it, const float 
 }
 
 
+void Sym_PathBounds::addCubicSegment( const Path::Iterator& it, const float ax, const float ay)
+{
+    
+    adjustWithPoint(ax, ay);
+    adjustWithPoint(it.x2, it.y2);
+    
+    auto testRect = PathInfo::getBoundsCubic( ax, ay, it.x1, it.y1, it.x2, it.y2, it.x3, it.y3 );
+    printRect(testRect);
+}
+
 void Sym_PathBounds::addSegment( const Path::Iterator& it, const float ax, const float ay)
 {
     if ( it.elementType == it.startNewSubPath )
@@ -82,6 +92,10 @@ void Sym_PathBounds::addSegment( const Path::Iterator& it, const float ax, const
     else if (it.elementType == it.quadraticTo)
     {
         addQuadraticSegment(it, ax, ay);
+    }
+    else if( it.elementType == it.cubicTo )
+    {
+        addCubicSegment( it, ax, ay );
     }
 }
 
@@ -219,107 +233,102 @@ Rectangle<float> PathInfo::getBoundsQuadratic( float x1, float y1, float x2, flo
     return bounds;
 }
 
-/*
+
  // Source: how-to-calculate-bezier-curves-bounding.html
  // Original version: NISHIO Hirokazu
  // Modifications: Timo
- Rectangle<float> getBoundsOfCurve(float x0, float y0, float x1, float y1, float x2, float y2, float x3, float y3)
- //Rectangle<float> getBoundsOfCurve( Point<float> p0, Point<float> p1, Point<float> p2, Point<float> p3 )
+ Rectangle<float> PathInfo::getBoundsCubic(float x0, float y0, float x1, float y1, float x2, float y2, float x3, float y3)
  {
  
- vector<float> x_pts;
- vector<float> y_pts;
- vector<float> tvalues;
- 
- x_pts.emplace_back( x0 );
- y_pts.emplace_back( y0 );
- x_pts.emplace_back( x3 );
- y_pts.emplace_back( y3 );
- 
- 
- float a, b, c, t, t1, t2, b2ac, sqrtb2ac;
- for (int i = 0; i < 2; ++i)
- {
- if (i == 0)
- {
- b = 6 * x0 - 12 * x1 + 6 * x2;
- a = -3 * x0 + 9 * x1 - 9 * x2 + 3 * x3;
- c = 3 * x1 - 3 * x0;
- }
- else
- {
- b = 6 * y0 - 12 * y1 + 6 * y2;
- a = -3 * y0 + 9 * y1 - 9 * y2 + 3 * y3;
- c = 3 * y1 - 3 * y0;
- }
- 
- if (abs(a) < 1e-12) // Numerical robustness
- {
- if (abs(b) < 1e-12) // Numerical robustness
- {
- continue;
- }
- t = -c / b;
- if (0 < t && t < 1)
- {
- tvalues.emplace_back(t);
- }
- continue;
- }
- 
- b2ac = b * b - 4 * c * a;
- sqrtb2ac = sqrt(b2ac);
- if (b2ac < 0)
- {
- continue;
- }
- 
- t1 = (-b + sqrtb2ac) / (2 * a);
- if (0 < t1 && t1 < 1)
- {
- tvalues.emplace_back(t1);
- }
- 
- t2 = (-b - sqrtb2ac) / (2 * a);
- if (0 < t2 && t2 < 1)
- {
- tvalues.emplace_back(t2);
- }
- 
- }
- 
- float x, y, mt;
- auto j = tvalues.size();
- 
- while (j--)
- {
- t = tvalues[j];
- mt = 1 - t;
- x = (mt * mt * mt * x0) + (3 * mt * mt * t * x1) + (3 * mt * t * t * x2) + (t * t * t * x3);
- x_pts.emplace_back( x );
- 
- 
- y = (mt * mt * mt * y0) + (3 * mt * mt * t * y1) + (3 * mt * t * t * y2) + (t * t * t * y3);
- y_pts.emplace_back( y );
- }
- 
- tvalues.emplace_back(0);
- tvalues.emplace_back(1);
- 
- 
- auto xminmax = minmax( x_pts.begin(), x_pts.end() );
- auto yminmax = minmax( y_pts.begin(), y_pts.end() );
- 
- return Rectangle<float>(*xminmax.first, *yminmax.first, *xminmax.second, *yminmax.second );
- 
- }
- 
- Rectangle<float> getBoundsOfCurve(float x0, float y0, float x1, float y1, float x2, float y2 )
- {
- 
- float xt = ((x0-x1) / (x0 - 2 * x1 + x3));
- float yt = ((y0-y1) / (y0 - 2 * y1 + y3));
- 
+     std::vector<float> x_pts;
+     std::vector<float> y_pts;
+     std::vector<float> tvalues;
+     
+     x_pts.emplace_back( x0 );
+     y_pts.emplace_back( y0 );
+     x_pts.emplace_back( x3 );
+     y_pts.emplace_back( y3 );
+     
+     
+     float a, b, c, t, t1, t2, b2ac, sqrtb2ac;
+     for (int i = 0; i < 2; ++i)
+     {
+         if (i == 0)
+         {
+             b = 6 * x0 - 12 * x1 + 6 * x2;
+             a = -3 * x0 + 9 * x1 - 9 * x2 + 3 * x3;
+             c = 3 * x1 - 3 * x0;
+         }
+         else
+         {
+             b = 6 * y0 - 12 * y1 + 6 * y2;
+             a = -3 * y0 + 9 * y1 - 9 * y2 + 3 * y3;
+             c = 3 * y1 - 3 * y0;
+         }
+     
+         if (fabs(a) < 1e-12) // Numerical robustness
+         {
+             if (fabs(b) < 1e-12) // Numerical robustness
+             {
+                 continue;
+             }
+             
+             t = -c / b;
+             
+             if (0 < t && t < 1)
+             {
+                 tvalues.emplace_back(t);
+             }
+             
+             continue;
+         }
+     
+         b2ac = b * b - 4 * c * a;
+         sqrtb2ac = sqrt(b2ac);
+         
+         if (b2ac < 0)
+         {
+             continue;
+         }
+     
+         t1 = (-b + sqrtb2ac) / (2 * a);
+         if (0 < t1 && t1 < 1)
+         {
+             tvalues.emplace_back(t1);
+         }
+     
+         t2 = (-b - sqrtb2ac) / (2 * a);
+         if (0 < t2 && t2 < 1)
+         {
+             tvalues.emplace_back(t2);
+         }
+         
+     }
+     
+     float x, y, mt;
+     auto j = tvalues.size();
+     std::cout << "j " << j << std::endl;;
+
+     while (j--)
+     {
+         t = tvalues[j];
+         mt = 1 - t;
+         x = (mt * mt * mt * x0) + (3 * mt * mt * t * x1) + (3 * mt * t * t * x2) + (t * t * t * x3);
+         x_pts.emplace_back( x );
+         
+         y = (mt * mt * mt * y0) + (3 * mt * mt * t * y1) + (3 * mt * t * t * y2) + (t * t * t * y3);
+         y_pts.emplace_back( y );
+         
+         std::cout << "xy " << x << " " << y << std::endl;;
+     }
+     
+     tvalues.emplace_back(0);
+     tvalues.emplace_back(1);
+     
+     auto xminmax = minmax( x_pts.begin(), x_pts.end() );
+     auto yminmax = minmax( y_pts.begin(), y_pts.end() );
+     
+     return Rectangle<float>(*xminmax.first, *yminmax.first, *xminmax.second, *yminmax.second );
  
  }
- */
+ 

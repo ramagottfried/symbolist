@@ -453,7 +453,8 @@ void PathBaseComponent::makeHandles()
                 addHandle( PathHandle::curve_control, it.x2, it.y2 );
                 addHandle( PathHandle::anchor, it.x3, it.y3 );
 
-                // addSegment() for cubic here
+                m_path_bounds.addSegment(it, ax, ay);
+                
                 ax = it.x3;
                 ay = it.y3;
             }

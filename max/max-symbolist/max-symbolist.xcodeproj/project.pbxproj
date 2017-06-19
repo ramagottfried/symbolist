@@ -1,0 +1,358 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1186486A1EF7DA7A00904672 /* symbolist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118648681EF7DA7A00904672 /* symbolist.cpp */; };
+		1186487D1EF7F6E400904672 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 118648781EF7F6E400904672 /* Carbon.framework */; };
+		1186487E1EF7F6E400904672 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 118648791EF7F6E400904672 /* Cocoa.framework */; };
+		1186487F1EF7F6E400904672 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186487A1EF7F6E400904672 /* IOKit.framework */; };
+		118648801EF7F6E400904672 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186487B1EF7F6E400904672 /* QuartzCore.framework */; };
+		118648811EF7F6E400904672 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186487C1EF7F6E400904672 /* WebKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1186485F1EF7D84300904672 /* symbolist.mxo */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = symbolist.mxo; sourceTree = BUILT_PRODUCTS_DIR; };
+		118648661EF7DA6100904672 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		118648681EF7DA7A00904672 /* symbolist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = symbolist.cpp; sourceTree = "<group>"; };
+		118648781EF7F6E400904672 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		118648791EF7F6E400904672 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		1186487A1EF7F6E400904672 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		1186487B1EF7F6E400904672 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		1186487C1EF7F6E400904672 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1186485C1EF7D84300904672 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				118648811EF7F6E400904672 /* WebKit.framework in Frameworks */,
+				118648801EF7F6E400904672 /* QuartzCore.framework in Frameworks */,
+				1186487E1EF7F6E400904672 /* Cocoa.framework in Frameworks */,
+				1186487D1EF7F6E400904672 /* Carbon.framework in Frameworks */,
+				1186487F1EF7F6E400904672 /* IOKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1186483D1EF7D7CC00904672 = {
+			isa = PBXGroup;
+			children = (
+				118648771EF7F6D200904672 /* Frameworks */,
+				118648681EF7DA7A00904672 /* symbolist.cpp */,
+				118648661EF7DA6100904672 /* Info.plist */,
+				118648471EF7D7CC00904672 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		118648471EF7D7CC00904672 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1186485F1EF7D84300904672 /* symbolist.mxo */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		118648771EF7F6D200904672 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				118648781EF7F6E400904672 /* Carbon.framework */,
+				118648791EF7F6E400904672 /* Cocoa.framework */,
+				1186487A1EF7F6E400904672 /* IOKit.framework */,
+				1186487B1EF7F6E400904672 /* QuartzCore.framework */,
+				1186487C1EF7F6E400904672 /* WebKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1186485E1EF7D84300904672 /* symbolist */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 118648631EF7D84300904672 /* Build configuration list for PBXNativeTarget "symbolist" */;
+			buildPhases = (
+				1186485B1EF7D84300904672 /* Sources */,
+				1186485C1EF7D84300904672 /* Frameworks */,
+				1186485D1EF7D84300904672 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = symbolist;
+			productName = symbolist;
+			productReference = 1186485F1EF7D84300904672 /* symbolist.mxo */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1186483E1EF7D7CC00904672 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = ircam;
+				TargetAttributes = {
+					1186485E1EF7D84300904672 = {
+						CreatedOnToolsVersion = 6.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 118648411EF7D7CC00904672 /* Build configuration list for PBXProject "max-symbolist" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 1186483D1EF7D7CC00904672;
+			productRefGroup = 118648471EF7D7CC00904672 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1186485E1EF7D84300904672 /* symbolist */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1186485D1EF7D84300904672 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1186485B1EF7D84300904672 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1186486A1EF7DA7A00904672 /* symbolist.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1186484B1EF7D7CC00904672 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = (
+					x86_64,
+					i386,
+				);
+				C74SUPPORT = "../../../max-sdk/source/c74support";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_NS_ASSERTIONS = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(C74SUPPORT)/max-includes";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_MASTER_OBJECT_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"../../../max-sdk/source/c74support/max-includes",
+					../../Source,
+				);
+				LIBRARY_SEARCH_PATHS = ../../Builds/MacOSX/build/Debug/;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = (
+					"-g",
+					"-DNO_TRANSLATION_SUPPORT",
+				);
+				OTHER_LDFLAGS = "@$(C74SUPPORT)/max-includes/c74_linker_flags.txt";
+				PRELINK_LIBS = ../../Builds/MacOSX/build/Debug/libsymbolist.a;
+				SDKROOT = macosx;
+				VALID_ARCHS = "x86_64 i386";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Debug;
+		};
+		1186484C1EF7D7CC00904672 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = (
+					x86_64,
+					i386,
+				);
+				C74SUPPORT = "../../../max-sdk/source/c74support";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(C74SUPPORT)/max-includes";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_MASTER_OBJECT_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"../../../max-sdk/source/c74support/max-includes",
+					../../Source,
+				);
+				LIBRARY_SEARCH_PATHS = ../../Builds/MacOSX/build/Debug/;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = (
+					"-g",
+					"-DNO_TRANSLATION_SUPPORT",
+				);
+				OTHER_LDFLAGS = "@$(C74SUPPORT)/max-includes/c74_linker_flags.txt";
+				PRELINK_LIBS = ../../Builds/MacOSX/build/Debug/libsymbolist.a;
+				SDKROOT = macosx;
+				VALID_ARCHS = "x86_64 i386";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Release;
+		};
+		118648641EF7D84300904672 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(C74SUPPORT)/max-includes/macho-prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GENERATE_MASTER_OBJECT_FILE = YES;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				OTHER_CFLAGS = (
+					"-DNO_TRANSLATION_SUPPORT",
+					"-g",
+				);
+				OTHER_LDFLAGS = "@$(C74SUPPORT)/max-includes/c74_linker_flags.txt";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = mxo;
+			};
+			name = Debug;
+		};
+		118648651EF7D84300904672 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(C74SUPPORT)/max-includes/macho-prefix.pch";
+				GENERATE_MASTER_OBJECT_FILE = YES;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				OTHER_CFLAGS = (
+					"-DNO_TRANSLATION_SUPPORT",
+					"-g",
+				);
+				OTHER_LDFLAGS = "@$(C74SUPPORT)/max-includes/c74_linker_flags.txt";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = mxo;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		118648411EF7D7CC00904672 /* Build configuration list for PBXProject "max-symbolist" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1186484B1EF7D7CC00904672 /* Debug */,
+				1186484C1EF7D7CC00904672 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		118648631EF7D84300904672 /* Build configuration list for PBXNativeTarget "symbolist" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				118648641EF7D84300904672 /* Debug */,
+				118648651EF7D84300904672 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1186483E1EF7D7CC00904672 /* Project object */;
+}

@@ -127,9 +127,9 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
     } else if ( desc    == "P") {
         setCurrentSymbol(1);
     } else if ( desc    == "option + V") {
-        scoreGUI.flipSelected(0);
+        scoreGUI.flipSelectedSymbols(0);
     } else if ( desc    == "option + H") {
-        scoreGUI.flipSelected(1);
+        scoreGUI.flipSelectedSymbols(1);
     } else if ( desc    == "spacebar") {
         executeTransportCallback(1); // start
     } else if ( desc    == "escape") {
@@ -163,9 +163,6 @@ void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
         else
             setEditMode( UI_EditType::select_mode );
     }
-    
-    // todo : better way to deal with modiyer keys
-    shift_down = modifiers.isShiftDown() ;
 }
 
 

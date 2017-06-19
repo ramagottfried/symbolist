@@ -73,9 +73,6 @@ public:
     inline SymbolistComponent* getPageComponent() override { return &scoreGUI; }
     inline SymbolistComponent* getMainComponent() override { return this; }
     
-    // temporary 
-    bool shift_down = false;
-    
     int getCurrentTime() { return current_time; }
     
 private:

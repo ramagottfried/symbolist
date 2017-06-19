@@ -7,21 +7,14 @@
 
 ScoreComponent::~ScoreComponent()
 {
-    //std::cout << "ScoreComponent delete... " << this << std::endl;
-    selected_items.deselectAll();
+    unselectAllComponents();
     clearAllSubcomponents();
 }
 
 
-void ScoreComponent::deselectAllSelected()
-{
-    selected_items.deselectAll();
-    repaint();
-}
-
 void ScoreComponent::notifyEditModeChanged( UI_EditType current_mode )
 {
-    for( auto s : selected_items )
+    for( auto s : selected_components )
     {
         s->notifyEditModeChanged( current_mode );
     }
@@ -45,22 +38,24 @@ BaseComponent* ScoreComponent::getSubcomponent( int i )
 
 void ScoreComponent::addSubcomponent( BaseComponent *c )
 {
-    subcomponents.emplace_back( c ) ;
     
+    subcomponents.emplace_back( c );
     c->setComponentID(String(String(c->getSymbolTypeStr()) += String("_") += String(subcomponents.size())));
     addAndMakeVisible( c );
-    //std::cout << "ADDING MOUSE LISTENER TO " << c->getSymbolTypeStr() << std::endl;
-    c->addMouseListener(this, false); // get rid of this ??
+    //c->addMouseListener(this, false); // get rid of this ??
+    std::cout << "ADDING SUBCOMP " << c->getComponentID() << " IN " << getComponentID() << std::endl;
 }
 
 void ScoreComponent::removeSubcomponent( BaseComponent *c )
 {
+    removeFromSelection(c);
     removeChildComponent(c);
     subcomponents.erase ( std::remove(subcomponents.begin(),subcomponents.end(), c) , subcomponents.end() );
 }
 
 void ScoreComponent::clearAllSubcomponents()
 {
+    selected_components.clear();
     for ( int i = 0; i < subcomponents.size(); i++ )
     {
         subcomponents[i]->clearAllSubcomponents();
@@ -82,47 +77,114 @@ void ScoreComponent::addSymbolComponent ( BaseComponent* c )
 
 void ScoreComponent::removeSymbolComponent( BaseComponent* c )
 {
+    unselectAllComponents ( );
     removeSubcomponent( c );
 }
 
 
+/**************/
+/* Selection  */
+/**************/
+
+void ScoreComponent::addToSelection(BaseComponent *c)
+{
+    selected_components.add(c);
+    c->selectComponent();
+}
+
+void ScoreComponent::removeFromSelection(BaseComponent *c)
+{
+    c->deselectComponent();
+    selected_components.removeAllInstancesOf(c);
+}
+
+void ScoreComponent::selectAllComponents()
+{
+    for (int i = 0 ; i < getNumSubcomponents(); i++ )
+    {
+        addToSelection(getSubcomponent(i));
+    }
+}
+
+void ScoreComponent::unselectAllComponents()
+{
+    for (int i = 0 ; i < getNumSubcomponents(); i++ )
+    {
+        removeFromSelection(getSubcomponent(i));
+    }
+}
+
+/*****************
+ * CUSTOM LASSO
+ *****************/
+
+void ScoreComponent::beginLasso(Point<float> position)
+{
+    unselectAllComponents();
+    addAndMakeVisible(lasso);
+    lasso.setBounds(position.getX(), position.getY(), 0, 0);
+}
+
+void ScoreComponent::dragLasso(Point<float> position)
+{
+    lasso.setSize(position.getX()-lasso.getX(), position.getY()-lasso.getY());
+    unselectAllComponents();
+    for (int i = 0; i < getNumSubcomponents(); ++i)
+    {
+        BaseComponent* cc =  getSubcomponent(i);
+        if (cc->getBounds().intersects (lasso.getBounds()))
+        {
+            addToSelection( cc );
+        }
+    }
+}
+
+void ScoreComponent::endLasso()
+{
+    removeChildComponent(&lasso);
+}
+
+
+void SymbolistLasso::paint ( Graphics &g)
+{
+    g.setColour(Colours::cornflowerblue);
+    g.drawRect(0, 0, getWidth(), getHeight());
+}
+
+
 /**************************
- * UI callbacks
+ * UI Actions
  **************************/
 
 void ScoreComponent::deleteSelectedSymbols()
 {
     vector< BaseComponent *> items;
     
-    for( BaseComponent *c : selected_items ) // there's probably a better way to copy a vector's contents :)
+    for( BaseComponent *c : selected_components ) // there's probably a better way to copy a vector's contents :)
     {
         std::cout << c << std::endl;
         items.push_back(c);
     }
     
-    selected_items.deselectAll();
+    //selected_items.deselectAll();
+    unselectAllComponents();
     
     for( BaseComponent *c : items )
     {
-        ScoreComponent* parent = (ScoreComponent*) c->getParentComponent() ; // the selected_items are not necesarily direct children
-        parent->removeSymbolComponent( c );
+        //ScoreComponent* parent = (ScoreComponent*) c->getParentComponent() ; // the selected_items are not necesarily direct children
+        //parent->
+        removeSymbolComponent( c );
         delete c;
     }
 }
 
-
-
-/************************/
-/* Grouping             */
-/************************/
-
 void ScoreComponent::groupSelectedSymbols()
 {
-    if ( selected_items.getNumSelected() > 1 )
+    if ( selected_components.size() > 1 )
     {
         // get the position an bounds of the group
         int minx = getWidth(), maxx = 0, miny = getHeight(), maxy = 0;
-        for( auto it = selected_items.begin(); it != selected_items.end(); it++ )
+        for( auto it = selected_components.begin(); it != selected_components.end(); it++ )
         {
             Rectangle<int> compBounds = (*it)->getBounds();
             minx =  min( minx, compBounds.getX() );
@@ -133,8 +195,9 @@ void ScoreComponent::groupSelectedSymbols()
         
         // create a list from selected items
         vector< BaseComponent *> items;
-        for( BaseComponent *c : selected_items ) { items.push_back(c); }
-        selected_items.deselectAll();
+        for( BaseComponent *c : selected_components ) { items.push_back(c); }
+        //selected_items.deselectAll();
+        unselectAllComponents();
         
         // create a symbol with these bounds
         Symbol s ("group", minx, miny, maxx-minx, maxy-miny);
@@ -165,6 +228,32 @@ void ScoreComponent::groupSelectedSymbols()
 }
 
 
+/*******************
+ * TRANSFORMATIONS
+ *******************/
+
+void ScoreComponent::translateSelectedSymbols( Point<int> delta_xy )
+{
+    //std::cout << "TRANSLATE IN " << getComponentID() << std::endl;
+    for ( auto c : selected_components )
+    {
+        auto b = c->getBounds();
+        c->setTopLeftPosition( b.getPosition() + delta_xy );
+    }
+}
+
+void ScoreComponent::flipSelectedSymbols( int axis )
+{
+    for ( auto c : selected_components )
+    {
+        if( axis == 0)
+            c->v_flip();
+        else
+            c->h_flip();
+    }
+}
+
+
 /***************************/
 /* UI callbacks from Juce  */
 /***************************/
@@ -182,9 +271,10 @@ BaseComponent* ScoreComponent::mouseAddSymbolAt ( Point<float> p )
 
     // add component in the view
     addSymbolComponent( c );
+    
     // deselect other itams and select this one
-    selected_items.deselectAll();
-    selected_items.addToSelection( c );
+    //unselectAllComponents();
+    //addToSelection( c );
     
     c->componentCretated();
     
@@ -195,27 +285,15 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
 {
     UI_EditType ed = getMainEditMode();
     
-    BaseComponent *c = (BaseComponent *) event.eventComponent;
-    //    SymbolistMainComponent* smc = (SymbolistMainComponent *) getMainComponent();
-    
     if( ed == select_mode )
     {
-        if (event.eventComponent != this ) // we're on a symbol
-        {
-            selected_items.addToSelectionBasedOnModifiers( c, event.mods );
-        }
-        else
-        {   // we're on the score
-            lassoSelector.beginLasso( event, this );
-        }
+        beginLasso( event.position );
     }
     else
     { // => draw mode
-        
         if( ed == draw_mode && !component_grabbing_mouse )
         {
             mouseAddSymbolAt( event.getEventRelativeTo(getPageComponent()).position );
-            // positionshould be in the score referential : pb in clicked on top of another symbol
         }
     }
 }
@@ -225,96 +303,18 @@ void ScoreComponent::mouseDrag ( const MouseEvent& event )
 {
     if( getMainEditMode() == select_mode )
     {
-        lassoSelector.dragLasso(event);
+        dragLasso(event.position);
     }
 }
 
-void ScoreComponent::mouseMove ( const MouseEvent& event )
-{}
+void ScoreComponent::mouseMove ( const MouseEvent& event ) {}
 
 void ScoreComponent::mouseUp ( const MouseEvent& event )
 {
-    lassoSelector.endLasso();
+    endLasso();
 }
-
 
 void ScoreComponent::resized () {}
 
-
-
-/************************/
-/* Selection / "Lasso"  */
-/************************/
-
-void ScoreSelectedItemSet::itemSelected (BaseComponent *c) { c->selectComponent(); }
-void ScoreSelectedItemSet::itemDeselected (BaseComponent *c) { c->deselectComponent(); }
-
-
-void ScoreComponent::activateLasso()
-{
-    selected_items.deselectAll();
-    addChildComponent( lassoSelector );
-    lassoSelector.setComponentID("lasso");
-    getLookAndFeel().setColour( lassoSelector.lassoFillColourId, Colours::transparentWhite );
-    getLookAndFeel().setColour( lassoSelector.lassoOutlineColourId, Colour::fromFloatRGBA(0, 0, 0, 0.2) );
-}
-
-void ScoreComponent::deactivateLasso()
-{
-    removeChildComponent( &lassoSelector );
-    selected_items.deselectAll();
-}
-
-
-void ScoreComponent::findLassoItemsInArea (Array <BaseComponent*>& results, const Rectangle<int>& area)
-{
-    std::cout << "lasso in " << getComponentID() << std::endl;
-    for (int i = 0; i < getNumSubcomponents(); ++i)
-    {
-        Component *cc = getSubcomponent(i);
-        
-        if( &lassoSelector != (LassoComponent< BaseComponent * > *)cc )
-        {
-            BaseComponent *c = (BaseComponent *)cc;
-            
-            // this needs to change to look for intersection with path
-            if (c->getBounds().intersects (area))
-            {
-                std::cout << "=> select " << c->getComponentID() << std::endl;
-                for ( auto ccc : selected_items ) {
-                    std::cout << "=======> " << ccc->getComponentID() << std::endl;
-                }
-                results.add (c);
-            }
-        }
-    }
-}
-
-
-/*******************
- * TRANSFORMATIONS
- *******************/
-
-void ScoreComponent::translateSelected( Point<int> delta_xy )
-{
-    std::cout << "TRANSLATE IN " << getComponentID() << std::endl;
-    for ( auto c : selected_items )
-    {
-        auto b = c->getBounds();
-        std::cout << "translate " << c->getComponentID() << std::endl;
-        c->setTopLeftPosition( b.getPosition() + delta_xy );
-    }
-}
-
-void ScoreComponent::flipSelected( int axis )
-{
-    for ( auto c : selected_items )
-    {
-        if( axis == 0)
-            c->v_flip();
-        else
-            c->h_flip();
-    }
-}
 
 

@@ -13,7 +13,7 @@
 PageComponent::PageComponent()
 {
     setComponentID("PageComponent");
-    activateLasso();
+    //activateLasso();
     //std::cout << "PageComponent " << this << std::endl;
 }
 
@@ -39,13 +39,11 @@ void PageComponent::removeSymbolComponent( BaseComponent *c )
 
 void PageComponent::enterEditMode( BaseComponent* c )
 {
+    unselectAllComponents();
     edited_component = c;
     edited_component->toFront(true);
     edited_component->setEditMode(true);
     edited_component->recursiveMaximizeBounds();
-    this->deactivateLasso();
-    edited_component->activateLasso();
-    
 }
 
 void PageComponent::exitEditMode( )
@@ -54,8 +52,6 @@ void PageComponent::exitEditMode( )
     {
         edited_component->recursiveShrinkBounds();
         edited_component->setEditMode(false);
-        edited_component->deactivateLasso();
-        this->activateLasso();
         edited_component = NULL;
     }
 }

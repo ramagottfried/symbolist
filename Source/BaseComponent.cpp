@@ -1,6 +1,7 @@
 
 #include "BaseComponent.h"
 #include "PageComponent.h"
+#include "ScoreComponent.h"
 #include "MainComponent.h"
 
 // do we need this ?
@@ -11,7 +12,6 @@ template <typename T> void printPoint(Point<T> point, String name = "point" )
 
 BaseComponent::BaseComponent(const Symbol &s)
 {
-    // importFromSymbol( s );
     std::cout <<" Creating BaseComponent " << this << std::endl;
 }
 
@@ -19,7 +19,6 @@ BaseComponent::~BaseComponent()
 {
     if ( getParentComponent() != NULL )
     {
-        ((ScoreComponent*)getParentComponent())->deselectAllSelected();
         ((ScoreComponent*)getParentComponent())->removeSymbolComponent(this);
     }
 }
@@ -110,10 +109,10 @@ void BaseComponent::setBoundsFromSymbol( float x, float y , float w , float h)
 }
 
 
-
 /******************
  * Called by selection mechanism
  *****************/
+
 void BaseComponent::selectComponent()
 {
     is_selected = true;
@@ -182,7 +181,6 @@ void BaseComponent::moved ()
     //reportModification(); // shoudl be smarter : call this when the move is over (mouse up)
 }
 
-
 void BaseComponent::resized ()
 {
     //reportModification(); // shoudl be smarter : call this when the move is over (mouse up)
@@ -193,9 +191,7 @@ void BaseComponent::resized ()
         addChildComponent( resizableBorder = new ResizableBorderComponent(this, &constrainer) );
         resizableBorder->setBorderThickness( BorderSize<int>(4) );
     }
-    
     resizableBorder->setBounds( getLocalBounds() );
-    
 }
 
 
@@ -213,7 +209,6 @@ Point<float> BaseComponent::shiftConstrainMouseAngle( const MouseEvent& event )
         else
             return Point<float>( event.position.getX(), m_down.getY() );
     }
-    
     return event.position;
 }
 
@@ -223,21 +218,32 @@ void BaseComponent::mouseMove( const MouseEvent& event )
 }
 
 
-
-
 void BaseComponent::mouseDown( const MouseEvent& event )
 {
-    //std::cout << "click " << getSymbolTypeStr() << std::endl;
     m_down = event.position;
+    ScoreComponent* parent = ((ScoreComponent*)getParentComponent());
+    if ( isTopLevelComponent() || ((BaseComponent*)parent)->isInEditMode() )
+    {
+       if ( event.mods.isShiftDown() )
+        {
+            if ( isSelected() ) parent->removeFromSelection(this);
+            else parent->addToSelection(this);
+        } else {
+            if ( ! isSelected() )
+            {
+                parent->unselectAllComponents();
+                parent->addToSelection(this);
+            }
+        }
+    }
 }
-
 
 void BaseComponent::mouseDrag( const MouseEvent& event )
 {
     if( is_selected && (getMainEditMode() == select_mode ) )
     {
         ScoreComponent* p = ( (ScoreComponent*) getParentComponent() );
-        p->translateSelected( (event.position - m_down).toInt() );
+        p->translateSelectedSymbols( (event.position - m_down).toInt() );
     }
 }
 

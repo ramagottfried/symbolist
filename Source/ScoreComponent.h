@@ -6,26 +6,18 @@
 
 class BaseComponent ;
 
-class ScoreSelectedItemSet : public SelectedItemSet<BaseComponent *>
-{
-public:
-    ScoreSelectedItemSet() = default ;
-    ~ScoreSelectedItemSet() = default;
-    
-    virtual void itemSelected (BaseComponent *c) override;
-    virtual void itemDeselected (BaseComponent *c) override;
-    
-private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScoreSelectedItemSet)
-};
 
+class SymbolistLasso : public Component
+{
+    void paint ( Graphics &g) override;
+};
 
 
 /*
  * Superclass for score-editable containers : PageComponent or SymbolGroupComponent
  * sharing a number of user interactions wrt. editing contents
  */
-class ScoreComponent : public SymbolistComponent, public LassoSource<BaseComponent *>
+class ScoreComponent : public SymbolistComponent //, public LassoSource<BaseComponent *>
 {
 public:
     
@@ -47,16 +39,15 @@ public:
     
     BaseComponent*  mouseAddSymbolAt ( Point<float> p );
     
-    // selection
-    void findLassoItemsInArea (Array < BaseComponent *>& results, const Rectangle<int>& area) override;
-    SelectedItemSet< BaseComponent *>& getLassoSelection() override { return selected_items; };
+    void addToSelection(BaseComponent* c);
+    void removeFromSelection(BaseComponent* c);
+    void selectAllComponents();
+    void unselectAllComponents();
     
     void deleteSelectedSymbols();
-    void deselectAllSelected();
     void groupSelectedSymbols();
-
-    void translateSelected( Point<int> delta_xy );
-    void flipSelected( int axis );
+    void translateSelectedSymbols( Point<int> delta_xy );
+    void flipSelectedSymbols( int axis );
     
     void mouseDown ( const MouseEvent& event ) override;
     void mouseMove ( const MouseEvent& event ) override;
@@ -69,15 +60,18 @@ public:
     
     void notifyEditModeChanged( UI_EditType current_mode );
     
-    void activateLasso();
-    void deactivateLasso();
     
 protected:
 
     std::vector<BaseComponent*>     subcomponents;
     
-    LassoComponent<BaseComponent*>  lassoSelector;
-    ScoreSelectedItemSet            selected_items;
+    Array<BaseComponent*>     selected_components;
+    SymbolistLasso lasso;
+    
+    void beginLasso(Point<float> position);
+    void dragLasso(Point<float> position);
+    void endLasso();
+
     
     bool                            component_grabbing_mouse = false;
 

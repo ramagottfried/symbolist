@@ -14,15 +14,9 @@ SymbolGroupComponent::~SymbolGroupComponent() {}
 void SymbolGroupComponent::paint ( Graphics& g )
 {
     BaseComponent::paint( g );
-    
-    g.setColour( Colours::darkcyan );
+    g.setColour( Colours::lightgrey );
     const Rectangle<int> b = ((BaseComponent*) this)->getLocalBounds();
-    const float dashLength[2] = {3.0 , 4.0};
-    int ndashLengths = 2;
-    g.drawDashedLine(Line<float>( b.getX(), b.getY(), b.getX() + b.getWidth(), b.getY() ), dashLength , ndashLengths );
-    g.drawDashedLine(Line<float>( b.getX() + b.getWidth(), b.getY(), b.getX() + b.getWidth(), b.getY() + b. getHeight() ), dashLength , ndashLengths );
-    g.drawDashedLine(Line<float>( b.getX() + b.getWidth() , b.getY() + b.getHeight() , b.getX() , b.getY() + b. getHeight() ), dashLength , ndashLengths );
-    g.drawDashedLine(Line<float>( b.getX() , b.getY() + b.getHeight() , b.getX() , b.getY()), dashLength , ndashLengths );
+    g.drawRect(b);
 }
 
 
@@ -55,9 +49,8 @@ void SymbolGroupComponent::mouseDoubleClick(const MouseEvent& event)
     
     if ( ! in_edit_mode && ( isTopLevelComponent() || ! ((BaseComponent*)pc)->isInEditMode()) )
     {
-        pc->deselectAllSelected();
-        PageComponent* pc = (PageComponent*)getPageComponent();
-        pc->enterEditMode( this );
+        PageComponent* page = (PageComponent*)getPageComponent();
+        page->enterEditMode( this );
     }
 }
 
@@ -75,8 +68,7 @@ void SymbolGroupComponent::mouseUp( const MouseEvent& event )
 
 void SymbolGroupComponent::mouseDrag( const MouseEvent& event )
 {
-    std::cout << "Group mouseDrag " << getComponentID() << std::endl;
-    
+    //std::cout << "Group mouseDrag " << getComponentID() << std::endl;
     if ( in_edit_mode )
     {
         std::cout << "=> editMode" << std::endl;

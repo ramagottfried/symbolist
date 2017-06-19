@@ -110,6 +110,9 @@ public:
     
     void setEditMode(bool val) { in_edit_mode = val; }
     bool isInEditMode() { return in_edit_mode; }
+    void setSeleted(bool val) { is_selected = val; }
+    bool isSelected() { return is_selected; }
+
 
 protected:
     

@@ -1,6 +1,7 @@
 Builds_LOCAL/
 intermediate/
 Builds/MacOSX/build/
+max/max-symbolist/build/
 *.xcuserstate
 *~
 *.dylib

@@ -87,7 +87,7 @@ protected:
 
     Point<float>                m_path_centroid;
     
-    Rectangle<float>            m_path_bounds;
+    Sym_PathBounds              m_path_bounds;
     
 private:
     //==============================================================================

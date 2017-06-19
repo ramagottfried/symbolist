@@ -371,8 +371,8 @@ Rectangle<float> PathBaseComponent::getPathBounds()
 void PathBaseComponent::h_flip()
 {
     m_path.applyTransform( AffineTransform().rotated( float_Pi,
-                                                     m_path.getBounds().getCentreX(),
-                                                     m_path.getBounds().getCentreY()  ) );
+                                                     m_path_centroid.getX(),
+                                                     m_path_centroid.getY()  ) );
     
     auto actualBounds = tranformAndGetBoundsInParent( m_path );
     m_path.applyTransform( AffineTransform().verticalFlip( actualBounds.getHeight() ) );
@@ -426,7 +426,7 @@ void PathBaseComponent::makeHandles()
     {
         
         float ax =0, ay = 0;
-        Sym_PathBounds p_bounds;
+        m_path_bounds.init();
 
         Path::Iterator it( m_path );
         while( it.next() )
@@ -434,14 +434,14 @@ void PathBaseComponent::makeHandles()
             if (it.elementType == it.startNewSubPath)
             {
                 addHandle( PathHandle::anchor, it.x1, it.y1 );
-                p_bounds.addSegment( it );
+                m_path_bounds.addSegment( it );
                 ax = it.x1;
                 ay = it.y1;
             }
             else if (it.elementType == it.lineTo)
             {
                 addHandle( PathHandle::anchor, it.x1, it.y1 );
-                p_bounds.addSegment( it );
+                m_path_bounds.addSegment( it );
                 ax = it.x1;
                 ay = it.y1;
 
@@ -450,7 +450,7 @@ void PathBaseComponent::makeHandles()
             {
                 addHandle( PathHandle::curve_control, it.x1, it.y1 );
                 addHandle( PathHandle::anchor, it.x2, it.y2 );
-                p_bounds.addSegment(it, ax, ay);
+                m_path_bounds.addSegment(it, ax, ay);
                 ax = it.x2;
                 ay = it.y2;
             }
@@ -466,10 +466,9 @@ void PathBaseComponent::makeHandles()
             }
         }
         
-        m_path_bounds = p_bounds;
-        m_path_centroid = p_bounds.getCentre();
+        m_path_centroid = m_path_bounds.getCentre();
         
-        auto length = max( p_bounds.getHeight(), p_bounds.getWidth() ) + 5 ;
+        auto length = max( m_path_bounds.getHeight(), m_path_bounds.getWidth() ) + 5 ;
         
         addHandle( PathHandle::rotate, m_path_centroid.getX(), m_path_centroid.getY() + length );
 
@@ -541,7 +540,8 @@ Rectangle<float> PathBaseComponent::tranformAndGetBoundsInParent( Path& p )
 {
     float strokeOffset = strokeType.getStrokeThickness() * 0.5;
     
-    Rectangle<float> abs_bounds = p.getBounds();
+    m_path_bounds.getRealPathBounds( m_path );
+    Rectangle<float> abs_bounds = m_path_bounds;
     
     // NOT FUNCTIONAL PROGRAMMING, but oh well
     p.applyTransform( AffineTransform().translated( -abs_bounds.getX() + strokeOffset, -abs_bounds.getY() + strokeOffset ) );
@@ -580,7 +580,7 @@ void PathBaseComponent::updatePathPoints()
         }
     }
 
-    m_path_bounds = Sym_PathBounds( p );
+    m_path_bounds.getRealPathBounds( p );
     m_path_centroid = m_path_bounds.getCentre();
     
     m_path.swapWithPath( p );
@@ -592,7 +592,8 @@ void PathBaseComponent::updateHandlePositions()
 {
     Path p;
     auto handle = path_handles.begin();
-    Sym_PathBounds p_bounds;
+
+    m_path_bounds.init();
     
     float ax = 0, ay = 0;
     
@@ -602,14 +603,14 @@ void PathBaseComponent::updateHandlePositions()
         if (it.elementType == it.startNewSubPath)
         {
             (*(handle++))->setCentrePosition(it.x1, it.y1);
-            p_bounds.addSegment( it );
+            m_path_bounds.addSegment( it );
             ax = it.x1;
             ay = it.y1;
         }
         else if (it.elementType == it.lineTo)
         {
             (*(handle++))->setCentrePosition(it.x1, it.y1);
-            p_bounds.addSegment( it );
+            m_path_bounds.addSegment( it );
             ax = it.x1;
             ay = it.y1;
         }
@@ -617,7 +618,7 @@ void PathBaseComponent::updateHandlePositions()
         {
             (*(handle++))->setCentrePosition(it.x1, it.y1);
             (*(handle++))->setCentrePosition(it.x2, it.y2);
-            p_bounds.addSegment( it, ax, ay );
+            m_path_bounds.addSegment( it, ax, ay );
             ax = it.x2;
             ay = it.y2;
         }
@@ -632,8 +633,7 @@ void PathBaseComponent::updateHandlePositions()
         }
     }
     
-    m_path_bounds = p_bounds;
-    m_path_centroid = p_bounds.getCentre();
+    m_path_centroid = m_path_bounds.getCentre();
     
     auto rot_handle = path_handles.back();
     auto ll = Line<float>( m_path_centroid.getX(), m_path_centroid.getY(), rot_handle->getBounds().getCentreX(), rot_handle->getBounds().getCentreY() );

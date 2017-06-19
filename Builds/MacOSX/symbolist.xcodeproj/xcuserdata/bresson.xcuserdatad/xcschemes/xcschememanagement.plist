@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>symbolist - Static Library.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 		<key>symbolist.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -17,6 +22,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>1107B3EE1EF7D53100E2DFA9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>11CE001F1EC3271700E4F624</key>
 		<dict>
 			<key>primary</key>

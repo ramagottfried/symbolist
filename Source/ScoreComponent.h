@@ -17,7 +17,7 @@ class SymbolistLasso : public Component
  * Superclass for score-editable containers : PageComponent or SymbolGroupComponent
  * sharing a number of user interactions wrt. editing contents
  */
-class ScoreComponent : public SymbolistComponent //, public LassoSource<BaseComponent *>
+class ScoreComponent : public SymbolistComponent
 {
 public:
     

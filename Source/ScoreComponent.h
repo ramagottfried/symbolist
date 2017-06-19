@@ -9,7 +9,17 @@ class BaseComponent ;
 
 class SymbolistLasso : public Component
 {
+    
+public:
+    
     void paint ( Graphics &g) override;
+    void begin(int x, int y);
+    void update(int x, int y);
+    void end();
+    
+private:
+    
+    float start_x, start_y;
 };
 
 
@@ -66,11 +76,11 @@ protected:
     std::vector<BaseComponent*>     subcomponents;
     
     Array<BaseComponent*>     selected_components;
-    SymbolistLasso lasso;
+    SymbolistLasso s_lasso;
     
-    void beginLasso(Point<float> position);
-    void dragLasso(Point<float> position);
-    void endLasso();
+    void beginLassoSelection(Point<int> position);
+    void dragLassoSelection(Point<int> position);
+    void endLassoSelection();
 
     
     bool                            component_grabbing_mouse = false;

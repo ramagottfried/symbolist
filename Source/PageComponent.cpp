@@ -13,10 +13,9 @@
 PageComponent::PageComponent()
 {
     setComponentID("PageComponent");
-    //activateLasso();
-    //std::cout << "PageComponent " << this << std::endl;
 }
 
+PageComponent::~PageComponent() {}
 
 /***************************************************/
 /* MODIFICATIONS TO BE TRANSFERRED TO THE SCORE    */

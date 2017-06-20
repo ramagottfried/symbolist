@@ -9,11 +9,11 @@ namespace PathInfo
     Point<float> calcBezier( float t, Point<float> a, Point<float> b, Point<float> c, Point<float> d  );
 
     std::vector<Point<float> > quadroots( Point<float> a, Point<float> b, Point<float> c );
- 
+    std::vector<Point<float>> getCubicRoots(Point<float> p1, Point<float> p2, Point<float> p3, Point<float> p4);
     
     Rectangle<float> getBoundsQuadratic( float x1, float y1, float x2, float y2, float x3, float y3 );
     Rectangle<float> getBoundsCubic(float x0, float y0, float x1, float y1, float x2, float y2, float x3, float y3);
-
+    
     void accumPathBounds( Rectangle<float>& currentBounds, float x, float y);
     
 }

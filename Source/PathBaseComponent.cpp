@@ -621,6 +621,9 @@ void PathBaseComponent::updateHandlePositions()
             (*(handle++))->setCentrePosition(it.x1, it.y1);
             (*(handle++))->setCentrePosition(it.x2, it.y2);
             (*(handle++))->setCentrePosition(it.x3, it.y3);
+            m_path_bounds.addSegment(it, ax, ay);
+            ax = it.x3;
+            ay = it.y3;
         }
         else if( it.elementType == it.closePath )
         {

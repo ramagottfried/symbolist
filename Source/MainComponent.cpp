@@ -140,6 +140,8 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
         scoreGUI.exitEditMode();
         
         scoreGUI.repaint();
+    } else if ( desc    == "S") {
+        score.sortScore();
     }
 return true;
 }

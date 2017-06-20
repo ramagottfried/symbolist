@@ -13,27 +13,31 @@ using namespace std;
 // SCORE
 //============================
 
-class Score {
+class Score
+{
+    
+public:
 
-    public:
-    
-        Score();
-        Score( int n, odot_bundle** bundle_array ) ;
-        ~Score();
+    Score();
+    Score( int n, odot_bundle** bundle_array ) ;
+    ~Score();
 
-        size_t getSize();
-        Symbol *getSymbol(int n);
-        int getSymbolPosition(Symbol* s);
+    size_t getSize();
+    Symbol *getSymbol(int n);
+    int getSymbolPosition(Symbol* s);
+
+    void addSymbol(Symbol *s);
+    void removeSymbol(Symbol *s);
+    void removeAllSymbols();
+
+    void importScoreFromOSC( int n, odot_bundle** bundle_array );
+
+    void sortScore();
     
-        void addSymbol(Symbol *s);
-        void removeSymbol(Symbol *s);
-        void removeAllSymbols();
+private:
+
+    vector<Symbol*> symbols;
     
-        void importScoreFromOSC( int n, odot_bundle** bundle_array );
-    
-    private:
-    
-        vector<Symbol*> symbols;
     
 };
 

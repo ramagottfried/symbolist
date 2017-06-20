@@ -114,4 +114,19 @@ void Score::deleteOdotBundleArray(odot_bundle** bundle_array, int size)
 */
 
 
+void Score::sortScore()
+{
+    auto sorted = symbols;
+    std::sort(sorted.begin(),
+              sorted.end(),
+              [](Symbol *a, Symbol *b) { return (a->getTime() < b->getTime()); } );
+    
+    for (auto e : sorted )
+    {
+        std::cout << e->getOSCMessageValue("/x").getFloat32() << " " << e->getTime() << std::endl;
+    }
+    
+}
+
+
 

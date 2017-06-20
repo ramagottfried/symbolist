@@ -13,13 +13,15 @@
 #include "types.h"
 #include "SymbolistHandler.h"
 
+class PageComponent; // forward declaration of subclass
+
 class SymbolistComponent : public Component
 {
 public:
     
-    virtual SymbolistComponent* getPageComponent();
+    virtual PageComponent* getPageComponent();
     virtual SymbolistHandler* getSymbolistHandler();
-    
+    SymbolistMainComponent* getMainComponent();
     UI_EditType getMainEditMode();
 };
 

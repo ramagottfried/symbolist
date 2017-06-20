@@ -36,7 +36,7 @@ public:
     UI_EditType getEditMode();
     
     // Redefine these from SymbolistComponent
-    inline SymbolistComponent* getPageComponent() override { return &scoreView; }
+    inline PageComponent* getPageComponent() override { return &scoreView; }
     inline SymbolistHandler* getSymbolistHandler() override { return symbolist_handler; }
     
     void clearScoreView () { scoreView.clearAllSubcomponents(); }

@@ -50,7 +50,7 @@ void SymbolGroupComponent::mouseDoubleClick(const MouseEvent& event)
     
     if ( ! in_edit_mode && ( isTopLevelComponent() || ! ((BaseComponent*)pc)->isInEditMode()) )
     {
-        PageComponent* page = (PageComponent*)getPageComponent();
+        PageComponent* page = getPageComponent();
         page->enterEditMode( this );
     }
 }

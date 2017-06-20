@@ -1,6 +1,7 @@
 
 #include "PathBaseComponent.h"
 #include "SymbolistMainComponent.h"
+#include "PageComponent.h"
 #include "PathHandleComponent.h"
 
 PathBaseComponent::PathBaseComponent(  const Symbol& s ) : BaseComponent( s )
@@ -224,7 +225,7 @@ void PathBaseComponent::enterPathEdit ()
     in_edit_mode = true;
     m_path_origin = getPosition().toFloat();
     
-    auto pc = static_cast<PageComponent*>( getPageComponent() );
+    PageComponent* pc = getPageComponent();
     setBounds( pc->getLocalBounds() );
     pc->stealMouse();
     
@@ -242,7 +243,7 @@ void PathBaseComponent::enterPathEdit ()
 
 void PathBaseComponent::exitPathEdit ()
 {
-    ((PageComponent*)getPageComponent() )->giveBackMouse();
+    getPageComponent()->giveBackMouse();
     
     if( !m_preview_path.isEmpty() )
         m_preview_path.clear();
@@ -472,12 +473,11 @@ void PathBaseComponent::makeHandles()
 
 void PathBaseComponent::removeHandles()
 {
-    auto *sc = getPageComponent();
+    PageComponent *sc = getPageComponent();
     
     for ( auto h : path_handles )
     {
-        if( sc )
-            sc->removeChildComponent( h );
+        if( sc ) sc->removeChildComponent( h );
         
         delete h;
     }

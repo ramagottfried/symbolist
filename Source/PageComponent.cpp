@@ -9,10 +9,10 @@
 #include "PageComponent.h"
 
 
-
 PageComponent::PageComponent()
 {
     setComponentID("PageComponent");
+    edited_component = NULL;
 }
 
 PageComponent::~PageComponent() {}
@@ -38,6 +38,7 @@ void PageComponent::removeSymbolComponent( BaseComponent *c )
 
 void PageComponent::enterEditMode( BaseComponent* c )
 {
+    exitEditMode();
     unselectAllComponents();
     edited_component = c;
     edited_component->toFront(true);
@@ -53,6 +54,17 @@ void PageComponent::exitEditMode( )
         edited_component->setEditMode(false);
         edited_component = NULL;
     }
+}
+
+ScoreComponent* PageComponent::getEditedComponent()
+{
+    if ( edited_component == NULL ) return this;
+    else return edited_component;
+}
+
+void PageComponent::resized ()
+{
+    if ( edited_component != NULL) edited_component->setSize(getWidth(),getHeight());
 }
 
 

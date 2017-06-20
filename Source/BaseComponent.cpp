@@ -191,6 +191,11 @@ void BaseComponent::resized ()
  * MOUSE INTERACTIONS
  ************************/
 
+bool BaseComponent::respondsToMouseEvents()
+{
+    return ( isTopLevelComponent() || ((BaseComponent*)getParentComponent())->isInEditMode() );
+}
+
 Point<float> BaseComponent::shiftConstrainMouseAngle( const MouseEvent& event )
 {
     if( event.mods.isShiftDown() )
@@ -209,10 +214,6 @@ void BaseComponent::mouseMove( const MouseEvent& event )
     //std::cout << "BaseComponent::mouseMove" << std::endl;
 }
 
-bool BaseComponent::respondsToMouseEvents()
-{
-    return ( isTopLevelComponent() || ((BaseComponent*)getParentComponent())->isInEditMode() );
-}
 
 void BaseComponent::mouseDown( const MouseEvent& event )
 {
@@ -273,6 +274,28 @@ void BaseComponent::mouseUp( const MouseEvent& event )
         parent->mouseUp(event.getEventRelativeTo(parent));
     }
 }
+
+
+void BaseComponent::mouseDoubleClick(const MouseEvent& event)
+{
+    std::cout << "db click in " << getComponentID() << std::endl;
+    
+    if ( (!in_edit_mode) && respondsToMouseEvents() )
+    {
+        getPageComponent()->enterEditMode( this );
+    }
+    else
+    {
+        Component* p = getParentComponent();
+        p->mouseDoubleClick(event.getEventRelativeTo(p));
+    }
+}
+
+
+/************************
+ * DRAW
+ ************************/
+
 
 
 void BaseComponent::paint ( Graphics& g )

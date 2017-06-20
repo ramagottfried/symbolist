@@ -43,18 +43,6 @@ void SymbolGroupComponent::deselectComponent()
 }
 
 
-void SymbolGroupComponent::mouseDoubleClick(const MouseEvent& event)
-{
-    std::cout << "db click in " << getComponentID() << std::endl;
-    ScoreComponent* pc = ((ScoreComponent*)getParentComponent());
-    
-    if ( ! in_edit_mode && ( isTopLevelComponent() || ! ((BaseComponent*)pc)->isInEditMode()) )
-    {
-        PageComponent* page = getPageComponent();
-        page->enterEditMode( this );
-    }
-}
-
 void SymbolGroupComponent::mouseDown( const MouseEvent& event )
 {
     BaseComponent::mouseDown(event);
@@ -69,12 +57,7 @@ void SymbolGroupComponent::mouseUp( const MouseEvent& event )
 
 void SymbolGroupComponent::mouseDrag( const MouseEvent& event )
 {
-    //std::cout << "Group mouseDrag " << getComponentID() << std::endl;
-    if ( in_edit_mode )
-    {
-        std::cout << "=> editMode" << std::endl;
-        ScoreComponent::mouseDrag(event);
-    }
+    if ( in_edit_mode ) ScoreComponent::mouseDrag(event);
     else BaseComponent::mouseDrag(event);
 }
 

@@ -64,7 +64,7 @@ public:
     void mouseDown( const MouseEvent& event ) override;
     void mouseDrag( const MouseEvent& event ) override;
     void mouseUp( const MouseEvent& event ) override;
-    void mouseDoubleClick( const MouseEvent& event ) override {};
+    void mouseDoubleClick( const MouseEvent& event ) override;
         
     void recursiveMaximizeBounds();
     void recursiveShrinkBounds();

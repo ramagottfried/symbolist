@@ -29,8 +29,10 @@ public:
     // single_component edit mode
     void enterEditMode( BaseComponent* c );
     void exitEditMode();
+    ScoreComponent* getEditedComponent();
     
     // Juce Callbacks
+    void resized () override;
     void paint (Graphics& g) override;
     
 private:

@@ -27,7 +27,6 @@ public:
     void selectComponent() override;
     void deselectComponent() override;
     
-    void mouseDoubleClick(const MouseEvent& event) override;
     void mouseDown(const MouseEvent& event) override;
     void mouseUp(const MouseEvent& event) override;
     void mouseDrag(const MouseEvent& event) override;

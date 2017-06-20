@@ -1,6 +1,6 @@
 
 #include "PaletteComponent.h"
-#include "MainComponent.h"
+#include "SymbolistMainComponent.h"
 
 
 using namespace std ;
@@ -13,7 +13,7 @@ using namespace std ;
 PaletteButton::PaletteButton( int i, Symbol *s)
 {
     button_id = i;
-    graphic_comp = SymbolistMainComponent::makeComponentFromSymbol(s);
+    graphic_comp = SymbolistHandler::makeComponentFromSymbol(s);
     setComponentID("PaletteButton");
 }
 

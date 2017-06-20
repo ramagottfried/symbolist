@@ -9,15 +9,14 @@
 */
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "MainWindow.h"
-
+#include "SymbolistHandler.h"
 
 //==============================================================================
-class jucemouseeventsApplication  : public JUCEApplication
+class SymbolistApplication  : public JUCEApplication
 {
 public:
     //==============================================================================
-    jucemouseeventsApplication() {}
+    SymbolistApplication() {}
 
     const String getApplicationName() override       { return ProjectInfo::projectName; }
     const String getApplicationVersion() override    { return ProjectInfo::versionString; }
@@ -28,14 +27,16 @@ public:
     {
         // This method is where you should put your application's initialisation code..
 
-        mainWindow = new AppMainWindow (getApplicationName());
+        //mainWindow = new AppMainWindow (getApplicationName());
+        symbolist_handler = SymbolistHandler::symbolistAPI_newSymbolist();
+        symbolist_handler->symbolistAPI_openWindow();
     }
 
     void shutdown() override
     {
         // Add your application's shutdown code here..
-
-        mainWindow = nullptr; // (deletes our window)
+        symbolist_handler = nullptr;
+        // mainWindow = nullptr; // (deletes our window)
     }
 
     //==============================================================================
@@ -53,31 +54,13 @@ public:
         // the other instance's command-line arguments were.
     }
 
-    //==============================================================================
-    /*
-        This class implements the desktop window that contains an instance of
-        our MainContentComponent class.
-    */
-    class AppMainWindow    : public SymbolistMainWindow
-    {
-    public:
-        
-        AppMainWindow (String name)  : SymbolistMainWindow ( ) {}
-
-        void closeButtonPressed() override
-        {
-            
-            JUCEApplication::getInstance()->systemRequestedQuit();
-        }
-
-    private:
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AppMainWindow)
-    };
 
 private:
-    ScopedPointer<AppMainWindow> mainWindow;
+    
+    //ScopedPointer<AppMainWindow> mainWindow;
+    ScopedPointer<SymbolistHandler> symbolist_handler;
 };
 
 //==============================================================================
 // This macro generates the main() routine that launches the app.
-START_JUCE_APPLICATION (jucemouseeventsApplication)
+START_JUCE_APPLICATION (SymbolistApplication)

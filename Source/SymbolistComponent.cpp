@@ -7,7 +7,7 @@
 //
 
 #include "SymbolistComponent.h"
-#include "MainComponent.h"
+#include "SymbolistMainComponent.h"
 
 // recursive methods for easy access to the top-level sore and main component
 // from anywhere in the GUI
@@ -20,17 +20,17 @@ SymbolistComponent* SymbolistComponent::getPageComponent()
 }
 
 
-SymbolistComponent* SymbolistComponent::getMainComponent()
+SymbolistHandler* SymbolistComponent::getSymbolistHandler()
 {
     auto p = static_cast<SymbolistComponent*>( getParentComponent() );
-    if (p == NULL) return p;
-    else return p->getMainComponent(); // only a SymbolistMainComponent will return 'this'
+    if (p == NULL) return NULL;
+    else return p->getSymbolistHandler(); // only a SymbolistMainComponent will return 'something different'
 }
 
 
 UI_EditType SymbolistComponent::getMainEditMode()
 {
-    SymbolistMainComponent* smc = (SymbolistMainComponent*)getMainComponent() ;
+    SymbolistMainComponent* smc = (SymbolistMainComponent*)getPageComponent()->getParentComponent() ;
     if ( smc != NULL)
         return smc->getEditMode() ;
     else {

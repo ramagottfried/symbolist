@@ -1,6 +1,6 @@
 
 #include "PathBaseComponent.h"
-#include "MainComponent.h"
+#include "SymbolistMainComponent.h"
 #include "PathHandleComponent.h"
 
 PathBaseComponent::PathBaseComponent(  const Symbol& s ) : BaseComponent( s )
@@ -10,7 +10,7 @@ PathBaseComponent::PathBaseComponent(  const Symbol& s ) : BaseComponent( s )
 
 PathBaseComponent::~PathBaseComponent()
 {
-    printf("freeing path %p\n", this);
+    //printf("freeing path %p\n", this);
     removeHandles();
 }
 
@@ -649,7 +649,7 @@ void PathBaseComponent::paint ( Graphics& g )
     //printRect(getBounds(), "paint " + getSymbolTypeStr() );
     if ( isTopLevelComponent() )
     {
-        cur_t = ((SymbolistMainComponent*)getMainComponent())->getCurrentTime();
+        cur_t = getSymbolistHandler()->getCurrentTime();
         local_t =  cur_t - getScoreSymbolPointer()->getTime() ;
         
         
@@ -666,7 +666,8 @@ void PathBaseComponent::paint ( Graphics& g )
     
     strokeType.setStrokeThickness( strokeType.getStrokeThickness() );
     
-    if( getMainComponent() == NULL ) // workaround since we don't know which context we're in, draw and return if in palette
+    // workaround since we don't know which context we're in, draw and return if in palette
+    if( getPageComponent() == NULL )
     {
         g.strokePath(m_path, strokeType );
         return;

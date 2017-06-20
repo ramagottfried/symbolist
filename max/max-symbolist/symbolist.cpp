@@ -7,7 +7,7 @@ typedef struct _symbolist
 {
     t_object    ob;
     
-    void *      symbolist_window;
+    void *      symbolist_handler;
     void *      m_qelem_open;
     void *      m_qelem_setTime;
     
@@ -37,23 +37,23 @@ void symbolist_closecallback ( void * sc )
 {
     for( auto x : symbolist_objects )
     {
-        if( x->symbolist_window == sc )
+        if( x->symbolist_handler == sc )
         {
-            x->symbolist_window = NULL;
+            x->symbolist_handler = NULL;
         }
     }
 }
 
 void symbolist_set_time( t_symbolist *x, int time_ms )
 {
-    symbolistSetTime( x->symbolist_window, time_ms );
+    symbolistSetTime( x->symbolist_handler, time_ms );
 }
 
 void symbolist_get_symbol( t_symbolist *x, int num)
 {
-    if( num >= 0 && num < symbolistGetNumSymbols( x->symbolist_window ) )
+    if( num >= 0 && num < symbolistGetNumSymbols( x->symbolist_handler ) )
     {
-        odot_bundle* bndl = symbolistGetSymbol( x->symbolist_window, num );
+        odot_bundle* bndl = symbolistGetSymbol( x->symbolist_handler, num );
         symbolist_outletOSC( x->outlet, bndl->len, bndl->data );
     }
     else
@@ -68,13 +68,13 @@ void symbolist_open_window( t_symbolist *x )
 
 void symbolist_qelem_open_window( t_symbolist *x )
 {
-    if (!x->symbolist_window)
+    if ( x->symbolist_handler)
     {
-        x->symbolist_window = symbolistNewWindow();
-        symbolistRegisterCloseCallback( x->symbolist_window, &symbolist_closecallback );
+        symbolistOpenWindow( x->symbolist_handler );
+     //   symbolistRegisterCloseCallback( x->symbolist_handler, &symbolist_closecallback );
     }
     else
-        symbolistWindowToFront( x->symbolist_window );
+        symbolistWindowToFront( x->symbolist_handler );
 
 }
 
@@ -86,9 +86,9 @@ void symbolist_qelem_open_window( t_symbolist *x )
 BEGIN_USING_C_LINKAGE
 void symbolist_free(t_symbolist *x)
 {
-    if( x->symbolist_window )
+    if( x->symbolist_handler )
     {
-        symbolistCloseWindow( x->symbolist_window );
+        symbolistFree( x->symbolist_handler );
     }
     
     qelem_free(x->m_qelem_open);
@@ -104,7 +104,14 @@ void *symbolist_new(t_symbol *s, long argc, t_atom *argv)
     if( x )
     {
         symbolist_objects.emplace_back( x );
-        x->symbolist_window = NULL;
+        x->symbolist_handler = symbolistNew();
+        
+        if( !x->symbolist_handler )
+        {
+            object_error((t_object *)x, "could not allocate symbolist");
+            return NULL;
+        }
+        
         x->m_qelem_open = qelem_new((t_object *)x, (method)symbolist_qelem_open_window);
         x->outlet = outlet_new(x, "FullPacket" );
     }

@@ -7,7 +7,7 @@
 //
 
 #include "PageComponent.h"
-#include "MainComponent.h"
+
 
 
 PageComponent::PageComponent()
@@ -25,13 +25,13 @@ PageComponent::~PageComponent() {}
 void PageComponent::addSymbolComponent( BaseComponent *c )
 {
     ScoreComponent::addSymbolComponent( c );
-    ((SymbolistMainComponent*) (getMainComponent()))->addSymbolToScore( c );
+    getSymbolistHandler()->addSymbolToScore( c );
 }
 
 
 void PageComponent::removeSymbolComponent( BaseComponent *c )
 {
-    ((SymbolistMainComponent*) (getMainComponent()))->removeSymbolFromScore( c );
+    getSymbolistHandler()->removeSymbolFromScore( c );
     ScoreComponent::removeSymbolComponent( c );
 }
 
@@ -69,7 +69,7 @@ void PageComponent::paint (Graphics& g)
     
     String msg = "";
     String timestr = "t = ";
-    timestr += ((String) ((SymbolistMainComponent*) (getMainComponent()))->getCurrentTime()) ;
+    timestr += (String) (getSymbolistHandler()->getCurrentTime()) ;
     
     switch ( getMainEditMode() )
     {
@@ -82,14 +82,14 @@ void PageComponent::paint (Graphics& g)
         case UI_EditType::draw_mode:
         {
             msg += " draw mode: " ;
-            Symbol *s = static_cast<SymbolistMainComponent*>( getMainComponent() )->getCurrentSymbol();
+            Symbol *s = getSymbolistHandler()->getCurrentSymbol();
             msg += s->getOSCMessageValue(s->getOSCMessagePos("/type")).getString();
             break;
         }
         case UI_EditType::draw_alt_mode:
         {
             msg += " draw alter: " ;
-            Symbol *s = static_cast<SymbolistMainComponent*>( getMainComponent() )->getCurrentSymbol();
+            Symbol *s = getSymbolistHandler()->getCurrentSymbol();
             msg += s->getOSCMessageValue(s->getOSCMessagePos("/type")).getString();
             break;
         }

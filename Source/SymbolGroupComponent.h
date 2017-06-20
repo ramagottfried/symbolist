@@ -9,8 +9,8 @@
 #ifndef SymbolGroupComponent_h
 #define SymbolGroupComponent_h
 
-#include "ScoreComponent.h"
 #include "BaseComponent.h"
+#include "Symbol.h"
 
 class SymbolGroupComponent : public BaseComponent
 {
@@ -20,7 +20,7 @@ public:
     SymbolGroupComponent( const Symbol& s );
     ~SymbolGroupComponent();
     
-    String getSymbolTypeStr() const override { return "group"; }
+    virtual String getSymbolTypeStr() const override { return "group"; }
     int addSymbolMessages(Symbol* s, const String &base_address ) override ;
     void importFromSymbol( const Symbol &s ) override;
 

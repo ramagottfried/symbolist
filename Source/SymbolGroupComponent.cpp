@@ -1,6 +1,7 @@
 
 #include "SymbolGroupComponent.h"
-#include "MainComponent.h"
+
+#include "PageComponent.h"
 
 SymbolGroupComponent::SymbolGroupComponent( const Symbol& s ) : BaseComponent( s )
 {
@@ -106,9 +107,9 @@ void SymbolGroupComponent::importFromSymbol( const Symbol &s )
     for (int i = 0; i < n; i++ )
     {
         String filter = "/subsymbol/" + String(i+1) ;   // we start at 1 .. (?)
-        cout << "IMPORT FROM: " << filter << endl;
+        //cout << "IMPORT FROM: " << filter << endl;
         Symbol sub_s = s.makeSubSymbol( filter );
-        BaseComponent* c = SymbolistMainComponent::makeComponentFromSymbol( &sub_s );
+        BaseComponent* c = SymbolistHandler::makeComponentFromSymbol( &sub_s );
         if ( c != NULL) addSubcomponent( c );
         else cout << "Error importing subsymbol #" << i << endl;
     }

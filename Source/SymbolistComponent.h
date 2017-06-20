@@ -25,4 +25,4 @@ public:
     UI_EditType getMainEditMode();
 };
 
-#endif /* SymbolistComponent_hpp */
+#endif

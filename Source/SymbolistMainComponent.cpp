@@ -74,24 +74,32 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
 {
     String desc = key.getTextDescription();
     std::cout << "keyPressed: " << desc << std::endl;;
-    if( desc            == "command + G" ) {
-        scoreView.groupSelectedSymbols();
-    } else if ( desc    == "backspace" ) {
-        scoreView.deleteSelectedSymbols();
-    } else if ( desc    == "C") {
+    
+    if( desc == "command + G" ) { scoreView.groupSelectedSymbols(); }
+    
+    else if( desc == "command + U" ) { scoreView.ungroupSelectedSymbols(); }
+    
+    else if ( desc == "backspace" ) { scoreView.deleteSelectedSymbols(); }
+    
+    else if ( desc == "C") {
         symbolist_handler->setCurrentSymbol(0);
         paletteView.selectPaletteButton(0);
-    } else if ( desc    == "P") {
+    }
+    
+    else if ( desc == "P") {
         symbolist_handler->setCurrentSymbol(1);
         paletteView.selectPaletteButton(1);
-    } else if ( desc    == "option + V") {
-        scoreView.flipSelectedSymbols(0);
-    } else if ( desc    == "option + H") {
-        scoreView.flipSelectedSymbols(1);
-    } else if ( desc    == "spacebar") {
-        symbolist_handler->executeTransportCallback(1); // start
-    } else if ( desc    == "escape") {
+    }
+    
+    else if ( desc == "option + V") { scoreView.flipSelectedSymbols(0); }
+    
+    else if ( desc == "option + H") { scoreView.flipSelectedSymbols(1); }
+    
+    else if ( desc == "spacebar") { symbolist_handler->executeTransportCallback(1); }
+    
+    else if ( desc == "escape") {
  
+        scoreView.unselectAllComponents();
         scoreView.exitEditMode();
         
         symbolist_handler->executeTransportCallback(0); // = stop
@@ -99,7 +107,8 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
         
         scoreView.repaint();
     }
-return true;
+    
+    return true;
 }
 
 

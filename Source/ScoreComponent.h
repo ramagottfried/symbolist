@@ -56,6 +56,7 @@ public:
     
     void deleteSelectedSymbols();
     void groupSelectedSymbols();
+    void ungroupSelectedSymbols();
     void translateSelectedSymbols( Point<int> delta_xy );
     void flipSelectedSymbols( int axis );
     

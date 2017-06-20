@@ -238,10 +238,9 @@ void ScoreComponent::groupSelectedSymbols()
         // create a list from selected items
         vector< BaseComponent *> items;
         for( BaseComponent *c : selected_components ) { items.push_back(c); }
-        //selected_items.deselectAll();
+        
         unselectAllComponents();
         
-        // create a symbol with these bounds
         Symbol s ("group", minx, miny, maxx-minx, maxy-miny);
         s.addOSCMessage( "/numsymbols", 0 );
         SymbolGroupComponent *group = (SymbolGroupComponent*) SymbolistHandler::makeComponentFromSymbol( &s );
@@ -265,10 +264,35 @@ void ScoreComponent::groupSelectedSymbols()
         }
         // will add the symbol to the score if this is a PageComponent
         this->addSymbolComponent( group );
-        group->selectComponent();
+        addToSelection( group );
     }
 }
 
+void ScoreComponent::ungroupSelectedSymbols()
+{
+    vector< BaseComponent *> items;
+    for( BaseComponent *c : selected_components ) { items.push_back(c); }
+    unselectAllComponents();
+    
+    for ( int i = 0; i < items.size(); i++ )
+    {
+        BaseComponent* c = items[i];
+        int n = ((int)c->getNumSubcomponents());
+        
+        vector< BaseComponent *> subitems;
+        for ( int ii = 0 ; ii < n ; ii++ ) { subitems.push_back(c->getSubcomponent(ii)); }
+
+        for ( int ii = 0; ii < n ; ii++ )
+        {
+            BaseComponent* sc = subitems[ii];
+            c->removeSymbolComponent(sc);
+            this->addSymbolComponent(sc);
+            sc->setTopLeftPosition(sc->getPosition().translated(c->getPosition().getX(), c->getPosition().getY()));
+        }
+        
+        removeSymbolComponent(c);
+    }
+}
 
 /*******************
  * TRANSFORMATIONS

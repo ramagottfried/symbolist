@@ -45,3 +45,4 @@ UI_EditType SymbolistComponent::getMainEditMode()
         return UI_EditType::select_mode;
     }
 }
+

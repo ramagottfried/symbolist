@@ -43,7 +43,11 @@ public:
 
     void addSymbolComponent( BaseComponent* c) { scoreView.addSubcomponent( c ); }
     
-    void close () { symbolist_handler->executeCloseCallback(); }
+    void close ()
+    {
+        //symbolist_handler->main_component = NULL;
+        symbolist_handler->executeCloseCallback();
+    }
     
 private:
         

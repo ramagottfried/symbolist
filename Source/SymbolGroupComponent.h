@@ -9,8 +9,8 @@
 #ifndef SymbolGroupComponent_h
 #define SymbolGroupComponent_h
 
-#include "ScoreComponent.h"
 #include "BaseComponent.h"
+#include "Symbol.h"
 
 class SymbolGroupComponent : public BaseComponent
 {

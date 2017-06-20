@@ -10,7 +10,7 @@ PathBaseComponent::PathBaseComponent(  const Symbol& s ) : BaseComponent( s )
 
 PathBaseComponent::~PathBaseComponent()
 {
-    printf("freeing path %p\n", this);
+    //printf("freeing path %p\n", this);
     removeHandles();
 }
 

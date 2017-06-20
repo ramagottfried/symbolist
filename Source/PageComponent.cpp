@@ -7,7 +7,7 @@
 //
 
 #include "PageComponent.h"
-#include "SymbolistMainComponent.h"
+
 
 
 PageComponent::PageComponent()

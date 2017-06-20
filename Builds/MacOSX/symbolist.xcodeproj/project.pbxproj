@@ -29,7 +29,7 @@
 		1107B4001EF7D55D00E2DFA9 /* ScoreComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */; };
 		1107B4011EF7D55D00E2DFA9 /* SymbolistComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 444CD9021EDDAF1B001AC03A /* SymbolistComponent.cpp */; };
 		1107B4021EF7D55D00E2DFA9 /* SymbolistMainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00531EC328EC00E4F624 /* SymbolistMainComponent.cpp */; };
-		1107B4031EF7D55D00E2DFA9 /* MainWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 446388D41EC34DC90038CFCB /* MainWindow.cpp */; };
+		1107B4031EF7D55D00E2DFA9 /* SymbolistMainWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 446388D41EC34DC90038CFCB /* SymbolistMainWindow.cpp */; };
 		1186486B1EF7E68200904672 /* include_juce_osc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44C0729D1EC4AF870028D5F8 /* include_juce_osc.cpp */; };
 		1186486C1EF7E68B00904672 /* include_juce_core.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3FAB00DCF22EB4922567B583 /* include_juce_core.mm */; };
 		1186486D1EF7E68B00904672 /* include_juce_data_structures.mm in Sources */ = {isa = PBXBuildFile; fileRef = B5F75CE38D2D3A7CD56C4F40 /* include_juce_data_structures.mm */; };
@@ -75,14 +75,14 @@
 		446388D11EC34B7A0038CFCB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A18855981466E65AB497B9D /* QuartzCore.framework */; };
 		446388D21EC34B840038CFCB /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 981D2B1E1F9131A715FECA14 /* WebKit.framework */; };
 		446388D31EC34B980038CFCB /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 938CD7E1345066F383D85CAB /* IOKit.framework */; };
-		446388D51EC34DC90038CFCB /* MainWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 446388D41EC34DC90038CFCB /* MainWindow.cpp */; };
+		446388D51EC34DC90038CFCB /* SymbolistMainWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 446388D41EC34DC90038CFCB /* SymbolistMainWindow.cpp */; };
 		44A3C1EE1EC317BE00C4AD14 /* symbolist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */; };
 		44B718B11EDD9D010039884E /* Symbol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44B718AF1EDD9D010039884E /* Symbol.cpp */; };
 		44B718B21EDD9D010039884E /* Symbol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44B718AF1EDD9D010039884E /* Symbol.cpp */; };
 		44C0729C1EC4ADFA0028D5F8 /* juce_osc in Resources */ = {isa = PBXBuildFile; fileRef = 44C0729B1EC4ADFA0028D5F8 /* juce_osc */; };
 		44C0729E1EC4AF870028D5F8 /* include_juce_osc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44C0729D1EC4AF870028D5F8 /* include_juce_osc.cpp */; };
 		44C0729F1EC4AF8C0028D5F8 /* include_juce_osc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44C0729D1EC4AF870028D5F8 /* include_juce_osc.cpp */; };
-		44CFE0391EC377EA009135F8 /* MainWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 446388D41EC34DC90038CFCB /* MainWindow.cpp */; };
+		44CFE0391EC377EA009135F8 /* SymbolistMainWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 446388D41EC34DC90038CFCB /* SymbolistMainWindow.cpp */; };
 		44CFE03A1EC3789C009135F8 /* include_juce_core.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3FAB00DCF22EB4922567B583 /* include_juce_core.mm */; };
 		44CFE03B1EC3789C009135F8 /* include_juce_data_structures.mm in Sources */ = {isa = PBXBuildFile; fileRef = B5F75CE38D2D3A7CD56C4F40 /* include_juce_data_structures.mm */; };
 		44CFE03C1EC3789C009135F8 /* include_juce_events.mm in Sources */ = {isa = PBXBuildFile; fileRef = C69F3680012FCE60A205EF05 /* include_juce_events.mm */; };
@@ -143,7 +143,7 @@
 		445A661F1EDABDED00E2ADA2 /* SymbolistComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SymbolistComponent.h; path = ../../Source/SymbolistComponent.h; sourceTree = "<group>"; };
 		446363931EC6F4960054CB6D /* OSCIO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OSCIO.cpp; path = ../../Source/OSCIO.cpp; sourceTree = "<group>"; };
 		446363961EC8EF9C0054CB6D /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = types.h; path = ../../Source/types.h; sourceTree = "<group>"; };
-		446388D41EC34DC90038CFCB /* MainWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainWindow.cpp; path = ../../Source/MainWindow.cpp; sourceTree = "<group>"; };
+		446388D41EC34DC90038CFCB /* SymbolistMainWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolistMainWindow.cpp; path = ../../Source/SymbolistMainWindow.cpp; sourceTree = "<group>"; };
 		447FFBF31EC60CB60001000D /* OSCIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OSCIO.h; path = ../../Source/OSCIO.h; sourceTree = "<group>"; };
 		44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = symbolist.cpp; path = ../../Source/symbolist.cpp; sourceTree = "<group>"; };
 		44A3C1ED1EC317BE00C4AD14 /* symbolist.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = symbolist.hpp; path = ../../Source/symbolist.hpp; sourceTree = "<group>"; };
@@ -152,7 +152,7 @@
 		44C0729B1EC4ADFA0028D5F8 /* juce_osc */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_osc; path = ../../../JUCE/modules/juce_osc; sourceTree = "<group>"; };
 		44C0729D1EC4AF870028D5F8 /* include_juce_osc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_osc.cpp; path = ../../JuceLibraryCode/include_juce_osc.cpp; sourceTree = "<group>"; };
 		44CFE0411EC37BA5009135F8 /* SymbolistMainComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SymbolistMainComponent.h; path = ../../Source/SymbolistMainComponent.h; sourceTree = "<group>"; };
-		44CFE0421EC37BA5009135F8 /* MainWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainWindow.h; path = ../../Source/MainWindow.h; sourceTree = "<group>"; };
+		44CFE0421EC37BA5009135F8 /* SymbolistMainWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SymbolistMainWindow.h; path = ../../Source/SymbolistMainWindow.h; sourceTree = "<group>"; };
 		48794DC1DC8CDA7359E3681F /* include_juce_gui_extra.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_gui_extra.mm; path = ../../JuceLibraryCode/include_juce_gui_extra.mm; sourceTree = SOURCE_ROOT; };
 		4A18855981466E65AB497B9D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		5B4BF2AC43CE9859FE07665E /* RecentFilesMenuTemplate.nib */ = {isa = PBXFileReference; lastKnownFileType = file.nib; path = RecentFilesMenuTemplate.nib; sourceTree = SOURCE_ROOT; };
@@ -232,8 +232,8 @@
 				4425D3041EF8599300B8BF1C /* SymbolistHandler.cpp */,
 				44CFE0411EC37BA5009135F8 /* SymbolistMainComponent.h */,
 				11CE00531EC328EC00E4F624 /* SymbolistMainComponent.cpp */,
-				44CFE0421EC37BA5009135F8 /* MainWindow.h */,
-				446388D41EC34DC90038CFCB /* MainWindow.cpp */,
+				44CFE0421EC37BA5009135F8 /* SymbolistMainWindow.h */,
+				446388D41EC34DC90038CFCB /* SymbolistMainWindow.cpp */,
 			);
 			name = main;
 			sourceTree = "<group>";
@@ -520,7 +520,7 @@
 				1107B4001EF7D55D00E2DFA9 /* ScoreComponent.cpp in Sources */,
 				1107B3F71EF7D55D00E2DFA9 /* TextGlyphComponent.cpp in Sources */,
 				118648711EF7E68B00904672 /* include_juce_gui_extra.mm in Sources */,
-				1107B4031EF7D55D00E2DFA9 /* MainWindow.cpp in Sources */,
+				1107B4031EF7D55D00E2DFA9 /* SymbolistMainWindow.cpp in Sources */,
 				1107B3F91EF7D55D00E2DFA9 /* PathInfo.cpp in Sources */,
 				1107B3FE1EF7D55D00E2DFA9 /* PaletteComponent.cpp in Sources */,
 				1186486B1EF7E68200904672 /* include_juce_osc.cpp in Sources */,
@@ -554,7 +554,7 @@
 				1107B3DE1EF1751900E2DFA9 /* TextGlyphComponent.cpp in Sources */,
 				1107B3E21EF2D45500E2DFA9 /* PathHandleComponent.cpp in Sources */,
 				44CFE03B1EC3789C009135F8 /* include_juce_data_structures.mm in Sources */,
-				44CFE0391EC377EA009135F8 /* MainWindow.cpp in Sources */,
+				44CFE0391EC377EA009135F8 /* SymbolistMainWindow.cpp in Sources */,
 				444C43A61EE4A748000C6F69 /* SymbolGroupComponent.cpp in Sources */,
 				118C38F01EC61404006FF4A1 /* PaletteComponent.cpp in Sources */,
 			);
@@ -573,7 +573,7 @@
 				4425D3051EF8599300B8BF1C /* SymbolistHandler.cpp in Sources */,
 				444C43A11EE4A2E4000C6F69 /* PageComponent.cpp in Sources */,
 				ECAB07494F266A96C75A7E47 /* include_juce_events.mm in Sources */,
-				446388D51EC34DC90038CFCB /* MainWindow.cpp in Sources */,
+				446388D51EC34DC90038CFCB /* SymbolistMainWindow.cpp in Sources */,
 				118C38E31EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */,
 				8D57C4E2ADEA2935AAB91AAC /* include_juce_graphics.mm in Sources */,
 				118C38DE1EC5BC4F006FF4A1 /* Score.cpp in Sources */,

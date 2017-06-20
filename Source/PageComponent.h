@@ -9,8 +9,8 @@
 #ifndef PageComponent_hpp
 #define PageComponent_hpp
 
-#include "PrimitiveIncludes.h"
 #include "ScoreComponent.h"
+#include "BaseComponent.h"
 
 
 class PageComponent : public ScoreComponent

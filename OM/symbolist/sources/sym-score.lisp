@@ -109,9 +109,10 @@
       )))
         
 (defmethod editor-close ((self sym-editor))
-  (symbolist::symbolistCloseWindow (symbolist-window self))
-  (symbolist::symbolistFree (symbolist-window self))
-  (setf (symbolist-window self) nil)
+  (when (symbolist-window self)
+    (symbolist::symbolistCloseWindow (symbolist-window self))
+    (symbolist::symbolistFree (symbolist-window self))
+    (setf (symbolist-window self) nil))
   (setf *symbolist-editors* (remove self *symbolist-editors*))
   (call-next-method)) 
 

@@ -10,8 +10,6 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SymbolistHandler.h"
-//#include "MainWindow.h"
-
 
 //==============================================================================
 class SymbolistApplication  : public JUCEApplication

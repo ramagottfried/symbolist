@@ -6,8 +6,6 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 #include "Score.h"
-//#include "SymbolistMainComponent.h"
-//#include "BaseComponent.h"
 
 class SymbolistMainComponent;
 class BaseComponent;

@@ -1,9 +1,5 @@
 
 #include "SymbolistMainComponent.h"
-#include "MainWindow.h"
-#include "PageComponent.h"
-#include "SymbolGroupComponent.h"
-
 
 SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
 {
@@ -28,7 +24,7 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
 }
 
 
-SymbolistMainComponent::~SymbolistMainComponent() { }
+SymbolistMainComponent::~SymbolistMainComponent() {}
 
 
 void SymbolistMainComponent::resized()
@@ -37,6 +33,9 @@ void SymbolistMainComponent::resized()
     paletteView.setBounds( 0, 0, 50, getHeight() );
 }
 
+/***************************
+ * edit mode
+ ***************************/
 
 void SymbolistMainComponent::setEditMode( UI_EditType m )
 {
@@ -50,7 +49,27 @@ UI_EditType SymbolistMainComponent::getEditMode()
     return mouse_mode ;
 }
 
+void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
+{
+    if ( modifiers.isCommandDown() )
+    {
+        if( modifiers.isAltDown() )
+            setEditMode( UI_EditType::draw_alt_mode );
+        else
+            setEditMode( UI_EditType::draw_mode );
+    }
+    else
+    {
+        if( modifiers.isAltDown() )
+            setEditMode( UI_EditType::select_alt_mode );
+        else
+            setEditMode( UI_EditType::select_mode );
+    }
+}
 
+/***************************
+ * main hub for key actions
+ ***************************/
 bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
 {
     String desc = key.getTextDescription();
@@ -84,23 +103,6 @@ return true;
 }
 
 
-void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
-{
-    if ( modifiers.isCommandDown() )
-    {
-        if( modifiers.isAltDown() )
-            setEditMode( UI_EditType::draw_alt_mode );
-        else
-            setEditMode( UI_EditType::draw_mode );
-    }
-    else
-    {
-        if( modifiers.isAltDown() )
-            setEditMode( UI_EditType::select_alt_mode );
-        else
-            setEditMode( UI_EditType::select_mode );
-    }
-}
 
 
 

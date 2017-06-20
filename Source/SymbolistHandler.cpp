@@ -7,8 +7,11 @@
 //
 
 #include "SymbolistHandler.h"
-#include "MainWindow.h"
+
+#include "SymbolistMainWindow.h"
 #include "SymbolGroupComponent.h"
+#include "PrimitiveIncludes.h"
+
 
 SymbolistHandler::SymbolistHandler()
 {
@@ -57,9 +60,13 @@ SymbolistHandler::SymbolistHandler()
     Symbol* s5 = new Symbol("text", 20.0, 20.0, symbol_size, symbol_size);
     palette.addPaletteItem(s5);
     
+    main_component = NULL;
 }
 
-SymbolistHandler::~SymbolistHandler() {}
+SymbolistHandler::~SymbolistHandler()
+{
+    if (main_component != NULL ) symbolistAPI_closeWindow();
+}
 
 /*********************************************
  * CONTROLLER METHODS CALLED FROM THE LIB API
@@ -80,30 +87,39 @@ void SymbolistHandler::symbolistAPI_freeSymbolist()
 
 void SymbolistHandler::symbolistAPI_openWindow()
 {
-    
     const MessageManagerLock mml;
-    SymbolistEditorWindow *w = new SymbolistEditorWindow (this);
+    SymbolistMainWindow *w = new SymbolistMainWindow (this);
     main_component = w->getMainComponent();
     addComponentsFromScore();
 }
 
 void SymbolistHandler::symbolistAPI_closeWindow()
 {
-    std::cout << "DELETE WINDOW: " << this << std::endl;
-    MessageManagerLock mml;
-    delete main_component->getTopLevelComponent(); // = the window
+    if ( main_component != NULL)
+    {
+        std::cout << "delete Symbolist window: " << this << std::endl;
+        MessageManagerLock mml;
+        delete main_component->getTopLevelComponent(); // = the window
+        main_component = NULL;
+    }
 }
 
 void SymbolistHandler::symbolistAPI_windowToFront()
 {
-    const MessageManagerLock mml;
-    main_component->getTopLevelComponent()->toFront(true);
+    if ( main_component != NULL)
+    {
+        const MessageManagerLock mml;
+        main_component->getTopLevelComponent()->toFront(true);
+    }
 }
 
 void SymbolistHandler::symbolistAPI_windowSetName(String name)
 {
-    const MessageManagerLock mml;
-    main_component->getTopLevelComponent()->setName(name);
+    if ( main_component != NULL)
+    {
+        const MessageManagerLock mml;
+        main_component->getTopLevelComponent()->setName(name);
+    }
 }
 
 void SymbolistHandler::symbolistAPI_registerUpdateCallback(symbolistUpdateCallback c)
@@ -134,16 +150,15 @@ odot_bundle* SymbolistHandler::symbolistAPI_getSymbol(int n)
 
 void SymbolistHandler::symbolistAPI_setSymbols(int n, odot_bundle **bundle_array)
 {
-    // Will lock the MainLoop until out of scope
-    const MessageManagerLock mmLock;
-    std::cout << std::endl << std::endl << std::endl << std::endl << std::endl << std::endl;
-    // clear the view
-    // if ( main_component != NULL) main_component->clearScoreView();
-    
-    // update score
+    const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
+
     score.importScoreFromOSC(n, bundle_array);
     
-    if ( main_component != NULL) addComponentsFromScore();
+    if ( main_component != NULL)
+    {
+        main_component->clearScoreView();
+        addComponentsFromScore();
+    }
 }
 
 void SymbolistHandler::symbolistAPI_setTime(int time_ms)
@@ -153,7 +168,10 @@ void SymbolistHandler::symbolistAPI_setTime(int time_ms)
     if ( main_component != NULL) main_component->repaint();
 }
 
-// these two methods shall be called from symbolist to notify the host environment
+
+/*******************************
+ * these methods are called from symbolist to notify the host environment
+ *******************************/
 void SymbolistHandler::executeCloseCallback()
 {
     if (myCloseCallback) { myCloseCallback( this ); }
@@ -173,7 +191,6 @@ void SymbolistHandler::executeTransportCallback(int arg)
 //=================================
 // PALETTE
 //=================================
-
 
 void SymbolistHandler::setCurrentSymbol(int n)
 {
@@ -197,8 +214,8 @@ Symbol* SymbolistHandler::getCurrentSymbol()
 // Component factory
 BaseComponent* SymbolistHandler::makeComponentFromSymbol(const Symbol* s)
 {
-    cout << "Creating component from Symbol: " << endl;
-    s->printBundle();
+    cout << "Creating component from Symbol: " ;
+    //s->printBundle();
     
     int typeMessagePos = s->getOSCMessagePos("/type");
     
@@ -210,7 +227,7 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(const Symbol* s)
     } else {
         
         String typeStr = s->getOSCMessageValue(typeMessagePos).getString();
-        
+        cout << typeStr << std::endl;
         BaseComponent *c;
         
         if (typeStr.equalsIgnoreCase(String("circle"))) {
@@ -237,8 +254,8 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(const Symbol* s)
 void SymbolistHandler::addComponentsFromScore ( )
 {
     // recreate and add components from score symbols
+    std::cout << "ADDING " << score.getSize() << " SYMBOLS" << std::endl;
     for (int i = 0; i < score.getSize(); i++) {
-        std::cout << std::endl << std::endl ;
         Symbol *s = score.getSymbol(i);
         BaseComponent* c = makeComponentFromSymbol( s );
         c->setScoreSymbolPointer( s );

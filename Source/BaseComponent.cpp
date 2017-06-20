@@ -10,18 +10,10 @@ template <typename T> void printPoint(Point<T> point, String name = "point" )
     std::cout << name << " " << point.getX() << " " << point.getY() << "\n";
 }
 
-BaseComponent::BaseComponent(const Symbol &s)
-{
-    std::cout <<" Creating BaseComponent " << this << std::endl;
-}
+BaseComponent::BaseComponent(const Symbol &s) {}
 
-BaseComponent::~BaseComponent()
-{
-    if ( getParentComponent() != NULL )
-    {
-        ((ScoreComponent*)getParentComponent())->removeSymbolComponent(this);
-    }
-}
+BaseComponent::~BaseComponent() {}
+// if ( getParentComponent() != NULL ) ((ScoreComponent*)getParentComponent())->removeSymbolComponent(this);
 
 
 bool BaseComponent::isTopLevelComponent()
@@ -29,7 +21,7 @@ bool BaseComponent::isTopLevelComponent()
     if ( getParentComponent() != NULL && getParentComponent() == getPageComponent() ) {
         if ( score_symbol != NULL ) return true;
         else {
-            std::cout << "Warning: BAseComponent is TopLevel but has no attached score symbol!" << std::endl ;
+            std::cout << "Warning: BaseComponent is TopLevel but has no attached score symbol!" << std::endl ;
             return false;
         }
     } else return false;

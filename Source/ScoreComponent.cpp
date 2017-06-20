@@ -43,7 +43,7 @@ void ScoreComponent::addSubcomponent( BaseComponent *c )
     c->setComponentID(String(String(c->getSymbolTypeStr()) += String("_") += String(subcomponents.size())));
     addAndMakeVisible( c );
     //c->addMouseListener(this, false); // get rid of this ??
-    std::cout << "ADDING SUBCOMP " << c->getComponentID() << " IN " << getComponentID() << std::endl;
+    //std::cout << "ADDING SUBCOMP " << c->getComponentID() << " IN " << getComponentID() << std::endl;
 }
 
 void ScoreComponent::removeSubcomponent( BaseComponent *c )
@@ -118,31 +118,73 @@ void ScoreComponent::unselectAllComponents()
  * CUSTOM LASSO
  *****************/
 
-void ScoreComponent::beginLasso(Point<float> position)
+void ScoreComponent::beginLassoSelection(Point<int> position)
 {
     unselectAllComponents();
-    addAndMakeVisible(lasso);
-    lasso.setBounds(position.getX(), position.getY(), 0, 0);
+    addAndMakeVisible(s_lasso);
+    s_lasso.begin(position.getX(), position.getY());
 }
 
-void ScoreComponent::dragLasso(Point<float> position)
+
+void ScoreComponent::dragLassoSelection(Point<int> position)
 {
-    lasso.setSize(position.getX()-lasso.getX(), position.getY()-lasso.getY());
+    
+    s_lasso.update( position.getX(), position.getY() );
+
     unselectAllComponents();
+    
     for (int i = 0; i < getNumSubcomponents(); ++i)
     {
         BaseComponent* cc =  getSubcomponent(i);
-        if (cc->getBounds().intersects (lasso.getBounds()))
+        
+        if (cc->getBounds().intersects( s_lasso.getBounds() ))
         {
             addToSelection( cc );
         }
     }
 }
 
-void ScoreComponent::endLasso()
+void ScoreComponent::endLassoSelection()
 {
-    removeChildComponent(&lasso);
+    removeChildComponent(&s_lasso);
+    s_lasso.end();
 }
+
+
+
+void SymbolistLasso::begin(int x, int y)
+{
+    start_x = x;
+    start_y = y;
+    setBounds(x, y, 0, 0);
+}
+
+void SymbolistLasso::update(int x, int y)
+{
+    int x1, x2, y1, y2;
+    
+    if (x > start_x)
+    {
+        x1 = start_x;
+        x2 = x;
+    } else {
+        x1 = x;
+        x2 = start_x;
+    }
+    
+    if (y > start_y)
+    {
+        y1 = start_y;
+        y2 = y;
+    } else {
+        y1 = y;
+        y2 = start_y;
+    }
+    
+    setBounds(x1, y1, x2-x1, y2-y1);
+}
+
+void SymbolistLasso::end() {}
 
 
 void SymbolistLasso::paint ( Graphics &g)
@@ -287,7 +329,7 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
     
     if( ed == select_mode )
     {
-        beginLasso( event.position );
+        beginLassoSelection( event.getPosition() );
     }
     else
     { // => draw mode
@@ -303,7 +345,7 @@ void ScoreComponent::mouseDrag ( const MouseEvent& event )
 {
     if( getMainEditMode() == select_mode )
     {
-        dragLasso(event.position);
+        dragLassoSelection(event.getPosition());
     }
 }
 
@@ -311,7 +353,7 @@ void ScoreComponent::mouseMove ( const MouseEvent& event ) {}
 
 void ScoreComponent::mouseUp ( const MouseEvent& event )
 {
-    endLasso();
+    endLassoSelection();
 }
 
 void ScoreComponent::resized () {}

@@ -209,12 +209,18 @@ void BaseComponent::mouseMove( const MouseEvent& event )
     //std::cout << "BaseComponent::mouseMove" << std::endl;
 }
 
+bool BaseComponent::respondsToMouseEvents()
+{
+    return ( isTopLevelComponent() || ((BaseComponent*)getParentComponent())->isInEditMode() );
+}
 
 void BaseComponent::mouseDown( const MouseEvent& event )
 {
     m_down = event.position;
+    
     ScoreComponent* parent = ((ScoreComponent*)getParentComponent());
-    if ( isTopLevelComponent() || ((BaseComponent*)parent)->isInEditMode() )
+
+    if ( respondsToMouseEvents() )
     {
        if ( event.mods.isShiftDown() )
         {
@@ -227,28 +233,46 @@ void BaseComponent::mouseDown( const MouseEvent& event )
                 parent->addToSelection(this);
             }
         }
+    
+    } else {
+        parent->mouseDown(event.getEventRelativeTo(parent));
     }
 }
 
 void BaseComponent::mouseDrag( const MouseEvent& event )
 {
-    if( is_selected && (getMainEditMode() == select_mode ) )
+    ScoreComponent* parent = ( (ScoreComponent*) getParentComponent() );
+    
+    if ( respondsToMouseEvents() )
     {
-        ScoreComponent* p = ( (ScoreComponent*) getParentComponent() );
-        p->translateSelectedSymbols( (event.position - m_down).toInt() );
+        if( is_selected && (getMainEditMode() == select_mode ) )
+        {
+            parent->translateSelectedSymbols( (event.position - m_down).toInt() );
+        }
+    }
+    else
+    {
+        parent->mouseDrag(event.getEventRelativeTo(parent));
     }
 }
 
 void BaseComponent::mouseUp( const MouseEvent& event )
 {
-    if( is_selected && getMainEditMode() == select_mode )
+    if ( respondsToMouseEvents() )
     {
-        resizableBorder->setVisible( true ); // here instead of the select callback makes it only when the symbol is clicked alone
-        repaint();
+        if( is_selected && getMainEditMode() == select_mode )
+        {
+            resizableBorder->setVisible( true ); // here instead of the select callback makes it only when the symbol is clicked alone
+            repaint();
+        }
+        reportModification();
     }
-    reportModification();
+    else
+    {
+        Component* parent = getParentComponent();
+        parent->mouseUp(event.getEventRelativeTo(parent));
+    }
 }
-
 
 
 void BaseComponent::paint ( Graphics& g )

@@ -68,7 +68,9 @@ public:
         
     void recursiveMaximizeBounds();
     void recursiveShrinkBounds();
-                
+    
+    bool respondsToMouseEvents();
+    
     Point<float> shiftConstrainMouseAngle( const MouseEvent& event );
 
     

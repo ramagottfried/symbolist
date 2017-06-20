@@ -29,6 +29,7 @@ public:
 
         //mainWindow = new AppMainWindow (getApplicationName());
         symbolist_handler = SymbolistHandler::symbolistAPI_newSymbolist();
+        symbolist_handler->inStandalone();
         symbolist_handler->symbolistAPI_openWindow();
     }
 

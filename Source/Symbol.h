@@ -17,14 +17,19 @@
 // SYMBOL
 //============================
 
-class Symbol {
+class Symbol
+{
     
 public:
     
     Symbol();
     Symbol(const String &type, float x, float y, float w, float h );
     Symbol(const Symbol& other) = default;
-    ~Symbol() = default;
+    ~Symbol()
+    {
+//        std::cout << "deleting symbol " << this << std::endl;
+    }
+    
     
     OSCBundle   getOSCBundle () const { return osc_bundle; }
     void        setOSCBundle (OSCBundle *b) { osc_bundle = *b; }
@@ -56,7 +61,7 @@ public:
 private:
     
     OSCBundle   osc_bundle;
-
+    
 };
 
 

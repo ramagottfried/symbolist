@@ -24,7 +24,7 @@ public:
 
     size_t getSize();
     Symbol *getSymbol(int n);
-    int getSymbolPosition(Symbol* s);
+    int getSymbolPosition(Symbol *s);
 
     void addSymbol(Symbol *s);
     void removeSymbol(Symbol *s);
@@ -32,13 +32,14 @@ public:
 
     void importScoreFromOSC( int n, odot_bundle** bundle_array );
 
-    void sortScore();
+//    void sortScore();
     
 private:
 
-    vector<Symbol*> symbols;
+    OwnedArray<Symbol>  score_symbols;
     
-    
+    //==============================================================================
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Score)
 };
 
 

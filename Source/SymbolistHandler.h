@@ -66,6 +66,10 @@ public:
     static BaseComponent* makeComponentFromSymbol(const Symbol *s);
     void addComponentsFromScore ();
     
+    void inStandalone(){ in_standalone = true; };
+    bool isStandalone(){ return in_standalone; };
+
+    
 private:
     
     Score score ;
@@ -83,6 +87,9 @@ private:
     symbolistUpdateCallback myUpdateCallback = NULL;
     symbolistCloseCallback myCloseCallback = NULL;
     symbolistTransportCallback myTransportCallback = NULL;
+    
+    
+    bool in_standalone = false;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistHandler)
 };

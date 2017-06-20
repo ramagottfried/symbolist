@@ -6,7 +6,6 @@
 #include <vector>
 
 
-
 Score::Score(){}
 
 Score::Score( int n, odot_bundle **bundle_array )
@@ -14,10 +13,7 @@ Score::Score( int n, odot_bundle **bundle_array )
     importScoreFromOSC( n, bundle_array );
 }
 
-Score::~Score()
-{
-    for ( int i = 0; i < symbols.size(); i++ ) { delete symbols[i]; }
-}
+Score::~Score() {}
 
 
 /***********************************
@@ -25,8 +21,7 @@ Score::~Score()
  ***********************************/
 void Score::removeAllSymbols()
 {
-    for ( int i = 0; i < symbols.size(); i++ ) { delete symbols[i]; }
-    symbols.clear();
+    score_symbols.clear(1);
 }
 
 /***********************************
@@ -34,7 +29,7 @@ void Score::removeAllSymbols()
  ***********************************/
 void Score::addSymbol(Symbol *symbol)
 {
-    symbols.emplace_back(symbol);
+    score_symbols.add( symbol );
 }
 
 /***********************************
@@ -42,14 +37,13 @@ void Score::addSymbol(Symbol *symbol)
  ***********************************/
 void Score::removeSymbol(Symbol *symbol)
 {
-    assert( symbols.empty() == false ); ///< what do you want to remove ?
+    assert( score_symbols.isEmpty() == false ); ///< what do you want to remove ?
     
-    for( std::size_t i = 0; i < symbols.size(); i++ )
+    for( int i = 0; i < score_symbols.size(); i++ )
     {
-        if( symbol == symbols[i] )
+        if( symbol == score_symbols[i] )
         {
-            symbols.erase( symbols.begin() + i );
-            delete symbol;
+            score_symbols.remove(i);
             return;
         }
     }
@@ -62,7 +56,7 @@ void Score::removeSymbol(Symbol *symbol)
  ***********************************/
 Symbol *Score::getSymbol(int n)
 {
-    if (n < symbols.size()) { return symbols[n]; }
+    if (n < score_symbols.size()) { return score_symbols[n]; }
     else { return NULL; }
 }
 
@@ -71,7 +65,7 @@ Symbol *Score::getSymbol(int n)
  ***********************************/
 size_t Score::getSize()
 {
-    return symbols.size();
+    return score_symbols.size();
 }
 
 /***********************************
@@ -79,10 +73,7 @@ size_t Score::getSize()
  ***********************************/
 int Score::getSymbolPosition(Symbol *s)
 {
-    std::vector<Symbol*>::iterator it = std::find(symbols.begin(), symbols.end(), s);
-    // cout << "iterator " << it - symbols.begin() << endl;
-    if (it >= symbols.end()) return -1;
-    else return static_cast<int>( it - symbols.begin() );
+    return score_symbols.indexOf( s );
 }
 
 /***********************************
@@ -113,10 +104,10 @@ void Score::deleteOdotBundleArray(odot_bundle** bundle_array, int size)
 }
 */
 
-
+/*
 void Score::sortScore()
 {
-    auto sorted = symbols;
+    auto sorted = score_symbols;
     std::sort(sorted.begin(),
               sorted.end(),
               [](Symbol *a, Symbol *b) { return (a->getTime() < b->getTime()); } );
@@ -130,3 +121,4 @@ void Score::sortScore()
 
 
 
+*/

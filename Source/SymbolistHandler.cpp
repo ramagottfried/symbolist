@@ -97,7 +97,6 @@ void SymbolistHandler::symbolistAPI_closeWindow()
 {
     if ( main_component != NULL)
     {
-        std::cout << "delete Symbolist window: " << this << std::endl;
         MessageManagerLock mml;
         delete main_component->getTopLevelComponent(); // = the window
         main_component = NULL;

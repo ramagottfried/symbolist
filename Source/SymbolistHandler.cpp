@@ -65,7 +65,7 @@ SymbolistHandler::SymbolistHandler()
 
 SymbolistHandler::~SymbolistHandler()
 {
-    if (main_component != NULL ) symbolistAPI_closeWindow();
+    if ( main_component != NULL ) symbolistAPI_closeWindow();
 }
 
 /*********************************************

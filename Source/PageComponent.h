@@ -12,7 +12,6 @@
 #include "ScoreComponent.h"
 #include "BaseComponent.h"
 
-
 class PageComponent : public ScoreComponent
 {
 public:
@@ -21,7 +20,7 @@ public:
     ~PageComponent();
     
     // Redefine this from SymbolistComponent
-    inline SymbolistComponent* getPageComponent() override { return this; };
+    inline PageComponent* getPageComponent() override { return this; };
     
     // redefine from ScoreComponents for special actions (update the score)
     void    addSymbolComponent ( BaseComponent *c ) override;

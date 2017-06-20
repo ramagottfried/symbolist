@@ -36,18 +36,12 @@ public:
     UI_EditType getEditMode();
     
     // Redefine these from SymbolistComponent
-    inline SymbolistComponent* getPageComponent() override { return &scoreView; }
+    inline PageComponent* getPageComponent() override { return &scoreView; }
     inline SymbolistHandler* getSymbolistHandler() override { return symbolist_handler; }
     
     void clearScoreView () { scoreView.clearAllSubcomponents(); }
-
     void addSymbolComponent( BaseComponent* c) { scoreView.addSubcomponent( c ); }
     
-    void close ()
-    {
-        //symbolist_handler->main_component = NULL;
-        symbolist_handler->executeCloseCallback();
-    }
     
 private:
         

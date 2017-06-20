@@ -120,6 +120,7 @@
   (let ((ed (find win-ptr *symbolist-editors* :key 'symbolist-window :test 'om-pointer-equal)))
     (if ed
         (let ()
+          (symbolist::symbolistFree (symbolist-window ed))
           (setf (symbolist-window ed) nil)
           (setf *symbolist-editors* (remove ed *symbolist-editors*)))
       (om-print "window-close callback : editor not found" "SYMBOLIST"))))
@@ -127,7 +128,6 @@
 (defun symbolist::symbolist-handle-update-callback (win-ptr n) 
   (let ((ed (find win-ptr *symbolist-editors* :key 'symbolist-window :test 'om-pointer-equal)))
     (if ed
-        
         (let ((sscore (object-value ed))
               (n-symbols (symbolist::symbolistGetNumSymbols win-ptr)))
           

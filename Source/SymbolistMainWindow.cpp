@@ -27,9 +27,10 @@ SymbolistMainComponent* SymbolistMainWindow::getMainComponent()
 
 void SymbolistMainWindow::closeButtonPressed()
 {
-    ////main_component.close(); // will callback to the host environment (if any)
     //JUCEApplication::getInstance()->systemRequestedQuit();
     ////delete this;
     main_component.getSymbolistHandler()->symbolistAPI_closeWindow();
+    main_component.getSymbolistHandler()->executeCloseCallback();
+    
 }
 

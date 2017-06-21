@@ -34,13 +34,12 @@ void SymbolistMainComponent::resized()
 }
 
 /***************************
- * edit mode
+ * edit/drax modes
  ***************************/
 
 void SymbolistMainComponent::setEditMode( UI_EditType m )
 {
     mouse_mode = m;
-    scoreView.notifyEditModeChanged( m );
     scoreView.repaint();
 }
 
@@ -49,21 +48,27 @@ UI_EditType SymbolistMainComponent::getEditMode()
     return mouse_mode ;
 }
 
+void SymbolistMainComponent::setDrawMode( UI_DrawType m )
+{
+    draw_mode = m;
+    scoreView.repaint();
+}
+
+UI_DrawType SymbolistMainComponent::getDrawMode()
+{
+    return draw_mode ;
+}
+
+
 void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
 {
     if ( modifiers.isCommandDown() )
     {
-        if( modifiers.isAltDown() )
-            setEditMode( UI_EditType::draw_alt_mode );
-        else
-            setEditMode( UI_EditType::draw_mode );
+        setEditMode( UI_EditType::draw_mode );
     }
     else
     {
-        if( modifiers.isAltDown() )
-            setEditMode( UI_EditType::select_alt_mode );
-        else
-            setEditMode( UI_EditType::select_mode );
+        setEditMode( UI_EditType::select_mode );
     }
 }
 

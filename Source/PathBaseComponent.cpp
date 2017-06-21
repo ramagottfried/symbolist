@@ -209,103 +209,136 @@ void PathBaseComponent::importFromSymbol(const Symbol &s)
     }
 
 /******************
- * INTERACTIONS
+ * MODES
  *****************/
+
+
+void PathBaseComponent::updatePathBounds ()
+{
+    m_path_bounds.getRealPathBounds( m_path );
+    m_path_centroid = m_path_bounds.getCentre();
+    m_path_origin = m_path_bounds.getPosition();
+}
 
 void PathBaseComponent::setMinimalBounds ()
 {
     Rectangle<float> pathBounds = tranformAndGetBoundsInParent( m_path );
     setBoundsFloatRect( pathBounds );
+    updatePathBounds();
+}
+
+void PathBaseComponent::setMaximalBounds ()
+{
+    Point<int> init_pos =  positionRelativeTo(getPageComponent());
+    BaseComponent::setMaximalBounds();
+    m_path.applyTransform(AffineTransform::translation(init_pos));
+    updatePathBounds();
+}
+
+void PathBaseComponent::setEditMode( bool val )
+{
+    in_edit_mode = val;
+    if ( val ) makeHandles();
+    else removeHandles();
 }
 
 
-void PathBaseComponent::enterPathEdit ()
+/******************
+ * HANDLES (path edit)
+ *****************/
+
+void PathBaseComponent::addHandle( int type, float x, float y )
 {
-    
-    in_edit_mode = true;
-    m_path_origin = getPosition().toFloat();
-    
-    PageComponent* pc = getPageComponent();
-    setBounds( pc->getLocalBounds() );
-    pc->stealMouse();
-    
-    if( !m_path.isEmpty() )
+    PathHandle *h = new PathHandle( (PathHandle::handleType)type, x + getX(), y + getY(), this );
+    addAndMakeVisible( h );
+    path_handles.emplace_back( h );
+}
+
+
+void PathBaseComponent::makeHandles()
+{
+
+    if( path_handles.size() == 0 ) // should always be the case when we call this
     {
-        m_path.applyTransform( AffineTransform().translated( m_path_origin ) );
+        float ax =0, ay = 0;
+        
+        Path::Iterator it( m_path );
+        
+        while( it.next() )
+        {
+            if (it.elementType == it.startNewSubPath)
+            {
+                addHandle( PathHandle::anchor, it.x1, it.y1 );
+                ax = it.x1;
+                ay = it.y1;
+            }
+            else if (it.elementType == it.lineTo)
+            {
+                addHandle( PathHandle::anchor, it.x1, it.y1 );
+                ax = it.x1;
+                ay = it.y1;
+                
+            }
+            else if (it.elementType == it.quadraticTo)
+            {
+                addHandle( PathHandle::curve_control, it.x1, it.y1 );
+                addHandle( PathHandle::anchor, it.x2, it.y2 );
+                ax = it.x2;
+                ay = it.y2;
+            }
+            else if (it.elementType == it.cubicTo)
+            {
+                addHandle( PathHandle::curve_control, it.x1, it.y1 );
+                addHandle( PathHandle::curve_control, it.x2, it.y2 );
+                addHandle( PathHandle::anchor, it.x3, it.y3 );
+                
+                ax = it.x3;
+                ay = it.y3;
+            }
+        }
+        
+        updatePathBounds();
+        
+        float length = max( m_path_bounds.getHeight(), m_path_bounds.getWidth() ) * 0.5 + 5;
+        addHandle( PathHandle::rotate, m_path_centroid.getX(), m_path_centroid.getY() + length );
+        
     }
     
-    if( getMainEditMode() == select_alt_mode && path_handles.size() == 0)
+}
+
+void PathBaseComponent::removeHandles()
+{
+    for ( PathHandle* h : path_handles )
     {
+        h->getParentComponent()->removeChildComponent( h );
+        delete h;
+    }
+    path_handles.clear();
+}
+
+
+
+
+/******************
+ * Mouse
+ *****************/
+
+// inside an existing Component we're editing the path...
+void PathBaseComponent::mouseAddClick ( Point<float> pt )
+{
+    if( in_edit_mode )
+    {
+        Path p;
+        if( m_path.isEmpty() ) p.startNewSubPath( m_path_origin );
+        else p = m_path;
+        
+        p.lineTo( pt.getX(), pt.getY() );
+        m_path.swapWithPath( p );
+        removeHandles();
         makeHandles();
         repaint();
     }
 }
-
-void PathBaseComponent::exitPathEdit ()
-{
-    getPageComponent()->giveBackMouse();
-    
-    if( !m_preview_path.isEmpty() )
-        m_preview_path.clear();
-    
-    if( !m_path.isEmpty() )
-    {
-        Rectangle<float> pathBounds = tranformAndGetBoundsInParent( m_path );
-        setBoundsFloatRect( pathBounds );
-    }
-    else
-    {
-        delete this;
-    }
-    
-    if (path_handles.size() > 0 )
-        removeHandles();
-    
-    in_edit_mode = false;
-}
-
-void PathBaseComponent::deselectComponent()
-{
-    BaseComponent::deselectComponent();
-}
-
-void PathBaseComponent::selectComponent()
-{
-    BaseComponent::selectComponent();
-}
-
-void PathBaseComponent::updatePathFromPreivew()
-{
-    if( !m_preview_path.isEmpty() )
-    {
-        m_path.swapWithPath( m_preview_path );
-        m_preview_path.clear();
-    }
-}
-
-void PathBaseComponent::notifyEditModeChanged( UI_EditType current_mode )
-{
-    if( is_selected )
-    {
-        UI_EditType ed = getMainEditMode();
-        
-        if( ed == draw_alt_mode || ed == select_alt_mode )
-        {
-            enterPathEdit();
-        }
-        else
-        {
-            if( in_edit_mode )
-            {
-            exitPathEdit();
-            }
-        }
-    }
-}
-
-/******************
- * Mouse interaction
- *****************/
 
 void PathBaseComponent::mouseDown( const MouseEvent& event )
 {
@@ -313,13 +346,12 @@ void PathBaseComponent::mouseDown( const MouseEvent& event )
     m_prev_drag = m_down;
 }
 
-void PathBaseComponent::mouseMove( const MouseEvent& event ) {}
-
 void PathBaseComponent::mouseDrag( const MouseEvent& event )
 {
     BaseComponent::mouseDrag(event);
 
-    if ( getMainEditMode() == select_alt_mode && path_handles.size() > 0 )
+    /*
+     if ( getMainEditMode() == select_mode && path_handles.size() > 0 )
     {
         auto delta = event.position - m_prev_drag;
         
@@ -336,28 +368,32 @@ void PathBaseComponent::mouseDrag( const MouseEvent& event )
         
         repaint();
     }
+     */
 
     m_prev_drag = event.position;
 }
 
-void PathBaseComponent::mouseUp( const MouseEvent& event )
+void PathBaseComponent::resizeToFit(int x, int y, int w, int h)
 {
-    BaseComponent::mouseUp(event);
+    Rectangle<int> r = Rectangle<int>(x,y,w,h).reduced( strokeType.getStrokeThickness() );
+    if( r.getWidth() > 0 && r.getHeight() > 0)
+    m_path.scaleToFit(r.getX(), r.getY(), r.getWidth(), r.getHeight(), false );
 }
 
 void PathBaseComponent::resized()
 {
     BaseComponent::resized();
     
-    if( !in_edit_mode )
+    if( getMainEditMode() == UI_EditType::draw_mode )
     {
-        auto local = getLocalBounds().reduced( strokeType.getStrokeThickness() );
-    
-        if( local.getWidth() > 0 && local.getHeight() > 0)
-            m_path.scaleToFit(local.getX(), local.getY(), local.getWidth(), local.getHeight(), false );
+        resizeToFit(getLocalBounds().getX(), getLocalBounds().getY(), getLocalBounds().getWidth(), getLocalBounds().getHeight());
     }
     
 }
+
+/******************
+ * Transforms
+ *****************/
 
 void PathBaseComponent::h_flip()
 {
@@ -393,6 +429,7 @@ void PathBaseComponent::rotatePath ( float theta, float ax, float ay )
     repaint();
 }
 
+
 void PathBaseComponent::rotatePath ( float theta )
 {
     m_path.applyTransform( AffineTransform().rotation( theta, m_path_centroid.getX(), m_path_centroid.getY()  ) );
@@ -401,135 +438,7 @@ void PathBaseComponent::rotatePath ( float theta )
 }
 
 
-/******************
- * preview routine
- *****************/
-
-void PathBaseComponent::addHandle( int type, float x, float y )
-{
-    PathHandle *h = new PathHandle( (PathHandle::handleType)type, x + getX(), y + getY(), this );
-    addAndMakeVisible( h );
-    path_handles.emplace_back( h );
-}
-
-
-void PathBaseComponent::makeHandles()
-{
-    
-    if( is_selected && path_handles.size() == 0 )
-    {
-        
-        float ax =0, ay = 0;
-        m_path_bounds.init();
-
-        Path::Iterator it( m_path );
-        while( it.next() )
-        {
-            if (it.elementType == it.startNewSubPath)
-            {
-                addHandle( PathHandle::anchor, it.x1, it.y1 );
-                m_path_bounds.addSegment( it );
-                ax = it.x1;
-                ay = it.y1;
-            }
-            else if (it.elementType == it.lineTo)
-            {
-                addHandle( PathHandle::anchor, it.x1, it.y1 );
-                m_path_bounds.addSegment( it );
-                ax = it.x1;
-                ay = it.y1;
-
-            }
-            else if (it.elementType == it.quadraticTo)
-            {
-                addHandle( PathHandle::curve_control, it.x1, it.y1 );
-                addHandle( PathHandle::anchor, it.x2, it.y2 );
-                m_path_bounds.addSegment(it, ax, ay);
-                ax = it.x2;
-                ay = it.y2;
-            }
-            else if (it.elementType == it.cubicTo)
-            {
-                addHandle( PathHandle::curve_control, it.x1, it.y1 );
-                addHandle( PathHandle::curve_control, it.x2, it.y2 );
-                addHandle( PathHandle::anchor, it.x3, it.y3 );
-
-                m_path_bounds.addSegment(it, ax, ay);
-                
-                ax = it.x3;
-                ay = it.y3;
-            }
-        }
-        
-        m_path_centroid = m_path_bounds.getCentre();
-        
-        auto length = max( m_path_bounds.getHeight(), m_path_bounds.getWidth() ) * 0.5 + 5;
-        
-        addHandle( PathHandle::rotate, m_path_centroid.getX(), m_path_centroid.getY() + length );
-
-    }
-    
-}
-
-void PathBaseComponent::removeHandles()
-{
-    PageComponent *sc = getPageComponent();
-    
-    for ( auto h : path_handles )
-    {
-        if( sc ) sc->removeChildComponent( h );
-        
-        delete h;
-    }
-    path_handles.clear();
-}
-
-void PathBaseComponent::drawHandlesLines( Graphics& g)
-{
-    float ax = -1, ay = -1;
-    float dashes[2] = {2.0f, 2.0f};
-    
-    Path::Iterator it( m_path );
-    while( it.next() )
-    {
-        if (it.elementType == it.startNewSubPath)
-        {
-            ax = it.x1;
-            ay = it.y1;
-        }
-        else if (it.elementType == it.lineTo)
-        {
-            ax = it.x1;
-            ay = it.y1;
-        }
-        else if (it.elementType == it.quadraticTo)
-        {
-            g.drawDashedLine(Line<float>(ax, ay, it.x1, it.y1), dashes, 2 );
-            ax = it.x2;
-            ay = it.y2;
-        }
-        else if (it.elementType == it.cubicTo)
-        {
-            g.drawDashedLine(Line<float>(ax, ay, it.x1, it.y1), dashes, 2 );
-            g.drawDashedLine(Line<float>(it.x2, it.y2, it.x3, it.y3), dashes, 2 );
-            ax = it.x3;
-            ay = it.y3;
-        }
-        else if (it.elementType == it.closePath)
-        {
-            
-        }
-    }
-    
-    g.drawRect( m_path_bounds );
-
-    auto rot_handle = path_handles.back();
-    auto ll = Line<float>( m_path_centroid.getX(), m_path_centroid.getY(), rot_handle->getBounds().getCentreX(), rot_handle->getBounds().getCentreY() );
-    g.drawDashedLine(ll, dashes, 2 );
-
-}
-
-
+// used to be called at exiting edit mode...
 Rectangle<float> PathBaseComponent::tranformAndGetBoundsInParent( Path& p )
 {
     float strokeOffset = strokeType.getStrokeThickness() * 0.5;
@@ -542,11 +451,13 @@ Rectangle<float> PathBaseComponent::tranformAndGetBoundsInParent( Path& p )
     return abs_bounds.expanded( strokeOffset );
 }
 
+
 void PathBaseComponent::updatePathPoints()
 {
     Path p;
     auto handle = path_handles.begin();
     Path::Iterator it( m_path );
+    
     while( it.next() )
     {
         if (it.elementType == it.startNewSubPath)
@@ -573,13 +484,9 @@ void PathBaseComponent::updatePathPoints()
             p.closeSubPath();
         }
     }
-
-    m_path_bounds.getRealPathBounds( p );
-    m_path_centroid = m_path_bounds.getCentre();
     
     m_path.swapWithPath( p );
-    m_path_origin = m_path_bounds.getPosition();
-    
+    updatePathBounds();
 }
 
 void PathBaseComponent::updateHandlePositions()
@@ -633,6 +540,47 @@ void PathBaseComponent::updateHandlePositions()
     m_path_centroid = m_path_bounds.getCentre();
 }
 
+
+
+/******************
+ * Edit/Hand-draw
+ *****************/
+
+/*
+void PathBaseComponent::exitPathEdit ()
+{
+    getPageComponent()->giveBackMouse();
+    
+    if( !m_preview_path.isEmpty() )
+        m_preview_path.clear();
+    
+    if( !m_path.isEmpty() )
+    {
+        Rectangle<float> pathBounds = tranformAndGetBoundsInParent( m_path );
+        setBoundsFloatRect( pathBounds );
+    }
+    else
+    {
+        delete this;
+    }
+    
+    if (path_handles.size() > 0 )
+        removeHandles();
+    
+    in_edit_mode = false;
+}
+*/
+
+void PathBaseComponent::updatePathFromPreview()
+{
+    if( !m_preview_path.isEmpty() )
+    {
+        m_path.swapWithPath( m_preview_path );
+        m_preview_path.clear();
+    }
+}
+
+
 /******************
  * Paint callback subroutine
  *****************/
@@ -646,7 +594,6 @@ void PathBaseComponent::paint ( Graphics& g )
     g.setColour( getCurrentColor() );
     float strok = strokeType.getStrokeThickness();
     
-    //printRect(getBounds(), "paint " + getSymbolTypeStr() );
     if ( isTopLevelComponent() )
     {
         cur_t = getSymbolistHandler()->getCurrentTime();
@@ -670,38 +617,84 @@ void PathBaseComponent::paint ( Graphics& g )
     if( getPageComponent() == NULL )
     {
         g.strokePath(m_path, strokeType );
-        return;
-    }
-    
-    UI_EditType ed = getMainEditMode();
-
-    if( !m_preview_path.isEmpty() )
-    {
-        g.setColour( preview_stroke_color );
-        g.strokePath(m_preview_path, strokeType ); // different color for preview?
     }
     else
     {
-        g.setColour( getCurrentColor() );
-        g.strokePath(m_path, strokeType );
-    }
-    
-    if( fill ) // preview fill also?
-    {
-        // will need to check for selection color
+        if( !m_preview_path.isEmpty() )
+        {
+            g.setColour( preview_stroke_color );
+            g.strokePath(m_preview_path, strokeType ); // different color for preview?
+        }
+        else
+        {
+            g.setColour( getCurrentColor() );
+            g.strokePath(m_path, strokeType );
+        }
         
-        // getFillColor()
-        // getStrokeColor()
+        if( fill ) // preview fill also?
+        {
+            // will need to check for selection color
+            // getFillColor()
+            // getStrokeColor()
+            // g.setColour( fill_color );
+            g.fillPath(m_path);
+        }
         
-        //            g.setColour( fill_color );
-        g.fillPath(m_path);
+        if( in_edit_mode )
+        {
+            drawHandlesLines(g);
+        }
     }
+}
 
 
-    if( in_edit_mode && ed == select_alt_mode )
+void PathBaseComponent::drawHandlesLines( Graphics& g)
+{
+    float ax = -1, ay = -1;
+    float dashes[2] = {2.0f, 2.0f};
+    
+    Path::Iterator it( m_path );
+    while( it.next() )
     {
-        drawHandlesLines(g);
-//        g.drawRect( m_path.getBounds() );
+        if (it.elementType == it.startNewSubPath)
+        {
+            ax = it.x1;
+            ay = it.y1;
+        }
+        else if (it.elementType == it.lineTo)
+        {
+            ax = it.x1;
+            ay = it.y1;
+        }
+        else if (it.elementType == it.quadraticTo)
+        {
+            g.drawDashedLine(Line<float>(ax, ay, it.x1, it.y1), dashes, 2 );
+            ax = it.x2;
+            ay = it.y2;
+        }
+        else if (it.elementType == it.cubicTo)
+        {
+            g.drawDashedLine(Line<float>(ax, ay, it.x1, it.y1), dashes, 2 );
+            g.drawDashedLine(Line<float>(it.x2, it.y2, it.x3, it.y3), dashes, 2 );
+            ax = it.x3;
+            ay = it.y3;
+        }
+        else if (it.elementType == it.closePath)
+        {
+            
+        }
     }
     
+    g.setColour(Colours::lightblue);
+    g.drawRect( m_path_bounds );
+    
+    if ( ! path_handles.empty() )
+    {
+        PathHandle* rot_handle = path_handles.back();
+        g.drawDashedLine(Line<float>(
+                                     m_path_centroid.getX(), m_path_centroid.getY(),
+                                     rot_handle->getBounds().getCentreX(), rot_handle->getBounds().getCentreY()
+                                     ),
+                         dashes, 2 );
+    }
 }

@@ -27,16 +27,12 @@ public:
 
     void drawHandlesLines( Graphics& g);
     
-    void deselectComponent () override;
-    void selectComponent () override;
-
     void paint ( Graphics& g ) override;
     void resized () override;
     
     void mouseDown( const MouseEvent& event ) override;
-    void mouseMove( const MouseEvent& event ) override;
     void mouseDrag( const MouseEvent& event ) override;
-    void mouseUp( const MouseEvent& event ) override;
+    void mouseAddClick ( Point<float> p ) override;
     
     void h_flip() override;
     void v_flip() override;
@@ -44,18 +40,19 @@ public:
     void rotatePath ( float theta, float ax, float ay );
     
     void setMinimalBounds () override;
-
+    void setMaximalBounds () override;
+    void updatePathBounds ();
+    void resizeToFit(int x, int y, int w, int h) override;
+    
     Rectangle<float> tranformAndGetBoundsInParent( Path& p );
     
     inline Point<float> getCentroid(){ return m_path_centroid; }
     inline Rectangle<float> getPathBounds() { return m_path_bounds; }
     
-    void notifyEditModeChanged( UI_EditType current_mode ) override;
     virtual void componentCretated() override {}
     
-    void enterPathEdit ();
-    void exitPathEdit ();
-    void updatePathFromPreivew ();
+    void setEditMode(bool val) override;
+    void updatePathFromPreview ();
     
     bool hitTest (int x, int y) override
     {
@@ -85,7 +82,6 @@ protected:
     std::vector<PathHandle*>    path_handles;
     
     Point<float>                m_prev_drag;
-
     Point<float>                m_path_centroid;
     
     Sym_PathBounds              m_path_bounds;

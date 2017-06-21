@@ -9,8 +9,11 @@
 #include "SymbolistHandler.h"
 
 #include "SymbolistMainWindow.h"
+
 #include "SymbolGroupComponent.h"
-#include "PrimitiveIncludes.h"
+#include "BasicShapePathComponents.h"
+#include "LinePathComponent.h"
+#include "TextGlyphComponent.h"
 
 
 SymbolistHandler::SymbolistHandler()
@@ -27,35 +30,6 @@ SymbolistHandler::SymbolistHandler()
     
     Symbol* s3 = new Symbol("triangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
     palette.addPaletteItem(s3);
-    
-    Symbol* s4 = new Symbol("path", symbol_pos, symbol_pos, symbol_size, symbol_size);
-    
-    OSCMessage numSeg_mess( "/numSegments",         (int32)3 );
-    
-    OSCMessage type_mess0(  "/segment/0/type",      (String)"line"                                  );
-    OSCMessage x_mess0(     "/segment/0/x_points",  (float)0.,  (float)20                           );
-    OSCMessage y_mess0(     "/segment/0/y_points",  (float)0,   (float)20.                          );
-    
-    OSCMessage type_mess1(  "/segment/1/type",      (String)"cubic"                                 );
-    OSCMessage x_mess1(     "/segment/1/x_points",  (float)20., (float)7., (float)15.,  (float)20   );
-    OSCMessage y_mess1(     "/segment/1/y_points",  (float)20., (float)5.,  (float)5.,  (float)0    );
-    
-    OSCMessage type_mess2(  "/segment/2/type",      (String)"line"                                  );
-    OSCMessage x_mess2(     "/segment/2/x_points",  (float)20,  (float)10.                          );
-    OSCMessage y_mess2(     "/segment/2/y_points",  (float)00., (float)5                            );
-    
-    s4->addOSCMessage(numSeg_mess);
-    s4->addOSCMessage(type_mess0);
-    s4->addOSCMessage(x_mess0);
-    s4->addOSCMessage(y_mess0);
-    s4->addOSCMessage(type_mess1);
-    s4->addOSCMessage(x_mess1);
-    s4->addOSCMessage(y_mess1);
-    s4->addOSCMessage(type_mess2);
-    s4->addOSCMessage(x_mess2);
-    s4->addOSCMessage(y_mess2);
-    
-    palette.addPaletteItem(s4);
     
     Symbol* s5 = new Symbol("text", 20.0, 20.0, symbol_size, symbol_size);
     palette.addPaletteItem(s5);

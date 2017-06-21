@@ -21,16 +21,12 @@ public:
     ~SymbolGroupComponent();
     
     virtual String getSymbolTypeStr() const override { return "group"; }
-    int addSymbolMessages(Symbol* s, const String &base_address ) override ;
+    int  addSymbolMessages(Symbol* s, const String &base_address ) override ;
     void importFromSymbol( const Symbol &s ) override;
 
     void selectComponent() override;
     void deselectComponent() override;
-    
-    void mouseDown(const MouseEvent& event) override;
-    void mouseUp(const MouseEvent& event) override;
-    void mouseDrag(const MouseEvent& event) override;
-    
+    void setEditMode( bool val ) override;
     void paint ( Graphics& g ) override;
     
     

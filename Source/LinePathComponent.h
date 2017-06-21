@@ -13,11 +13,9 @@ public:
     void mouseDown(const MouseEvent& event) override;
     void mouseUp(const MouseEvent& event) override;
     
-    void deselectComponent () override;
-    void selectComponent () override;
-
     void newPathDrawing ();
-  
+    Point<float> shiftConstrainMouseAngle( const MouseEvent& event );
+    
     void componentCretated() override;
 
     String getSymbolTypeStr() const override { return "path"; }

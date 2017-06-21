@@ -13,29 +13,34 @@ LinePathComponent::LinePathComponent(const Symbol &s) : PathBaseComponent( s )
 void LinePathComponent::componentCretated()
 {
     m_path.clear();
-    enterPathEdit();
+    setEditMode(true);
 }
 
-void LinePathComponent::selectComponent ()
-{
-    PathBaseComponent::selectComponent();
-}
-
-void LinePathComponent::deselectComponent ()
-{
-    PathBaseComponent::deselectComponent();
-    // might need to remove and give back mouse here? if deselect/cancel becomes a keyboard shortcut (esc)
-}
 
 /*************
  *  MOUSE UI
  ************/
 
+
+Point<float> LinePathComponent::shiftConstrainMouseAngle( const MouseEvent& event )
+{
+    if( event.mods.isShiftDown() )
+    {
+        float angle = event.position.getAngleToPoint( m_down );
+        if( fabs(angle) < 0.78539816339745 ) // pi / 4
+            return Point<float>( m_down.getX(), event.position.getY() );
+        else
+            return Point<float>( event.position.getX(), m_down.getY() );
+    }
+    return event.position;
+}
+
+
 void LinePathComponent::mouseMove( const MouseEvent& event )
 {
     PathBaseComponent::mouseMove( event );
 
-    if( in_edit_mode && (getMainEditMode() == draw_mode ||  getMainEditMode() == draw_alt_mode) )
+    if( in_edit_mode && event.mods.isCommandDown() )
     {
         Path p;
         
@@ -56,7 +61,7 @@ void LinePathComponent::mouseDrag( const MouseEvent& event )
 {
     PathBaseComponent::mouseDrag( event );
 
-    if( in_edit_mode && (getMainEditMode() == draw_mode ||  getMainEditMode() == draw_alt_mode) && event.getDistanceFromDragStart() > 10 )
+    if( in_edit_mode && event.mods.isCommandDown() && event.getDistanceFromDragStart() > 10 )
     {
         Path p;
         
@@ -82,6 +87,6 @@ void LinePathComponent::mouseUp(const MouseEvent& event)
 {
     PathBaseComponent::mouseUp(event);
 
-    updatePathFromPreivew();
+    updatePathFromPreview();
 }
 

@@ -12,14 +12,6 @@ ScoreComponent::~ScoreComponent()
 }
 
 
-void ScoreComponent::notifyEditModeChanged( UI_EditType current_mode )
-{
-    for( auto s : selected_components )
-    {
-        s->notifyEditModeChanged( current_mode );
-    }
-}
-
 
 /*****************************
  * Management of sucomponents
@@ -80,7 +72,6 @@ void ScoreComponent::removeSymbolComponent( BaseComponent* c )
     unselectAllComponents ( );
     removeSubcomponent( c );
 }
-
 
 /**************/
 /* Selection  */
@@ -220,6 +211,8 @@ void ScoreComponent::deleteSelectedSymbols()
     }
 }
 
+
+
 void ScoreComponent::groupSelectedSymbols()
 {
     if ( selected_components.size() > 1 )
@@ -324,13 +317,13 @@ void ScoreComponent::flipSelectedSymbols( int axis )
 /* UI callbacks from Juce  */
 /***************************/
 
-BaseComponent* ScoreComponent::mouseAddSymbolAt ( Point<float> p )
+void ScoreComponent::mouseAddClick ( Point<float> p )
 {
     Symbol* symbol_template = getSymbolistHandler()->getCurrentSymbol();
     
     // sets position in symbol before creation
     // will need to make offset for center based symbols (circle, square, etc.)
-    symbol_template->setPosition( p );
+    symbol_template->setPosition ( p );
     
     // create a new component from the current selected symbol of the palette
     BaseComponent *c = SymbolistHandler::makeComponentFromSymbol( symbol_template );
@@ -344,7 +337,6 @@ BaseComponent* ScoreComponent::mouseAddSymbolAt ( Point<float> p )
     
     c->componentCretated();
     
-    return c;
 }
 
 void ScoreComponent::mouseDown ( const MouseEvent& event )
@@ -357,9 +349,9 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
     }
     else
     { // => draw mode
-        if( ed == draw_mode && !component_grabbing_mouse )
+        if( ed == draw_mode )
         {
-            mouseAddSymbolAt( event.getEventRelativeTo(getPageComponent()).position );
+            mouseAddClick( event.getEventRelativeTo(getPageComponent()).position );
         }
     }
 }

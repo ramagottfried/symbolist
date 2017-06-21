@@ -42,9 +42,10 @@ void PageComponent::enterEditMode( BaseComponent* c )
     unselectAllComponents();
     edited_component = c;
     edited_component->toFront(true);
-    edited_component->setEditMode(true);
     edited_component->recursiveMaximizeBounds();
+    edited_component->setEditMode(true);
 }
+
 
 void PageComponent::exitEditMode( )
 {
@@ -56,15 +57,20 @@ void PageComponent::exitEditMode( )
     }
 }
 
+
 ScoreComponent* PageComponent::getEditedComponent()
 {
     if ( edited_component == NULL ) return this;
     else return edited_component;
 }
 
+
 void PageComponent::resized ()
 {
-    if ( edited_component != NULL) edited_component->setSize(getWidth(),getHeight());
+    if ( edited_component != NULL)
+    {
+        edited_component->recursiveMaximizeBounds();
+    }
 }
 
 
@@ -79,35 +85,27 @@ void PageComponent::paint (Graphics& g)
     g.setFont (Font (16.0f));
     g.setColour (Colours::grey);
     
-    String msg = "";
-    String timestr = "t = ";
-    timestr += (String) (getSymbolistHandler()->getCurrentTime()) ;
+    String msg;
     
-    switch ( getMainEditMode() )
+    
+    if ( getMainEditMode() == UI_EditType::select_mode )
     {
-        case UI_EditType::select_mode:
-            msg += " select / group / mode" ;
-            break;
-        case UI_EditType::select_alt_mode:
-            msg += " select / resize mode: " ;
-            break;
-        case UI_EditType::draw_mode:
-        {
-            msg += " draw mode: " ;
-            Symbol *s = getSymbolistHandler()->getCurrentSymbol();
-            msg += s->getOSCMessageValue(s->getOSCMessagePos("/type")).getString();
-            break;
-        }
-        case UI_EditType::draw_alt_mode:
-        {
-            msg += " draw alter: " ;
-            Symbol *s = getSymbolistHandler()->getCurrentSymbol();
-            msg += s->getOSCMessageValue(s->getOSCMessagePos("/type")).getString();
-            break;
-        }
+        msg = " select " ;
+    }
+    else if ( getMainDrawMode() == UI_DrawType::from_template )
+    {
+        msg = " draw " ;
+        msg += getSymbolistHandler()->getCurrentSymbol()->getType();
+    }
+    else
+    {
+            msg += " draw lines " ;
     }
     
     g.drawText (msg, getLocalBounds() , Justification::bottom, false);
+    
+    String timestr = " t = ";
+    timestr += (String) (getSymbolistHandler()->getCurrentTime()) ;
     g.drawText (timestr, getLocalBounds() , Justification::topLeft, false);
   
 }

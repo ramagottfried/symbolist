@@ -45,13 +45,12 @@ public:
     
 private:
         
-    UI_EditType      mouse_mode = select_mode;
+    UI_EditType         mouse_mode = select_mode;
 
-    SymbolistHandler* symbolist_handler;
+    SymbolistHandler*   symbolist_handler;
     
-    PageComponent    scoreView;
-    PaletteComponent paletteView ;
-    
+    PageComponent       scoreView;
+    PaletteComponent    paletteView ;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainComponent)
 };

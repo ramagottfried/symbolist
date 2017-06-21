@@ -13,6 +13,7 @@ PageComponent::PageComponent()
 {
     setComponentID("PageComponent");
     edited_component = NULL;
+    addAndMakeVisible(score_cursor);
 }
 
 PageComponent::~PageComponent() {}
@@ -65,6 +66,8 @@ ScoreComponent* PageComponent::getEditedComponent()
 void PageComponent::resized ()
 {
     if ( edited_component != NULL) edited_component->setSize(getWidth(),getHeight());
+    
+    score_cursor.setBounds( score_cursor.getPlayPoint() * 100, 0, 50, getHeight() );
 }
 
 

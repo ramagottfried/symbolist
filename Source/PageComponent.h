@@ -11,6 +11,7 @@
 
 #include "ScoreComponent.h"
 #include "BaseComponent.h"
+#include "ScoreCursor.h"
 
 class PageComponent : public ScoreComponent
 {
@@ -38,6 +39,8 @@ public:
 private:
     
     BaseComponent* edited_component;
+    
+    ScoreCursor         score_cursor;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PageComponent)

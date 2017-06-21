@@ -1,14 +1,5 @@
-//
-//  Symbol.hpp
-//  symbolist
-//
-//  Created by Jean Bresson on 30/05/2017.
-//
-//
 
-#ifndef Symbol_h
-#define Symbol_h
-
+#pragma once
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "OSCIO.h"
 #include "types.h"
@@ -53,8 +44,15 @@ public:
     void            importFromOSC(odot_bundle *bundle);
     
     Symbol makeSubSymbol( const String &base_address ) const;
-    int getTime() const ;
-    int getDuration() const ;
+    
+    float getTime() const ;
+    float getDuration() const ;
+    float getEndTime() const ;
+
+    bool hitTest( float t )
+    {
+        return (t >= getTime() && t <= getEndTime());
+    }
     
     void setPosition( const Point<float> pos );
     
@@ -64,6 +62,3 @@ private:
     
 };
 
-
-
-#endif /* Symbol_hpp */

@@ -65,7 +65,10 @@ SymbolistHandler::SymbolistHandler()
 
 SymbolistHandler::~SymbolistHandler()
 {
-    if ( main_component != NULL ) symbolistAPI_closeWindow();
+    cout << "deleting symbolist, main comp:" << main_component << endl;
+    if ( main_component != NULL )
+        symbolistAPI_closeWindow();
+    
 }
 
 /*********************************************
@@ -145,6 +148,11 @@ int SymbolistHandler::symbolistAPI_getNumSymbols()
 odot_bundle* SymbolistHandler::symbolistAPI_getSymbol(int n)
 {
     return score.getSymbol(n)->exportToOSC();
+}
+
+odot_bundle* SymbolistHandler::symbolistAPI_getSymbolsAtTime( float t )
+{
+    return score.getSymbolsAtTime(t);
 }
 
 void SymbolistHandler::symbolistAPI_setSymbols(int n, odot_bundle **bundle_array)

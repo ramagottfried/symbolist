@@ -37,7 +37,8 @@ public:
     odot_bundle* symbolistAPI_getSymbol(int n);
     void symbolistAPI_setSymbols(int n, odot_bundle **bundle_array);
     void symbolistAPI_setTime(int time_ms);
-    
+
+    odot_bundle* symbolistAPI_getSymbolsAtTime(float t);
     
     /*********************************************
      * CONTROLLER METHODS CALLED FROM THE GUI

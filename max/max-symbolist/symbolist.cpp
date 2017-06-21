@@ -49,6 +49,14 @@ void symbolist_set_time( t_symbolist *x, int time_ms )
     symbolistSetTime( x->symbolist_handler, time_ms );
 }
 
+void symbolist_getSymbols_at_time( t_symbolist *x, float time )
+{
+    odot_bundle* bndl = symbolistGetSymbolsAtTime( x->symbolist_handler, time);
+    if( bndl )
+        symbolist_outletOSC( x->outlet, bndl->len, bndl->data );
+
+}
+
 void symbolist_get_symbol( t_symbolist *x, int num)
 {
     if( num >= 0 && num < symbolistGetNumSymbols( x->symbolist_handler ) )
@@ -127,9 +135,9 @@ void ext_main(void* unused)
                   (method)symbolist_free,
                   sizeof(t_symbolist), NULL, A_GIMME, 0);
     
-    class_addmethod(c, (method)symbolist_open_window,   "open", 0);
-    class_addmethod(c, (method)symbolist_set_time,      "time", A_LONG, 0);
-    class_addmethod(c, (method)symbolist_get_symbol,    "getsymbol", A_LONG, 0);
+    class_addmethod(c, (method)symbolist_open_window,           "open", 0);
+    class_addmethod(c, (method)symbolist_getSymbols_at_time,    "time", A_DEFFLOAT, 0);
+    class_addmethod(c, (method)symbolist_get_symbol,            "getsymbol", A_LONG, 0);
 
     
     class_register(CLASS_BOX, c);

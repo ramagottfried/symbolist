@@ -35,11 +35,16 @@ void SymbolistMainWindow::closeButtonPressed()
 
     if(sh->isStandalone() )
     {
+        cout << "freeing" << endl;
+        sh->symbolistAPI_closeWindow();
         sh->symbolistAPI_freeSymbolist();
+        sh = nullptr;
     }
-    
-    sh->symbolistAPI_closeWindow();
-    sh->executeCloseCallback();
+    else
+    {
+        sh->symbolistAPI_closeWindow();
+        sh->executeCloseCallback();
+    }
     
 }
 

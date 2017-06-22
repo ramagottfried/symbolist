@@ -58,8 +58,8 @@ public:
     }
 
     odot_bundle *getSymbolsAtTime( float t );
-    odot_bundle *symbolVectorToOSC( const vector<Symbol*> vec );
-
+    odot_bundle *timePointToOSC(const SymbolTimePoint *tpoint);
+    
     int lookupTimePoint( float t );
     
 private:

@@ -9,7 +9,7 @@
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 1796.0, 167.0, 1368.0, 787.0 ],
+		"rect" : [ 1586.0, 63.0, 1043.0, 1073.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -47,7 +47,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 468.0, 57.5, 459.0, 333.0 ],
-					"text" : "/symbolsAtTime/0/type : \"circle\",\n/symbolsAtTime/0/x : 48.,\n/symbolsAtTime/0/y : 297.,\n/symbolsAtTime/0/w : 30.,\n/symbolsAtTime/0/h : 30.,\n/symbolsAtTime/0/time/start : 0.48,\n/symbolsAtTime/0/duration : 0.3,\n/symbolsAtTime/0/segment/0/type : \"cubic\",\n/symbolsAtTime/0/segment/0/x_points : [15., 22.15, 28., 28.],\n/symbolsAtTime/0/segment/0/y_points : [2., 2., 7.85, 15.],\n/symbolsAtTime/0/segment/1/type : \"cubic\",\n/symbolsAtTime/0/segment/1/x_points : [28., 28., 22.15, 15.],\n/symbolsAtTime/0/segment/1/y_points : [15., 22.15, 28., 28.],\n/symbolsAtTime/0/segment/2/type : \"cubic\",\n/symbolsAtTime/0/segment/2/x_points : [15., 7.85, 2., 2.],\n/symbolsAtTime/0/segment/2/y_points : [28., 28., 22.15, 15.],\n/symbolsAtTime/0/segment/3/type : \"cubic\",\n/symbolsAtTime/0/segment/3/x_points : [2., 2., 7.85, 15.],\n/symbolsAtTime/0/segment/3/y_points : [15., 7.85, 2., 2.],\n/symbolsAtTime/0/segment/4/type : \"close\",\n/symbolsAtTime/0/segment/4/x_points : [15., 15.],\n/symbolsAtTime/0/segment/4/y_points : [2., 2.],\n/symbolsAtTime/0/num_segments : 5",
+					"text" : "/symbolsAtTime/0/type : \"circle\",\n/symbolsAtTime/0/x : 55.,\n/symbolsAtTime/0/y : 231.,\n/symbolsAtTime/0/w : 30.,\n/symbolsAtTime/0/h : 30.,\n/symbolsAtTime/0/time/start : 0.55,\n/symbolsAtTime/0/duration : 0.3,\n/symbolsAtTime/0/segment/0/type : \"cubic\",\n/symbolsAtTime/0/segment/0/x_points : [15., 22.15, 28., 28.],\n/symbolsAtTime/0/segment/0/y_points : [2., 2., 7.85, 15.],\n/symbolsAtTime/0/segment/1/type : \"cubic\",\n/symbolsAtTime/0/segment/1/x_points : [28., 28., 22.15, 15.],\n/symbolsAtTime/0/segment/1/y_points : [15., 22.15, 28., 28.],\n/symbolsAtTime/0/segment/2/type : \"cubic\",\n/symbolsAtTime/0/segment/2/x_points : [15., 7.85, 2., 2.],\n/symbolsAtTime/0/segment/2/y_points : [28., 28., 22.15, 15.],\n/symbolsAtTime/0/segment/3/type : \"cubic\",\n/symbolsAtTime/0/segment/3/x_points : [2., 2., 7.85, 15.],\n/symbolsAtTime/0/segment/3/y_points : [15., 7.85, 2., 2.],\n/symbolsAtTime/0/segment/4/type : \"close\",\n/symbolsAtTime/0/segment/4/x_points : [15., 15.],\n/symbolsAtTime/0/segment/4/y_points : [2., 2.],\n/symbolsAtTime/0/num_segments : 5",
 					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
 				}
 

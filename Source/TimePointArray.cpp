@@ -17,6 +17,12 @@ void TimePointArray::printTimePoints()
     for( auto t : (*this) )
     {
         cout << "timepoint " << count << " " << t->symbols_at_time.size() << " overlapping at " << t->time << endl;
+        
+        for (auto s : t->symbols_at_time)
+        {
+            cout << "\t" << s << "\t" << s->getTime() << "\t" << s->getEndTime() << endl;
+        }
+        
         count++;
     }
 }
@@ -99,32 +105,39 @@ odot_bundle* symbolBundleToOdot( const OSCBundle& osc )
     return bundle;
 }
 
-odot_bundle *TimePointArray::symbolVectorToOSC( const vector<Symbol*> vec )
+odot_bundle *TimePointArray::timePointToOSC(const SymbolTimePoint *tpoint  )
 {
+    const vector<Symbol*> vec = tpoint->symbols_at_time;
+    
     OSCBundle bndl;
     int count = 0;
     String prefix = "/symbolsAtTime/";
-//    cout << "vec len " << vec.size() << endl;
     for (auto s : vec )
     {
-        auto s_bndl = s->getOSCBundle();
-
-        for ( auto osc : s_bndl )
+        // ignore symbols if after endpoint
+        if( current_time <= s->getEndTime() )
         {
-            OSCMessage msg = osc.getMessage();
-            
-            String newaddr = prefix + String(count) + msg.getAddressPattern().toString();
-            
-            msg.setAddressPattern(newaddr);
-            
-            bndl.addElement(msg);
+            auto s_bndl = s->getOSCBundle();
 
+            for ( auto osc : s_bndl )
+            {
+                OSCMessage msg = osc.getMessage();
+                
+                String newaddr = prefix + String(count) + msg.getAddressPattern().toString();
+                
+                msg.setAddressPattern(newaddr);
+                
+                bndl.addElement(msg);
+
+            }
+            
+            count++;
         }
-        
-        count++;
+        else
+        {
+//             cout << "skipped sym " << s << " endpt: " << s->getEndTime() << endl;
+        }
     }
-    
-//    printBundle(bndl);
     
     return symbolBundleToOdot( bndl );
 }
@@ -134,28 +147,53 @@ int TimePointArray::lookupTimePoint( float t )
     int idx = (current_point < 0 ) ? 0 : current_point;
     float p_time = current_time;
 
-    if ( t > p_time )
-    {        
-        while ( t > p_time && idx < size() )
-        {
-            p_time = (*this)[ idx ]->time;
-            idx++;
-        }
-        idx--;
-        
-        current_point = (t > p_time) ? size()-1 : idx - 1;
-    }
-    else if ( t < p_time )
+    if ( p_time < t ) // moving forward
     {
-        while ( t < p_time && idx >= 0 )
+        // maybe check one step before doing the loop?
+        
+        for ( ; idx < size(); idx++ ) // step forward
         {
             p_time = (*this)[ idx ]->time;
-            idx--;
+            
+            if (p_time > t) // if point time is >, we want the previous one
+            {
+                current_time = t;
+                current_point = idx - 1;
+                return current_point;
+            }
         }
-        idx++;
+        
+        if( idx >= size() )
+            current_point = size() - 1;
+        else
+            cout << "shouldn't happen " << current_point <<  endl;
+        
+        current_time = t;
+        return current_point;
+        
+    }
+    else if ( p_time > t )
+    {
+        for ( ; idx >= 0; idx-- ) // step backward
+        {
+            p_time = (*this)[ idx ]->time;
+            
+            if (p_time < t) // if point time is <, we want the previous one
+            {
+                current_time = t;
+                current_point = idx;
+                return current_point;
+            }
+        }
+        
+        // if we run off the end, we are before the first time point
         current_point = idx;
+        current_time = t;
+        
+        return current_point;
     }
 
+    // otherwise, we're not moving
     current_time = t;
     return current_point;
 }
@@ -166,13 +204,16 @@ odot_bundle *TimePointArray::getSymbolsAtTime( float t )
         return nullptr;
     
     int idx = lookupTimePoint( t );
+    current_point = idx;
+
+//    cout << "timepoint number: " << current_point << endl;
     if( idx >= 0 )
     {
         auto tpoint = (*this)[idx];
 
       //  cout << "for " << t <<" closest timepoint: " << idx << " at " << tpoint->time << " with: " << tpoint->symbols_at_time.size() << " overlaping" << endl;
         
-        return symbolVectorToOSC( tpoint->symbols_at_time );
+        return timePointToOSC( tpoint );
     }
     
     return nullptr;

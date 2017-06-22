@@ -49,11 +49,9 @@
 		1186489C1EFAC44100904672 /* ScoreCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1186489A1EFAC44100904672 /* ScoreCursor.cpp */; };
 		1186489D1EFAC44100904672 /* ScoreCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1186489A1EFAC44100904672 /* ScoreCursor.cpp */; };
 		1186489E1EFAC44100904672 /* ScoreCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1186489A1EFAC44100904672 /* ScoreCursor.cpp */; };
-		1186489F1EFAC44100904672 /* ScoreCursor.h in Headers */ = {isa = PBXBuildFile; fileRef = 1186489B1EFAC44100904672 /* ScoreCursor.h */; };
 		118648A21EFBB5D500904672 /* TimePointGUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118648A01EFBB5D500904672 /* TimePointGUI.cpp */; };
 		118648A31EFBB5D500904672 /* TimePointGUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118648A01EFBB5D500904672 /* TimePointGUI.cpp */; };
 		118648A41EFBB5D500904672 /* TimePointGUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118648A01EFBB5D500904672 /* TimePointGUI.cpp */; };
-		118648A51EFBB5D500904672 /* TimePointGUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 118648A11EFBB5D500904672 /* TimePointGUI.h */; };
 		118C38DE1EC5BC4F006FF4A1 /* Score.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38DC1EC5BC4F006FF4A1 /* Score.cpp */; };
 		118C38DF1EC5BC4F006FF4A1 /* Score.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38DC1EC5BC4F006FF4A1 /* Score.cpp */; };
 		118C38E31EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */; };
@@ -415,8 +413,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				118648991EFA811800904672 /* TimePointArray.h in Headers */,
-				118648A51EFBB5D500904672 /* TimePointGUI.h in Headers */,
-				1186489F1EFAC44100904672 /* ScoreCursor.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

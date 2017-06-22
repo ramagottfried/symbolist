@@ -42,13 +42,17 @@ public:
     void removeAllSymbols();
     
     void importScoreFromOSC( int n, odot_bundle** bundle_array );
-    
+    Symbol* importSymbolFromOdot( odot_bundle *bundle );
+
     //    void sortScore();
     
     void addTimePoints( Symbol *s, int score_index );
     void updateTimePoints( Symbol *s, int score_index );
     
     odot_bundle *getSymbolsAtTime( float t );
+
+    odot_bundle *getScoreBundle();
+
     
     const TimePointArray* getTimePointArray() const { return &time_points; }
     

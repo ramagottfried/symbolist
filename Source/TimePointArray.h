@@ -47,7 +47,7 @@ public:
     
     void printTimePoints();
     
-    int getTimePointIndex( float t, bool& match );
+    int getTimePointInsertIndex( float t, bool& match );
     
     void addSymbolTimePoints( Symbol *s );
     void addSymbol_atTime( Symbol *s, float t);
@@ -58,9 +58,14 @@ public:
     }
 
     odot_bundle *getSymbolsAtTime( float t );
-    odot_bundle * symbolVectorToOSC( const vector<Symbol*> vec );
+    odot_bundle *symbolVectorToOSC( const vector<Symbol*> vec );
 
+    int lookupTimePoint( float t );
     
 private:
+    
+    int current_point = 0;
+    float current_time = 0;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimePointArray)
 };

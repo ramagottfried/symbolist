@@ -10,15 +10,15 @@ public:
     
     void paint( Graphics& g ) override
     {
-        g.setColour( Colours::red );
-        g.fillRect( getLocalBounds() );
+        g.setColour( Colours::lightblue );
+        auto b = getLocalBounds();
+        g.drawLine( b.getCentreX(), 0, 2, b.getHeight() );
     }
     
     void mouseDrag( const MouseEvent& event ) override
     {
         float x = event.getEventRelativeTo( getParentComponent() ).position.getX();
         m_playpoint = x * 0.01f;
-        setBounds( x, 0, 2, getLocalBounds().getHeight() );
         
         auto sh = getSymbolistHandler();
         if( sh )
@@ -26,6 +26,8 @@ public:
             sh->symbolistAPI_setTime( m_playpoint );
             sh->symbolistAPI_getSymbolsAtTime( m_playpoint );
         }
+        
+        setBounds( x, 0, 2, getLocalBounds().getHeight() );
 
     }
     
@@ -36,7 +38,7 @@ public:
     
     void resized() override
     {
-        setBounds( m_playpoint * 100.0f, 0, 2, getLocalBounds().getHeight() );
+        setBounds( m_playpoint * 100.0f, 0, 5, getLocalBounds().getHeight() );
     }
     
     inline void setPlayPoint( float t){ m_playpoint = t; }

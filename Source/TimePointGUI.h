@@ -16,9 +16,8 @@ public:
         
         for( auto t : (*timepoints) )
         {
-            g.drawEllipse( t->time * 100.0f, getHeight() / 2, 10, 10, 1);
+            g.fillEllipse( t->time * 100.0f, getHeight() / 2, 2, 2);
         }
-        
     }
     
     void resized() override

@@ -24,7 +24,7 @@ void TimePointArray::printTimePoints()
 void TimePointArray::addSymbol_atTime( Symbol *s, float time)
 {
     bool match;
-    int idx = getTimePointIndex( time, match );
+    int idx = getTimePointInsertIndex( time, match );
     if( match )
     {
         (*this)[ idx ]->addSymbol( s );
@@ -129,17 +129,54 @@ odot_bundle *TimePointArray::symbolVectorToOSC( const vector<Symbol*> vec )
     return symbolBundleToOdot( bndl );
 }
 
+int TimePointArray::lookupTimePoint( float t )
+{
+    int idx = (current_point < 0 ) ? 0 : current_point;
+    float p_time = current_time;
 
+    if ( t > p_time )
+    {        
+        while ( t > p_time && idx < size() )
+        {
+            p_time = (*this)[ idx ]->time;
+            idx++;
+        }
+        idx--;
+        
+        current_point = (t > p_time) ? size()-1 : idx - 1;
+    }
+    else if ( t < p_time )
+    {
+        while ( t < p_time && idx >= 0 )
+        {
+            p_time = (*this)[ idx ]->time;
+            idx--;
+        }
+        idx++;
+        current_point = idx;
+    }
+
+    current_time = t;
+    return current_point;
+}
 
 odot_bundle *TimePointArray::getSymbolsAtTime( float t )
 {
+    int idx = lookupTimePoint( t );
+    if( idx >= 0 )
+    {
+        auto tpoint = (*this)[idx];
+
+        cout << "for " << t <<" closest timepoint: " << idx << " at " << tpoint->time << " with: " << tpoint->symbols_at_time.size() << " overlaping" << endl;
+    }
+/*
     bool match;
     int idx = getTimePointIndex( t, match );
     
     if( match )
     {
         auto symbs = (*this)[idx]->symbols_at_time;
-        cout << "(maptch) timepoint: " << idx << " at " << (*this)[idx]->time << " with: " << symbs.size() << " overlaping" << endl;
+        cout << "(matched) timepoint: " << idx << " at " << (*this)[idx]->time << " with: " << symbs.size() << " overlaping" << endl;
         return symbolVectorToOSC( symbs );
     }
     else if( idx > 0 )
@@ -150,12 +187,12 @@ odot_bundle *TimePointArray::getSymbolsAtTime( float t )
     }
     
     cout << "timepoint: -1" << endl;
-
+*/
     
     return nullptr;
 }
 
-int TimePointArray::getTimePointIndex( float t, bool& match )
+int TimePointArray::getTimePointInsertIndex( float t, bool& match )
 {
     match = false;
     

@@ -39,6 +39,9 @@ public:
     void symbolistAPI_setTime(float time_ms);
 
     odot_bundle* symbolistAPI_getSymbolsAtTime(float t);
+    odot_bundle* symbolistAPI_getScoreBundle();
+    
+    void symbolistAPI_setOneSymbol( odot_bundle *bundle);
     
     /*********************************************
      * CONTROLLER METHODS CALLED FROM THE GUI

@@ -57,6 +57,46 @@ void Score::removeSymbol(Symbol *symbol)
 }
 
 
+/***********************************
+ * Create Single Bundle from Score Bundles
+ ***********************************/
+odot_bundle *Score::getScoreBundle()
+{
+    OSCBundle bndl;
+    int count = 0;
+    // maybe log number of symbols here... but will have to check it when loading
+    String prefix = "/symbol/";
+    for( auto sym : score_symbols )
+    {
+        auto s_bndl = sym->getOSCBundle();
+        
+        for ( auto osc : s_bndl )
+        {
+            OSCMessage msg = osc.getMessage();
+            String newaddr = prefix + String(count) + msg.getAddressPattern().toString();
+            msg.setAddressPattern(newaddr);
+            bndl.addElement(msg);
+        }
+
+        count++;
+
+    }
+    
+    OSCWriter w ;
+    w.writeBundle( bndl );
+    size_t size = w.getDataSize();
+    
+    odot_bundle *bundle = new odot_bundle;
+    bundle->len = static_cast<long>(size);
+    bundle->data = new char[size];
+    
+    std::memcpy(bundle->data, w.getData() ,size );
+    return bundle;
+}
+
+/***********************************
+ * Get active symbols at time
+ ***********************************/
 odot_bundle *Score::getSymbolsAtTime( float t )
 {
     return time_points.getSymbolsAtTime( t );
@@ -64,6 +104,7 @@ odot_bundle *Score::getSymbolsAtTime( float t )
 
 void Score::updateTimePoints( Symbol *s, int score_index)
 {
+    
 }
 
 /***********************************
@@ -105,6 +146,14 @@ void Score::importScoreFromOSC(int n, odot_bundle **bundle_array)
         addSymbol(s);
     }
     std::cout << "===IMPORT DONE" << std::endl;
+}
+
+Symbol* Score::importSymbolFromOdot( odot_bundle *bundle )
+{
+    Symbol *s = new Symbol();
+    s->importFromOSC( bundle );
+    addSymbol(s);
+    return s;
 }
 
 

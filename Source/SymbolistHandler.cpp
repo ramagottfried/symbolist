@@ -129,6 +129,21 @@ odot_bundle* SymbolistHandler::symbolistAPI_getSymbolsAtTime( float t )
     return score.getSymbolsAtTime(t);
 }
 
+odot_bundle* SymbolistHandler::symbolistAPI_getScoreBundle()
+{
+    return score.getScoreBundle();
+}
+
+void SymbolistHandler::symbolistAPI_setOneSymbol( odot_bundle *bundle)
+{
+    const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
+    Symbol *s = score.importSymbolFromOdot( bundle );
+    
+    BaseComponent* c = makeComponentFromSymbol( s );
+    c->setScoreSymbolPointer( s );
+    main_component->addSymbolComponent(c);
+}
+
 void SymbolistHandler::symbolistAPI_setSymbols(int n, odot_bundle **bundle_array)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope

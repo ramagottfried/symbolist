@@ -15,7 +15,9 @@ typedef struct _symbolist
     void*       m_qelem_open;
     void*       m_qelem_setTime;
 
-    void*       outlet;
+    void*       player_outlet;
+    void*       dump_outlet;
+    
     t_critical  lock;
     
 } t_symbolist;
@@ -69,8 +71,43 @@ void symbolist_getSymbols_at_time( t_symbolist *x, double time )
 
     odot_bundle* bndl = symbolistGetSymbolsAtTime( x->symbolist_handler, time);
     if( bndl )
-        symbolist_outletOSC( x->outlet, bndl->len, bndl->data );
+        symbolist_outletOSC( x->player_outlet, bndl->len, bndl->data );
 
+}
+
+
+void symbolist_setSymbol( t_symbolist *x, t_symbol *msg, int argc, t_atom *argv )
+{
+    if(argc != 2){
+        object_error((t_object *)x, "expected 2 arguments but got %d", argc);
+        return;
+    }
+    if(atom_gettype(argv) != A_LONG){
+        object_error((t_object *)x, "argument 1 should be an int");
+        return;
+    }
+    if(atom_gettype(argv + 1) != A_LONG){
+        object_error((t_object *)x, "argument 2 should be an int");
+        return;
+    }
+    long len = atom_getlong(argv);
+    char *ptr = (char *)atom_getlong(argv + 1);
+    
+    odot_bundle bndl;
+    bndl.len = len;
+    bndl.data = ptr;
+    
+    symbolistSetOneSymbol( x->symbolist_handler, &bndl );
+    
+}
+
+void symbolist_getScoreBundle( t_symbolist *x )
+{
+    
+    odot_bundle* bndl = symbolistGetScoreBundle( x->symbolist_handler );
+    if( bndl )
+        symbolist_outletOSC( x->dump_outlet, bndl->len, bndl->data );
+    
 }
 
 void symbolist_get_symbol( t_symbolist *x, int num)
@@ -78,7 +115,7 @@ void symbolist_get_symbol( t_symbolist *x, int num)
     if( num >= 0 && num < symbolistGetNumSymbols( x->symbolist_handler ) )
     {
         odot_bundle* bndl = symbolistGetSymbol( x->symbolist_handler, num );
-        symbolist_outletOSC( x->outlet, bndl->len, bndl->data );
+        symbolist_outletOSC( x->player_outlet, bndl->len, bndl->data );
     }
     else
         object_error((t_object *)x, "lookup not in range!");
@@ -145,7 +182,8 @@ void *symbolist_new(t_symbol *s, long argc, t_atom *argv)
         
         x->m_qelem_setTime = qelem_new((t_object *)x, (method)symbolist_qset_time);
         x->m_qelem_open = qelem_new((t_object *)x, (method)symbolist_qelem_open_window);
-        x->outlet = outlet_new(x, "FullPacket" );
+        x->player_outlet = outlet_new(x, "FullPacket" );
+        x->dump_outlet = outlet_new(x, "FullPacket" );
     }
     return (x);
 }
@@ -160,6 +198,10 @@ void ext_main(void* unused)
                   sizeof(t_symbolist), NULL, A_GIMME, 0);
     
     class_addmethod(c, (method)symbolist_open_window,           "open", 0);
+    class_addmethod(c, (method)symbolist_getScoreBundle,        "dump", 0);
+    class_addmethod(c, (method)symbolist_setSymbol,             "FullPacket", A_GIMME, 0);
+
+    
     class_addmethod(c, (method)symbolist_getSymbols_at_time,    "time",     A_FLOAT, 0);
     class_addmethod(c, (method)symbolist_get_symbol,            "getsymbol", A_LONG, 0);
 

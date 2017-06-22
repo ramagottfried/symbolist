@@ -146,7 +146,12 @@ void SymbolistHandler::symbolistAPI_setTime(float time_ms)
 {
     const MessageManagerLock mmLock;
     current_time = time_ms;
-    if ( main_component != NULL) main_component->repaint();
+    
+    if ( main_component != NULL)
+    {
+        main_component->getPageComponent()->setTimePoint( time_ms );
+        main_component->repaint();
+    }
 }
 
 

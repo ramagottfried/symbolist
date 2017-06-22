@@ -1,17 +1,22 @@
 
 
 #include "ext.h"
+#include "ext_critical.h"
+
 #include "symbolist.hpp"
 
 typedef struct _symbolist
 {
     t_object    ob;
+
+    double      current_time;
     
-    void *      symbolist_handler;
-    void *      m_qelem_open;
-    void *      m_qelem_setTime;
-    
-    void *      outlet;
+    void*       symbolist_handler;
+    void*       m_qelem_open;
+    void*       m_qelem_setTime;
+
+    void*       outlet;
+    t_critical  lock;
     
 } t_symbolist;
 
@@ -44,13 +49,24 @@ void symbolist_closecallback ( void * sc )
     }
 }
 
-void symbolist_set_time( t_symbolist *x, int time_ms )
+void symbolist_qset_time( t_symbolist *x )
 {
-    symbolistSetTime( x->symbolist_handler, time_ms );
+    critical_enter(x->lock);
+    double time = x->current_time;
+    critical_exit(x->lock);
+    
+    symbolistSetTime( x->symbolist_handler, time );
 }
 
-void symbolist_getSymbols_at_time( t_symbolist *x, float time )
+void symbolist_getSymbols_at_time( t_symbolist *x, double time )
 {
+
+    critical_enter(x->lock);
+    x->current_time = time;
+    critical_exit(x->lock);
+    
+    qelem_set( x->m_qelem_setTime );
+
     odot_bundle* bndl = symbolistGetSymbolsAtTime( x->symbolist_handler, time);
     if( bndl )
         symbolist_outletOSC( x->outlet, bndl->len, bndl->data );
@@ -79,7 +95,7 @@ void symbolist_qelem_open_window( t_symbolist *x )
     if ( x->symbolist_handler)
     {
         symbolistOpenWindow( x->symbolist_handler );
-     //   symbolistRegisterCloseCallback( x->symbolist_handler, &symbolist_closecallback );
+        //   symbolistRegisterCloseCallback( x->symbolist_handler, &symbolist_closecallback );
     }
     else
         symbolistWindowToFront( x->symbolist_handler );
@@ -100,6 +116,9 @@ void symbolist_free(t_symbolist *x)
     }
     
     qelem_free(x->m_qelem_open);
+    qelem_free(x->m_qelem_setTime);
+    critical_free( x->lock );
+
     symbolist_objects.erase( std::remove( symbolist_objects.begin(), symbolist_objects.end(), x), symbolist_objects.end() );
 }
 
@@ -120,6 +139,11 @@ void *symbolist_new(t_symbol *s, long argc, t_atom *argv)
             return NULL;
         }
         
+        x->current_time = 0;
+        
+        critical_new( &x->lock );
+        
+        x->m_qelem_setTime = qelem_new((t_object *)x, (method)symbolist_qset_time);
         x->m_qelem_open = qelem_new((t_object *)x, (method)symbolist_qelem_open_window);
         x->outlet = outlet_new(x, "FullPacket" );
     }
@@ -136,7 +160,7 @@ void ext_main(void* unused)
                   sizeof(t_symbolist), NULL, A_GIMME, 0);
     
     class_addmethod(c, (method)symbolist_open_window,           "open", 0);
-    class_addmethod(c, (method)symbolist_getSymbols_at_time,    "time", A_DEFFLOAT, 0);
+    class_addmethod(c, (method)symbolist_getSymbols_at_time,    "time",     A_FLOAT, 0);
     class_addmethod(c, (method)symbolist_get_symbol,            "getsymbol", A_LONG, 0);
 
     

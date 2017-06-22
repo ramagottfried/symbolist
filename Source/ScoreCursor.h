@@ -12,7 +12,7 @@ public:
     {
         g.setColour( Colours::lightblue );
         auto b = getLocalBounds();
-        g.drawLine( b.getCentreX(), 0, 2, b.getHeight() );
+        g.drawLine( b.getCentreX(), 0, b.getCentreX(), b.getBottom() );
     }
     
     void mouseDrag( const MouseEvent& event ) override
@@ -41,7 +41,12 @@ public:
         setBounds( m_playpoint * 100.0f, 0, 5, getLocalBounds().getHeight() );
     }
     
-    inline void setPlayPoint( float t){ m_playpoint = t; }
+    void setPlayPoint( float t )
+    {
+        m_playpoint = t;
+        setBounds( m_playpoint * 100.0f, 0, 5, getLocalBounds().getHeight() );
+    }
+    
     inline float getPlayPoint(){ return m_playpoint; }
     
 private:

@@ -104,7 +104,7 @@ odot_bundle *TimePointArray::symbolVectorToOSC( const vector<Symbol*> vec )
     OSCBundle bndl;
     int count = 0;
     String prefix = "/symbolsAtTime/";
-    cout << "vec len " << vec.size() << endl;
+//    cout << "vec len " << vec.size() << endl;
     for (auto s : vec )
     {
         auto s_bndl = s->getOSCBundle();
@@ -162,32 +162,18 @@ int TimePointArray::lookupTimePoint( float t )
 
 odot_bundle *TimePointArray::getSymbolsAtTime( float t )
 {
+    if (size() == 0 )
+        return nullptr;
+    
     int idx = lookupTimePoint( t );
     if( idx >= 0 )
     {
         auto tpoint = (*this)[idx];
 
-        cout << "for " << t <<" closest timepoint: " << idx << " at " << tpoint->time << " with: " << tpoint->symbols_at_time.size() << " overlaping" << endl;
+      //  cout << "for " << t <<" closest timepoint: " << idx << " at " << tpoint->time << " with: " << tpoint->symbols_at_time.size() << " overlaping" << endl;
+        
+        return symbolVectorToOSC( tpoint->symbols_at_time );
     }
-/*
-    bool match;
-    int idx = getTimePointIndex( t, match );
-    
-    if( match )
-    {
-        auto symbs = (*this)[idx]->symbols_at_time;
-        cout << "(matched) timepoint: " << idx << " at " << (*this)[idx]->time << " with: " << symbs.size() << " overlaping" << endl;
-        return symbolVectorToOSC( symbs );
-    }
-    else if( idx > 0 )
-    {
-        auto symbs = (*this)[idx-1]->symbols_at_time;
-    cout << "timepoint: " << idx << " at " << (*this)[idx-1]->time << " with: " << symbs.size() << " overlaping" << endl;
-        return symbolVectorToOSC( symbs );
-    }
-    
-    cout << "timepoint: -1" << endl;
-*/
     
     return nullptr;
 }

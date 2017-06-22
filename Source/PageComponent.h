@@ -37,6 +37,11 @@ public:
     void resized () override;
     void paint (Graphics& g) override;
     
+    void setTimePoint( float t )
+    {
+        score_cursor.setPlayPoint( t );
+    }
+    
 private:
     
     BaseComponent*      edited_component;

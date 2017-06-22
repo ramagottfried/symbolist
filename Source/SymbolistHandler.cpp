@@ -39,7 +39,10 @@ SymbolistHandler::SymbolistHandler()
 
 SymbolistHandler::~SymbolistHandler()
 {
-    if ( main_component != NULL ) symbolistAPI_closeWindow();
+    cout << "deleting symbolist, main comp:" << main_component << endl;
+    if ( main_component != NULL )
+        symbolistAPI_closeWindow();
+    
 }
 
 /*********************************************
@@ -121,6 +124,11 @@ odot_bundle* SymbolistHandler::symbolistAPI_getSymbol(int n)
     return score.getSymbol(n)->exportToOSC();
 }
 
+odot_bundle* SymbolistHandler::symbolistAPI_getSymbolsAtTime( float t )
+{
+    return score.getSymbolsAtTime(t);
+}
+
 void SymbolistHandler::symbolistAPI_setSymbols(int n, odot_bundle **bundle_array)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
@@ -134,7 +142,7 @@ void SymbolistHandler::symbolistAPI_setSymbols(int n, odot_bundle **bundle_array
     }
 }
 
-void SymbolistHandler::symbolistAPI_setTime(int time_ms)
+void SymbolistHandler::symbolistAPI_setTime(float time_ms)
 {
     const MessageManagerLock mmLock;
     current_time = time_ms;

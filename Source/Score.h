@@ -4,43 +4,66 @@
 #include <vector>
 #include "types.h"
 #include "Symbol.h"
-
+#include "TimePointArray.h"
 
 using namespace std;
-
 
 //============================
 // SCORE
 //============================
 
+struct ScoreSorter
+{
+    static int compareElements (const Symbol* a, const Symbol* b)
+    {
+        auto a_t = a->getTime();
+        auto b_t = b->getTime();
+        return (a_t < b_t ? -1 : (a_t == b_t ? 0 : 1));
+    }
+};
+
 class Score
 {
     
 public:
-
+    
     Score();
     Score( int n, odot_bundle** bundle_array ) ;
     ~Score();
-
+    
     size_t getSize();
-    Symbol *getSymbol(int n);
+    
+    Symbol *getSymbol(int n);    
+    
     int getSymbolPosition(Symbol *s);
-
+    
     void addSymbol(Symbol *s);
     void removeSymbol(Symbol *s);
     void removeAllSymbols();
-
+    
     void importScoreFromOSC( int n, odot_bundle** bundle_array );
-
-//    void sortScore();
+    
+    //    void sortScore();
+    
+    void addTimePoints( Symbol *s, int score_index );
+    void updateTimePoints( Symbol *s, int score_index );
+    
+    odot_bundle *getSymbolsAtTime( float t );
+    
+    const TimePointArray* getTimePointArray() const { return &time_points; }
     
 private:
-
-    OwnedArray<Symbol>  score_symbols;
     
+    OwnedArray<Symbol>          score_symbols;
+    TimePointArray              time_points;
+    
+    ScoreSorter                 score_sorter;
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Score)
 };
+
+
 
 
 

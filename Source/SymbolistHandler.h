@@ -36,8 +36,9 @@ public:
     int symbolistAPI_getNumSymbols();
     odot_bundle* symbolistAPI_getSymbol(int n);
     void symbolistAPI_setSymbols(int n, odot_bundle **bundle_array);
-    void symbolistAPI_setTime(int time_ms);
-    
+    void symbolistAPI_setTime(float time_ms);
+
+    odot_bundle* symbolistAPI_getSymbolsAtTime(float t);
     
     /*********************************************
      * CONTROLLER METHODS CALLED FROM THE GUI
@@ -52,7 +53,7 @@ public:
     void removeSymbolFromScore ( BaseComponent* c ) ;
     void modifySymbolInScore ( BaseComponent* c ) ;
     
-    int getCurrentTime() { return current_time; }
+    float getCurrentTime() { return current_time; }
     
     /*********************************************
      * PALETTE AND SYMBOL CONSTRUCTOR
@@ -69,6 +70,7 @@ public:
     void inStandalone(){ in_standalone = true; };
     bool isStandalone(){ return in_standalone; };
 
+    const TimePointArray* getTimePointArray() const { return score.getTimePointArray(); }
     
 private:
     
@@ -81,7 +83,7 @@ private:
     SymbolistMainComponent* main_component;
     
     // the current play-time in ms (change for float or long_int?)
-    int current_time = 0;
+    float current_time = 0;
     
     // callbacks to the host environment
     symbolistUpdateCallback myUpdateCallback = NULL;

@@ -13,6 +13,8 @@ PageComponent::PageComponent()
 {
     setComponentID("PageComponent");
     edited_component = NULL;
+    addAndMakeVisible(score_cursor);
+    addAndMakeVisible(time_pointGUI);
 }
 
 PageComponent::~PageComponent() {}
@@ -71,6 +73,9 @@ void PageComponent::resized ()
     {
         edited_component->recursiveMaximizeBounds();
     }
+    
+    score_cursor.setBounds( score_cursor.getPlayPoint() * 100, 0, 50, getHeight() );
+    time_pointGUI.setBounds(0, getBottom() - 50, getWidth(), 50);
 }
 
 

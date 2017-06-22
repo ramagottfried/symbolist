@@ -24,13 +24,18 @@ void Score::removeAllSymbols()
     score_symbols.clear(1);
 }
 
+
 /***********************************
  * Add a new Symbol in the Score
  ***********************************/
 void Score::addSymbol(Symbol *symbol)
 {
-    score_symbols.add( symbol );
+    int idx = score_symbols.addSorted( score_sorter, symbol );
+    
+    time_points.addSymbolTimePoints( symbol );
 }
+
+
 
 /***********************************
  * Removes a Symbol from the Score
@@ -49,6 +54,16 @@ void Score::removeSymbol(Symbol *symbol)
     }
     
     assert( false );    ///< not found
+}
+
+
+odot_bundle *Score::getSymbolsAtTime( float t )
+{
+    return time_points.getSymbolsAtTime( t );
+}
+
+void Score::updateTimePoints( Symbol *s, int score_index)
+{
 }
 
 /***********************************
@@ -73,7 +88,7 @@ size_t Score::getSize()
  ***********************************/
 int Score::getSymbolPosition(Symbol *s)
 {
-    return score_symbols.indexOf( s );
+    return score_symbols.indexOfSorted(score_sorter, s );
 }
 
 /***********************************

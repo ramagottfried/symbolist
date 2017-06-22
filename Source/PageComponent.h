@@ -11,6 +11,8 @@
 
 #include "ScoreComponent.h"
 #include "BaseComponent.h"
+#include "ScoreCursor.h"
+#include "TimePointGUI.h"
 
 class PageComponent : public ScoreComponent
 {
@@ -37,7 +39,10 @@ public:
     
 private:
     
-    BaseComponent* edited_component;
+    BaseComponent*      edited_component;
+    
+    ScoreCursor         score_cursor;
+    TimePointGUI        time_pointGUI;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PageComponent)

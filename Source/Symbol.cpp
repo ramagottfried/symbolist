@@ -16,27 +16,33 @@ Symbol::Symbol (const String & type, float x, float y, float w, float h)
     addOSCMessage("/type", type);
     addOSCMessage("/x", x);
     addOSCMessage("/y", y);
-    addOSCMessage("/w", w);
+    addOSCMessage("/w", w);  // note: w must not be zero!
     addOSCMessage("/h", h);
     
-    addOSCMessage("/offset", x * 10.0f);
-    addOSCMessage("/duration", 500.0f);
+    addOSCMessage("/time/start",    x * 0.01f );
+    addOSCMessage("/duration",      w * 0.01f );
     
 }
+
 
 String Symbol::getType()
 {
     return getOSCMessageValue("/type").getString();
 }
 
-int Symbol::getTime() const
+float Symbol::getTime() const
 {
-    return (int)getOSCMessageValue("/offset").getFloat32();
+    return getOSCMessageValue("/time/start").getFloat32();
 }
 
-int Symbol::getDuration() const
+float Symbol::getDuration() const
 {
-    return (int)getOSCMessageValue("/duration").getFloat32();
+    return getOSCMessageValue("/duration").getFloat32();
+}
+
+float Symbol::getEndTime() const
+{
+    return ( getTime() + getDuration() );
 }
 
 // filter the symbol from base_address

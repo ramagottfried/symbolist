@@ -93,7 +93,7 @@ void PageComponent::paint (Graphics& g)
     String msg;
     
     
-    if ( getMainEditMode() == UI_EditType::select_mode )
+    if ( getMainEditMode() == UI_EditType::selection )
     {
         msg = " select " ;
     }

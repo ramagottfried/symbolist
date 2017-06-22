@@ -33,8 +33,7 @@ SymbolistHandler::SymbolistHandler()
     
     Symbol* s5 = new Symbol("text", 20.0, 20.0, symbol_size, symbol_size);
     palette.addPaletteItem(s5);
-    
-    main_component = NULL;
+
 }
 
 SymbolistHandler::~SymbolistHandler()

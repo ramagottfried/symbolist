@@ -38,8 +38,6 @@ public:
     bool isTopLevelComponent();
     void reportModification();
         
-    virtual void componentCretated() {}
-    
     virtual int addSymbolMessages( Symbol* s, const String &base_address );
     
     virtual void importFromSymbol( const Symbol &s );

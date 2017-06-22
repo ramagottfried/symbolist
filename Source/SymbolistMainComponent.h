@@ -48,7 +48,7 @@ public:
     
 private:
     
-    UI_EditType      mouse_mode = select_mode;
+    UI_EditType      mouse_mode = selection;
     UI_DrawType      draw_mode = free_draw;
 
     SymbolistHandler*   symbolist_handler;

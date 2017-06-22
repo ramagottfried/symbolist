@@ -8,8 +8,6 @@ class LinePathComponent : public PathBaseComponent
 public:
     LinePathComponent(const Symbol &s);
     
-    void componentCretated() override;
-
     String getSymbolTypeStr() const override { return "path"; }
 
 private:

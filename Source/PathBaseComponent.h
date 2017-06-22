@@ -16,26 +16,27 @@ public:
     
     int addSymbolMessages(Symbol* s, const String &base_address) override;
     void importFromSymbol(const Symbol &s) override;
-    virtual void componentCretated() override {}
     
-    void addHandle( int type, float x, float y );
-    void makeHandles();
+    void addHandle( PathHandle::handleType type, float x, float y );
+    void removeHandle(PathHandle* h);
+    void addHandlesTo( Point<float> p, PathHandle* last );
+    void insertHandleBefore( PathHandle* target );
+    void makeHandlesFromPath();
     void removeHandles();
     void updateHandlePositions();
-
     void updatePathPoints();
     void drawHandlesLines( Graphics& g);
     
     void paint ( Graphics& g ) override;
     void resized () override;
     
-    //void mouseDown( const MouseEvent& event ) override;
     void mouseUp(const MouseEvent& event) override;
     void mouseMove(const MouseEvent& event) override;
     void mouseDrag( const MouseEvent& event ) override;
-    void mouseAddClick ( Point<float> p ) override;
+    void mouseDoubleClick( const MouseEvent& event ) override;
+    void mouseAddClick ( const MouseEvent& event ) override;
     bool hitTest (int x, int y) override;
-    Point<float> shiftConstrainMouseAngle( const MouseEvent& event );
+    Point<float> shiftConstrainMouseAngle( const PathHandle* last, const MouseEvent& event );
     
     void setMinimalBounds () override;
     void setMaximalBounds () override;
@@ -72,7 +73,7 @@ protected:
     Colour                      preview_stroke_color = Colours::cornflowerblue ;
     
     Point<float>                m_path_origin;
-    std::vector<PathHandle*>    path_handles;
+    Array<PathHandle*>          path_handles;
     
     //Point<float>                m_prev_drag;
     

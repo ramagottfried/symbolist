@@ -30,9 +30,8 @@ void Score::removeAllSymbols()
  ***********************************/
 void Score::addSymbol(Symbol *symbol)
 {
-    int idx = score_symbols.addSorted( score_sorter, symbol );
-    
-    time_points.addSymbolTimePoints( symbol );
+    score_symbols.addSorted( score_sorter, symbol );
+    //time_points.addSymbolTimePoints( symbol );
 }
 
 

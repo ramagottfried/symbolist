@@ -262,7 +262,7 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
         
         if ( respondsToMouseEvents() )
         {
-            if( is_selected && (getMainEditMode() == select_mode ) )
+            if( is_selected && (getMainEditMode() == selection ) )
             {
                 parent->translateSelectedSymbols( (event.position - m_down).toInt() );
             }
@@ -282,7 +282,7 @@ void BaseComponent::mouseUp( const MouseEvent& event )
         
         if ( respondsToMouseEvents() )
         {
-            if( is_selected && getMainEditMode() == select_mode )
+            if( is_selected && getMainEditMode() == selection )
             {
                 resizableBorder->setVisible( true ); // here instead of the select callback makes it only when the symbol is clicked alone
                 repaint();

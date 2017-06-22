@@ -44,7 +44,7 @@ UI_EditType SymbolistComponent::getMainEditMode()
     else
     {
         std::cout << "Warning: trying to get the edit_mode => MainComponent not found.." << std::endl;
-        return UI_EditType::select_mode;
+        return UI_EditType::selection;
     }
 }
 

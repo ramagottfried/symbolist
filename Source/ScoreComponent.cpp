@@ -312,25 +312,34 @@ void ScoreComponent::flipSelectedSymbols( int axis )
 /* UI callbacks from Juce  */
 /***************************/
 
-void ScoreComponent::mouseAddClick ( Point<float> p )
+void ScoreComponent::mouseAddClick ( const MouseEvent& event )
 {
-    Symbol* symbol_template = getSymbolistHandler()->getCurrentSymbol();
+    BaseComponent *c;
     
-    // sets position in symbol before creation
-    // will need to make offset for center based symbols (circle, square, etc.)
-    symbol_template->setPosition ( p );
+    if ( getMainDrawMode() == UI_DrawType::from_template )
+    {
+        Symbol* symbol_template = getSymbolistHandler()->getCurrentSymbol();
+        // sets position in symbol before creation
+        // will need to make offset for center based symbols (circle, square, etc.)
+        symbol_template->setPosition ( event.position );
+        // create a new component from the current selected symbol of the palette
+        c = SymbolistHandler::makeComponentFromSymbol( symbol_template );
+        // add component in the view
+        addSymbolComponent( c );
+    }
+    else
+    {
+        Symbol* dummy_symbol = new Symbol("path", event.position.x, event.position.y, 40.0, 40.0) ;
+        c = SymbolistHandler::makeComponentFromSymbol( dummy_symbol );
+        delete dummy_symbol;
+        addSymbolComponent( c );
+        getPageComponent()->enterEditMode(c);
+        c->mouseAddClick(event.getEventRelativeTo(c));
+    }
     
-    // create a new component from the current selected symbol of the palette
-    BaseComponent *c = SymbolistHandler::makeComponentFromSymbol( symbol_template );
-
-    // add component in the view
-    addSymbolComponent( c );
-    
-    // deselect other itams and select this one
+    // deselect other items and select this one
     //unselectAllComponents();
     //addToSelection( c );
-    
-    c->componentCretated();
     
 }
 
@@ -338,19 +347,19 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
 {
     UI_EditType ed = getMainEditMode();
     
-    if( ed == select_mode )
+    if( ed == selection )
     {
         beginLassoSelection( event.getPosition() );
     }
-    else if( ed == draw_mode )
+    else if( ed == draw )
     {
-        mouseAddClick( event.getEventRelativeTo(getPageComponent()).position );
+        mouseAddClick( event.getEventRelativeTo(getPageComponent()) );
     }
 }
 
 void ScoreComponent::mouseDrag ( const MouseEvent& event )
 {
-    if( getMainEditMode() == select_mode )
+    if( getMainEditMode() == selection )
     {
         dragLassoSelection(event.getPosition());
     }

@@ -64,11 +64,11 @@ void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
 {
     if ( modifiers.isCommandDown() )
     {
-        setEditMode( UI_EditType::draw_mode );
+        setEditMode( UI_EditType::draw );
     }
     else
     {
-        setEditMode( UI_EditType::select_mode );
+        setEditMode( UI_EditType::selection );
     }
 }
 

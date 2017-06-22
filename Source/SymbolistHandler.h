@@ -81,9 +81,9 @@ private:
 
     // the palette is an array of symbol 'templates'
     SymbolistPalette palette;
- 
+    
     // the main view of the editor (could be embedded in a foreign app independently of the window)
-    SymbolistMainComponent* main_component;
+    SymbolistMainComponent* main_component = NULL;
     
     // the current play-time in ms (change for float or long_int?)
     float current_time = 0;

@@ -46,7 +46,7 @@ public:
     virtual void    addSymbolComponent( BaseComponent *c );
     virtual void    removeSymbolComponent( BaseComponent *c );
     
-    virtual void mouseAddClick ( Point<float> p );
+    virtual void mouseAddClick ( const MouseEvent& event );
     
     void addToSelection(BaseComponent* c);
     void removeFromSelection(BaseComponent* c);

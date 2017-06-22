@@ -54,8 +54,9 @@ public:
     // these four modify the symbol
     void moved () override;
     void resized () override;
-    virtual void h_flip(){}
-    virtual void v_flip(){}
+
+    virtual void h_flip() {}
+    virtual void v_flip() {}
     
     // these are standard interactions
     void mouseEnter( const MouseEvent& event ) override {};

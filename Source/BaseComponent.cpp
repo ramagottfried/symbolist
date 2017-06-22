@@ -223,11 +223,11 @@ void BaseComponent::mouseMove( const MouseEvent& event )
 void BaseComponent::mouseDown( const MouseEvent& event )
 {
     
+    m_down = event.position;
+    
     if ( in_edit_mode ) ScoreComponent::mouseDown(event);
     
     else {
-        
-        m_down = event.position;
         
         ScoreComponent* parent = ((ScoreComponent*)getParentComponent());
         

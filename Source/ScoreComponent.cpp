@@ -12,7 +12,6 @@ ScoreComponent::~ScoreComponent()
 }
 
 
-
 /*****************************
  * Management of sucomponents
  * Add/remove operations apply on views only
@@ -105,8 +104,9 @@ void ScoreComponent::unselectAllComponents()
     }
 }
 
+
 /*****************
- * CUSTOM LASSO
+ * Custom lasso tool
  *****************/
 
 void ScoreComponent::beginLassoSelection(Point<int> position)
@@ -115,7 +115,6 @@ void ScoreComponent::beginLassoSelection(Point<int> position)
     addAndMakeVisible(s_lasso);
     s_lasso.begin(position.getX(), position.getY());
 }
-
 
 void ScoreComponent::dragLassoSelection(Point<int> position)
 {
@@ -140,8 +139,6 @@ void ScoreComponent::endLassoSelection()
     removeChildComponent(&s_lasso);
     s_lasso.end();
 }
-
-
 
 void SymbolistLasso::begin(int x, int y)
 {
@@ -186,7 +183,7 @@ void SymbolistLasso::paint ( Graphics &g)
 
 
 /**************************
- * UI Actions
+ * User actions
  **************************/
 
 void ScoreComponent::deleteSelectedSymbols()
@@ -261,6 +258,7 @@ void ScoreComponent::groupSelectedSymbols()
     }
 }
 
+
 void ScoreComponent::ungroupSelectedSymbols()
 {
     vector< BaseComponent *> items;
@@ -287,9 +285,6 @@ void ScoreComponent::ungroupSelectedSymbols()
     }
 }
 
-/*******************
- * TRANSFORMATIONS
- *******************/
 
 void ScoreComponent::translateSelectedSymbols( Point<int> delta_xy )
 {
@@ -347,15 +342,11 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
     {
         beginLassoSelection( event.getPosition() );
     }
-    else
-    { // => draw mode
-        if( ed == draw_mode )
-        {
-            mouseAddClick( event.getEventRelativeTo(getPageComponent()).position );
-        }
+    else if( ed == draw_mode )
+    {
+        mouseAddClick( event.getEventRelativeTo(getPageComponent()).position );
     }
 }
-
 
 void ScoreComponent::mouseDrag ( const MouseEvent& event )
 {
@@ -365,14 +356,11 @@ void ScoreComponent::mouseDrag ( const MouseEvent& event )
     }
 }
 
-void ScoreComponent::mouseMove ( const MouseEvent& event ) {}
-
 void ScoreComponent::mouseUp ( const MouseEvent& event )
 {
     endLassoSelection();
 }
 
-void ScoreComponent::resized () {}
 
 
 

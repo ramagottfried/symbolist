@@ -60,11 +60,9 @@ public:
     void flipSelectedSymbols( int axis );
     
     void mouseDown ( const MouseEvent& event ) override;
-    void mouseMove ( const MouseEvent& event ) override;
     void mouseDrag ( const MouseEvent& event ) override;
     void mouseUp ( const MouseEvent& event ) override;
-    void resized () override;
-    
+
 protected:
 
     std::vector<BaseComponent*>     subcomponents;

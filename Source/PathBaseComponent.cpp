@@ -44,6 +44,26 @@ void PathBaseComponent::printPath( Path p, const char* name )
     }
 }
 
+
+void PathBaseComponent::resizeToFit(int x, int y, int w, int h)
+{
+    Rectangle<int> r = Rectangle<int>(x,y,w,h).reduced( strokeType.getStrokeThickness() );
+    if( r.getWidth() > 0 && r.getHeight() > 0)
+        m_path.scaleToFit(r.getX(), r.getY(), r.getWidth(), r.getHeight(), false );
+}
+
+// Juce callback
+void PathBaseComponent::resized()
+{
+    BaseComponent::resized();
+    
+    if( getMainEditMode() == UI_EditType::draw_mode )
+    {
+        resizeToFit(getLocalBounds().getX(), getLocalBounds().getY(), getLocalBounds().getWidth(), getLocalBounds().getHeight());
+    }
+    
+}
+
 /******************
  * Creates OSC Messages in the Symbol
  * Can be overriden / completed by class-specific messages
@@ -243,6 +263,7 @@ void PathBaseComponent::setEditMode( bool val )
 }
 
 
+
 /******************
  * HANDLES (path edit)
  *****************/
@@ -317,141 +338,9 @@ void PathBaseComponent::removeHandles()
 }
 
 
-
-
-/******************
- * Mouse
- *****************/
-
-// inside an existing Component we're editing the path...
-void PathBaseComponent::mouseAddClick ( Point<float> pt )
-{
-    if( in_edit_mode )
-    {
-        Path p;
-        if( m_path.isEmpty() ) p.startNewSubPath( m_path_origin );
-        else p = m_path;
-        
-        p.lineTo( pt.getX(), pt.getY() );
-        m_path.swapWithPath( p );
-        removeHandles();
-        makeHandles();
-        repaint();
-    }
-}
-
-void PathBaseComponent::mouseDown( const MouseEvent& event )
-{
-    BaseComponent::mouseDown(event);
-    m_prev_drag = m_down;
-}
-
-void PathBaseComponent::mouseDrag( const MouseEvent& event )
-{
-    BaseComponent::mouseDrag(event);
-
-    /*
-     if ( getMainEditMode() == select_mode && path_handles.size() > 0 )
-    {
-        auto delta = event.position - m_prev_drag;
-        
-        m_path.applyTransform( AffineTransform().translated( delta ) );
-        m_path_centroid += delta;
-        
-        updateHandlePositions();
-
-        { // PUT THIS SOMEWHERE ELSE LATER
-            auto rot_handle = path_handles.back();
-            auto length = max( m_path_bounds.getHeight(), m_path_bounds.getWidth() ) * 0.5 + 5;
-            rot_handle->setCentrePosition( m_path_centroid.getX(), m_path_centroid.getY() + length );
-        }
-        
-        repaint();
-    }
-     */
-
-    m_prev_drag = event.position;
-}
-
-void PathBaseComponent::resizeToFit(int x, int y, int w, int h)
-{
-    Rectangle<int> r = Rectangle<int>(x,y,w,h).reduced( strokeType.getStrokeThickness() );
-    if( r.getWidth() > 0 && r.getHeight() > 0)
-    m_path.scaleToFit(r.getX(), r.getY(), r.getWidth(), r.getHeight(), false );
-}
-
-void PathBaseComponent::resized()
-{
-    BaseComponent::resized();
-    
-    if( getMainEditMode() == UI_EditType::draw_mode )
-    {
-        resizeToFit(getLocalBounds().getX(), getLocalBounds().getY(), getLocalBounds().getWidth(), getLocalBounds().getHeight());
-    }
-    
-}
-
-/******************
- * Transforms
- *****************/
-
-void PathBaseComponent::h_flip()
-{
-    m_path.applyTransform( AffineTransform().rotated( float_Pi,
-                                                     m_path_centroid.getX(),
-                                                     m_path_centroid.getY()  ) );
-    
-    auto actualBounds = tranformAndGetBoundsInParent( m_path );
-    m_path.applyTransform( AffineTransform().verticalFlip( actualBounds.getHeight() ) );
-    m_path.applyTransform( AffineTransform().translated( m_path_origin ) );
-    
-    updateHandlePositions();
-    repaint();
-    
-}
-
-void PathBaseComponent::v_flip()
-{
-
-    auto actualBounds = tranformAndGetBoundsInParent(m_path);
-    m_path.applyTransform( AffineTransform().verticalFlip( actualBounds.getHeight() ) );
-    m_path.applyTransform( AffineTransform().translated( m_path_origin ) );
-    
-    updateHandlePositions();
-    repaint();
-}
-
-
-void PathBaseComponent::rotatePath ( float theta, float ax, float ay )
-{
-    m_path.applyTransform( AffineTransform().rotation( theta, ax, ay ) );
-    updateHandlePositions();
-    repaint();
-}
-
-
-void PathBaseComponent::rotatePath ( float theta )
-{
-    m_path.applyTransform( AffineTransform().rotation( theta, m_path_centroid.getX(), m_path_centroid.getY()  ) );
-    updateHandlePositions();
-    repaint(); 
-}
-
-
-// used to be called at exiting edit mode...
-Rectangle<float> PathBaseComponent::tranformAndGetBoundsInParent( Path& p )
-{
-    float strokeOffset = strokeType.getStrokeThickness() * 0.5;
-    
-    m_path_bounds.getRealPathBounds( m_path );
-    Rectangle<float> abs_bounds = m_path_bounds;
-    
-    // NOT FUNCTIONAL PROGRAMMING, but oh well
-    p.applyTransform( AffineTransform().translated( -abs_bounds.getX() + strokeOffset, -abs_bounds.getY() + strokeOffset ) );
-    return abs_bounds.expanded( strokeOffset );
-}
-
-
+/***********************
+ * Update path after use action on handles
+ ***********************/
 void PathBaseComponent::updatePathPoints()
 {
     Path p;
@@ -489,12 +378,14 @@ void PathBaseComponent::updatePathPoints()
     updatePathBounds();
 }
 
+/***********************
+ * Update handles after transformations on the path
+ ***********************/
+
 void PathBaseComponent::updateHandlePositions()
 {
     Path p;
     auto handle = path_handles.begin();
-
-    m_path_bounds.init();
     
     float ax = 0, ay = 0;
     
@@ -504,14 +395,12 @@ void PathBaseComponent::updateHandlePositions()
         if (it.elementType == it.startNewSubPath)
         {
             (*(handle++))->setCentrePosition(it.x1, it.y1);
-            m_path_bounds.addSegment( it );
             ax = it.x1;
             ay = it.y1;
         }
         else if (it.elementType == it.lineTo)
         {
             (*(handle++))->setCentrePosition(it.x1, it.y1);
-            m_path_bounds.addSegment( it );
             ax = it.x1;
             ay = it.y1;
         }
@@ -519,7 +408,6 @@ void PathBaseComponent::updateHandlePositions()
         {
             (*(handle++))->setCentrePosition(it.x1, it.y1);
             (*(handle++))->setCentrePosition(it.x2, it.y2);
-            m_path_bounds.addSegment( it, ax, ay );
             ax = it.x2;
             ay = it.y2;
         }
@@ -528,7 +416,6 @@ void PathBaseComponent::updateHandlePositions()
             (*(handle++))->setCentrePosition(it.x1, it.y1);
             (*(handle++))->setCentrePosition(it.x2, it.y2);
             (*(handle++))->setCentrePosition(it.x3, it.y3);
-            m_path_bounds.addSegment(it, ax, ay);
             ax = it.x3;
             ay = it.y3;
         }
@@ -536,49 +423,232 @@ void PathBaseComponent::updateHandlePositions()
         {
         }
     }
-    
-    m_path_centroid = m_path_bounds.getCentre();
+    updatePathBounds();
 }
 
+
+// used to be called at exiting edit mode...
+// !!! redo THIS
+Rectangle<float> PathBaseComponent::tranformAndGetBoundsInParent( Path& p )
+{
+    float strokeOffset = strokeType.getStrokeThickness() * 0.5;
+    
+    m_path_bounds.getRealPathBounds( m_path );
+    Rectangle<float> abs_bounds = m_path_bounds;
+    
+    // NOT FUNCTIONAL PROGRAMMING, but oh well
+    p.applyTransform( AffineTransform().translated( -abs_bounds.getX() + strokeOffset, -abs_bounds.getY() + strokeOffset ) );
+    return abs_bounds.expanded( strokeOffset );
+}
 
 
 /******************
- * Edit/Hand-draw
+ * Draw new path section
  *****************/
 
-/*
-void PathBaseComponent::exitPathEdit ()
+void PathBaseComponent::abortDrawPath (  )
 {
-    getPageComponent()->giveBackMouse();
-    
-    if( !m_preview_path.isEmpty() )
-        m_preview_path.clear();
-    
-    if( !m_path.isEmpty() )
-    {
-        Rectangle<float> pathBounds = tranformAndGetBoundsInParent( m_path );
-        setBoundsFloatRect( pathBounds );
-    }
-    else
-    {
-        delete this;
-    }
-    
-    if (path_handles.size() > 0 )
-        removeHandles();
-    
-    in_edit_mode = false;
+    m_preview_path.clear();
+    drawing = false;
 }
-*/
+
 
 void PathBaseComponent::updatePathFromPreview()
 {
     if( !m_preview_path.isEmpty() )
     {
-        m_path.swapWithPath( m_preview_path );
+        m_path.addPath( m_preview_path );
+    }
+    m_preview_path.clear();
+}
+
+
+
+/******************
+ * Mouse
+ *****************/
+
+bool PathBaseComponent::hitTest (int x, int y)
+{
+    if( in_edit_mode || is_selected ) return true; // why ?
+    else return m_path.intersectsLine( Line<float>( x - 5, y - 5, x + 5, y + 5) ) || m_path.intersectsLine( Line<float>( x + 5, y - 5, x - 5, y + 5) );
+}
+
+Point<float> PathBaseComponent::shiftConstrainMouseAngle( const MouseEvent& event )
+{
+    if( event.mods.isShiftDown() )
+    {
+        float angle = event.position.getAngleToPoint( m_down );
+        if( fabs(angle) < 0.78539816339745 ) // pi / 4
+            return Point<float>( m_down.getX(), event.position.getY() );
+        else
+            return Point<float>( event.position.getX(), m_down.getY() );
+    }
+    return event.position;
+}
+
+
+
+
+// inside an existing Component we're editing the path...
+void PathBaseComponent::mouseAddClick ( Point<float> pt )
+{
+    if( in_edit_mode )
+    {
+  //      Path p;
+  //      if( m_path.isEmpty() ) p.startNewSubPath( m_path_origin );
+  //      else p = m_path;
+        
+        Path p = m_path;
+        if ( drawing ) // we were already in a draw process
+        {
+            m_path.addPath( m_preview_path );
+        }
+        
+        // start a new segment
+        drawing = true;
         m_preview_path.clear();
+        m_preview_path.startNewSubPath( pt.getX(), pt.getY() );
+       
+        removeHandles();
+        makeHandles();
+        repaint();
     }
 }
+
+void PathBaseComponent::mouseUp(const MouseEvent& event)
+{
+    BaseComponent::mouseUp(event);
+    updatePathFromPreview();
+}
+
+
+
+
+
+
+
+void PathBaseComponent::mouseMove( const MouseEvent& event )
+{
+    
+    if( in_edit_mode && drawing )
+    {
+        if ( event.mods.isCommandDown() )
+        {
+            Path p;
+            p.startNewSubPath( m_down );
+            p.lineTo( shiftConstrainMouseAngle( event ) );
+            m_preview_path.swapWithPath( p );
+            repaint();
+        }
+        else
+        {
+            abortDrawPath();
+        }
+    }
+}
+
+void PathBaseComponent::mouseDrag( const MouseEvent& event )
+{
+    if( in_edit_mode && event.mods.isCommandDown() && event.getDistanceFromDragStart() > 10 )
+    {
+        Path p;
+        
+        if( m_path.isEmpty() )
+            p.startNewSubPath( m_path_origin );
+        else
+            p = m_path;
+        
+        p.quadraticTo( shiftConstrainMouseAngle( event ), m_down );
+        
+        m_preview_path.swapWithPath( p );
+        
+        repaint();
+    }
+    else
+    {
+        BaseComponent::mouseDrag(event);
+    }
+}
+
+
+
+/*
+void PathBaseComponent::mouseDrag( const MouseEvent& event )
+{
+    BaseComponent::mouseDrag(event);
+
+
+     if ( getMainEditMode() == select_mode && path_handles.size() > 0 )
+    {
+        auto delta = event.position - m_prev_drag;
+        
+        m_path.applyTransform( AffineTransform().translated( delta ) );
+        m_path_centroid += delta;
+        
+        updateHandlePositions();
+
+        { // PUT THIS SOMEWHERE ELSE LATER
+            auto rot_handle = path_handles.back();
+            auto length = max( m_path_bounds.getHeight(), m_path_bounds.getWidth() ) * 0.5 + 5;
+            rot_handle->setCentrePosition( m_path_centroid.getX(), m_path_centroid.getY() + length );
+        }
+        
+        repaint();
+    }
+
+    m_prev_drag = event.position;
+}
+*/
+
+
+
+
+/******************
+ * Transformations
+ *****************/
+
+void PathBaseComponent::h_flip()
+{
+    m_path.applyTransform( AffineTransform().rotated( float_Pi,
+                                                     m_path_centroid.getX(),
+                                                     m_path_centroid.getY()  ) );
+    
+    auto actualBounds = tranformAndGetBoundsInParent( m_path );
+    m_path.applyTransform( AffineTransform().verticalFlip( actualBounds.getHeight() ) );
+    m_path.applyTransform( AffineTransform().translated( m_path_origin ) );
+    
+    updateHandlePositions();
+    repaint();
+    
+}
+
+void PathBaseComponent::v_flip()
+{
+
+    auto actualBounds = tranformAndGetBoundsInParent(m_path);
+    m_path.applyTransform( AffineTransform().verticalFlip( actualBounds.getHeight() ) );
+    m_path.applyTransform( AffineTransform().translated( m_path_origin ) );
+    updateHandlePositions();
+    repaint();
+}
+
+
+void PathBaseComponent::rotatePath ( float theta, float ax, float ay )
+{
+    m_path.applyTransform( AffineTransform().rotation( theta, ax, ay ) );
+    updateHandlePositions();
+    repaint();
+}
+
+
+void PathBaseComponent::rotatePath ( float theta )
+{
+    m_path.applyTransform( AffineTransform().rotation( theta, m_path_centroid.getX(), m_path_centroid.getY()  ) );
+    updateHandlePositions();
+    repaint(); 
+}
+
 
 
 /******************

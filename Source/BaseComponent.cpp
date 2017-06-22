@@ -119,6 +119,23 @@ void BaseComponent::deselectComponent()
     repaint();
 }
 
+
+void BaseComponent::setEditMode(bool val)
+{
+    in_edit_mode = val;
+    repaint();
+}
+
+
+bool BaseComponent::isInEditMode()
+{
+    return in_edit_mode;
+}
+
+void BaseComponent::setSeleted(bool val) { is_selected = val; }
+bool BaseComponent::isSelected() { return is_selected; }
+
+
 /************************/
 /* Expanding/srinking   */
 /************************/
@@ -196,90 +213,93 @@ bool BaseComponent::respondsToMouseEvents()
     return ( isTopLevelComponent() || ((BaseComponent*)getParentComponent())->isInEditMode() );
 }
 
-Point<float> BaseComponent::shiftConstrainMouseAngle( const MouseEvent& event )
-{
-    if( event.mods.isShiftDown() )
-    {
-        float angle = event.position.getAngleToPoint( m_down );
-        if( fabs(angle) < 0.78539816339745 ) // pi / 4
-            return Point<float>( m_down.getX(), event.position.getY() );
-        else
-            return Point<float>( event.position.getX(), m_down.getY() );
-    }
-    return event.position;
-}
+
 
 void BaseComponent::mouseMove( const MouseEvent& event )
 {
     //std::cout << "BaseComponent::mouseMove" << std::endl;
 }
 
-
 void BaseComponent::mouseDown( const MouseEvent& event )
 {
+    
     m_down = event.position;
     
-    ScoreComponent* parent = ((ScoreComponent*)getParentComponent());
-
-    if ( respondsToMouseEvents() )
-    {
-       if ( event.mods.isShiftDown() )
-        {
-            if ( isSelected() ) parent->removeFromSelection(this);
-            else parent->addToSelection(this);
-        } else {
-            if ( ! isSelected() )
-            {
-                parent->unselectAllComponents();
-                parent->addToSelection(this);
-            }
-        }
+    if ( in_edit_mode ) ScoreComponent::mouseDown(event);
     
-    } else {
-        parent->mouseDown(event.getEventRelativeTo(parent));
+    else {
+        
+        ScoreComponent* parent = ((ScoreComponent*)getParentComponent());
+        
+        if ( respondsToMouseEvents() )
+        {
+            if ( event.mods.isShiftDown() )
+            {
+                if ( isSelected() ) parent->removeFromSelection(this);
+                else parent->addToSelection(this);
+            } else {
+                if ( ! isSelected() )
+                {
+                    parent->unselectAllComponents();
+                    parent->addToSelection(this);
+                }
+            }
+            
+        } else {
+            parent->mouseDown(event.getEventRelativeTo(parent));
+        }
     }
 }
 
+
 void BaseComponent::mouseDrag( const MouseEvent& event )
 {
-    ScoreComponent* parent = ( (ScoreComponent*) getParentComponent() );
+    if ( in_edit_mode ) ScoreComponent::mouseDrag(event);
     
-    if ( respondsToMouseEvents() )
-    {
-        if( is_selected && (getMainEditMode() == select_mode ) )
+    else {
+        
+        ScoreComponent* parent = ( (ScoreComponent*) getParentComponent() );
+        
+        if ( respondsToMouseEvents() )
         {
-            parent->translateSelectedSymbols( (event.position - m_down).toInt() );
+            if( is_selected && (getMainEditMode() == select_mode ) )
+            {
+                parent->translateSelectedSymbols( (event.position - m_down).toInt() );
+            }
         }
-    }
-    else
-    {
-        parent->mouseDrag(event.getEventRelativeTo(parent));
+        else
+        {
+            parent->mouseDrag(event.getEventRelativeTo(parent));
+        }
     }
 }
 
 void BaseComponent::mouseUp( const MouseEvent& event )
 {
-    if ( respondsToMouseEvents() )
-    {
-        if( is_selected && getMainEditMode() == select_mode )
+    if ( in_edit_mode ) ScoreComponent::mouseUp(event);
+    
+    else {
+        
+        if ( respondsToMouseEvents() )
         {
-            resizableBorder->setVisible( true ); // here instead of the select callback makes it only when the symbol is clicked alone
-            repaint();
+            if( is_selected && getMainEditMode() == select_mode )
+            {
+                resizableBorder->setVisible( true ); // here instead of the select callback makes it only when the symbol is clicked alone
+                repaint();
+            }
+            reportModification();
         }
-        reportModification();
-    }
-    else
-    {
-        Component* parent = getParentComponent();
-        parent->mouseUp(event.getEventRelativeTo(parent));
+        else
+        {
+            Component* parent = getParentComponent();
+            parent->mouseUp(event.getEventRelativeTo(parent));
+        }
     }
 }
 
 
 void BaseComponent::mouseDoubleClick(const MouseEvent& event)
 {
-    std::cout << "db click in " << getComponentID() << std::endl;
-    
     if ( (!in_edit_mode) && respondsToMouseEvents() )
     {
         getPageComponent()->enterEditMode( this );

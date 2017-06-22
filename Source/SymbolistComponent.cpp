@@ -29,7 +29,9 @@ SymbolistHandler* SymbolistComponent::getSymbolistHandler()
 
 SymbolistMainComponent* SymbolistComponent::getMainComponent()
 {
-  return (SymbolistMainComponent*)getPageComponent()->getParentComponent() ;
+    PageComponent* pc = getPageComponent();
+    if (pc == NULL) return NULL;
+    else return (SymbolistMainComponent*)pc->getParentComponent() ;
 }
 
 
@@ -46,3 +48,15 @@ UI_EditType SymbolistComponent::getMainEditMode()
     }
 }
 
+UI_DrawType SymbolistComponent::getMainDrawMode()
+{
+    if ( getMainComponent() != NULL)
+    {
+        return getMainComponent()->getDrawMode() ;
+    }
+    else
+    {
+        std::cout << "Warning: trying to get the edit_mode => MainComponent not found.." << std::endl;
+        return UI_DrawType::free_draw ;
+    }
+}

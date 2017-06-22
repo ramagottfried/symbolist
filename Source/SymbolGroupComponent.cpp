@@ -2,6 +2,7 @@
 #include "SymbolGroupComponent.h"
 
 #include "PageComponent.h"
+#include "ScoreComponent.h"
 
 SymbolGroupComponent::SymbolGroupComponent( const Symbol& s ) : BaseComponent( s )
 {
@@ -43,23 +44,27 @@ void SymbolGroupComponent::deselectComponent()
 }
 
 
-void SymbolGroupComponent::mouseDown( const MouseEvent& event )
+
+void SymbolGroupComponent::setEditMode( bool val )
 {
-    BaseComponent::mouseDown(event);
-    if ( in_edit_mode ) ScoreComponent::mouseDown(event);
+    BaseComponent::setEditMode(val);
+    
+    if (val == false )
+    {
+        ScoreComponent* sc = ((ScoreComponent*)getParentComponent());
+        sc->addToSelection(this);
+        
+        if ( getNumSubcomponents() == 1 )
+        {
+            sc->ungroupSelectedSymbols();
+        }
+        else if ( getNumSubcomponents() == 0 )
+        {
+            sc->deleteSelectedSymbols();
+        }
+    }
 }
 
-void SymbolGroupComponent::mouseUp( const MouseEvent& event )
-{
-    if ( in_edit_mode ) ScoreComponent::mouseUp(event);
-    else BaseComponent::mouseUp(event);
-}
-
-void SymbolGroupComponent::mouseDrag( const MouseEvent& event )
-{
-    if ( in_edit_mode ) ScoreComponent::mouseDrag(event);
-    else BaseComponent::mouseDrag(event);
-}
 
 /*============================*
  * SYMBOL MANAGEMENT

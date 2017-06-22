@@ -12,15 +12,6 @@ ScoreComponent::~ScoreComponent()
 }
 
 
-void ScoreComponent::notifyEditModeChanged( UI_EditType current_mode )
-{
-    for( auto s : selected_components )
-    {
-        s->notifyEditModeChanged( current_mode );
-    }
-}
-
-
 /*****************************
  * Management of sucomponents
  * Add/remove operations apply on views only
@@ -81,7 +72,6 @@ void ScoreComponent::removeSymbolComponent( BaseComponent* c )
     removeSubcomponent( c );
 }
 
-
 /**************/
 /* Selection  */
 /**************/
@@ -114,8 +104,9 @@ void ScoreComponent::unselectAllComponents()
     }
 }
 
+
 /*****************
- * CUSTOM LASSO
+ * Custom lasso tool
  *****************/
 
 void ScoreComponent::beginLassoSelection(Point<int> position)
@@ -124,7 +115,6 @@ void ScoreComponent::beginLassoSelection(Point<int> position)
     addAndMakeVisible(s_lasso);
     s_lasso.begin(position.getX(), position.getY());
 }
-
 
 void ScoreComponent::dragLassoSelection(Point<int> position)
 {
@@ -149,8 +139,6 @@ void ScoreComponent::endLassoSelection()
     removeChildComponent(&s_lasso);
     s_lasso.end();
 }
-
-
 
 void SymbolistLasso::begin(int x, int y)
 {
@@ -195,7 +183,7 @@ void SymbolistLasso::paint ( Graphics &g)
 
 
 /**************************
- * UI Actions
+ * User actions
  **************************/
 
 void ScoreComponent::deleteSelectedSymbols()
@@ -219,6 +207,8 @@ void ScoreComponent::deleteSelectedSymbols()
         delete c;
     }
 }
+
+
 
 void ScoreComponent::groupSelectedSymbols()
 {
@@ -268,6 +258,7 @@ void ScoreComponent::groupSelectedSymbols()
     }
 }
 
+
 void ScoreComponent::ungroupSelectedSymbols()
 {
     vector< BaseComponent *> items;
@@ -294,9 +285,6 @@ void ScoreComponent::ungroupSelectedSymbols()
     }
 }
 
-/*******************
- * TRANSFORMATIONS
- *******************/
 
 void ScoreComponent::translateSelectedSymbols( Point<int> delta_xy )
 {
@@ -324,13 +312,13 @@ void ScoreComponent::flipSelectedSymbols( int axis )
 /* UI callbacks from Juce  */
 /***************************/
 
-BaseComponent* ScoreComponent::mouseAddSymbolAt ( Point<float> p )
+void ScoreComponent::mouseAddClick ( Point<float> p )
 {
     Symbol* symbol_template = getSymbolistHandler()->getCurrentSymbol();
     
     // sets position in symbol before creation
     // will need to make offset for center based symbols (circle, square, etc.)
-    symbol_template->setPosition( p );
+    symbol_template->setPosition ( p );
     
     // create a new component from the current selected symbol of the palette
     BaseComponent *c = SymbolistHandler::makeComponentFromSymbol( symbol_template );
@@ -344,7 +332,6 @@ BaseComponent* ScoreComponent::mouseAddSymbolAt ( Point<float> p )
     
     c->componentCretated();
     
-    return c;
 }
 
 void ScoreComponent::mouseDown ( const MouseEvent& event )
@@ -355,15 +342,11 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
     {
         beginLassoSelection( event.getPosition() );
     }
-    else
-    { // => draw mode
-        if( ed == draw_mode && !component_grabbing_mouse )
-        {
-            mouseAddSymbolAt( event.getEventRelativeTo(getPageComponent()).position );
-        }
+    else if( ed == draw_mode )
+    {
+        mouseAddClick( event.getEventRelativeTo(getPageComponent()).position );
     }
 }
-
 
 void ScoreComponent::mouseDrag ( const MouseEvent& event )
 {
@@ -373,14 +356,11 @@ void ScoreComponent::mouseDrag ( const MouseEvent& event )
     }
 }
 
-void ScoreComponent::mouseMove ( const MouseEvent& event ) {}
-
 void ScoreComponent::mouseUp ( const MouseEvent& event )
 {
     endLassoSelection();
 }
 
-void ScoreComponent::resized () {}
 
 
 

@@ -49,13 +49,14 @@ public:
     virtual void selectComponent();
     virtual void deselectComponent();
     
-    inline const Colour getCurrentColor(){ return is_selected ? sel_color : sym_color; }
+    inline const Colour getCurrentColor() { return is_selected ? sel_color : sym_color; }
 
     // these four modify the symbol
     void moved () override;
     void resized () override;
-    virtual void h_flip(){}
-    virtual void v_flip(){}
+
+    virtual void h_flip() {}
+    virtual void v_flip() {}
     
     // these are standard interactions
     void mouseEnter( const MouseEvent& event ) override {};
@@ -71,17 +72,12 @@ public:
     
     bool respondsToMouseEvents();
     
-    Point<float> shiftConstrainMouseAngle( const MouseEvent& event );
-
-    
     virtual float symbol_export_X(){ return getX(); }
     virtual float symbol_export_Y(){ return getY(); }
         
     // not very happy with therm "Symbol" here
     inline void setSymbolStrokeWeight( float s ){ strokeWeight = s; }
     inline void setSymbolColor( Colour c ){ sym_color = c; }
-    
-    virtual void notifyEditModeChanged( UI_EditType current_mode ){}
     
     
     // helper functions
@@ -109,12 +105,12 @@ public:
         
     virtual void setMinimalBounds ();
     virtual void setMaximalBounds ();
-    
-    void setEditMode(bool val) { in_edit_mode = val; }
-    bool isInEditMode() { return in_edit_mode; }
-    void setSeleted(bool val) { is_selected = val; }
-    bool isSelected() { return is_selected; }
+    virtual void resizeToFit(int x, int y, int w, int h) {};
 
+    virtual void setEditMode(bool val);
+    bool isInEditMode();
+    virtual void setSeleted(bool val);
+    bool isSelected();
 
 protected:
     

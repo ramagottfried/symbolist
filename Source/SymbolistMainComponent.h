@@ -34,6 +34,9 @@ public:
 
     void setEditMode( UI_EditType m );
     UI_EditType getEditMode();
+    void setDrawMode( UI_DrawType m );
+    UI_DrawType getDrawMode();
+    
     
     // Redefine these from SymbolistComponent
     inline PageComponent* getPageComponent() override { return &scoreView; }
@@ -44,8 +47,9 @@ public:
     
     
 private:
-        
-    UI_EditType         mouse_mode = select_mode;
+    
+    UI_EditType      mouse_mode = select_mode;
+    UI_DrawType      draw_mode = free_draw;
 
     SymbolistHandler*   symbolist_handler;
     

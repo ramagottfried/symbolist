@@ -23,6 +23,13 @@ public:
     virtual SymbolistHandler* getSymbolistHandler();
     SymbolistMainComponent* getMainComponent();
     UI_EditType getMainEditMode();
+    UI_DrawType getMainDrawMode();
+    
+    Point<int> positionRelativeTo(SymbolistComponent* to)
+    {
+        if (to == getParentComponent() ) return getPosition() ;
+        else return getPosition() + ((SymbolistComponent*)getParentComponent())->positionRelativeTo(to);
+    }
 };
 
 #endif

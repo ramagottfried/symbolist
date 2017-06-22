@@ -138,7 +138,6 @@
 		11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreComponent.cpp; path = ../../Source/ScoreComponent.cpp; sourceTree = "<group>"; };
 		11CE005D1EC4B31200E4F624 /* ScoreComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreComponent.h; path = ../../Source/ScoreComponent.h; sourceTree = "<group>"; };
 		11CE00651EC4B90700E4F624 /* BaseComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BaseComponent.h; path = ../../Source/BaseComponent.h; sourceTree = "<group>"; };
-		11CE00661EC4BA3100E4F624 /* PrimitiveIncludes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PrimitiveIncludes.h; path = ../../Source/PrimitiveIncludes.h; sourceTree = "<group>"; };
 		11D86B851EEAEF2000681F6D /* LinePathComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LinePathComponent.cpp; path = ../../Source/LinePathComponent.cpp; sourceTree = "<group>"; };
 		11D86B861EEAEF2000681F6D /* LinePathComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LinePathComponent.h; path = ../../Source/LinePathComponent.h; sourceTree = "<group>"; };
 		11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PathBaseComponent.cpp; path = ../../Source/PathBaseComponent.cpp; sourceTree = "<group>"; };
@@ -274,16 +273,11 @@
 		11CE00151EC3231E00E4F624 /* symbol-components */ = {
 			isa = PBXGroup;
 			children = (
-				11CE00661EC4BA3100E4F624 /* PrimitiveIncludes.h */,
 				1107B3DB1EF1751900E2DFA9 /* TextGlyphComponent.cpp */,
 				1107B3DC1EF1751900E2DFA9 /* TextGlyphComponent.h */,
 				11D86B851EEAEF2000681F6D /* LinePathComponent.cpp */,
 				11D86B861EEAEF2000681F6D /* LinePathComponent.h */,
 				11D86B8F1EEAF9FD00681F6D /* BasicShapePathComponents.h */,
-				1107B3E71EF5388500E2DFA9 /* PathInfo.cpp */,
-				1107B3E81EF5388500E2DFA9 /* PathInfo.h */,
-				1107B3E01EF2D2BA00E2DFA9 /* PathHandleComponent.h */,
-				1107B3DF1EF2D2BA00E2DFA9 /* PathHandleComponent.cpp */,
 				11D86B8A1EEAEF7900681F6D /* PathBaseComponent.h */,
 				11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */,
 				11CE00651EC4B90700E4F624 /* BaseComponent.h */,
@@ -300,6 +294,17 @@
 				11CE00511EC328DE00E4F624 /* Main.cpp */,
 			);
 			name = "test-app";
+			sourceTree = "<group>";
+		};
+		444572681EFA67BE00A7DECD /* path-tools */ = {
+			isa = PBXGroup;
+			children = (
+				1107B3E01EF2D2BA00E2DFA9 /* PathHandleComponent.h */,
+				1107B3DF1EF2D2BA00E2DFA9 /* PathHandleComponent.cpp */,
+				1107B3E71EF5388500E2DFA9 /* PathInfo.cpp */,
+				1107B3E81EF5388500E2DFA9 /* PathInfo.h */,
+			);
+			name = "path-tools";
 			sourceTree = "<group>";
 		};
 		44DFA0951ED2C96600A6847A /* window-components */ = {
@@ -372,6 +377,7 @@
 				446363961EC8EF9C0054CB6D /* types.h */,
 				118C38E11EC5C39F006FF4A1 /* score */,
 				11CE00151EC3231E00E4F624 /* symbol-components */,
+				444572681EFA67BE00A7DECD /* path-tools */,
 				44DFA0951ED2C96600A6847A /* window-components */,
 				117556381ED30F0F00203B67 /* main */,
 				11CE00431EC3275500E4F624 /* test-app */,

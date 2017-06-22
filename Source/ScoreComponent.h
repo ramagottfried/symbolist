@@ -23,10 +23,9 @@ private:
 };
 
 
-/*
- * Superclass for score-editable containers : PageComponent or SymbolGroupComponent
- * sharing a number of user interactions wrt. editing contents
- */
+/*********************
+ * Superclass for score-editable containers : PageComponent or BaseComponent (when in_edit_mode)
+ *********************/
 class ScoreComponent : public SymbolistComponent
 {
 public:
@@ -47,7 +46,7 @@ public:
     virtual void    addSymbolComponent( BaseComponent *c );
     virtual void    removeSymbolComponent( BaseComponent *c );
     
-    BaseComponent*  mouseAddSymbolAt ( Point<float> p );
+    virtual void mouseAddClick ( Point<float> p );
     
     void addToSelection(BaseComponent* c);
     void removeFromSelection(BaseComponent* c);
@@ -61,17 +60,9 @@ public:
     void flipSelectedSymbols( int axis );
     
     void mouseDown ( const MouseEvent& event ) override;
-    void mouseMove ( const MouseEvent& event ) override;
     void mouseDrag ( const MouseEvent& event ) override;
     void mouseUp ( const MouseEvent& event ) override;
-    void resized () override;
-    
-    inline void stealMouse(){ component_grabbing_mouse = true; }
-    inline void giveBackMouse(){ component_grabbing_mouse = false; }
-    
-    void notifyEditModeChanged( UI_EditType current_mode );
-    
-    
+
 protected:
 
     std::vector<BaseComponent*>     subcomponents;
@@ -82,9 +73,6 @@ protected:
     void beginLassoSelection(Point<int> position);
     void dragLassoSelection(Point<int> position);
     void endLassoSelection();
-
-    
-    bool                            component_grabbing_mouse = false;
 
 };
 

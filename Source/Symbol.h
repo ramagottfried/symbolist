@@ -21,6 +21,7 @@ public:
 //        std::cout << "deleting symbol " << this << std::endl;
     }
     
+    String      getType();
     
     OSCBundle   getOSCBundle () const { return osc_bundle; }
     void        setOSCBundle (OSCBundle *b) { osc_bundle = *b; }

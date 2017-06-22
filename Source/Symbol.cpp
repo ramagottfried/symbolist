@@ -24,6 +24,12 @@ Symbol::Symbol (const String & type, float x, float y, float w, float h)
     
 }
 
+
+String Symbol::getType()
+{
+    return getOSCMessageValue("/type").getString();
+}
+
 float Symbol::getTime() const
 {
     return getOSCMessageValue("/time/start").getFloat32();

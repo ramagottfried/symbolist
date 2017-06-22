@@ -17,9 +17,12 @@ public:
     ~PaletteButton();
     
     void setSelected(bool sel);
+    
     void resized() override;
     void paint(Graphics &g) override;
     void mouseDown ( const MouseEvent& event ) override;
+ 
+    int getID() { return button_id; }
     
 private:
     
@@ -44,7 +47,7 @@ class PaletteComponent : public SymbolistComponent
     void buildFromPalette(SymbolistPalette *palette);
     void selectPaletteButton(int i);
     
-    void paint (Graphics& g) override {}
+    void paint (Graphics& g) override;
     
     private:
     

@@ -50,7 +50,8 @@ public:
     
     odot_bundle *getSymbolsAtTime( float t );
     
-
+    const TimePointArray* getTimePointArray() const { return &time_points; }
+    
 private:
     
     OwnedArray<Symbol>          score_symbols;

@@ -10,14 +10,16 @@ class BasicShapePathComponent : public PathBaseComponent
     
     BasicShapePathComponent(const Symbol &s) : PathBaseComponent(s) {}
     
-    float symbol_export_X() override { return getX() + getWidth()/2; }
+    float symbol_export_X() override { return getX();/* + getWidth()/2;*/ }
     float symbol_export_Y() override { return getY() + getHeight()/2; }
     
     void setBoundsFromSymbol( float x, float y , float w , float h) override final
     {
-        setBounds( x - (w * 0.5) , y - (h * 0.5), w , h);
+//        setBounds( x - (w * 0.5) , y - (h * 0.5), w , h);
+        setBounds( x, y - (h * 0.5), w , h);
+
     }
-        
+    
 };
 
 class CirclePathComponent : public BasicShapePathComponent

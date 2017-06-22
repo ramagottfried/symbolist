@@ -74,7 +74,7 @@ void symbolistSetSymbols(void* symbolist_handler, int n, odot_bundle **bundle_ar
     static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setSymbols(n, bundle_array);
 }
 
-void symbolistSetTime(void* symbolist_handler, int time_ms)
+void symbolistSetTime(void* symbolist_handler, float time_ms)
 {
     static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setTime(time_ms);
 }

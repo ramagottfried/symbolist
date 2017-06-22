@@ -134,12 +134,12 @@ odot_bundle *TimePointArray::symbolVectorToOSC( const vector<Symbol*> vec )
 odot_bundle *TimePointArray::getSymbolsAtTime( float t )
 {
     bool match;
-    int idx = getTimePointIndex( t, match ); // why -1 ?
+    int idx = getTimePointIndex( t, match );
     
     if( match )
     {
         auto symbs = (*this)[idx]->symbols_at_time;
-        cout << "timepoint: " << idx << " at " << (*this)[idx]->time << " with: " << symbs.size() << " overlaping" << endl;
+        cout << "(maptch) timepoint: " << idx << " at " << (*this)[idx]->time << " with: " << symbs.size() << " overlaping" << endl;
         return symbolVectorToOSC( symbs );
     }
     else if( idx > 0 )
@@ -148,6 +148,9 @@ odot_bundle *TimePointArray::getSymbolsAtTime( float t )
     cout << "timepoint: " << idx << " at " << (*this)[idx-1]->time << " with: " << symbs.size() << " overlaping" << endl;
         return symbolVectorToOSC( symbs );
     }
+    
+    cout << "timepoint: -1" << endl;
+
     
     return nullptr;
 }

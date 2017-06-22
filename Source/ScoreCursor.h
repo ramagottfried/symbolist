@@ -18,12 +18,14 @@ public:
     {
         float x = event.getEventRelativeTo( getParentComponent() ).position.getX();
         m_playpoint = x * 0.01f;
-        cout << "p " << m_playpoint << endl;
         setBounds( x, 0, 2, getLocalBounds().getHeight() );
         
         auto sh = getSymbolistHandler();
         if( sh )
+        {
+            sh->symbolistAPI_setTime( m_playpoint );
             sh->symbolistAPI_getSymbolsAtTime( m_playpoint );
+        }
 
     }
     

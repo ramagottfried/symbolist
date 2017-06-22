@@ -168,7 +168,7 @@ void SymbolistHandler::symbolistAPI_setSymbols(int n, odot_bundle **bundle_array
     }
 }
 
-void SymbolistHandler::symbolistAPI_setTime(int time_ms)
+void SymbolistHandler::symbolistAPI_setTime(float time_ms)
 {
     const MessageManagerLock mmLock;
     current_time = time_ms;

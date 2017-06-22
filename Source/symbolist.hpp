@@ -44,7 +44,7 @@ SYMBOLIST_API void symbolistWindowSetName(void* symbolist_handler, char *name);
 SYMBOLIST_API int  symbolistGetNumSymbols(void* symbolist_handler);
 SYMBOLIST_API odot_bundle* symbolistGetSymbol(void* symbolist_handler, int n);
 SYMBOLIST_API void symbolistSetSymbols(void* symbolist_handler, int n, odot_bundle **bundle_array);
-SYMBOLIST_API void symbolistSetTime(void* symbolist_handler, int time_ms);
+SYMBOLIST_API void symbolistSetTime(void* symbolist_handler, float time_ms);
 
 SYMBOLIST_API odot_bundle* symbolistGetSymbolsAtTime(void* symbolist_handler, float t);
 

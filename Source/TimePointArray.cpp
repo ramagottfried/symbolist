@@ -86,28 +86,40 @@ void TimePointArray::removeSymbolTimePoints( Symbol *s)
 
 void TimePointArray::addSymbolTimePoints( Symbol *s )
 {
+    
+    // 1) add start and end points
+    // 2) check previous start-1 and end-1 points for continuing symbols to add to new start/end points
+    // 3) iterate forward from start to end point and add this symbol to all preexisting time points
+    
     float start_t = s->getTime();
     float end_t = s->getEndTime();
     
-    addSymbol_atTime( s, start_t );
-    addSymbol_atTime( s, end_t );
+    int start_idx = addSymbol_atTime( s, start_t );
+    int end_idx = addSymbol_atTime( s, end_t );
+    
+    for( int i = (start_idx + 1); i < end_idx; i++ )
+    {
+        (*this)[ i ]->addSymbol( s );
+    }
+    
     
     printTimePoints();
 
 }
 
-void TimePointArray::addSymbol_atTime( Symbol *s, float time)
+int TimePointArray::addSymbol_atTime( Symbol *s, float time)
 {
+    
     bool match;
     int idx = getTimePointInsertIndex( time, match );
     if( match )
     {
-        (*this)[ idx ]->addSymbol( s );
+        (*this)[ idx ]->addSymbol( s ); // if it's an exact match we don't need to check the previous point
     }
     else
     {
-        auto newTimePoint = insert( idx, new SymbolTimePoint( s, time ) );
-        
+        auto newTimePoint = insert( idx, new SymbolTimePoint( s, time ) );  // otherwise, create new point and check previous for continuing points
+
         if( idx - 1 >= 0 )
         {
             auto prevTimePoint = (*this)[idx-1];
@@ -122,15 +134,16 @@ void TimePointArray::addSymbol_atTime( Symbol *s, float time)
                 {
                     newTimePoint->addSymbol( *prev_s );
                 }
-                else if ( s->hitTest( prevTimePoint->time ) )
+           /*     else if ( s->hitTest( prevTimePoint->time ) )
                 {
                     prevTimePoint->addSymbol( s );
                 }
-
+            */
             }
     
         }
     }
+    return idx;
     
 }
 

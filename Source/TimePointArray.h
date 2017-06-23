@@ -55,7 +55,7 @@ public:
     void addSymbolTimePoints( Symbol *s );
     void removeSymbolTimePoints( Symbol *s);
 
-    void addSymbol_atTime( Symbol *s, float t);
+    int addSymbol_atTime( Symbol *s, float t);
     
     bool f_almost_equal(float x, float y, int ulp)
     {

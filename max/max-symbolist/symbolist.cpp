@@ -182,8 +182,8 @@ void *symbolist_new(t_symbol *s, long argc, t_atom *argv)
         
         x->m_qelem_setTime = qelem_new((t_object *)x, (method)symbolist_qset_time);
         x->m_qelem_open = qelem_new((t_object *)x, (method)symbolist_qelem_open_window);
-        x->player_outlet = outlet_new(x, "FullPacket" );
         x->dump_outlet = outlet_new(x, "FullPacket" );
+        x->player_outlet = outlet_new(x, "FullPacket" );
     }
     return (x);
 }

@@ -279,9 +279,10 @@ void SymbolistHandler::addSymbolToScore ( BaseComponent* c )
     assert ( c->getScoreSymbolPointer() != NULL ) ;
     //cout << "ADDING SYMBOL FOR " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
     score.addSymbol( c->getScoreSymbolPointer() );
-    main_component->getPageComponent()->drawTimePoints();
     
     executeUpdateCallback( -1 );
+    
+    main_component->getPageComponent()->drawTimePoints();
 }
 
 void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
@@ -300,6 +301,8 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
     
     c->setScoreSymbolPointer( NULL );
     executeUpdateCallback( -1 );
+    
+    main_component->getPageComponent()->drawTimePoints();
 }
 
 
@@ -318,6 +321,8 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     c->addSymbolMessages( s , String("") );
     score.addSymbolTimePoints( s );
     executeUpdateCallback( score.getSymbolPosition( s ) );
+    
+    main_component->getPageComponent()->drawTimePoints();
 }
 
 

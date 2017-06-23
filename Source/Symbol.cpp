@@ -75,10 +75,13 @@ void Symbol::setPosition( const Point<float> pos )
     
     OSCBundle new_bundle;
     
+    // there must be a better way to do this!
     for (auto osc : osc_bundle )
     {
         if( !osc.getMessage().getAddressPattern().toString().equalsIgnoreCase( "/x" ) &&
-           !osc.getMessage().getAddressPattern().toString().equalsIgnoreCase( "/y" ) )
+            !osc.getMessage().getAddressPattern().toString().equalsIgnoreCase( "/y" ) &&
+            !osc.getMessage().getAddressPattern().toString().equalsIgnoreCase( "/time/start" ) &&
+            !osc.getMessage().getAddressPattern().toString().equalsIgnoreCase( "/duration" ) )
         {
             new_bundle.addElement(osc);
         }
@@ -88,6 +91,11 @@ void Symbol::setPosition( const Point<float> pos )
     
     addOSCMessage(String("/x"), pos.getX() );
     addOSCMessage(String("/y"), pos.getY() );
+    
+    addOSCMessage(String("/time/start"), pos.getX() * 0.01f );
+    addOSCMessage(String("/duration"), getOSCMessageValue("/w").getFloat32() * 0.01f );
+
+    printBundle();
 }
 
 

@@ -21,40 +21,66 @@ void TimePointArray::printTimePoints()
 
 void TimePointArray::removeSymbolTimePoints( Symbol *s)
 {
-    removeSymbol_atTime(s, s->getTime() );
-    removeSymbol_atTime(s, s->getEndTime() );
-    
-//    printTimePoints();
-}
 
-void TimePointArray::removeSymbol_atTime( Symbol *s, float time)
-{
+    float start_t = s->getTime();
+    
     bool match = false;
-    int idx = getTimePointInsertIndex( time, match );
+    int idx = getTimePointInsertIndex( start_t, match );
     
     if( !match )
     {
-        cout << " could not find existing timepoint at time " << time << endl;
+        cout << " could not find existing timepoint at time " << start_t << endl;
         printTimePoints();
         return;
     }
     
-    cout << "match point " << idx << " for time " << time <<  endl;
-
-    vector<Symbol*> *vec = &((*this)[idx]->symbols_at_time);
+    float t = start_t;
+    float end_t = s->getEndTime();
     
-    vec->erase( std::remove( vec->begin(), vec->end(), s), vec->end());
-/*
-    int count = 0;
-    for( auto sym : *vec )
+    cout << s << " " << t << " " << end_t << endl;
+    
+    vector<SymbolTimePoint *> points_to_remove;
+    
+    while ( idx < size() )
     {
-        cout << "++++++++++++++++++++++++++++++++++++++++++++++ " << count++ << endl;
-        sym->printBundle();
+        t = (*this)[idx]->time;
+        
+        if( t > end_t ) break;
+        
+        vector<Symbol*> *vec = &((*this)[idx]->symbols_at_time);
+
+        // remove this symbol
+        vec->erase( std::remove( vec->begin(), vec->end(), s), vec->end());
+
+        // if no other symbol at this time point start or end here, we should fully delete it
+        int other_start_or_end = 0;
+        if( t == start_t || t == end_t )
+        {
+            for (auto it = vec->begin(); it != vec->end(); it++ )
+            {
+                cout << "start/end test for " << (*it) << " t " << t << " == " << (*it)->getTime() << " " << (*it)->getEndTime() << endl;
+                if( (*it)->getTime() == t || (*it)->getEndTime() == t )
+                    other_start_or_end = 1;
+            }
+            if (!other_start_or_end)
+                points_to_remove.emplace_back( (*this)[idx] );
+
+        }
+        
+        cout << "vector size " << vec->size() << " at " << t << " " << other_start_or_end  <<  " " << end_t << endl;
+        if( vec->size() == 0 )
+            points_to_remove.emplace_back( (*this)[idx] );
+        
+        idx++;
     }
-  */
-    if( vec->size() == 0 )
-        remove( idx, true );
     
+    
+    for (auto rm = points_to_remove.begin(); rm != points_to_remove.end(); ++rm)
+    {
+        removeObject( *rm, true );
+    }
+    
+    printTimePoints();
 }
 
 

@@ -18,7 +18,7 @@ struct SymbolTimePoint
         
     }
     
-    ~SymbolTimePoint(){ cout << "deleting timepoint " << this << endl; }
+    ~SymbolTimePoint(){ cout << "deleting timepoint " << time << endl; }
     
     void removeSymbol( Symbol * s)
     {
@@ -56,7 +56,6 @@ public:
     void removeSymbolTimePoints( Symbol *s);
 
     void addSymbol_atTime( Symbol *s, float t);
-    void removeSymbol_atTime( Symbol *s, float time);
     
     bool f_almost_equal(float x, float y, int ulp)
     {

@@ -281,8 +281,9 @@ void ScoreComponent::flipSelectedSymbols( int axis )
 
 void ScoreComponent::mouseAddClick ( const MouseEvent& event )
 {
+
     unselectAllComponents();
-    
+
     BaseComponent *c;
     
     bool top_level = ( this == getPageComponent() );

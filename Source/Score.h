@@ -44,8 +44,8 @@ public:
     
     //    void sortScore();
     
-    void addTimePoints( Symbol *s, int score_index );
-    void updateTimePoints( Symbol *s, int score_index );
+    void addSymbolTimePoints( Symbol *s );
+    void removeSymbolTimePoints( Symbol *s );
     
     odot_bundle *getSymbolsAtTime( float t );
 

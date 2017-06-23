@@ -198,6 +198,8 @@ void ext_main(void* unused)
                   sizeof(t_symbolist), NULL, A_GIMME, 0);
     
     class_addmethod(c, (method)symbolist_open_window,           "open", 0);
+    class_addmethod(c, (method)symbolist_open_window,           "dblclick", A_CANT, 0);
+    
     class_addmethod(c, (method)symbolist_getScoreBundle,        "dump", 0);
     class_addmethod(c, (method)symbolist_setSymbol,             "FullPacket", A_GIMME, 0);
 

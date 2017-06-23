@@ -2,6 +2,7 @@
 
 #include "Symbol.h"
 
+
 //============================
 // SYMBOL Timepoint
 //============================
@@ -16,6 +17,8 @@ struct SymbolTimePoint
         time = t;
         
     }
+    
+    ~SymbolTimePoint(){ cout << "deleting timepoint " << this << endl; }
     
     void removeSymbol( Symbol * s)
     {
@@ -38,7 +41,6 @@ private:
     
 };
 
-
 class TimePointArray : public OwnedArray<SymbolTimePoint>
 {
 public:
@@ -46,15 +48,29 @@ public:
     ~TimePointArray() = default;
     
     void printTimePoints();
+    void printBundle(OSCBundle bndl);
     
     int getTimePointInsertIndex( float t, bool& match );
     
     void addSymbolTimePoints( Symbol *s );
+    void removeSymbolTimePoints( Symbol *s);
+
     void addSymbol_atTime( Symbol *s, float t);
+    void removeSymbol_atTime( Symbol *s, float time);
     
+    bool f_almost_equal(float x, float y, int ulp)
+    {
+        // the machine epsilon has to be scaled to the magnitude of the values used
+        // and multiplied by the desired precision in ULPs (units in the last place)
+        return std::abs(x-y) < std::numeric_limits<float>::epsilon() * std::abs(x+y) * ulp
+        // unless the result is subnormal
+        || std::abs(x-y) < std::numeric_limits<float>::min();
+    }
+    
+    // f_almost_equal(a_t, b_t, 2)
     inline int compareTimes( float a_t, float b_t )
     {
-        return (a_t < b_t ? 1 : (a_t == b_t ? 0 : -1));
+        return ( a_t < b_t ? 1 : ( a_t == b_t ? 0 : -1 ) );
     }
 
     odot_bundle *getSymbolsAtTime( float t );

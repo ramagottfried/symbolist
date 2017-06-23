@@ -30,9 +30,9 @@ void Score::removeAllSymbols()
  ***********************************/
 void Score::addSymbol(Symbol *symbol)
 {
-    score_symbols.addSorted( score_sorter, symbol );
-    
     time_points.addSymbolTimePoints( symbol );
+
+    score_symbols.addSorted( score_sorter, symbol );
 }
 
 
@@ -102,9 +102,14 @@ odot_bundle *Score::getSymbolsAtTime( float t )
     return time_points.getSymbolsAtTime( t );
 }
 
-void Score::updateTimePoints( Symbol *s, int score_index)
+void Score::removeSymbolTimePoints( Symbol *s )
 {
-    
+    time_points.removeSymbolTimePoints( s );
+}
+
+void Score::addSymbolTimePoints( Symbol *s )
+{
+    time_points.addSymbolTimePoints( s );
 }
 
 /***********************************

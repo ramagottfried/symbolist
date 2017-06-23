@@ -19,6 +19,23 @@ class BasicShapePathComponent : public PathBaseComponent
         setBounds( x, y - (h * 0.5), w , h);
 
     }
+
+    int addSymbolMessages( Symbol* s, const String &base_address ) override
+    {
+        int messages_added = 0;
+        
+        s->addOSCMessage ((String(base_address) += "/type") ,   getSymbolTypeStr());
+        s->addOSCMessage ((String(base_address) += "/x") ,      symbol_export_X());
+        s->addOSCMessage ((String(base_address) += "/y") ,      symbol_export_Y());
+        s->addOSCMessage ((String(base_address) += "/w") ,      (float) getWidth());
+        s->addOSCMessage ((String(base_address) += "/h") ,      (float) getHeight());
+        s->addOSCMessage ((String(base_address) += "/time/start") , symbol_export_X() * 0.01f );
+        s->addOSCMessage ((String(base_address) += "/duration"),    (float) getWidth() * 0.01f );
+        
+        messages_added += 7;
+        
+        return messages_added;
+    }
     
 };
 

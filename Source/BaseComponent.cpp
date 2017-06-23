@@ -66,11 +66,13 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
     s->addOSCMessage ((String(base_address) += "/y") ,      symbol_export_Y());
     s->addOSCMessage ((String(base_address) += "/w") ,      (float) getWidth());
     s->addOSCMessage ((String(base_address) += "/h") ,      (float) getHeight());
-    
     s->addOSCMessage ((String(base_address) += "/time/start") , symbol_export_X() * 0.01f );
     s->addOSCMessage ((String(base_address) += "/duration"),    (float) getWidth() * 0.01f );
     
     messages_added += 7;
+    
+    cout << "*********** START BASE ADD DATA ************ " << endl;
+    s->printBundle();
     
     return messages_added;
 }

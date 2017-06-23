@@ -74,7 +74,7 @@ protected:
     
     Point<float>                m_path_origin;
     Array<PathHandle*>          path_handles;
-    PathHandle*                 rotation_handle;
+    PathHandle*                 rotation_handle = NULL;
     //Point<float>                m_prev_drag;
     
     Point<float>                m_path_centroid;

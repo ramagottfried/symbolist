@@ -392,7 +392,7 @@ void PathBaseComponent::removeHandles()
     }
     path_handles.clear();
     
-    delete rotation_handle;
+    if ( rotation_handle != NULL ) delete rotation_handle;
 }
 
 

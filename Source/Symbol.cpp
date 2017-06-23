@@ -90,8 +90,6 @@ void Symbol::setPosition( const Point<float> pos )
 
 
 
-
-
 int Symbol::getOSCMessagePos(const String &address) const
 {
     for (int i = 0; (i < osc_bundle.size()) ; i++)
@@ -134,6 +132,16 @@ float Symbol::getOSCValueAsFloat(OSCArgument a)
         return 0.0f;
 }
 
+int Symbol::getOSCValueAsInt(OSCArgument a)
+{
+    if( a.isInt32() )
+        return a.getInt32();
+    else if( a.isFloat32() )
+        return (int)a.isFloat32();
+    else
+        return 0;
+}
+
 void Symbol::addOSCMessage( const String &address )
 {
     osc_bundle.addElement(OSCBundle::Element(OSCMessage(OSCAddressPattern(address))));
@@ -161,7 +169,7 @@ void Symbol::addOSCMessage( const String &address, const String &value)
 
 void Symbol::printBundle() const
 {
-    std::cout << "==== OSC BUNDLE ====" << std::endl;
+    std::cout << "==== " << this << " OSC BUNDLE ====" << std::endl;
     for (auto osc : osc_bundle )
     {
         OSCMessage msg = osc.getMessage();

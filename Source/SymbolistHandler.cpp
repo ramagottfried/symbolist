@@ -246,6 +246,7 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(const Symbol* s)
             cout << "Unknown symbol type : " << typeStr << endl;
             c = NULL;
         }
+        
         if (c != NULL) c->importFromSymbol( *s ) ;
         return c;
     }
@@ -283,7 +284,16 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
 {
     assert ( c->getScoreSymbolPointer() != NULL ) ;
     //cout << "REMOVING SYMBOL OF " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
-    score.removeSymbol( c->getScoreSymbolPointer() );
+    
+    Symbol *s = c->getScoreSymbolPointer();
+    assert ( s != NULL ) ; // that's not normal
+    
+    cout << "removeSymbolFromScore" << endl;
+    s->printBundle();
+    
+    score.removeSymbolTimePoints( s );
+    score.removeSymbol( s );
+    
     c->setScoreSymbolPointer( NULL );
     executeUpdateCallback( -1 );
 }
@@ -293,8 +303,16 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
 {
     Symbol *s = c->getScoreSymbolPointer();
     assert ( s != NULL ) ; // that's not normal
+    
+    cout << "modifySymbolInScore " << s << endl;
+    s->printBundle();
+    printRect(c->getBounds(), "component");
+
+    score.removeSymbolTimePoints( s );
     s->clearOSCBundle();
+    
     c->addSymbolMessages( s , String("") );
+    score.addSymbolTimePoints( s );
     executeUpdateCallback( score.getSymbolPosition( s ) );
 }
 

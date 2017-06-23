@@ -1,22 +1,13 @@
 
 #include "TimePointArray.h"
 
-void TimePointArray::addSymbolTimePoints( Symbol *s )
-{
-    float start_t = s->getTime();
-    float end_t = s->getEndTime();
-
-    addSymbol_atTime( s, start_t );
-    addSymbol_atTime( s, end_t );
-}
-
 void TimePointArray::printTimePoints()
 {
     cout << "-------- timepoint list ----------" << endl;
     int count = 0;
     for( auto t : (*this) )
     {
-        cout << "timepoint " << count << " " << t->symbols_at_time.size() << " overlapping at " << t->time << endl;
+        cout << "timepoint " << count << " " << t->time << " #overlap: " << t->symbols_at_time.size() << endl;
         
         for (auto s : t->symbols_at_time)
         {
@@ -25,6 +16,51 @@ void TimePointArray::printTimePoints()
         
         count++;
     }
+}
+
+
+void TimePointArray::removeSymbolTimePoints( Symbol *s)
+{
+    removeSymbol_atTime(s, s->getTime() );
+    removeSymbol_atTime(s, s->getEndTime() );
+    
+    printTimePoints();
+}
+
+void TimePointArray::removeSymbol_atTime( Symbol *s, float time)
+{
+    bool match = false;
+    int idx = getTimePointInsertIndex( time, match );
+    
+    cout << "insert point " << idx << " for time " << time <<  endl;
+    
+    if( !match )
+    {
+        cout << " could not find existing timepoint at time " << time << endl;
+        printTimePoints();
+        return;
+    }
+    
+    auto vec = &((*this)[idx]->symbols_at_time);
+    
+    vec->erase( std::remove( vec->begin(), vec->end(), s), vec->end());
+    
+    if( vec->size() == 0 )
+        remove( idx, true );
+    
+}
+
+
+void TimePointArray::addSymbolTimePoints( Symbol *s )
+{
+    float start_t = s->getTime();
+    float end_t = s->getEndTime();
+    
+    addSymbol_atTime( s, start_t );
+    addSymbol_atTime( s, end_t );
+    
+    printTimePoints();
+
 }
 
 void TimePointArray::addSymbol_atTime( Symbol *s, float time)
@@ -61,16 +97,15 @@ void TimePointArray::addSymbol_atTime( Symbol *s, float time)
         }
     }
     
-    printTimePoints();
 }
 
-void printBundle(OSCBundle bndl)
+void TimePointArray::printBundle(OSCBundle bndl)
 {
-    std::cout << "==== OSC BUNDLE ====" << std::endl;
+    std::cout << "\t==== TIMEPOINT OSC BUNDLE ====" << std::endl;
     for (auto osc : bndl )
     {
         OSCMessage msg = osc.getMessage();
-        std::cout << msg.getAddressPattern().toString();
+        std::cout << "\t" << msg.getAddressPattern().toString();
         
         for (auto arg : msg )
         {
@@ -86,7 +121,7 @@ void printBundle(OSCBundle bndl)
         
         std::cout << std::endl;
     }
-    std::cout << "====-===-======-====" << std::endl;
+    std::cout << "\t====-===-======-====" << std::endl;
     
 }
 
@@ -237,13 +272,13 @@ int TimePointArray::getTimePointInsertIndex( float t, bool& match )
             
             if (halfway == firstElement)
             {
-                if (compareTimes ((*this)[firstElement]->time, t ) >= 0)
+                if (compareTimes ((*this)[halfway]->time, t ) >= 0)
                 {
                     ++firstElement;
                 }
                 break;
             }
-            else if (compareTimes ((*this)[firstElement]->time, t ) >= 0)
+            else if (compareTimes ((*this)[halfway]->time, t ) >= 0)
             {
                 firstElement = halfway;
             }

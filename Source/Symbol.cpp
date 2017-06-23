@@ -32,6 +32,14 @@ String Symbol::getType()
 
 float Symbol::getTime() const
 {
+    int pos = getOSCMessagePos("/time/start");
+    if  (pos == -1 )
+    {
+        printBundle();
+        std::cout << " no /time/start above? " << std::endl;
+        return 0;
+    }
+    
     return getOSCMessageValue("/time/start").getFloat32();
 }
 

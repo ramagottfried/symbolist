@@ -4,10 +4,7 @@
 #include "PageComponent.h"
 #include "ScoreComponent.h"
 
-SymbolGroupComponent::SymbolGroupComponent( const Symbol& s ) : BaseComponent( s )
-{
-    //importGroupFromSymbol( s ); // has its own method for that
-}
+SymbolGroupComponent::SymbolGroupComponent( const Symbol& s ) : BaseComponent( s ) {}
 
 SymbolGroupComponent::~SymbolGroupComponent() {}
 
@@ -79,27 +76,33 @@ int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_addre
     for (int i = 0; i < getNumSubcomponents(); i++)
     {
         String base = String(base_address) += String("/subsymbol/") += String(i+1) ; // we start at 1 .. (?)
-        messages_added += getSubcomponent(i)->addSymbolMessages( s, base );
+        messages_added += ((BaseComponent*)getSubcomponent(i))->addSymbolMessages( s, base );
     }
     
     return messages_added;
 }
+
 
 void SymbolGroupComponent::importFromSymbol( const Symbol &s )
 {
     
     BaseComponent::importFromSymbol(s);
     
-    int n = s.getOSCMessageValue("/numsymbols").getInt32();
-    std::cout << "Importing Group of " << n << " symbols..." << std::endl;
-    for (int i = 0; i < n; i++ )
+    int pos = s.getOSCMessagePos("/numsymbols");
+    
+    if ( pos >= 0 )
     {
-        String filter = "/subsymbol/" + String(i+1) ;   // we start at 1 .. (?)
-        //cout << "IMPORT FROM: " << filter << endl;
-        Symbol sub_s = s.makeSubSymbol( filter );
-        BaseComponent* c = SymbolistHandler::makeComponentFromSymbol( &sub_s );
-        if ( c != NULL) addSubcomponent( c );
-        else cout << "Error importing subsymbol #" << i << endl;
+        int n_symbols = s.getOSCMessageValue(pos).getInt32();
+        std::cout << "Importing Group of " << n_symbols << " symbols..." << std::endl;
+        for (int i = 0; i < n_symbols; i++ )
+        {
+            String filter = "/subsymbol/" + String(i+1) ;   // we start at 1 .. (?)
+            //cout << "IMPORT FROM: " << filter << endl;
+            Symbol sub_s = s.makeSubSymbol( filter );
+            BaseComponent* c = SymbolistHandler::makeComponentFromSymbol( &sub_s , false );
+            if ( c != NULL) addSubcomponent( c );
+            else cout << "Error importing subsymbol #" << i << endl;
+        }
     }
 }
 

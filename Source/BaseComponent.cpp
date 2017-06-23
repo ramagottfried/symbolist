@@ -50,6 +50,13 @@ void BaseComponent::reportModification()
  * Can be overriden / completed by class-specific messages
  *****************/
 
+void BaseComponent::createAndAttachSymbol()
+{
+    Symbol *s = new Symbol();
+    addSymbolMessages( s , String("") );
+    setScoreSymbolPointer( s );
+}
+
 int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
 {
     int messages_added = 0;
@@ -109,16 +116,14 @@ void BaseComponent::setBoundsFromSymbol( float x, float y , float w , float h)
 
 void BaseComponent::selectComponent()
 {
-    is_selected = true;
+    SymbolistComponent::selectComponent();
     //resizableBorder->setVisible( true ); // this makes the resizable border apera also in multiple selection
-    repaint();
 }
 
 void BaseComponent::deselectComponent()
 {
-    is_selected = false;
     resizableBorder->setVisible( false );
-    repaint();
+    SymbolistComponent::deselectComponent();
 }
 
 
@@ -137,6 +142,11 @@ bool BaseComponent::isInEditMode()
 void BaseComponent::setSeleted(bool val) { is_selected = val; }
 bool BaseComponent::isSelected() { return is_selected; }
 
+const Colour BaseComponent::getCurrentColor()
+{
+    if ( is_selected ) return sel_color;
+    else return sym_color;
+}
 
 /************************/
 /* Expanding/srinking   */
@@ -155,7 +165,7 @@ void BaseComponent::setMinimalBounds () {
     setBounds(minx, miny, maxx-minx, maxy-miny);
     for( int i = 0; i < getNumSubcomponents(); i++)
     {
-        BaseComponent* subcomp = getSubcomponent(i);
+        SymbolistComponent* subcomp = getSubcomponent(i);
         subcomp->setTopLeftPosition( subcomp->getX()-getX(), subcomp->getY()-getY() );
     }
 }
@@ -165,7 +175,7 @@ void BaseComponent::setMaximalBounds ()
 {
     for ( int i  = 0; i < getNumSubcomponents(); i++ )
     {
-        BaseComponent* subcomp = getSubcomponent(i);
+        SymbolistComponent* subcomp = getSubcomponent(i);
         subcomp->setTopLeftPosition( getX()+subcomp->getX(), getY()+subcomp->getY() );
     }
     setBounds( 0, 0, getParentComponent()->getWidth(), getParentComponent()->getHeight());

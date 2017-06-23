@@ -12,7 +12,7 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
     
     paletteView.buildFromPalette(symbolist_handler->getSymbolPalette());
     
-    paletteView.selectPaletteButton(0);
+    paletteView.selectPaletteButton(-1);
     addAndMakeVisible(scoreView);
     addAndMakeVisible(paletteView);
     
@@ -86,7 +86,7 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
     
     else if ( desc == "backspace" ) { scoreView.getEditedComponent()->deleteSelectedSymbols(); }
     
-    else if ( desc == "C") {
+    else if ( desc == "C") { // would be better to type a number and that selects the nth palete item..
         symbolist_handler->setCurrentSymbol(0);
         paletteView.selectPaletteButton(0);
     }

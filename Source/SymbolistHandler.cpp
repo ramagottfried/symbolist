@@ -136,11 +136,13 @@ odot_bundle* SymbolistHandler::symbolistAPI_getScoreBundle()
 void SymbolistHandler::symbolistAPI_setOneSymbol( odot_bundle *bundle)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
-    Symbol *s = score.importSymbolFromOdot( bundle );
     
-    BaseComponent* c = makeComponentFromSymbol( s );
+    Symbol *s = new Symbol();
+    s->importFromOSC( bundle );
+    score.addSymbol(s);
+    BaseComponent* c = makeComponentFromSymbol( s , false);
+    main_component->getPageComponent()->addSubcomponent(c);
     c->setScoreSymbolPointer( s );
-    main_component->addSymbolComponent(c);
 }
 
 void SymbolistHandler::symbolistAPI_setSymbols(int n, odot_bundle **bundle_array)
@@ -151,7 +153,7 @@ void SymbolistHandler::symbolistAPI_setSymbols(int n, odot_bundle **bundle_array
     
     if ( main_component != NULL)
     {
-        main_component->clearScoreView();
+        main_component->getPageComponent()->clearAllSubcomponents();
         addComponentsFromScore();
     }
 }
@@ -212,7 +214,7 @@ Symbol* SymbolistHandler::getCurrentSymbol()
 //=================================
 
 // Component factory
-BaseComponent* SymbolistHandler::makeComponentFromSymbol(const Symbol* s)
+BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_the_symbol)
 {
     cout << "Creating component from Symbol: " ;
     //s->printBundle();
@@ -246,8 +248,11 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(const Symbol* s)
             cout << "Unknown symbol type : " << typeStr << endl;
             c = NULL;
         }
-        
-        if (c != NULL) c->importFromSymbol( *s ) ;
+        if (c != NULL)
+        {
+            c->importFromSymbol( *s ) ;
+            if ( attach_the_symbol ) c->setScoreSymbolPointer( s );
+        }
         return c;
     }
 }
@@ -258,9 +263,9 @@ void SymbolistHandler::addComponentsFromScore ( )
     std::cout << "ADDING " << score.getSize() << " SYMBOLS" << std::endl;
     for (int i = 0; i < score.getSize(); i++) {
         Symbol *s = score.getSymbol(i);
-        BaseComponent* c = makeComponentFromSymbol( s );
+        BaseComponent* c = makeComponentFromSymbol( s, false );
+        main_component->getPageComponent()->addSubcomponent(c);
         c->setScoreSymbolPointer( s );
-        main_component->addSymbolComponent(c);
     }
 }
 
@@ -271,15 +276,11 @@ void SymbolistHandler::addComponentsFromScore ( )
 
 void SymbolistHandler::addSymbolToScore ( BaseComponent* c )
 {
+    assert ( c->getScoreSymbolPointer() != NULL ) ;
     //cout << "ADDING SYMBOL FOR " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
-    Symbol *s = new Symbol();
-        
-    c->addSymbolMessages( s , String("") );
-    c->setScoreSymbolPointer( s );
-    score.addSymbol( s );
+    score.addSymbol( c->getScoreSymbolPointer() );
     executeUpdateCallback( -1 );
 }
-
 
 void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
 {

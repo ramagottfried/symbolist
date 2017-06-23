@@ -5,6 +5,8 @@
 #include "SymbolGroupComponent.h"
 
 
+ScoreComponent::ScoreComponent() {}
+
 ScoreComponent::~ScoreComponent()
 {
     unselectAllComponents();
@@ -12,77 +14,17 @@ ScoreComponent::~ScoreComponent()
 }
 
 
-/*****************************
- * Management of sucomponents
- * Add/remove operations apply on views only
- *****************************/
-
-const size_t ScoreComponent::getNumSubcomponents()
-{
-    return subcomponents.size() ;
-}
-
-BaseComponent* ScoreComponent::getSubcomponent( int i )
-{
-    return subcomponents.at(i) ;
-}
-
-void ScoreComponent::addSubcomponent( BaseComponent *c )
-{
-    
-    subcomponents.emplace_back( c );
-    c->setComponentID(String(String(c->getSymbolTypeStr()) += String("_") += String(subcomponents.size())));
-    addAndMakeVisible( c );
-    //c->addMouseListener(this, false); // get rid of this ??
-    //std::cout << "ADDING SUBCOMP " << c->getComponentID() << " IN " << getComponentID() << std::endl;
-}
-
-void ScoreComponent::removeSubcomponent( BaseComponent *c )
-{
-    removeFromSelection(c);
-    removeChildComponent(c);
-    subcomponents.erase ( std::remove(subcomponents.begin(),subcomponents.end(), c) , subcomponents.end() );
-}
-
-void ScoreComponent::clearAllSubcomponents()
-{
-    selected_components.clear();
-    for ( int i = 0; i < subcomponents.size(); i++ )
-    {
-        subcomponents[i]->clearAllSubcomponents();
-        removeChildComponent( subcomponents[i] );
-        delete subcomponents[i];
-    }
-    subcomponents.clear();
-}
-
-
-/**************************
- * Apply on the view but except for PageComponent subclass => propagates to the Score
- **************************/
-
-void ScoreComponent::addSymbolComponent ( BaseComponent* c )
-{
-    addSubcomponent( c );
-}
-
-void ScoreComponent::removeSymbolComponent( BaseComponent* c )
-{
-    unselectAllComponents ( );
-    removeSubcomponent( c );
-}
-
 /**************/
 /* Selection  */
 /**************/
 
-void ScoreComponent::addToSelection(BaseComponent *c)
+void ScoreComponent::addToSelection(SymbolistComponent *c)
 {
     selected_components.add(c);
     c->selectComponent();
 }
 
-void ScoreComponent::removeFromSelection(BaseComponent *c)
+void ScoreComponent::removeFromSelection(SymbolistComponent *c)
 {
     c->deselectComponent();
     selected_components.removeAllInstancesOf(c);
@@ -105,6 +47,21 @@ void ScoreComponent::unselectAllComponents()
 }
 
 
+// redefinitions from SymbolComponents
+void ScoreComponent::removeSubcomponent( SymbolistComponent *c )
+{
+    removeFromSelection(c);
+    SymbolistComponent::removeSubcomponent( c );
+}
+
+void ScoreComponent::clearAllSubcomponents()
+{
+    SymbolistComponent::clearAllSubcomponents();
+    selected_components.clear();
+}
+
+
+
 /*****************
  * Custom lasso tool
  *****************/
@@ -125,7 +82,7 @@ void ScoreComponent::dragLassoSelection(Point<int> position)
     
     for (int i = 0; i < getNumSubcomponents(); ++i)
     {
-        BaseComponent* cc =  getSubcomponent(i);
+        SymbolistComponent* cc =  getSubcomponent(i);
         
         if (cc->getBounds().intersects( s_lasso.getBounds() ))
         {
@@ -188,9 +145,9 @@ void SymbolistLasso::paint ( Graphics &g)
 
 void ScoreComponent::deleteSelectedSymbols()
 {
-    vector< BaseComponent *> items;
+    vector< SymbolistComponent *> items;
     
-    for( BaseComponent *c : selected_components ) // there's probably a better way to copy a vector's contents :)
+    for( SymbolistComponent *c : selected_components ) // there's probably a better way to copy a vector's contents :)
     {
         std::cout << c << std::endl;
         items.push_back(c);
@@ -199,11 +156,11 @@ void ScoreComponent::deleteSelectedSymbols()
     //selected_items.deselectAll();
     unselectAllComponents();
     
-    for( BaseComponent *c : items )
+    for( SymbolistComponent *c : items )
     {
         //ScoreComponent* parent = (ScoreComponent*) c->getParentComponent() ; // the selected_items are not necesarily direct children
         //parent->
-        removeSymbolComponent( c );
+        removeSubcomponent( c );
         delete c;
     }
 }
@@ -212,6 +169,9 @@ void ScoreComponent::deleteSelectedSymbols()
 
 void ScoreComponent::groupSelectedSymbols()
 {
+    
+    bool creating_a_top_level_group = ( this == getPageComponent() );
+    
     if ( selected_components.size() > 1 )
     {
         // get the position an bounds of the group
@@ -226,21 +186,19 @@ void ScoreComponent::groupSelectedSymbols()
         }
         
         // create a list from selected items
-        vector< BaseComponent *> items;
-        for( BaseComponent *c : selected_components ) { items.push_back(c); }
+        vector< SymbolistComponent *> items;
+        for( SymbolistComponent *c : selected_components ) { items.push_back(c); }
         
         unselectAllComponents();
         
-        Symbol s ("group", minx, miny, maxx-minx, maxy-miny);
-        s.addOSCMessage( "/numsymbols", 0 );
-        SymbolGroupComponent *group = (SymbolGroupComponent*) SymbolistHandler::makeComponentFromSymbol( &s );
-        
+        Symbol* s = new Symbol("group", minx, miny, maxx-minx, maxy-miny);
+        SymbolGroupComponent *group = (SymbolGroupComponent*) SymbolistHandler::makeComponentFromSymbol( s , creating_a_top_level_group );
         
         Rectangle<int> groupBounds( minx, miny, maxx-minx, maxy-miny );
         
         for ( auto it = items.begin(); it != items.end(); it++ )
         {
-            BaseComponent *c = *it ;
+            SymbolistComponent *c = *it ;
             
             // sets the position now relative to the group
             Rectangle<int> compBounds = c->getBounds();
@@ -249,11 +207,19 @@ void ScoreComponent::groupSelectedSymbols()
                          compBounds.getY() - groupBounds.getY(),
                          compBounds.getWidth(), compBounds.getHeight());
             
-            ((ScoreComponent*)c->getParentComponent())->removeSymbolComponent( c ); // the parent is not necessarily 'this' (selected_items can be indirect children...)
-            group->addSymbolComponent( c );
+            ((ScoreComponent*)c->getParentComponent())->removeSubcomponent( c ); // the parent is not necessarily 'this' (selected_items can be indirect children...)
+            group->addSubcomponent( c );
         }
-        // will add the symbol to the score if this is a PageComponent
-        this->addSymbolComponent( group );
+        
+        if ( creating_a_top_level_group )
+        {
+            group->addSymbolMessages( s , String("") );
+        }
+        else
+        {
+            delete s;
+        }
+        addSubcomponent( group );
         addToSelection( group );
     }
 }
@@ -261,27 +227,28 @@ void ScoreComponent::groupSelectedSymbols()
 
 void ScoreComponent::ungroupSelectedSymbols()
 {
-    vector< BaseComponent *> items;
-    for( BaseComponent *c : selected_components ) { items.push_back(c); }
+    vector< SymbolistComponent *> items;
+    for( SymbolistComponent *c : selected_components ) { items.push_back(c); }
     unselectAllComponents();
     
     for ( int i = 0; i < items.size(); i++ )
     {
-        BaseComponent* c = items[i];
+        BaseComponent* c = (BaseComponent*) items[i];
         int n = ((int)c->getNumSubcomponents());
         
-        vector< BaseComponent *> subitems;
+        vector< SymbolistComponent *> subitems;
         for ( int ii = 0 ; ii < n ; ii++ ) { subitems.push_back(c->getSubcomponent(ii)); }
 
         for ( int ii = 0; ii < n ; ii++ )
         {
-            BaseComponent* sc = subitems[ii];
-            c->removeSymbolComponent(sc);
-            this->addSymbolComponent(sc);
+            BaseComponent* sc = (BaseComponent*) subitems[ii];
+            c->removeSubcomponent(sc);
+            if ( c->isTopLevelComponent() ) sc->createAndAttachSymbol() ;
+            addSubcomponent(sc);
             sc->setTopLeftPosition(sc->getPosition().translated(c->getPosition().getX(), c->getPosition().getY()));
         }
         
-        removeSymbolComponent(c);
+        removeSubcomponent(c);
     }
 }
 
@@ -301,9 +268,9 @@ void ScoreComponent::flipSelectedSymbols( int axis )
     for ( auto c : selected_components )
     {
         if( axis == 0)
-            c->v_flip();
+            ((BaseComponent*)c)->v_flip();
         else
-            c->h_flip();
+            ((BaseComponent*)c)->h_flip();
     }
 }
 
@@ -314,35 +281,41 @@ void ScoreComponent::flipSelectedSymbols( int axis )
 
 void ScoreComponent::mouseAddClick ( const MouseEvent& event )
 {
-    
+
+    unselectAllComponents();
+
     BaseComponent *c;
+    
+    bool top_level = ( this == getPageComponent() );
     
     if ( getMainDrawMode() == UI_DrawType::from_template )
     {
         Symbol* symbol_template = getSymbolistHandler()->getCurrentSymbol();
+        Symbol* s = new Symbol( *symbol_template );
         // sets position in symbol before creation
         // will need to make offset for center based symbols (circle, square, etc.)
-        symbol_template->setPosition ( event.position );
+        s->setPosition ( event.position );
         // create a new component from the current selected symbol of the palette
-        c = SymbolistHandler::makeComponentFromSymbol( symbol_template );
+        c = SymbolistHandler::makeComponentFromSymbol( s, top_level );
         // add component in the view
-        addSymbolComponent( c );
+        addSubcomponent( c );
     }
     else
     {
-        Symbol* dummy_symbol = new Symbol("path", event.position.x, event.position.y, 40.0, 40.0) ;
-        c = SymbolistHandler::makeComponentFromSymbol( dummy_symbol );
-        delete dummy_symbol;
-        addSymbolComponent( c );
+        Symbol* s = new Symbol("path", event.position.x, event.position.y, 40.0, 40.0) ;
+        c = SymbolistHandler::makeComponentFromSymbol( s , top_level );
+        addSubcomponent( c );
         getPageComponent()->enterEditMode(c);
         c->mouseAddClick(event.getEventRelativeTo(c));
     }
+
+    if ( ! top_level ) c->reportModification();
     
     // deselect other items and select this one
-    //unselectAllComponents();
     //addToSelection( c );
-    
 }
+
+
 
 void ScoreComponent::mouseDown ( const MouseEvent& event )
 {
@@ -368,7 +341,18 @@ void ScoreComponent::mouseDrag ( const MouseEvent& event )
 
 void ScoreComponent::mouseUp ( const MouseEvent& event )
 {
-    endLassoSelection();
+    UI_EditType ed = getMainEditMode();
+    
+    if( ed == selection )
+    {
+        endLassoSelection();
+    }
+    else if( ed == draw )
+    {
+        // when the mousedown on this triggered an entry to edit mode, we might want to pass the mouse up there, too
+        ScoreComponent* sc = getPageComponent()->getEditedComponent();
+        if ( sc != this ) sc->mouseUp(event.getEventRelativeTo( sc ));
+    }
 }
 
 

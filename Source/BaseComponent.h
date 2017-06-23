@@ -28,26 +28,21 @@ public:
     BaseComponent(const Symbol &s);
     ~BaseComponent();
     
-    virtual String getSymbolTypeStr() const = 0 ; // { return "symbol"; }
-
     void paint ( Graphics& g ) override;
     
     void setScoreSymbolPointer (Symbol* s) { score_symbol = s; }
     Symbol* getScoreSymbolPointer () { return score_symbol; }
+    void createAndAttachSymbol();
+    virtual int addSymbolMessages( Symbol* s, const String &base_address );
     
     bool isTopLevelComponent();
     void reportModification();
         
-    virtual int addSymbolMessages( Symbol* s, const String &base_address );
+    
     
     virtual void importFromSymbol( const Symbol &s );
-
-    // Called from the Juce::SelectedItemSet subclass in ScoreComponent
-    // specific methd defined not to mess with existing select system
-    virtual void selectComponent();
-    virtual void deselectComponent();
     
-    inline const Colour getCurrentColor() { return is_selected ? sel_color : sym_color; }
+    const Colour getCurrentColor();
 
     // these four modify the symbol
     void moved () override;
@@ -105,6 +100,9 @@ public:
     virtual void setMaximalBounds ();
     virtual void resizeToFit(int x, int y, int w, int h) {};
 
+    void selectComponent() override;
+    void deselectComponent() override;
+    
     virtual void setEditMode(bool val);
     bool isInEditMode();
     virtual void setSeleted(bool val);
@@ -134,7 +132,6 @@ protected:
     Colour          bb_color = Colours::cornflowerblue;
     Colour          sel_color = Colours::cornflowerblue;
     
-    bool            is_selected = false;
     bool            in_edit_mode = false;
         
         

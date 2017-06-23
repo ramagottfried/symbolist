@@ -153,13 +153,7 @@ void Score::importScoreFromOSC(int n, odot_bundle **bundle_array)
     std::cout << "===IMPORT DONE" << std::endl;
 }
 
-Symbol* Score::importSymbolFromOdot( odot_bundle *bundle )
-{
-    Symbol *s = new Symbol();
-    s->importFromOSC( bundle );
-    addSymbol(s);
-    return s;
-}
+
 
 
 /*

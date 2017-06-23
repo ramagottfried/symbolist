@@ -35,6 +35,55 @@ SymbolistMainComponent* SymbolistComponent::getMainComponent()
 }
 
 
+
+/*****************************
+ * Management of sucomponents
+ * Add/remove operations apply on views only
+ *****************************/
+
+const size_t SymbolistComponent::getNumSubcomponents()
+{
+    return subcomponents.size() ;
+}
+
+SymbolistComponent* SymbolistComponent::getSubcomponent( int i )
+{
+    return subcomponents[i] ;
+}
+
+void SymbolistComponent::addSubcomponent( SymbolistComponent *c )
+{
+    
+    subcomponents.add( c );
+    c->setComponentID(String(String(c->getSymbolTypeStr()) += String("_") += String(subcomponents.size())));
+    addAndMakeVisible( c );
+    //c->addMouseListener(this, false); // get rid of this ??
+    //std::cout << "ADDING SUBCOMP " << c->getComponentID() << " IN " << getComponentID() << std::endl;
+}
+
+void SymbolistComponent::removeSubcomponent( SymbolistComponent *c )
+{
+    removeChildComponent(c);
+    for ( int i = 0; i < subcomponents.size(); i++ )
+    {
+        if ( subcomponents[i] == c ) subcomponents.remove( i );
+    }
+}
+
+void SymbolistComponent::clearAllSubcomponents()
+{
+    for ( int i = 0; i < subcomponents.size(); i++ )
+    {
+        subcomponents[i]->clearAllSubcomponents();
+        removeChildComponent( subcomponents[i] );
+        delete subcomponents[i];
+    }
+    subcomponents.clear();
+}
+
+
+
+
 UI_EditType SymbolistComponent::getMainEditMode()
 {
     if ( getMainComponent() != NULL)
@@ -60,3 +109,27 @@ UI_DrawType SymbolistComponent::getMainDrawMode()
         return UI_DrawType::free_draw ;
     }
 }
+
+void SymbolistComponent::selectComponent()
+{
+    is_selected = true;
+    repaint();
+}
+
+void SymbolistComponent::deselectComponent()
+{
+    is_selected = false;
+    repaint();
+}
+
+
+Point<int> SymbolistComponent::positionRelativeTo(SymbolistComponent* to)
+{
+    if (to == getParentComponent() ) return getPosition() ;
+        else return getPosition() + ((SymbolistComponent*)getParentComponent())->positionRelativeTo(to);
+}
+
+
+
+
+

@@ -3,6 +3,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+#include "SymbolistComponent.h"
 #include "SymbolistHandler.h"
 #include "PageComponent.h"
 #include "PaletteComponent.h"
@@ -41,10 +42,6 @@ public:
     // Redefine these from SymbolistComponent
     inline PageComponent* getPageComponent() override { return &scoreView; }
     inline SymbolistHandler* getSymbolistHandler() override { return symbolist_handler; }
-    
-    void clearScoreView () { scoreView.clearAllSubcomponents(); }
-    void addSymbolComponent( BaseComponent* c) { scoreView.addSubcomponent( c ); }
-    
     
 private:
     

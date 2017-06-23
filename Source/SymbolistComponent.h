@@ -19,17 +19,32 @@ class SymbolistComponent : public Component
 {
 public:
     
+    virtual String getSymbolTypeStr() const { return " ??? " ; } ; // every component defines its type
+
     virtual PageComponent* getPageComponent();
     virtual SymbolistHandler* getSymbolistHandler();
     SymbolistMainComponent* getMainComponent();
+    
     UI_EditType getMainEditMode();
     UI_DrawType getMainDrawMode();
+    virtual void selectComponent();
+    virtual void deselectComponent();
     
-    Point<int> positionRelativeTo(SymbolistComponent* to)
-    {
-        if (to == getParentComponent() ) return getPosition() ;
-        else return getPosition() + ((SymbolistComponent*)getParentComponent())->positionRelativeTo(to);
-    }
+    const size_t    getNumSubcomponents( );
+    SymbolistComponent*  getSubcomponent( int i );
+    void            addSubcomponent( SymbolistComponent *c );
+    virtual void    removeSubcomponent( SymbolistComponent *c );
+    virtual void    clearAllSubcomponents();
+    
+    Point<int> positionRelativeTo(SymbolistComponent* to);
+    
+
+
+protected :
+    
+    bool            is_selected = false;
+    Array<SymbolistComponent*>     subcomponents;
+    
 };
 
 #endif

@@ -8,7 +8,8 @@ class BasicShapePathComponent : public PathBaseComponent
 {
     public :
     
-    BasicShapePathComponent(const Symbol &s) : PathBaseComponent(s) {}
+    BasicShapePathComponent() = default;
+    ~BasicShapePathComponent() = default;
     
     float symbol_export_X() override { return getX();/* + getWidth()/2;*/ }
     float symbol_export_Y() override { return getY() + getHeight()/2; }
@@ -43,7 +44,8 @@ class CirclePathComponent : public BasicShapePathComponent
 {
 public:
     
-    CirclePathComponent(const Symbol &s) : BasicShapePathComponent ( s ) {};
+    CirclePathComponent() = default;
+    ~CirclePathComponent() = default;
     
     String getSymbolTypeStr() const override { return "circle"; }
     
@@ -65,7 +67,8 @@ class RectanglePathComponent : public BasicShapePathComponent
 {
 public:
     
-    RectanglePathComponent(const Symbol &s) : BasicShapePathComponent(s) {}
+    RectanglePathComponent() = default;
+    ~RectanglePathComponent() = default;
     
     void importFromSymbol(const Symbol &s) override
     {
@@ -86,7 +89,8 @@ class TrianglePathComponent : public BasicShapePathComponent
 {
 public:
     
-    TrianglePathComponent(const Symbol &s) : BasicShapePathComponent(s) {}
+    TrianglePathComponent() = default;
+    ~TrianglePathComponent() = default;
     
     void importFromSymbol(const Symbol &s) override
     {

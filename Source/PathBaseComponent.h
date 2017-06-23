@@ -9,7 +9,7 @@ class PathBaseComponent : public BaseComponent
 {
 public:
     
-    PathBaseComponent(  const Symbol& s );
+    PathBaseComponent() = default;
     ~PathBaseComponent() ;
     
     static void printPath( Path p, const char* name = "path" );

@@ -17,8 +17,8 @@ class SymbolGroupComponent : public BaseComponent
     
 public:
     
-    SymbolGroupComponent( const Symbol& s );
-    ~SymbolGroupComponent();
+    SymbolGroupComponent() = default;
+    ~SymbolGroupComponent() = default;
     
     virtual String getSymbolTypeStr() const override { return "group"; }
     int  addSymbolMessages(Symbol* s, const String &base_address ) override ;

@@ -4,10 +4,6 @@
 #include "PageComponent.h"
 #include "PathHandleComponent.h"
 
-PathBaseComponent::PathBaseComponent(  const Symbol& s ) : BaseComponent( s )
-{
-    //importFromSymbol( s ) ;
-}
 
 PathBaseComponent::~PathBaseComponent()
 {

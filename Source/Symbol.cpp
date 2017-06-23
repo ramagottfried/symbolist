@@ -22,6 +22,7 @@ Symbol::Symbol (const String & type, float x, float y, float w, float h)
     addOSCMessage("/time/start",    x * 0.01f );
     addOSCMessage("/duration",      w * 0.01f );
     
+  // cout << x << " " << y << " " << w << " " << h << endl;
 }
 
 
@@ -70,6 +71,7 @@ Symbol Symbol::makeSubSymbol( const String &base_address ) const
 
 void Symbol::setPosition( const Point<float> pos )
 {
+    cout << this << " set x position " << pos.getX() << endl;
     
     OSCBundle new_bundle;
     

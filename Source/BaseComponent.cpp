@@ -100,6 +100,9 @@ void BaseComponent::importFromSymbol( const Symbol &s )
         float w = s.getOSCMessageValue("/w").getFloat32();
         float h = s.getOSCMessageValue("/h").getFloat32();
         
+        cout << "x " << x  << " y " << y << " w " << w << endl;
+
+        
         setBoundsFromSymbol( x , y , w , h);
     }
 }

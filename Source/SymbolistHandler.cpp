@@ -279,6 +279,8 @@ void SymbolistHandler::addSymbolToScore ( BaseComponent* c )
     assert ( c->getScoreSymbolPointer() != NULL ) ;
     //cout << "ADDING SYMBOL FOR " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
     score.addSymbol( c->getScoreSymbolPointer() );
+    main_component->getPageComponent()->drawTimePoints();
+    
     executeUpdateCallback( -1 );
 }
 

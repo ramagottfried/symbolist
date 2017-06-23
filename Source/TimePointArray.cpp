@@ -66,7 +66,7 @@ void TimePointArray::addSymbolTimePoints( Symbol *s )
     addSymbol_atTime( s, start_t );
     addSymbol_atTime( s, end_t );
     
-//    printTimePoints();
+    printTimePoints();
 
 }
 

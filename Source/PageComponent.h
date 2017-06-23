@@ -42,6 +42,11 @@ public:
         score_cursor.setPlayPoint( t );
     }
     
+    void drawTimePoints()
+    {
+        time_pointGUI.repaint();
+    }
+    
 private:
     
     BaseComponent*      edited_component;

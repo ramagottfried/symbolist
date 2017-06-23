@@ -306,7 +306,7 @@ void ScoreComponent::mouseAddClick ( const MouseEvent& event )
         c = SymbolistHandler::makeComponentFromSymbol( s , top_level );
         addSubcomponent( c );
         getPageComponent()->enterEditMode(c);
-        c->mouseAddClick(event.getEventRelativeTo(c));
+        c->mouseAddClick( event.getEventRelativeTo(c) );
     }
 
     if ( ! top_level ) c->reportModification();

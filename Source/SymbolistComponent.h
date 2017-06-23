@@ -32,7 +32,7 @@ public:
     
     const size_t    getNumSubcomponents( );
     SymbolistComponent*  getSubcomponent( int i );
-    void            addSubcomponent( SymbolistComponent *c );
+    virtual void    addSubcomponent( SymbolistComponent *c );
     virtual void    removeSubcomponent( SymbolistComponent *c );
     virtual void    clearAllSubcomponents();
     

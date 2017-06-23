@@ -63,8 +63,8 @@ void PathBaseComponent::resized()
     if( getMainEditMode() == UI_EditType::draw )
     {
         resizeToFit(getLocalBounds().getX(), getLocalBounds().getY(), getLocalBounds().getWidth(), getLocalBounds().getHeight());
+        //resizeToFit(m_path_bounds.getX(), m_path_bounds.getY(), m_path_bounds.getWidth(), m_path_bounds.getHeight());
     }
-    
 }
 
 /******************
@@ -366,8 +366,8 @@ void PathBaseComponent::makeHandlesFromPath()
         updatePathBounds();
         
         float length = max( m_path_bounds.getHeight(), m_path_bounds.getWidth() ) * 0.5 + 5;
-        addHandle( PathHandle::rotate, m_path_centroid.getX(), m_path_centroid.getY() + length );
-        
+        rotation_handle = new PathHandle( PathHandle::rotate, m_path_centroid.getX(), m_path_centroid.getY() + length );
+        addAndMakeVisible( rotation_handle );
     }
 }
 
@@ -391,6 +391,8 @@ void PathBaseComponent::removeHandles()
         delete h;
     }
     path_handles.clear();
+    
+    delete rotation_handle;
 }
 
 
@@ -591,6 +593,8 @@ void PathBaseComponent::mouseUp(const MouseEvent& event)
     {
         drawing = true;
     }
+    
+    reportModification();
 }
 
 
@@ -808,12 +812,11 @@ void PathBaseComponent::drawHandlesLines( Graphics& g)
     g.setColour(Colours::lightblue);
     g.drawRect( m_path_bounds );
     
-    if ( ! path_handles.isEmpty() )
+    if ( rotation_handle != NULL )
     {
-        PathHandle* rot_handle = path_handles.getLast();
         g.drawDashedLine(Line<float>(
                                      m_path_centroid.getX(), m_path_centroid.getY(),
-                                     rot_handle->getBounds().getCentreX(), rot_handle->getBounds().getCentreY()
+                                     rotation_handle->getBounds().getCentreX(), rotation_handle->getBounds().getCentreY()
                                      ),
                          dashes, 2 );
     }

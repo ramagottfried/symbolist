@@ -34,7 +34,6 @@ public:
     size_t getSize();
     
     Symbol *getSymbol(int n);    
-    
     int getSymbolPosition(Symbol *s);
     
     void addSymbol(Symbol *s);
@@ -42,8 +41,7 @@ public:
     void removeAllSymbols();
     
     void importScoreFromOSC( int n, odot_bundle** bundle_array );
-    Symbol* importSymbolFromOdot( odot_bundle *bundle );
-
+    
     //    void sortScore();
     
     void addTimePoints( Symbol *s, int score_index );

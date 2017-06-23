@@ -2,8 +2,9 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "SymbolistComponent.h"
 
-class PathHandle : public Component
+class PathHandle : public SymbolistComponent
 {
 public:
     
@@ -17,6 +18,8 @@ public:
     
     PathHandle( handleType type, float x, float y);
     ~PathHandle(){}
+    
+    String getSymbolTypeStr() const override { return "path_point"; }
     
     void paint ( Graphics& g ) override;
     void mouseDown( const MouseEvent& event ) override;

@@ -4,9 +4,6 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SymbolistComponent.h"
 
-class BaseComponent ;
-
-
 class SymbolistLasso : public Component
 {
     
@@ -30,28 +27,16 @@ class ScoreComponent : public SymbolistComponent
 {
 public:
     
-    ScoreComponent()
-    {
-        setComponentID("ScoreComponent");
-    }
-    
+    ScoreComponent();
     ~ScoreComponent();
     
-    const size_t    getNumSubcomponents( );
-    BaseComponent*  getSubcomponent( int i );
-    void            addSubcomponent( BaseComponent *c );
-    void            removeSubcomponent( BaseComponent *c );
-    void            clearAllSubcomponents();
-    
-    virtual void    addSymbolComponent( BaseComponent *c );
-    virtual void    removeSymbolComponent( BaseComponent *c );
-    
-    virtual void mouseAddClick ( const MouseEvent& event );
-    
-    void addToSelection(BaseComponent* c);
-    void removeFromSelection(BaseComponent* c);
+    void addToSelection(SymbolistComponent* c);
+    void removeFromSelection(SymbolistComponent* c);
     void selectAllComponents();
     void unselectAllComponents();
+    
+    void removeSubcomponent( SymbolistComponent *c ) override;
+    void clearAllSubcomponents( ) override;
     
     void deleteSelectedSymbols();
     void groupSelectedSymbols();
@@ -63,11 +48,11 @@ public:
     void mouseDrag ( const MouseEvent& event ) override;
     void mouseUp ( const MouseEvent& event ) override;
 
+    virtual void mouseAddClick ( const MouseEvent& event );
+    
 protected:
 
-    std::vector<BaseComponent*>     subcomponents;
-    
-    Array<BaseComponent*>     selected_components;
+    Array<SymbolistComponent*>     selected_components;
     SymbolistLasso s_lasso;
     
     void beginLassoSelection(Point<int> position);

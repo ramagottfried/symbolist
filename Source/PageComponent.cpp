@@ -24,17 +24,17 @@ PageComponent::~PageComponent() {}
 /* will update the data (score) and notify to host environment */
 /***************************************************/
 
-void PageComponent::addSymbolComponent( BaseComponent *c )
+void PageComponent::addSubcomponent( BaseComponent *c )
 {
-    ScoreComponent::addSymbolComponent( c );
-    getSymbolistHandler()->addSymbolToScore( c );
+    ScoreComponent::addSubcomponent( c );
+    if ( c->getScoreSymbolPointer() != NULL ) getSymbolistHandler()->addSymbolToScore( c );
 }
 
 
-void PageComponent::removeSymbolComponent( BaseComponent *c )
+void PageComponent::removeSubcomponent( BaseComponent *c )
 {
-    getSymbolistHandler()->removeSymbolFromScore( c );
-    ScoreComponent::removeSymbolComponent( c );
+    if ( c->getScoreSymbolPointer() != NULL ) getSymbolistHandler()->removeSymbolFromScore( c );
+    ScoreComponent::removeSubcomponent( c );
 }
 
 

@@ -18,6 +18,8 @@ struct SymbolTimePoint
         
     }
     
+    ~SymbolTimePoint(){ cout << "deleting timepoint " << this << endl; }
+    
     void removeSymbol( Symbol * s)
     {
         symbols_at_time.erase( remove(symbols_at_time.begin(), symbols_at_time.end(), s ), symbols_at_time.end() );

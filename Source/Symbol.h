@@ -4,6 +4,8 @@
 #include "OSCIO.h"
 #include "types.h"
 
+using namespace std;
+
 //============================
 // SYMBOL
 //============================
@@ -32,6 +34,7 @@ public:
     OSCArgument getOSCMessageValue(const String &address) const;
     
     static float getOSCValueAsFloat(OSCArgument a) ;
+    static int getOSCValueAsInt(OSCArgument a) ;
     
     void printBundle() const;
     

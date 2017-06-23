@@ -314,6 +314,7 @@ void ScoreComponent::flipSelectedSymbols( int axis )
 
 void ScoreComponent::mouseAddClick ( const MouseEvent& event )
 {
+    
     BaseComponent *c;
     
     if ( getMainDrawMode() == UI_DrawType::from_template )

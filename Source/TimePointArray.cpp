@@ -7,13 +7,13 @@ void TimePointArray::printTimePoints()
     int count = 0;
     for( auto t : (*this) )
     {
-        cout << "timepoint " << count << " " << t->time << " #overlap: " << t->symbols_at_time.size() << endl;
+        cout << "timepoint " << count << " " << t->time << " nsyms " << t->symbols_at_time.size() << endl;
         
-        for (auto s : t->symbols_at_time)
+        int symcount = 0;
+        for( auto sym : t->symbols_at_time )
         {
-            cout << "\t" << s << "\t" << s->getTime() << "\t" << s->getEndTime() << endl;
+            cout << symcount++ << " " << sym << " " << sym->getOSCBundle().size() << endl;
         }
-        
         count++;
     }
 }
@@ -24,15 +24,13 @@ void TimePointArray::removeSymbolTimePoints( Symbol *s)
     removeSymbol_atTime(s, s->getTime() );
     removeSymbol_atTime(s, s->getEndTime() );
     
-    printTimePoints();
+//    printTimePoints();
 }
 
 void TimePointArray::removeSymbol_atTime( Symbol *s, float time)
 {
     bool match = false;
     int idx = getTimePointInsertIndex( time, match );
-    
-    cout << "insert point " << idx << " for time " << time <<  endl;
     
     if( !match )
     {
@@ -41,10 +39,19 @@ void TimePointArray::removeSymbol_atTime( Symbol *s, float time)
         return;
     }
     
-    auto vec = &((*this)[idx]->symbols_at_time);
+    cout << "match point " << idx << " for time " << time <<  endl;
+
+    vector<Symbol*> *vec = &((*this)[idx]->symbols_at_time);
     
     vec->erase( std::remove( vec->begin(), vec->end(), s), vec->end());
-    
+/*
+    int count = 0;
+    for( auto sym : *vec )
+    {
+        cout << "++++++++++++++++++++++++++++++++++++++++++++++ " << count++ << endl;
+        sym->printBundle();
+    }
+  */
     if( vec->size() == 0 )
         remove( idx, true );
     
@@ -59,7 +66,7 @@ void TimePointArray::addSymbolTimePoints( Symbol *s )
     addSymbol_atTime( s, start_t );
     addSymbol_atTime( s, end_t );
     
-    printTimePoints();
+//    printTimePoints();
 
 }
 
@@ -79,13 +86,15 @@ void TimePointArray::addSymbol_atTime( Symbol *s, float time)
         {
             auto prevTimePoint = (*this)[idx-1];
 
-            for( auto prev_s : prevTimePoint->symbols_at_time )
+            auto vec = prevTimePoint->symbols_at_time;
+            
+            for( auto prev_s = vec.begin(); prev_s != vec.end(); prev_s++ )
             {
-                if( s == prev_s ) continue;
+                if( s == *prev_s ) continue;
                 
-                if( prev_s->hitTest( time ) )
+                if( (*prev_s)->hitTest( time ) )
                 {
-                    newTimePoint->addSymbol( prev_s );
+                    newTimePoint->addSymbol( *prev_s );
                 }
                 else if ( s->hitTest( prevTimePoint->time ) )
                 {

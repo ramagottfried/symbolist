@@ -273,6 +273,7 @@ void SymbolistHandler::addSymbolToScore ( BaseComponent* c )
 {
     //cout << "ADDING SYMBOL FOR " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
     Symbol *s = new Symbol();
+        
     c->addSymbolMessages( s , String("") );
     c->setScoreSymbolPointer( s );
     score.addSymbol( s );

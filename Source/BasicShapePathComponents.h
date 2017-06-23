@@ -34,9 +34,6 @@ class BasicShapePathComponent : public PathBaseComponent
         
         messages_added += 7;
         
-        cout << "*********** START SHAPE ADD DATA ************ " << endl;
-        s->printBundle();
-        
         return messages_added;
     }
     

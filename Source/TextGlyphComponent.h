@@ -6,17 +6,10 @@
 class TextGlphComponent : public BaseComponent
 {
 public:
-    TextGlphComponent( const Symbol& s ) : BaseComponent( s )
-    {
-        importTextFromSymbol( s );
-    }
+    TextGlphComponent() = default;
+    ~TextGlphComponent() = default;
     
-    ~TextGlphComponent() {}
-    
-    void importTextFromSymbol( const Symbol& s )
-    {
-        
-    }
+    void importTextFromSymbol( const Symbol& s ) {}
     
     void paint( Graphics& g ) override
     {

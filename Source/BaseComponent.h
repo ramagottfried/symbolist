@@ -25,8 +25,8 @@ class BaseComponent : public ScoreComponent
 {
 public:
     
-    BaseComponent(const Symbol &s);
-    ~BaseComponent();
+    BaseComponent() = default;
+    ~BaseComponent() = default;
     
     void paint ( Graphics& g ) override;
     

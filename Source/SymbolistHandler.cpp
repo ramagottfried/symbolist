@@ -12,7 +12,7 @@
 
 #include "SymbolGroupComponent.h"
 #include "BasicShapePathComponents.h"
-#include "LinePathComponent.h"
+#include "PathBaseComponent.h"
 #include "TextGlyphComponent.h"
 
 
@@ -233,17 +233,17 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
         BaseComponent *c;
         
         if (typeStr.equalsIgnoreCase(String("circle"))) {
-            c = new CirclePathComponent( *s );
+            c = new CirclePathComponent();
         } else if (typeStr.equalsIgnoreCase(String("rectangle"))) {
-            c = new RectanglePathComponent( *s );
+            c = new RectanglePathComponent();
         } else if (typeStr.equalsIgnoreCase(String("triangle"))) {
-            c = new TrianglePathComponent( *s );
+            c = new TrianglePathComponent();
         } else if (typeStr.equalsIgnoreCase(String("path"))) {
-            c = new LinePathComponent( *s );
+            c = new PathBaseComponent();
         } else if (typeStr.equalsIgnoreCase(String("text"))) {
-            c = new TextGlphComponent( *s );
+            c = new TextGlphComponent();
         } else if (typeStr.equalsIgnoreCase(String("group"))) {
-            c = new SymbolGroupComponent( *s );
+            c = new SymbolGroupComponent();
         } else {
             cout << "Unknown symbol type : " << typeStr << endl;
             c = NULL;

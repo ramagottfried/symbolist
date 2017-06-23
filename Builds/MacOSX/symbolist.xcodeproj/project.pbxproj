@@ -18,7 +18,6 @@
 		1107B3F51EF7D55D00E2DFA9 /* Symbol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44B718AF1EDD9D010039884E /* Symbol.cpp */; };
 		1107B3F61EF7D55D00E2DFA9 /* Score.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38DC1EC5BC4F006FF4A1 /* Score.cpp */; };
 		1107B3F71EF7D55D00E2DFA9 /* TextGlyphComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1107B3DB1EF1751900E2DFA9 /* TextGlyphComponent.cpp */; };
-		1107B3F81EF7D55D00E2DFA9 /* LinePathComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D86B851EEAEF2000681F6D /* LinePathComponent.cpp */; };
 		1107B3F91EF7D55D00E2DFA9 /* PathInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1107B3E71EF5388500E2DFA9 /* PathInfo.cpp */; };
 		1107B3FA1EF7D55D00E2DFA9 /* PathHandleComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1107B3DF1EF2D2BA00E2DFA9 /* PathHandleComponent.cpp */; };
 		1107B3FB1EF7D55D00E2DFA9 /* PathBaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */; };
@@ -62,8 +61,6 @@
 		11CE00581EC328EC00E4F624 /* SymbolistMainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00531EC328EC00E4F624 /* SymbolistMainComponent.cpp */; };
 		11CE005E1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */; };
 		11CE005F1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */; };
-		11D86B871EEAEF2000681F6D /* LinePathComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D86B851EEAEF2000681F6D /* LinePathComponent.cpp */; };
-		11D86B881EEAEF2000681F6D /* LinePathComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D86B851EEAEF2000681F6D /* LinePathComponent.cpp */; };
 		11D86B8B1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */; };
 		11D86B8C1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */; };
 		27D1022754DD8B9BF3100BB7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A18855981466E65AB497B9D /* QuartzCore.framework */; };
@@ -136,8 +133,6 @@
 		11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreComponent.cpp; path = ../../Source/ScoreComponent.cpp; sourceTree = "<group>"; };
 		11CE005D1EC4B31200E4F624 /* ScoreComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreComponent.h; path = ../../Source/ScoreComponent.h; sourceTree = "<group>"; };
 		11CE00651EC4B90700E4F624 /* BaseComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BaseComponent.h; path = ../../Source/BaseComponent.h; sourceTree = "<group>"; };
-		11D86B851EEAEF2000681F6D /* LinePathComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LinePathComponent.cpp; path = ../../Source/LinePathComponent.cpp; sourceTree = "<group>"; };
-		11D86B861EEAEF2000681F6D /* LinePathComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LinePathComponent.h; path = ../../Source/LinePathComponent.h; sourceTree = "<group>"; };
 		11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PathBaseComponent.cpp; path = ../../Source/PathBaseComponent.cpp; sourceTree = "<group>"; };
 		11D86B8A1EEAEF7900681F6D /* PathBaseComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PathBaseComponent.h; path = ../../Source/PathBaseComponent.h; sourceTree = "<group>"; };
 		11D86B8F1EEAF9FD00681F6D /* BasicShapePathComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicShapePathComponents.h; path = ../../Source/BasicShapePathComponents.h; sourceTree = "<group>"; };
@@ -273,8 +268,6 @@
 			children = (
 				1107B3DB1EF1751900E2DFA9 /* TextGlyphComponent.cpp */,
 				1107B3DC1EF1751900E2DFA9 /* TextGlyphComponent.h */,
-				11D86B851EEAEF2000681F6D /* LinePathComponent.cpp */,
-				11D86B861EEAEF2000681F6D /* LinePathComponent.h */,
 				11D86B8F1EEAF9FD00681F6D /* BasicShapePathComponents.h */,
 				11CE00651EC4B90700E4F624 /* BaseComponent.h */,
 				118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */,
@@ -539,7 +532,6 @@
 				1107B3FD1EF7D55D00E2DFA9 /* SymbolGroupComponent.cpp in Sources */,
 				1186486D1EF7E68B00904672 /* include_juce_data_structures.mm in Sources */,
 				1107B3F41EF7D54E00E2DFA9 /* OSCIO.cpp in Sources */,
-				1107B3F81EF7D55D00E2DFA9 /* LinePathComponent.cpp in Sources */,
 				1107B3F61EF7D55D00E2DFA9 /* Score.cpp in Sources */,
 				1186489E1EFAC44100904672 /* ScoreCursor.cpp in Sources */,
 				1107B4011EF7D55D00E2DFA9 /* SymbolistComponent.cpp in Sources */,
@@ -584,7 +576,6 @@
 				11D86B8C1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */,
 				44C0729F1EC4AF8C0028D5F8 /* include_juce_osc.cpp in Sources */,
 				118648A31EFBB5D500904672 /* TimePointGUI.cpp in Sources */,
-				11D86B881EEAEF2000681F6D /* LinePathComponent.cpp in Sources */,
 				118648971EFA811800904672 /* TimePointArray.cpp in Sources */,
 				1107B3DE1EF1751900E2DFA9 /* TextGlyphComponent.cpp in Sources */,
 				1107B3E21EF2D45500E2DFA9 /* PathHandleComponent.cpp in Sources */,
@@ -619,7 +610,6 @@
 				11D86B8B1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */,
 				44C0729E1EC4AF870028D5F8 /* include_juce_osc.cpp in Sources */,
 				118648A21EFBB5D500904672 /* TimePointGUI.cpp in Sources */,
-				11D86B871EEAEF2000681F6D /* LinePathComponent.cpp in Sources */,
 				118648961EFA811800904672 /* TimePointArray.cpp in Sources */,
 				1107B3DD1EF1751900E2DFA9 /* TextGlyphComponent.cpp in Sources */,
 				1107B3E11EF2D2BA00E2DFA9 /* PathHandleComponent.cpp in Sources */,

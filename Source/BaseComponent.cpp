@@ -10,11 +10,6 @@ template <typename T> void printPoint(Point<T> point, String name = "point" )
     std::cout << name << " " << point.getX() << " " << point.getY() << "\n";
 }
 
-BaseComponent::BaseComponent(const Symbol &s) {}
-
-BaseComponent::~BaseComponent() {}
-// if ( getParentComponent() != NULL ) ((ScoreComponent*)getParentComponent())->removeSymbolComponent(this);
-
 
 bool BaseComponent::isTopLevelComponent()
 {

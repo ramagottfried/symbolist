@@ -4,11 +4,6 @@
 #include "PageComponent.h"
 #include "ScoreComponent.h"
 
-SymbolGroupComponent::SymbolGroupComponent( const Symbol& s ) : BaseComponent( s ) {}
-
-SymbolGroupComponent::~SymbolGroupComponent() {}
-
-
 
 void SymbolGroupComponent::paint ( Graphics& g )
 {

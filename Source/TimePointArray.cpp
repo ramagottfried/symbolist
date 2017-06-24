@@ -193,6 +193,9 @@ odot_bundle *TimePointArray::timePointToOSC(const SymbolTimePoint *tpoint  )
     const vector<Symbol*> vec = tpoint->symbols_at_time;
     
     OSCBundle bndl;
+    
+    bndl.addElement( OSCMessage("/time/lookup", (float)current_time));
+    
     int count = 0;
     String prefix = "/symbolsAtTime/";
     for (auto s : vec )
@@ -200,13 +203,17 @@ odot_bundle *TimePointArray::timePointToOSC(const SymbolTimePoint *tpoint  )
         // ignore symbols if after endpoint
         if( current_time <= s->getEndTime() )
         {
+            String s_prefix = prefix + String(count);
+            
+            bndl.addElement( OSCMessage( s_prefix + "/time/local", (current_time - s->getTime()) / s->getDuration() ) );
+            
             auto s_bndl = s->getOSCBundle();
 
             for ( auto osc : s_bndl )
             {
                 OSCMessage msg = osc.getMessage();
                 
-                String newaddr = prefix + String(count) + msg.getAddressPattern().toString();
+                String newaddr = s_prefix + msg.getAddressPattern().toString();
                 
                 msg.setAddressPattern(newaddr);
                 

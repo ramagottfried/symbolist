@@ -65,8 +65,7 @@ public:
     
     bool respondsToMouseEvents();
     
-    virtual float symbol_export_X(){ return getX(); }
-    virtual float symbol_export_Y(){ return getY(); }
+    virtual Rectangle<float> symbol_export_bounds(){ return getBounds().toFloat(); }
         
     // not very happy with therm "Symbol" here
     inline void setSymbolStrokeWeight( float s ){ strokeWeight = s; }

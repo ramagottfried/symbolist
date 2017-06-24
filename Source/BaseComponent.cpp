@@ -56,13 +56,15 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
 {
     int messages_added = 0;
     
+    auto b = symbol_export_bounds();
+    
     s->addOSCMessage ((String(base_address) += "/type") ,   getSymbolTypeStr());
-    s->addOSCMessage ((String(base_address) += "/x") ,      symbol_export_X());
-    s->addOSCMessage ((String(base_address) += "/y") ,      symbol_export_Y());
-    s->addOSCMessage ((String(base_address) += "/w") ,      (float) getWidth());
-    s->addOSCMessage ((String(base_address) += "/h") ,      (float) getHeight());
-    s->addOSCMessage ((String(base_address) += "/time/start") , symbol_export_X() * 0.01f );
-    s->addOSCMessage ((String(base_address) += "/duration"),    (float) getWidth() * 0.01f );
+    s->addOSCMessage ((String(base_address) += "/x") ,      b.getX() );
+    s->addOSCMessage ((String(base_address) += "/y") ,      b.getY() );
+    s->addOSCMessage ((String(base_address) += "/w") ,      b.getWidth() );
+    s->addOSCMessage ((String(base_address) += "/h") ,      b.getHeight() );
+    s->addOSCMessage ((String(base_address) += "/time/start") , b.getX() * 0.01f );
+    s->addOSCMessage ((String(base_address) += "/duration"),    b.getWidth() * 0.01f );
     
     messages_added += 7;
     

@@ -15,7 +15,14 @@ public:
     static void printPath( Path p, const char* name = "path" );
     
     int addSymbolMessages(Symbol* s, const String &base_address) override;
-    void importFromSymbol(const Symbol &s) override;
+    virtual void importFromSymbol(const Symbol &s) override;
+    
+    String getSymbolTypeStr() const override { return "path"; }
+    
+    Rectangle<float> symbol_export_bounds() override
+    {
+        return m_path_bounds;
+    }
     
     void addHandle( PathHandle::handleType type, float x, float y );
     void removeHandle(PathHandle* h);

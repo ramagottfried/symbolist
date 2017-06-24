@@ -11,27 +11,29 @@ class BasicShapePathComponent : public PathBaseComponent
     BasicShapePathComponent() = default;
     ~BasicShapePathComponent() = default;
     
-    float symbol_export_X() override { return getX();/* + getWidth()/2;*/ }
-    float symbol_export_Y() override { return getY() + getHeight()/2; }
+    Rectangle<float> symbol_export_bounds() override
+    {
+        auto b = getBounds().toFloat();
+        return Rectangle<float>( b.getX(), b.getY() + b.getHeight()/2, b.getWidth(), b.getHeight() );
+    }
     
     void setBoundsFromSymbol( float x, float y , float w , float h) override final
     {
-//        setBounds( x - (w * 0.5) , y - (h * 0.5), w , h);
         setBounds( x, y - (h * 0.5), w , h);
-
     }
 
     int addSymbolMessages( Symbol* s, const String &base_address ) override
     {
         int messages_added = 0;
-        
+     
+        auto b = symbol_export_bounds();
         s->addOSCMessage ((String(base_address) += "/type") ,   getSymbolTypeStr());
-        s->addOSCMessage ((String(base_address) += "/x") ,      symbol_export_X());
-        s->addOSCMessage ((String(base_address) += "/y") ,      symbol_export_Y());
-        s->addOSCMessage ((String(base_address) += "/w") ,      (float) getWidth());
-        s->addOSCMessage ((String(base_address) += "/h") ,      (float) getHeight());
-        s->addOSCMessage ((String(base_address) += "/time/start") , symbol_export_X() * 0.01f );
-        s->addOSCMessage ((String(base_address) += "/duration"),    (float) getWidth() * 0.01f );
+        s->addOSCMessage ((String(base_address) += "/x") ,      b.getX() );
+        s->addOSCMessage ((String(base_address) += "/y") ,      b.getY() );
+        s->addOSCMessage ((String(base_address) += "/w") ,      b.getWidth() );
+        s->addOSCMessage ((String(base_address) += "/h") ,      b.getHeight() );
+        s->addOSCMessage ((String(base_address) += "/time/start") , b.getX() * 0.01f );
+        s->addOSCMessage ((String(base_address) += "/duration"),    b.getWidth() * 0.01f );
         
         messages_added += 7;
         

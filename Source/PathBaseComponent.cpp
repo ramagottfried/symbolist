@@ -562,6 +562,7 @@ void PathBaseComponent::mouseAddClick ( const MouseEvent& event )
             path_handles.getLast()->setEnd(true);
             updatePathPoints();
         }
+        updatePathBounds();
         repaint();
     }
 }

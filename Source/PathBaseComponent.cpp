@@ -474,8 +474,6 @@ void PathBaseComponent::mouseUp(const MouseEvent& event)
     {
         drawing = true;
     }
-    
-    reportModification();
 }
 
 

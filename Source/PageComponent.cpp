@@ -60,6 +60,7 @@ void PageComponent::exitEditMode( )
     {
         edited_component->recursiveShrinkBounds();
         edited_component->setEditMode(false);
+        edited_component->reportModification();
         edited_component = NULL;
     }
 }

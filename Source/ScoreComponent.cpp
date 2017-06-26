@@ -62,6 +62,16 @@ void ScoreComponent::clearAllSubcomponents()
 
 
 
+void ScoreComponent::reportModificationForSelectedSymbols()
+{
+    for( SymbolistComponent *c : selected_components )
+    {
+        ((BaseComponent*)c)->reportModification();
+    }
+}
+
+
+
 /*****************
  * Custom lasso tool
  *****************/

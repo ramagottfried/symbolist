@@ -38,6 +38,8 @@ public:
     void removeSubcomponent( SymbolistComponent *c ) override;
     void clearAllSubcomponents( ) override;
     
+    void reportModificationForSelectedSymbols();
+    
     void deleteSelectedSymbols();
     void groupSelectedSymbols();
     void ungroupSelectedSymbols();

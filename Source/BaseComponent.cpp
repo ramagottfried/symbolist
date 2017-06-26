@@ -299,7 +299,7 @@ void BaseComponent::mouseUp( const MouseEvent& event )
                 resizableBorder->setVisible( true ); // here instead of the select callback makes it only when the symbol is clicked alone
                 repaint();
             }
-            reportModification();
+            ((ScoreComponent*) getParentComponent())->reportModificationForSelectedSymbols();
         }
         else
         {

@@ -140,9 +140,17 @@ void SymbolistHandler::symbolistAPI_setOneSymbol( odot_bundle *bundle)
     Symbol *s = new Symbol();
     s->importFromOSC( bundle );
     score.addSymbol(s);
-    BaseComponent* c = makeComponentFromSymbol( s , false);
-    main_component->getPageComponent()->addSubcomponent(c);
-    c->setScoreSymbolPointer( s );
+    
+    if ( main_component != NULL )
+    {
+        BaseComponent* c = makeComponentFromSymbol( s , false);
+        main_component->getPageComponent()->addSubcomponent(c);
+        c->setScoreSymbolPointer( s );
+    }
+    else
+    {
+        cout << "main component is NULL" << endl;
+    }
 }
 
 void SymbolistHandler::symbolistAPI_setSymbols(int n, odot_bundle **bundle_array)

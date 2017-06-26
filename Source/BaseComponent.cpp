@@ -58,13 +58,13 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
     
     auto b = symbol_export_bounds();
     
-    s->addOSCMessage ((String(base_address) += "/type") ,   getSymbolTypeStr());
-    s->addOSCMessage ((String(base_address) += "/x") ,      b.getX() );
-    s->addOSCMessage ((String(base_address) += "/y") ,      b.getY() );
-    s->addOSCMessage ((String(base_address) += "/w") ,      b.getWidth() );
-    s->addOSCMessage ((String(base_address) += "/h") ,      b.getHeight() );
-    s->addOSCMessage ((String(base_address) += "/time/start") , b.getX() * 0.01f );
-    s->addOSCMessage ((String(base_address) += "/duration"),    b.getWidth() * 0.01f );
+    s->addOSCMessage ((String(base_address) += "/type") ,       getSymbolTypeStr());
+    s->addOSCMessage ((String(base_address) += "/x") ,          b.getX() );
+    s->addOSCMessage ((String(base_address) += "/y") ,          b.getY() );
+    s->addOSCMessage ((String(base_address) += "/w") ,          b.getWidth() );
+    s->addOSCMessage ((String(base_address) += "/h") ,          b.getHeight() );
+    s->addOSCMessage ((String(base_address) += "/time/start") , s->pixelsToTime( b.getX() ) );
+    s->addOSCMessage ((String(base_address) += "/duration"),    s->pixelsToTime( b.getWidth() ) );
     
     messages_added += 7;
     
@@ -92,15 +92,26 @@ void BaseComponent::importFromSymbol( const Symbol &s )
         String typeStr = s.getOSCMessageValue(typeMessagePos).getString();
         cout << "Importing BaseComponent from Symbol: " << typeStr << endl;
         
-        float x = s.getOSCMessageValue("/x").getFloat32();
-        float y = s.getOSCMessageValue("/y").getFloat32();
-        float w = s.getOSCMessageValue("/w").getFloat32();
-        float h = s.getOSCMessageValue("/h").getFloat32();
         
-        cout << "x " << x  << " y " << y << " w " << w << endl;
-
+        int x_pos = s.getOSCMessagePos("/x");
+        int y_pos = s.getOSCMessagePos("/y");
+        int w_pos = s.getOSCMessagePos("/w");
+        int h_pos = s.getOSCMessagePos("/h");
         
-        setBoundsFromSymbol( x , y , w , h);
+        if( x_pos != -1 && y_pos != -1 && w_pos != -1 && h_pos != -1  )
+        {
+            OSCBundle bundle = s.getOSCBundle();
+            float x = Symbol::getOSCValueAsFloat( bundle[x_pos].getMessage()[0] );
+            float y = Symbol::getOSCValueAsFloat( bundle[y_pos].getMessage()[0] );
+            float w = Symbol::getOSCValueAsFloat( bundle[w_pos].getMessage()[0] );
+            float h = Symbol::getOSCValueAsFloat( bundle[h_pos].getMessage()[0] );
+            
+            cout << "x " << x  << " y " << y << " w " << w << endl;
+            
+            setBoundsFromSymbol( x , y , w , h);
+        }
+        else
+            cout << "***** couldn't find x y w or h values " << endl;
     }
 }
 

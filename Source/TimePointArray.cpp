@@ -37,7 +37,7 @@ void TimePointArray::removeSymbolTimePoints( Symbol *s)
     float t = start_t;
     float end_t = s->getEndTime();
     
-    cout << s << " " << t << " " << end_t << endl;
+//    cout << s << " " << t << " " << end_t << endl;
     
     vector<SymbolTimePoint *> points_to_remove;
     
@@ -58,7 +58,7 @@ void TimePointArray::removeSymbolTimePoints( Symbol *s)
         {
             for (auto it = vec->begin(); it != vec->end(); it++ )
             {
-                cout << "start/end test for " << (*it) << " t " << t << " == " << (*it)->getTime() << " " << (*it)->getEndTime() << endl;
+              //  cout << "start/end test for " << (*it) << " t " << t << " == " << (*it)->getTime() << " " << (*it)->getEndTime() << endl;
                 if( (*it)->getTime() == t || (*it)->getEndTime() == t )
                     other_start_or_end = 1;
             }
@@ -67,7 +67,7 @@ void TimePointArray::removeSymbolTimePoints( Symbol *s)
 
         }
         
-        cout << "vector size " << vec->size() << " at " << t << " " << other_start_or_end  <<  " " << end_t << endl;
+    //    cout << "vector size " << vec->size() << " at " << t << " " << other_start_or_end  <<  " " << end_t << endl;
         if( vec->size() == 0 )
             points_to_remove.emplace_back( (*this)[idx] );
         
@@ -80,7 +80,7 @@ void TimePointArray::removeSymbolTimePoints( Symbol *s)
         removeObject( *rm, true );
     }
     
-    printTimePoints();
+//    printTimePoints();
 }
 
 
@@ -103,7 +103,7 @@ void TimePointArray::addSymbolTimePoints( Symbol *s )
     }
     
     
-    printTimePoints();
+//    printTimePoints();
 
 }
 
@@ -190,21 +190,24 @@ odot_bundle* symbolBundleToOdot( const OSCBundle& osc )
 
 Point<float> TimePointArray::lookupPathPoint( const Symbol *s, const float t )
 {
-    Point<float> xy;
-    
     OSCBundle bndl = s->getOSCBundle();
     
-    s->getOSCValueAsInt( OSCArgument("/numsegments") );
+    int path_oscpos = s->getOSCMessagePos("/path");
+    if( s->symbol_parse_error( path_oscpos, "/path" ) ) return Point<float>();
     
-    float pixel_time = timeToPixels( t );
+    int pathlen_oscpos = s->getOSCMessagePos("/pathlength");
+    if( s->symbol_parse_error( pathlen_oscpos, "/pathlength" ) ) return Point<float>();
     
-    // for first impl, duration of path will be the width of the bounds...
-    for( auto osc : bndl )
-    {
-        
-    }
+    OSCBundle b = s->getOSCBundle();
     
-    return xy;
+    String path_str = b[path_oscpos].getMessage()[0].getString();
+    Path p;
+    p.restoreFromString( path_str );
+
+    float length = s->getOSCValueAsFloat( b[pathlen_oscpos].getMessage()[0] );
+    float path_time = t * length;;
+    
+    return p.getPointAlongPath( path_time );
 }
 
 odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint  )
@@ -230,6 +233,8 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                 if( s->getType() == "path" )
                 {
                     auto xy = lookupPathPoint( s, local_time );
+                    bndl.addElement( OSCMessage( s_prefix + "/path/lookup/xy", xy.x, xy.y ) );
+
                 }
                 
                 bndl.addElement( OSCMessage( s_prefix + "/time/local", local_time ) );
@@ -296,7 +301,7 @@ int TimePointArray::lookupTimePoint( float t )
         {
             p_time = (*this)[ idx ]->time;
             
-            if (p_time < t) // if point time is <, we want the previous one
+            if (p_time < t) // if point time is <, we want this one
             {
                 current_time = t;
                 current_point = idx;

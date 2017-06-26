@@ -78,15 +78,6 @@ public:
         std::cout << juce::Time::currentTimeMillis() << " " << getSymbolTypeStr() << " " << this << " " << func << std::endl;
     }
     
-    inline bool symbol_parse_error( int p, const String& address )
-    {
-        if( p == -1 )
-        {
-            std::cout << "failed to parse symbol:\t" << address << std::endl;
-            return true; // there is an error
-        }
-        return false;
-    }
     
     inline void setBoundsFloatRect( Rectangle<float> r )
     {

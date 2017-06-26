@@ -37,7 +37,7 @@ void TimePointArray::removeSymbolTimePoints( Symbol *s)
     float t = start_t;
     float end_t = s->getEndTime();
     
-    cout << s << " " << t << " " << end_t << endl;
+//    cout << s << " " << t << " " << end_t << endl;
     
     vector<SymbolTimePoint *> points_to_remove;
     
@@ -58,7 +58,7 @@ void TimePointArray::removeSymbolTimePoints( Symbol *s)
         {
             for (auto it = vec->begin(); it != vec->end(); it++ )
             {
-                cout << "start/end test for " << (*it) << " t " << t << " == " << (*it)->getTime() << " " << (*it)->getEndTime() << endl;
+              //  cout << "start/end test for " << (*it) << " t " << t << " == " << (*it)->getTime() << " " << (*it)->getEndTime() << endl;
                 if( (*it)->getTime() == t || (*it)->getEndTime() == t )
                     other_start_or_end = 1;
             }
@@ -67,7 +67,7 @@ void TimePointArray::removeSymbolTimePoints( Symbol *s)
 
         }
         
-        cout << "vector size " << vec->size() << " at " << t << " " << other_start_or_end  <<  " " << end_t << endl;
+    //    cout << "vector size " << vec->size() << " at " << t << " " << other_start_or_end  <<  " " << end_t << endl;
         if( vec->size() == 0 )
             points_to_remove.emplace_back( (*this)[idx] );
         
@@ -80,7 +80,7 @@ void TimePointArray::removeSymbolTimePoints( Symbol *s)
         removeObject( *rm, true );
     }
     
-    printTimePoints();
+//    printTimePoints();
 }
 
 
@@ -103,7 +103,7 @@ void TimePointArray::addSymbolTimePoints( Symbol *s )
     }
     
     
-    printTimePoints();
+//    printTimePoints();
 
 }
 
@@ -301,7 +301,7 @@ int TimePointArray::lookupTimePoint( float t )
         {
             p_time = (*this)[ idx ]->time;
             
-            if (p_time < t) // if point time is <, we want the previous one
+            if (p_time < t) // if point time is <, we want this one
             {
                 current_time = t;
                 current_point = idx;

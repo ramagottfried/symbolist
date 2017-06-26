@@ -70,17 +70,29 @@ void PathBaseComponent::resized()
 
 int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
 {
+    
     // adds the basic messages
-    int messages_added = BaseComponent::addSymbolMessages( s, base_address );
+    s->addOSCMessage ((String(base_address) += "/type") ,       getSymbolTypeStr());
+    s->addOSCMessage ((String(base_address) += "/x") ,          getX() );
+    s->addOSCMessage ((String(base_address) += "/y") ,          getY() );
+    s->addOSCMessage ((String(base_address) += "/w") ,          m_path_bounds.getWidth() );
+    s->addOSCMessage ((String(base_address) += "/h") ,          m_path_bounds.getHeight() );
+    s->addOSCMessage ((String(base_address) += "/time/start") , s->pixelsToTime( m_path_origin.getX() ) );
+    s->addOSCMessage ((String(base_address) += "/duration"),    s->pixelsToTime( m_path_bounds.getWidth() ) );
     
     Path p = m_path;
     p.applyTransform( AffineTransform().translated( -m_path_origin.getX(), -m_path_origin.getY()) );
-    s->addOSCMessage( OSCMessage( base_address + "/path", p.toString()) );
+    s->addOSCMessage( OSCMessage( base_address + "/path",       p.toString()) );
     s->addOSCMessage( OSCMessage( base_address + "/pathlength", p.getLength()) );
     
-    messages_added += 2;
- 
-//    internal_symbol.printBundle();
+    int messages_added = 9;
+
+    std::cout << "EXPORT " << s << " PATH to OSC" << std::endl;
+    printRect( m_path_bounds , "current m_path_bounds");
+    printPoint(m_path_origin, "path origin");
+    s->printBundle();
+    
+    
     return messages_added;
 }
 
@@ -94,20 +106,21 @@ void PathBaseComponent::importFromSymbol(const Symbol &s)
 
     BaseComponent::importFromSymbol(s);
 
-//    std::cout << "IMPORT PATH" << std::endl;
-//    std::cout << s.getOSCMessageValue(String("/type")).getString() << std::endl;
+    std::cout << "IMPORT PATH" << std::endl;
+    std::cout << s.getOSCMessageValue(String("/type")).getString() << std::endl;
 
     int path_oscpos = s.getOSCMessagePos("/path");
     if( s.symbol_parse_error( path_oscpos, "/path" ) ) return;
-
- //   int pathlen_oscpos = s.getOSCMessagePos("/pathlength");
- //   if( symbol_parse_error( pathlen_oscpos, "/pathlength" ) ) return;
     
     OSCBundle b = s.getOSCBundle();
 
     m_path.clear();
     String path_str = b[path_oscpos].getMessage()[0].getString();
     m_path.restoreFromString( path_str );
+    
+    printPoint( getPosition(), "new path" );
+    m_path.applyTransform( AffineTransform().translated( getX(), getY() ) );
+    updatePathBounds();
 
 }
 

@@ -74,12 +74,13 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
     int messages_added = BaseComponent::addSymbolMessages( s, base_address );
     
     float ax = -111, ay = -111, startx = -111, starty = -111;
+    float x_pos = m_path_origin.getX();
+    float y_pos = m_path_origin.getY();
     
     int count = 0;
     Path::Iterator it(m_path);
-    
     const String seg_baseaddr = base_address + "/segment/";
-    
+
     while( it.next() )
     {
         const String seg_addr = seg_baseaddr + String(count);
@@ -94,8 +95,8 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
         else if (it.elementType == it.lineTo)
         {
             s->addOSCMessage( OSCMessage( seg_addr + "/type",      (String)"line" ) );
-            s->addOSCMessage( OSCMessage( seg_addr + "/x_points",  ax,  it.x1 ) );
-            s->addOSCMessage( OSCMessage( seg_addr + "/y_points",  ay,  it.y1 ) );
+            s->addOSCMessage( OSCMessage( seg_addr + "/x_points",  ax - x_pos,  it.x1 - x_pos ) );
+            s->addOSCMessage( OSCMessage( seg_addr + "/y_points",  ay - y_pos,  it.y1 - y_pos ) );
             messages_added += 3;
             count++;
 
@@ -106,8 +107,8 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
         else if (it.elementType == it.quadraticTo)
         {
             s->addOSCMessage( OSCMessage( seg_addr + "/type",      (String)"quadratic" ) );
-            s->addOSCMessage( OSCMessage( seg_addr + "/x_points",  ax,  it.x1, it.x2 ) );
-            s->addOSCMessage( OSCMessage( seg_addr + "/y_points",  ay,  it.y1, it.y2 ) );
+            s->addOSCMessage( OSCMessage( seg_addr + "/x_points",  ax - x_pos,  it.x1 - x_pos, it.x2 - x_pos ) );
+            s->addOSCMessage( OSCMessage( seg_addr + "/y_points",  ay - y_pos,  it.y1 - y_pos, it.y2 - y_pos ) );
             messages_added += 3;
             count++;
 
@@ -118,8 +119,8 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
         else if (it.elementType == it.cubicTo)
         {
             s->addOSCMessage( OSCMessage( seg_addr + "/type",      (String)"cubic" ) );
-            s->addOSCMessage( OSCMessage( seg_addr + "/x_points",  ax,  it.x1, it.x2, it.x3 ) );
-            s->addOSCMessage( OSCMessage( seg_addr + "/y_points",  ay,  it.y1, it.y2, it.y3 ) );
+            s->addOSCMessage( OSCMessage( seg_addr + "/x_points",  ax - x_pos,  it.x1 - x_pos, it.x2 - x_pos, it.x3 - x_pos ) );
+            s->addOSCMessage( OSCMessage( seg_addr + "/y_points",  ay - y_pos,  it.y1 - y_pos, it.y2 - y_pos, it.y3 - y_pos ) );
             messages_added += 3;
             count++;
 
@@ -129,8 +130,8 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
         else if (it.elementType == it.closePath)
         {
             s->addOSCMessage( OSCMessage( seg_addr + "/type",      (String)"close" ) );
-            s->addOSCMessage( OSCMessage( seg_addr + "/x_points",  ax,  startx ) );
-            s->addOSCMessage( OSCMessage( seg_addr + "/y_points",  ay,  starty ) );
+            s->addOSCMessage( OSCMessage( seg_addr + "/x_points",  ax - x_pos,  startx - x_pos ) );
+            s->addOSCMessage( OSCMessage( seg_addr + "/y_points",  ay - y_pos,  starty - y_pos ) );
             messages_added += 3;
             count++;
 
@@ -140,7 +141,7 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
 
     }
     
-    s->addOSCMessage( OSCMessage(base_address + "/num_segments", count ) );
+    s->addOSCMessage( OSCMessage(base_address + "/numSegments", count ) );
     messages_added += 1;
  
 //    internal_symbol.printBundle();
@@ -388,7 +389,7 @@ void PathBaseComponent::removeHandles()
     }
     path_handles.clear();
     
-    if ( rotation_handle != NULL ) delete rotation_handle;
+    if ( getMainComponent() != NULL && rotation_handle != NULL ) delete rotation_handle;
 }
 
 

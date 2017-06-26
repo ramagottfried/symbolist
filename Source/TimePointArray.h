@@ -73,9 +73,20 @@ public:
     }
 
     odot_bundle *getSymbolsAtTime( float t );
-    odot_bundle *timePointToOSC(const SymbolTimePoint *tpoint);
+    odot_bundle *timePointStreamToOSC(const SymbolTimePoint *tpoint);
     
     int lookupTimePoint( float t );
+    Point<float> lookupPathPoint( const Symbol *s, const float t );
+    
+    inline float pixelsToTime( float f )
+    {
+        return f * 0.01f;
+    }
+    
+    inline float timeToPixels( float t )
+    {
+        return t * 100.0f;
+    }
     
 private:
     

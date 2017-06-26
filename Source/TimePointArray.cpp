@@ -188,44 +188,72 @@ odot_bundle* symbolBundleToOdot( const OSCBundle& osc )
     return bundle;
 }
 
-odot_bundle *TimePointArray::timePointToOSC(const SymbolTimePoint *tpoint  )
+Point<float> TimePointArray::lookupPathPoint( const Symbol *s, const float t )
 {
-    const vector<Symbol*> vec = tpoint->symbols_at_time;
+    Point<float> xy;
     
+    OSCBundle bndl = s->getOSCBundle();
+    
+    s->getOSCValueAsInt( OSCArgument("/numsegments") );
+    
+    float pixel_time = timeToPixels( t );
+    
+    // for first impl, duration of path will be the width of the bounds...
+    for( auto osc : bndl )
+    {
+        
+    }
+    
+    return xy;
+}
+
+odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint  )
+{
     OSCBundle bndl;
-    
     bndl.addElement( OSCMessage("/time/lookup", (float)current_time));
     
-    int count = 0;
-    String prefix = "/symbolsAtTime/";
-    for (auto s : vec )
+    if( tpoint != nullptr )
     {
-        // ignore symbols if after endpoint
-        if( current_time <= s->getEndTime() )
-        {
-            String s_prefix = prefix + String(count);
-            
-            bndl.addElement( OSCMessage( s_prefix + "/time/local", (current_time - s->getTime()) / s->getDuration() ) );
-            
-            auto s_bndl = s->getOSCBundle();
+        const vector<Symbol*> vec = tpoint->symbols_at_time;
 
-            for ( auto osc : s_bndl )
+        int count = 0;
+        String prefix = "/symbolsAtTime/";
+        for (auto s : vec )
+        {
+            // ignore symbols if after endpoint
+            if( current_time <= s->getEndTime() )
             {
-                OSCMessage msg = osc.getMessage();
+                String s_prefix = prefix + String(count);
                 
-                String newaddr = s_prefix + msg.getAddressPattern().toString();
+                float local_time = (current_time - s->getTime()) / s->getDuration() ;
                 
-                msg.setAddressPattern(newaddr);
+                if( s->getType() == "path" )
+                {
+                    auto xy = lookupPathPoint( s, local_time );
+                }
                 
-                bndl.addElement(msg);
+                bndl.addElement( OSCMessage( s_prefix + "/time/local", local_time ) );
+                
+                auto s_bndl = s->getOSCBundle();
 
+                for ( auto osc : s_bndl )
+                {
+                    OSCMessage msg = osc.getMessage();
+                    
+                    String newaddr = s_prefix + msg.getAddressPattern().toString();
+                    
+                    msg.setAddressPattern(newaddr);
+                    
+                    bndl.addElement(msg);
+
+                }
+                
+                count++;
             }
-            
-            count++;
-        }
-        else
-        {
-//             cout << "skipped sym " << s << " endpt: " << s->getEndTime() << endl;
+            else
+            {
+    //             cout << "skipped sym " << s << " endpt: " << s->getEndTime() << endl;
+            }
         }
     }
     
@@ -293,20 +321,18 @@ odot_bundle *TimePointArray::getSymbolsAtTime( float t )
     if (size() == 0 )
         return nullptr;
     
-    int idx = lookupTimePoint( t );
+    int idx = lookupTimePoint( t ); //<< also sets current time
     current_point = idx;
 
-//    cout << "timepoint number: " << current_point << endl;
     if( idx >= 0 )
     {
-        auto tpoint = (*this)[idx];
-
-      //  cout << "for " << t <<" closest timepoint: " << idx << " at " << tpoint->time << " with: " << tpoint->symbols_at_time.size() << " overlaping" << endl;
+        SymbolTimePoint *tpoint = (*this)[idx];
         
-        return timePointToOSC( tpoint );
+        
+        return timePointStreamToOSC( tpoint );
     }
     
-    return nullptr;
+    return timePointStreamToOSC( nullptr );
 }
 
 int TimePointArray::getTimePointInsertIndex( float t, bool& match )

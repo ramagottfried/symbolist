@@ -267,11 +267,13 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
             cout << "Unknown symbol type : " << typeStr << endl;
             c = NULL;
         }
+        
         if (c != NULL)
         {
             c->importFromSymbol( *s ) ;
             if ( attach_the_symbol ) c->setScoreSymbolPointer( s );
         }
+        
         return c;
     }
 }
@@ -280,7 +282,8 @@ void SymbolistHandler::addComponentsFromScore ( )
 {
     // recreate and add components from score symbols
     std::cout << "ADDING " << score.getSize() << " SYMBOLS" << std::endl;
-    for (int i = 0; i < score.getSize(); i++) {
+    for (int i = 0; i < score.getSize(); i++)
+    {
         Symbol *s = score.getSymbol(i);
         BaseComponent* c = makeComponentFromSymbol( s, false );
         main_component->getPageComponent()->addSubcomponent(c);

@@ -18,6 +18,8 @@ typedef struct _symbolist
     void*       player_outlet;
     void*       dump_outlet;
     
+    bool        window_is_open;
+    
     t_critical  lock;
     
 } t_symbolist;
@@ -46,7 +48,7 @@ void symbolist_closecallback ( void * sc )
     {
         if( x->symbolist_handler == sc )
         {
-            x->symbolist_handler = NULL;
+            x->window_is_open = false;
         }
     }
 }
@@ -133,10 +135,10 @@ void symbolist_open_window( t_symbolist *x )
 
 void symbolist_qelem_open_window( t_symbolist *x )
 {
-    if ( x->symbolist_handler)
+    if ( !x->window_is_open )
     {
         symbolistOpenWindow( x->symbolist_handler );
-        //   symbolistRegisterCloseCallback( x->symbolist_handler, &symbolist_closecallback );
+         x->window_is_open = true;
     }
     else
         symbolistWindowToFront( x->symbolist_handler );
@@ -184,10 +186,15 @@ void *symbolist_new(t_symbol *s, long argc, t_atom *argv)
         
         critical_new( &x->lock );
         
+        x->window_is_open = 0;
+        
         x->m_qelem_setTime = qelem_new((t_object *)x, (method)symbolist_qset_time);
         x->m_qelem_open = qelem_new((t_object *)x, (method)symbolist_qelem_open_window);
         x->dump_outlet = outlet_new(x, "FullPacket" );
         x->player_outlet = outlet_new(x, "FullPacket" );
+        
+        symbolistRegisterCloseCallback( x->symbolist_handler, &symbolist_closecallback );
+
     }
     return (x);
 }

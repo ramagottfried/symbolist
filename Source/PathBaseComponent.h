@@ -21,7 +21,7 @@ public:
     
     Rectangle<float> symbol_export_bounds() override
     {
-        return m_path_bounds;
+        return m_path_bounds.expanded( strokeType.getStrokeThickness() * 0.5 );
     }
     
     void addHandle( PathHandle::handleType type, float x, float y );

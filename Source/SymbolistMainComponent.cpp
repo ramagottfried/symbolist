@@ -77,7 +77,8 @@ void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
  ***************************/
 bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
 {
-  //  String desc = key.getTextDescription();
+    String desc = key.getTextDescription();
+    cout << "keyPressed: " << desc << endl;;
    
     if(         key == KeyPress ('g', ModifierKeys::commandModifier, 0)) { scoreView.getEditedComponent()->groupSelectedSymbols(); }
     

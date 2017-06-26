@@ -92,7 +92,7 @@ UI_EditType SymbolistComponent::getMainEditMode()
     }
     else
     {
-        std::cout << "Warning: trying to get the edit_mode => MainComponent not found.." << std::endl;
+        std::cout << "Warning: trying to get the Main Edit Mode => MainComponent not found.." << std::endl;
         return UI_EditType::selection;
     }
 }
@@ -105,7 +105,7 @@ UI_DrawType SymbolistComponent::getMainDrawMode()
     }
     else
     {
-        std::cout << "Warning: trying to get the edit_mode => MainComponent not found.." << std::endl;
+        std::cout << "Warning: trying to get the Main Draw Mode => MainComponent not found.." << std::endl;
         return UI_DrawType::free_draw ;
     }
 }

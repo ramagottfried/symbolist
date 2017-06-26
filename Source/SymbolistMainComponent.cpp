@@ -84,7 +84,7 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
     
     else if( desc == "command + U" ) { scoreView.getEditedComponent()->ungroupSelectedSymbols(); }
     
-    else if ( desc == "backspace" ) { scoreView.getEditedComponent()->deleteSelectedSymbols(); }
+    else if ( desc == "backspace" ) { scoreView.getEditedComponent()->deleteSelectedComponents(); }
     
     else if ( desc == "C") { // would be better to type a number and that selects the nth palete item..
         symbolist_handler->setCurrentSymbol(0);

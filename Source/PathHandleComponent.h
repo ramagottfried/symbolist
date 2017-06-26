@@ -27,6 +27,7 @@ public:
     void mouseDoubleClick(const MouseEvent& event) override;
 
     handleType getHandleType() { return h_type; }
+    void setHandleType(handleType type) { h_type = type ; }
     bool isClosing() { return closing; }
     void setClosing(bool val) { closing = val; }
     bool isEnd() { return end; }

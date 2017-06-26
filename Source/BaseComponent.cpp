@@ -139,8 +139,6 @@ bool BaseComponent::isInEditMode()
     return in_edit_mode;
 }
 
-void BaseComponent::setSeleted(bool val) { is_selected = val; }
-bool BaseComponent::isSelected() { return is_selected; }
 
 const Colour BaseComponent::getCurrentColor()
 {
@@ -234,7 +232,6 @@ void BaseComponent::mouseMove( const MouseEvent& event )
 
 void BaseComponent::mouseDown( const MouseEvent& event )
 {
-    
     m_down = event.position;
     
     if ( in_edit_mode ) ScoreComponent::mouseDown(event);
@@ -245,18 +242,7 @@ void BaseComponent::mouseDown( const MouseEvent& event )
         
         if ( respondsToMouseEvents() )
         {
-            if ( event.mods.isShiftDown() )
-            {
-                if ( isSelected() ) parent->removeFromSelection(this);
-                else parent->addToSelection(this);
-            } else {
-                if ( ! isSelected() )
-                {
-                    parent->unselectAllComponents();
-                    parent->addToSelection(this);
-                }
-            }
-            
+            mouseDownSelection(event);
         } else {
             parent->mouseDown(event.getEventRelativeTo(parent));
         }
@@ -276,7 +262,7 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
         {
             if( is_selected && (getMainEditMode() == selection ) )
             {
-                parent->translateSelectedSymbols( (event.position - m_down).toInt() );
+                parent->translateSelectedComponents( (event.position - m_down).toInt() );
             }
         }
         else

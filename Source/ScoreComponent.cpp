@@ -153,7 +153,7 @@ void SymbolistLasso::paint ( Graphics &g)
  * User actions
  **************************/
 
-void ScoreComponent::deleteSelectedSymbols()
+void ScoreComponent::deleteSelectedComponents()
 {
     vector< SymbolistComponent *> items;
     
@@ -263,13 +263,11 @@ void ScoreComponent::ungroupSelectedSymbols()
 }
 
 
-void ScoreComponent::translateSelectedSymbols( Point<int> delta_xy )
+void ScoreComponent::translateSelectedComponents( Point<int> delta_xy )
 {
-    //std::cout << "TRANSLATE IN " << getComponentID() << std::endl;
     for ( auto c : selected_components )
     {
-        auto b = c->getBounds();
-        c->setTopLeftPosition( b.getPosition() + delta_xy );
+        c->setTopLeftPosition( c->getPosition() + delta_xy );
     }
 }
 

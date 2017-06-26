@@ -104,9 +104,7 @@ public:
     
     virtual void setEditMode(bool val);
     bool isInEditMode();
-    virtual void setSeleted(bool val);
-    bool isSelected();
-
+    
 protected:
     
     // score structure

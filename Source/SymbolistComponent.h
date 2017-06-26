@@ -29,6 +29,7 @@ public:
     UI_DrawType getMainDrawMode();
     virtual void selectComponent();
     virtual void deselectComponent();
+    bool componentSelected();
     
     const size_t    getNumSubcomponents( );
     SymbolistComponent*  getSubcomponent( int i );
@@ -37,12 +38,13 @@ public:
     virtual void    clearAllSubcomponents();
     
     Point<int> positionRelativeTo(SymbolistComponent* to);
-    
+    void mouseDownSelection( const MouseEvent& event );
+
 
 
 protected :
     
-    bool            is_selected = false;
+    bool is_selected = false;
     Array<SymbolistComponent*>     subcomponents;
     
 };

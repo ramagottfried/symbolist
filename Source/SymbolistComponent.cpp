@@ -122,6 +122,10 @@ void SymbolistComponent::deselectComponent()
     repaint();
 }
 
+bool SymbolistComponent::componentSelected()
+{
+    return is_selected;
+}
 
 Point<int> SymbolistComponent::positionRelativeTo(SymbolistComponent* to)
 {
@@ -129,6 +133,24 @@ Point<int> SymbolistComponent::positionRelativeTo(SymbolistComponent* to)
         else return getPosition() + ((SymbolistComponent*)getParentComponent())->positionRelativeTo(to);
 }
 
+
+// basic selection mechanism
+void SymbolistComponent::mouseDownSelection( const MouseEvent& event )
+{
+    ScoreComponent* parent = (ScoreComponent*)getParentComponent();
+    
+    if ( event.mods.isShiftDown() )
+    {
+        if ( componentSelected() ) parent->removeFromSelection(this);
+        else parent->addToSelection(this);
+    } else {
+        if ( ! componentSelected() )
+        {
+            parent->unselectAllComponents();
+            parent->addToSelection(this);
+        }
+    }
+}
 
 
 

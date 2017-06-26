@@ -52,7 +52,7 @@ void SymbolGroupComponent::setEditMode( bool val )
         }
         else if ( getNumSubcomponents() == 0 )
         {
-            sc->deleteSelectedSymbols();
+            sc->deleteSelectedComponents();
         }
     }
 }

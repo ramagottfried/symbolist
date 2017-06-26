@@ -258,11 +258,25 @@ void PathBaseComponent::setMaximalBounds ()
 void PathBaseComponent::setEditMode( bool val )
 {
     in_edit_mode = val;
-    if ( val ) makeHandlesFromPath();
-    else removeHandles();
+    if ( val )
+    {
+        makeHandlesFromPath();
+    }
+    else
+    {
+        ScoreComponent* sc = ((ScoreComponent*)getParentComponent());
+        sc->addToSelection(this);
+        removeHandles();
+        if ( m_path.isEmpty() ) sc->deleteSelectedComponents();
+    }
 }
 
 
+void PathBaseComponent::unselectAllComponents()
+{
+    ScoreComponent::unselectAllComponents();
+    if ( rotation_handle != NULL ) removeFromSelection(rotation_handle);
+}
 
 /******************
  * HANDLES (path edit)
@@ -271,7 +285,7 @@ void PathBaseComponent::setEditMode( bool val )
 void PathBaseComponent::addHandle( PathHandle::handleType type, float x, float y )
 {
     PathHandle *h = new PathHandle( type, x + getX(), y + getY() );
-    addAndMakeVisible( h );
+    addSubcomponent(h);
     path_handles.add( h );
 }
 
@@ -283,8 +297,8 @@ void PathBaseComponent::addHandlesTo( Point<float> p, PathHandle* last )
     float miny = min(p.y,(float)last->getCenter().y);
     float maxy = max(p.y,(float)last->getCenter().y);
     PathHandle* h1 = new PathHandle( PathHandle::quadratic_control, (minx+((maxx-minx)*0.5)) , (miny+((maxy-miny)*0.5)) );
-    addAndMakeVisible(h1);
-    addAndMakeVisible(h2);
+    addSubcomponent(h1);
+    addSubcomponent(h2);
     path_handles.add(h1);
     path_handles.add(h2);
 }
@@ -302,7 +316,7 @@ void PathBaseComponent::insertHandleBefore( PathHandle* target )
         float miny = min(previous->getCenter().y, target->getCenter().y);
         float maxy = max(previous->getCenter().y, target->getCenter().y);
         PathHandle* h = new PathHandle( PathHandle::quadratic_control, (minx+((maxx-minx)*0.5)) , (miny+((maxy-miny)*0.5)) );
-        addAndMakeVisible(h);
+        addSubcomponent(h);
         path_handles.insert(position, h);
     }
 }
@@ -369,28 +383,31 @@ void PathBaseComponent::makeHandlesFromPath()
 }
 
 
-void PathBaseComponent::removeHandle(PathHandle* h)
+void PathBaseComponent::removeSubcomponent(SymbolistComponent* h)
 {
     for( int i = 0; i < path_handles.size(); i++ )
     {
         if( h == path_handles[i] ) path_handles.remove(i);
     }
-    h->getParentComponent()->removeChildComponent( h );
-    delete h;
+    
+    ScoreComponent::removeSubcomponent(h);
+    updatePathPoints();
+    updatePathBounds();
+    repaint();
 }
 
 
 void PathBaseComponent::removeHandles()
 {
-    for ( PathHandle* h : path_handles )
-    {
-        h->getParentComponent()->removeChildComponent( h );
-        delete h;
-    }
+    SymbolistComponent::clearAllSubcomponents();
     path_handles.clear();
     
-    if ( getMainComponent() != NULL && rotation_handle != NULL ) delete rotation_handle;
+    if ( getMainComponent() != NULL && rotation_handle != NULL )
+    {
+        delete rotation_handle;
+    }
 }
+
 
 
 
@@ -440,27 +457,65 @@ void PathBaseComponent::updateHandlePositions()
 
 /***********************
  * Update path after user action on handles
+ * also fixes the handle sequence
  ************************/
 void PathBaseComponent::updatePathPoints()
 {
     Path p;
     for( int h = 0 ; h < path_handles.size() ; h++ )
     {
-        if ( path_handles[h]->getHandleType() == PathHandle::start )
+        PathHandle* current_handle = path_handles[h];
+        
+        // normal start/anchor points
+        if ( current_handle->getHandleType() == PathHandle::start )
         {
-            p.startNewSubPath( path_handles[h]->getBounds().toFloat().getCentre() );
+            p.startNewSubPath( current_handle->getBounds().toFloat().getCentre() );
         }
-        else if ( path_handles[h]->getHandleType() == PathHandle::anchor )
+        else if ( current_handle->getHandleType() == PathHandle::anchor )
         {
-            p.lineTo( path_handles[h]->getBounds().toFloat().getCentre() );
+            p.lineTo( current_handle->getBounds().toFloat().getCentre() );
         }
-        else if ( path_handles[h]->getHandleType() == PathHandle::quadratic_control )
+        
+        // quadratic
+        else if ( current_handle->getHandleType() == PathHandle::quadratic_control )
         {
-            p.quadraticTo(path_handles[h]->getBounds().toFloat().getCentre() ,
-                          path_handles[h+1]->getBounds().toFloat().getCentre() );
-            h+=1;
+            
+            if ( h >= path_handles.size()-1 ) // we're at the end: not normal !
+            {
+                //path_handles[h]->setHandleType(PathHandle::anchor); // fix the type
+                //h-=1; // back on the same point next iteration (then exit)
+                SymbolistComponent::removeSubcomponent(current_handle);
+                delete current_handle;
+            }
+            else
+            {
+                PathHandle* next_handle = path_handles[h+1];
+                
+                if ( next_handle->getHandleType() == PathHandle::anchor) // everything ok
+                {
+                    p.quadraticTo(current_handle->getBounds().toFloat().getCentre() ,
+                                  next_handle->getBounds().toFloat().getCentre() );
+                    h+=1;
+                }
+                
+                else if ( next_handle->getHandleType() == PathHandle::quadratic_control )
+                {
+                    // the anchor has disappeared => try the cubic transformation
+                    current_handle->setHandleType(PathHandle::cubic_control);
+                    next_handle->setHandleType(PathHandle::cubic_control);
+                    h-=1; // back on the same point next iteration
+                }
+                
+                else // probably a cubic: remove this handle
+                {
+                    SymbolistComponent::removeSubcomponent(current_handle);
+                    delete current_handle;
+                }
+            }
         }
-        else if ( path_handles[h]->getHandleType() == PathHandle::cubic_control )
+        
+        // cubic
+        else if ( current_handle->getHandleType() == PathHandle::cubic_control )
         {
             p.cubicTo(path_handles[h]->getBounds().toFloat().getCentre(),
                       path_handles[h+1]->getBounds().toFloat().getCentre(),
@@ -468,11 +523,14 @@ void PathBaseComponent::updatePathPoints()
             h+=2;
         }
         
+        
+        // last point should be a 'anchor'
         if ( path_handles[h]->isClosing() )
         {
             p.closeSubPath();
         }
-    }    
+    }
+    
     m_path.swapWithPath( p );
 }
 
@@ -536,7 +594,7 @@ void PathBaseComponent::abortDrawPath (  )
     drawing = false;
     if ( path_handles.getLast()->getHandleType() == PathHandle::start )
     {
-        removeHandle(path_handles.getLast());
+        removeSubcomponent(path_handles.getLast());
         updatePathPoints();
         repaint();
     }
@@ -648,8 +706,6 @@ void PathBaseComponent::mouseDrag( const MouseEvent& event )
         BaseComponent::mouseDrag(event);
     }
 }
-
-
 
 
 /******************

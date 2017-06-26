@@ -33,17 +33,18 @@ public:
     void addToSelection(SymbolistComponent* c);
     void removeFromSelection(SymbolistComponent* c);
     void selectAllComponents();
-    void unselectAllComponents();
+    virtual void unselectAllComponents();
     
     void removeSubcomponent( SymbolistComponent *c ) override;
     void clearAllSubcomponents( ) override;
     
     void reportModificationForSelectedSymbols();
     
-    void deleteSelectedSymbols();
+    void deleteSelectedComponents();
+
+    void translateSelectedComponents( Point<int> delta_xy );
     void groupSelectedSymbols();
     void ungroupSelectedSymbols();
-    void translateSelectedSymbols( Point<int> delta_xy );
     void flipSelectedSymbols( int axis );
     
     void mouseDown ( const MouseEvent& event ) override;

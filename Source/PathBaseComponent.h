@@ -25,7 +25,6 @@ public:
     }
     
     void addHandle( PathHandle::handleType type, float x, float y );
-    void removeHandle(PathHandle* h);
     void addHandlesTo( Point<float> p, PathHandle* last );
     void insertHandleBefore( PathHandle* target );
     void makeHandlesFromPath();
@@ -33,6 +32,9 @@ public:
     void updateHandlePositions();
     void updatePathPoints();
     void drawHandlesLines( Graphics& g);
+    
+    void removeSubcomponent(SymbolistComponent* c) override;
+    void unselectAllComponents() override;
     
     void paint ( Graphics& g ) override;
     void resized () override;

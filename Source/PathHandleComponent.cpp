@@ -25,6 +25,7 @@ void PathHandle::mouseDown( const MouseEvent& event )
     PathBaseComponent* parent = (PathBaseComponent*)getParentComponent();
     m_anchor_bounds = parent->getPathBounds();
     
+    mouseDownSelection(event);
 }
 
 
@@ -32,8 +33,8 @@ void PathHandle::mouseDrag( const MouseEvent& event )
 {
     PathBaseComponent* parent = (PathBaseComponent*)getParentComponent();
 
-    Point<int> draggy = event.getEventRelativeTo( parent ).getPosition();
-    setTopLeftPosition ( draggy - m_down.toInt() );
+    Point<int> delta_xy = (event.position - m_down).toInt() ;
+    parent->translateSelectedComponents(delta_xy);
     
     
     if( h_type == rotate )
@@ -86,7 +87,7 @@ void PathHandle::mouseDoubleClick(const MouseEvent& event)
 
 void PathHandle::paint ( Graphics& g )
 {
-    g.setColour ( Colours::cornflowerblue );
+    g.setColour ( is_selected ? Colours::darkred : Colours::cornflowerblue );
     const Rectangle<float> bounds = getLocalBounds().toFloat().reduced( m_strokeweight );
     
     if( h_type == anchor || h_type == start )

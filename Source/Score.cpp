@@ -22,6 +22,7 @@ Score::~Score() {}
 void Score::removeAllSymbols()
 {
     score_symbols.clear(1);
+    time_points.clear(1);
 }
 
 
@@ -30,9 +31,8 @@ void Score::removeAllSymbols()
  ***********************************/
 void Score::addSymbol(Symbol *symbol)
 {
-    time_points.addSymbolTimePoints( symbol );
-
     score_symbols.addSorted( score_sorter, symbol );
+    time_points.addSymbolTimePoints( symbol );
 }
 
 

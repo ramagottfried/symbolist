@@ -79,6 +79,11 @@ void symbolistSetOneSymbol(void* symbolist_handler, odot_bundle *bundle)
     static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setOneSymbol( bundle );
 }
 
+void symbolistClearScore(void* symbolist_handler)
+{
+    static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_clearScore();
+}
+
 void symbolistSetTime(void* symbolist_handler, float time_ms)
 {
     static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setTime(time_ms);

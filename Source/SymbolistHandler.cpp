@@ -133,6 +133,17 @@ odot_bundle* SymbolistHandler::symbolistAPI_getScoreBundle()
     return score.getScoreBundle();
 }
 
+void SymbolistHandler::symbolistAPI_clearScore()
+{
+    const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
+
+    if ( main_component != NULL )
+    {
+        main_component->getPageComponent()->clearAllSubcomponents();
+    }
+    score.removeAllSymbols();
+}
+
 void SymbolistHandler::symbolistAPI_setOneSymbol( odot_bundle *bundle)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope

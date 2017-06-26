@@ -42,6 +42,7 @@ public:
     odot_bundle* symbolistAPI_getScoreBundle();
     
     void symbolistAPI_setOneSymbol( odot_bundle *bundle);
+    void symbolistAPI_clearScore();
     
     /*********************************************
      * CONTROLLER METHODS CALLED FROM THE GUI

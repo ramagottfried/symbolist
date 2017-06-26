@@ -62,7 +62,6 @@ void symbolist_qset_time( t_symbolist *x )
 
 void symbolist_getSymbols_at_time( t_symbolist *x, double time )
 {
-
     critical_enter(x->lock);
     x->current_time = time;
     critical_exit(x->lock);
@@ -99,6 +98,11 @@ void symbolist_setSymbol( t_symbolist *x, t_symbol *msg, int argc, t_atom *argv 
     
     symbolistSetOneSymbol( x->symbolist_handler, &bndl );
     
+}
+
+void symbolist_clearScore( t_symbolist *x )
+{
+    symbolistClearScore( x->symbolist_handler );
 }
 
 void symbolist_getScoreBundle( t_symbolist *x )
@@ -197,15 +201,16 @@ void ext_main(void* unused)
                   (method)symbolist_free,
                   sizeof(t_symbolist), NULL, A_GIMME, 0);
     
-    class_addmethod(c, (method)symbolist_open_window,           "open", 0);
-    class_addmethod(c, (method)symbolist_open_window,           "dblclick", A_CANT, 0);
+    class_addmethod(c, (method)symbolist_open_window,           "open",         0);
+    class_addmethod(c, (method)symbolist_open_window,           "dblclick",     A_CANT, 0);
     
-    class_addmethod(c, (method)symbolist_getScoreBundle,        "dump", 0);
-    class_addmethod(c, (method)symbolist_setSymbol,             "FullPacket", A_GIMME, 0);
+    class_addmethod(c, (method)symbolist_getScoreBundle,        "dump",         0);
+    class_addmethod(c, (method)symbolist_setSymbol,             "FullPacket",   A_GIMME, 0);
 
+    class_addmethod(c, (method)symbolist_getSymbols_at_time,    "time",         A_FLOAT, 0);
+    class_addmethod(c, (method)symbolist_get_symbol,            "getsymbol",    A_LONG, 0);
     
-    class_addmethod(c, (method)symbolist_getSymbols_at_time,    "time",     A_FLOAT, 0);
-    class_addmethod(c, (method)symbolist_get_symbol,            "getsymbol", A_LONG, 0);
+    class_addmethod(c, (method)symbolist_clearScore,            "clear",        0);
 
     
     class_register(CLASS_BOX, c);

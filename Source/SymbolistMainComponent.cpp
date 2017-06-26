@@ -77,32 +77,31 @@ void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
  ***************************/
 bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
 {
-    String desc = key.getTextDescription();
-    std::cout << "keyPressed: " << desc << std::endl;;
+  //  String desc = key.getTextDescription();
+   
+    if(         key == KeyPress ('g', ModifierKeys::commandModifier, 0)) { scoreView.getEditedComponent()->groupSelectedSymbols(); }
     
-    if( desc == "command + G" ) { scoreView.getEditedComponent()->groupSelectedSymbols(); }
+    else if(    key == KeyPress ('u', ModifierKeys::commandModifier, 0) ) { scoreView.getEditedComponent()->ungroupSelectedSymbols(); }
     
-    else if( desc == "command + U" ) { scoreView.getEditedComponent()->ungroupSelectedSymbols(); }
+    else if (   key == KeyPress::backspaceKey ) { scoreView.getEditedComponent()->deleteSelectedSymbols(); }
     
-    else if ( desc == "backspace" ) { scoreView.getEditedComponent()->deleteSelectedSymbols(); }
-    
-    else if ( desc == "C") { // would be better to type a number and that selects the nth palete item..
+    else if (   key == 'c') { // would be better to type a number and that selects the nth palete item..
         symbolist_handler->setCurrentSymbol(0);
         paletteView.selectPaletteButton(0);
     }
     
-    else if ( desc == "P") {
+    else if (   key == 'p' ) {
         symbolist_handler->setCurrentSymbol(1);
         paletteView.selectPaletteButton(1);
     }
     
-    else if ( desc == "option + V") { scoreView.getEditedComponent()->flipSelectedSymbols(0); }
+    else if (   key == KeyPress ('v', ModifierKeys::altModifier, 0) ) { scoreView.getEditedComponent()->flipSelectedSymbols(0); }
     
-    else if ( desc == "option + H") { scoreView.getEditedComponent()->flipSelectedSymbols(1); }
+    else if (   key == KeyPress ('h', ModifierKeys::commandModifier, 0) ) { scoreView.getEditedComponent()->flipSelectedSymbols(1); }
     
-    else if ( desc == "spacebar") { symbolist_handler->executeTransportCallback(1); }
+    else if (   key == KeyPress::spaceKey ) { symbolist_handler->executeTransportCallback(1); }
     
-    else if ( desc == "escape") {
+    else if (   key == KeyPress::escapeKey ) {
  
         scoreView.getEditedComponent()->unselectAllComponents();
         scoreView.exitEditMode();

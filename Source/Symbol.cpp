@@ -39,6 +39,18 @@ float Symbol::getEndTime() const
     return ( getTime() + getDuration() );
 }
 
+
+bool Symbol::symbol_parse_error( int p, const String& address ) const
+{
+    if( p == -1 )
+    {
+        std::cout << "failed to parse symbol:\t" << address << std::endl;
+        return true; // there is an error
+    }
+    return false;
+}
+
+
 // filter the symbol from base_address
 Symbol Symbol::makeSubSymbol( const String &base_address ) const
 {

@@ -94,11 +94,11 @@ void PathBaseComponent::importFromSymbol(const Symbol &s)
 
     BaseComponent::importFromSymbol(s);
 
-    std::cout << "IMPORT PATH" << std::endl;
-    std::cout << s.getOSCMessageValue(String("/type")).getString() << std::endl;
+//    std::cout << "IMPORT PATH" << std::endl;
+//    std::cout << s.getOSCMessageValue(String("/type")).getString() << std::endl;
 
     int path_oscpos = s.getOSCMessagePos("/path");
-    if( symbol_parse_error( path_oscpos, "/path" ) ) return;
+    if( s.symbol_parse_error( path_oscpos, "/path" ) ) return;
 
  //   int pathlen_oscpos = s.getOSCMessagePos("/pathlength");
  //   if( symbol_parse_error( pathlen_oscpos, "/pathlength" ) ) return;

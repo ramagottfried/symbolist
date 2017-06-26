@@ -36,6 +36,9 @@ public:
     static float getOSCValueAsFloat(OSCArgument a) ;
     static int getOSCValueAsInt(OSCArgument a) ;
     
+    
+    bool symbol_parse_error( int p, const String& address ) const;
+    
     void printBundle() const;
     
     void addOSCMessage( const String &address );

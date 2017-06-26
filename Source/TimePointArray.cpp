@@ -190,21 +190,24 @@ odot_bundle* symbolBundleToOdot( const OSCBundle& osc )
 
 Point<float> TimePointArray::lookupPathPoint( const Symbol *s, const float t )
 {
-    Point<float> xy;
-    
     OSCBundle bndl = s->getOSCBundle();
     
-    s->getOSCValueAsInt( OSCArgument("/numsegments") );
+    int path_oscpos = s->getOSCMessagePos("/path");
+    if( s->symbol_parse_error( path_oscpos, "/path" ) ) return Point<float>();
     
-    float pixel_time = s->timeToPixels( t );
+    int pathlen_oscpos = s->getOSCMessagePos("/pathlength");
+    if( s->symbol_parse_error( pathlen_oscpos, "/pathlength" ) ) return Point<float>();
     
-    // for first impl, duration of path will be the width of the bounds...
-    for( auto osc : bndl )
-    {
-        ;
-    }
+    OSCBundle b = s->getOSCBundle();
     
-    return xy;
+    String path_str = b[path_oscpos].getMessage()[0].getString();
+    Path p;
+    p.restoreFromString( path_str );
+
+    float length = s->getOSCValueAsFloat( b[pathlen_oscpos].getMessage()[0] );
+    float path_time = t * length;;
+    
+    return p.getPointAlongPath( path_time );
 }
 
 odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint  )
@@ -230,6 +233,8 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                 if( s->getType() == "path" )
                 {
                     auto xy = lookupPathPoint( s, local_time );
+                    bndl.addElement( OSCMessage( s_prefix + "/path/lookup/xy", xy.x, xy.y ) );
+
                 }
                 
                 bndl.addElement( OSCMessage( s_prefix + "/time/local", local_time ) );

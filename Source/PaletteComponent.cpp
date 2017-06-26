@@ -59,28 +59,10 @@ PaletteComponent::PaletteComponent()
 
     Symbol s("path", 0, 0, 30, 30);
     
-    OSCMessage numSeg_mess( "/numSegments",         (int32)3 );
-    OSCMessage type_mess0(  "/segment/0/type",      (String)"cubic" );
-    OSCMessage x_mess0(     "/segment/0/x_points",  4.0f, 14.0f, 22.0f, 16.0f );
-    OSCMessage y_mess0(     "/segment/0/y_points",  4.0f, 2.0f, 8.0f, 14.0f );
-    OSCMessage type_mess1(  "/segment/1/type",      (String)"cubic" );
-    OSCMessage x_mess1(     "/segment/1/x_points",  16.0f, 12.0f, 14.0f, 20.0f );
-    OSCMessage y_mess1(     "/segment/1/y_points",  14.0f, 20.0f, 24.0f, 22.0f );
-    OSCMessage type_mess2(  "/segment/1/type",      (String)"cubic" );
-    OSCMessage x_mess2(     "/segment/1/x_points",  20.0f, 24.0f, 28.0f, 36.0f );
-    OSCMessage y_mess2(     "/segment/1/y_points",  22.0f, 24.0f, 28.0f, 36.0f );
-    
-    s.addOSCMessage(numSeg_mess);
-    s.addOSCMessage(type_mess0);
-    s.addOSCMessage(x_mess0);
-    s.addOSCMessage(y_mess0);
-    s.addOSCMessage(type_mess1);
-    s.addOSCMessage(x_mess1);
-    s.addOSCMessage(y_mess1);
-    s.addOSCMessage(type_mess2);
-    s.addOSCMessage(x_mess2);
-    s.addOSCMessage(y_mess2);
-    
+    OSCMessage path_mess(     "/path",  (String)"m 4. 4. c 14. 2. 22. 8. 16. 14. c 12. 20. 14. 24. 20. 22." );
+
+    s.addOSCMessage(path_mess);
+
     PaletteButton *pb = new PaletteButton(-1, &s);
     pb->setTopLeftPosition(10, 20);
     pb->setSize(30 , 30);

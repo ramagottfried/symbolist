@@ -59,10 +59,26 @@ public:
     }
     
     void setPosition( const Point<float> pos );
+
+    
+    inline float pixelsToTime( const float f ) const
+    {
+        return f * m_pixels_to_time;
+    }
+    
+    inline float timeToPixels( const float t ) const
+    {
+        return t * m_time_to_pixels;
+    }
+    
     
 private:
     
     OSCBundle   osc_bundle;
     
+    float       m_pixels_to_time = 0.01f;
+    float       m_time_to_pixels = 100.0f;
+    
+    Path        symbol_path;
 };
 

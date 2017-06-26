@@ -196,12 +196,12 @@ Point<float> TimePointArray::lookupPathPoint( const Symbol *s, const float t )
     
     s->getOSCValueAsInt( OSCArgument("/numsegments") );
     
-    float pixel_time = timeToPixels( t );
+    float pixel_time = s->timeToPixels( t );
     
     // for first impl, duration of path will be the width of the bounds...
     for( auto osc : bndl )
     {
-        
+        ;
     }
     
     return xy;

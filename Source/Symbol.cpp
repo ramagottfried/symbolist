@@ -1,14 +1,7 @@
-//
-//  Symbol.cpp
-//  symbolist
-//
-//  Created by Jean Bresson on 30/05/2017.
-//
-//
+
 
 #include "Symbol.h"
 
-//: Symbol ("undefined", 0.0, 0.0, 10.0, 10.0)
 Symbol::Symbol () {};
 
 Symbol::Symbol (const String & type, float x, float y, float w, float h)
@@ -19,8 +12,8 @@ Symbol::Symbol (const String & type, float x, float y, float w, float h)
     addOSCMessage("/w", w);  // note: w must not be zero!
     addOSCMessage("/h", h);
     
-    addOSCMessage("/time/start",    x * 0.01f );
-    addOSCMessage("/duration",      w * 0.01f );
+    addOSCMessage("/time/start",    pixelsToTime( x ) );
+    addOSCMessage("/duration",      pixelsToTime( w ) );
     
   // cout << x << " " << y << " " << w << " " << h << endl;
 }

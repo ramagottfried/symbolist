@@ -33,8 +33,9 @@ struct SymbolTimePoint
         symbols_at_time.emplace_back( s );
     }
     
-    float time;
+    float           time;
     vector<Symbol*> symbols_at_time;
+
     
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolTimePoint)
@@ -78,15 +79,6 @@ public:
     int lookupTimePoint( float t );
     Point<float> lookupPathPoint( const Symbol *s, const float t );
     
-    inline float pixelsToTime( float f )
-    {
-        return f * 0.01f;
-    }
-    
-    inline float timeToPixels( float t )
-    {
-        return t * 100.0f;
-    }
     
 private:
     

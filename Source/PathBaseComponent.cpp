@@ -62,7 +62,7 @@ Path PathBaseComponent::mergePathArray()
 void PathBaseComponent::makePathArrayFromPath(const Path &p)
 {
     Path::Iterator it( p );
-    m_path_array.clear();
+    cleanupPathArray();
     
     while( it.next() )
     {
@@ -150,7 +150,7 @@ void PathBaseComponent::importFromSymbol(const Symbol &s)
 {
     BaseComponent::importFromSymbol(s);
 
-    m_path_array.clear();
+    cleanupPathArray();
     
     int n_subpaths = s.getOSCMessageValue("/num_sub_paths").getInt32();
     
@@ -438,7 +438,7 @@ void PathBaseComponent::updateHandlePositions()
 void PathBaseComponent::updatePathPoints()
 {
     //Path p;
-    m_path_array.clear();
+    cleanupPathArray();
     
     for( int h = 0 ; h < path_handles.size() ; h++ )
     {

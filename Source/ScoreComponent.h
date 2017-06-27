@@ -47,6 +47,8 @@ public:
     void ungroupSelectedSymbols();
     void flipSelectedSymbols( int axis );
     
+    void addSelectedSymbolsToPalette();
+    
     void mouseDown ( const MouseEvent& event ) override;
     void mouseDrag ( const MouseEvent& event ) override;
     void mouseUp ( const MouseEvent& event ) override;

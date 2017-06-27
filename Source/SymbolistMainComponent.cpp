@@ -10,7 +10,7 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
     
     symbolist_handler = sh;
     
-    paletteView.buildFromPalette(symbolist_handler->getSymbolPalette());
+    updatePaletteView();
     
     paletteView.selectPaletteButton(-1);
     addAndMakeVisible(scoreView);
@@ -31,6 +31,11 @@ void SymbolistMainComponent::resized()
 {
     scoreView.setBounds( 50, 0, getWidth(), getHeight() );
     paletteView.setBounds( 0, 0, 50, getHeight() );
+}
+
+void SymbolistMainComponent::updatePaletteView()
+{
+    paletteView.buildFromPalette(symbolist_handler->getSymbolPalette());
 }
 
 /***************************
@@ -113,6 +118,8 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
         scoreView.repaint();
     }
     else if(    key == KeyPress ('?', ModifierKeys::shiftModifier, 0) ) { cout << "yep" << endl; }
+    
+    else if (   key == 'w' ) { scoreView.getEditedComponent()->addSelectedSymbolsToPalette(); }
 
     return true;
 }

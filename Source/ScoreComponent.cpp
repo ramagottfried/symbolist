@@ -283,6 +283,19 @@ void ScoreComponent::flipSelectedSymbols( int axis )
 }
 
 
+
+void ScoreComponent::addSelectedSymbolsToPalette( )
+{
+    for ( int i = 0; i < selected_components.size(); i++ )
+    {
+        BaseComponent* c = (BaseComponent*)selected_components[i];
+        Symbol* s = new Symbol(*c->getScoreSymbolPointer());
+        getSymbolistHandler()->getSymbolPalette()->addPaletteItem(s);
+    }
+    getMainComponent()->updatePaletteView();
+}
+
+
 /***************************/
 /* UI callbacks from Juce  */
 /***************************/

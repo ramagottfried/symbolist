@@ -121,7 +121,6 @@ void PathBaseComponent::resized()
 
 int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
 {
-    
     int messages_added = 0 ;
 
     messages_added += BaseComponent::addSymbolMessages( s, base_address );

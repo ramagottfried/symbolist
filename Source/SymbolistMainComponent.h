@@ -27,6 +27,7 @@ public:
     /*********************************************
      * GUI FUNCTIONALITY AND TOOLS
      *********************************************/
+    void updatePaletteView();
     
     // Redefinition of methods from Juce::Component
     void resized() override;

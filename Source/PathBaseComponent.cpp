@@ -8,8 +8,16 @@
 PathBaseComponent::~PathBaseComponent()
 {
     //printf("freeing path %p\n", this);
+    cleanupPathArray();
     removeHandles();
 }
+
+void PathBaseComponent::cleanupPathArray()
+{
+    for ( int np = 0; np < m_path_array.size(); np++ ) delete m_path_array[np] ;
+    m_path_array.clear();
+}
+
 
 void PathBaseComponent::printPath( Path p, const char* name )
 {
@@ -41,12 +49,56 @@ void PathBaseComponent::printPath( Path p, const char* name )
 }
 
 
+Path PathBaseComponent::mergePathArray()
+{
+    Path p;
+    for (int np = 0 ; np < m_path_array.size(); np++ )
+    {
+        p.addPath(*m_path_array[np]);
+    }
+    return p;
+}
+
+void PathBaseComponent::makePathArrayFromPath(const Path &p)
+{
+    Path::Iterator it( p );
+    m_path_array.clear();
+    
+    while( it.next() )
+    {
+        if (it.elementType == it.startNewSubPath)
+        {
+            Path *newpath = new Path();
+            newpath->startNewSubPath(it.x1,it.y1);
+            m_path_array.add(newpath);
+        }
+        else if (it.elementType == it.lineTo)
+        {
+            m_path_array.getLast()->lineTo(it.x1, it.y1);
+        }
+        else if (it.elementType == it.quadraticTo)
+        {
+            m_path_array.getLast()->quadraticTo(it.x1, it.y1, it.x2, it.y2);
+        }
+        else if (it.elementType == it.cubicTo)
+        {
+            m_path_array.getLast()->cubicTo(it.x1, it.y1, it.x2, it.y2, it.x3, it.y3);
+        }
+        else if( it.elementType == it.closePath )
+        {
+            m_path_array.getLast()->closeSubPath();
+        }
+    }
+}
+
 void PathBaseComponent::resizeToFit(int x, int y, int w, int h)
 {
     Rectangle<int> r = Rectangle<int>(x,y,w,h).reduced( strokeType.getStrokeThickness() );
     if( r.getWidth() > 0 && r.getHeight() > 0)
     {
-        m_path.scaleToFit(r.getX(), r.getY(), r.getWidth(), r.getHeight(), false );
+        Path temp = mergePathArray();
+        temp.scaleToFit(r.getX(), r.getY(), r.getWidth(), r.getHeight(), false );
+        makePathArrayFromPath(temp);
         updateHandlePositions();
     }
 }
@@ -59,7 +111,6 @@ void PathBaseComponent::resized()
     if( getMainEditMode() == UI_EditType::draw )
     {
         resizeToFit(getLocalBounds().getX(), getLocalBounds().getY(), getLocalBounds().getWidth(), getLocalBounds().getHeight());
-        //resizeToFit(m_path_bounds.getX(), m_path_bounds.getY(), m_path_bounds.getWidth(), m_path_bounds.getHeight());
     }
 }
 
@@ -71,13 +122,22 @@ void PathBaseComponent::resized()
 int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
 {
     
-    BaseComponent::addSymbolMessages( s, base_address );
+    int messages_added = 0 ;
+
+    messages_added += BaseComponent::addSymbolMessages( s, base_address );
     
-    Path p = m_path;
-    s->addOSCMessage( OSCMessage( base_address + "/path",       p.toString()) );
-    s->addOSCMessage( OSCMessage( base_address + "/pathlength", p.getLength()) );
+    int n_subpaths = m_path_array.size();
     
-    int messages_added = 2;
+    s->addOSCMessage( OSCMessage( base_address + "/num_sub_paths", n_subpaths ));
+    messages_added += 1;
+    
+    for ( int np = 0; np < n_subpaths ; np++ )
+    {
+        Path *p = m_path_array[np];
+        s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/pathlength", p->getLength()) );
+        s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) , p->toString()) );
+        messages_added += 2 ;
+    }
     
     return messages_added;
 }
@@ -89,23 +149,21 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
 
 void PathBaseComponent::importFromSymbol(const Symbol &s)
 {
-
     BaseComponent::importFromSymbol(s);
 
-//    std::cout << "IMPORT PATH" << std::endl;
-//    std::cout << s.getOSCMessageValue(String("/type")).getString() << std::endl;
-
-    int path_oscpos = s.getOSCMessagePos("/path");
-    if( s.symbol_parse_error( path_oscpos, "/path" ) ) return;
+    m_path_array.clear();
     
-    OSCBundle b = s.getOSCBundle();
-
-    m_path.clear();
-    String path_str = b[path_oscpos].getMessage()[0].getString();
-    m_path.restoreFromString( path_str );
+    int n_subpaths = s.getOSCMessageValue("/num_sub_paths").getInt32();
     
+    for ( int np = 0; np < n_subpaths ; np++ )
+    {
+        Path* subp = new Path();
+        String path_str = s.getOSCMessageValue(String("/path/") + String(np)).getString();
+        subp->restoreFromString( path_str );
+        m_path_array.add(subp);
+    }
+
     updatePathBounds();
-
 }
 
 /******************
@@ -115,15 +173,55 @@ void PathBaseComponent::importFromSymbol(const Symbol &s)
 
 void PathBaseComponent::updatePathBounds ()
 {
+    /*
+    float minx, miny = MAXFLOAT;
+    float maxx, maxy = 0.0;
+    for( int np = 0; np < m_path_array.size(); np++ )
+    {
+        Rectangle<float> pb = m_path_array[np].getBounds();
+        minx =  min( minx, pb.getX() );
+        miny =  min( miny, pb.getY() );
+        maxx =  max( maxx, pb.getRight() );
+        maxy =  max( maxy, pb.getBottom() );
+    }
+    m_path_bounds.setBounds(minx,miny, maxx-minx, maxy-miny);
+    */
+    
+    Path temp = mergePathArray();
+    m_path_bounds.getRealPathBounds( temp );
     m_path_origin = m_path_bounds.getPosition();
-    m_path_bounds.getRealPathBounds( m_path );
     m_path_centroid = m_path_bounds.getCentre();
 }
 
+
+// used to be called at exiting edit mode...
+// !!! redo THIS
+
+/*
+Rectangle<float> PathBaseComponent::tranformAndGetBoundsInParent( Path& p )
+{
+ 
+    
+    Path m_path = mergePathArray();
+    
+    
+    // NOT FUNCTIONAL PROGRAMMING, but oh well
+    p.applyTransform( AffineTransform().translated( - m_path_bounds.getX() + strokeOffset, - m_path_bounds.getY() + strokeOffset ) );
+    return abs_bounds.expanded( strokeOffset );
+}
+*/
+
+
 void PathBaseComponent::setMinimalBounds ()
 {
-    Rectangle<float> pathBounds = tranformAndGetBoundsInParent( m_path );
-    setBoundsFloatRect( pathBounds );
+    //float strokeOffset = strokeType.getStrokeThickness() * 0.5;
+    Path m_path = mergePathArray();
+    m_path_bounds.getRealPathBounds(m_path);
+    Rectangle<float> symbol_bounds = m_path_bounds.expanded( strokeType.getStrokeThickness() );
+    m_path.applyTransform(AffineTransform::translation(- symbol_bounds.getX(), - symbol_bounds.getY() ));
+    makePathArrayFromPath(m_path);
+    setBounds( 0, 0, symbol_bounds.getWidth(), symbol_bounds.getHeight() );
+    setTopLeftPosition(symbol_bounds.getX(), symbol_bounds.getY());
     updatePathBounds();
 }
 
@@ -131,7 +229,9 @@ void PathBaseComponent::setMaximalBounds ()
 {
     Point<int> init_pos =  positionRelativeTo(getPageComponent());
     BaseComponent::setMaximalBounds();
+    Path m_path = mergePathArray();
     m_path.applyTransform(AffineTransform::translation(init_pos));
+    makePathArrayFromPath(m_path);
     updatePathBounds();
 }
 
@@ -147,7 +247,7 @@ void PathBaseComponent::setEditMode( bool val )
         ScoreComponent* sc = ((ScoreComponent*)getParentComponent());
         sc->addToSelection(this);
         removeHandles();
-        if ( m_path.isEmpty() ) sc->deleteSelectedComponents();
+        if ( m_path_array.isEmpty() ) sc->deleteSelectedComponents();
     }
 }
 
@@ -204,56 +304,48 @@ void PathBaseComponent::insertHandleBefore( PathHandle* target )
 
 void PathBaseComponent::makeHandlesFromPath()
 {
-
+    
     if( path_handles.size() == 0 ) // should always be the case when we call this
     {
-        float ax =0, ay = 0;
-        
-        Path::Iterator it( m_path );
-        
-        while( it.next() )
+        for ( int np = 0; np < m_path_array.size(); np++ )
         {
-            if (it.elementType == it.startNewSubPath)
+            Path* m_path = m_path_array[np];
+            Path::Iterator it( *m_path );
+            
+            while( it.next() )
             {
-                if ( !path_handles.isEmpty() )
+                if (it.elementType == it.startNewSubPath)
+                {
+                    if ( !path_handles.isEmpty() )
+                    {
+                        path_handles.getLast()->setEnd(true);
+                    }
+                    addHandle( PathHandle::start, it.x1, it.y1 );
+                }
+                else if (it.elementType == it.lineTo)
+                {
+                    addHandle( PathHandle::anchor, it.x1, it.y1 );
+                    
+                }
+                else if (it.elementType == it.quadraticTo)
+                {
+                    addHandle( PathHandle::quadratic_control, it.x1, it.y1 );
+                    addHandle( PathHandle::anchor, it.x2, it.y2 );
+                }
+                else if (it.elementType == it.cubicTo)
+                {
+                    addHandle( PathHandle::cubic_control, it.x1, it.y1 );
+                    addHandle( PathHandle::cubic_control, it.x2, it.y2 );
+                    addHandle( PathHandle::anchor, it.x3, it.y3 );
+                }
+                else if( it.elementType == it.closePath )
                 {
                     path_handles.getLast()->setEnd(true);
+                    path_handles.getLast()->setClosing(true);
                 }
-                addHandle( PathHandle::start, it.x1, it.y1 );
-                ax = it.x1;
-                ay = it.y1;
-            }
-            else if (it.elementType == it.lineTo)
-            {
-                addHandle( PathHandle::anchor, it.x1, it.y1 );
-                ax = it.x1;
-                ay = it.y1;
                 
             }
-            else if (it.elementType == it.quadraticTo)
-            {
-                addHandle( PathHandle::quadratic_control, it.x1, it.y1 );
-                addHandle( PathHandle::anchor, it.x2, it.y2 );
-                ax = it.x2;
-                ay = it.y2;
-            }
-            else if (it.elementType == it.cubicTo)
-            {
-                addHandle( PathHandle::cubic_control, it.x1, it.y1 );
-                addHandle( PathHandle::cubic_control, it.x2, it.y2 );
-                addHandle( PathHandle::anchor, it.x3, it.y3 );
-                
-                ax = it.x3;
-                ay = it.y3;
-            }
-            else if( it.elementType == it.closePath )
-            {
-                path_handles.getLast()->setEnd(true);
-                path_handles.getLast()->setClosing(true);
-            }
-
         }
-        
         updatePathBounds();
         
         float length = max( m_path_bounds.getHeight(), m_path_bounds.getWidth() ) * 0.5 + 5;
@@ -300,34 +392,39 @@ void PathBaseComponent::updateHandlePositions()
 {
     if ( in_edit_mode && !path_handles.isEmpty() ) // in principle path_handle is not empty if we're in edit mode..
     {
-        Path::Iterator it( m_path );
         int n = 0;
-        while( it.next() )
+        
+        for ( int np = 0; np < m_path_array.size(); np++ )
         {
-            if (it.elementType == it.startNewSubPath)
+            Path* m_path = m_path_array[np];
+            Path::Iterator it( *m_path );
+            while( it.next() )
             {
-                // if (n > 0 ) path_handles[n+1]->setEnd(true);
-                path_handles[n++]->setCentrePosition(it.x1, it.y1);
-            }
-            else if (it.elementType == it.lineTo)
-            {
-                path_handles[n++]->setCentrePosition(it.x1, it.y1);
-            }
-            else if (it.elementType == it.quadraticTo)
-            {
-                path_handles[n++]->setCentrePosition(it.x1, it.y1);
-                path_handles[n++]->setCentrePosition(it.x2, it.y2);
-            }
-            else if (it.elementType == it.cubicTo)
-            {
-                path_handles[n++]->setCentrePosition(it.x1, it.y1);
-                path_handles[n++]->setCentrePosition(it.x2, it.y2);
-                path_handles[n++]->setCentrePosition(it.x3, it.y3);
-            }
-            else if( it.elementType == it.closePath )
-            {
-                //path_handles[n]->setEnd(true);
-                //path_handles[n]->setClosing(true);
+                if (it.elementType == it.startNewSubPath)
+                {
+                    // if (n > 0 ) path_handles[n+1]->setEnd(true);
+                    path_handles[n++]->setCentrePosition(it.x1, it.y1);
+                }
+                else if (it.elementType == it.lineTo)
+                {
+                    path_handles[n++]->setCentrePosition(it.x1, it.y1);
+                }
+                else if (it.elementType == it.quadraticTo)
+                {
+                    path_handles[n++]->setCentrePosition(it.x1, it.y1);
+                    path_handles[n++]->setCentrePosition(it.x2, it.y2);
+                }
+                else if (it.elementType == it.cubicTo)
+                {
+                    path_handles[n++]->setCentrePosition(it.x1, it.y1);
+                    path_handles[n++]->setCentrePosition(it.x2, it.y2);
+                    path_handles[n++]->setCentrePosition(it.x3, it.y3);
+                }
+                else if( it.elementType == it.closePath )
+                {
+                    //path_handles[n]->setEnd(true);
+                    //path_handles[n]->setClosing(true);
+                }
             }
         }
     }
@@ -341,7 +438,9 @@ void PathBaseComponent::updateHandlePositions()
  ************************/
 void PathBaseComponent::updatePathPoints()
 {
-    Path p;
+    //Path p;
+    m_path_array.clear();
+    
     for( int h = 0 ; h < path_handles.size() ; h++ )
     {
         PathHandle* current_handle = path_handles[h];
@@ -349,11 +448,22 @@ void PathBaseComponent::updatePathPoints()
         // normal start/anchor points
         if ( current_handle->getHandleType() == PathHandle::start )
         {
-            p.startNewSubPath( current_handle->getBounds().toFloat().getCentre() );
+            m_path_array.add(new Path());
+            m_path_array.getLast()->startNewSubPath( current_handle->getBounds().toFloat().getCentre() );
         }
         else if ( current_handle->getHandleType() == PathHandle::anchor )
         {
-            p.lineTo( current_handle->getBounds().toFloat().getCentre() );
+            // deal with the case where the starting point has been erased
+            if ( m_path_array.isEmpty() )
+            {
+                m_path_array.add(new Path());
+                current_handle->setHandleType(PathHandle::start);
+                m_path_array.getLast()->startNewSubPath( current_handle->getBounds().toFloat().getCentre() );
+            }
+            else // normal case
+            {
+            m_path_array.getLast()->lineTo( current_handle->getBounds().toFloat().getCentre() );
+            }
         }
         
         // quadratic
@@ -373,8 +483,8 @@ void PathBaseComponent::updatePathPoints()
                 
                 if ( next_handle->getHandleType() == PathHandle::anchor) // everything ok
                 {
-                    p.quadraticTo(current_handle->getBounds().toFloat().getCentre() ,
-                                  next_handle->getBounds().toFloat().getCentre() );
+                    m_path_array.getLast()->quadraticTo(current_handle->getBounds().toFloat().getCentre() ,
+                                                       next_handle->getBounds().toFloat().getCentre() );
                     h+=1;
                 }
                 
@@ -397,9 +507,9 @@ void PathBaseComponent::updatePathPoints()
         // cubic
         else if ( current_handle->getHandleType() == PathHandle::cubic_control )
         {
-            p.cubicTo(path_handles[h]->getBounds().toFloat().getCentre(),
-                      path_handles[h+1]->getBounds().toFloat().getCentre(),
-                      path_handles[h+2]->getBounds().toFloat().getCentre() );
+            m_path_array.getLast()->cubicTo(path_handles[h]->getBounds().toFloat().getCentre(),
+                                           path_handles[h+1]->getBounds().toFloat().getCentre(),
+                                           path_handles[h+2]->getBounds().toFloat().getCentre() );
             h+=2;
         }
         
@@ -407,28 +517,15 @@ void PathBaseComponent::updatePathPoints()
         // last point should be a 'anchor'
         if ( path_handles[h]->isClosing() )
         {
-            p.closeSubPath();
+            m_path_array.getLast()->closeSubPath();
         }
     }
     
-    m_path.swapWithPath( p );
+    // m_path.swapWithPath( p );
 }
 
 
 
-// used to be called at exiting edit mode...
-// !!! redo THIS
-Rectangle<float> PathBaseComponent::tranformAndGetBoundsInParent( Path& p )
-{
-    float strokeOffset = strokeType.getStrokeThickness() * 0.5;
-    
-    m_path_bounds.getRealPathBounds( m_path );
-    Rectangle<float> abs_bounds = m_path_bounds;
-    
-    // NOT FUNCTIONAL PROGRAMMING, but oh well
-    p.applyTransform( AffineTransform().translated( -abs_bounds.getX() + strokeOffset, -abs_bounds.getY() + strokeOffset ) );
-    return abs_bounds.expanded( strokeOffset );
-}
 
 
 /******************
@@ -438,10 +535,16 @@ Rectangle<float> PathBaseComponent::tranformAndGetBoundsInParent( Path& p )
 bool PathBaseComponent::hitTest (int x, int y)
 {
     if( in_edit_mode || is_selected ) return true; // why ?
-    else return (
-                 m_path.intersectsLine( Line<float>( x - 5, y - 5, x + 5, y + 5) ) ||
-                 m_path.intersectsLine( Line<float>( x + 5, y - 5, x - 5, y + 5) )
-                 );
+    else
+    {
+        for ( int np = 0; np < m_path_array.size(); np++ )
+        {
+            if (m_path_array[np]->intersectsLine( Line<float>( x - 5, y - 5, x + 5, y + 5) ) ||
+                m_path_array[np]->intersectsLine( Line<float>( x + 5, y - 5, x - 5, y + 5) ) )
+                return true;
+        }
+        return false;
+    }
 }
 
 
@@ -540,7 +643,7 @@ void PathBaseComponent::mouseMove( const MouseEvent& event )
         {
             Path p;
             p.startNewSubPath( path_handles.getLast()->getCenter() );
-            p.lineTo( shiftConstrainMouseAngle( path_handles.getLast(), event ) );
+            p.lineTo( PathBaseComponent::shiftConstrainMouseAngle( path_handles.getLast(), event ) );
             m_preview_path.swapWithPath( p );
             repaint();
         } else
@@ -594,14 +697,16 @@ void PathBaseComponent::mouseDrag( const MouseEvent& event )
 
 void PathBaseComponent::h_flip()
 {
+    Path m_path = mergePathArray();
     m_path.applyTransform( AffineTransform().rotated( float_Pi,
                                                      m_path_centroid.getX(),
                                                      m_path_centroid.getY()  ) );
     
-    auto actualBounds = tranformAndGetBoundsInParent( m_path );
-    m_path.applyTransform( AffineTransform().verticalFlip( actualBounds.getHeight() ) );
+    //auto actualBounds = tranformAndGetBoundsInParent( m_path );
+    m_path.applyTransform( AffineTransform().verticalFlip( m_path_bounds.getHeight() ) );
     m_path.applyTransform( AffineTransform().translated( m_path_origin ) );
     
+    makePathArrayFromPath(m_path);
     updateHandlePositions();
     updatePathBounds();
     repaint();
@@ -610,10 +715,14 @@ void PathBaseComponent::h_flip()
 
 void PathBaseComponent::v_flip()
 {
-
-    auto actualBounds = tranformAndGetBoundsInParent(m_path);
-    m_path.applyTransform( AffineTransform().verticalFlip( actualBounds.getHeight() ) );
+    
+    Path m_path = mergePathArray();
+    
+    // auto actualBounds = tranformAndGetBoundsInParent(m_path);
+    m_path.applyTransform( AffineTransform().verticalFlip( m_path_bounds.getHeight() ) );
     m_path.applyTransform( AffineTransform().translated( m_path_origin ) );
+ 
+    makePathArrayFromPath(m_path);
     updateHandlePositions();
     updatePathBounds();
     repaint();
@@ -622,7 +731,9 @@ void PathBaseComponent::v_flip()
 
 void PathBaseComponent::rotatePath ( float theta, float ax, float ay )
 {
+    Path m_path = mergePathArray();
     m_path.applyTransform( AffineTransform().rotation( theta, ax, ay ) );
+    makePathArrayFromPath(m_path);
     updateHandlePositions();
     updatePathBounds();
     repaint();
@@ -631,7 +742,9 @@ void PathBaseComponent::rotatePath ( float theta, float ax, float ay )
 
 void PathBaseComponent::rotatePath ( float theta )
 {
+    Path m_path = mergePathArray();
     m_path.applyTransform( AffineTransform().rotation( theta, m_path_centroid.getX(), m_path_centroid.getY()  ) );
+    makePathArrayFromPath(m_path);
     updateHandlePositions();
     updatePathBounds();
     repaint(); 
@@ -674,26 +787,26 @@ void PathBaseComponent::paint ( Graphics& g )
     // workaround since we don't know which context we're in, draw and return if in palette
     if( getPageComponent() == NULL )
     {
-        g.strokePath(m_path, strokeType );
+        for ( int np = 0; np < m_path_array.size(); np++)
+        {
+            g.strokePath(*m_path_array[np], strokeType );
+            if( fill ) g.fillPath(*m_path_array[np]);
+        }
     }
     else
     {
         g.setColour( getCurrentColor() );
-        g.strokePath(m_path, strokeType );
+        for ( int np = 0; np < m_path_array.size(); np++)
+        {
+            //std::cout << "DRAW " << getComponentID() << " -- " << np << std::endl;
+            g.strokePath(*m_path_array[np], strokeType );
+            if( fill ) g.fillPath(*m_path_array[np]);
+        }
         
         if( !m_preview_path.isEmpty() )
         {
             g.setColour( preview_stroke_color );
             g.strokePath(m_preview_path, PathStrokeType(0.5) ); // different color for preview?
-        }
-        
-        
-        if( fill ) // preview fill also?
-        {
-            // will need to check for selection color
-            // getFillColor()
-            // g.setColour( fill_color );
-            g.fillPath(m_path);
         }
         
         if( in_edit_mode )
@@ -709,37 +822,40 @@ void PathBaseComponent::drawHandlesLines( Graphics& g)
     float ax = -1, ay = -1;
     float dashes[2] = {2.0f, 2.0f};
     
-    Path::Iterator it( m_path );
-    while( it.next() )
+    for ( int np = 0; np < m_path_array.size(); np++)
     {
-        if (it.elementType == it.startNewSubPath)
+        Path* m_path = m_path_array[np];
+        Path::Iterator it( *m_path );
+        while( it.next() )
         {
-            ax = it.x1;
-            ay = it.y1;
-        }
-        else if (it.elementType == it.lineTo)
-        {
-            ax = it.x1;
-            ay = it.y1;
-        }
-        else if (it.elementType == it.quadraticTo)
-        {
-            g.drawDashedLine(Line<float>(ax, ay, it.x1, it.y1), dashes, 2 );
-            ax = it.x2;
-            ay = it.y2;
-        }
-        else if (it.elementType == it.cubicTo)
-        {
-            g.drawDashedLine(Line<float>(ax, ay, it.x1, it.y1), dashes, 2 );
-            g.drawDashedLine(Line<float>(it.x2, it.y2, it.x3, it.y3), dashes, 2 );
-            ax = it.x3;
-            ay = it.y3;
-        }
-        else if (it.elementType == it.closePath)
-        {
-            
-        }
-    }
+            if (it.elementType == it.startNewSubPath)
+            {
+                ax = it.x1;
+                ay = it.y1;
+            }
+            else if (it.elementType == it.lineTo)
+            {
+                ax = it.x1;
+                ay = it.y1;
+            }
+            else if (it.elementType == it.quadraticTo)
+            {
+                g.drawDashedLine(Line<float>(ax, ay, it.x1, it.y1), dashes, 2 );
+                ax = it.x2;
+                ay = it.y2;
+            }
+            else if (it.elementType == it.cubicTo)
+            {
+                g.drawDashedLine(Line<float>(ax, ay, it.x1, it.y1), dashes, 2 );
+                g.drawDashedLine(Line<float>(it.x2, it.y2, it.x3, it.y3), dashes, 2 );
+                ax = it.x3;
+                ay = it.y3;
+            }
+            else if (it.elementType == it.closePath)
+            {
+                
+            }
+        }}
     
     g.setColour(Colours::lightblue);
     g.drawRect( m_path_bounds );

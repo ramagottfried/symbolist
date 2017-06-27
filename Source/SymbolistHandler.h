@@ -11,6 +11,7 @@ class SymbolistMainComponent;
 class BaseComponent;
 class OSCInspectorTable;
 
+
 class SymbolistHandler
 {
     

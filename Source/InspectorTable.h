@@ -37,6 +37,9 @@ public:
    
     void resized() override;
     
+    
+    SymbolistHandler* getSymbolistHandler(){ return symbolist_handler; }
+
 private:
     // this loads the embedded database XML file into memory
     void loadData( OSCBundle& data );

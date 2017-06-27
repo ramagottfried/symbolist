@@ -34,6 +34,7 @@ public:
     void removeFromSelection(SymbolistComponent* c);
     void selectAllComponents();
     virtual void unselectAllComponents();
+    Array<SymbolistComponent*>& getSelectedItems(){ return selected_components; }
     
     void removeSubcomponent( SymbolistComponent *c ) override;
     void clearAllSubcomponents( ) override;

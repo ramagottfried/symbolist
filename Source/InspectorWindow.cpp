@@ -19,7 +19,7 @@ InspectorWindow::~InspectorWindow() {}
 
 void InspectorWindow::closeButtonPressed()
 {
-    delete this;
+    inspector.getSymbolistHandler()->symbolistAPI_closeInspectorWindow();
 }
 
 OSCInspectorTable* InspectorWindow::getMainComponent()

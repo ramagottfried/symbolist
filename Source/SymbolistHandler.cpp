@@ -68,13 +68,10 @@ void SymbolistHandler::symbolistAPI_openWindow()
     SymbolistMainWindow *w = new SymbolistMainWindow (this);
     main_component = w->getMainComponent();
     addComponentsFromScore();
-    
-    InspectorWindow *iw = new InspectorWindow (this);
-    inspector = iw->getMainComponent();
-    
-    main_component->getTopLevelComponent()->toFront(true);
+    main_component->grabKeyboardFocus();
 
 }
+
 
 void SymbolistHandler::symbolistAPI_closeWindow()
 {
@@ -110,6 +107,9 @@ void SymbolistHandler::symbolistAPI_closeInspectorWindow()
     {
         delete inspector->getTopLevelComponent();
         inspector = NULL;
+        
+        if( main_component != NULL )
+            main_component->grabKeyboardFocus();
     }
 }
 
@@ -121,6 +121,12 @@ void SymbolistHandler::symbolistAPI_openInspectorWindow()
     {
         InspectorWindow *iw = new InspectorWindow (this);
         inspector = iw->getMainComponent();
+        inspector->grabKeyboardFocus();
+        if ( main_component )
+        {
+            auto sel = main_component->getPageComponent()->getSelectedItems();
+            addToInspector( (BaseComponent *)sel.getLast() );
+        }
     }
     else
     {
@@ -401,7 +407,7 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     
     main_component->getPageComponent()->drawTimePoints();
     
-    inspector->setInspectorObject( c );
+    addToInspector( c );
 
 }
 

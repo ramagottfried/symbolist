@@ -59,9 +59,8 @@ PaletteComponent::PaletteComponent()
 
     Symbol s("path", 0, 0, 30, 30);
     
-    OSCMessage path_mess(     "/path",  (String)"m 4. 4. c 14. 2. 22. 8. 16. 14. c 12. 20. 14. 24. 20. 22." );
-
-    s.addOSCMessage(path_mess);
+    s.addOSCMessage( OSCMessage("/num_sub_paths", 1) );
+    s.addOSCMessage( OSCMessage("/path/0", String("m 4. 4. c 14. 2. 22. 8. 16. 14. c 12. 20. 14. 24. 20. 22.")) );
 
     PaletteButton *pb = new PaletteButton(-1, &s);
     pb->setTopLeftPosition(10, 20);

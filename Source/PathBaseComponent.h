@@ -13,6 +13,7 @@ public:
     ~PathBaseComponent() ;
     
     static void printPath( Path p, const char* name = "path" );
+    void cleanupPathArray();
     
     int addSymbolMessages(Symbol* s, const String &base_address) override;
     virtual void importFromSymbol(const Symbol &s) override;
@@ -45,13 +46,18 @@ public:
     void mouseDoubleClick( const MouseEvent& event ) override;
     void mouseAddClick ( const MouseEvent& event ) override;
     bool hitTest (int x, int y) override;
-    Point<float> shiftConstrainMouseAngle( const PathHandle* last, const MouseEvent& event );
+    static Point<float> shiftConstrainMouseAngle( const PathHandle* last, const MouseEvent& event );
     
     void setMinimalBounds () override;
     void setMaximalBounds () override;
     void updatePathBounds ();
+    
+    
+    Path mergePathArray();
+    void makePathArrayFromPath(const Path &p);
+    
     void resizeToFit(int x, int y, int w, int h) override;
-    Rectangle<float> tranformAndGetBoundsInParent( Path& p );
+    // Rectangle<float> tranformAndGetBoundsInParent( Path& p );
     
     
     void setEditMode(bool val) override;
@@ -69,15 +75,15 @@ public:
 
 protected:
     
-    Path                    m_path;
+    Array<Path*>             m_path_array;
     
-    PathStrokeType          strokeType = PathStrokeType(2.0) ;
+    PathStrokeType          strokeType = PathStrokeType(4.0) ;
     bool                    fill = false;
     Colour                  fill_color;
     Colour                  stroke_color;
     
     // editing objects
-    bool                    drawing = false;
+    bool                        drawing = false;
     Path                        m_preview_path;
     Colour                      preview_stroke_color = Colours::cornflowerblue ;
     

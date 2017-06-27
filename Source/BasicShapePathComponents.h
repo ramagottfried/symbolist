@@ -55,7 +55,8 @@ public:
     {
         BaseComponent::importFromSymbol(s);
         auto area = getLocalBounds().toFloat().reduced( strokeWeight );
-        m_path.addEllipse(area);
+        m_path_array.add(new Path());
+        m_path_array.getLast()->addEllipse(area);
     }
 
 private:
@@ -76,7 +77,8 @@ public:
     {
         BaseComponent::importFromSymbol(s);
         auto area = getLocalBounds().toFloat().reduced( strokeWeight );
-        m_path.addRectangle(area);
+        m_path_array.add(new Path());
+        m_path_array.getLast()->addRectangle(area);
     }
 
     String getSymbolTypeStr() const override { return "rectangle"; }
@@ -98,7 +100,8 @@ public:
     {
         BaseComponent::importFromSymbol(s);
         auto area = getLocalBounds().toFloat().reduced( strokeWeight );
-        m_path.addTriangle( area.getBottomLeft(), Point<float>(area.getCentreX(), area.getY()), area.getBottomRight());
+        m_path_array.add(new Path());
+        m_path_array.getLast()->addTriangle( area.getBottomLeft(), Point<float>(area.getCentreX(), area.getY()), area.getBottomRight());
     }
 
     String getSymbolTypeStr() const override { return "triangle"; }

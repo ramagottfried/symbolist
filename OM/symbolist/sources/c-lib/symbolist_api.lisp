@@ -12,7 +12,7 @@
 (cffi:defcfun ("symbolistSetSymbols" symbolistSetSymbols) :void (s-comp :pointer) (n-symbols :int) (bundle-array :pointer))
 (cffi:defcfun ("symbolistGetNumSymbols" symbolistGetNumSymbols) :int (s-comp :pointer))
 (cffi:defcfun ("symbolistGetSymbol" symbolistGetSymbol) :pointer (s-comp :pointer) (n :int))
-(cffi:defcfun ("symbolistSetTime" symbolistSetTime) :void (s-comp :pointer) (time :int))
+(cffi:defcfun ("symbolistSetTime" symbolistSetTime) :void (s-comp :pointer) (time :float))
 (cffi:defcfun ("symbolistRegisterCloseCallback" symbolistRegisterCloseCallback) :void (s-comp :pointer) (callback :pointer))
 (cffi:defcfun ("symbolistRegisterUpdateCallback" symbolistRegisterUpdateCallback) :void (s-comp :pointer) (callback :pointer))
 (cffi:defcfun ("symbolistRegisterTransportCallback" symbolistRegisterTransportCallback) :void (s-comp :pointer) (callback :pointer))

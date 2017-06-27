@@ -43,7 +43,7 @@
                                  (list 
                                   tt
                                   #'(lambda ()
-                                      (symbolist::symbolistSetTime (symbolist-window ed) tt))))))
+                                      (symbolist::symbolistSetTime (symbolist-window ed) (ms->sec tt)))))))
          '< :key 'car)
       (call-next-method))))
   

@@ -232,7 +232,7 @@ void OSCInspectorTable::setText (const int columnNumber, const int rowNumber, co
 {
     if( symbol_component == nullptr ) return;
     OSCBundle bundle = symbol_component->getScoreSymbolPointer()->getOSCBundle();
-
+    
     switch( columnNumber )
     {
         case 1:
@@ -274,10 +274,9 @@ void OSCInspectorTable::setText (const int columnNumber, const int rowNumber, co
                 }
             }
             
-            
-//            symbol_component->setScoreSymbolPointer(<#Symbol *s#>);
-//            bundle = new_bndl;
-//            symbolist_handler->
+            Symbol s;
+            s.setOSCBundle(&new_bndl);
+            symbolist_handler->updateSymbolFromInspector( symbol_component, s );
             break;
         }
             

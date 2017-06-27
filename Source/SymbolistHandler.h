@@ -62,6 +62,8 @@ public:
     
     void addToInspector( BaseComponent *c);
     
+    void updateSymbolFromInspector( BaseComponent *c, Symbol& s );
+    
     /*********************************************
      * PALETTE AND SYMBOL CONSTRUCTOR
      *********************************************/

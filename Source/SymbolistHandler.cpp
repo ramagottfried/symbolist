@@ -378,3 +378,9 @@ void SymbolistHandler::addToInspector( BaseComponent *c )
     inspector->setInspectorObject( c );
 }
 
+
+void SymbolistHandler::updateSymbolFromInspector( BaseComponent *c, Symbol& s )
+{
+    c->importFromSymbol(s);
+    modifySymbolInScore( c );
+}

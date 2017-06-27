@@ -91,8 +91,41 @@ void SymbolistHandler::symbolistAPI_closeWindow()
         delete inspector->getTopLevelComponent();
         inspector = NULL;
     }
+}
 
+void SymbolistHandler::symbolistAPI_toggleInspectorWindow()
+{
+    if( inspector == NULL )
+        symbolistAPI_openInspectorWindow();
+    else
+        symbolistAPI_closeInspectorWindow();
+
+}
+
+
+void SymbolistHandler::symbolistAPI_closeInspectorWindow()
+{
+    const MessageManagerLock mml;
+    if ( inspector != NULL)
+    {
+        delete inspector->getTopLevelComponent();
+        inspector = NULL;
+    }
+}
+
+void SymbolistHandler::symbolistAPI_openInspectorWindow()
+{
+    const MessageManagerLock mml;
     
+    if ( inspector == NULL)
+    {
+        InspectorWindow *iw = new InspectorWindow (this);
+        inspector = iw->getMainComponent();
+    }
+    else
+    {
+        inspector->getTopLevelComponent()->toFront(true);
+    }
 }
 
 void SymbolistHandler::symbolistAPI_windowToFront()
@@ -375,7 +408,8 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
 
 void SymbolistHandler::addToInspector( BaseComponent *c )
 {
-    inspector->setInspectorObject( c );
+    if( inspector )
+        inspector->setInspectorObject( c );
 }
 
 

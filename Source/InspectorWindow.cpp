@@ -19,7 +19,7 @@ InspectorWindow::~InspectorWindow() {}
 
 void InspectorWindow::closeButtonPressed()
 {
-    //  delete this;
+    delete this;
 }
 
 OSCInspectorTable* InspectorWindow::getMainComponent()

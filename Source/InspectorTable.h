@@ -6,10 +6,11 @@
 #include "BaseComponent.h"
 
 
-class OSCInspectorTable : public Component, public TableListBoxModel
+class OSCInspectorTable : public Component, public TableListBoxModel, public KeyListener
 {
 public:
     OSCInspectorTable( SymbolistHandler *sh );
+    bool keyPressed (const KeyPress& key, Component* originatingComponent) override;
     
     void setInspectorObject( BaseComponent *c );
     
@@ -49,9 +50,8 @@ private:
     
     BaseComponent*      symbol_component = nullptr;
     
-    SymbolistHandler*   symbolist_handler;    
+    SymbolistHandler*   symbolist_handler;
     
-
     //==============================================================================
     // This is a custom Label component, which we use for the table's editable text columns.
     class EditableTextCustomComponent  : public Label

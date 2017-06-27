@@ -117,7 +117,7 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
         
         scoreView.repaint();
     }
-    else if(    key == KeyPress ('?', ModifierKeys::shiftModifier, 0) ) { cout << "yep" << endl; }
+    else if(    key == KeyPress ('i', ModifierKeys::commandModifier, 0) ){ symbolist_handler->symbolistAPI_toggleInspectorWindow(); }
     
     else if (   key == 'w' ) { scoreView.getEditedComponent()->addSelectedSymbolsToPalette(); }
 

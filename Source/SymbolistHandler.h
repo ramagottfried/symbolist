@@ -31,6 +31,10 @@ public:
     void symbolistAPI_closeWindow();
     void symbolistAPI_windowToFront();
     void symbolistAPI_windowSetName(String name);
+    void symbolistAPI_openInspectorWindow();
+    void symbolistAPI_closeInspectorWindow();
+    void symbolistAPI_toggleInspectorWindow();
+    
     void symbolistAPI_registerUpdateCallback(symbolistUpdateCallback c);
     void symbolistAPI_registerCloseCallback(symbolistCloseCallback c);
     void symbolistAPI_registerTransportCallback(symbolistTransportCallback c);

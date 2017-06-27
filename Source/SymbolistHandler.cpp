@@ -368,13 +368,13 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     
     main_component->getPageComponent()->drawTimePoints();
     
-    inspector->setInspectorData( c->getScoreSymbolPointer()->getOSCBundle() );
+    inspector->setInspectorSymbol( c->getScoreSymbolPointer() );
 
 }
 
 
 void SymbolistHandler::addToInspector( BaseComponent *c )
 {
-    inspector->setInspectorData( c->getScoreSymbolPointer()->getOSCBundle() );
+    inspector->setInspectorSymbol( c->getScoreSymbolPointer() );
 }
 

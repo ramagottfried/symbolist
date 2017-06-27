@@ -1,6 +1,6 @@
 
 #include "InspectorTable.h"
-
+#include "SymbolistHandler.h"
 
 
 OSCInspectorTable::OSCInspectorTable( SymbolistHandler *sh ) : font (14.0f)
@@ -40,21 +40,20 @@ OSCInspectorTable::OSCInspectorTable( SymbolistHandler *sh ) : font (14.0f)
     
     
     // we could now change some initial settings..
-    table.getHeader().setSortColumnId (1, true); // sort forwards by the ID column
-//        table.getHeader().setColumnVisible (7, false); // hide the "length" column until the user shows it
+//    table.getHeader().setSortColumnId (1, true); // sort forwards by the ID column
     
     // un-comment this line to have a go of stretch-to-fit mode
-    // table.getHeader().setStretchToFitActive (true);
+//    table.getHeader().setStretchToFitActive (true);
     
     table.setMultipleSelectionEnabled (true);
 }
 
 
-void OSCInspectorTable::setInspectorData( OSCBundle data )
+void OSCInspectorTable::setInspectorSymbol( Symbol* s )
 {
  //   cout << "addSymbolData" << endl;
 
-    bundle = data;
+    symbol = s;
     
 //    for (auto osc : data )
 //        bundle.addElement( osc );
@@ -63,13 +62,23 @@ void OSCInspectorTable::setInspectorData( OSCBundle data )
     table.repaint();
 }
 
+int OSCInspectorTable::getNumRows()
+{
+    if( symbol != nullptr )
+    {
+        return symbol->getOSCBundle().size();
+    }
+    else
+        return 0;
+}
+
 // This is overloaded from TableListBoxModel, and must paint any cells that aren't using custom
 // components.
 void OSCInspectorTable::paintCell (Graphics& g, int rowNumber, int columnId,
                 int width, int height, bool /*rowIsSelected*/)
 {
     
-    cout << "paintCell" << endl;
+    OSCBundle bundle = symbol->getOSCBundle();
     
     g.setColour (getLookAndFeel().findColour (ListBox::textColourId));
     g.setFont (font);
@@ -180,6 +189,8 @@ int OSCInspectorTable::getColumnAutoSizeWidth (int columnId)
 
 String OSCInspectorTable::getText (const int columnNumber, const int rowNumber) const
 {
+    OSCBundle bundle = symbol->getOSCBundle();
+
     switch( columnNumber )
     {
         case 1:
@@ -193,7 +204,7 @@ String OSCInspectorTable::getText (const int columnNumber, const int rowNumber) 
             
             for( int i = 0; i < msg.size(); i++ )
             {
-                auto val = msg[0];
+                auto val = msg[i];
                 if( val.isFloat32() )
                     text += (String)val.getFloat32() + " ";
                 else if( val.isInt32() )
@@ -215,20 +226,66 @@ String OSCInspectorTable::getText (const int columnNumber, const int rowNumber) 
 
 void OSCInspectorTable::setText (const int columnNumber, const int rowNumber, const String& newText)
 {
-    cout << "change and push back to Symbol/GUI here " << endl;
+    OSCBundle bundle = symbol->getOSCBundle();
+
+    switch( columnNumber )
+    {
+        case 1:
+            cout << "would be cool to set a mapping id here" << endl;
+            break;
+        case 2:
+        {
+            cout << "not allowed to change address! sorry " << endl;
+            break;
+        }
+        case 3:
+        {
+            String text;
+
+            OSCMessage msg = bundle[ rowNumber ].getMessage();
+            OSCAddressPattern addr = msg.getAddressPattern();
+            OSCBundle new_bndl;
+            
+            for( auto osc : bundle )
+            {
+                if( osc.getMessage().getAddressPattern() != addr )
+                {
+                    new_bndl.addElement(osc);
+                }
+                else
+                {
+                    for( int i = 0; i < msg.size(); i++ )
+                    {
+                        auto val = msg[i];
+                        if( val.isFloat32() )
+                            new_bndl.addElement( OSCMessage(addr, newText.getFloatValue() ) );
+                        else if( val.isInt32() )
+                            new_bndl.addElement( OSCMessage(addr, newText.getIntValue() ) );
+                        else if( val.isString() )
+                            new_bndl.addElement( OSCMessage(addr, newText ) );
+                        else if( val.isBlob() )
+                            new_bndl.addElement( OSCMessage(addr, (String)"not sure how to deal with blobs" ) );
+                    }
+                }
+            }
+//            bundle = new_bndl;
+//            symbolist_handler->
+            break;
+        }
+            
+        default:
+            cout << "unhandled column " << columnNumber << endl;
+            break;
+    }
     
 }
 
-
-//==============================================================================
 void OSCInspectorTable::resized()
 {
     // position our table with a gap around its edge
     table.setBoundsInset (BorderSize<int> (8));
 }
 
-
-// This is overloaded from TableListBoxModel, and should fill in the background of the whole row
 void OSCInspectorTable::paintRowBackground (Graphics& g, int rowNumber, int /*width*/, int /*height*/, bool rowIsSelected)
 {
     const Colour alternateColour (getLookAndFeel().findColour (ListBox::backgroundColourId)

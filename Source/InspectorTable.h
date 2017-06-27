@@ -10,9 +10,9 @@ class OSCInspectorTable : public Component, public TableListBoxModel
 public:
     OSCInspectorTable( SymbolistHandler *sh );
     
-    void setInspectorData( OSCBundle data );
+    void setInspectorSymbol( Symbol *s );
     
-    int getNumRows() override { return bundle.size(); }
+    int getNumRows() override;
 
     // This is overloaded from TableListBoxModel, and should fill in the background of the whole row
     void paintRowBackground (Graphics& g, int rowNumber, int /*width*/, int /*height*/, bool rowIsSelected) override;
@@ -46,7 +46,7 @@ private:
     TableListBox    table;
     Font            font;
     
-    OSCBundle       bundle;
+    Symbol*         symbol = nullptr;
     
     int             numRows;            // The number of rows of data we've got
     

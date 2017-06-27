@@ -129,6 +129,8 @@ void BaseComponent::selectComponent()
 {
     SymbolistComponent::selectComponent();
     //resizableBorder->setVisible( true ); // this makes the resizable border apera also in multiple selection
+    
+    getSymbolistHandler()->addToInspector( this );
 }
 
 void BaseComponent::deselectComponent()

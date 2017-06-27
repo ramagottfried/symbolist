@@ -112,7 +112,8 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
         
         scoreView.repaint();
     }
-    
+    else if(    key == KeyPress ('?', ModifierKeys::shiftModifier, 0) ) { cout << "yep" << endl; }
+
     return true;
 }
 

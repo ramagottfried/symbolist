@@ -57,6 +57,14 @@
 		118C38E41EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */; };
 		118C38EF1EC61404006FF4A1 /* PaletteComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */; };
 		118C38F01EC61404006FF4A1 /* PaletteComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */; };
+		11BE14971F025643006F328D /* InspectorTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11BE14951F025643006F328D /* InspectorTable.cpp */; };
+		11BE14981F025643006F328D /* InspectorTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11BE14951F025643006F328D /* InspectorTable.cpp */; };
+		11BE14991F025643006F328D /* InspectorTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11BE14951F025643006F328D /* InspectorTable.cpp */; };
+		11BE149A1F025643006F328D /* InspectorTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 11BE14961F025643006F328D /* InspectorTable.h */; };
+		11BE149D1F0272DA006F328D /* InspectorWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11BE149B1F0272DA006F328D /* InspectorWindow.cpp */; };
+		11BE149E1F0272DA006F328D /* InspectorWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11BE149B1F0272DA006F328D /* InspectorWindow.cpp */; };
+		11BE149F1F0272DA006F328D /* InspectorWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11BE149B1F0272DA006F328D /* InspectorWindow.cpp */; };
+		11BE14A01F0272DA006F328D /* InspectorWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 11BE149C1F0272DA006F328D /* InspectorWindow.h */; };
 		11CE00571EC328EC00E4F624 /* SymbolistMainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00531EC328EC00E4F624 /* SymbolistMainComponent.cpp */; };
 		11CE00581EC328EC00E4F624 /* SymbolistMainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00531EC328EC00E4F624 /* SymbolistMainComponent.cpp */; };
 		11CE005E1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */; };
@@ -127,6 +135,10 @@
 		118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BaseComponent.cpp; path = ../../Source/BaseComponent.cpp; sourceTree = "<group>"; };
 		118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PaletteComponent.cpp; path = ../../Source/PaletteComponent.cpp; sourceTree = "<group>"; };
 		118C38EE1EC61404006FF4A1 /* PaletteComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PaletteComponent.h; path = ../../Source/PaletteComponent.h; sourceTree = "<group>"; };
+		11BE14951F025643006F328D /* InspectorTable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InspectorTable.cpp; path = ../../Source/InspectorTable.cpp; sourceTree = "<group>"; };
+		11BE14961F025643006F328D /* InspectorTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InspectorTable.h; path = ../../Source/InspectorTable.h; sourceTree = "<group>"; };
+		11BE149B1F0272DA006F328D /* InspectorWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InspectorWindow.cpp; path = ../../Source/InspectorWindow.cpp; sourceTree = "<group>"; };
+		11BE149C1F0272DA006F328D /* InspectorWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InspectorWindow.h; path = ../../Source/InspectorWindow.h; sourceTree = "<group>"; };
 		11CE00201EC3271700E4F624 /* symbolist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = symbolist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11CE00511EC328DE00E4F624 /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Main.cpp; path = ../../Source/Main.cpp; sourceTree = "<group>"; };
 		11CE00531EC328EC00E4F624 /* SymbolistMainComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolistMainComponent.cpp; path = ../../Source/SymbolistMainComponent.cpp; sourceTree = "<group>"; };
@@ -240,10 +252,14 @@
 			children = (
 				4425D3031EF858C700B8BF1C /* SymbolistHandler.h */,
 				4425D3041EF8599300B8BF1C /* SymbolistHandler.cpp */,
-				44CFE0411EC37BA5009135F8 /* SymbolistMainComponent.h */,
-				11CE00531EC328EC00E4F624 /* SymbolistMainComponent.cpp */,
 				44CFE0421EC37BA5009135F8 /* SymbolistMainWindow.h */,
 				446388D41EC34DC90038CFCB /* SymbolistMainWindow.cpp */,
+				44CFE0411EC37BA5009135F8 /* SymbolistMainComponent.h */,
+				11CE00531EC328EC00E4F624 /* SymbolistMainComponent.cpp */,
+				11BE149C1F0272DA006F328D /* InspectorWindow.h */,
+				11BE149B1F0272DA006F328D /* InspectorWindow.cpp */,
+				11BE14961F025643006F328D /* InspectorTable.h */,
+				11BE14951F025643006F328D /* InspectorTable.cpp */,
 			);
 			name = main;
 			sourceTree = "<group>";
@@ -405,7 +421,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11BE14A01F0272DA006F328D /* InspectorWindow.h in Headers */,
 				118648991EFA811800904672 /* TimePointArray.h in Headers */,
+				11BE149A1F025643006F328D /* InspectorTable.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -524,6 +542,7 @@
 			files = (
 				1186486F1EF7E68B00904672 /* include_juce_graphics.mm in Sources */,
 				1107B3FC1EF7D55D00E2DFA9 /* BaseComponent.cpp in Sources */,
+				11BE149F1F0272DA006F328D /* InspectorWindow.cpp in Sources */,
 				1186486C1EF7E68B00904672 /* include_juce_core.mm in Sources */,
 				1107B3F31EF7D54800E2DFA9 /* symbolist.cpp in Sources */,
 				1107B3FB1EF7D55D00E2DFA9 /* PathBaseComponent.cpp in Sources */,
@@ -540,6 +559,7 @@
 				1107B4021EF7D55D00E2DFA9 /* SymbolistMainComponent.cpp in Sources */,
 				1107B3F51EF7D55D00E2DFA9 /* Symbol.cpp in Sources */,
 				1107B4001EF7D55D00E2DFA9 /* ScoreComponent.cpp in Sources */,
+				11BE14991F025643006F328D /* InspectorTable.cpp in Sources */,
 				118648A41EFBB5D500904672 /* TimePointGUI.cpp in Sources */,
 				1107B3F71EF7D55D00E2DFA9 /* TextGlyphComponent.cpp in Sources */,
 				118648981EFA811800904672 /* TimePointArray.cpp in Sources */,
@@ -558,6 +578,7 @@
 			files = (
 				446363951EC6F4960054CB6D /* OSCIO.cpp in Sources */,
 				11CE005F1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */,
+				11BE149E1F0272DA006F328D /* InspectorWindow.cpp in Sources */,
 				44EE9BBE1EC37D3E0021C5A8 /* Main.cpp in Sources */,
 				44CFE03D1EC3789C009135F8 /* include_juce_graphics.mm in Sources */,
 				11CE00581EC328EC00E4F624 /* SymbolistMainComponent.cpp in Sources */,
@@ -574,6 +595,7 @@
 				44CFE03E1EC3789C009135F8 /* include_juce_gui_basics.mm in Sources */,
 				1107B3EA1EF5388500E2DFA9 /* PathInfo.cpp in Sources */,
 				11D86B8C1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */,
+				11BE14981F025643006F328D /* InspectorTable.cpp in Sources */,
 				44C0729F1EC4AF8C0028D5F8 /* include_juce_osc.cpp in Sources */,
 				118648A31EFBB5D500904672 /* TimePointGUI.cpp in Sources */,
 				118648971EFA811800904672 /* TimePointArray.cpp in Sources */,
@@ -592,6 +614,7 @@
 			files = (
 				446363941EC6F4960054CB6D /* OSCIO.cpp in Sources */,
 				11CE005E1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */,
+				11BE149D1F0272DA006F328D /* InspectorWindow.cpp in Sources */,
 				AC7BC43E089630154F7F79D6 /* include_juce_core.mm in Sources */,
 				52B193FE560B5C8022529FF5 /* include_juce_data_structures.mm in Sources */,
 				11CE00571EC328EC00E4F624 /* SymbolistMainComponent.cpp in Sources */,
@@ -608,6 +631,7 @@
 				41C3942D9A94933B560F98F2 /* include_juce_gui_basics.mm in Sources */,
 				1107B3E91EF5388500E2DFA9 /* PathInfo.cpp in Sources */,
 				11D86B8B1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */,
+				11BE14971F025643006F328D /* InspectorTable.cpp in Sources */,
 				44C0729E1EC4AF870028D5F8 /* include_juce_osc.cpp in Sources */,
 				118648A21EFBB5D500904672 /* TimePointGUI.cpp in Sources */,
 				118648961EFA811800904672 /* TimePointArray.cpp in Sources */,

@@ -9,6 +9,7 @@
 #include "SymbolistHandler.h"
 
 #include "SymbolistMainWindow.h"
+#include "InspectorWindow.h"
 
 #include "SymbolGroupComponent.h"
 #include "BasicShapePathComponents.h"
@@ -67,24 +68,45 @@ void SymbolistHandler::symbolistAPI_openWindow()
     SymbolistMainWindow *w = new SymbolistMainWindow (this);
     main_component = w->getMainComponent();
     addComponentsFromScore();
+    
+    InspectorWindow *iw = new InspectorWindow (this);
+    inspector = iw->getMainComponent();
+    
+    main_component->getTopLevelComponent()->toFront(true);
+
 }
 
 void SymbolistHandler::symbolistAPI_closeWindow()
 {
+    MessageManagerLock mml;
+
     if ( main_component != NULL)
     {
-        MessageManagerLock mml;
         delete main_component->getTopLevelComponent(); // = the window
         main_component = NULL;
     }
+
+    if ( inspector != NULL)
+    {
+        delete inspector->getTopLevelComponent();
+        inspector = NULL;
+    }
+
+    
 }
 
 void SymbolistHandler::symbolistAPI_windowToFront()
 {
+    const MessageManagerLock mml;
+
     if ( main_component != NULL)
     {
-        const MessageManagerLock mml;
         main_component->getTopLevelComponent()->toFront(true);
+    }
+
+    if ( inspector != NULL)
+    {
+        inspector->getTopLevelComponent()->toFront(true);
     }
 }
 
@@ -347,4 +369,9 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     main_component->getPageComponent()->drawTimePoints();
 }
 
+
+void SymbolistHandler::addToInspector( BaseComponent *c )
+{
+    inspector->addSymbolData( c->getScoreSymbolPointer()->getOSCBundle() );
+}
 

@@ -9,6 +9,7 @@
 
 class SymbolistMainComponent;
 class BaseComponent;
+class OSCInspectorTable;
 
 class SymbolistHandler
 {
@@ -59,6 +60,8 @@ public:
     
     float getCurrentTime() { return current_time; }
     
+    void addToInspector( BaseComponent *c);
+    
     /*********************************************
      * PALETTE AND SYMBOL CONSTRUCTOR
      *********************************************/
@@ -84,7 +87,10 @@ private:
     SymbolistPalette palette;
     
     // the main view of the editor (could be embedded in a foreign app independently of the window)
-    SymbolistMainComponent* main_component = NULL;
+    SymbolistMainComponent*     main_component = NULL;
+    
+    // the main view of the editor (could be embedded in a foreign app independently of the window)
+    OSCInspectorTable*         inspector = NULL;
     
     // the current play-time in ms (change for float or long_int?)
     float current_time = 0;

@@ -49,11 +49,11 @@ OSCInspectorTable::OSCInspectorTable( SymbolistHandler *sh ) : font (14.0f)
 }
 
 
-void OSCInspectorTable::setInspectorSymbol( Symbol* s )
+void OSCInspectorTable::setInspectorObject( BaseComponent* c )
 {
  //   cout << "addSymbolData" << endl;
 
-    symbol = s;
+    symbol_component = c;
     
 //    for (auto osc : data )
 //        bundle.addElement( osc );
@@ -64,9 +64,9 @@ void OSCInspectorTable::setInspectorSymbol( Symbol* s )
 
 int OSCInspectorTable::getNumRows()
 {
-    if( symbol != nullptr )
+    if( symbol_component != nullptr )
     {
-        return symbol->getOSCBundle().size();
+        return symbol_component->getScoreSymbolPointer()->getOSCBundle().size();
     }
     else
         return 0;
@@ -77,8 +77,9 @@ int OSCInspectorTable::getNumRows()
 void OSCInspectorTable::paintCell (Graphics& g, int rowNumber, int columnId,
                 int width, int height, bool /*rowIsSelected*/)
 {
+    if( symbol_component == nullptr ) return;
     
-    OSCBundle bundle = symbol->getOSCBundle();
+    OSCBundle bundle = symbol_component->getScoreSymbolPointer()->getOSCBundle();
     
     g.setColour (getLookAndFeel().findColour (ListBox::textColourId));
     g.setFont (font);
@@ -189,7 +190,10 @@ int OSCInspectorTable::getColumnAutoSizeWidth (int columnId)
 
 String OSCInspectorTable::getText (const int columnNumber, const int rowNumber) const
 {
-    OSCBundle bundle = symbol->getOSCBundle();
+   
+    if( symbol_component == nullptr ) return String();
+    
+    OSCBundle bundle = symbol_component->getScoreSymbolPointer()->getOSCBundle();
 
     switch( columnNumber )
     {
@@ -226,7 +230,8 @@ String OSCInspectorTable::getText (const int columnNumber, const int rowNumber) 
 
 void OSCInspectorTable::setText (const int columnNumber, const int rowNumber, const String& newText)
 {
-    OSCBundle bundle = symbol->getOSCBundle();
+    if( symbol_component == nullptr ) return;
+    OSCBundle bundle = symbol_component->getScoreSymbolPointer()->getOSCBundle();
 
     switch( columnNumber )
     {
@@ -268,6 +273,9 @@ void OSCInspectorTable::setText (const int columnNumber, const int rowNumber, co
                     }
                 }
             }
+            
+            
+//            symbol_component->setScoreSymbolPointer(<#Symbol *s#>);
 //            bundle = new_bndl;
 //            symbolist_handler->
             break;

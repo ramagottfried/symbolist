@@ -3,6 +3,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SymbolistHandler.h"
+#include "BaseComponent.h"
 
 
 class OSCInspectorTable : public Component, public TableListBoxModel
@@ -10,7 +11,7 @@ class OSCInspectorTable : public Component, public TableListBoxModel
 public:
     OSCInspectorTable( SymbolistHandler *sh );
     
-    void setInspectorSymbol( Symbol *s );
+    void setInspectorObject( BaseComponent *c );
     
     int getNumRows() override;
 
@@ -43,12 +44,10 @@ private:
     String getAttributeNameForColumnId (const int columnId) const;
 
     //==============================================================================
-    TableListBox    table;
-    Font            font;
+    TableListBox        table;
+    Font                font;
     
-    Symbol*         symbol = nullptr;
-    
-    int             numRows;            // The number of rows of data we've got
+    BaseComponent*      symbol_component = nullptr;
     
     SymbolistHandler*   symbolist_handler;    
     

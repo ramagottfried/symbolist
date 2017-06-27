@@ -77,7 +77,7 @@ protected:
     
     Array<Path*>             m_path_array;
     
-    PathStrokeType          strokeType = PathStrokeType(4.0) ;
+    PathStrokeType          strokeType = PathStrokeType(2.0) ;
     bool                    fill = false;
     Colour                  fill_color;
     Colour                  stroke_color;

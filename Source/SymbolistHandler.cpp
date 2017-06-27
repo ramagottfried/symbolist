@@ -414,8 +414,7 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
 
 void SymbolistHandler::addToInspector( BaseComponent *c )
 {
-    if( inspector )
-        inspector->setInspectorObject( c );
+    if( inspector ) inspector->setInspectorObject( c );
 }
 
 

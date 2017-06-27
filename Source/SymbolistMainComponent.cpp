@@ -91,12 +91,12 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
     
     else if (   key == KeyPress::backspaceKey ) { scoreView.getEditedComponent()->deleteSelectedComponents(); }
     
-    else if (   key == 'c') { // would be better to type a number and that selects the nth palete item..
+    else if (   key == KeyPress('c')) { // would be better to type a number and that selects the nth palete item..
         symbolist_handler->setCurrentSymbol(0);
         paletteView.selectPaletteButton(0);
     }
     
-    else if (   key == 'p' ) {
+    else if (   key == KeyPress('p') ) {
         symbolist_handler->setCurrentSymbol(1);
         paletteView.selectPaletteButton(1);
     }
@@ -119,7 +119,7 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
     }
     else if(    key == KeyPress ('?', ModifierKeys::shiftModifier, 0) ) { cout << "yep" << endl; }
     
-    else if (   key == 'w' ) { scoreView.getEditedComponent()->addSelectedSymbolsToPalette(); }
+    else if (   key == KeyPress('w') ) { scoreView.getEditedComponent()->addSelectedSymbolsToPalette(); }
 
     return true;
 }

@@ -368,13 +368,13 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     
     main_component->getPageComponent()->drawTimePoints();
     
-    inspector->setInspectorObject( c );
+    if ( inspector != NULL ) inspector->setInspectorObject( c );
 
 }
 
 
 void SymbolistHandler::addToInspector( BaseComponent *c )
 {
-    inspector->setInspectorObject( c );
+    if ( inspector != NULL ) inspector->setInspectorObject( c );
 }
 

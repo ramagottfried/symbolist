@@ -137,27 +137,13 @@ Component* OSCInspectorTable::refreshComponentForCell (int rowNumber, int column
 {
    // cout << "refreshComponentForCell" << endl;
 
-    /*
-    if (columnId == 1 || columnId == 7) // The ID and Length columns do not have a custom component
+
+    if (columnId == 1 ) // The ID and Length columns do not have a custom component
     {
         jassert (existingComponentToUpdate == nullptr);
         return nullptr;
     }
     
-    if (columnId == 5) // For the ratings column, we return the custom combobox component
-    {
-        RatingColumnCustomComponent* ratingsBox = static_cast<RatingColumnCustomComponent*> (existingComponentToUpdate);
-        
-        // If an existing component is being passed-in for updating, we'll re-use it, but
-        // if not, we'll have to create one.
-        if (ratingsBox == nullptr)
-            ratingsBox = new RatingColumnCustomComponent (*this);
-        
-        ratingsBox->setRowAndColumn (rowNumber, columnId);
-        return ratingsBox;
-    }
-    
-    // The other columns are editable text columns, for which we use the custom Label component
     EditableTextCustomComponent* textLabel = static_cast<EditableTextCustomComponent*> (existingComponentToUpdate);
     
     // same as above...
@@ -166,9 +152,8 @@ Component* OSCInspectorTable::refreshComponentForCell (int rowNumber, int column
     
     textLabel->setRowAndColumn (rowNumber, columnId);
     return textLabel;
-     */
+
     
-    return nullptr;
 }
     
 // This is overloaded from TableListBoxModel, and should choose the best width for the specified
@@ -195,15 +180,42 @@ int OSCInspectorTable::getColumnAutoSizeWidth (int columnId)
 
 String OSCInspectorTable::getText (const int columnNumber, const int rowNumber) const
 {
+    switch( columnNumber )
+    {
+        case 1:
+            return (String)rowNumber;
+        case 2:
+            return bundle[ rowNumber ].getMessage().getAddressPattern().toString();
+        case 3:
+        {
+            String text;
+            auto msg = bundle[ rowNumber ].getMessage();
+            
+            for( int i = 0; i < msg.size(); i++ )
+            {
+                auto val = msg[0];
+                if( val.isFloat32() )
+                    text += (String)val.getFloat32() + " ";
+                else if( val.isInt32() )
+                    text += (String)val.getInt32() + " ";
+                else if( val.isString() )
+                    text += val.getString() + " ";
+                else if( val.isBlob() )
+                    text += (String)val.getBlob().toString() + " ";
+            }
+            return text;
+        }
+            
+        default:
+            return (String)"???";
+    }
    
-    return "getText"; //dataList->getChildElement (rowNumber)->getStringAttribute ( getAttributeNameForColumnId(columnNumber));
+    return "getText failed";
 }
 
 void OSCInspectorTable::setText (const int columnNumber, const int rowNumber, const String& newText)
 {
-//     const String& columnName = table.getHeader().getColumnName (columnNumber);
-    
-    // dataList->getChildElement (rowNumber)->setAttribute (columnName, newText);
+    cout << "change and push back to Symbol/GUI here " << endl;
     
 }
 
@@ -213,7 +225,6 @@ void OSCInspectorTable::resized()
 {
     // position our table with a gap around its edge
     table.setBoundsInset (BorderSize<int> (8));
-    repaint();
 }
 
 

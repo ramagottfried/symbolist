@@ -10,6 +10,8 @@ OSCInspectorTable::OSCInspectorTable( SymbolistHandler *sh ) : font (14.0f)
     setComponentID("InspectorComponent");
     addAndMakeVisible (table);
     setSize (400, 600);
+    setWantsKeyboardFocus(true);
+    addKeyListener(this);
     
     table.setModel (this);
     table.setColour (ListBox::outlineColourId, Colours::grey);
@@ -47,6 +49,15 @@ OSCInspectorTable::OSCInspectorTable( SymbolistHandler *sh ) : font (14.0f)
     
     table.setMultipleSelectionEnabled (true);
 }
+
+
+bool OSCInspectorTable::keyPressed (const KeyPress& key, Component* originatingComponent)
+{
+    if( key == KeyPress ('i', ModifierKeys::commandModifier, 0) ){ symbolist_handler->symbolistAPI_toggleInspectorWindow(); }
+    
+    return true;
+}
+
 
 
 void OSCInspectorTable::setInspectorObject( BaseComponent* c )
@@ -232,7 +243,7 @@ void OSCInspectorTable::setText (const int columnNumber, const int rowNumber, co
 {
     if( symbol_component == nullptr ) return;
     OSCBundle bundle = symbol_component->getScoreSymbolPointer()->getOSCBundle();
-
+    
     switch( columnNumber )
     {
         case 1:
@@ -274,10 +285,9 @@ void OSCInspectorTable::setText (const int columnNumber, const int rowNumber, co
                 }
             }
             
-            
-//            symbol_component->setScoreSymbolPointer(<#Symbol *s#>);
-//            bundle = new_bndl;
-//            symbolist_handler->
+            Symbol s;
+            s.setOSCBundle(&new_bndl);
+            symbolist_handler->updateSymbolFromInspector( symbol_component, s );
             break;
         }
             

@@ -10,7 +10,7 @@ class OSCInspectorTable : public Component, public TableListBoxModel
 public:
     OSCInspectorTable( SymbolistHandler *sh );
     
-    void addSymbolData( OSCBundle data );
+    void setInspectorData( OSCBundle data );
     
     int getNumRows() override { return bundle.size(); }
 

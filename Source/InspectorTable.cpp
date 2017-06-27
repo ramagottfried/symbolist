@@ -50,9 +50,9 @@ OSCInspectorTable::OSCInspectorTable( SymbolistHandler *sh ) : font (14.0f)
 }
 
 
-void OSCInspectorTable::addSymbolData( OSCBundle data )
+void OSCInspectorTable::setInspectorData( OSCBundle data )
 {
-    cout << "addSymbolData" << endl;
+ //   cout << "addSymbolData" << endl;
 
     bundle = data;
     

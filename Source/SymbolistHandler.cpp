@@ -367,11 +367,14 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     executeUpdateCallback( score.getSymbolPosition( s ) );
     
     main_component->getPageComponent()->drawTimePoints();
+    
+    inspector->setInspectorData( c->getScoreSymbolPointer()->getOSCBundle() );
+
 }
 
 
 void SymbolistHandler::addToInspector( BaseComponent *c )
 {
-    inspector->addSymbolData( c->getScoreSymbolPointer()->getOSCBundle() );
+    inspector->setInspectorData( c->getScoreSymbolPointer()->getOSCBundle() );
 }
 

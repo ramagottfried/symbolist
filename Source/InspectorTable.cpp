@@ -270,24 +270,40 @@ void OSCInspectorTable::setText (const int columnNumber, const int rowNumber, co
                 }
                 else
                 {
+                    
+                    
+                    StringArray tokens;
+                    tokens.addTokens(newText, " ");
+                    tokens.removeEmptyStrings();
+                    
+                    if(  msg.size() == 0 || ( tokens.size() != msg.size() ) )
+                        return;
+                   
+                    
+                    OSCMessage new_mess(addr);
                     for( int i = 0; i < msg.size(); i++ )
                     {
                         auto val = msg[i];
                         if( val.isFloat32() )
-                            new_bndl.addElement( OSCMessage(addr, newText.getFloatValue() ) );
+                            new_mess.addArgument( OSCArgument(tokens[i].getFloatValue()) );
                         else if( val.isInt32() )
-                            new_bndl.addElement( OSCMessage(addr, newText.getIntValue() ) );
+                            new_mess.addArgument( OSCArgument(tokens[i].getIntValue()) );
                         else if( val.isString() )
-                            new_bndl.addElement( OSCMessage(addr, newText ) );
+                            new_mess.addArgument( OSCArgument(tokens[i]) );
                         else if( val.isBlob() )
-                            new_bndl.addElement( OSCMessage(addr, (String)"not sure how to deal with blobs" ) );
+                            new_mess.addArgument( OSCArgument("not sure how to deal with blobs") );
                     }
+                    
+                    if( new_mess.size() > 0 )
+                        new_bndl.addElement( new_mess );
+                    
                 }
             }
             
             Symbol s;
             s.setOSCBundle(&new_bndl);
             symbolist_handler->updateSymbolFromInspector( symbol_component, s );
+            s.printBundle();
             break;
         }
             

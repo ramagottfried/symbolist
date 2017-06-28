@@ -67,51 +67,60 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
     
     auto b = symbol_export_bounds();
     
-    if( s->getOSCMessagePos("/type") == -1 )
+    String addr = base_address + "/type";
+    
+    if( s->getOSCMessagePos(addr) == -1 )
     {
-        s->addOSCMessage ((String(base_address) += "/type") ,           getSymbolTypeStr());
+        s->addOSCMessage( addr,           getSymbolTypeStr());
         messages_added++;
     }
     
-    if( s->getOSCMessagePos("/x") == -1 )
+    addr = base_address + "/x";
+    if( s->getOSCMessagePos(addr) == -1 )
     {
-        s->addOSCMessage ((String(base_address) += "/x") ,              b.getX() );
+        s->addOSCMessage( addr,         b.getX() );
         messages_added++;
     }
     
-    if( s->getOSCMessagePos("/y") == -1 )
+    addr = base_address + "/y";
+    if( s->getOSCMessagePos(addr) == -1 )
     {
-        s->addOSCMessage ((String(base_address) += "/y") ,              b.getY() );
+        s->addOSCMessage( addr ,              b.getY() );
         messages_added++;
     }
     
-    if( s->getOSCMessagePos("/w") == -1 )
+    addr = base_address + "/w";
+    if( s->getOSCMessagePos(addr) == -1 )
     {
-        s->addOSCMessage ((String(base_address) += "/w") ,              b.getWidth() );
+        s->addOSCMessage( addr ,              b.getWidth() );
         messages_added++;
     }
     
-    if( s->getOSCMessagePos("/h") == -1 )
+    addr = base_address + "/h";
+    if( s->getOSCMessagePos(addr) == -1 )
     {
-        s->addOSCMessage ((String(base_address) += "/h") ,              b.getHeight() );
+        s->addOSCMessage( addr ,              b.getHeight() );
         messages_added++;
     }
     
-    if( s->getOSCMessagePos("/time/start") == -1 )
+    addr = base_address + "/time/start";
+    if( s->getOSCMessagePos(addr) == -1 )
     {
-        s->addOSCMessage ((String(base_address) += "/time/start"),      s->pixelsToTime( b.getX() ) );
+        s->addOSCMessage( addr,      s->pixelsToTime( b.getX() ) );
         messages_added++;
     }
 
-    if( s->getOSCMessagePos("/time/duration") == -1 )
+    addr = base_address + "/time/duration";
+    if( s->getOSCMessagePos(addr) == -1 )
     {
-        s->addOSCMessage ((String(base_address) += "/time/duration"),   s->pixelsToTime( b.getWidth() ) );
+        s->addOSCMessage( addr,   s->pixelsToTime( b.getWidth() ) );
         messages_added++;
     }
     
-    if( s->getOSCMessagePos("/color") == -1 )
+    addr = base_address + "/color";
+    if( s->getOSCMessagePos(addr) == -1 )
     {
-        s->addOSCMessage (OSCMessage( (String(base_address) += "/color"),   sym_color.getFloatRed(), sym_color.getFloatGreen(), sym_color.getFloatBlue(), sym_color.getFloatAlpha()  ) );
+        s->addOSCMessage( OSCMessage( addr,   sym_color.getFloatRed(), sym_color.getFloatGreen(), sym_color.getFloatBlue(), sym_color.getFloatAlpha()  ) );
         messages_added++;
     }
     

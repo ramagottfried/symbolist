@@ -67,12 +67,23 @@ int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_addre
 {
     int messages_added = BaseComponent::addSymbolMessages( s, base_address );
     
-    s->addOSCMessage( (String(base_address) += "/numsymbols") , (int)getNumSubcomponents() );
+    String addr = base_address + "/numsymbols";
+    
+    if( s->getOSCMessagePos(addr) == -1 )
+    {
+        s->addOSCMessage( addr,     (int)getNumSubcomponents() );
+        messages_added++;
+    }
+    
     
     for (int i = 0; i < getNumSubcomponents(); i++)
     {
-        String base = String(base_address) += String("/subsymbol/") += String(i+1) ; // we start at 1 .. (?)
-        messages_added += ((BaseComponent*)getSubcomponent(i))->addSymbolMessages( s, base );
+        addr = base_address + "/subsymbol/" + String(i+1);
+        
+        if( s->getOSCMessagePos(addr) == -1 )
+        {
+            messages_added += ((BaseComponent*)getSubcomponent(i))->addSymbolMessages( s, addr );
+        }
     }
     
     return messages_added;

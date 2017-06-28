@@ -26,11 +26,13 @@ class BasicShapePathComponent : public PathBaseComponent
     {
         int messages_added = BaseComponent::addSymbolMessages( s, base_address );
      
-        if( s->getOSCMessagePos("/fill") == -1 )
+        String addr = base_address + "/fill";
+        if( s->getOSCMessagePos(addr) == -1 )
         {
-            s->addOSCMessage ((String(base_address) += "/fill"), m_fill );
+            s->addOSCMessage (addr, m_fill );
             messages_added++;
         }
+        
         
         return messages_added;
     }

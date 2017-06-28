@@ -85,8 +85,9 @@ public:
         
     virtual void setMinimalBounds ();
     virtual void setMaximalBounds ();
-    virtual void resizeToFit(int x, int y, int w, int h) {};
-
+    
+    virtual void resizeToFit(int x, int y, int w, int h);
+    
     void selectComponent() override;
     void deselectComponent() override;
     

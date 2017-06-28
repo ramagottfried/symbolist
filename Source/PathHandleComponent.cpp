@@ -57,14 +57,12 @@ void PathHandle::mouseDrag( const MouseEvent& event )
         parent->rotatePath( delta_rad, centre.getX(), centre.getY()  );
 
     }
-    
     else
     {
         parent->updatePathPoints();
         parent->updatePathBounds();
         parent->repaint();
     }
-    
 }
 
 

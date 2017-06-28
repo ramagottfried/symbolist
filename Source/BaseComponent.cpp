@@ -318,6 +318,12 @@ void BaseComponent::updateRelativeAttributes()
     }
 }
 
+void BaseComponent::resizeToFit(int x, int y, int w, int h)
+{
+    setBounds( x, y, w, h);
+    updateSubcomponents();
+}
+
 // update the subcomponents according to their relative pos and size
 // call this from container at resize
 void BaseComponent::updateSubcomponents ()

@@ -204,23 +204,6 @@ void PathBaseComponent::updatePathBounds ()
 }
 
 
-// used to be called at exiting edit mode...
-// !!! redo THIS
-
-/*
-Rectangle<float> PathBaseComponent::tranformAndGetBoundsInParent( Path& p )
-{
- 
-    
-    Path m_path = mergePathArray();
-    
-    
-    // NOT FUNCTIONAL PROGRAMMING, but oh well
-    p.applyTransform( AffineTransform().translated( - m_path_bounds.getX() + strokeOffset, - m_path_bounds.getY() + strokeOffset ) );
-    return abs_bounds.expanded( strokeOffset );
-}
-*/
-
 
 void PathBaseComponent::setMinimalBounds ()
 {
@@ -243,21 +226,14 @@ void PathBaseComponent::setMaximalBounds ()
     m_path.applyTransform(AffineTransform::translation(init_pos));
     makePathArrayFromPath(m_path);
     updatePathBounds();
-    for (int i = 0 ; i < getNumSubcomponents(); i++)
-    {
-        SymbolistComponent* handle = getSubcomponent(i);
-        handle->setTopLeftPosition( handle->getX()-init_pos.x , handle->getY()-init_pos.y );
-    }
+    
+    makeHandlesFromPath();
 }
 
 void PathBaseComponent::setEditMode( bool val )
 {
     in_edit_mode = val;
-    if ( val )
-    {
-        makeHandlesFromPath();
-    }
-    else
+    if ( val == false ) // = exit
     {
         ScoreComponent* sc = ((ScoreComponent*)getParentComponent());
         sc->addToSelection(this);

@@ -22,9 +22,7 @@ void SymbolGroupComponent::selectComponent()
         for (int i = 0; i < getNumSubcomponents(); i++ )
         {
             getSubcomponent(i)->selectComponent();
-            
         }
-        
     }
 }
 

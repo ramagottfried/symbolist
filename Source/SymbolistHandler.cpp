@@ -450,7 +450,10 @@ void SymbolistHandler::newFromClipBoard()
     {
         BaseComponent *c = makeComponentFromSymbol( new Symbol(*s), true );
         if ( c != NULL)
+        {
             main_component->getPageComponent()->addSubcomponent( c );
+            main_component->getPageComponent()->addToSelection( c );
+        }
 
     }
 }

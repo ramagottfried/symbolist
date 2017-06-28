@@ -138,9 +138,20 @@ void SymbolistComponent::mouseDownSelection( const MouseEvent& event )
     
     if ( event.mods.isShiftDown() )
     {
-        if ( componentSelected() ) parent->removeFromSelection(this);
-        else parent->addToSelection(this);
-    } else {
+        if ( componentSelected() )
+            parent->removeFromSelection(this);
+        else
+            parent->addToSelection(this);
+    }
+    else if( event.mods.isAltDown() )
+    {
+        parent->unselectAllComponents();
+        parent->addToSelection(this);
+        getSymbolistHandler()->copySelectedToClipBoard();
+        getSymbolistHandler()->newFromClipBoard();
+    }
+    else
+    {
         if ( ! componentSelected() )
         {
             parent->unselectAllComponents();

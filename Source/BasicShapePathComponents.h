@@ -27,17 +27,38 @@ class BasicShapePathComponent : public PathBaseComponent
         int messages_added = 0;
      
         auto b = symbol_export_bounds();
-        s->addOSCMessage ((String(base_address) += "/type") ,   getSymbolTypeStr());
-        s->addOSCMessage ((String(base_address) += "/x") ,      b.getX() );
-        s->addOSCMessage ((String(base_address) += "/y") ,      b.getY() );
-        s->addOSCMessage ((String(base_address) += "/w") ,      b.getWidth() );
-        s->addOSCMessage ((String(base_address) += "/h") ,      b.getHeight() );
-        s->addOSCMessage ((String(base_address) += "/time/start") , b.getX() * 0.01f );
-        s->addOSCMessage ((String(base_address) += "/time/duration"),    b.getWidth() * 0.01f );
-        
-        messages_added += 7;
+        s->addOSCMessage ((String(base_address) += "/type") ,           getSymbolTypeStr());
+        s->addOSCMessage ((String(base_address) += "/x") ,              b.getX() );
+        s->addOSCMessage ((String(base_address) += "/y") ,              b.getY() );
+        s->addOSCMessage ((String(base_address) += "/w") ,              b.getWidth() );
+        s->addOSCMessage ((String(base_address) += "/h") ,              b.getHeight() );
+        s->addOSCMessage ((String(base_address) += "/time/start") ,     s->pixelsToTime( b.getX() ) );
+        s->addOSCMessage ((String(base_address) += "/time/duration"),   s->pixelsToTime( b.getWidth() ) );
+        s->addOSCMessage ((String(base_address) += "/fill") ,           m_fill   );
+
+        messages_added += 8;
         
         return messages_added;
+    }
+    
+    void initSymbolData() override
+    {
+        BaseComponent::initSymbolData();
+        
+        Symbol *s = getScoreSymbolPointer();
+
+        int fill_pos = s->getOSCMessagePos("/fill");
+        if( fill_pos == -1 )
+            s->addOSCMessage ("/fill",  m_fill  );
+    }
+    
+    void importFromSymbol(const Symbol &s) override
+    {
+        BaseComponent::importFromSymbol(s);
+        int fill_pos = s.getOSCMessagePos("/fill");
+        if( fill_pos != -1  )
+            m_fill = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(fill_pos) );
+            
     }
     
 };
@@ -53,7 +74,7 @@ public:
     
     void importFromSymbol(const Symbol &s) override
     {
-        BaseComponent::importFromSymbol(s);
+        BasicShapePathComponent::importFromSymbol(s);
         auto area = getLocalBounds().toFloat().reduced( strokeWeight );
         m_path_array.add(new Path());
         m_path_array.getLast()->addEllipse(area);
@@ -75,7 +96,7 @@ public:
     
     void importFromSymbol(const Symbol &s) override
     {
-        BaseComponent::importFromSymbol(s);
+        BasicShapePathComponent::importFromSymbol(s);
         auto area = getLocalBounds().toFloat().reduced( strokeWeight );
         m_path_array.add(new Path());
         m_path_array.getLast()->addRectangle(area);
@@ -98,7 +119,7 @@ public:
     
     void importFromSymbol(const Symbol &s) override
     {
-        BaseComponent::importFromSymbol(s);
+        BasicShapePathComponent::importFromSymbol(s);
         auto area = getLocalBounds().toFloat().reduced( strokeWeight );
         m_path_array.add(new Path());
         m_path_array.getLast()->addTriangle( area.getBottomLeft(), Point<float>(area.getCentreX(), area.getY()), area.getBottomRight());

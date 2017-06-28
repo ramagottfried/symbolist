@@ -27,21 +27,20 @@ public:
     
     BaseComponent() = default;
     ~BaseComponent() = default;
+
+    virtual int addSymbolMessages( Symbol* s, const String &base_address );
+    virtual void importFromSymbol( const Symbol &s );
+    virtual void initSymbolData();     //<<  initializes OSC data specific to the derived component type
     
     void paint ( Graphics& g ) override;
     
     void setScoreSymbolPointer (Symbol* s) { score_symbol = s; }
     Symbol* getScoreSymbolPointer () { return score_symbol; }
     void createAndAttachSymbol();
-    virtual int addSymbolMessages( Symbol* s, const String &base_address );
     
     bool isTopLevelComponent();
     void reportModification();
-        
-    
-    
-    virtual void importFromSymbol( const Symbol &s );
-    
+
     const Colour getCurrentColor();
 
     // these four modify the symbol

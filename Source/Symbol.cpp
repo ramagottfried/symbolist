@@ -6,16 +6,14 @@ Symbol::Symbol () {};
 
 Symbol::Symbol (const String & type, float x, float y, float w, float h)
 {
-    addOSCMessage("/type", type);
-    addOSCMessage("/x", x);
-    addOSCMessage("/y", y);
-    addOSCMessage("/w", w);  // note: w must not be zero!
-    addOSCMessage("/h", h);
+    addOSCMessage("/type",  type);
+    addOSCMessage("/x",     x);
+    addOSCMessage("/y",     y);
+    addOSCMessage("/w",     w);
+    addOSCMessage("/h",     h);
     
-    addOSCMessage("/time/start",    pixelsToTime( x ) );
-    addOSCMessage("/time/duration",      pixelsToTime( w ) );
-    
-  // cout << x << " " << y << " " << w << " " << h << endl;
+    addOSCMessage("/time/start",        pixelsToTime( x ) );
+    addOSCMessage("/time/duration",     pixelsToTime( w ) );
 }
 
 
@@ -79,7 +77,7 @@ void Symbol::setPosition( const Point<float> pos )
     cout << this << " set x position " << pos.getX() << endl;
     
     OSCBundle new_bundle;
-    
+
     // there must be a better way to do this!
     for (auto osc : osc_bundle )
     {

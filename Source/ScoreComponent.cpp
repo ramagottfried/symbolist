@@ -312,12 +312,20 @@ void ScoreComponent::mouseAddClick ( const MouseEvent& event )
     if ( getMainDrawMode() == UI_DrawType::from_template )
     {
         Symbol* symbol_template = getSymbolistHandler()->getCurrentSymbol();
+        
+        
+        /* creates a new symbol with the same settings as the symbol_template
+         * template symbols all have a default type of "path" and bounds of 0,0,30,30
+         * the generic symbol has the same OSC data as the BaseComponent
+         */
         Symbol* s = new Symbol( *symbol_template );
-        // sets position in symbol before creation
-        // will need to make offset for center based symbols (circle, square, etc.)
+        
+        // sets default position before creating the graphic component
         s->setPosition ( event.position );
-        // create a new component from the current selected symbol of the palette
+        
+        // create a new component of the current selected symbol type
         c = SymbolistHandler::makeComponentFromSymbol( s, top_level );
+        
         // add component in the view
         addSubcomponent( c );
     }

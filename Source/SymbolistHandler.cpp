@@ -312,6 +312,7 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
         cout << typeStr << std::endl;
         BaseComponent *c;
         
+        // allocates component based on type, all are derived from the BaseComponent
         if (typeStr.equalsIgnoreCase(String("circle"))) {
             c = new CirclePathComponent();
         } else if (typeStr.equalsIgnoreCase(String("rectangle"))) {
@@ -331,8 +332,16 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
         
         if (c != NULL)
         {
+            // reads base component symbol values, and sets component bounds for display
             c->importFromSymbol( *s ) ;
-            if ( attach_the_symbol ) c->setScoreSymbolPointer( s );
+            
+            if ( attach_the_symbol )
+            {
+                c->setScoreSymbolPointer( s );
+                
+                // initializes object specific messages if not present
+                c->initSymbolData();
+            }
         }
         
         return c;

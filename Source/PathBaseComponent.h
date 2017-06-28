@@ -17,7 +17,8 @@ public:
     
     int addSymbolMessages(Symbol* s, const String &base_address) override;
     virtual void importFromSymbol(const Symbol &s) override;
-    
+    virtual void initSymbolData() override;
+
     String getSymbolTypeStr() const override { return "path"; }
     
     Rectangle<float> symbol_export_bounds() override
@@ -78,9 +79,9 @@ protected:
     Array<Path*>             m_path_array;
     
     PathStrokeType          strokeType = PathStrokeType(2.0) ;
-    bool                    fill = false;
-    Colour                  fill_color;
-    Colour                  stroke_color;
+    bool                    m_fill = false;
+    Colour                  m_fill_color;
+    Colour                  m_stroke_color;
     
     // editing objects
     bool                        drawing = false;

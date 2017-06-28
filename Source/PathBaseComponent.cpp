@@ -139,12 +139,29 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
         auto sub_bounds = Sym_PathBounds( *p );
         s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/time/start",    s->pixelsToTime( sub_bounds.getX() ) ) );
         s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/time/duration", s->pixelsToTime( sub_bounds.getWidth() ) ) );
-        messages_added += 4 ;
+        
+        s->addOSCMessage ((String(base_address) += "/fill") ,   m_fill   );
+        
+        messages_added += 5 ;
     }
     
     return messages_added;
 }
 
+/******************
+ * Initializes type specific components' data in the symbol's OSC bundle
+ *****************/
+void PathBaseComponent::initSymbolData()
+{
+    BaseComponent::initSymbolData();
+    
+    Symbol *s = getScoreSymbolPointer();
+    
+    int fill_pos = s->getOSCMessagePos("/fill");
+    if( fill_pos != -1  )
+         s->addOSCMessage( "/fill",  m_fill   );
+    
+}
 
 /******************
  * Imports components' data from the symbol's OSC bundle
@@ -161,11 +178,16 @@ void PathBaseComponent::importFromSymbol(const Symbol &s)
     for ( int np = 0; np < n_subpaths ; np++ )
     {
         Path* subp = new Path();
-        String path_str = s.getOSCMessageValue(String("/path/") + String(np)).getString();
+        String path_str = s.getOSCMessageValue("/path/" + String(np) + "/str").getString();
         subp->restoreFromString( path_str );
         m_path_array.add(subp);
     }
 
+    int fill_pos = s.getOSCMessagePos("/fill");
+    if( fill_pos != -1  )
+        m_fill = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(fill_pos) );
+    
+    
     updatePathBounds();
 }
 
@@ -793,7 +815,7 @@ void PathBaseComponent::paint ( Graphics& g )
         for ( int np = 0; np < m_path_array.size(); np++)
         {
             g.strokePath(*m_path_array[np], strokeType );
-            if( fill ) g.fillPath(*m_path_array[np]);
+            if( m_fill ) g.fillPath(*m_path_array[np]);
         }
     }
     else
@@ -803,13 +825,13 @@ void PathBaseComponent::paint ( Graphics& g )
         {
             //std::cout << "DRAW " << getComponentID() << " -- " << np << std::endl;
             g.strokePath(*m_path_array[np], strokeType );
-            if( fill ) g.fillPath(*m_path_array[np]);
+            if( m_fill ) g.fillPath(*m_path_array[np]);
         }
         
         if( !m_preview_path.isEmpty() )
         {
             g.setColour( preview_stroke_color );
-            g.strokePath(m_preview_path, PathStrokeType(0.5) ); // different color for preview?
+            g.strokePath( m_preview_path, PathStrokeType(0.5) ); // different color for preview?
         }
         
         if( in_edit_mode )

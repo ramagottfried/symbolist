@@ -52,21 +52,38 @@ void BaseComponent::createAndAttachSymbol()
     setScoreSymbolPointer( s );
 }
 
+
+void BaseComponent::initSymbolData()
+{
+    Symbol *s = getScoreSymbolPointer();
+   
+    auto b = symbol_export_bounds();
+    int pos = -1;
+
+    pos = s->getOSCMessagePos("/color");
+    if( pos == -1 )
+         s->addOSCMessage( OSCMessage( "/color", sym_color.getFloatRed(), sym_color.getFloatGreen(), sym_color.getFloatBlue(), sym_color.getFloatAlpha() ) );
+    
+    
+}
+
+
 int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
 {
     int messages_added = 0;
     
     auto b = symbol_export_bounds();
     
-    s->addOSCMessage ((String(base_address) += "/type") ,       getSymbolTypeStr());
-    s->addOSCMessage ((String(base_address) += "/x") ,          b.getX() );
-    s->addOSCMessage ((String(base_address) += "/y") ,          b.getY() );
-    s->addOSCMessage ((String(base_address) += "/w") ,          b.getWidth() );
-    s->addOSCMessage ((String(base_address) += "/h") ,          b.getHeight() );
-    s->addOSCMessage ((String(base_address) += "/time/start") , s->pixelsToTime( b.getX() ) );
-    s->addOSCMessage ((String(base_address) += "/time/duration"),    s->pixelsToTime( b.getWidth() ) );
-    
-    messages_added += 7;
+    s->addOSCMessage ((String(base_address) += "/type") ,           getSymbolTypeStr());
+    s->addOSCMessage ((String(base_address) += "/x") ,              b.getX() );
+    s->addOSCMessage ((String(base_address) += "/y") ,              b.getY() );
+    s->addOSCMessage ((String(base_address) += "/w") ,              b.getWidth() );
+    s->addOSCMessage ((String(base_address) += "/h") ,              b.getHeight() );
+    s->addOSCMessage ((String(base_address) += "/time/start") ,     s->pixelsToTime( b.getX() ) );
+    s->addOSCMessage ((String(base_address) += "/time/duration"),   s->pixelsToTime( b.getWidth() ) );
+    s->addOSCMessage (OSCMessage( (String(base_address) += "/color"),   sym_color.getFloatRed(), sym_color.getFloatGreen(), sym_color.getFloatBlue(), sym_color.getFloatAlpha()  ) );
+
+    messages_added += 8;
     
     cout << "*********** START BASE ADD DATA ************ " << endl;
     s->printBundle();
@@ -100,11 +117,10 @@ void BaseComponent::importFromSymbol( const Symbol &s )
         
         if( x_pos != -1 && y_pos != -1 && w_pos != -1 && h_pos != -1  )
         {
-            OSCBundle bundle = s.getOSCBundle();
-            float x = Symbol::getOSCValueAsFloat( bundle[x_pos].getMessage()[0] );
-            float y = Symbol::getOSCValueAsFloat( bundle[y_pos].getMessage()[0] );
-            float w = Symbol::getOSCValueAsFloat( bundle[w_pos].getMessage()[0] );
-            float h = Symbol::getOSCValueAsFloat( bundle[h_pos].getMessage()[0] );
+            float x = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(x_pos) );
+            float y = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(y_pos) );
+            float w = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(w_pos) );
+            float h = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(h_pos) );
             
             cout << "x " << x  << " y " << y << " w " << w << endl;
             
@@ -112,6 +128,26 @@ void BaseComponent::importFromSymbol( const Symbol &s )
         }
         else
             cout << "***** couldn't find x y w or h values " << endl;
+    
+        
+        int color_pos = s.getOSCMessagePos("/color");
+        if( color_pos != -1  )
+        {
+            auto bndl = s.getOSCBundle();
+            if( bndl[color_pos].getMessage().size() == 4 )
+            {
+                float r = Symbol::getOSCValueAsFloat( bndl[color_pos].getMessage()[0] );
+                float g = Symbol::getOSCValueAsFloat( bndl[color_pos].getMessage()[1] );
+                float b = Symbol::getOSCValueAsFloat( bndl[color_pos].getMessage()[2] );
+                float a = Symbol::getOSCValueAsFloat( bndl[color_pos].getMessage()[3] );
+                sym_color = Colour::fromFloatRGBA( r, g, b, a );
+            }
+        }
+        else
+        {
+            
+        }
+        
     }
 }
 

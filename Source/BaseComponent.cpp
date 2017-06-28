@@ -52,38 +52,59 @@ void BaseComponent::createAndAttachSymbol()
     setScoreSymbolPointer( s );
 }
 
-
-void BaseComponent::initSymbolData()
-{
-    Symbol *s = getScoreSymbolPointer();
-   
-    auto b = symbol_export_bounds();
-    int pos = -1;
-
-    pos = s->getOSCMessagePos("/color");
-    if( pos == -1 )
-         s->addOSCMessage( OSCMessage( "/color", sym_color.getFloatRed(), sym_color.getFloatGreen(), sym_color.getFloatBlue(), sym_color.getFloatAlpha() ) );
-    
-    
-}
-
-
 int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
 {
     int messages_added = 0;
     
     auto b = symbol_export_bounds();
     
-    s->addOSCMessage ((String(base_address) += "/type") ,           getSymbolTypeStr());
-    s->addOSCMessage ((String(base_address) += "/x") ,              b.getX() );
-    s->addOSCMessage ((String(base_address) += "/y") ,              b.getY() );
-    s->addOSCMessage ((String(base_address) += "/w") ,              b.getWidth() );
-    s->addOSCMessage ((String(base_address) += "/h") ,              b.getHeight() );
-    s->addOSCMessage ((String(base_address) += "/time/start") ,     s->pixelsToTime( b.getX() ) );
-    s->addOSCMessage ((String(base_address) += "/time/duration"),   s->pixelsToTime( b.getWidth() ) );
-    s->addOSCMessage (OSCMessage( (String(base_address) += "/color"),   sym_color.getFloatRed(), sym_color.getFloatGreen(), sym_color.getFloatBlue(), sym_color.getFloatAlpha()  ) );
+    if( s->getOSCMessagePos("/type") == -1 )
+    {
+        s->addOSCMessage ((String(base_address) += "/type") ,           getSymbolTypeStr());
+        messages_added++;
+    }
+    
+    if( s->getOSCMessagePos("/x") == -1 )
+    {
+        s->addOSCMessage ((String(base_address) += "/x") ,              b.getX() );
+        messages_added++;
+    }
+    
+    if( s->getOSCMessagePos("/y") == -1 )
+    {
+        s->addOSCMessage ((String(base_address) += "/y") ,              b.getY() );
+        messages_added++;
+    }
+    
+    if( s->getOSCMessagePos("/w") == -1 )
+    {
+        s->addOSCMessage ((String(base_address) += "/w") ,              b.getWidth() );
+        messages_added++;
+    }
+    
+    if( s->getOSCMessagePos("/h") == -1 )
+    {
+        s->addOSCMessage ((String(base_address) += "/h") ,              b.getHeight() );
+        messages_added++;
+    }
+    
+    if( s->getOSCMessagePos("/time/start") == -1 )
+    {
+        s->addOSCMessage ((String(base_address) += "/time/start"),      s->pixelsToTime( b.getX() ) );
+        messages_added++;
+    }
 
-    messages_added += 8;
+    if( s->getOSCMessagePos("/time/duration") == -1 )
+    {
+        s->addOSCMessage ((String(base_address) += "/time/duration"),   s->pixelsToTime( b.getWidth() ) );
+        messages_added++;
+    }
+    
+    if( s->getOSCMessagePos("/color") == -1 )
+    {
+        s->addOSCMessage (OSCMessage( (String(base_address) += "/color"),   sym_color.getFloatRed(), sym_color.getFloatGreen(), sym_color.getFloatBlue(), sym_color.getFloatAlpha()  ) );
+        messages_added++;
+    }
     
     cout << "*********** START BASE ADD DATA ************ " << endl;
     s->printBundle();
@@ -102,7 +123,7 @@ void BaseComponent::importFromSymbol( const Symbol &s )
     
     if ( typeMessagePos == -1 ) {
         
-        cout << "BaseComponent import: Could not find '/type' message in OSC Bundle.. (size=" << s.getOSCBundle().size() << ")" << endl;
+        cout << "BaseComponent import: Could not find '/type' message in OSC Bundle.. (size=" << s.getOSCBundle()->size() << ")" << endl;
         
     } else {
         
@@ -133,7 +154,7 @@ void BaseComponent::importFromSymbol( const Symbol &s )
         int color_pos = s.getOSCMessagePos("/color");
         if( color_pos != -1  )
         {
-            auto bndl = s.getOSCBundle();
+            auto bndl = *(s.getOSCBundle());
             if( bndl[color_pos].getMessage().size() == 4 )
             {
                 float r = Symbol::getOSCValueAsFloat( bndl[color_pos].getMessage()[0] );
@@ -142,10 +163,6 @@ void BaseComponent::importFromSymbol( const Symbol &s )
                 float a = Symbol::getOSCValueAsFloat( bndl[color_pos].getMessage()[3] );
                 sym_color = Colour::fromFloatRGBA( r, g, b, a );
             }
-        }
-        else
-        {
-            
         }
         
     }

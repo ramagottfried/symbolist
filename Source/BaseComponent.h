@@ -30,7 +30,6 @@ public:
 
     virtual int addSymbolMessages( Symbol* s, const String &base_address );
     virtual void importFromSymbol( const Symbol &s );
-    virtual void initSymbolData();     //<<  initializes OSC data specific to the derived component type
     
     void paint ( Graphics& g ) override;
     

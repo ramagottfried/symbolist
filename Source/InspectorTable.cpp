@@ -75,9 +75,9 @@ void OSCInspectorTable::setInspectorObject( BaseComponent* c )
 
 int OSCInspectorTable::getNumRows()
 {
-    if( symbol_component != nullptr )
+    if( symbol_component != nullptr && symbol_component->getScoreSymbolPointer() != nullptr && symbol_component->getScoreSymbolPointer()->getOSCBundle() != nullptr )
     {
-        return symbol_component->getScoreSymbolPointer()->getOSCBundle().size();
+        return symbol_component->getScoreSymbolPointer()->getOSCBundle()->size();
     }
     else
         return 0;
@@ -90,7 +90,7 @@ void OSCInspectorTable::paintCell (Graphics& g, int rowNumber, int columnId,
 {
     if( symbol_component == nullptr ) return;
     
-    OSCBundle bundle = symbol_component->getScoreSymbolPointer()->getOSCBundle();
+    const OSCBundle bundle = *(symbol_component->getScoreSymbolPointer()->getOSCBundle());
     
     g.setColour (getLookAndFeel().findColour (ListBox::textColourId));
     g.setFont (font);
@@ -204,7 +204,7 @@ String OSCInspectorTable::getText (const int columnNumber, const int rowNumber) 
    
     if( symbol_component == nullptr ) return String();
     
-    OSCBundle bundle = symbol_component->getScoreSymbolPointer()->getOSCBundle();
+    OSCBundle bundle = *(symbol_component->getScoreSymbolPointer()->getOSCBundle());
 
     switch( columnNumber )
     {
@@ -242,7 +242,7 @@ String OSCInspectorTable::getText (const int columnNumber, const int rowNumber) 
 void OSCInspectorTable::setText (const int columnNumber, const int rowNumber, const String& newText)
 {
     if( symbol_component == nullptr ) return;
-    OSCBundle bundle = symbol_component->getScoreSymbolPointer()->getOSCBundle();
+    OSCBundle bundle = *(symbol_component->getScoreSymbolPointer()->getOSCBundle());
     
     switch( columnNumber )
     {

@@ -303,7 +303,7 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
     
     if ( typeMessagePos == -1 ) {
         
-        cout << "Could not find '/type' message in OSC Bundle.. (size=" << s->getOSCBundle().size() << ")" << endl;
+        cout << "Could not find '/type' message in OSC Bundle.. (size=" << s->getOSCBundle()->size() << ")" << endl;
         return NULL;
         
     } else {
@@ -340,7 +340,7 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
                 c->setScoreSymbolPointer( s );
                 
                 // initializes object specific messages if not present
-                c->initSymbolData();
+                c->addSymbolMessages( s, "" );
             }
         }
         

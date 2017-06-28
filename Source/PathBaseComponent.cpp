@@ -149,21 +149,6 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
 }
 
 /******************
- * Initializes type specific components' data in the symbol's OSC bundle
- *****************/
-void PathBaseComponent::initSymbolData()
-{
-    BaseComponent::initSymbolData();
-    
-    Symbol *s = getScoreSymbolPointer();
-    
-    int fill_pos = s->getOSCMessagePos("/fill");
-    if( fill_pos != -1  )
-         s->addOSCMessage( "/fill",  m_fill   );
-    
-}
-
-/******************
  * Imports components' data from the symbol's OSC bundle
  *****************/
 

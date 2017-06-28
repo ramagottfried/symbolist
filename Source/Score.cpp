@@ -68,7 +68,7 @@ odot_bundle *Score::getScoreBundle()
     String prefix = "/symbol/";
     for( auto sym : score_symbols )
     {
-        auto s_bndl = sym->getOSCBundle();
+        auto s_bndl = *(sym->getOSCBundle());
         
         for ( auto osc : s_bndl )
         {

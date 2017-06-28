@@ -24,32 +24,15 @@ class BasicShapePathComponent : public PathBaseComponent
 
     int addSymbolMessages( Symbol* s, const String &base_address ) override
     {
-        int messages_added = 0;
+        int messages_added = BaseComponent::addSymbolMessages( s, base_address );
      
-        auto b = symbol_export_bounds();
-        s->addOSCMessage ((String(base_address) += "/type") ,           getSymbolTypeStr());
-        s->addOSCMessage ((String(base_address) += "/x") ,              b.getX() );
-        s->addOSCMessage ((String(base_address) += "/y") ,              b.getY() );
-        s->addOSCMessage ((String(base_address) += "/w") ,              b.getWidth() );
-        s->addOSCMessage ((String(base_address) += "/h") ,              b.getHeight() );
-        s->addOSCMessage ((String(base_address) += "/time/start") ,     s->pixelsToTime( b.getX() ) );
-        s->addOSCMessage ((String(base_address) += "/time/duration"),   s->pixelsToTime( b.getWidth() ) );
-        s->addOSCMessage ((String(base_address) += "/fill") ,           m_fill   );
-
-        messages_added += 8;
+        if( s->getOSCMessagePos("/fill") == -1 )
+        {
+            s->addOSCMessage ((String(base_address) += "/fill"), m_fill );
+            messages_added++;
+        }
         
         return messages_added;
-    }
-    
-    void initSymbolData() override
-    {
-        BaseComponent::initSymbolData();
-        
-        Symbol *s = getScoreSymbolPointer();
-
-        int fill_pos = s->getOSCMessagePos("/fill");
-        if( fill_pos == -1 )
-            s->addOSCMessage ("/fill",  m_fill  );
     }
     
     void importFromSymbol(const Symbol &s) override

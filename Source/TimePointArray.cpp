@@ -12,7 +12,7 @@ void TimePointArray::printTimePoints()
         int symcount = 0;
         for( auto sym : t->symbols_at_time )
         {
-            cout << symcount++ << " " << sym << " " << sym->getOSCBundle().size() << endl;
+            cout << symcount++ << " " << sym << " " << sym->getOSCBundle()->size() << endl;
         }
         count++;
     }
@@ -190,7 +190,7 @@ odot_bundle* symbolBundleToOdot( const OSCBundle& osc )
 
 Point<float> TimePointArray::lookupPathPoint( const Symbol *s, const float t )
 {
-    OSCBundle bndl = s->getOSCBundle();
+    OSCBundle b = *s->getOSCBundle();
     
     int path_oscpos = s->getOSCMessagePos("/path");
     if( s->symbol_parse_error( path_oscpos, "/path" ) ) return Point<float>();
@@ -198,7 +198,6 @@ Point<float> TimePointArray::lookupPathPoint( const Symbol *s, const float t )
     int pathlen_oscpos = s->getOSCMessagePos("/pathlength");
     if( s->symbol_parse_error( pathlen_oscpos, "/pathlength" ) ) return Point<float>();
     
-    OSCBundle b = s->getOSCBundle();
     
     String path_str = b[path_oscpos].getMessage()[0].getString();
     Path p;
@@ -212,7 +211,7 @@ Point<float> TimePointArray::lookupPathPoint( const Symbol *s, const float t )
 
 Point<float> TimePointArray::lookupPathPoint( const Symbol *s, const int pathIDX, const float t, const float start, const float dur )
 {
-    OSCBundle b = s->getOSCBundle();
+    OSCBundle b = *(s->getOSCBundle());
     
     String path_addr = "/path/" + String(pathIDX) + "/str" ;
     int path_oscpos = s->getOSCMessagePos( path_addr );
@@ -266,7 +265,7 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                     {
                         int npaths = Symbol::getOSCValueAsInt( s->getOSCMessageValue(npath_oscpos) );
 
-                        OSCBundle b = s->getOSCBundle();
+                        OSCBundle b = *(s->getOSCBundle());
                         
                         for( int i = 0; i < npaths; i++)
                         {
@@ -296,7 +295,7 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                 float time_ratio = (current_time - s->getTime()) / s->getDuration() ;
                 bndl.addElement( OSCMessage( s_prefix + "/time/ratio", time_ratio ) );
                 
-                auto s_bndl = s->getOSCBundle();
+                auto s_bndl = *(s->getOSCBundle());
 
                 for ( auto osc : s_bndl )
                 {

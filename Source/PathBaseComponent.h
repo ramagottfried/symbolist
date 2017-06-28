@@ -17,7 +17,6 @@ public:
     
     int addSymbolMessages(Symbol* s, const String &base_address) override;
     virtual void importFromSymbol(const Symbol &s) override;
-    virtual void initSymbolData() override;
 
     String getSymbolTypeStr() const override { return "path"; }
     

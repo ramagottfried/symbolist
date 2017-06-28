@@ -48,9 +48,9 @@ void PageComponent::enterEditMode( BaseComponent* c )
     exitEditMode();
     unselectAllComponents();
     edited_component = c;
+    edited_component->setEditMode(true);
     edited_component->toFront(true);
     edited_component->recursiveMaximizeBounds();
-    edited_component->setEditMode(true);
 }
 
 

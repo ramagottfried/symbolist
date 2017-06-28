@@ -53,12 +53,9 @@ SymbolistComponent* SymbolistComponent::getSubcomponent( int i )
 
 void SymbolistComponent::addSubcomponent( SymbolistComponent *c )
 {
-    
     subcomponents.add( c );
     c->setComponentID(String(String(c->getSymbolTypeStr()) += String("_") += String(subcomponents.size())));
     addAndMakeVisible( c );
-    //c->addMouseListener(this, false); // get rid of this ??
-    //std::cout << "ADDING SUBCOMP " << c->getComponentID() << " IN " << getComponentID() << std::endl;
 }
 
 void SymbolistComponent::removeSubcomponent( SymbolistComponent *c )

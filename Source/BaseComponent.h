@@ -41,8 +41,7 @@ public:
     void reportModification();
 
     const Colour getCurrentColor();
-
-    // these four modify the symbol
+    
     void moved () override;
     void resized () override;
 
@@ -94,6 +93,13 @@ public:
     virtual void setEditMode(bool val);
     bool isInEditMode();
     
+    void updateRelativePos();
+    void updateRelativeSize();
+    void updateRelativeAttributes();
+    void updateSubcomponents();
+    void addSubcomponent( SymbolistComponent *c ) override;
+    bool inPlaceForRelativeUpdates();
+    
 protected:
     
     // score structure
@@ -109,10 +115,11 @@ protected:
 
     ScopedPointer<ResizableBorderComponent> resizableBorder;
     ComponentBoundsConstrainer              constrainer;
-    
+
+    float           relative_x = 0.0, relative_y = 0.0 , relative_w = 1.0 , relative_h = 1.0 ;  // values between 0.0 and 1.0 relative to the size of its container
     int             resize_mode = 0; // 0 = scale symbol to bounds, 1 = scale spacing (not resizing)
     float           m_min_size = 5;
-        
+   
     bool            showBoundingBox = false;
     float           bb_strokeWeight = 1;
     Colour          bb_color = Colours::cornflowerblue;

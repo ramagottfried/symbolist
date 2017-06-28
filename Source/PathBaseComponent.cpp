@@ -108,7 +108,7 @@ void PathBaseComponent::resized()
 {
     BaseComponent::resized();
     
-    if( getMainEditMode() == UI_EditType::draw )
+    if( ! in_edit_mode )
     {
         resizeToFit(getLocalBounds().getX(), getLocalBounds().getY(), getLocalBounds().getWidth(), getLocalBounds().getHeight());
     }
@@ -243,6 +243,11 @@ void PathBaseComponent::setMaximalBounds ()
     m_path.applyTransform(AffineTransform::translation(init_pos));
     makePathArrayFromPath(m_path);
     updatePathBounds();
+    for (int i = 0 ; i < getNumSubcomponents(); i++)
+    {
+        SymbolistComponent* handle = getSubcomponent(i);
+        handle->setTopLeftPosition( handle->getX()-init_pos.x , handle->getY()-init_pos.y );
+    }
 }
 
 void PathBaseComponent::setEditMode( bool val )

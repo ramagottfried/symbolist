@@ -98,7 +98,7 @@ void Symbol::setPosition( const Point<float> pos )
     addOSCMessage(String("/time/start"), pos.getX() * 0.01f );
     addOSCMessage(String("/time/duration"), getOSCMessageValue("/w").getFloat32() * 0.01f );
 
-    printBundle();
+    //printBundle();
 }
 
 

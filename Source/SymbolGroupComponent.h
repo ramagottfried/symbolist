@@ -29,7 +29,6 @@ public:
     void setEditMode( bool val ) override;
     void paint ( Graphics& g ) override;
     
-    
 private :
     
 };

@@ -13,7 +13,7 @@ Symbol::Symbol (const String & type, float x, float y, float w, float h)
     addOSCMessage("/h", h);
     
     addOSCMessage("/time/start",    pixelsToTime( x ) );
-    addOSCMessage("/duration",      pixelsToTime( w ) );
+    addOSCMessage("/time/duration",      pixelsToTime( w ) );
     
   // cout << x << " " << y << " " << w << " " << h << endl;
 }
@@ -31,7 +31,7 @@ float Symbol::getTime() const
 
 float Symbol::getDuration() const
 {
-    return getOSCMessageValue("/duration").getFloat32();
+    return getOSCMessageValue("/time/duration").getFloat32();
 }
 
 float Symbol::getEndTime() const
@@ -86,7 +86,7 @@ void Symbol::setPosition( const Point<float> pos )
         if( !osc.getMessage().getAddressPattern().toString().equalsIgnoreCase( "/x" ) &&
             !osc.getMessage().getAddressPattern().toString().equalsIgnoreCase( "/y" ) &&
             !osc.getMessage().getAddressPattern().toString().equalsIgnoreCase( "/time/start" ) &&
-            !osc.getMessage().getAddressPattern().toString().equalsIgnoreCase( "/duration" ) )
+            !osc.getMessage().getAddressPattern().toString().equalsIgnoreCase( "/time/duration" ) )
         {
             new_bundle.addElement(osc);
         }
@@ -98,7 +98,7 @@ void Symbol::setPosition( const Point<float> pos )
     addOSCMessage(String("/y"), pos.getY() );
     
     addOSCMessage(String("/time/start"), pos.getX() * 0.01f );
-    addOSCMessage(String("/duration"), getOSCMessageValue("/w").getFloat32() * 0.01f );
+    addOSCMessage(String("/time/duration"), getOSCMessageValue("/w").getFloat32() * 0.01f );
 
     printBundle();
 }
@@ -137,7 +137,7 @@ OSCArgument Symbol::getOSCMessageValue(const String &address) const
     }
 }
 
-float Symbol::getOSCValueAsFloat(OSCArgument a)
+float Symbol::getOSCValueAsFloat(const OSCArgument& a)
 {
     if( a.isFloat32() )
         return a.getFloat32();
@@ -147,7 +147,7 @@ float Symbol::getOSCValueAsFloat(OSCArgument a)
         return 0.0f;
 }
 
-int Symbol::getOSCValueAsInt(OSCArgument a)
+int Symbol::getOSCValueAsInt(const OSCArgument& a)
 {
     if( a.isInt32() )
         return a.getInt32();

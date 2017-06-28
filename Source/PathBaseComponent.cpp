@@ -127,15 +127,19 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
     
     int n_subpaths = m_path_array.size();
     
-    s->addOSCMessage( OSCMessage( base_address + "/num_sub_paths", n_subpaths ));
+    s->addOSCMessage( OSCMessage( base_address + "/num_sub_paths", (int)n_subpaths ));
     messages_added += 1;
     
     for ( int np = 0; np < n_subpaths ; np++ )
     {
         Path *p = m_path_array[np];
-        s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/pathlength", p->getLength()) );
-        s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) , p->toString()) );
-        messages_added += 2 ;
+        s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/str",    p->toString())  );
+        s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/length", p->getLength()) );
+
+        auto sub_bounds = Sym_PathBounds( *p );
+        s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/time/start",    s->pixelsToTime( sub_bounds.getX() ) ) );
+        s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/time/duration", s->pixelsToTime( sub_bounds.getWidth() ) ) );
+        messages_added += 4 ;
     }
     
     return messages_added;

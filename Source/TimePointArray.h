@@ -15,7 +15,6 @@ struct SymbolTimePoint
     {
         addSymbol( s );
         time = t;
-        
     }
     
     ~SymbolTimePoint(){ cout << "deleting timepoint " << time << endl; }
@@ -78,7 +77,7 @@ public:
     
     int lookupTimePoint( float t );
     Point<float> lookupPathPoint( const Symbol *s, const float t );
-    
+    Point<float> lookupPathPoint( const Symbol *s, const int pathIDX, const float t, const float start, const float dur );
     
 private:
     

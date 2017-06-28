@@ -38,6 +38,20 @@
 		"subpatcher_template" : "Default Max 7",
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-34",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 321.0, 446.0, 50.0, 22.0 ],
+					"presentation_rect" : [ 321.0, 446.0, 0.0, 0.0 ],
+					"style" : "",
+					"text" : "clear"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"fontface" : 0,
 					"fontsize" : 12.0,
 					"id" : "obj-28",
@@ -75,14 +89,14 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-32",
-					"linecount" : 5,
+					"linecount" : 3,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 16.0, 501.0, 69.0, 76.0 ],
+					"patching_rect" : [ 16.0, 501.0, 69.0, 49.0 ],
 					"style" : "",
-					"text" : "lineto 220.032898 166.572174"
+					"text" : "lineto 75.749016 74.862183"
 				}
 
 			}
@@ -122,8 +136,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "FullPacket", "FullPacket" ],
-					"patching_rect" : [ 101.0, 354.0, 329.0, 59.0 ],
-					"text" : "if( bound(/symbolsAtTime/0/path/lookup/xy),\n  /lcd = /symbolsAtTime/0/path/lookup/xy\n)",
+					"patching_rect" : [ 101.0, 354.0, 345.0, 59.0 ],
+					"text" : "if( bound(/symbolsAtTime/0/path/1/lookup/xy),\n  /lcd = /symbolsAtTime/0/path/1/lookup/xy\n)",
 					"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
 				}
 
@@ -600,9 +614,9 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 497.0, 540.5, 424.0, 24.0 ],
-					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 24, 47, 116, 105, 109, 101, 47, 108, 111, 111, 107, 117, 112, 0, 0, 0, 0, 44, 102, 0, 0, 64, 120, 81, -20 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 24, 47, 116, 105, 109, 101, 47, 108, 111, 111, 107, 117, 112, 0, 0, 0, 0, 44, 102, 0, 0, 64, -86, -113, 92 ],
 					"saved_bundle_length" : 44,
-					"text" : "/time/lookup : 3.88",
+					"text" : "/time/lookup : 5.33",
 					"textcolor" : [ 0.188, 0.188, 0.188, 1.0 ]
 				}
 

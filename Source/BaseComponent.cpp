@@ -64,7 +64,7 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
     s->addOSCMessage ((String(base_address) += "/w") ,          b.getWidth() );
     s->addOSCMessage ((String(base_address) += "/h") ,          b.getHeight() );
     s->addOSCMessage ((String(base_address) += "/time/start") , s->pixelsToTime( b.getX() ) );
-    s->addOSCMessage ((String(base_address) += "/duration"),    s->pixelsToTime( b.getWidth() ) );
+    s->addOSCMessage ((String(base_address) += "/time/duration"),    s->pixelsToTime( b.getWidth() ) );
     
     messages_added += 7;
     

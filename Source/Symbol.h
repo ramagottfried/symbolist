@@ -33,8 +33,8 @@ public:
     OSCArgument getOSCMessageValue(const int pos) const;
     OSCArgument getOSCMessageValue(const String &address) const;
     
-    static float getOSCValueAsFloat(OSCArgument a) ;
-    static int getOSCValueAsInt(OSCArgument a) ;
+    static float getOSCValueAsFloat(const OSCArgument& a) ;
+    static int getOSCValueAsInt(const OSCArgument& a) ;
     
     
     bool symbol_parse_error( int p, const String& address ) const;
@@ -74,6 +74,10 @@ public:
         return t * m_time_to_pixels;
     }
     
+    float calcTime() // << this should be dynamically settable somehow
+    {
+        return pixelsToTime( getOSCValueAsFloat( getOSCMessageValue("/x") ) );
+    }
     
 private:
     

@@ -33,7 +33,7 @@ class BasicShapePathComponent : public PathBaseComponent
         s->addOSCMessage ((String(base_address) += "/w") ,      b.getWidth() );
         s->addOSCMessage ((String(base_address) += "/h") ,      b.getHeight() );
         s->addOSCMessage ((String(base_address) += "/time/start") , b.getX() * 0.01f );
-        s->addOSCMessage ((String(base_address) += "/duration"),    b.getWidth() * 0.01f );
+        s->addOSCMessage ((String(base_address) += "/time/duration"),    b.getWidth() * 0.01f );
         
         messages_added += 7;
         

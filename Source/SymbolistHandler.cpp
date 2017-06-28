@@ -432,3 +432,25 @@ void SymbolistHandler::updateSymbolFromInspector( BaseComponent *c, Symbol& s )
     c->importFromSymbol(s);
     modifySymbolInScore( c );
 }
+
+
+void SymbolistHandler::copySelectedToClipBoard()
+{
+    clipboard.clear();
+    
+    for( auto c : main_component->getPageComponent()->getSelectedItems() )
+    {
+        clipboard.add(new Symbol( *((BaseComponent*)c)->getScoreSymbolPointer()) );
+    }
+}
+
+void SymbolistHandler::newFromClipBoard()
+{
+    for( auto s : clipboard )
+    {
+        BaseComponent *c = makeComponentFromSymbol( new Symbol(*s), true );
+        if ( c != NULL)
+            main_component->getPageComponent()->addSubcomponent( c );
+
+    }
+}

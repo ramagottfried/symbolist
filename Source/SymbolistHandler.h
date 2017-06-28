@@ -86,18 +86,22 @@ public:
 
     const TimePointArray* getTimePointArray() const { return score.getTimePointArray(); }
     
+    void copySelectedToClipBoard();
+    void newFromClipBoard();
 private:
     
     Score score ;
 
     // the palette is an array of symbol 'templates'
-    SymbolistPalette palette;
+    SymbolistPalette            palette;
     
     // the main view of the editor (could be embedded in a foreign app independently of the window)
     SymbolistMainComponent*     main_component = NULL;
     
     // the main view of the editor (could be embedded in a foreign app independently of the window)
-    OSCInspectorTable*         inspector = NULL;
+    OSCInspectorTable*          inspector = NULL;
+    
+    OwnedArray<Symbol>   clipboard;
     
     // the current play-time in ms (change for float or long_int?)
     float current_time = 0;

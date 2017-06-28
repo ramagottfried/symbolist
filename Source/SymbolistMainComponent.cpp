@@ -121,6 +121,10 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
     
     else if (   key == KeyPress('w') ) { scoreView.getEditedComponent()->addSelectedSymbolsToPalette(); }
 
+    else if (   key == KeyPress('c', ModifierKeys::commandModifier, 0) ) { symbolist_handler->copySelectedToClipBoard(); }
+    else if (   key == KeyPress('v', ModifierKeys::commandModifier, 0) ) { symbolist_handler->newFromClipBoard(); }
+
+    
     return true;
 }
 

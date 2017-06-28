@@ -313,7 +313,6 @@ void ScoreComponent::mouseAddClick ( const MouseEvent& event )
     {
         Symbol* symbol_template = getSymbolistHandler()->getCurrentSymbol();
         
-        
         /* creates a new symbol with the same settings as the symbol_template
          * template symbols all have a default type of "path" and bounds of 0,0,30,30
          * the generic symbol has the same OSC data as the BaseComponent

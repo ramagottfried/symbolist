@@ -386,7 +386,7 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
     assert ( s != NULL ) ; // that's not normal
     
     cout << "removeSymbolFromScore" << endl;
-    s->printBundle();
+    //s->printBundle();
     
     score.removeSymbolTimePoints( s );
     score.removeSymbol( s );
@@ -404,7 +404,7 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     assert ( s != NULL ) ; // that's not normal
     
     cout << c << " ---> modifySymbolInScore " << s << endl;
-    s->printBundle();
+    //s->printBundle();
     printRect(c->getBounds(), "component");
 
     score.removeSymbolTimePoints( s );

@@ -43,7 +43,7 @@ void SymbolGroupComponent::setEditMode( bool val )
 {
     BaseComponent::setEditMode(val);
     
-    if (val == false )
+    if (val == false ) // exit
     {
         ScoreComponent* sc = ((ScoreComponent*)getParentComponent());
         sc->addToSelection(this);
@@ -58,7 +58,6 @@ void SymbolGroupComponent::setEditMode( bool val )
         }
     }
 }
-
 
 /*============================*
  * SYMBOL MANAGEMENT

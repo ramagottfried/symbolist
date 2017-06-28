@@ -31,12 +31,21 @@ void BaseComponent::reportModification()
         if ( isTopLevelComponent() )
         {
             getSymbolistHandler()->modifySymbolInScore( this );
+            updateRelativeAttributes();
         }
         else
         {
             ((BaseComponent*) getParentComponent())->reportModification() ;
         }
     }
+    
+    /*
+    if (inPlaceForRelativeUpdates())
+    {
+        updateRelativePos();
+        updateRelativeSize();
+    }
+    */
 }
 
 
@@ -107,7 +116,7 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
     }
     
     cout << "*********** START BASE ADD DATA ************ " << endl;
-    s->printBundle();
+    //s->printBundle();
     
     return messages_added;
 }
@@ -261,15 +270,79 @@ void BaseComponent::recursiveShrinkBounds()
  * Component modification callbacks
  ************************/
 
-void BaseComponent::moved ()
+// We don't want this to happen while in edit_mode
+bool BaseComponent::inPlaceForRelativeUpdates()
 {
-    //reportModification(); // shoudl be smarter : call this when the move is over (mouse up)
+    return ( getParentComponent() // we have a parent
+             && getParentComponent() != getPageComponent() // the parent is not the page
+             && ! ((BaseComponent*)getParentComponent())->isInEditMode() // the parent is not being edited
+             && ( getPageComponent() == NULL || getPageComponent()->getEditedComponent() ==  getPageComponent()) // the page component is being edited
+            ) ;
 }
+
+// update the relative pos according to container
+// call this after a move
+
+void BaseComponent::updateRelativePos()
+{
+        Rectangle<int> container_bounds = getParentComponent()->getBounds();
+        relative_x = getPosition().x / (float) (container_bounds.getWidth());
+        relative_y = getPosition().y / (float) (container_bounds.getHeight());
+}
+
+// update the relative size according to container
+// call this after a resize
+void BaseComponent::updateRelativeSize()
+{
+        Rectangle<int> container_bounds = getParentComponent()->getBounds();
+        relative_w = getWidth() / (float) (container_bounds.getWidth());
+        relative_h = getHeight() / (float) (container_bounds.getHeight());
+}
+
+void BaseComponent::updateRelativeAttributes()
+{
+    updateRelativePos();
+    updateRelativeSize();
+    for ( int i = 0; i < getNumSubcomponents(); i++ )
+    {
+        ((BaseComponent*)getSubcomponent(i))->updateRelativeAttributes();
+    }
+}
+
+// update the subcomponents according to their relative pos and size
+// call this from container at resize
+void BaseComponent::updateSubcomponents ()
+{
+    //float relative_x, relative_y, relative_w, relative_h;
+    for ( int i = 0; i < getNumSubcomponents(); i++ )
+    {
+        BaseComponent* c = (BaseComponent*)getSubcomponent(i);
+        c->setTopLeftPosition(c->relative_x * getWidth(),c->relative_y * getHeight() );
+        c->setSize(c->relative_w * getWidth(),c->relative_h * getHeight() );
+        c->updateSubcomponents();
+    }
+}
+
+void BaseComponent::addSubcomponent( SymbolistComponent *c )
+{
+    ScoreComponent::addSubcomponent( c );
+    if ( ((BaseComponent*)c)->inPlaceForRelativeUpdates() )
+    {
+        ((BaseComponent*)c)->updateRelativePos();
+        ((BaseComponent*)c)->updateRelativeSize();
+    }
+}
+
 
 void BaseComponent::resized ()
 {
-    //reportModification(); // shoudl be smarter : call this when the move is over (mouse up)
-
+    if ( getPageComponent() &&
+         (     getPageComponent()->getEditedComponent() == getPageComponent()
+            || getPageComponent()->getEditedComponent() == getParentComponent() ))
+    {
+            updateSubcomponents ();
+    }
+    
     if( !resizableBorder ) // << probably better to initialize the resizable border somewhere else...
     {
         constrainer.setMinimumSize ( m_min_size, m_min_size );
@@ -279,6 +352,7 @@ void BaseComponent::resized ()
     resizableBorder->setBounds( getLocalBounds() );
 }
 
+void BaseComponent::moved () {}
 
 /************************
  * MOUSE INTERACTIONS

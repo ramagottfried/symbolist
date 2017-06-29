@@ -351,7 +351,7 @@ void ScoreComponent::mouseAddClick ( const MouseEvent& event )
 
 void ScoreComponent::mouseDown ( const MouseEvent& event )
 {
-    UI_EditType ed = getMainEditMode();
+    UI_EditType ed = getMainMouseMode();
     
     if( ed == selection )
     {
@@ -366,7 +366,7 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
 
 void ScoreComponent::mouseDrag ( const MouseEvent& event )
 {
-    if( getMainEditMode() == selection )
+    if( getMainMouseMode() == selection )
     {
         dragLassoSelection(event.getPosition());
     }
@@ -374,7 +374,7 @@ void ScoreComponent::mouseDrag ( const MouseEvent& event )
 
 void ScoreComponent::mouseUp ( const MouseEvent& event )
 {
-    UI_EditType ed = getMainEditMode();
+    UI_EditType ed = getMainMouseMode();
     
     if( ed == selection )
     {

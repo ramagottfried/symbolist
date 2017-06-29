@@ -74,11 +74,11 @@ void SymbolistComponent::clearAllSubcomponents()
 
 
 
-UI_EditType SymbolistComponent::getMainEditMode()
+UI_EditType SymbolistComponent::getMainMouseMode()
 {
     if ( getMainComponent() != NULL)
     {
-        return getMainComponent()->getEditMode() ;
+        return getMainComponent()->getMouseMode() ;
     }
     else
     {

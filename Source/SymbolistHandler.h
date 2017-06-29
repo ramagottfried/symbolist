@@ -39,15 +39,22 @@ public:
     void symbolistAPI_registerUpdateCallback(symbolistUpdateCallback c);
     void symbolistAPI_registerCloseCallback(symbolistCloseCallback c);
     void symbolistAPI_registerTransportCallback(symbolistTransportCallback c);
+    
     int symbolistAPI_getNumSymbols();
     odot_bundle* symbolistAPI_getSymbol(int n);
+    void symbolistAPI_setOneSymbol( odot_bundle *bundle);
     void symbolistAPI_setSymbols(int n, odot_bundle **bundle_array);
+    
+    int symbolistAPI_getNumPaletteSymbols();
+    odot_bundle* symbolistAPI_getPaletteSymbol(int n);
+    void symbolistAPI_setOnePaletteSymbol( odot_bundle *bundle);
+    void symbolistAPI_setPaletteSymbols(int n, odot_bundle **bundle_array);
+    
     void symbolistAPI_setTime(float time_ms);
 
     odot_bundle* symbolistAPI_getSymbolsAtTime(float t);
     odot_bundle* symbolistAPI_getScoreBundle();
     
-    void symbolistAPI_setOneSymbol( odot_bundle *bundle);
     void symbolistAPI_clearScore();
     
     /*********************************************

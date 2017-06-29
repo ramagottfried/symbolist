@@ -24,17 +24,16 @@ SymbolistHandler::SymbolistHandler()
     float symbol_pos = 0.0;
     
     Symbol* s1 = new Symbol("circle", symbol_pos, symbol_pos, symbol_size, symbol_size);
-    palette.addPaletteItem(s1);
+    palette.addDefaultItem(s1);
     
     Symbol* s2 = new Symbol("rectangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
-    palette.addPaletteItem(s2);
+    palette.addDefaultItem(s2);
     
     Symbol* s3 = new Symbol("triangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
-    palette.addPaletteItem(s3);
+    palette.addDefaultItem(s3);
     
     Symbol* s5 = new Symbol("text", 20.0, 20.0, symbol_size, symbol_size);
-    palette.addPaletteItem(s5);
-
+    palette.addDefaultItem(s5);
 }
 
 SymbolistHandler::~SymbolistHandler()
@@ -184,27 +183,6 @@ odot_bundle* SymbolistHandler::symbolistAPI_getSymbol(int n)
     return score.getSymbol(n)->exportToOSC();
 }
 
-odot_bundle* SymbolistHandler::symbolistAPI_getSymbolsAtTime( float t )
-{
-    return score.getSymbolsAtTime(t);
-}
-
-odot_bundle* SymbolistHandler::symbolistAPI_getScoreBundle()
-{
-    return score.getScoreBundle();
-}
-
-void SymbolistHandler::symbolistAPI_clearScore()
-{
-    const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
-
-    if ( main_component != NULL )
-    {
-        main_component->getPageComponent()->clearAllSubcomponents();
-    }
-    score.removeAllSymbols();
-}
-
 void SymbolistHandler::symbolistAPI_setOneSymbol( odot_bundle *bundle)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
@@ -228,7 +206,7 @@ void SymbolistHandler::symbolistAPI_setOneSymbol( odot_bundle *bundle)
 void SymbolistHandler::symbolistAPI_setSymbols(int n, odot_bundle **bundle_array)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
-
+    
     score.importScoreFromOSC(n, bundle_array);
     
     if ( main_component != NULL)
@@ -237,6 +215,43 @@ void SymbolistHandler::symbolistAPI_setSymbols(int n, odot_bundle **bundle_array
         addComponentsFromScore();
     }
 }
+
+
+int SymbolistHandler::symbolistAPI_getNumPaletteSymbols()
+{
+    return static_cast<int>( palette.getPaletteNumUserItems() );
+}
+
+odot_bundle* SymbolistHandler::symbolistAPI_getPaletteSymbol(int n)
+{
+    return palette.getPaletteUserItem(n)->exportToOSC();
+}
+
+void SymbolistHandler::symbolistAPI_setOnePaletteSymbol( odot_bundle *bundle)
+{
+    const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
+    
+    Symbol *s = new Symbol();
+    s->importFromOSC( bundle );
+    palette.addUserItem(s);
+    
+}
+
+void SymbolistHandler::symbolistAPI_setPaletteSymbols(int n, odot_bundle **bundle_array)
+{
+    const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
+    
+    for (int i = 0; i < n ; i++) {
+        Symbol *s = new Symbol();
+        s->importFromOSC( bundle_array[i] );
+        palette.addUserItem(s);
+    }
+    if ( main_component != NULL )
+    {
+        main_component->updatePaletteView();
+    }
+}
+
 
 void SymbolistHandler::symbolistAPI_setTime(float time_ms)
 {
@@ -248,6 +263,27 @@ void SymbolistHandler::symbolistAPI_setTime(float time_ms)
         main_component->getPageComponent()->setTimePoint( time_ms );
         main_component->repaint();
     }
+}
+
+odot_bundle* SymbolistHandler::symbolistAPI_getSymbolsAtTime( float t )
+{
+    return score.getSymbolsAtTime(t);
+}
+
+odot_bundle* SymbolistHandler::symbolistAPI_getScoreBundle()
+{
+    return score.getScoreBundle();
+}
+
+void SymbolistHandler::symbolistAPI_clearScore()
+{
+    const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
+
+    if ( main_component != NULL )
+    {
+        main_component->getPageComponent()->clearAllSubcomponents();
+    }
+    score.removeAllSymbols();
 }
 
 
@@ -286,7 +322,13 @@ int SymbolistHandler::getCurrentSymbolIndex()
 
 Symbol* SymbolistHandler::getCurrentSymbol()
 {
-    return palette.getPaletteItem(palette.getSelectedItem());
+    int num_def_symbols = palette.getPaletteNumDefaultItems();
+    int sel = palette.getSelectedItem();
+    
+    if ( sel < num_def_symbols )
+        return palette.getPaletteDefaultItem(sel);
+    else
+        return palette.getPaletteUserItem(sel - num_def_symbols);
 }
 
 //=================================

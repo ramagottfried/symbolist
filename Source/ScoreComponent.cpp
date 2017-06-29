@@ -292,7 +292,7 @@ void ScoreComponent::addSelectedSymbolsToPalette( )
         BaseComponent* c = (BaseComponent*)selected_components[i];
         Symbol* s = new Symbol();
         c->addSymbolMessages(s, "");
-        getSymbolistHandler()->getSymbolPalette()->addPaletteItem(s);
+        getSymbolistHandler()->getSymbolPalette()->addUserItem(s);
     }
     getMainComponent()->updatePaletteView();
 }

@@ -68,15 +68,34 @@ odot_bundle* symbolistGetSymbol(void* symbolist_handler, int n)
 {
     return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getSymbol(n);
 }
+void symbolistSetOneSymbol(void* symbolist_handler, odot_bundle *bundle)
+{
+    static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setOneSymbol( bundle );
+}
 
 void symbolistSetSymbols(void* symbolist_handler, int n, odot_bundle **bundle_array)
 {
     static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setSymbols(n, bundle_array);
 }
 
-void symbolistSetOneSymbol(void* symbolist_handler, odot_bundle *bundle)
+int symbolistGetNumPaletteSymbols(void* symbolist_handler)
 {
-    static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setOneSymbol( bundle );
+    return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getNumPaletteSymbols();
+}
+
+odot_bundle* symbolistGetPaletteSymbol(void* symbolist_handler, int n)
+{
+    return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getPaletteSymbol(n);
+}
+
+void symbolistSetOnePaletteSymbol(void* symbolist_handler, odot_bundle *bundle)
+{
+    static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setOnePaletteSymbol( bundle );
+}
+
+void symbolistSetPaletteSymbols(void* symbolist_handler, int n, odot_bundle **bundle_array)
+{
+    static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setPaletteSymbols(n, bundle_array);
 }
 
 void symbolistClearScore(void* symbolist_handler)

@@ -78,17 +78,26 @@ class SymbolistPalette
 public:
     
     SymbolistPalette(){};
-    ~SymbolistPalette(){ for (int i = 0; i < items.size(); i++) delete items[i] ; }
-    
-    void addPaletteItem( Symbol *c ) { items.emplace_back(c); }
-    Symbol* getPaletteItem( int i ) { return items[i] ; }
-    int getPaletteNumItems() { return static_cast<int>( items.size() ) ; }
+    ~SymbolistPalette()
+    {
+        for (int i = 0; i < default_items.size(); i++) delete default_items[i] ;
+        for (int i = 0; i < user_items.size(); i++) delete user_items[i] ;
+    }
+
+    void addDefaultItem( Symbol *s ) { default_items.emplace_back(s); }
+    void addUserItem( Symbol *s ) { user_items.emplace_back(s); }
+    Symbol* getPaletteDefaultItem( int i ) { return default_items[i] ; }
+    Symbol* getPaletteUserItem( int i ) { return user_items[i] ; }
+    int getPaletteNumDefaultItems() { return static_cast<int>( default_items.size() ) ; }
+    int getPaletteNumUserItems() { return static_cast<int>( user_items.size() ) ; }
     int getSelectedItem() { return selected_item ; }
     void setSelectedItem(int n) { selected_item = n; }
     
     private :
     
-    std::vector<Symbol*> items;
+    std::vector<Symbol*> default_items;
+    std::vector<Symbol*> user_items;
+    
     int selected_item = 0;
 };
 

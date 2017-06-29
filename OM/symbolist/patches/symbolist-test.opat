@@ -5,7 +5,7 @@
  (:doc "")
  (:info
   (:created "2017/05/12 11:19:12")
-  (:modified "2017/06/20 10:46:43"))
+  (:modified "2017/06/29 13:46:51"))
  (:window (:size (758 804)) (:position (1426 614)))
  (:boxes
   (:box
@@ -37,16 +37,10 @@
      (:type :standard)
      (:name "SYMBOLS")
      (:value nil)
-     (:reactive nil))
-    (:input
-     (:type :standard)
-     (:name "REFRESH-RATE")
-     (:value 100)
      (:reactive nil)))
    (:outputs
     (:output (:name "SELF") (:reactive nil))
-    (:output (:name "SYMBOLS") (:reactive t))
-    (:output (:name "REFRESH-RATE") (:reactive nil)))
+    (:output (:name "SYMBOLS") (:reactive t)))
    (:window (:size (404 309)) (:position (685 436)))
    (:edition-params)
    (:value
@@ -1467,8 +1461,8 @@
               (:list "/subsymbol/3/segment/4/type" "close")
               (:list "/subsymbol/3/segment/4/x_points" 9.0 9.0)
               (:list "/subsymbol/3/segment/4/y_points" 2.0 2.0)
-              (:list "/subsymbol/3/num_segments" 5))))))))
-       (:refresh-rate 100)))))
+              (:list "/subsymbol/3/num_segments" 5))))))))))
+     (:add-slots ((palette-symbols nil) (refresh-rate 100)))))
    (:id 0))
   (:box
    (:reference gen-score-symbols)

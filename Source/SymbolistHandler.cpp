@@ -446,13 +446,16 @@ void SymbolistHandler::copySelectedToClipBoard()
 
 void SymbolistHandler::newFromClipBoard()
 {
+    auto pc = main_component->getPageComponent();
+    
     for( auto s : clipboard )
     {
         BaseComponent *c = makeComponentFromSymbol( new Symbol(*s), true );
         if ( c != NULL)
         {
-            main_component->getPageComponent()->addSubcomponent( c );
-            main_component->getPageComponent()->addToSelection( c );
+            pc->addSubcomponent( c );
+            c->toFront(true);
+            pc->addToSelection( c );
         }
 
     }

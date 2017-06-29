@@ -1,13 +1,4 @@
-//
-//  SymbolistComponent.hpp
-//  symbolist
-//
-//  Created by Jean Bresson on 28/05/2017.
-//
-//
-
-#ifndef SymbolistComponent_h
-#define SymbolistComponent_h
+#pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "types.h"
@@ -48,5 +39,3 @@ protected :
     Array<SymbolistComponent*>     subcomponents;
     
 };
-
-#endif

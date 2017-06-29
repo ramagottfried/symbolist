@@ -1,10 +1,4 @@
-//
-//  SymbolistComponent.cpp
-//  symbolist
-//
-//  Created by Jean Bresson on 30/05/2017.
-//
-//
+
 
 #include "SymbolistComponent.h"
 #include "SymbolistMainComponent.h"
@@ -130,7 +124,6 @@ Point<int> SymbolistComponent::positionRelativeTo(SymbolistComponent* to)
         else return getPosition() + ((SymbolistComponent*)getParentComponent())->positionRelativeTo(to);
 }
 
-
 // basic selection mechanism
 void SymbolistComponent::mouseDownSelection( const MouseEvent& event )
 {
@@ -142,13 +135,7 @@ void SymbolistComponent::mouseDownSelection( const MouseEvent& event )
             parent->removeFromSelection(this);
         else
             parent->addToSelection(this);
-    }
-    else if( event.mods.isAltDown() )
-    {
-        parent->unselectAllComponents();
-        parent->addToSelection(this);
-        getSymbolistHandler()->copySelectedToClipBoard();
-        getSymbolistHandler()->newFromClipBoard();
+        
     }
     else
     {

@@ -1,6 +1,4 @@
-
-#ifndef BaseComponent_h
-#define BaseComponent_h
+#pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
@@ -56,7 +54,9 @@ public:
     void mouseDrag( const MouseEvent& event ) override;
     void mouseUp( const MouseEvent& event ) override;
     void mouseDoubleClick( const MouseEvent& event ) override;
-        
+    
+    void altDragCopy( const MouseEvent& event  );
+    
     void recursiveMaximizeBounds();
     void recursiveShrinkBounds();
     
@@ -93,6 +93,7 @@ public:
     
     virtual void setEditMode(bool val);
     bool isInEditMode();
+    bool isSelected(){ return is_selected; }
     
     void updateRelativePos();
     void updateRelativeSize();
@@ -127,8 +128,10 @@ protected:
     Colour          sel_color = Colours::cornflowerblue;
     
     bool            in_edit_mode = false;
-        
-        
+
+    bool            is_alt_copying = false;
+    Point<float>    m_prev_event;
+
 private:
     
     //==============================================================================
@@ -136,8 +139,3 @@ private:
     
 };
 
-#endif
-
-// all parameters that might be used for performance should be stored in the score,
-// separate from the graphic component class, if possible, generalize the stored parameter namespace here so that
-// all inherited children can read and write their states through this interface

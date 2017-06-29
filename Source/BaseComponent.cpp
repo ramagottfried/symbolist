@@ -124,7 +124,7 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
         messages_added++;
     }
     
-    cout << "*********** START BASE ADD DATA ************ " << endl;
+//    cout << "*********** START BASE ADD DATA ************ " << endl;
     //s->printBundle();
     
     return messages_added;
@@ -407,12 +407,28 @@ void BaseComponent::mouseDown( const MouseEvent& event )
     }
 }
 
+void BaseComponent::altDragCopy( const MouseEvent& event  )
+{
+    is_alt_copying = true;
+    ScoreComponent* parent = (ScoreComponent*)getParentComponent();
+    
+    if ( ! componentSelected() )
+        parent->addToSelection(this);
+    
+    getSymbolistHandler()->copySelectedToClipBoard();
+    
+    parent->unselectAllComponents();
+    getSymbolistHandler()->newFromClipBoard();
+    
+}
 
 void BaseComponent::mouseDrag( const MouseEvent& event )
 {
-    if ( in_edit_mode ) ScoreComponent::mouseDrag(event);
     
-    else {
+    if ( in_edit_mode )
+        ScoreComponent::mouseDrag(event);
+    else
+    {
         
         ScoreComponent* parent = ( (ScoreComponent*) getParentComponent() );
         
@@ -420,21 +436,40 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
         {
             if( is_selected && (getMainEditMode() == selection ) )
             {
-                parent->translateSelectedComponents( (event.position - m_down).toInt() );
+                
+                if( event.mods.isAltDown() && !is_alt_copying)
+                {
+                    altDragCopy( event );
+                    m_prev_event = event.position - m_down;
+                }
+                else
+                {
+                    parent->translateSelectedComponents( (event.position - m_down).roundToInt() );
+                }
+                
             }
+            else if( is_alt_copying )
+            {
+                auto delta_pt = (event.position - m_down - m_prev_event).roundToInt();
+                parent->translateSelectedComponents( delta_pt );
+                m_prev_event = event.position - m_down;
+            }
+            
         }
         else
         {
             parent->mouseDrag(event.getEventRelativeTo(parent));
         }
+        
     }
 }
 
 void BaseComponent::mouseUp( const MouseEvent& event )
 {
-    if ( in_edit_mode ) ScoreComponent::mouseUp(event);
-    
-    else {
+    if ( in_edit_mode )
+        ScoreComponent::mouseUp(event);
+    else
+    {
         
         if ( respondsToMouseEvents() )
         {
@@ -451,6 +486,9 @@ void BaseComponent::mouseUp( const MouseEvent& event )
             parent->mouseUp(event.getEventRelativeTo(parent));
         }
     }
+    
+    if( is_alt_copying )
+        is_alt_copying = false;
 }
 
 

@@ -390,7 +390,8 @@ void BaseComponent::resized ()
     {
         constrainer.setMinimumSize ( m_min_size, m_min_size );
         addChildComponent( resizableBorder = new ResizableBorderComponent(this, &constrainer) );
-        resizableBorder->setBorderThickness( BorderSize<int>(4) );
+        resizableBorder->setBorderThickness( BorderSize<int>(6) );
+        resizableBorder->setAlwaysOnTop(true);
     }
     
     resizableBorder->setBounds( getLocalBounds() );

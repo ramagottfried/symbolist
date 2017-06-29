@@ -6,9 +6,9 @@
 #include <vector>
 
 
-Score::Score(){}
+Score::Score() : time_points(this) {}
 
-Score::Score( int n, odot_bundle **bundle_array )
+Score::Score( int n, odot_bundle **bundle_array ) : time_points(this)
 {
     importScoreFromOSC( n, bundle_array );
 }
@@ -135,6 +135,20 @@ size_t Score::getSize()
 int Score::getSymbolPosition(Symbol *s)
 {
     return score_symbols.indexOfSorted(score_sorter, s );
+}
+
+const Array<Symbol*> Score::getSymbolsByValue( const String& address, const String& value )
+{
+    Array<Symbol*> matched;
+    for (auto s : score_symbols )
+    {
+        OSCArgument val = s->getOSCMessageValue( address );
+        if( val.isString() && val.getString() == value )
+        {
+            matched.add( s );
+        }
+    }
+    return matched;
 }
 
 /***********************************

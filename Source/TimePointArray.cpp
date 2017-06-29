@@ -1,5 +1,7 @@
 
 #include "TimePointArray.h"
+#include "Score.h"
+
 
 void TimePointArray::printTimePoints()
 {
@@ -86,10 +88,37 @@ void TimePointArray::removeSymbolTimePoints( Symbol *s)
 
 void TimePointArray::addSymbolTimePoints( Symbol *s )
 {
+    // 0) check if the symbol has a staff reference, if not ignore it
+    // 1) if attached to a staff, calculate start & end times based on staff ( for now: start = x, end = x+w )
+    // 2) add start and end points to array
+    // 3) check previous start-1 and end-1 points for continuing symbols to add to new start/end points
+    // 4) iterate forward from start to end point and add this symbol to all preexisting time points
     
-    // 1) add start and end points
-    // 2) check previous start-1 and end-1 points for continuing symbols to add to new start/end points
-    // 3) iterate forward from start to end point and add this symbol to all preexisting time points
+    
+    
+    // for the staff process, we might want to look this up here
+/*
+    int staff_pos = s->getOSCMessagePos( "/staff" );
+    if( staff_pos != -1 )
+    {
+        String staff_name = s->getOSCMessageValue( staff_pos ).getString();
+        if( staff_name.isNotEmpty() )
+        {
+            String addr = "/name";
+            auto found_staves = score_ptr->getSymbolsByValue( addr, staff_name );
+            
+            Symbol *staff = found_staves.getFirst();
+            
+            staff_x = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/x") );
+            staff_y = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/y") );
+            
+        }
+    }
+  */
+    
+    
+    int staff_pos = s->getOSCMessagePos( "/staff" );
+    if( staff_pos == -1 || s->getOSCMessageValue( staff_pos ).getString().isEmpty() ) return;
     
     float start_t = s->getTime();
     float end_t = s->getEndTime();
@@ -249,6 +278,27 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
             // ignore symbols if after endpoint
             if( current_time <= s->getEndTime() )
             {
+                
+                float staff_x = 0, staff_y = 0;
+                
+                int staff_pos = s->getOSCMessagePos( "/staff" );
+                if( staff_pos != -1 )
+                {
+                    String staff_name = s->getOSCMessageValue( staff_pos ).getString();
+                    if( staff_name.isNotEmpty() )
+                    {
+                        String addr = "/name";
+                        auto found_staves = score_ptr->getSymbolsByValue( addr, staff_name );
+                        
+                        Symbol *staff = found_staves.getFirst();
+                        
+                        staff_x = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/x") );
+                        staff_y = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/y") );
+                        
+                    }
+                }
+                
+                
                 String s_prefix = prefix + String(count);
 
                 float offset_time = current_time - s->getTime();
@@ -285,7 +335,7 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                             if (offset_time >= start && offset_time < (start + dur) )
                             {
                                 auto xy = lookupPathPoint( s, i, offset_time, start, dur );
-                                bndl.addElement( OSCMessage( s_prefix + "/path/" + (String)i + "/lookup/xy", xy.x, xy.y ) );
+                                bndl.addElement( OSCMessage( s_prefix + "/path/" + (String)i + "/lookup/xy", xy.x - staff_x, xy.y - staff_y ) );
                             }
 
                         }
@@ -301,11 +351,23 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                 {
                     OSCMessage msg = osc.getMessage();
                     
-                    String newaddr = s_prefix + msg.getAddressPattern().toString();
+                    String msg_addr = msg.getAddressPattern().toString();
+                    String newaddr = s_prefix + msg_addr;
+
+                    if( msg_addr == "/x" )
+                    {
+                        bndl.addElement( OSCMessage( newaddr, Symbol::getOSCValueAsFloat( msg[0] ) - staff_x )  );
+                    }
+                    else if( msg_addr == "/y" )
+                    {
+                        bndl.addElement( OSCMessage( newaddr, Symbol::getOSCValueAsFloat( msg[0] ) - staff_y )  );
+                    }
+                    else
+                    {
+                        msg.setAddressPattern(newaddr);
+                        bndl.addElement(msg);
+                    }
                     
-                    msg.setAddressPattern(newaddr);
-                    
-                    bndl.addElement(msg);
 
                 }
                 
@@ -388,7 +450,6 @@ odot_bundle *TimePointArray::getSymbolsAtTime( float t )
     if( idx >= 0 )
     {
         SymbolTimePoint *tpoint = (*this)[idx];
-        
         
         return timePointStreamToOSC( tpoint );
     }

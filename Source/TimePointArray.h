@@ -2,12 +2,12 @@
 
 #include "Symbol.h"
 
-
 //============================
 // SYMBOL Timepoint
 //============================
 
 using namespace std;
+
 
 struct SymbolTimePoint
 {
@@ -41,10 +41,16 @@ private:
     
 };
 
+class Score;
+
 class TimePointArray : public OwnedArray<SymbolTimePoint>
 {
 public:
-    TimePointArray() = default;
+    TimePointArray(Score *s)
+    {
+        score_ptr = s;
+    }
+    
     ~TimePointArray() = default;
     
     void printTimePoints();
@@ -83,6 +89,8 @@ private:
     
     int current_point = 0;
     float current_time = 0;
+    
+    Score   *score_ptr = nullptr;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimePointArray)
 };

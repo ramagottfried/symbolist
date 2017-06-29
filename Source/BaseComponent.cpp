@@ -72,14 +72,14 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
     addr = base_address + "/name";
     if( s->getOSCMessagePos(addr) == -1 )
     {
-        s->addOSCMessage( addr,         symbol_export_name() );
+        s->addOSCMessage( addr,         name );
         messages_added++;
     }
 
     addr = base_address + "/staff";
     if( s->getOSCMessagePos(addr) == -1 )
     {
-        s->addOSCMessage( addr,           "<none>" );
+        s->addOSCMessage( addr,         staff_name );
         messages_added++;
     }
 
@@ -87,7 +87,7 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
     addr = base_address + "/type";
     if( s->getOSCMessagePos(addr) == -1 )
     {
-        s->addOSCMessage( addr,           getSymbolTypeStr());
+        s->addOSCMessage( addr,         getSymbolTypeStr());
         messages_added++;
     }
     
@@ -101,28 +101,28 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
     addr = base_address + "/y";
     if( s->getOSCMessagePos(addr) == -1 )
     {
-        s->addOSCMessage( addr ,              b.getY() );
+        s->addOSCMessage( addr ,        b.getY() );
         messages_added++;
     }
     
     addr = base_address + "/w";
     if( s->getOSCMessagePos(addr) == -1 )
     {
-        s->addOSCMessage( addr ,              b.getWidth() );
+        s->addOSCMessage( addr ,        b.getWidth() );
         messages_added++;
     }
     
     addr = base_address + "/h";
     if( s->getOSCMessagePos(addr) == -1 )
     {
-        s->addOSCMessage( addr ,              b.getHeight() );
+        s->addOSCMessage( addr ,        b.getHeight() );
         messages_added++;
     }
     
     addr = base_address + "/time/start";
     if( s->getOSCMessagePos(addr) == -1 )
     {
-        s->addOSCMessage( addr,      s->pixelsToTime( b.getX() ) );
+        s->addOSCMessage( addr,         s->pixelsToTime( b.getX() ) );
         messages_added++;
     }
 

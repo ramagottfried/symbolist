@@ -13,7 +13,8 @@ public:
     bool keyPressed (const KeyPress& key, Component* originatingComponent) override;
     
     void setInspectorObject( BaseComponent *c );
-    
+    void clearInspector();
+      
     int getNumRows() override;
 
     // This is overloaded from TableListBoxModel, and should fill in the background of the whole row

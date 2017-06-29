@@ -359,6 +359,7 @@ void ScoreComponent::mouseDown ( const MouseEvent& event )
     }
     else if( ed == draw )
     {
+//        getSymbolistHandler()->symbolistAPI_closeInspectorWindow();
         mouseAddClick( event.getEventRelativeTo(getPageComponent()) );
     }
 }

@@ -432,6 +432,8 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
     
     cout << "removeSymbolFromScore" << endl;
     //s->printBundle();
+
+    if( inspector ) inspector->clearInspector();
     
     score.removeSymbolTimePoints( s );
     score.removeSymbol( s );
@@ -471,6 +473,10 @@ void SymbolistHandler::addToInspector( BaseComponent *c )
     if( inspector ) inspector->setInspectorObject( c );
 }
 
+void SymbolistHandler::clearInspector()
+{
+    if( inspector ) inspector->clearInspector();
+}
 
 void SymbolistHandler::updateSymbolFromInspector( BaseComponent *c, Symbol& s )
 {

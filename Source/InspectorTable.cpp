@@ -62,13 +62,18 @@ bool OSCInspectorTable::keyPressed (const KeyPress& key, Component* originatingC
 
 void OSCInspectorTable::setInspectorObject( BaseComponent* c )
 {
- //   cout << "addSymbolData" << endl;
-
     symbol_component = c;
     
 //    for (auto osc : data )
 //        bundle.addElement( osc );
+    
+    table.updateContent();
+    table.repaint();
+}
 
+void OSCInspectorTable::clearInspector()
+{
+    symbol_component = nullptr;
     table.updateContent();
     table.repaint();
 }

@@ -73,6 +73,7 @@ public:
     float getCurrentTime() { return current_time; }
     
     void addToInspector( BaseComponent *c);
+    void clearInspector();
     
     void updateSymbolFromInspector( BaseComponent *c, Symbol& s );
     

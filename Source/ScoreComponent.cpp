@@ -94,7 +94,7 @@ void ScoreComponent::dragLassoSelection(Point<int> position)
     {
         SymbolistComponent* cc =  getSubcomponent(i);
         
-        if (cc->getBounds().intersects( s_lasso.getBounds() ))
+        if (cc->intersectRect( s_lasso.getBounds() ))
         {
             addToSelection( cc );
         }

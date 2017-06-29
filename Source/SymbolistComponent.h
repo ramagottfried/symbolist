@@ -30,7 +30,7 @@ public:
     
     Point<int> positionRelativeTo(SymbolistComponent* to);
     void mouseDownSelection( const MouseEvent& event );
-
+    virtual bool intersectRect( Rectangle<int> rect);
 
 
 protected :

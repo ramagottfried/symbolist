@@ -114,6 +114,36 @@ void PathBaseComponent::resized()
     }
 }
 
+
+bool PathBaseComponent::intersectRect( Rectangle<int> rect)
+{
+    Sym_PathBounds pb;
+    
+    Rectangle<int> shifted_rect = rect.translated( - getBoundsInParent().getX(), - getBoundsInParent().getY() );
+    
+    for ( int np = 0; np < m_path_array.size(); np++)
+    {
+        Path* p = m_path_array[np];
+        
+        Rectangle<float> r_path = pb.getRealPathBounds( *p );
+
+        if ( (  r_path.getX() >= shifted_rect.getX() && r_path.getY() >= shifted_rect.getY()     &&
+                r_path.getRight() <= shifted_rect.getRight() && r_path.getBottom() <= shifted_rect.getBottom() )
+            // => he path is _inside_ the rect
+            ||
+            (   p->intersectsLine( Line<float>( shifted_rect.getX() , shifted_rect.getY() , shifted_rect.getRight() , shifted_rect.getY())) ||
+                p->intersectsLine( Line<float>( shifted_rect.getRight() , shifted_rect.getY() , shifted_rect.getRight() , shifted_rect.getBottom())) ||
+                p->intersectsLine( Line<float>( shifted_rect.getX() , shifted_rect.getBottom() , shifted_rect.getRight() , shifted_rect.getBottom())) ||
+                p->intersectsLine( Line<float>( shifted_rect.getX() , shifted_rect.getY() , shifted_rect.getX() , shifted_rect.getBottom())) )
+            // => the path intersects one of the vertices of the rect
+            )
+            return true;
+    }
+    return false; // no match
+}
+
+
+
 /******************
  * Creates OSC Messages in the Symbol
  * Can be overriden / completed by class-specific messages

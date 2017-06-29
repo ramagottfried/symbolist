@@ -28,6 +28,7 @@ public:
     void deselectComponent() override;
     void setEditMode( bool val ) override;
     void paint ( Graphics& g ) override;
+    bool intersectRect( Rectangle<int> rect) override;
     
 private :
     

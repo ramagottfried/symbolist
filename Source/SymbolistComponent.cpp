@@ -123,6 +123,11 @@ Point<int> SymbolistComponent::positionRelativeTo(SymbolistComponent* to)
         else return getPosition() + ((SymbolistComponent*)getParentComponent())->positionRelativeTo(to);
 }
 
+bool SymbolistComponent::intersectRect( Rectangle<int> rect)
+{
+    return getBounds().intersects(rect);
+}
+
 // basic selection mechanism
 void SymbolistComponent::mouseDownSelection( const MouseEvent& event )
 {

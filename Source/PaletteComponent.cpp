@@ -15,11 +15,12 @@ PaletteButton::PaletteButton( int i, Symbol *s)
     button_id = i;
     graphic_comp = getSymbolistHandler()->makeComponentFromSymbol(s,false);
     setComponentID("PaletteButton");
+    addAndMakeVisible(graphic_comp);
 }
 
 PaletteButton::~PaletteButton()
 {
-    delete graphic_comp;
+    // delete graphic_comp;
 }
 
 void PaletteButton::setSelected(bool sel)
@@ -39,7 +40,7 @@ void PaletteButton::paint (Graphics& g)
     else g.fillAll( Colours::white );
     //g.setOrigin(getX()+((getWidth()-graphic_comp->getWidth())/2),
     //            getY()+((getHeight()-graphic_comp->getHeight())/2));
-    graphic_comp->paint(g);
+    //graphic_comp->paint(g);
 }
 
 void PaletteButton::mouseDown ( const MouseEvent& event )

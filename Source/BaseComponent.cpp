@@ -79,7 +79,7 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
     addr = base_address + "/staff";
     if( s->getOSCMessagePos(addr) == -1 )
     {
-        s->addOSCMessage( addr,           "<name>" );
+        s->addOSCMessage( addr,           "<none>" );
         messages_added++;
     }
 
@@ -199,6 +199,18 @@ void BaseComponent::importFromSymbol( const Symbol &s )
             }
         }
         
+        int name_pos = s.getOSCMessagePos("/name");
+        if( name_pos != -1 )
+        {
+            name = s.getOSCMessageValue(name_pos).getString();
+        }
+        
+        int staffname_pos = s.getOSCMessagePos("/staff");
+        if( staffname_pos != -1 )
+        {
+            staff_name = s.getOSCMessageValue(staffname_pos).getString();
+        }
+
     }
 }
 

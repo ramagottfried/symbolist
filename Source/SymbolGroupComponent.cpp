@@ -8,7 +8,7 @@
 void SymbolGroupComponent::paint ( Graphics& g )
 {
     BaseComponent::paint( g );
-    g.setColour( Colours::lightgrey );
+    g.setColour( Colour::fromRGB(240,240,240) ) ;
     const Rectangle<int> b = ((BaseComponent*) this)->getLocalBounds();
     g.drawRect(b);
 }
@@ -56,6 +56,18 @@ void SymbolGroupComponent::setEditMode( bool val )
         }
     }
 }
+
+
+bool SymbolGroupComponent::intersectRect( Rectangle<int> rect)
+{
+    for (int i = 0; i < getNumSubcomponents(); i++ )
+    {
+        if ( getSubcomponent(i)->intersectRect( rect.translated( -getX(), -getY()) ) ) return true ;
+    }
+    return false;
+}
+
+
 
 /*============================*
  * SYMBOL MANAGEMENT

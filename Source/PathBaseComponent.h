@@ -57,9 +57,8 @@ public:
     void makePathArrayFromPath(const Path &p);
     
     void resizeToFit(int x, int y, int w, int h) override;
-    // Rectangle<float> tranformAndGetBoundsInParent( Path& p );
-    
-    
+    bool intersectRect( Rectangle<int> rect) override;
+
     void setEditMode(bool val) override;
     void updatePathFromPreview ();
     void abortDrawPath();

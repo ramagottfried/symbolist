@@ -125,7 +125,7 @@ protected:
 
     ScopedPointer<ResizableBorderComponent> resizableBorder;
     ComponentBoundsConstrainer              constrainer;
-
+    
     float           relative_x = 0.0, relative_y = 0.0 , relative_w = 1.0 , relative_h = 1.0 ;  // values between 0.0 and 1.0 relative to the size of its container
     int             resize_mode = 0; // 0 = scale symbol to bounds, 1 = scale spacing (not resizing)
     float           m_min_size = 5;

@@ -392,7 +392,13 @@ void BaseComponent::resized ()
         addChildComponent( resizableBorder = new ResizableBorderComponent(this, &constrainer) );
         resizableBorder->setBorderThickness( BorderSize<int>(4) );
     }
+    
     resizableBorder->setBounds( getLocalBounds() );
+    
+    if( is_selected )
+    {
+        ((ScoreComponent*) getParentComponent())->reportModificationForSelectedSymbols();
+    }
 }
 
 void BaseComponent::moved () {}
@@ -494,6 +500,7 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
 
 void BaseComponent::mouseUp( const MouseEvent& event )
 {
+    
     if ( in_edit_mode )
         ScoreComponent::mouseUp(event);
     else
@@ -517,6 +524,7 @@ void BaseComponent::mouseUp( const MouseEvent& event )
     
     if( is_alt_copying )
         is_alt_copying = false;
+    
 }
 
 

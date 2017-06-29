@@ -24,16 +24,21 @@ class BasicShapePathComponent : public PathBaseComponent
 
     int addSymbolMessages( Symbol* s, const String &base_address ) override
     {
-        int messages_added = BaseComponent::addSymbolMessages( s, base_address );
-     
-        String addr = base_address + "/fill";
-        if( s->getOSCMessagePos(addr) == -1 )
-        {
-            s->addOSCMessage (addr, m_fill );
-            messages_added++;
+        int messages_added = 0;
+        
+        if ( modif_flag )
+        {   // becomes a normal path
+            messages_added += PathBaseComponent::addSymbolMessages( s, base_address );
         }
         
-        
+        else
+        {
+            messages_added += BaseComponent::addSymbolMessages( s, base_address );
+
+            s->addOSCMessage (base_address + "/fill", m_fill );
+            messages_added += 1;
+        }
+       
         return messages_added;
     }
     
@@ -41,11 +46,18 @@ class BasicShapePathComponent : public PathBaseComponent
     {
         BaseComponent::importFromSymbol(s);
         int fill_pos = s.getOSCMessagePos("/fill");
-        if( fill_pos != -1  )
-            m_fill = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(fill_pos) );
-            
+        if( fill_pos != -1  ) m_fill = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(fill_pos) );
     }
     
+    void updatePathPoints() override
+    {
+        PathBaseComponent::updatePathPoints();
+        modif_flag = true;
+    }
+    
+    protected :
+    
+        bool modif_flag = false;
 };
 
 class CirclePathComponent : public BasicShapePathComponent
@@ -55,7 +67,7 @@ public:
     CirclePathComponent() = default;
     ~CirclePathComponent() = default;
     
-    String getSymbolTypeStr() const override { return "circle"; }
+    String getSymbolTypeStr() const override { return ( modif_flag ? "path" : "circle" ); }
     
     void importFromSymbol(const Symbol &s) override
     {
@@ -87,7 +99,7 @@ public:
         m_path_array.getLast()->addRectangle(area);
     }
 
-    String getSymbolTypeStr() const override { return "rectangle"; }
+    String getSymbolTypeStr() const override { return ( modif_flag ? "path" : "rectangle" ) ; }
     
 private:
     //==============================================================================
@@ -110,7 +122,7 @@ public:
         m_path_array.getLast()->addTriangle( area.getBottomLeft(), Point<float>(area.getCentreX(), area.getY()), area.getBottomRight());
     }
 
-    String getSymbolTypeStr() const override { return "triangle"; }
+    String getSymbolTypeStr() const override { return ( modif_flag ? "path" : "triangle" ); }
     
     
 private:

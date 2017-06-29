@@ -31,7 +31,7 @@ public:
     void makeHandlesFromPath();
     void removeHandles();
     void updateHandlePositions();
-    void updatePathPoints();
+    virtual void updatePathPoints();
     void drawHandlesLines( Graphics& g);
     
     void removeSubcomponent(SymbolistComponent* c) override;

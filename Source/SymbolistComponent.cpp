@@ -48,7 +48,6 @@ SymbolistComponent* SymbolistComponent::getSubcomponent( int i )
 void SymbolistComponent::addSubcomponent( SymbolistComponent *c )
 {
     subcomponents.add( c );
-    c->setComponentID(String(String(c->getSymbolTypeStr()) += String("_") += String(subcomponents.size())));
     addAndMakeVisible( c );
 }
 

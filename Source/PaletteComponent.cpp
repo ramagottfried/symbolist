@@ -13,7 +13,7 @@ using namespace std ;
 PaletteButton::PaletteButton( int i, Symbol *s)
 {
     button_id = i;
-    graphic_comp = SymbolistHandler::makeComponentFromSymbol(s,false);
+    graphic_comp = getSymbolistHandler()->makeComponentFromSymbol(s,false);
     setComponentID("PaletteButton");
 }
 

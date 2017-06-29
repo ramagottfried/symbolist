@@ -78,7 +78,7 @@ public:
     Symbol* getCurrentSymbol();
     SymbolistPalette* getSymbolPalette() { return &palette; }
     
-    static BaseComponent* makeComponentFromSymbol( Symbol *s, bool attach_the_symbol );
+    BaseComponent* makeComponentFromSymbol( Symbol *s, bool attach_the_symbol );
     void addComponentsFromScore ();
     
     void inStandalone(){ in_standalone = true; };

@@ -104,7 +104,7 @@ void SymbolGroupComponent::importFromSymbol( const Symbol &s )
             String filter = "/subsymbol/" + String(i+1) ;   // we start at 1 .. (?)
             //cout << "IMPORT FROM: " << filter << endl;
             Symbol sub_s = s.makeSubSymbol( filter );
-            BaseComponent* c = SymbolistHandler::makeComponentFromSymbol( &sub_s , false );
+            BaseComponent* c = getSymbolistHandler()->makeComponentFromSymbol( &sub_s , false );
             if ( c != NULL) addSubcomponent( c );
             else cout << "Error importing subsymbol #" << i << endl;
         }

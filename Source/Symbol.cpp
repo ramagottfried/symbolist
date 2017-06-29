@@ -14,6 +14,7 @@ Symbol::Symbol (const String & type, float x, float y, float w, float h)
     
     addOSCMessage("/time/start",        pixelsToTime( x ) );
     addOSCMessage("/time/duration",     pixelsToTime( w ) );
+    
 }
 
 

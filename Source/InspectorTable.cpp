@@ -20,21 +20,21 @@ OSCInspectorTable::OSCInspectorTable( SymbolistHandler *sh ) : font (14.0f)
     
     table.getHeader().addColumn ( "ID",         // name
                                  1,             // id
-                                 50,           // width
+                                 60,           // width
                                  50,            // min width
                                  100,           // max width
                                  TableHeaderComponent::defaultFlags);
     
     table.getHeader().addColumn ( "Address",    // name
                                  2,             // id
-                                 100,           // width
+                                 150,           // width
                                  100,            // min width
                                  400,           // max width
                                  TableHeaderComponent::defaultFlags);
     
     table.getHeader().addColumn ( "Value",      // name
                                  3,             // id
-                                 225,           // width
+                                 200,           // width
                                  50,            // min width
                                  400,           // max width
                                  TableHeaderComponent::defaultFlags);
@@ -98,7 +98,7 @@ void OSCInspectorTable::paintCell (Graphics& g, int rowNumber, int columnId,
     switch( columnId )
     {
         case 1:
-            g.drawText ( (String)rowNumber, 2, 0, width - 4, height, Justification::centredLeft, true);
+            g.drawText ( symbol_component->getComponentID(), 2, 0, width - 4, height, Justification::centredLeft, true);
             break;
         case 2:
         {
@@ -209,7 +209,7 @@ String OSCInspectorTable::getText (const int columnNumber, const int rowNumber) 
     switch( columnNumber )
     {
         case 1:
-            return (String)rowNumber;
+            return symbol_component->getComponentID();
         case 2:
             return bundle[ rowNumber ].getMessage().getAddressPattern().toString();
         case 3:

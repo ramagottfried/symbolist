@@ -336,7 +336,10 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
             c->importFromSymbol( *s ) ;
             
             if ( attach_the_symbol )
-            {
+            {                
+                if( main_component != NULL )
+                    c->setComponentID( c->getSymbolTypeStr() + "_" + (String)main_component->getPageComponent()->getNumSubcomponents() );
+
                 c->setScoreSymbolPointer( s );
                 
                 // initializes object specific messages if not present

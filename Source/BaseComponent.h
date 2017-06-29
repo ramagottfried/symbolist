@@ -63,7 +63,12 @@ public:
     bool respondsToMouseEvents();
     
     virtual Rectangle<float> symbol_export_bounds(){ return getBounds().toFloat(); }
-        
+    const String& symbol_export_name()
+    {
+        cout << "name " << getComponentID() <<  " " << getSymbolTypeStr() << endl;
+        return ( !name.isEmpty() ? name : getComponentID() );
+    }
+    
     // not very happy with therm "Symbol" here
     inline void setSymbolStrokeWeight( float s ){ strokeWeight = s; }
     inline void setSymbolColor( Colour c ){ sym_color = c; }
@@ -106,6 +111,9 @@ protected:
     
     // score structure
     Symbol*         score_symbol;   // poiner to the score symbol (set when this is a topLevel symbol, NULL otherwise)
+    
+    String          name;
+    String          staff_name;
     
     // parameters
     float           strokeWeight = 2;

@@ -202,7 +202,8 @@ void ScoreComponent::groupSelectedSymbols()
         unselectAllComponents();
         
         Symbol* s = new Symbol("group", minx, miny, maxx-minx, maxy-miny);
-        SymbolGroupComponent *group = (SymbolGroupComponent*) SymbolistHandler::makeComponentFromSymbol( s , creating_a_top_level_group );
+        auto sh = getSymbolistHandler();
+        SymbolGroupComponent *group = (SymbolGroupComponent*) sh->makeComponentFromSymbol( s , creating_a_top_level_group );
         
         Rectangle<int> groupBounds( minx, miny, maxx-minx, maxy-miny );
         
@@ -309,6 +310,8 @@ void ScoreComponent::mouseAddClick ( const MouseEvent& event )
     
     bool top_level = ( this == getPageComponent() );
     
+    auto sh = getSymbolistHandler();
+
     if ( getMainDrawMode() == UI_DrawType::from_template )
     {
         Symbol* symbol_template = getSymbolistHandler()->getCurrentSymbol();
@@ -323,7 +326,7 @@ void ScoreComponent::mouseAddClick ( const MouseEvent& event )
         s->setPosition ( event.position );
         
         // create a new component of the current selected symbol type
-        c = SymbolistHandler::makeComponentFromSymbol( s, top_level );
+        c = sh->makeComponentFromSymbol( s, top_level );
         
         // add component in the view
         addSubcomponent( c );
@@ -331,7 +334,7 @@ void ScoreComponent::mouseAddClick ( const MouseEvent& event )
     else
     {
         Symbol* s = new Symbol("path", event.position.x, event.position.y, 40.0, 40.0) ;
-        c = SymbolistHandler::makeComponentFromSymbol( s , top_level );
+        c = sh->makeComponentFromSymbol( s , top_level );
         addSubcomponent( c );
         getPageComponent()->enterEditMode(c);
         c->mouseAddClick( event.getEventRelativeTo(c) );

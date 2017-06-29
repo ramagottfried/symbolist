@@ -67,8 +67,24 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
     
     auto b = symbol_export_bounds();
     
-    String addr = base_address + "/type";
+    String addr;
+
+    addr = base_address + "/name";
+    if( s->getOSCMessagePos(addr) == -1 )
+    {
+        s->addOSCMessage( addr,         symbol_export_name() );
+        messages_added++;
+    }
+
+    addr = base_address + "/staff";
+    if( s->getOSCMessagePos(addr) == -1 )
+    {
+        s->addOSCMessage( addr,           "<name>" );
+        messages_added++;
+    }
+
     
+    addr = base_address + "/type";
     if( s->getOSCMessagePos(addr) == -1 )
     {
         s->addOSCMessage( addr,           getSymbolTypeStr());

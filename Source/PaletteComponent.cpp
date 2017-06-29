@@ -57,17 +57,6 @@ void PaletteButton::mouseDown ( const MouseEvent& event )
 PaletteComponent::PaletteComponent()
 {
     setComponentID("PaletteComponent");
-
-    Symbol s("path", 0, 0, 30, 30);
-    
-    s.addOSCMessage( OSCMessage("/num_sub_paths", 1) );
-    s.addOSCMessage( OSCMessage("/path/0/str", String("m 4. 4. c 14. 2. 22. 8. 16. 14. c 12. 20. 14. 24. 20. 22.")) );
-
-    PaletteButton *pb = new PaletteButton(-1, &s);
-    pb->setTopLeftPosition(10, 20);
-    pb->setSize(30 , 30);
-    addAndMakeVisible(pb);
-
 }
 
 PaletteComponent::~PaletteComponent()
@@ -80,11 +69,34 @@ void PaletteComponent::buildFromPalette(SymbolistPalette* palette)
 {
     palette_pointer = palette;
     
-    for (int i = 0 ; i < palette->getPaletteNumItems() ; i++ )
+    deleteAllChildren();
+    
+    // default "draw" button
+    Symbol s("path", 0, 0, 30, 30);
+    s.addOSCMessage( OSCMessage("/num_sub_paths", 1) );
+    s.addOSCMessage( OSCMessage("/path/0/str", String("m 4. 4. c 14. 2. 22. 8. 16. 14. c 12. 20. 14. 24. 20. 22.")) );
+    PaletteButton *pb = new PaletteButton(-1, &s);
+    pb->setTopLeftPosition(10, 20);
+    pb->setSize(30 , 30);
+    addAndMakeVisible(pb);
+    
+    int bx = 14, by = 80, bw = 22, bh = 22;
+    
+    for ( int i = 0; i < palette->getPaletteNumDefaultItems(); i++ )
     {
-        PaletteButton *pb = new PaletteButton(i, palette->getPaletteItem(i));
-        pb->setTopLeftPosition(14, 80 + (i * 30));
-        pb->setSize(22 , 22);
+        PaletteButton *pb = new PaletteButton(i, palette->getPaletteDefaultItem(i));
+        bx = Random().nextFloat()*20;
+        pb->setTopLeftPosition(bx, by += 28);
+        pb->setSize(bw , bh);
+        addAndMakeVisible(pb);
+    }
+    
+    for ( int i = 0 ; i < palette->getPaletteNumUserItems() ; i++ )
+    {
+        PaletteButton *pb = new PaletteButton( i + palette->getPaletteNumDefaultItems(), palette->getPaletteUserItem(i));
+        bx = Random().nextFloat()*20;
+        pb->setTopLeftPosition(bx, by += 28);
+        pb->setSize(bw , bh);
         addAndMakeVisible(pb);
     }
 }

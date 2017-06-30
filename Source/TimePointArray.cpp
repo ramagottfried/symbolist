@@ -287,14 +287,18 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                     String staff_name = s->getOSCMessageValue( staff_pos ).getString();
                     if( staff_name.isNotEmpty() )
                     {
+                        cout << "staff name " << staff_name << endl;
+                        
                         String addr = "/name";
                         auto found_staves = score_ptr->getSymbolsByValue( addr, staff_name );
                         
-                        Symbol *staff = found_staves.getFirst();
-                        
-                        staff_x = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/x") );
-                        staff_y = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/y") );
-                        
+                        if( found_staves.size() > 0 )
+                        {
+                            Symbol *staff = found_staves.getFirst();
+                            
+                            staff_x = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/x") );
+                            staff_y = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/y") );
+                        }
                     }
                 }
                 
@@ -335,7 +339,7 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                             if (offset_time >= start && offset_time < (start + dur) )
                             {
                                 auto xy = lookupPathPoint( s, i, offset_time, start, dur );
-                                bndl.addElement( OSCMessage( s_prefix + "/path/" + (String)i + "/lookup/xy", xy.x - staff_x, xy.y - staff_y ) );
+                                bndl.addElement( OSCMessage( s_prefix + "/path/" + (String)i + "/lookup/xy", xy.x, xy.y ) );
                             }
 
                         }

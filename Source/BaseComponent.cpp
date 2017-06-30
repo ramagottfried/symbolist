@@ -13,13 +13,23 @@ template <typename T> void printPoint(Point<T> point, String name = "point" )
 
 bool BaseComponent::isTopLevelComponent()
 {
-    if ( getParentComponent() != NULL && getParentComponent() == getPageComponent() ) {
-        if ( score_symbol != NULL ) return true;
-        else {
+    if ( getParentComponent() != NULL && getParentComponent() == getPageComponent() )
+    {
+        if ( score_symbol != NULL )
+        {
+            return true;
+        }
+        else
+        {
             std::cout << "Warning: BaseComponent is TopLevel but has no attached score symbol!" << std::endl ;
             return false;
         }
-    } else return false;
+    }
+    else
+    {
+        return false;
+    }
+    
 }
 
 
@@ -229,7 +239,6 @@ void BaseComponent::selectComponent()
     SymbolistComponent::selectComponent();
     //resizableBorder->setVisible( true ); // this makes the resizable border apera also in multiple selection
     
-    cout << "BaseComponent::selectComponent" << endl;
     getSymbolistHandler()->addToInspector( this );
 }
 

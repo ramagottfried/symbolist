@@ -97,7 +97,7 @@ public:
     void deselectComponent() override;
     
     virtual void setEditMode(bool val);
-    bool isInEditMode();
+    virtual bool isInEditMode() override;
     bool isSelected(){ return is_selected; }
     
     void updateRelativePos();

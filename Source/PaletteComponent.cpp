@@ -40,7 +40,7 @@ void PaletteButton::paint (Graphics& g)
     else g.fillAll( Colours::white );
     //g.setOrigin(getX()+((getWidth()-graphic_comp->getWidth())/2),
     //            getY()+((getHeight()-graphic_comp->getHeight())/2));
-    //graphic_comp->paint(g);
+    graphic_comp->paint(g);
 }
 
 void PaletteButton::mouseDown ( const MouseEvent& event )
@@ -85,7 +85,7 @@ void PaletteComponent::buildFromPalette(SymbolistPalette* palette)
     for ( int i = 0; i < palette->getPaletteNumDefaultItems(); i++ )
     {
         PaletteButton *pb = new PaletteButton(i, palette->getPaletteDefaultItem(i));
-        bx = Random().nextFloat()*20;
+//        bx = Random().nextFloat()*20;
         pb->setTopLeftPosition(bx, by += 28);
         pb->setSize(bw , bh);
         addAndMakeVisible(pb);
@@ -94,7 +94,7 @@ void PaletteComponent::buildFromPalette(SymbolistPalette* palette)
     for ( int i = 0 ; i < palette->getPaletteNumUserItems() ; i++ )
     {
         PaletteButton *pb = new PaletteButton( i + palette->getPaletteNumDefaultItems(), palette->getPaletteUserItem(i));
-        bx = Random().nextFloat()*20;
+//        bx = Random().nextFloat()*20;
         pb->setTopLeftPosition(bx, by += 28);
         pb->setSize(bw , bh);
         addAndMakeVisible(pb);

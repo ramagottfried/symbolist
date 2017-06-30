@@ -9,7 +9,8 @@
 /*************************************
  * A graphical component of the palette.
  **************************************/
-class PaletteButton : public SymbolistComponent {
+class PaletteButton : public SymbolistComponent
+{
 
 public:
     

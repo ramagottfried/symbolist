@@ -32,6 +32,7 @@ public:
     void mouseDownSelection( const MouseEvent& event );
     virtual bool intersectRect( Rectangle<int> rect);
 
+    virtual bool isInEditMode(){ return false; }
 
 protected :
     

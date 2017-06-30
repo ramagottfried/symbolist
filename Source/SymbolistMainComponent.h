@@ -34,8 +34,8 @@ public:
     bool keyPressed (const KeyPress& key, Component* originatingComponent) override;
     void modifierKeysChanged (const ModifierKeys& modifiers) override;
 
-    void setEditMode( UI_EditType m );
-    UI_EditType getEditMode();
+    void setMouseMode( UI_EditType m );
+    UI_EditType getMouseMode();
     void setDrawMode( UI_DrawType m );
     UI_DrawType getDrawMode();
     

@@ -42,13 +42,13 @@ void SymbolistMainComponent::updatePaletteView()
  * edit/drax modes
  ***************************/
 
-void SymbolistMainComponent::setEditMode( UI_EditType m )
+void SymbolistMainComponent::setMouseMode( UI_EditType m )
 {
     mouse_mode = m;
     scoreView.repaint();
 }
 
-UI_EditType SymbolistMainComponent::getEditMode()
+UI_EditType SymbolistMainComponent::getMouseMode()
 {
     return mouse_mode ;
 }
@@ -69,11 +69,11 @@ void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
 {
     if ( modifiers.isCommandDown() )
     {
-        setEditMode( UI_EditType::draw );
+        setMouseMode( UI_EditType::draw );
     }
     else
     {
-        setEditMode( UI_EditType::selection );
+        setMouseMode( UI_EditType::selection );
     }
 }
 

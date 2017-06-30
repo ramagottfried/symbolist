@@ -479,7 +479,7 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
         
         if ( respondsToMouseEvents() )
         {
-            if( is_selected && (getMainEditMode() == selection ) )
+            if( is_selected && (getMainMouseMode() == selection ) )
             {
                 
                 if( event.mods.isAltDown() && !is_alt_copying)
@@ -519,7 +519,7 @@ void BaseComponent::mouseUp( const MouseEvent& event )
         
         if ( respondsToMouseEvents() )
         {
-            if( is_selected && getMainEditMode() == selection )
+            if( is_selected && getMainMouseMode() == selection )
             {
                 resizableBorder->setVisible( true ); // here instead of the select callback makes it only when the symbol is clicked alone
                 repaint();

@@ -16,7 +16,7 @@ public:
     virtual SymbolistHandler* getSymbolistHandler();
     SymbolistMainComponent* getMainComponent();
     
-    UI_EditType getMainEditMode();
+    UI_EditType getMainMouseMode();
     UI_DrawType getMainDrawMode();
     virtual void selectComponent();
     virtual void deselectComponent();

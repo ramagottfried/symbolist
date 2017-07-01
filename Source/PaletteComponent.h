@@ -27,7 +27,7 @@ public:
     
 private:
     
-    BaseComponent* graphic_comp;
+    ScopedPointer<BaseComponent> graphic_comp;
     int button_id;
     bool selected;
     

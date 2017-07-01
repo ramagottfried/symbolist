@@ -24,6 +24,8 @@ public:
     SymbolistMainComponent(SymbolistHandler *sh);
     ~SymbolistMainComponent();
     
+    static ScopedPointer<SymbolistMainComponent> createMainComponent(SymbolistHandler *sh);
+    
     /*********************************************
      * GUI FUNCTIONALITY AND TOOLS
      *********************************************/
@@ -49,7 +51,7 @@ private:
     UI_EditType      mouse_mode = selection;
     UI_DrawType      draw_mode = free_draw;
 
-    SymbolistHandler*   symbolist_handler;
+    SymbolistHandler*   symbolist_handler; // (not allocated here)
     
     PageComponent       scoreView;
     PaletteComponent    paletteView ;

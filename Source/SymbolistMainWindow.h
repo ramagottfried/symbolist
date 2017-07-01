@@ -23,7 +23,7 @@ public:
     
 protected:
 
-    SymbolistMainComponent main_component;
+    ScopedPointer<SymbolistMainComponent> main_component;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainWindow)
 };

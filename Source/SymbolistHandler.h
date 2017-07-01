@@ -7,6 +7,7 @@
 
 #include "Score.h"
 
+class SymbolistMainWindow;
 class SymbolistMainComponent;
 class BaseComponent;
 class OSCInspectorTable;
@@ -24,7 +25,7 @@ public:
      * CONTROLLER METHODS CALLED FROM THE API
      *********************************************/
     // main entry point / symbolist factory
-    static SymbolistHandler* symbolistAPI_newSymbolist();
+    static ScopedPointer<SymbolistHandler> symbolistAPI_newSymbolist();
  
     // apply on an existing symbolist instance
     void symbolistAPI_freeSymbolist();
@@ -103,8 +104,12 @@ private:
     // the palette is an array of symbol 'templates'
     SymbolistPalette            palette;
     
+    // main window, allocated here in symbolist handler
+    ScopedPointer<SymbolistMainWindow> main_window;
+    
+    // main component, allocated and owned by main window
     // the main view of the editor (could be embedded in a foreign app independently of the window)
-    SymbolistMainComponent*     main_component = NULL;
+    SymbolistMainComponent*    main_component;
     
     // the main view of the editor (could be embedded in a foreign app independently of the window)
     OSCInspectorTable*          inspector = NULL;

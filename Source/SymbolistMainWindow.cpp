@@ -5,40 +5,44 @@
 
 SymbolistMainWindow::SymbolistMainWindow (SymbolistHandler *sh) : DocumentWindow ( "symbolist",
                                                                 Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId),
-                                                                DocumentWindow::allButtons),
-                                            main_component(sh)
+                                                                DocumentWindow::allButtons)
 {
     // default stuff copied from Juce
     setUsingNativeTitleBar (true);
-    setContentOwned (&main_component , true );
+    main_component = new SymbolistMainComponent(sh);
+    setContentOwned (main_component , true );
     centreWithSize (getWidth(), getHeight());
     setVisible (true);
     setResizable(true, true);
 }
 
-SymbolistMainWindow::~SymbolistMainWindow () {}
+SymbolistMainWindow::~SymbolistMainWindow ()
+{
+    cout << "freeing main window" << endl;
+}
 
 
 SymbolistMainComponent* SymbolistMainWindow::getMainComponent()
 {
-    return &main_component;
+    return main_component;
 }
 
 
 void SymbolistMainWindow::closeButtonPressed()
 {
-    //JUCEApplication::getInstance()->systemRequestedQuit();
     ////delete this;
     
-    SymbolistHandler* sh = main_component.getSymbolistHandler();
+    SymbolistHandler* sh = main_component->getSymbolistHandler();
     sh->symbolistAPI_closeWindow();
 
     if(sh->isStandalone() )
     {
-        cout << "freeing" << endl;
+        cout << "closeButtonPressed freeing" << endl;
         sh->symbolistAPI_closeWindow();
         sh->symbolistAPI_freeSymbolist();
         sh = nullptr;
+        JUCEApplication::getInstance()->systemRequestedQuit();
+
     }
     else
     {

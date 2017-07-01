@@ -4,7 +4,7 @@
 SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
 {
     // score = std::unique_ptr<Score>(new Score());
-    //std::cout << "MainComponent " << this << std::endl;
+    std::cout << "MainComponent " << this << std::endl;
     setComponentID("MainComponent");
     setSize (600, 400);
     

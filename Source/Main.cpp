@@ -36,7 +36,7 @@ public:
     void shutdown() override
     {
         // Add your application's shutdown code here..
-        symbolist_handler = nullptr;
+        symbolist_handler->symbolistAPI_closeWindow();
         // mainWindow = nullptr; // (deletes our window)
     }
 

@@ -38,7 +38,7 @@ SymbolistHandler::SymbolistHandler()
 
 SymbolistHandler::~SymbolistHandler()
 {
-    cout << "deleting symbolist, main comp:" << main_component << endl;
+    cout << "deleting symbolist, main comp:" << main_component << " inspector " << inspector << endl;
     if ( main_component != NULL )
         symbolistAPI_closeWindow();
     
@@ -50,22 +50,23 @@ SymbolistHandler::~SymbolistHandler()
 
 // This is a static method called to create a window
 // return the new SymbolistHandler
-SymbolistHandler* SymbolistHandler::symbolistAPI_newSymbolist()
+ScopedPointer<SymbolistHandler> SymbolistHandler::symbolistAPI_newSymbolist()
 {
     return new SymbolistHandler ();
 }
 
 void SymbolistHandler::symbolistAPI_freeSymbolist()
 {
-    delete this;
+   // delete this;
 }
 
 
 void SymbolistHandler::symbolistAPI_openWindow()
 {
     const MessageManagerLock mml;
-    SymbolistMainWindow *w = new SymbolistMainWindow (this);
-    main_component = w->getMainComponent();
+    main_window = new SymbolistMainWindow (this);
+    main_component = main_window->getMainComponent();
+
     addComponentsFromScore();
     main_component->grabKeyboardFocus();
 
@@ -74,18 +75,30 @@ void SymbolistHandler::symbolistAPI_openWindow()
 
 void SymbolistHandler::symbolistAPI_closeWindow()
 {
+    cout << "symbolistAPI_closeWindow" << endl;
     MessageManagerLock mml;
 
     if ( main_component != NULL)
     {
-        delete main_component->getTopLevelComponent(); // = the window
+ //       delete main_component->getTopLevelComponent(); // = the window
+        //deleteAndZero( main_component );
+        cout << "deleting inspector component " << inspector << endl;
         main_component = NULL;
     }
 
     if ( inspector != NULL)
     {
+        cout << "deleting inspector component " << inspector << endl;
+
         delete inspector->getTopLevelComponent();
+        //deleteAndZero( inspector );
         inspector = NULL;
+    }
+    
+    if( main_window )
+    {
+        cout << "nulling main window " << main_window << endl;
+        main_window = nullptr;
     }
 }
 

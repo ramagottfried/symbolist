@@ -57,6 +57,7 @@
 		118C38E41EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */; };
 		118C38EF1EC61404006FF4A1 /* PaletteComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */; };
 		118C38F01EC61404006FF4A1 /* PaletteComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */; };
+		11B71DCE1F09844300CDE209 /* symbolist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */; };
 		11BE14971F025643006F328D /* InspectorTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11BE14951F025643006F328D /* InspectorTable.cpp */; };
 		11BE14981F025643006F328D /* InspectorTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11BE14951F025643006F328D /* InspectorTable.cpp */; };
 		11BE14991F025643006F328D /* InspectorTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11BE14951F025643006F328D /* InspectorTable.cpp */; };
@@ -604,6 +605,7 @@
 				44CFE03B1EC3789C009135F8 /* include_juce_data_structures.mm in Sources */,
 				44CFE0391EC377EA009135F8 /* SymbolistMainWindow.cpp in Sources */,
 				444C43A61EE4A748000C6F69 /* SymbolGroupComponent.cpp in Sources */,
+				11B71DCE1F09844300CDE209 /* symbolist.cpp in Sources */,
 				118C38F01EC61404006FF4A1 /* PaletteComponent.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

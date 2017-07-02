@@ -24,7 +24,10 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
 }
 
 
-SymbolistMainComponent::~SymbolistMainComponent() {}
+SymbolistMainComponent::~SymbolistMainComponent()
+{
+    paletteView.deleteAllChildren();
+}
 
 
 void SymbolistMainComponent::resized()

@@ -12,6 +12,7 @@ typedef struct _symbolist
     double      current_time;
     
     void*       symbolist_handler;
+    
     void*       m_qelem_open;
     void*       m_qelem_setTime;
 
@@ -156,6 +157,7 @@ void symbolist_free(t_symbolist *x)
     if( x->symbolist_handler )
     {
         symbolistFree( x->symbolist_handler );
+        x->symbolist_handler = NULL;
     }
     
     qelem_free(x->m_qelem_open);
@@ -163,6 +165,7 @@ void symbolist_free(t_symbolist *x)
     critical_free( x->lock );
 
     symbolist_objects.erase( std::remove( symbolist_objects.begin(), symbolist_objects.end(), x), symbolist_objects.end() );
+    
 }
 
 

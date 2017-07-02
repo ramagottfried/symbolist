@@ -82,12 +82,11 @@ public:
     SymbolistPalette(){};
     ~SymbolistPalette()
     {
-        for (int i = 0; i < default_items.size(); i++) delete default_items[i] ;
-        for (int i = 0; i < user_items.size(); i++) delete user_items[i] ;
+//        cout << "~SymbolistPalette" << this <<  endl;
     }
 
-    void addDefaultItem( Symbol *s ) { default_items.emplace_back(s); }
-    void addUserItem( Symbol *s ) { user_items.emplace_back(s); }
+    void addDefaultItem( Symbol *s ) { default_items.add(s); }
+    void addUserItem( Symbol *s ) { user_items.add(s); }
     Symbol* getPaletteDefaultItem( int i ) { return default_items[i] ; }
     Symbol* getPaletteUserItem( int i ) { return user_items[i] ; }
     int getPaletteNumDefaultItems() { return static_cast<int>( default_items.size() ) ; }
@@ -97,8 +96,8 @@ public:
     
     private :
     
-    std::vector<Symbol*> default_items;
-    std::vector<Symbol*> user_items;
+    OwnedArray<Symbol> default_items;
+    OwnedArray<Symbol> user_items;
     
     int selected_item = 0;
 };

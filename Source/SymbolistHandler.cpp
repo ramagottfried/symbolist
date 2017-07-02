@@ -38,8 +38,8 @@ SymbolistHandler::SymbolistHandler()
 
 SymbolistHandler::~SymbolistHandler()
 {
-    cout << "deleting symbolist, main comp:" << main_component << " inspector " << inspector << endl;
-    if ( main_component != NULL )
+    cout << "deleting symbolist handler, main comp pointer:" << main_component_ptr << " inspector " << inspector << " window " << main_window << endl;
+    if ( main_component_ptr != NULL )
         symbolistAPI_closeWindow();
     
 }
@@ -50,14 +50,14 @@ SymbolistHandler::~SymbolistHandler()
 
 // This is a static method called to create a window
 // return the new SymbolistHandler
-ScopedPointer<SymbolistHandler> SymbolistHandler::symbolistAPI_newSymbolist()
+SymbolistHandler* SymbolistHandler::symbolistAPI_newSymbolist()
 {
     return new SymbolistHandler ();
 }
 
 void SymbolistHandler::symbolistAPI_freeSymbolist()
 {
-   // delete this;
+    delete this;
 }
 
 
@@ -65,10 +65,10 @@ void SymbolistHandler::symbolistAPI_openWindow()
 {
     const MessageManagerLock mml;
     main_window = new SymbolistMainWindow (this);
-    main_component = main_window->getMainComponent();
+    main_component_ptr = main_window->getMainComponent();
 
     addComponentsFromScore();
-    main_component->grabKeyboardFocus();
+    main_component_ptr->grabKeyboardFocus();
 
 }
 
@@ -78,12 +78,12 @@ void SymbolistHandler::symbolistAPI_closeWindow()
     cout << "symbolistAPI_closeWindow" << endl;
     MessageManagerLock mml;
 
-    if ( main_component != NULL)
+    if ( main_component_ptr != NULL)
     {
  //       delete main_component->getTopLevelComponent(); // = the window
         //deleteAndZero( main_component );
-        cout << "deleting inspector component " << inspector << endl;
-        main_component = NULL;
+        cout << "nulling main component pointer " << main_component_ptr << endl;
+        main_component_ptr = nullptr;
     }
 
     if ( inspector != NULL)
@@ -92,7 +92,7 @@ void SymbolistHandler::symbolistAPI_closeWindow()
 
         delete inspector->getTopLevelComponent();
         //deleteAndZero( inspector );
-        inspector = NULL;
+        inspector = nullptr;
     }
     
     if( main_window )
@@ -120,8 +120,8 @@ void SymbolistHandler::symbolistAPI_closeInspectorWindow()
         delete inspector->getTopLevelComponent();
         inspector = NULL;
         
-        if( main_component != NULL )
-            main_component->grabKeyboardFocus();
+        if( main_component_ptr != NULL )
+            main_component_ptr->grabKeyboardFocus();
     }
 }
 
@@ -134,9 +134,9 @@ void SymbolistHandler::symbolistAPI_openInspectorWindow()
         InspectorWindow *iw = new InspectorWindow (this);
         inspector = iw->getMainComponent();
         inspector->grabKeyboardFocus();
-        if ( main_component )
+        if ( main_component_ptr )
         {
-            auto sel = main_component->getPageComponent()->getSelectedItems();
+            auto sel = main_component_ptr->getPageComponent()->getSelectedItems();
             addToInspector( (BaseComponent *)sel.getLast() );
         }
     }
@@ -150,9 +150,9 @@ void SymbolistHandler::symbolistAPI_windowToFront()
 {
     const MessageManagerLock mml;
 
-    if ( main_component != NULL)
+    if ( main_component_ptr != NULL)
     {
-        main_component->getTopLevelComponent()->toFront(true);
+        main_component_ptr->getTopLevelComponent()->toFront(true);
     }
 
     if ( inspector != NULL)
@@ -163,10 +163,10 @@ void SymbolistHandler::symbolistAPI_windowToFront()
 
 void SymbolistHandler::symbolistAPI_windowSetName(String name)
 {
-    if ( main_component != NULL)
+    if ( main_component_ptr != NULL)
     {
         const MessageManagerLock mml;
-        main_component->getTopLevelComponent()->setName(name);
+        main_component_ptr->getTopLevelComponent()->setName(name);
     }
 }
 
@@ -204,10 +204,10 @@ void SymbolistHandler::symbolistAPI_setOneSymbol( odot_bundle *bundle)
     s->importFromOSC( bundle );
     score.addSymbol(s);
     
-    if ( main_component != NULL )
+    if ( main_component_ptr != NULL )
     {
         BaseComponent* c = makeComponentFromSymbol( s , false);
-        main_component->getPageComponent()->addSubcomponent(c);
+        main_component_ptr->getPageComponent()->addSubcomponent(c);
         c->setScoreSymbolPointer( s );
     }
     else
@@ -222,9 +222,9 @@ void SymbolistHandler::symbolistAPI_setSymbols(int n, odot_bundle **bundle_array
     
     score.importScoreFromOSC(n, bundle_array);
     
-    if ( main_component != NULL)
+    if ( main_component_ptr != NULL)
     {
-        main_component->getPageComponent()->clearAllSubcomponents();
+        main_component_ptr->getPageComponent()->clearAllSubcomponents();
         addComponentsFromScore();
     }
 }
@@ -259,9 +259,9 @@ void SymbolistHandler::symbolistAPI_setPaletteSymbols(int n, odot_bundle **bundl
         s->importFromOSC( bundle_array[i] );
         palette.addUserItem(s);
     }
-    if ( main_component != NULL )
+    if ( main_component_ptr != NULL )
     {
-        main_component->updatePaletteView();
+        main_component_ptr->updatePaletteView();
     }
 }
 
@@ -271,10 +271,10 @@ void SymbolistHandler::symbolistAPI_setTime(float time_ms)
     const MessageManagerLock mmLock;
     current_time = time_ms;
     
-    if ( main_component != NULL)
+    if ( main_component_ptr != NULL)
     {
-        main_component->getPageComponent()->setTimePoint( time_ms );
-        main_component->repaint();
+        main_component_ptr->getPageComponent()->setTimePoint( time_ms );
+        main_component_ptr->repaint();
     }
 }
 
@@ -292,9 +292,9 @@ void SymbolistHandler::symbolistAPI_clearScore()
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
 
-    if ( main_component != NULL )
+    if ( main_component_ptr != NULL )
     {
-        main_component->getPageComponent()->clearAllSubcomponents();
+        main_component_ptr->getPageComponent()->clearAllSubcomponents();
     }
     score.removeAllSymbols();
 }
@@ -392,8 +392,8 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
             
             if ( attach_the_symbol )
             {                
-                if( main_component != NULL )
-                    c->setComponentID( c->getSymbolTypeStr() + "_" + (String)main_component->getPageComponent()->getNumSubcomponents() );
+                if( main_component_ptr != NULL )
+                    c->setComponentID( c->getSymbolTypeStr() + "_" + (String)main_component_ptr->getPageComponent()->getNumSubcomponents() );
 
                 c->setScoreSymbolPointer( s );
                 
@@ -414,7 +414,7 @@ void SymbolistHandler::addComponentsFromScore ( )
     {
         Symbol *s = score.getSymbol(i);
         BaseComponent* c = makeComponentFromSymbol( s, false );
-        main_component->getPageComponent()->addSubcomponent(c);
+        main_component_ptr->getPageComponent()->addSubcomponent(c);
         c->setScoreSymbolPointer( s );
     }
 }
@@ -432,7 +432,7 @@ void SymbolistHandler::addSymbolToScore ( BaseComponent* c )
     
     executeUpdateCallback( -1 );
     
-    main_component->getPageComponent()->drawTimePoints();
+    main_component_ptr->getPageComponent()->drawTimePoints();
 }
 
 void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
@@ -454,7 +454,7 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
     c->setScoreSymbolPointer( NULL );
     executeUpdateCallback( -1 );
     
-    main_component->getPageComponent()->drawTimePoints();
+    main_component_ptr->getPageComponent()->drawTimePoints();
 }
 
 
@@ -474,7 +474,7 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     score.addSymbolTimePoints( s );
     executeUpdateCallback( score.getSymbolPosition( s ) );
     
-    main_component->getPageComponent()->drawTimePoints();
+    main_component_ptr->getPageComponent()->drawTimePoints();
     
     addToInspector( c );
 
@@ -502,7 +502,7 @@ void SymbolistHandler::copySelectedToClipBoard()
 {
     clipboard.clear();
     
-    for( auto c : main_component->getPageComponent()->getSelectedItems() )
+    for( auto c : main_component_ptr->getPageComponent()->getSelectedItems() )
     {
         clipboard.add(new Symbol( *((BaseComponent*)c)->getScoreSymbolPointer()) );
     }
@@ -510,7 +510,7 @@ void SymbolistHandler::copySelectedToClipBoard()
 
 void SymbolistHandler::newFromClipBoard()
 {
-    auto pc = main_component->getPageComponent();
+    auto pc = main_component_ptr->getPageComponent();
     
     for( auto s : clipboard )
     {

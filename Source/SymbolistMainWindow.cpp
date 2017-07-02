@@ -18,7 +18,8 @@ SymbolistMainWindow::SymbolistMainWindow (SymbolistHandler *sh) : DocumentWindow
 
 SymbolistMainWindow::~SymbolistMainWindow ()
 {
-    cout << "freeing main window" << endl;
+    main_component = nullptr;
+    cout << "freeing main window " << this << " allocated main_component is now " << main_component << endl;
 }
 
 
@@ -35,13 +36,14 @@ void SymbolistMainWindow::closeButtonPressed()
     SymbolistHandler* sh = main_component->getSymbolistHandler();
     sh->symbolistAPI_closeWindow();
 
-    if(sh->isStandalone() )
+    if( sh->isStandalone() )
     {
         cout << "closeButtonPressed freeing" << endl;
         sh->symbolistAPI_closeWindow();
-        sh->symbolistAPI_freeSymbolist();
-        sh = nullptr;
-        JUCEApplication::getInstance()->systemRequestedQuit();
+        sh = nullptr;        
+
+        // could have several open windows maybe later, and then we wouldn't request Quit here
+//        JUCEApplication::getInstance()->systemRequestedQuit();
 
     }
     else

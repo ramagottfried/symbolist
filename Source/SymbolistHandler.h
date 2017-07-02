@@ -25,7 +25,7 @@ public:
      * CONTROLLER METHODS CALLED FROM THE API
      *********************************************/
     // main entry point / symbolist factory
-    static ScopedPointer<SymbolistHandler> symbolistAPI_newSymbolist();
+    static SymbolistHandler* symbolistAPI_newSymbolist();
  
     // apply on an existing symbolist instance
     void symbolistAPI_freeSymbolist();
@@ -102,17 +102,17 @@ private:
     Score score ;
 
     // the palette is an array of symbol 'templates'
-    SymbolistPalette            palette;
+    SymbolistPalette                    palette;
     
     // main window, allocated here in symbolist handler
-    ScopedPointer<SymbolistMainWindow> main_window;
+    ScopedPointer<SymbolistMainWindow>  main_window;
     
     // main component, allocated and owned by main window
     // the main view of the editor (could be embedded in a foreign app independently of the window)
-    SymbolistMainComponent*    main_component;
+    SymbolistMainComponent*             main_component_ptr;
     
     // the main view of the editor (could be embedded in a foreign app independently of the window)
-    OSCInspectorTable*          inspector = NULL;
+    ScopedPointer<OSCInspectorTable>    inspector;
     
     OwnedArray<Symbol>   clipboard;
     

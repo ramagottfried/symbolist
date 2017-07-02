@@ -20,7 +20,7 @@ PaletteButton::PaletteButton( int i, Symbol *s)
 
 PaletteButton::~PaletteButton()
 {
-    // delete graphic_comp;
+//    cout << "deleting button " << this << endl;
 }
 
 void PaletteButton::setSelected(bool sel)
@@ -61,6 +61,7 @@ PaletteComponent::PaletteComponent()
 
 PaletteComponent::~PaletteComponent()
 {
+    cout << "deleting all children of palette " << this << endl;
     deleteAllChildren();
 }
 

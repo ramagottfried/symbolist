@@ -10,7 +10,8 @@
  ************************************************/
 
 
-class SymbolistMainWindow : public DocumentWindow {
+class SymbolistMainWindow : public DocumentWindow
+{
     
 public:
 

@@ -7,7 +7,9 @@ class TextGlphComponent : public BaseComponent
 {
 public:
     TextGlphComponent() = default;
-    ~TextGlphComponent() = default;
+    ~TextGlphComponent(){
+        cout << "deleting text " <<  this << endl;
+    };
     
     void importTextFromSymbol( const Symbol& s ) {}
     

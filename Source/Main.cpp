@@ -9,7 +9,9 @@
 */
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "SymbolistHandler.h"
+//#include "SymbolistHandler.h"
+#include "symbolist.hpp"
+
 
 //==============================================================================
 class SymbolistApplication  : public JUCEApplication
@@ -25,19 +27,25 @@ public:
     //==============================================================================
     void initialise (const String& commandLine) override
     {
-        // This method is where you should put your application's initialisation code..
-
-        //mainWindow = new AppMainWindow (getApplicationName());
+        
+        /*
         symbolist_handler = SymbolistHandler::symbolistAPI_newSymbolist();
         symbolist_handler->inStandalone();
         symbolist_handler->symbolistAPI_openWindow();
+         */
+        
+        // making the app use the void pointer system for cross checking
+        symbolist_handler_ptr = symbolistNew();
+        symbolistOpenWindow(symbolist_handler_ptr);
     }
 
     void shutdown() override
     {
-        // Add your application's shutdown code here..
-        symbolist_handler->symbolistAPI_closeWindow();
         // mainWindow = nullptr; // (deletes our window)
+        // Add your application's shutdown code here..
+//        symbolist_handler->symbolistAPI_closeWindow();
+  
+        symbolistFree( symbolist_handler_ptr );
     }
 
     //==============================================================================
@@ -59,7 +67,8 @@ public:
 private:
     
     //ScopedPointer<AppMainWindow> mainWindow;
-    ScopedPointer<SymbolistHandler> symbolist_handler;
+//    ScopedPointer<SymbolistHandler> symbolist_handler;
+    void* symbolist_handler_ptr;
 };
 
 //==============================================================================

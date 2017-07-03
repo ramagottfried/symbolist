@@ -59,7 +59,7 @@ public:
         // launch color picker
         ColourSelector* colourSelector = new ColourSelector();
         colourSelector->setName ("color");
-        colourSelector->setCurrentColour (findColour (TextButton::buttonColourId));
+        colourSelector->setCurrentColour ( color );
         colourSelector->addChangeListener (this);
         colourSelector->setColour (ColourSelector::backgroundColourId, Colours::transparentBlack);
         colourSelector->setSize (300, 400);
@@ -109,7 +109,8 @@ public:
                     OSCMessage& msg,
                     osc_callback_t change_fn,
                     StringArray choiceList ) :
-    ChoicePropertyComponent( _addr ), osc_msg(msg)
+    ChoicePropertyComponent( _addr ),
+    osc_msg(msg)
     {
         choices = choiceList;
         change_callback = change_fn;
@@ -140,7 +141,38 @@ private:
 };
 
 
+class OSCTextProperty : public TextPropertyComponent
+{
+public:
+    OSCTextProperty(    const String& _addr,
+                        OSCMessage& msg,
+                        osc_callback_t change_fn ) :
+    TextPropertyComponent( _addr, 0, false ),
+    osc_msg(msg)
+    {
+        change_callback = change_fn;
+    }
+    
+    void setText (const String& newText) override
+    {
+        text = newText;
+        change_callback( osc_msg );
 
+    }
+    String getText() const override
+    {
+        return text;
+    }
+    
+private:
+    OSCMessage      osc_msg;
+    osc_callback_t  change_callback;
+    
+    String          text;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OSCTextProperty)
+    
+};
 
 //==============================================================================
 class StaffSelectionButton : public ButtonPropertyComponent

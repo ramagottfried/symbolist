@@ -11,27 +11,10 @@ SymbolPropertiesPanel::SymbolPropertiesPanel(SymbolistHandler *sh )
     change_callback_fn = std::bind( &SymbolPropertiesPanel::change_callback, this, std::placeholders::_1);
     
 }
-/*
-static PropertyComponent* createObjectTypeList (OSCMessage& msg)
-{
-    Array<PropertyComponent*> comps;
-    
-    StringArray choices;
-    Array<var> choiceVars;
-    
-    choices.add("object");
-    choiceVars.add (0);
-    
-    choices.add("staff");
-    choiceVars.add (1);
-        
-}
-*/
 
 void SymbolPropertiesPanel::change_callback( OSCMessage& msg)
 {
 //    iterate and update OSC value in bundle
-    
     cout << "recieved " << msg.getAddressPattern().toString() << endl;
 }
 
@@ -60,7 +43,7 @@ void SymbolPropertiesPanel::createOSCview ()
             }
             else if( addr == "/name" )
             {
-                ; // text edit
+                properties.add( new OSCTextProperty( "/name", msg, change_callback_fn) );
             }
             else if( msg[0].isFloat32() )
             {

@@ -38,7 +38,7 @@ SymbolistHandler::SymbolistHandler()
 
 SymbolistHandler::~SymbolistHandler()
 {
-    cout << "deleting symbolist handler, main comp pointer:" << main_component_ptr << " inspector " << inspector << " window " << main_window << endl;
+    cout << "deleting symbolist handler, main comp pointer:" << main_component_ptr << " inspector window " << inspector_window << " window " << main_window << endl;
     if ( main_component_ptr != NULL )
         symbolistAPI_closeWindow();
     
@@ -78,33 +78,23 @@ void SymbolistHandler::symbolistAPI_closeWindow()
     cout << "symbolistAPI_closeWindow" << endl;
     MessageManagerLock mml;
 
-    if ( main_component_ptr != NULL)
+    if( inspector_window )
     {
- //       delete main_component->getTopLevelComponent(); // = the window
-        //deleteAndZero( main_component );
-        cout << "nulling main component pointer " << main_component_ptr << endl;
-        main_component_ptr = nullptr;
+        inspector_ptr = nullptr;
+        inspector_window = nullptr;
     }
-
-    if ( inspector != NULL)
-    {
-        cout << "deleting inspector component " << inspector << endl;
-
-        delete inspector->getTopLevelComponent();
-        //deleteAndZero( inspector );
-        inspector = nullptr;
-    }
-    
+        
     if( main_window )
     {
-        cout << "nulling main window " << main_window << endl;
+//        cout << "nulling main window " << main_window << endl;
+        main_component_ptr = nullptr;
         main_window = nullptr;
     }
 }
 
 void SymbolistHandler::symbolistAPI_toggleInspectorWindow()
 {
-    if( inspector == NULL )
+    if( inspector_window == NULL )
         symbolistAPI_openInspectorWindow();
     else
         symbolistAPI_closeInspectorWindow();
@@ -115,10 +105,9 @@ void SymbolistHandler::symbolistAPI_toggleInspectorWindow()
 void SymbolistHandler::symbolistAPI_closeInspectorWindow()
 {
     const MessageManagerLock mml;
-    if ( inspector != NULL)
+    if ( inspector_window != nullptr)
     {
-        delete inspector->getTopLevelComponent();
-        inspector = NULL;
+        inspector_window = nullptr;
         
         if( main_component_ptr != NULL )
             main_component_ptr->grabKeyboardFocus();
@@ -129,11 +118,12 @@ void SymbolistHandler::symbolistAPI_openInspectorWindow()
 {
     const MessageManagerLock mml;
     
-    if ( inspector == NULL)
+    if ( inspector_window == NULL)
     {
-        InspectorWindow *iw = new InspectorWindow (this);
-        inspector = iw->getMainComponent();
-        inspector->grabKeyboardFocus();
+        inspector_window = new InspectorWindow (this);
+        inspector_ptr = inspector_window->getMainComponent();
+        inspector_ptr->grabKeyboardFocus();
+        
         if ( main_component_ptr )
         {
             auto sel = main_component_ptr->getPageComponent()->getSelectedItems();
@@ -142,7 +132,7 @@ void SymbolistHandler::symbolistAPI_openInspectorWindow()
     }
     else
     {
-        inspector->getTopLevelComponent()->toFront(true);
+        inspector_ptr->getTopLevelComponent()->toFront(true);
     }
 }
 
@@ -155,9 +145,9 @@ void SymbolistHandler::symbolistAPI_windowToFront()
         main_component_ptr->getTopLevelComponent()->toFront(true);
     }
 
-    if ( inspector != NULL)
+    if ( inspector_ptr != NULL)
     {
-        inspector->getTopLevelComponent()->toFront(true);
+        inspector_ptr->getTopLevelComponent()->toFront(true);
     }
 }
 
@@ -446,7 +436,7 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
     cout << "removeSymbolFromScore" << endl;
     //s->printBundle();
 
-    if( inspector ) inspector->clearInspector();
+    if( inspector_ptr ) inspector_ptr->clearInspector();
     
     score.removeSymbolTimePoints( s );
     score.removeSymbol( s );
@@ -483,12 +473,12 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
 
 void SymbolistHandler::addToInspector( BaseComponent *c )
 {
-    if( inspector ) inspector->setInspectorObject( c );
+    if( inspector_window ) inspector_ptr->setInspectorObject( c );
 }
 
 void SymbolistHandler::clearInspector()
 {
-    if( inspector ) inspector->clearInspector();
+    if( inspector_window ) inspector_ptr->clearInspector();
 }
 
 void SymbolistHandler::updateSymbolFromInspector( BaseComponent *c, Symbol& s )

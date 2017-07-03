@@ -3,6 +3,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 #include "InspectorTable.h"
+#include "SymbolPropertiesPanel.h"
 
 /************************************************
  * SHARED BY THE LIBRARY AND THE STANDALONE APP
@@ -16,7 +17,7 @@ public:
     InspectorWindow ( SymbolistHandler *sh );
     ~InspectorWindow();
     void closeButtonPressed();
-    OSCInspectorTable* getMainComponent();
+    SymbolPropertiesPanel* getMainComponent();
     
     void resized() override
     {
@@ -27,7 +28,7 @@ private:
     
     void changeListenerCallback (ChangeBroadcaster* source);
     
-    OSCInspectorTable  inspector;
+    ScopedPointer<SymbolPropertiesPanel>  inspector;
     
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (InspectorWindow)

@@ -10,7 +10,9 @@
 class SymbolistMainWindow;
 class SymbolistMainComponent;
 class BaseComponent;
-class OSCInspectorTable;
+
+class InspectorWindow;
+class SymbolPropertiesPanel;
 
 
 class SymbolistHandler
@@ -112,7 +114,8 @@ private:
     SymbolistMainComponent*             main_component_ptr;
     
     // the main view of the editor (could be embedded in a foreign app independently of the window)
-    ScopedPointer<OSCInspectorTable>    inspector;
+    ScopedPointer<InspectorWindow>      inspector_window;
+    SymbolPropertiesPanel*              inspector_ptr;
     
     OwnedArray<Symbol>   clipboard;
     

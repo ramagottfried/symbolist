@@ -4,27 +4,30 @@
 
 InspectorWindow::InspectorWindow ( SymbolistHandler *sh ) : DocumentWindow ( "inspector",
                   Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId),
-                  DocumentWindow::allButtons), inspector(sh)
+                  DocumentWindow::allButtons)
 {
     
     setUsingNativeTitleBar (true);
-    setContentOwned (&inspector , true );
-//    centreWithSize (100, 100 );
-    setBounds(800, 100, 100, 100);
+    inspector = new SymbolPropertiesPanel(sh);
+    setContentOwned ( inspector , true );
+    setBounds(800, 100, inspector->getWidth(), inspector->getHeight() );
     setVisible (true);
     setResizable(true, true);
 }
 
-InspectorWindow::~InspectorWindow() {}
+InspectorWindow::~InspectorWindow()
+{
+    inspector = nullptr;
+}
 
 void InspectorWindow::closeButtonPressed()
 {
-    inspector.getSymbolistHandler()->symbolistAPI_closeInspectorWindow();
+    inspector->getSymbolistHandler()->symbolistAPI_closeInspectorWindow();
 }
 
-OSCInspectorTable* InspectorWindow::getMainComponent()
+SymbolPropertiesPanel* InspectorWindow::getMainComponent()
 {
-    return &inspector;
+    return inspector;
 }
 
 void InspectorWindow::changeListenerCallback (ChangeBroadcaster* source)

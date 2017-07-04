@@ -117,6 +117,9 @@ public:
     {
         choices = choiceList;
         change_callback = change_fn;
+        
+        selected_index = choices.indexOf( msg[0].getString() );
+        refresh();
     }
     
     void setIndex (int newIndex) override
@@ -212,7 +215,7 @@ public:
         change_callback( osc_msg );
         
     }
-  */  
+  */
     
     void buttonClicked() override
     {

@@ -24,6 +24,7 @@ public:
     }
     
     String      getType();
+    String      getObjectType();
     
     const OSCBundle *getOSCBundle () const { return &osc_bundle; }
     void        setOSCBundle (OSCBundle *b) { osc_bundle = *b; }
@@ -87,5 +88,6 @@ private:
     float       m_time_to_pixels = 100.0f;
     
     Path        symbol_path;
+    
 };
 

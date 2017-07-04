@@ -92,7 +92,13 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
         s->addOSCMessage( addr,         staff_name );
         messages_added++;
     }
-
+    
+    addr = base_address + "/objectType";
+    if( s->getOSCMessagePos(addr) == -1 )
+    {
+        s->addOSCMessage( addr,         object_type );
+        messages_added++;
+    }
     
     addr = base_address + "/type";
     if( s->getOSCMessagePos(addr) == -1 )
@@ -219,6 +225,12 @@ void BaseComponent::importFromSymbol( const Symbol &s )
         if( staffname_pos != -1 )
         {
             staff_name = s.getOSCMessageValue(staffname_pos).getString();
+        }
+        
+        int objtype_pos = s.getOSCMessagePos("/objectType");
+        if( objtype_pos != -1 )
+        {
+            object_type = s.getOSCMessageValue(objtype_pos).getString();
         }
 
     }

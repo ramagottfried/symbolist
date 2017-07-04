@@ -18,6 +18,11 @@ Symbol::Symbol (const String & type, float x, float y, float w, float h)
 }
 
 
+String Symbol::getObjectType()
+{
+    return getOSCMessageValue("/objectType").getString();
+}
+
 String Symbol::getType()
 {
     return getOSCMessageValue("/type").getString();

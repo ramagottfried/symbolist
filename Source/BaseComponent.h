@@ -114,6 +114,7 @@ protected:
     
     String          name;
     String          staff_name;
+    String          object_type = "object";
     
     // parameters
     float           strokeWeight = 2;

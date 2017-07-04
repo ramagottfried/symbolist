@@ -66,10 +66,6 @@
 		11B71DD81F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */; };
 		11B71DD91F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */; };
 		11B71DDA1F0AA83A00CDE209 /* OSCPropertyComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = 11B71DD61F0AA83A00CDE209 /* OSCPropertyComponents.h */; };
-		11BE14971F025643006F328D /* InspectorTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11BE14951F025643006F328D /* InspectorTable.cpp */; };
-		11BE14981F025643006F328D /* InspectorTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11BE14951F025643006F328D /* InspectorTable.cpp */; };
-		11BE14991F025643006F328D /* InspectorTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11BE14951F025643006F328D /* InspectorTable.cpp */; };
-		11BE149A1F025643006F328D /* InspectorTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 11BE14961F025643006F328D /* InspectorTable.h */; };
 		11BE149D1F0272DA006F328D /* InspectorWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11BE149B1F0272DA006F328D /* InspectorWindow.cpp */; };
 		11BE149E1F0272DA006F328D /* InspectorWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11BE149B1F0272DA006F328D /* InspectorWindow.cpp */; };
 		11BE149F1F0272DA006F328D /* InspectorWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11BE149B1F0272DA006F328D /* InspectorWindow.cpp */; };
@@ -148,8 +144,6 @@
 		11B71DD01F098F1400CDE209 /* SymbolPropertiesPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SymbolPropertiesPanel.h; path = ../../Source/SymbolPropertiesPanel.h; sourceTree = "<group>"; };
 		11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OSCPropertyComponents.cpp; path = ../../Source/OSCPropertyComponents.cpp; sourceTree = "<group>"; };
 		11B71DD61F0AA83A00CDE209 /* OSCPropertyComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OSCPropertyComponents.h; path = ../../Source/OSCPropertyComponents.h; sourceTree = "<group>"; };
-		11BE14951F025643006F328D /* InspectorTable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InspectorTable.cpp; path = ../../Source/InspectorTable.cpp; sourceTree = "<group>"; };
-		11BE14961F025643006F328D /* InspectorTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InspectorTable.h; path = ../../Source/InspectorTable.h; sourceTree = "<group>"; };
 		11BE149B1F0272DA006F328D /* InspectorWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InspectorWindow.cpp; path = ../../Source/InspectorWindow.cpp; sourceTree = "<group>"; };
 		11BE149C1F0272DA006F328D /* InspectorWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InspectorWindow.h; path = ../../Source/InspectorWindow.h; sourceTree = "<group>"; };
 		11CE00201EC3271700E4F624 /* symbolist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = symbolist.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -297,8 +291,6 @@
 				11B71DD01F098F1400CDE209 /* SymbolPropertiesPanel.h */,
 				11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */,
 				11B71DD61F0AA83A00CDE209 /* OSCPropertyComponents.h */,
-				11BE14961F025643006F328D /* InspectorTable.h */,
-				11BE14951F025643006F328D /* InspectorTable.cpp */,
 			);
 			name = "property-panel";
 			sourceTree = "<group>";
@@ -407,8 +399,8 @@
 				44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */,
 				446363961EC8EF9C0054CB6D /* types.h */,
 				118C38E11EC5C39F006FF4A1 /* score */,
-				11CE00151EC3231E00E4F624 /* symbol-components */,
 				444572681EFA67BE00A7DECD /* path-tools */,
+				11CE00151EC3231E00E4F624 /* symbol-components */,
 				44DFA0951ED2C96600A6847A /* window-components */,
 				11B71DE11F0AD8EA00CDE209 /* property-panel */,
 				117556381ED30F0F00203B67 /* main */,
@@ -450,7 +442,6 @@
 				11B71DDA1F0AA83A00CDE209 /* OSCPropertyComponents.h in Headers */,
 				11BE14A01F0272DA006F328D /* InspectorWindow.h in Headers */,
 				118648991EFA811800904672 /* TimePointArray.h in Headers */,
-				11BE149A1F025643006F328D /* InspectorTable.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -587,7 +578,6 @@
 				1107B4021EF7D55D00E2DFA9 /* SymbolistMainComponent.cpp in Sources */,
 				1107B3F51EF7D55D00E2DFA9 /* Symbol.cpp in Sources */,
 				1107B4001EF7D55D00E2DFA9 /* ScoreComponent.cpp in Sources */,
-				11BE14991F025643006F328D /* InspectorTable.cpp in Sources */,
 				118648A41EFBB5D500904672 /* TimePointGUI.cpp in Sources */,
 				1107B3F71EF7D55D00E2DFA9 /* TextGlyphComponent.cpp in Sources */,
 				118648981EFA811800904672 /* TimePointArray.cpp in Sources */,
@@ -625,7 +615,6 @@
 				44CFE03E1EC3789C009135F8 /* include_juce_gui_basics.mm in Sources */,
 				1107B3EA1EF5388500E2DFA9 /* PathInfo.cpp in Sources */,
 				11D86B8C1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */,
-				11BE14981F025643006F328D /* InspectorTable.cpp in Sources */,
 				44C0729F1EC4AF8C0028D5F8 /* include_juce_osc.cpp in Sources */,
 				118648A31EFBB5D500904672 /* TimePointGUI.cpp in Sources */,
 				118648971EFA811800904672 /* TimePointArray.cpp in Sources */,
@@ -664,7 +653,6 @@
 				41C3942D9A94933B560F98F2 /* include_juce_gui_basics.mm in Sources */,
 				1107B3E91EF5388500E2DFA9 /* PathInfo.cpp in Sources */,
 				11D86B8B1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */,
-				11BE14971F025643006F328D /* InspectorTable.cpp in Sources */,
 				44C0729E1EC4AF870028D5F8 /* include_juce_osc.cpp in Sources */,
 				118648A21EFBB5D500904672 /* TimePointGUI.cpp in Sources */,
 				118648961EFA811800904672 /* TimePointArray.cpp in Sources */,

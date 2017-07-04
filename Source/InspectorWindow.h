@@ -2,7 +2,6 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-#include "InspectorTable.h"
 #include "SymbolPropertiesPanel.h"
 
 /************************************************

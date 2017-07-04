@@ -19,19 +19,20 @@ void SymbolPropertiesPanel::change_callback( const OSCMessage& msg)
     
     OSCBundle newBundle;
     
-    for( auto osc : *bundle )
+    for( auto osc_m_iter : *bundle )
     {
-        if( osc.getMessage().getAddressPattern() == msg.getAddressPattern() )
+        auto i_msg = osc_m_iter.getMessage();
+        if( i_msg.getAddressPattern() == msg.getAddressPattern() )
             newBundle.addElement( msg );
         else
-            newBundle.addElement( osc );
+            newBundle.addElement( i_msg );
     }
     
     s->setOSCBundle( &newBundle );
     
     symbolist_handler->updateSymbolFromInspector( symbol_component );
-
-    s->printBundle();
+    
+    // s->printBundle();
 }
 
 void SymbolPropertiesPanel::createOSCview ()
@@ -79,7 +80,7 @@ void SymbolPropertiesPanel::createOSCview ()
 void SymbolPropertiesPanel::setInspectorObject( BaseComponent *c )
 {
     symbol_component = c;
-
+    symbol_inspector.clear();
     createOSCview();
 }
 

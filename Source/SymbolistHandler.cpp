@@ -465,9 +465,6 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     executeUpdateCallback( score.getSymbolPosition( s ) );
     
     main_component_ptr->getPageComponent()->drawTimePoints();
-    
-    addToInspector( c );
-
 }
 
 
@@ -484,6 +481,7 @@ void SymbolistHandler::clearInspector()
 void SymbolistHandler::updateSymbolFromInspector( BaseComponent *c)
 {
     c->importFromSymbol( *c->getScoreSymbolPointer() );
+    
     modifySymbolInScore( c );
 }
 

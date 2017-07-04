@@ -71,10 +71,16 @@ public:
     
     void importFromSymbol(const Symbol &s) override
     {
-        BasicShapePathComponent::importFromSymbol(s);
-        auto area = getLocalBounds().toFloat().reduced( strokeWeight );
-        m_path_array.add(new Path());
-        m_path_array.getLast()->addEllipse(area);
+        if( !modif_flag )
+        {
+            BasicShapePathComponent::importFromSymbol(s);
+            auto area = getLocalBounds().toFloat().reduced( strokeWeight );
+            m_path_array.add(new Path());
+            m_path_array.getLast()->addEllipse(area);
+        }
+        else
+            PathBaseComponent::importFromSymbol(s);
+            
     }
 
 private:
@@ -93,10 +99,16 @@ public:
     
     void importFromSymbol(const Symbol &s) override
     {
-        BasicShapePathComponent::importFromSymbol(s);
-        auto area = getLocalBounds().toFloat().reduced( strokeWeight );
-        m_path_array.add(new Path());
-        m_path_array.getLast()->addRectangle(area);
+        if( !modif_flag )
+        {
+            BasicShapePathComponent::importFromSymbol(s);
+            auto area = getLocalBounds().toFloat().reduced( strokeWeight );
+            m_path_array.add(new Path());
+            m_path_array.getLast()->addRectangle(area);
+        }
+        else
+            PathBaseComponent::importFromSymbol(s);
+        
     }
 
     String getSymbolTypeStr() const override { return ( modif_flag ? "path" : "rectangle" ) ; }
@@ -116,10 +128,16 @@ public:
     
     void importFromSymbol(const Symbol &s) override
     {
-        BasicShapePathComponent::importFromSymbol(s);
-        auto area = getLocalBounds().toFloat().reduced( strokeWeight );
-        m_path_array.add(new Path());
-        m_path_array.getLast()->addTriangle( area.getBottomLeft(), Point<float>(area.getCentreX(), area.getY()), area.getBottomRight());
+        if( !modif_flag )
+        {
+            BasicShapePathComponent::importFromSymbol(s);
+            auto area = getLocalBounds().toFloat().reduced( strokeWeight );
+            m_path_array.add(new Path());
+            m_path_array.getLast()->addTriangle( area.getBottomLeft(), Point<float>(area.getCentreX(), area.getY()), area.getBottomRight());
+        }
+        else
+            PathBaseComponent::importFromSymbol(s);
+        
     }
 
     String getSymbolTypeStr() const override { return ( modif_flag ? "path" : "triangle" ); }

@@ -481,9 +481,9 @@ void SymbolistHandler::clearInspector()
     if( inspector_window ) inspector_ptr->clearInspector();
 }
 
-void SymbolistHandler::updateSymbolFromInspector( BaseComponent *c, Symbol& s )
+void SymbolistHandler::updateSymbolFromInspector( BaseComponent *c)
 {
-    c->importFromSymbol(s);
+    c->importFromSymbol( *c->getScoreSymbolPointer() );
     modifySymbolInScore( c );
 }
 

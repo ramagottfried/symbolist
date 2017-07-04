@@ -8,7 +8,7 @@
 
 //==============================================================================
 
-typedef std::function<void(OSCMessage&)> osc_callback_t;
+typedef std::function<void(const OSCMessage&)> osc_callback_t;
 
 
 class SymbolPropertiesPanel   : public Component
@@ -30,7 +30,11 @@ public:
     
     void clearInspector()
     {
-        symbol_inspector.clear();
+        if( !symbol_inspector.isEmpty() )
+        {
+            symbol_inspector.clear();
+        }
+        
         symbol_component = nullptr;
     }
     
@@ -38,7 +42,7 @@ public:
     void createOSCview ();
     void updateBundle();
 
-    void change_callback(OSCMessage& msg);
+    void change_callback(const OSCMessage& msg);
     
 private:
     BaseComponent*              symbol_component = nullptr;

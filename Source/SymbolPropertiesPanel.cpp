@@ -12,10 +12,26 @@ SymbolPropertiesPanel::SymbolPropertiesPanel(SymbolistHandler *sh )
     
 }
 
-void SymbolPropertiesPanel::change_callback( OSCMessage& msg)
+void SymbolPropertiesPanel::change_callback( const OSCMessage& msg)
 {
-//    iterate and update OSC value in bundle
-    cout << "recieved " << msg.getAddressPattern().toString() << endl;
+    Symbol *s = symbol_component->getScoreSymbolPointer();
+    const OSCBundle *bundle = s->getOSCBundle();
+    
+    OSCBundle newBundle;
+    
+    for( auto osc : *bundle )
+    {
+        if( osc.getMessage().getAddressPattern() == msg.getAddressPattern() )
+            newBundle.addElement( msg );
+        else
+            newBundle.addElement( osc );
+    }
+    
+    s->setOSCBundle( &newBundle );
+    
+    symbolist_handler->updateSymbolFromInspector( symbol_component );
+
+    s->printBundle();
 }
 
 void SymbolPropertiesPanel::createOSCview ()
@@ -35,15 +51,19 @@ void SymbolPropertiesPanel::createOSCview ()
             {
                 properties.add( new OSCColourSelectorButton("/color", msg, change_callback_fn) );
             }
-            else if( addr == "/staff" ) // << this should be something like: /objectType : "staff"
+            else if( addr == "/objectType" ) // << this should be something like: /objectType : "staff"
             {
                 StringArray choices = {"object", "staff"};
 
                 properties.add( new OSCOptionMenu ( "/objectType", msg, change_callback_fn, choices ) );
             }
-            else if( addr == "/name" )
+            else if( addr == "/staff" )
             {
-                properties.add( new OSCTextProperty( "/name", msg, change_callback_fn) );
+                properties.add( new OSCTextProperty( msg.getAddressPattern().toString(), msg, change_callback_fn) );
+            }
+            else if( msg[0].isString() )
+            {
+                properties.add( new OSCTextProperty( msg.getAddressPattern().toString(), msg, change_callback_fn) );
             }
             else if( msg[0].isFloat32() )
             {

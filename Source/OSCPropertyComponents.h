@@ -4,7 +4,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SymbolPropertiesPanel.h"
 
-typedef std::function<void(OSCMessage&)> osc_callback_t;
+typedef std::function<void(const OSCMessage&)> osc_callback_t;
 
 class OSCFloatValueSlider : public SliderPropertyComponent
 {
@@ -85,6 +85,9 @@ public:
             setColour (TextButton::buttonColourId, cs->getCurrentColour());
             color = cs->getCurrentColour();
             
+            osc_msg.clear();
+            osc_msg.addString( color.toString() );
+
             change_callback( osc_msg );
             
             refresh();
@@ -120,7 +123,9 @@ public:
     {
         selected_index = newIndex;
 
-        // update msg here
+        osc_msg.clear();
+        osc_msg.addString( choices[selected_index] );
+        
         change_callback( osc_msg );
     }
     
@@ -151,11 +156,17 @@ public:
     osc_msg(msg)
     {
         change_callback = change_fn;
+        
+        text = msg[0].getString();
     }
     
     void setText (const String& newText) override
     {
         text = newText;
+        
+        osc_msg.clear();
+        osc_msg.addString( text );
+        
         change_callback( osc_msg );
 
     }
@@ -174,18 +185,43 @@ private:
     
 };
 
-//==============================================================================
+
 class StaffSelectionButton : public ButtonPropertyComponent
 {
 public:
-    StaffSelectionButton (const String& propertyName)
-    : ButtonPropertyComponent (propertyName, true)
+    StaffSelectionButton(   const String& _addr,
+                            OSCMessage& msg,
+                            osc_callback_t change_fn ) :
+    ButtonPropertyComponent (_addr, true),
+    osc_msg(msg)
     {
+        change_callback = change_fn;
+        
+        text = msg[0].getString();
         refresh();
+
     }
+/*
+    void setText (const String& newText)
+    {
+        text = newText;
+        
+        osc_msg.clear();
+        osc_msg.addString( text );
+        
+        change_callback( osc_msg );
+        
+    }
+  */  
     
     void buttonClicked() override
     {
+
+        /*
+         *  Enter Staff selection mode, where staff objects are clickable
+         *  clicking on a staff fills the staff field.
+         */
+        
         AlertWindow::showMessageBoxAsync (AlertWindow::InfoIcon, "Action Button Pressed",
                                           "Pressing this type of property component can trigger an action such as showing an alert window!");
         refresh();
@@ -193,62 +229,16 @@ public:
     
     String getButtonText() const override
     {
-        return staff_name;
+        return text;
     }
     
+    
 private:
-    String staff_name;
+    OSCMessage      osc_msg;
+    osc_callback_t  change_callback;
+    
+    String          text;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StaffSelectionButton)
+    
 };
-
-
-//==============================================================================
-static Array<PropertyComponent*> createTextEditors()
-{
-    Array<PropertyComponent*> comps;
-    
-    comps.add (new TextPropertyComponent (Value (var ("This is a single-line Text Property")), "Text 1", 200, false));
-    comps.add (new TextPropertyComponent (Value (var ("Another one")), "Text 2", 200, false));
-    
-    comps.add (new TextPropertyComponent (Value (var (
-                                                      "Lorem ipsum dolor sit amet, cu mei labore admodum facilisi. Iriure iuvaret invenire ea vim, cum quod"
-                                                      "si intellegat delicatissimi an. Cetero recteque ei eos, his an scripta fastidii placerat. Nec et anc"
-                                                      "illae nominati corrumpit. Vis dictas audire accumsan ad, elit fabulas saperet mel eu.\n"
-                                                      "\n"
-                                                      "Dicam utroque ius ne, eum choro phaedrum eu. Ut mel omnes virtute appareat, semper quodsi labitur in"
-                                                      " cum. Est aeque eripuit deleniti in, amet ferri recusabo ea nec. Cu persius maiorum corrumpit mei, i"
-                                                      "n ridens perpetua mea, pri nobis tation inermis an. Vis alii autem cotidieque ut, ius harum salutatu"
-                                                      "s ut. Mel eu purto veniam dissentias, malis doctus bonorum ne vel, mundi aperiam adversarium cu eum."
-                                                      " Mei quando graeci te, dolore accusata mei te.")),
-                                          "Multi-line text",
-                                          1000, true));
-    
-    return comps;
-}
-
-/*
- static Array<PropertyComponent*> createSliders (int howMany)
- {
- Array<PropertyComponent*> comps;
- 
- for (int i = 0; i < howMany; ++i)
- comps.add (new DemoSliderPropertyComponent ("Slider " + String (i + 1)));
- 
- return comps;
- }
- 
- static Array<PropertyComponent*> createButtons (int howMany)
- {
- Array<PropertyComponent*> comps;
- 
- for (int i = 0; i < howMany; ++i)
- comps.add (new DemoButtonPropertyComponent ("Button " + String (i + 1)));
- 
- for (int i = 0; i < howMany; ++i)
- comps.add (new BooleanPropertyComponent (Value (Random::getSystemRandom().nextBool()), "Toggle " + String (i + 1), "Description of toggleable thing"));
- 
- return comps;
- }
-  */
-

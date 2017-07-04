@@ -307,7 +307,7 @@ void OSCInspectorTable::setText (const int columnNumber, const int rowNumber, co
             
             Symbol s;
             s.setOSCBundle(&new_bndl);
-            symbolist_handler->updateSymbolFromInspector( symbol_component, s );
+//            symbolist_handler->updateSymbolFromInspector( symbol_component, s );
             s.printBundle();
             break;
         }

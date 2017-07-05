@@ -15,7 +15,7 @@ class InspectorWindow : public DocumentWindow, private ChangeListener
 public:
     InspectorWindow ( SymbolistHandler *sh );
     ~InspectorWindow();
-    void closeButtonPressed();
+    void closeButtonPressed() override;
     SymbolPropertiesPanel* getMainComponent();
     
     void resized() override
@@ -25,7 +25,7 @@ public:
     
 private:
     
-    void changeListenerCallback (ChangeBroadcaster* source);
+    void changeListenerCallback (ChangeBroadcaster* source) override;
     
     ScopedPointer<SymbolPropertiesPanel>  inspector;
     

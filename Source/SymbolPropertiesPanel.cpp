@@ -54,27 +54,31 @@ void SymbolPropertiesPanel::createOSCview ()
             auto msg = bndl[i].getMessage();
             const String& addr = msg.getAddressPattern().toString();
             
-            if( addr == "/color" )  // should have separate selection for stroke color and the other stroke parameters
+            StringArray addr_arr = StringArray::fromTokens(addr, "/", "" );
+            addr_arr.removeEmptyStrings();
+            
+            const String& test_addr = *addr_arr.end();
+            
+            if( test_addr == "color" )  // should have separate selection for stroke color and the other stroke parameters
             {
-                properties.add( new OSCColourSelectorButton("/color", msg, change_callback_fn) );
+                properties.add( new OSCColourSelectorButton(addr, msg, change_callback_fn) );
             }
-            else if( addr == "/objectType" ) // << this should be something like: /objectType : "staff"
+            else if( test_addr == "objectType" ) // << this should be something like: /objectType : "staff"
             {
                 StringArray choices = {"object", "staff"};
-
-                properties.add( new OSCOptionMenu ( "/objectType", msg, change_callback_fn, choices ) );
+                properties.add( new OSCOptionMenu ( addr, msg, change_callback_fn, choices ) );
             }
-            else if( addr == "/staff" )
+            else if( test_addr == "staff" )
             {
-                properties.add( new OSCTextProperty( msg.getAddressPattern().toString(), msg, change_callback_fn) );
+                properties.add( new OSCTextProperty( addr, msg, change_callback_fn) );
             }
-            else if( addr == "/fill" )
+            else if( test_addr == "fill" )
             {
                 ; // make check box for fill
             }
             else if( msg[0].isString() )
             {
-                properties.add( new OSCTextProperty( msg.getAddressPattern().toString(), msg, change_callback_fn) );
+                properties.add( new OSCTextProperty( addr, msg, change_callback_fn) );
             }
             else if( msg[0].isFloat32() )
             {

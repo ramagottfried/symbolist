@@ -75,6 +75,7 @@ public:
         {
             BasicShapePathComponent::importFromSymbol(s);
             auto area = getLocalBounds().toFloat().reduced( strokeWeight );
+            cleanupPathArray();
             m_path_array.add(new Path());
             m_path_array.getLast()->addEllipse(area);
         }
@@ -103,6 +104,7 @@ public:
         {
             BasicShapePathComponent::importFromSymbol(s);
             auto area = getLocalBounds().toFloat().reduced( strokeWeight );
+            cleanupPathArray();
             m_path_array.add(new Path());
             m_path_array.getLast()->addRectangle(area);
         }
@@ -132,6 +134,7 @@ public:
         {
             BasicShapePathComponent::importFromSymbol(s);
             auto area = getLocalBounds().toFloat().reduced( strokeWeight );
+            cleanupPathArray();
             m_path_array.add(new Path());
             m_path_array.getLast()->addTriangle( area.getBottomLeft(), Point<float>(area.getCentreX(), area.getY()), area.getBottomRight());
         }

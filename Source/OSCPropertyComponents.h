@@ -25,7 +25,7 @@ public:
         change_callback( osc_msg );
     }
     
-    virtual double getValue() const
+    virtual double getValue() const override
     {
         return osc_msg[0].getFloat32();
     }

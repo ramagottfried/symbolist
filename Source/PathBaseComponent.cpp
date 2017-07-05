@@ -462,6 +462,8 @@ void PathBaseComponent::updatePathPoints()
     //Path p;
     cleanupPathArray();
     
+    std::vector<PathHandle*> remove;
+    
     for( int h = 0 ; h < path_handles.size() ; h++ )
     {
         PathHandle* current_handle = path_handles[h];
@@ -491,12 +493,13 @@ void PathBaseComponent::updatePathPoints()
         else if ( current_handle->getHandleType() == PathHandle::quadratic_control )
         {
             
-            if ( h >= path_handles.size()-1 ) // we're at the end: not normal !
+            if ( ( h >= path_handles.size()-1 ) || ( path_handles[h+1]->getHandleType() == PathHandle::start ) ) // we're at the end: not normal !
             {
                 //path_handles[h]->setHandleType(PathHandle::anchor); // fix the type
                 //h-=1; // back on the same point next iteration (then exit)
-                SymbolistComponent::removeSubcomponent(current_handle);
-                delete current_handle;
+                //SymbolistComponent::removeSubcomponent(current_handle);
+                //delete current_handle;
+                remove.emplace_back(current_handle);
             }
             else
             {
@@ -542,7 +545,12 @@ void PathBaseComponent::updatePathPoints()
         }
     }
     
-    // m_path.swapWithPath( p );
+    for ( int rh = 0; rh < remove.size() ; rh++ )
+    {
+        SymbolistComponent::removeSubcomponent(remove[rh]);
+        delete remove[rh];
+    }
+
 }
 
 
@@ -840,43 +848,46 @@ void PathBaseComponent::paint ( Graphics& g )
 
 void PathBaseComponent::drawHandlesLines( Graphics& g)
 {
-    float ax = -1, ay = -1;
     float dashes[2] = {2.0f, 2.0f};
     
-    for ( int np = 0; np < m_path_array.size(); np++)
+    for ( int h = 0; h < path_handles.size(); h ++ )
     {
-        Path* m_path = m_path_array[np];
-        Path::Iterator it( *m_path );
-        while( it.next() )
+        PathHandle* current_handle = path_handles[h];
+        
+        // normal start/anchor points
+        if ( (current_handle->getHandleType() == PathHandle::start) && (h > 0))
         {
-            if (it.elementType == it.startNewSubPath)
+            g.setColour(Colours::grey);
+            g.drawDashedLine(Line<float>(path_handles[h-1]->getCenter().x, path_handles[h-1]->getCenter().y,
+                                         current_handle->getCenter().x, current_handle->getCenter().y), dashes, 2 );
+        }
+        else if ( current_handle->getHandleType() == PathHandle::quadratic_control )
+        {   // in principle if this is a quadradic there must be a handle before and after...:s
+            g.setColour(Colours::grey);
+            g.drawDashedLine(Line<float>(path_handles[h-1]->getCenter().x, path_handles[h-1]->getCenter().y,
+                                         current_handle->getCenter().x, current_handle->getCenter().y), dashes, 2 );
+            g.drawDashedLine(Line<float>(path_handles[h+1]->getCenter().x, path_handles[h+1]->getCenter().y,
+                                         current_handle->getCenter().x, current_handle->getCenter().y), dashes, 2 );
+        }
+        else if ( current_handle->getHandleType() == PathHandle::cubic_control )
+        {   // check to see if its a number 1 or number 2 cubic controller...:s
+            g.setColour(Colours::grey);
+      
+            if ( (path_handles[h-1]->getHandleType() == PathHandle::start) ||  (path_handles[h-1]->getHandleType() == PathHandle::anchor))
             {
-                ax = it.x1;
-                ay = it.y1;
+                g.drawDashedLine(Line<float>(path_handles[h-1]->getCenter().x, path_handles[h-1]->getCenter().y,
+                                             current_handle->getCenter().x, current_handle->getCenter().y),
+                                            dashes, 2 );
             }
-            else if (it.elementType == it.lineTo)
+            
+            if ( path_handles[h+1]->getHandleType() == PathHandle::anchor )
             {
-                ax = it.x1;
-                ay = it.y1;
+                g.drawDashedLine(Line<float>(current_handle->getCenter().x, current_handle->getCenter().y,
+                                             path_handles[h+1]->getCenter().x, path_handles[h+1]->getCenter().y),
+                                            dashes, 2 );
             }
-            else if (it.elementType == it.quadraticTo)
-            {
-                g.drawDashedLine(Line<float>(ax, ay, it.x1, it.y1), dashes, 2 );
-                ax = it.x2;
-                ay = it.y2;
-            }
-            else if (it.elementType == it.cubicTo)
-            {
-                g.drawDashedLine(Line<float>(ax, ay, it.x1, it.y1), dashes, 2 );
-                g.drawDashedLine(Line<float>(it.x2, it.y2, it.x3, it.y3), dashes, 2 );
-                ax = it.x3;
-                ay = it.y3;
-            }
-            else if (it.elementType == it.closePath)
-            {
-                
-            }
-        }}
+        }
+    }
     
     g.setColour(Colours::lightblue);
     g.drawRect( m_path_bounds );
@@ -884,9 +895,9 @@ void PathBaseComponent::drawHandlesLines( Graphics& g)
     if ( rotation_handle != NULL )
     {
         g.drawDashedLine(Line<float>(
-                                     m_path_centroid.getX(), m_path_centroid.getY(),
-                                     rotation_handle->getBounds().getCentreX(), rotation_handle->getBounds().getCentreY()
-                                     ),
-                         dashes, 2 );
+                m_path_centroid.getX(), m_path_centroid.getY(),
+                rotation_handle->getBounds().getCentreX(), rotation_handle->getBounds().getCentreY()
+                ),
+                dashes, 2 );
     }
 }

@@ -32,7 +32,9 @@ void SymbolPropertiesPanel::change_callback( const OSCMessage& msg)
     
     symbolist_handler->updateSymbolFromInspector( symbol_component );
     
-    // s->printBundle();
+//    cout << "*********************** updated bundle from inspector ********** " << endl;
+//    s->printBundle();
+    
 }
 
 void SymbolPropertiesPanel::createOSCview ()
@@ -77,6 +79,10 @@ void SymbolPropertiesPanel::createOSCview ()
             else if( msg[0].isFloat32() )
             {
                 properties.add( new OSCFloatValueSlider( addr, msg, change_callback_fn ) );
+            }
+            else if( msg[0].isInt32() )
+            {
+                properties.add( new OSCIntValueSlider( addr, msg, change_callback_fn ) );
             }
         }
     

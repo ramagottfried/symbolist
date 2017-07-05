@@ -39,6 +39,38 @@ private:
 };
 
 
+class OSCIntValueSlider : public SliderPropertyComponent
+{
+public:
+    OSCIntValueSlider ( const String& _addr, OSCMessage& msg, osc_callback_t change_fn )
+    : SliderPropertyComponent (_addr, 0, 1000, 1), osc_msg(msg)
+    {
+        change_callback = change_fn;
+    }
+    
+    void setValue (double newValue) override
+    {
+        osc_msg.clear();
+        osc_msg.addInt32((int)newValue);
+        
+        slider.setValue ( newValue );
+        
+        change_callback( osc_msg );
+    }
+    
+    virtual double getValue() const override
+    {
+        return (double)osc_msg[0].getInt32();
+    }
+    
+    
+private:
+    OSCMessage      osc_msg;
+    osc_callback_t  change_callback;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OSCIntValueSlider)
+};
+
 
 class OSCColourSelectorButton  : public PropertyComponent, public ChangeListener, private ButtonListener
 {

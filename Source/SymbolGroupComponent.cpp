@@ -75,11 +75,20 @@ bool SymbolGroupComponent::intersectRect( Rectangle<int> rect)
 
 int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_address )
 {
+    
+//    cout << "SymbolGroupComponent::addSymbolMessages " << s << " " << base_address << " " << getNumSubcomponents() << endl;
+    
     int messages_added = BaseComponent::addSymbolMessages( s, base_address );
     
     String addr = base_address + "/numsymbols";
     
-    if( s->getOSCMessagePos(addr) == -1 )
+    /* 
+     * the group symbol is created fist (with the default state), then added to, then updated,
+     * so we need (getNumSubcomponents() > 0) to wait to set /numsymbols until after the symbol has been updated,
+     * otherwise, /numsymbols gets stuck at 0
+     */
+    
+    if( s->getOSCMessagePos(addr) == -1 && (getNumSubcomponents() > 0) )
     {
         s->addOSCMessage( addr,     (int)getNumSubcomponents() );
         messages_added++;
@@ -89,7 +98,6 @@ int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_addre
     for (int i = 0; i < getNumSubcomponents(); i++)
     {
         addr = base_address + "/subsymbol/" + String(i+1);
-        
         if( s->getOSCMessagePos(addr) == -1 )
         {
             messages_added += ((BaseComponent*)getSubcomponent(i))->addSymbolMessages( s, addr );
@@ -102,6 +110,8 @@ int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_addre
 
 void SymbolGroupComponent::importFromSymbol( const Symbol &s )
 {
+
+    clearAllSubcomponents();
     
     BaseComponent::importFromSymbol(s);
     
@@ -110,7 +120,7 @@ void SymbolGroupComponent::importFromSymbol( const Symbol &s )
     if ( pos >= 0 )
     {
         int n_symbols = s.getOSCMessageValue(pos).getInt32();
-        std::cout << "Importing Group of " << n_symbols << " symbols..." << std::endl;
+ //       std::cout << "Importing Group of " << n_symbols << " symbols..." << std::endl;
         for (int i = 0; i < n_symbols; i++ )
         {
             String filter = "/subsymbol/" + String(i+1) ;   // we start at 1 .. (?)

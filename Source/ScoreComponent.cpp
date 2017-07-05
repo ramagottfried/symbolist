@@ -205,6 +205,9 @@ void ScoreComponent::groupSelectedSymbols()
         auto sh = getSymbolistHandler();
         SymbolGroupComponent *group = (SymbolGroupComponent*) sh->makeComponentFromSymbol( s , creating_a_top_level_group );
         
+//        cout << "group bundle pre:" << endl;
+//        group->getScoreSymbolPointer()->printBundle();
+        
         Rectangle<int> groupBounds( minx, miny, maxx-minx, maxy-miny );
         
         for ( auto it = items.begin(); it != items.end(); it++ )
@@ -232,6 +235,9 @@ void ScoreComponent::groupSelectedSymbols()
         }
         addSubcomponent( group );
         addToSelection( group );
+        
+//        cout << "group bundle post: " << endl;
+//        group->getScoreSymbolPointer()->printBundle();
     }
 }
 

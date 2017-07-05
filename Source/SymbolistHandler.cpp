@@ -380,6 +380,9 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
             // reads base component symbol values, and sets component bounds for display
             c->importFromSymbol( *s ) ;
             
+            // initializes object specific messages if not present
+            c->addSymbolMessages( s, "" );
+            
             if ( attach_the_symbol )
             {                
                 if( main_component_ptr != NULL )
@@ -387,8 +390,6 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
 
                 c->setScoreSymbolPointer( s );
                 
-                // initializes object specific messages if not present
-                c->addSymbolMessages( s, "" );
             }
         }
         

@@ -42,13 +42,17 @@ void SymbolPropertiesPanel::createOSCview ()
     if( symbol_component )
     {
         Symbol *s = symbol_component->getScoreSymbolPointer();
+        if( !s ) return;
+        
         OSCBundle bndl = *s->getOSCBundle();
+        if ( bndl.isEmpty() )  return;
+        
         for( int i = 0; i < bndl.size(); i++ )
         {
             auto msg = bndl[i].getMessage();
             const String& addr = msg.getAddressPattern().toString();
             
-            if( addr == "/color" )
+            if( addr == "/color" )  // should have separate selection for stroke color and the other stroke parameters
             {
                 properties.add( new OSCColourSelectorButton("/color", msg, change_callback_fn) );
             }
@@ -61,6 +65,10 @@ void SymbolPropertiesPanel::createOSCview ()
             else if( addr == "/staff" )
             {
                 properties.add( new OSCTextProperty( msg.getAddressPattern().toString(), msg, change_callback_fn) );
+            }
+            else if( addr == "/fill" )
+            {
+                ; // make check box for fill
             }
             else if( msg[0].isString() )
             {

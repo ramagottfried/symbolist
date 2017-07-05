@@ -115,7 +115,7 @@ private:
     
     // the main view of the editor (could be embedded in a foreign app independently of the window)
     ScopedPointer<InspectorWindow>      inspector_window;
-    SymbolPropertiesPanel*              inspector_ptr;
+    SymbolPropertiesPanel*              inspector_ptr = nullptr;
     
     OwnedArray<Symbol>   clipboard;
     

@@ -436,7 +436,7 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
     cout << "removeSymbolFromScore" << endl;
     //s->printBundle();
 
-    if( inspector_ptr ) inspector_ptr->clearInspector();
+    if( inspector_window && inspector_ptr ) inspector_ptr->clearInspector();
     
     score.removeSymbolTimePoints( s );
     score.removeSymbol( s );

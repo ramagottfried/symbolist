@@ -205,7 +205,11 @@ void BaseComponent::importFromSymbol( const Symbol &s )
         if( color_pos != -1  )
         {
             auto bndl = *(s.getOSCBundle());
-            if( bndl[color_pos].getMessage().size() == 4 )
+            if( bndl[color_pos].getMessage().size() == 1 && bndl[color_pos].getMessage()[0].isString() )
+            {
+                sym_color = Colour::fromString( bndl[color_pos].getMessage()[0].getString() );
+            }
+            else if( bndl[color_pos].getMessage().size() == 4 )
             {
                 float r = Symbol::getOSCValueAsFloat( bndl[color_pos].getMessage()[0] );
                 float g = Symbol::getOSCValueAsFloat( bndl[color_pos].getMessage()[1] );

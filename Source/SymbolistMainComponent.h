@@ -43,7 +43,7 @@ public:
     
     
     // Redefine these from SymbolistComponent
-    inline PageComponent* getPageComponent() override { return &scoreView; }
+    inline PageComponent* getPageComponent() override { return (PageComponent*)score_viewport.getViewedComponent(); }
     inline SymbolistHandler* getSymbolistHandler() override { return symbolist_handler; }
     
 private:
@@ -51,9 +51,12 @@ private:
     UI_EditType      mouse_mode = selection;
     UI_DrawType      draw_mode = free_draw;
 
-    SymbolistHandler*   symbolist_handler; // (not allocated here)
+    SymbolistHandler*   symbolist_handler = nullptr; // (not allocated here)
     
+    Viewport            score_viewport;
     PageComponent       scoreView;
+    
+    
     PaletteComponent    paletteView ;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainComponent)

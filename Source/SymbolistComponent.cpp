@@ -8,24 +8,24 @@
 // redefined in PageComponent and MAincomponent
 PageComponent* SymbolistComponent::getPageComponent()
 {
-    SymbolistComponent* p = (SymbolistComponent*)getParentComponent() ;
-    if (p == NULL) return NULL;
-    else return p->getPageComponent(); // SymbolistMainComponent and PageComponent will return the actual PageComponent
+    PageComponent* pc = findParentComponentOfClass<PageComponent>() ;
+    return pc;
 }
 
 
 SymbolistHandler* SymbolistComponent::getSymbolistHandler()
 {
-    SymbolistComponent* p = (SymbolistComponent*)getParentComponent() ;
-    if (p == NULL) return NULL;
-    else return p->getSymbolistHandler(); // only a SymbolistMainComponent will return 'something different'
+    SymbolistMainComponent* mc = findParentComponentOfClass<SymbolistMainComponent>() ;
+    if( mc )
+        return mc->getSymbolistHandler();
+    else
+        return nullptr;
 }
 
 SymbolistMainComponent* SymbolistComponent::getMainComponent()
 {
-    PageComponent* pc = getPageComponent();
-    if (pc == NULL) return NULL;
-    else return (SymbolistMainComponent*)pc->getParentComponent() ;
+    SymbolistMainComponent* mc = findParentComponentOfClass<SymbolistMainComponent>() ;
+    return mc;
 }
 
 

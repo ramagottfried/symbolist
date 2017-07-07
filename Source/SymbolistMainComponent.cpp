@@ -12,8 +12,14 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
     
     updatePaletteView();
     
+    score_viewport.setViewedComponent( &scoreView, false );
+    score_viewport.setFocusContainer (true);
+    score_viewport.setScrollBarsShown(true, true);
+    
+    scoreView.setSize(6000, 2000);
+    addAndMakeVisible(score_viewport);
+    
     paletteView.selectPaletteButton(-1);
-    addAndMakeVisible(scoreView);
     addAndMakeVisible(paletteView);
     
     // the main component will receive key events from the subviews
@@ -32,7 +38,8 @@ SymbolistMainComponent::~SymbolistMainComponent()
 
 void SymbolistMainComponent::resized()
 {
-    scoreView.setBounds( 50, 0, getWidth(), getHeight() );
+    score_viewport.setBounds (50, 0, getWidth()-50, getHeight() );
+//    scoreView.setBounds( 50, 0, getWidth(), getHeight() );
     paletteView.setBounds( 0, 0, 50, getHeight() );
 }
 

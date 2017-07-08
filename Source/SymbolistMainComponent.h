@@ -33,6 +33,8 @@ public:
     
     // Redefinition of methods from Juce::Component
     void resized() override;
+    void zoom( float delta );
+    
     bool keyPressed (const KeyPress& key, Component* originatingComponent) override;
     void modifierKeysChanged (const ModifierKeys& modifiers) override;
 
@@ -56,8 +58,9 @@ private:
     Viewport            score_viewport;
     PageComponent       scoreView;
     
-    
     PaletteComponent    paletteView ;
+    
+    float               m_zoom = 1.0f;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainComponent)
 };

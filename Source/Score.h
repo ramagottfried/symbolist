@@ -94,7 +94,7 @@ public:
     int getSelectedItem() { return selected_item ; }
     void setSelectedItem(int n) { selected_item = n; }
     
-    private :
+private :
     
     OwnedArray<Symbol> default_items;
     OwnedArray<Symbol> user_items;

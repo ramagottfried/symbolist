@@ -12,10 +12,11 @@ using namespace std ;
 
 PaletteButton::PaletteButton( int i, Symbol *s)
 {
+    cout << "new palette button " << this << endl;
     button_id = i;
     graphic_comp = getSymbolistHandler()->makeComponentFromSymbol(s,false);
     setComponentID("PaletteButton");
-    addAndMakeVisible(graphic_comp);
+//    addAndMakeVisible(graphic_comp);
 }
 
 PaletteButton::~PaletteButton()
@@ -30,17 +31,26 @@ void PaletteButton::setSelected(bool sel)
 
 void PaletteButton::resized()
 {
-    graphic_comp->setBounds( 0 , 0 , getWidth() , getHeight() );
-    graphic_comp->resizeToFit( 0 , 0 , getWidth() , getHeight() );
+    graphic_comp->setBounds( 5 , 5 , getWidth() -10, getHeight() -10 );
+    graphic_comp->resizeToFit( 5 , 5 , getWidth() -10, getHeight() -10  );
 }
 
 void PaletteButton::paint (Graphics& g)
 {
-    if (selected) g.fillAll( Colours::lightgrey );
-    else g.fillAll( Colours::white );
-    //g.setOrigin(getX()+((getWidth()-graphic_comp->getWidth())/2),
-    //            getY()+((getHeight()-graphic_comp->getHeight())/2));
+
+    if (selected)
+    {
+        g.fillAll( Colours::lightgrey );
+    }
+    else
+    {
+        g.fillAll( Colours::white );
+    }
+    
     graphic_comp->paint(g);
+    
+    g.drawRect(getLocalBounds());
+
 }
 
 void PaletteButton::mouseDown ( const MouseEvent& event )
@@ -72,33 +82,53 @@ void PaletteComponent::buildFromPalette(SymbolistPalette* palette)
     
     deleteAllChildren();
     
-    // default "draw" button
-    Symbol s("path", 0, 0, 30, 30);
-    s.addOSCMessage( OSCMessage("/num_sub_paths", 1) );
-    s.addOSCMessage( OSCMessage("/path/0/str", String("m 4. 4. c 14. 2. 22. 8. 16. 14. c 12. 20. 14. 24. 20. 22.")) );
-    PaletteButton *pb = new PaletteButton(-1, &s);
-    pb->setTopLeftPosition(10, 20);
-    pb->setSize(30 , 30);
-    addAndMakeVisible(pb);
+    // start center points
+    int b_cX = 25, b_cY = 30;
     
-    int bx = 14, by = 80, bw = 22, bh = 22;
+    // size for default button
+    int d_bh = 30, d_bw = 30;
+    int d_y_spacing = d_bh + 5;
+    
+    // size for user buttons
+    int bw = 23, bh = 23;
+    int b_y_spacing = bh + 5;
+    
+    int y_separator = 5; // gap between default and user buttons
+    
+    
+    // default "draw" buttons (only one for now)
+    {
+        Symbol s("path", 0, 0, d_bh, d_bw);
+        s.addOSCMessage( OSCMessage("/num_sub_paths", 1) );
+        s.addOSCMessage( OSCMessage("/path/0/str", String("m 4. 4. c 14. 2. 22. 8. 16. 14. c 12. 20. 14. 24. 20. 22.")) );
+        PaletteButton *pb = new PaletteButton(-1, &s);
+        pb->setSize(d_bh , d_bw);
+        pb->setCentrePosition( b_cX, b_cY);
+        addAndMakeVisible(pb);
+        b_cY += d_y_spacing;
+    }
+    
+    // separator
+    b_cY += y_separator;
     
     for ( int i = 0; i < palette->getPaletteNumDefaultItems(); i++ )
     {
         PaletteButton *pb = new PaletteButton(i, palette->getPaletteDefaultItem(i));
-//        bx = Random().nextFloat()*20;
-        pb->setTopLeftPosition(bx, by += 28);
+
         pb->setSize(bw , bh);
+        pb->setCentrePosition( b_cX, b_cY);
         addAndMakeVisible(pb);
+        b_cY += b_y_spacing;
+
     }
     
     for ( int i = 0 ; i < palette->getPaletteNumUserItems() ; i++ )
     {
         PaletteButton *pb = new PaletteButton( i + palette->getPaletteNumDefaultItems(), palette->getPaletteUserItem(i));
-//        bx = Random().nextFloat()*20;
-        pb->setTopLeftPosition(bx, by += 28);
         pb->setSize(bw , bh);
+        pb->setCentrePosition( b_cX, b_cY);
         addAndMakeVisible(pb);
+        b_cY += b_y_spacing;
     }
 }
 

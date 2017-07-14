@@ -47,6 +47,7 @@ public:
     // Redefine these from SymbolistComponent
     inline PageComponent* getPageComponent() override { return (PageComponent*)score_viewport.getViewedComponent(); }
     inline SymbolistHandler* getSymbolistHandler() override { return symbolist_handler; }
+    inline Viewport* getViewer() { return &score_viewport; }
     
 private:
     

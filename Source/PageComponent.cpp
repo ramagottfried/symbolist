@@ -1,13 +1,6 @@
-//
-//  PageComponent.cpp
-//  symbolist
-//
-//  Created by Jean Bresson on 04/06/2017.
-//
-//
 
 #include "PageComponent.h"
-
+#include "SymbolistMainComponent.h"
 
 PageComponent::PageComponent()
 {
@@ -113,10 +106,12 @@ void PageComponent::paint (Graphics& g)
             msg += " draw lines " ;
     }
     
-    g.drawText (msg, getLocalBounds() , Justification::bottom, false);
+    auto visibleBounds = getMainComponent()->getViewer()->getViewArea();
+    
+    g.drawText (msg, visibleBounds , Justification::bottom, false);
     
     String timestr = " t = ";
     timestr += (String) (getSymbolistHandler()->getCurrentTime()) ;
-    g.drawText (timestr, getLocalBounds() , Justification::topLeft, false);
+    g.drawText (timestr, visibleBounds , Justification::topLeft, false);
   
 }

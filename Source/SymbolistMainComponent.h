@@ -48,7 +48,7 @@ public:
     inline PageComponent* getPageComponent() override { return (PageComponent*)score_viewport.getViewedComponent(); }
     inline SymbolistHandler* getSymbolistHandler() override { return symbolist_handler; }
     inline Viewport* getViewer() { return &score_viewport; }
-    
+    inline ModifierKeys* getCurrentMods(){ return &current_mods; }
 private:
     
     UI_EditType      mouse_mode = selection;
@@ -62,6 +62,8 @@ private:
     PaletteComponent    paletteView ;
     
     float               m_zoom = 1.0f;
+    
+    ModifierKeys        current_mods;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainComponent)
 };

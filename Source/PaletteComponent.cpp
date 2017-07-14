@@ -38,17 +38,12 @@ void PaletteButton::resized()
 void PaletteButton::paint (Graphics& g)
 {
 
-    if (selected)
-    {
-        g.fillAll( Colours::lightgrey );
-    }
-    else
-    {
-        g.fillAll( Colours::white );
-    }
+    Colour button_color = selected ? Colours::black : Colour::fromFloatRGBA(0, 0, 0, 0.2);
     
+    graphic_comp->setSymbolColor( button_color );
     graphic_comp->paint(g);
     
+    g.setColour( button_color );
     g.drawRect(getLocalBounds());
 
 }

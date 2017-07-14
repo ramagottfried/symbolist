@@ -420,6 +420,17 @@ void BaseComponent::resized ()
         resizableBorder->setAlwaysOnTop(true);
     }
     
+    
+    if( getMainComponent() && getMainComponent()->getCurrentMods()->isShiftDown() )
+    {
+        auto xovery = (double)resizableBorder->getWidth() / (double)resizableBorder->getHeight();
+        constrainer.setFixedAspectRatio( xovery );
+    }
+    else
+    {
+        constrainer.setFixedAspectRatio( 0.0 );
+    }
+        
     resizableBorder->setBounds( getLocalBounds() );
     
     if( is_selected )

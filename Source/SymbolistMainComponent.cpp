@@ -94,6 +94,8 @@ void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
     {
         setMouseMode( UI_EditType::selection );
     }
+    
+    current_mods = modifiers;
 }
 
 /***************************

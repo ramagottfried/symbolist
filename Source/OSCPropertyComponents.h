@@ -13,6 +13,8 @@ public:
     : SliderPropertyComponent (_addr, 0.0, 1000.0, 0.0001), osc_msg(msg)
     {
         change_callback = change_fn;
+        slider.setColour(Slider::textBoxTextColourId, Colours::black );
+        slider.setColour(Slider::trackColourId, Colour::fromFloatRGBA(0, 0, 0, 0.1) );
     }
     
     void setValue (double newValue) override
@@ -46,6 +48,8 @@ public:
     : SliderPropertyComponent (_addr, 0, 1000, 1), osc_msg(msg)
     {
         change_callback = change_fn;
+        slider.setColour(Slider::textBoxTextColourId, Colours::black );
+        slider.setColour(Slider::trackColourId, Colour::fromFloatRGBA(0, 0, 0, 0.1) );
     }
     
     void setValue (double newValue) override
@@ -151,6 +155,14 @@ public:
         change_callback = change_fn;
         
         selected_index = choices.indexOf( msg[0].getString() );
+        
+        getLookAndFeel().setColour(ComboBox::textColourId, Colours::black );
+        getLookAndFeel().setColour(ComboBox::backgroundColourId, Colours::transparentWhite );
+        getLookAndFeel().setColour(ComboBox::arrowColourId, Colours::black );
+        
+        getLookAndFeel().setColour(PopupMenu::textColourId, Colours::black );
+        getLookAndFeel().setColour(PopupMenu::backgroundColourId, Colour::fromFloatRGBA(0.9, 0.9, 0.9, 1) );
+        
         refresh();
     }
     
@@ -193,6 +205,9 @@ public:
         change_callback = change_fn;
         
         text = msg[0].getString();
+        
+        setColour(TextPropertyComponent::textColourId , Colours::black );
+        setColour(TextPropertyComponent::backgroundColourId, Colours::transparentWhite );
     }
     
     void setText (const String& newText) override

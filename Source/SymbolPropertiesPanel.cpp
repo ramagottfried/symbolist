@@ -3,13 +3,18 @@
 
 SymbolPropertiesPanel::SymbolPropertiesPanel(SymbolistHandler *sh )
 {
-    setOpaque (true);
+    setOpaque (false);
     addAndMakeVisible (symbol_inspector);
     setSize (400, 600);
     
     symbolist_handler = sh;
     change_callback_fn = std::bind( &SymbolPropertiesPanel::change_callback, this, std::placeholders::_1);
     
+    getLookAndFeel().setColour( PropertyComponent::backgroundColourId, Colours::transparentWhite );
+    getLookAndFeel().setColour( PropertyComponent::labelTextColourId, Colours::black );
+    
+    getLookAndFeel().setColour(Label::textWhenEditingColourId, Colours::black  );
+    getLookAndFeel().setColour(Label::backgroundWhenEditingColourId, Colours::transparentWhite  );
 }
 
 void SymbolPropertiesPanel::change_callback( const OSCMessage& msg)

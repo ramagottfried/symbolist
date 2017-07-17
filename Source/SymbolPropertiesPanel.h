@@ -18,7 +18,9 @@ public:
     
     void paint (Graphics& g) override
     {
-        g.fillAll ( Colour::greyLevel (0.8f) );
+        g.fillAll ( Colour::fromFloatRGBA(0, 0, 0, 0.05) );
+        g.setColour(Colours::lightgrey);
+        g.drawLine( 0, 0, 0, getHeight() );
     }
     
     void resized() override

@@ -85,6 +85,17 @@ public:
         addAndMakeVisible (button);
         button.setTriggeredOnMouseDown (true);
         button.addListener (this);
+        
+        if( msg[0].isString() )
+            color = Colour::fromString( msg[0].getString() );
+        else if( msg.size() == 4 && msg[0].isFloat32() )
+        {
+            color = Colour::fromFloatRGBA(  msg[0].getFloat32(),
+                                            msg[1].getFloat32(),
+                                            msg[2].getFloat32(),
+                                            msg[3].getFloat32() );
+        }
+        
         refresh();
     }
     
@@ -123,7 +134,7 @@ public:
             
             osc_msg.clear();
             osc_msg.addString( color.toString() );
-
+            
             change_callback( osc_msg );
             
             refresh();

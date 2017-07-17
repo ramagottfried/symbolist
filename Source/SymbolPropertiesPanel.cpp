@@ -5,7 +5,7 @@ SymbolPropertiesPanel::SymbolPropertiesPanel(SymbolistHandler *sh )
 {
     setOpaque (false);
     addAndMakeVisible (symbol_inspector);
-    setSize (400, 600);
+    setSize (200, 600);
     
     symbolist_handler = sh;
     change_callback_fn = std::bind( &SymbolPropertiesPanel::change_callback, this, std::placeholders::_1);
@@ -37,8 +37,8 @@ void SymbolPropertiesPanel::change_callback( const OSCMessage& msg)
     
     symbolist_handler->updateSymbolFromInspector( symbol_component );
     
-//    cout << "*********************** updated bundle from inspector ********** " << endl;
-//    s->printBundle();
+    cout << "*********************** updated bundle from inspector ********** " << endl;
+    s->printBundle();
     
 }
 

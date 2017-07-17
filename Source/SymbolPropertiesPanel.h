@@ -25,7 +25,7 @@ public:
     
     void resized() override
     {
-        symbol_inspector.setBounds (getLocalBounds().reduced (4));
+        symbol_inspector.setBounds( getLocalBounds().reduced (4) );
     }
     
     SymbolistHandler* getSymbolistHandler(){ return symbolist_handler; }

@@ -9,6 +9,7 @@
 #include "PaletteComponent.h"
 #include "BaseComponent.h"
 
+#include "SymbolPropertiesPanel.h"
 
 /*
  * SymbolistMainComponent is the main controller of the application
@@ -49,6 +50,10 @@ public:
     inline SymbolistHandler* getSymbolistHandler() override { return symbolist_handler; }
     inline Viewport* getViewer() { return &score_viewport; }
     inline ModifierKeys* getCurrentMods(){ return &current_mods; }
+    
+    
+    void toggleInspector();
+    
 private:
     
     UI_EditType      mouse_mode = selection;
@@ -64,6 +69,9 @@ private:
     float               m_zoom = 1.0f;
     
     ModifierKeys        current_mods;
+
+    ScopedPointer<SymbolPropertiesPanel>    inspector;
+
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainComponent)
 };

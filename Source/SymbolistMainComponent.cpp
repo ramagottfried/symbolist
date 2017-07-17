@@ -6,7 +6,6 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
     // score = std::unique_ptr<Score>(new Score());
     std::cout << "MainComponent " << this << std::endl;
     setComponentID("MainComponent");
-    setSize (600, 400);
     
     symbolist_handler = sh;
     
@@ -22,11 +21,16 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
     paletteView.selectPaletteButton(-1);
     addAndMakeVisible(paletteView);
     
+    inspector = new SymbolPropertiesPanel(sh);
+
     // the main component will receive key events from the subviews
     paletteView.addKeyListener(this);
     scoreView.addKeyListener(this);
     setWantsKeyboardFocus(true);
     addKeyListener(this);
+    
+    setSize (600, 400);
+
 }
 
 
@@ -38,9 +42,17 @@ SymbolistMainComponent::~SymbolistMainComponent()
 
 void SymbolistMainComponent::resized()
 {
-    score_viewport.setBounds (50, 0, getWidth()-50, getHeight() );
-//    scoreView.setBounds( 50, 0, getWidth(), getHeight() );
-    paletteView.setBounds( 0, 0, 50, getHeight() );
+    auto w = getWidth();
+    auto h = getHeight();
+    
+    score_viewport.setBounds (50, 0, w-50, h );
+    paletteView.setBounds( 0, 0, 50, h );
+    
+    if( inspector->isVisible() )
+    {
+        inspector->setSize(400, h - score_viewport.getScrollBarThickness());
+        inspector->setTopRightPosition( w - score_viewport.getScrollBarThickness(), 0 );
+    }
 }
 
 void SymbolistMainComponent::updatePaletteView()
@@ -48,6 +60,24 @@ void SymbolistMainComponent::updatePaletteView()
     paletteView.buildFromPalette(symbolist_handler->getSymbolPalette());
 }
 
+
+void SymbolistMainComponent::toggleInspector()
+{
+    if( !inspector->isVisible() )
+    {
+        auto sel = getPageComponent()->getSelectedItems();
+        inspector->setInspectorObject( (BaseComponent *)sel.getLast() );
+        
+        addAndMakeVisible(inspector);
+        inspector->setSize(400, getHeight() - score_viewport.getScrollBarThickness());
+        inspector->setTopRightPosition( getWidth() - score_viewport.getScrollBarThickness(), 0 );
+    }
+    else
+    {
+        removeChildComponent(inspector);
+        inspector->setVisible(false);
+    }
+}
 
 void SymbolistMainComponent::zoom( float delta )
 {
@@ -138,8 +168,7 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
         
         scoreView.repaint();
     }
-    else if(    key == KeyPress ('i') ){ symbolist_handler->symbolistAPI_toggleInspectorWindow(); }
-    
+    else if (   key == KeyPress ('i') ) { toggleInspector(); }
     else if (   key == KeyPress('w') ) { scoreView.getEditedComponent()->addSelectedSymbolsToPalette(); }
 
     else if (   key == KeyPress('c', ModifierKeys::commandModifier, 0) ) { symbolist_handler->copySelectedToClipBoard(); }

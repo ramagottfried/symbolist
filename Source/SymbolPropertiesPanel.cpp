@@ -91,8 +91,8 @@ void SymbolPropertiesPanel::createOSCview ()
         }
     
     }
-    
-    symbol_inspector.addSection("OSC", properties);
+    symbol_inspector.addProperties( properties );
+//    symbol_inspector.addSection("OSC", properties);
 }
 
 void SymbolPropertiesPanel::setInspectorObject( BaseComponent *c )

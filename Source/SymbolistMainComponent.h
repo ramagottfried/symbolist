@@ -51,9 +51,13 @@ public:
     inline Viewport* getViewer() { return &score_viewport; }
     inline ModifierKeys* getCurrentMods(){ return &current_mods; }
     
-    
+    /*********************************************
+     * Properties Panel (Inspector)
+     *********************************************/
     void toggleInspector();
-    
+    inline void clearInspector(){ inspector->clearInspector(); }
+    inline void setInspectorObject( BaseComponent *c ){ inspector->setInspectorObject( c ); }
+
 private:
     
     UI_EditType      mouse_mode = selection;

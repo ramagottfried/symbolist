@@ -1,15 +1,7 @@
-//
-//  SymbolistHandler.cpp
-//  symbolist
-//
-//  Created by Jean Bresson on 19/06/2017.
-//
-//
 
 #include "SymbolistHandler.h"
 
 #include "SymbolistMainWindow.h"
-#include "InspectorWindow.h"
 
 #include "SymbolGroupComponent.h"
 #include "BasicShapePathComponents.h"
@@ -38,7 +30,7 @@ SymbolistHandler::SymbolistHandler()
 
 SymbolistHandler::~SymbolistHandler()
 {
-    cout << "deleting symbolist handler, main comp pointer:" << main_component_ptr << " inspector window " << inspector_window << " window " << main_window << endl;
+    cout << "deleting symbolist handler, main comp pointer:" << main_component_ptr <<  " window " << main_window << endl;
     if ( main_component_ptr != NULL )
         symbolistAPI_closeWindow();
     
@@ -77,13 +69,7 @@ void SymbolistHandler::symbolistAPI_closeWindow()
 {
     cout << "symbolistAPI_closeWindow" << endl;
     MessageManagerLock mml;
-
-    if( inspector_window )
-    {
-        inspector_ptr = nullptr;
-        inspector_window = nullptr;
-    }
-        
+  
     if( main_window )
     {
 //        cout << "nulling main window " << main_window << endl;
@@ -92,49 +78,6 @@ void SymbolistHandler::symbolistAPI_closeWindow()
     }
 }
 
-void SymbolistHandler::symbolistAPI_toggleInspectorWindow()
-{
-    if( inspector_window == NULL )
-        symbolistAPI_openInspectorWindow();
-    else
-        symbolistAPI_closeInspectorWindow();
-
-}
-
-
-void SymbolistHandler::symbolistAPI_closeInspectorWindow()
-{
-    const MessageManagerLock mml;
-    if ( inspector_window != nullptr)
-    {
-        inspector_window = nullptr;
-        
-        if( main_component_ptr != NULL )
-            main_component_ptr->grabKeyboardFocus();
-    }
-}
-
-void SymbolistHandler::symbolistAPI_openInspectorWindow()
-{
-    const MessageManagerLock mml;
-    
-    if ( inspector_window == NULL)
-    {
-        inspector_window = new InspectorWindow (this);
-        inspector_ptr = inspector_window->getMainComponent();
-        inspector_ptr->grabKeyboardFocus();
-        
-        if ( main_component_ptr )
-        {
-            auto sel = main_component_ptr->getPageComponent()->getSelectedItems();
-            addToInspector( (BaseComponent *)sel.getLast() );
-        }
-    }
-    else
-    {
-        inspector_ptr->getTopLevelComponent()->toFront(true);
-    }
-}
 
 void SymbolistHandler::symbolistAPI_windowToFront()
 {
@@ -437,7 +380,8 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
     cout << "removeSymbolFromScore" << endl;
     //s->printBundle();
 
-    if( inspector_window && inspector_ptr ) inspector_ptr->clearInspector();
+    if( main_component_ptr )
+        main_component_ptr->clearInspector();
     
     score.removeSymbolTimePoints( s );
     score.removeSymbol( s );
@@ -445,7 +389,8 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
     c->setScoreSymbolPointer( NULL );
     executeUpdateCallback( -1 );
     
-    main_component_ptr->getPageComponent()->drawTimePoints();
+    if( main_component_ptr )
+        main_component_ptr->getPageComponent()->drawTimePoints();
 }
 
 
@@ -471,12 +416,13 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
 
 void SymbolistHandler::addToInspector( BaseComponent *c )
 {
-    if( inspector_window ) inspector_ptr->setInspectorObject( c );
+    // only selected and called if the main component is there...
+    main_component_ptr->setInspectorObject(c);
 }
 
 void SymbolistHandler::clearInspector()
 {
-    if( inspector_window ) inspector_ptr->clearInspector();
+    main_component_ptr->clearInspector();
 }
 
 void SymbolistHandler::updateSymbolFromInspector( BaseComponent *c)

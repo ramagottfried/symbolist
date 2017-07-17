@@ -11,9 +11,7 @@ class SymbolistMainWindow;
 class SymbolistMainComponent;
 class BaseComponent;
 
-class InspectorWindow;
 class SymbolPropertiesPanel;
-
 
 class SymbolistHandler
 {
@@ -35,9 +33,6 @@ public:
     void symbolistAPI_closeWindow();
     void symbolistAPI_windowToFront();
     void symbolistAPI_windowSetName(String name);
-    void symbolistAPI_openInspectorWindow();
-    void symbolistAPI_closeInspectorWindow();
-    void symbolistAPI_toggleInspectorWindow();
     
     void symbolistAPI_registerUpdateCallback(symbolistUpdateCallback c);
     void symbolistAPI_registerCloseCallback(symbolistCloseCallback c);
@@ -114,7 +109,7 @@ private:
     SymbolistMainComponent*             main_component_ptr;
     
     // the main view of the editor (could be embedded in a foreign app independently of the window)
-    ScopedPointer<InspectorWindow>      inspector_window;
+
     SymbolPropertiesPanel*              inspector_ptr = nullptr;
     
     OwnedArray<Symbol>   clipboard;

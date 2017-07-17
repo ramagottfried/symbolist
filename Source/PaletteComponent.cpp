@@ -16,7 +16,7 @@ PaletteButton::PaletteButton( int i, Symbol *s)
     button_id = i;
     graphic_comp = getSymbolistHandler()->makeComponentFromSymbol(s,false);
     setComponentID("PaletteButton");
-//    addAndMakeVisible(graphic_comp);
+    addAndMakeVisible(graphic_comp);
 }
 
 PaletteButton::~PaletteButton()
@@ -31,17 +31,15 @@ void PaletteButton::setSelected(bool sel)
 
 void PaletteButton::resized()
 {
-    graphic_comp->setBounds( 5 , 5 , getWidth() -10, getHeight() -10 );
+    graphic_comp->setBounds( getLocalBounds() );
     graphic_comp->resizeToFit( 5 , 5 , getWidth() -10, getHeight() -10  );
 }
 
 void PaletteButton::paint (Graphics& g)
 {
-
     Colour button_color = selected ? Colours::black : Colour::fromFloatRGBA(0, 0, 0, 0.2);
     
     graphic_comp->setSymbolColor( button_color );
-    graphic_comp->paint(g);
     
     g.setColour( button_color );
     g.drawRect(getLocalBounds());

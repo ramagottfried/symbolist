@@ -48,6 +48,7 @@ void PaletteButton::paint (Graphics& g)
 
 void PaletteButton::mouseDown ( const MouseEvent& event )
 {
+    cout << "PaletteButton::mouseDown" << endl;
     PaletteComponent* pv = (PaletteComponent*) getParentComponent();
     pv->selectPaletteButton(button_id);
 }

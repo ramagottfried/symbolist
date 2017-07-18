@@ -18,8 +18,8 @@ public:
     
     void paint (Graphics& g) override
     {
-        g.fillAll ( Colour::fromFloatRGBA(0, 0, 0, 0.05) );
-        g.setColour(Colours::lightgrey);
+        g.fillAll ( Colour::fromFloatRGBA(0.95, 0.95, 0.95, 0.7) );
+        g.setColour( Colours::lightgrey );
         g.drawLine( 0, 0, 0, getHeight() );
     }
     

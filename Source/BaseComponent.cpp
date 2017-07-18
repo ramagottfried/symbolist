@@ -588,6 +588,8 @@ void BaseComponent::mouseDoubleClick(const MouseEvent& event)
 
 void BaseComponent::paint ( Graphics& g )
 {
+    cout << "BaseComponent::paint " << this << endl;
+
     if( in_edit_mode )
     {
         g.setColour( Colour::fromFloatRGBA(1.0f,1.0f,1.0f,0.7f)  );

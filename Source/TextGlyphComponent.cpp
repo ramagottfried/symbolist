@@ -5,7 +5,6 @@ void EditableTextObjListener::labelTextChanged (Label* l)
 {
     cout << l->getText() << endl;
     owner->updateText( l->getText() );
-    owner->resized();
 }
 
 EditableTextObj::EditableTextObj(BaseComponent *c) : Label( String(), String() ), owner(c)
@@ -83,7 +82,55 @@ Rectangle<float> TextGlphComponent::symbol_export_bounds()
     return Rectangle<float>( b.getX(), b.getY() + b.getHeight()/2, b.getWidth(), b.getHeight() );
 }
 
-void TextGlphComponent::importTextFromSymbol( const Symbol& s ) {}
+void TextGlphComponent::importFromSymbol( const Symbol& s )
+{
+    BaseComponent::importFromSymbol(s);
+    
+    int pos = s.getOSCMessagePos("/text");
+    if( pos != -1 )
+    {
+        m_text = s.getOSCMessageValue(pos).getString();
+    }
+    
+    pos = s.getOSCMessagePos("/font");
+    if( pos != -1 )
+    {
+        m_font = Font::fromString( s.getOSCMessageValue(pos).getString() );
+    }
+
+    textobj->setFont( m_font );
+    textobj->setText( m_text, sendNotificationSync );
+    
+    setBounds(getX(), getY(), textobj->getFont().getStringWidth(m_text), m_font.getHeight() );
+    textobj->setBounds( getLocalBounds() );
+
+}
+
+int TextGlphComponent::addSymbolMessages( Symbol* s, const String &base_address )
+{
+    int messages_added = BaseComponent::addSymbolMessages( s, base_address );
+    
+    auto b = symbol_export_bounds();
+    
+    String addr;
+    
+    addr = base_address + "/text";
+    if( s->getOSCMessagePos(addr) == -1 )
+    {
+        s->addOSCMessage( addr, m_text );
+        messages_added++;
+    }
+
+    addr = base_address + "/font";
+    if( s->getOSCMessagePos(addr) == -1 )
+    {
+        s->addOSCMessage( addr, m_font.toString() );
+        messages_added++;
+    }
+    
+    return messages_added;
+}
+
 
 void TextGlphComponent::resized()
 {
@@ -98,4 +145,5 @@ void TextGlphComponent::resized()
 void TextGlphComponent::updateText( String str)
 {
     m_text = str;
+    resized();
 }

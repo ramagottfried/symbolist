@@ -48,7 +48,8 @@ public:
     
     Rectangle<float> symbol_export_bounds() override;
     
-    void importTextFromSymbol( const Symbol& s );
+    void importFromSymbol( const Symbol& s ) override;
+    int addSymbolMessages( Symbol* s, const String &base_address ) override;
 
     void resized() override;
     

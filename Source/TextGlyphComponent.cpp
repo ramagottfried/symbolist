@@ -7,6 +7,12 @@ void EditableTextObjListener::labelTextChanged (Label* l)
     owner->updateText( l->getText() );
 }
 
+void TextEditorObjListener::textEditorTextChanged (TextEditor& t)
+{
+    owner->updateText( t.getText() );
+}
+
+
 EditableTextObj::EditableTextObj(BaseComponent *c) : Label( String(), String() ), owner(c)
 {
     setEditable (false, true, false);

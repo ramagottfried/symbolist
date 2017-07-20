@@ -8,14 +8,37 @@ using namespace std;
 
 class TextGlphComponent;
 
-class EditableTextObjListener : public Label::Listener
+
+class TextEditorObjListener : public TextEditor::Listener
 {
 public:
-    EditableTextObjListener(TextGlphComponent* c) : owner(c) {}
-    virtual void labelTextChanged (Label* l) override;
+    TextEditorObjListener(TextGlphComponent* c) : owner(c) {}
+    void textEditorTextChanged (TextEditor& t) override;
     
 private:
     TextGlphComponent*    owner;
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TextEditorObjListener)
+};
+
+class EditableTextObjListener : public Label::Listener
+{
+public:
+    EditableTextObjListener(TextGlphComponent* c) : owner(c)
+    {
+        editlistener = new TextEditorObjListener(c);
+    }
+    
+    virtual void editorShown (Label* l, TextEditor& t) override
+    {
+        t.addListener( editlistener );
+    }
+    
+    virtual void labelTextChanged (Label* l) override;
+    
+private:
+    TextGlphComponent*                      owner;
+    ScopedPointer<TextEditorObjListener>    editlistener;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EditableTextObjListener)
 };
 

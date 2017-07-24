@@ -85,12 +85,18 @@ public:
     Point<float> lookupPathPoint( const Symbol *s, const float t );
     Point<float> lookupPathPoint( const Symbol *s, const int pathIDX, const float t, const float start, const float dur );
     
+    
+    vector<const Symbol *> getNoteOffs( const SymbolTimePoint *prev_tpoint , const SymbolTimePoint *tpoint   );
+    bool isNewSym( const Symbol *s , const SymbolTimePoint *prev_tpoint   );
+
 private:
     
     int current_point = 0;
     float current_time = 0;
     
     Score   *score_ptr = nullptr;
+    
+    const SymbolTimePoint*    prev_timepoint = nullptr;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimePointArray)
 };

@@ -262,19 +262,70 @@ Point<float> TimePointArray::lookupPathPoint( const Symbol *s, const int pathIDX
     return p.getPointAlongPath( path_time );
 }
 
+vector<const Symbol *> TimePointArray::getNoteOffs( const SymbolTimePoint *prev_tpoint , const SymbolTimePoint *tpoint   )
+{
+    
+    vector<const Symbol *> off_vec;
+    if( prev_tpoint )
+    {
+        for (auto prv : prev_tpoint->symbols_at_time )
+        {
+            bool found = false;
+            
+            if( tpoint )
+            {
+                for( auto s : tpoint->symbols_at_time )
+                {
+                    
+                    if( prv == s)
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            
+            if( !found )
+            {
+                off_vec.emplace_back( prv );
+            }
+        }
+    }
+    
+    return off_vec;
+}
+
+
+bool TimePointArray::isNewSym( const Symbol *s , const SymbolTimePoint *prev_tpoint   )
+{
+    if( prev_tpoint )
+    {
+        for (auto prv : prev_tpoint->symbols_at_time )
+        {
+            if( s == prv )
+                return false;
+        }
+    }
+    
+    return true;
+}
+
+
 odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint  )
 {
     OSCBundle bndl;
     bndl.addElement( OSCMessage("/time/lookup", (float)current_time));
     
+    String prefix = "/symbolsAtTime/";
+
     if( tpoint != nullptr )
     {
         const vector<Symbol*> vec = tpoint->symbols_at_time;
-
+        
         int count = 0;
-        String prefix = "/symbolsAtTime/";
         for (auto s : vec )
         {
+            
             // ignore symbols if after endpoint
             if( current_time <= s->getEndTime() )
             {
@@ -372,8 +423,13 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                         bndl.addElement(msg);
                     }
                     
-
                 }
+                
+                if ( isNewSym(s, prev_timepoint ) )
+                    bndl.addElement( OSCMessage( s_prefix + "/state", 1 ) );
+                else
+                    bndl.addElement( OSCMessage( s_prefix + "/state", 0 ) );
+
                 
                 count++;
             }
@@ -383,6 +439,15 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
             }
         }
     }
+    
+    auto offs = getNoteOffs( prev_timepoint, tpoint );
+    for( int i = 0; i < offs.size(); i++ )
+    {
+        String s_prefix = prefix + String(i);
+        bndl.addElement( OSCMessage( s_prefix + "/state", -1 ) );
+    }
+    
+    prev_timepoint = tpoint;
     //printBundle(bndl);
     return symbolBundleToOdot( bndl );
 }
@@ -451,6 +516,7 @@ odot_bundle *TimePointArray::getSymbolsAtTime( float t )
     int idx = lookupTimePoint( t ); //<< also sets current time
     current_point = idx;
 
+    
     if( idx >= 0 )
     {
         SymbolTimePoint *tpoint = (*this)[idx];

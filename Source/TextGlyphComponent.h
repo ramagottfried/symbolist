@@ -28,12 +28,8 @@ public:
         editlistener = new TextEditorObjListener(c);
     }
     
-    virtual void editorShown (Label* l, TextEditor& t) override
-    {
-        t.addListener( editlistener );
-    }
-    
-    virtual void labelTextChanged (Label* l) override;
+    void editorShown (Label* l, TextEditor& t) override;
+    void labelTextChanged (Label* l) override;
     
 private:
     TextGlphComponent*                      owner;

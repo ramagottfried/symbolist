@@ -1,23 +1,35 @@
 
 #include "TextGlyphComponent.h"
 
-void EditableTextObjListener::labelTextChanged (Label* l)
-{
-    cout << l->getText() << endl;
-    owner->updateText( l->getText() );
-}
-
 void TextEditorObjListener::textEditorTextChanged (TextEditor& t)
 {
     owner->updateText( t.getText() );
 }
 
 
+void EditableTextObjListener::labelTextChanged (Label* l)
+{
+    cout << l->getText() << endl;
+    owner->updateText( l->getText() );
+}
+
+void EditableTextObjListener::editorShown (Label* l, TextEditor& t)
+{
+    t.addListener( editlistener );
+    t.setBorder(BorderSize<int>(0,0,0,0));
+ //  Font f = l->getFont();
+    t.setFont(  l->getFont() );
+
+//    f.getStringWidth( l->getText() );
+    
+    t.setBounds( owner->getLocalBounds().expanded( 1 ) );
+}
+
 EditableTextObj::EditableTextObj(BaseComponent *c) : Label( String(), String() ), owner(c)
 {
     setEditable (false, true, false);
     setJustificationType (Justification::centredLeft);
-    setBorderSize( BorderSize<int>(0,0,0,0) );
+    setBorderSize( BorderSize<int>(1,1,1,1) );
     
     listener = new EditableTextObjListener((TextGlphComponent*)c);
     addListener(listener);
@@ -78,7 +90,8 @@ void TextGlphComponent::setBoundsFromSymbol( float x, float y , float w , float 
 {
     //setBounds( x, y - (h * 0.5), w , h);
     textobj->setFont( Font(h) );
-    setBounds( x, y, textobj->getFont().getStringWidth(m_text), h );
+    
+    setBounds( x, y - (h * 0.5), textobj->getFont().getStringWidth(m_text), h );
     textobj->setBounds( getLocalBounds() );
 }
 
@@ -142,9 +155,10 @@ void TextGlphComponent::resized()
 {
     BaseComponent::resized();
     int h = getHeight();
-    setBounds(getX(), getY(), textobj->getFont().getStringWidth(m_text), h );
+    setBounds(getX(), getY(), textobj->getFont().getStringWidth(m_text) + 2, h );
     
     textobj->setFont( Font( h ) );
+    //textobj->setBounds( 1, 1, textobj->getFont().getStringWidth(m_text), h );
     textobj->setBounds( getLocalBounds() );
 }
 

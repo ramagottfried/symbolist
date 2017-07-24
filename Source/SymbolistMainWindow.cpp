@@ -4,7 +4,7 @@
 
 
 SymbolistMainWindow::SymbolistMainWindow (SymbolistHandler *sh) : DocumentWindow ( "symbolist",
-                                                                Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId),
+                                                                                  Colours::white,
                                                                 DocumentWindow::allButtons)
 {
     // default stuff copied from Juce

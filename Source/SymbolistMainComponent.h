@@ -11,6 +11,8 @@
 
 #include "SymbolPropertiesPanel.h"
 
+#include "SymbolistLookAndFeel.hpp"
+
 /*
  * SymbolistMainComponent is the main controller of the application
  * managing the connection between data (score) and visualization/editing.
@@ -76,6 +78,7 @@ private:
 
     ScopedPointer<SymbolPropertiesPanel>    inspector;
 
+    SymbolistLookAndFeel    look_and_feel;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainComponent)
 };

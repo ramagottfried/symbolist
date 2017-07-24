@@ -29,6 +29,8 @@ public:
     }
     
     void editorShown (Label* l, TextEditor& t) override;
+    void editorHidden (Label*, TextEditor&) override;
+    
     void labelTextChanged (Label* l) override;
     
 private:
@@ -82,6 +84,7 @@ private:
     Font        m_font;
     
     ScopedPointer<EditableTextObj>    textobj;
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TextGlphComponent)
     

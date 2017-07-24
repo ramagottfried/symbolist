@@ -30,6 +30,8 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
     addKeyListener(this);
     
     setSize (600, 400);
+    
+    setLookAndFeel( &look_and_feel );
 
 }
 
@@ -37,6 +39,7 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
 SymbolistMainComponent::~SymbolistMainComponent()
 {
     paletteView.deleteAllChildren();
+    inspector->removeAllChildren();
 }
 
 

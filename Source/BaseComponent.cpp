@@ -602,5 +602,7 @@ void BaseComponent::paint ( Graphics& g )
         g.setColour( Colour::fromFloatRGBA(0.8f,0.8f,0.8f,0.5f)  );
         g.fillRect( getLocalBounds() );
     }
+    
+    //g.drawRect( getLocalBounds() );
 }
 

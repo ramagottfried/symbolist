@@ -19,11 +19,24 @@ void EditableTextObjListener::editorShown (Label* l, TextEditor& t)
     t.setBorder(BorderSize<int>(0,0,0,0));
  //  Font f = l->getFont();
     t.setFont(  l->getFont() );
+    
+    t.setColour( TextEditor::shadowColourId, Colours::transparentWhite );
+    t.setColour( TextEditor::focusedOutlineColourId, Colours::transparentWhite );
+    
+    // maybe use subtracted from...
+    // const Rectangle<int> centreArea (border.subtractedFrom (fullSize));
 
 //    f.getStringWidth( l->getText() );
     
-    t.setBounds( owner->getLocalBounds().expanded( 1 ) );
+    // t.setBounds( owner->getLocalBounds().translated(1, 0) );
+    //owner->setBounds( owner->getBounds().expanded(2) );
 }
+
+void EditableTextObjListener::editorHidden (Label* l, TextEditor& t)
+{
+    
+}
+
 
 EditableTextObj::EditableTextObj(BaseComponent *c) : Label( String(), String() ), owner(c)
 {
@@ -98,7 +111,7 @@ void TextGlphComponent::setBoundsFromSymbol( float x, float y , float w , float 
 Rectangle<float> TextGlphComponent::symbol_export_bounds()
 {
     auto b = getBounds().toFloat();
-    return Rectangle<float>( b.getX(), b.getY() + b.getHeight()/2, b.getWidth(), b.getHeight() );
+    return Rectangle<float>( b.getX(), b.getY() + b.getHeight()/2.0f, b.getWidth(), b.getHeight() );
 }
 
 void TextGlphComponent::importFromSymbol( const Symbol& s )

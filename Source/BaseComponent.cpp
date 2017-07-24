@@ -85,7 +85,14 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
         s->addOSCMessage( addr,         name );
         messages_added++;
     }
-
+    
+    addr = base_address + "/id";
+    if( s->getOSCMessagePos(addr) == -1 )
+    {
+        s->addOSCMessage( addr,          getComponentID() );
+        messages_added++;
+    }
+    
     addr = base_address + "/staff";
     if( s->getOSCMessagePos(addr) == -1 )
     {
@@ -157,7 +164,7 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
     }
     
 //    cout << "*********** START BASE ADD DATA ************ " << endl;
-    //s->printBundle();
+//    s->printBundle();
     
     return messages_added;
 }

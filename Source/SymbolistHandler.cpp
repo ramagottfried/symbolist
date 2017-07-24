@@ -329,8 +329,11 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
             if ( attach_the_symbol )
             {                
                 if( main_component_ptr != NULL )
+                {
+                  //  c->setComponentID( s->getID() ); // << ID is not set yet... not super clean right now
                     c->setComponentID( c->getSymbolTypeStr() + "_" + (String)main_component_ptr->getPageComponent()->getNumSubcomponents() );
-
+                    s->setID( c->getComponentID() );
+                }
                 c->setScoreSymbolPointer( s );
                 
             }

@@ -18,6 +18,17 @@ Symbol::Symbol (const String & type, float x, float y, float w, float h)
 }
 
 
+void Symbol::setID( const String& str )
+{
+    addOSCMessage("/id",     str);
+}
+
+String Symbol::getID()
+{
+    return getOSCMessageValue("/id").getString();
+}
+
+
 String Symbol::getObjectType()
 {
     return getOSCMessageValue("/objectType").getString();

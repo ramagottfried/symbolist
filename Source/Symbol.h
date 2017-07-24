@@ -63,7 +63,8 @@ public:
     }
     
     void setPosition( const Point<float> pos );
-
+    void setID( const String& str );
+    String getID();
     
     inline float pixelsToTime( const float f ) const
     {

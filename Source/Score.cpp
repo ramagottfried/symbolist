@@ -33,6 +33,8 @@ void Score::addSymbol(Symbol *symbol)
 {
     score_symbols.addSorted( score_sorter, symbol );
     time_points.addSymbolTimePoints( symbol );
+    
+  //  symbol->setID( symbol->getType() + "_" + (String)getSize() );
 }
 
 

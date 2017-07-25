@@ -16,12 +16,12 @@ void EditableTextObjListener::labelTextChanged (Label* l)
 void EditableTextObjListener::editorShown (Label* l, TextEditor& t)
 {
     t.addListener( editlistener );
-    t.setBorder(BorderSize<int>(0,0,0,0));
- //  Font f = l->getFont();
+    t.setBorder( l->getBorderSize() );
     t.setFont(  l->getFont() );
     
     t.setColour( TextEditor::shadowColourId, Colours::transparentWhite );
     t.setColour( TextEditor::focusedOutlineColourId, Colours::transparentWhite );
+    t.setIndents(0, 4);
     
     // maybe use subtracted from...
     // const Rectangle<int> centreArea (border.subtractedFrom (fullSize));
@@ -42,7 +42,9 @@ EditableTextObj::EditableTextObj(BaseComponent *c) : Label( String(), String() )
 {
     setEditable (false, true, false);
     setJustificationType (Justification::centredLeft);
-    setBorderSize( BorderSize<int>(1,1,1,1) );
+    setBorderSize( BorderSize<int>(0,0,0,0) );
+    setColour( Label::backgroundColourId, Colours::transparentWhite );
+    setMinimumHorizontalScale(1.0f);
     
     listener = new EditableTextObjListener((TextGlphComponent*)c);
     addListener(listener);
@@ -89,10 +91,7 @@ TextGlphComponent::TextGlphComponent()
     textobj = new EditableTextObj(this);
     textobj->setText (m_text, sendNotificationSync );
     textobj->setColour( Label::textColourId, getCurrentColor() );
-    textobj->setColour( Label::backgroundColourId, Colours::transparentWhite );
-    textobj->setMinimumHorizontalScale(1.0f);
     addAndMakeVisible(textobj);
-    
 }
     
 TextGlphComponent::~TextGlphComponent(){
@@ -102,10 +101,10 @@ TextGlphComponent::~TextGlphComponent(){
 void TextGlphComponent::setBoundsFromSymbol( float x, float y , float w , float h)
 {
     //setBounds( x, y - (h * 0.5), w , h);
-    textobj->setFont( Font(h) );
-    
-    setBounds( x, y - (h * 0.5), textobj->getFont().getStringWidth(m_text), h );
-    textobj->setBounds( getLocalBounds() );
+    m_font.setHeight( h );
+    textobj->setFont( m_font );
+    setBounds( x, y - (h * 0.5), textobj->getFont().getStringWidth(m_text) + 8, h );
+    textobj->setBounds( getLocalBounds().translated(4, 0) );
 }
 
 Rectangle<float> TextGlphComponent::symbol_export_bounds()
@@ -133,8 +132,8 @@ void TextGlphComponent::importFromSymbol( const Symbol& s )
     textobj->setFont( m_font );
     textobj->setText( m_text, sendNotificationSync );
     
-    setBounds(getX(), getY(), textobj->getFont().getStringWidth(m_text), m_font.getHeight() );
-    textobj->setBounds( getLocalBounds() );
+    setBounds(getX(), getY(), textobj->getFont().getStringWidth(m_text) + 8, m_font.getHeight() );
+    textobj->setBounds( getLocalBounds().translated(4, 0) );
 
 }
 
@@ -168,11 +167,11 @@ void TextGlphComponent::resized()
 {
     BaseComponent::resized();
     int h = getHeight();
-    setBounds(getX(), getY(), textobj->getFont().getStringWidth(m_text) + 2, h );
+    setBounds(getX(), getY(), textobj->getFont().getStringWidth(m_text) + 8, h );
     
-    textobj->setFont( Font( h ) );
-    //textobj->setBounds( 1, 1, textobj->getFont().getStringWidth(m_text), h );
-    textobj->setBounds( getLocalBounds() );
+    //textobj->setFont( Font( h ) );
+//    textobj->setBounds( 4, 0, textobj->getFont().getStringWidth(m_text) + 4, h );
+    textobj->setBounds( getLocalBounds().translated(4, 0) );
 }
 
 void TextGlphComponent::updateText( String str)

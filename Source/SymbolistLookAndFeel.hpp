@@ -98,6 +98,35 @@ public:
         return jmin (scrollbar.getWidth(), scrollbar.getHeight()) * 2;
     }
     
+    void drawLabel (Graphics& g, Label& label) override
+    {
+        g.fillAll (label.findColour (Label::backgroundColourId));
+        
+        if (! label.isBeingEdited())
+        {
+            const float alpha = label.isEnabled() ? 1.0f : 0.5f;
+            const Font font (getLabelFont (label));
+            
+            g.setColour (label.findColour (Label::textColourId).withMultipliedAlpha (alpha));
+            g.setFont (font);
+            
+            Rectangle<int> textArea (label.getBorderSize().subtractedFrom (label.getLocalBounds()));
+            
+            g.drawFittedText (label.getText(), textArea, label.getJustificationType(),
+                              jmax (1, (int) (textArea.getHeight() / font.getHeight())),
+                              label.getMinimumHorizontalScale());
+            
+            g.setColour (label.findColour (Label::outlineColourId).withMultipliedAlpha (alpha));
+        }
+        else if (label.isEnabled())
+        {
+            g.setColour (label.findColour (Label::outlineColourId));
+        }
+
+        g.drawRect (label.getLocalBounds());
+
+    }
+    
 private:
     
     

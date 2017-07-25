@@ -260,10 +260,6 @@ public:
         change_callback = change_fn;
         
         setState( msg[0].getInt32() > 0 );
-        
-        setColour(BooleanPropertyComponent::outlineColourId , Colours::black );
-        setColour(BooleanPropertyComponent::backgroundColourId, Colours::transparentWhite );
-
     }
     
     void setState( bool newState ) override

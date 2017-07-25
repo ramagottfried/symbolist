@@ -20,7 +20,23 @@ Symbol::Symbol (const String & type, float x, float y, float w, float h)
 
 void Symbol::setID( const String& str )
 {
-    addOSCMessage("/id",     str);
+    int pos = getOSCMessagePos("/id");
+    if( pos == -1 )
+        addOSCMessage("/id",     str);
+    else
+    {
+        OSCBundle newBundle;
+        for( auto osc_m_iter : osc_bundle )
+        {
+            auto i_msg = osc_m_iter.getMessage();
+            if( i_msg.getAddressPattern().toString() == "/id" )
+                newBundle.addElement(OSCBundle::Element(OSCMessage(OSCAddressPattern("/id"), str)));
+            else
+                newBundle.addElement( i_msg );
+        }
+        osc_bundle = newBundle;
+        
+    }
 }
 
 String Symbol::getID()

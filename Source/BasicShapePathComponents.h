@@ -35,8 +35,13 @@ class BasicShapePathComponent : public PathBaseComponent
         {
             messages_added += BaseComponent::addSymbolMessages( s, base_address );
 
-            s->addOSCMessage (base_address + "/fill", m_fill );
-            messages_added += 1;
+            String addr = base_address + "/fill";
+            if( s->getOSCMessagePos(addr) == -1 )
+            {
+                s->addOSCMessage( addr,         m_fill );
+                messages_added++;
+            }
+            
         }
        
         return messages_added;
@@ -46,7 +51,8 @@ class BasicShapePathComponent : public PathBaseComponent
     {
         BaseComponent::importFromSymbol(s);
         int fill_pos = s.getOSCMessagePos("/fill");
-        if( fill_pos != -1  ) m_fill = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(fill_pos) );
+        if( fill_pos != -1  )
+            m_fill = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(fill_pos) );
     }
     
     void updatePathPoints() override

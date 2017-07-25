@@ -53,7 +53,7 @@ void SymbolPropertiesPanel::createOSCview ()
         
         OSCBundle bndl = *s->getOSCBundle();
         if ( bndl.isEmpty() )  return;
-        
+
         for( int i = 0; i < bndl.size(); i++ )
         {
             auto msg = bndl[i].getMessage();
@@ -63,6 +63,8 @@ void SymbolPropertiesPanel::createOSCview ()
             addr_arr.removeEmptyStrings();
             
             const String& test_addr = *addr_arr.end();
+            
+            cout << test_addr << endl;
             
             if( test_addr == "color" )  // should have separate selection for stroke color and the other stroke parameters
             {

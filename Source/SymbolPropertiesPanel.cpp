@@ -68,6 +68,10 @@ void SymbolPropertiesPanel::createOSCview ()
             {
                 properties.add( new OSCColourSelectorButton(addr, msg, change_callback_fn) );
             }
+            else if( test_addr == "font" )
+            {
+                properties.add( new OSCFontMenu ( addr, msg, change_callback_fn, Font::findAllTypefaceNames() ) );
+            }
             else if( test_addr == "objectType" ) // << this should be something like: /objectType : "staff"
             {
                 StringArray choices = {"object", "staff"};

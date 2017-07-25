@@ -65,11 +65,9 @@
 		11B71DD11F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DCF1F098F1400CDE209 /* SymbolPropertiesPanel.cpp */; };
 		11B71DD21F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DCF1F098F1400CDE209 /* SymbolPropertiesPanel.cpp */; };
 		11B71DD31F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DCF1F098F1400CDE209 /* SymbolPropertiesPanel.cpp */; };
-		11B71DD41F098F1400CDE209 /* SymbolPropertiesPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 11B71DD01F098F1400CDE209 /* SymbolPropertiesPanel.h */; };
 		11B71DD71F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */; };
 		11B71DD81F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */; };
 		11B71DD91F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */; };
-		11B71DDA1F0AA83A00CDE209 /* OSCPropertyComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = 11B71DD61F0AA83A00CDE209 /* OSCPropertyComponents.h */; };
 		11CE00571EC328EC00E4F624 /* SymbolistMainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00531EC328EC00E4F624 /* SymbolistMainComponent.cpp */; };
 		11CE00581EC328EC00E4F624 /* SymbolistMainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00531EC328EC00E4F624 /* SymbolistMainComponent.cpp */; };
 		11CE005E1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */; };
@@ -439,8 +437,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				118353491F26AD0600DB1DF5 /* SymbolistLookAndFeel.hpp in Headers */,
-				11B71DD41F098F1400CDE209 /* SymbolPropertiesPanel.h in Headers */,
-				11B71DDA1F0AA83A00CDE209 /* OSCPropertyComponents.h in Headers */,
 				118648991EFA811800904672 /* TimePointArray.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

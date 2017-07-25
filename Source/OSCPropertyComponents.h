@@ -204,7 +204,6 @@ private:
 
 };
 
-
 class OSCTextProperty : public TextPropertyComponent
 {
 public:
@@ -302,5 +301,67 @@ private:
     String          text;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StaffSelectionButton)
+    
+};
+
+
+
+// menu with font name, size and style options
+class OSCFontMenu : public ChoicePropertyComponent
+{
+public:
+    OSCFontMenu(const String& _addr,
+                OSCMessage& msg,
+                osc_callback_t change_fn,
+                StringArray choiceList ) :
+    ChoicePropertyComponent( _addr ),
+    osc_msg(msg)
+    {
+        choices = choiceList;
+        change_callback = change_fn;
+        
+        m_font = Font::fromString( msg[0].getString() );
+        selected_index = choices.indexOf( m_font.getTypefaceName() );
+        
+        getLookAndFeel().setColour(ComboBox::textColourId, Colours::black );
+        getLookAndFeel().setColour(ComboBox::backgroundColourId, Colours::transparentWhite );
+        getLookAndFeel().setColour(ComboBox::arrowColourId, Colours::black );
+        
+        getLookAndFeel().setColour(PopupMenu::textColourId, Colours::black );
+        getLookAndFeel().setColour(PopupMenu::backgroundColourId, Colour::fromFloatRGBA(0.9, 0.9, 0.9, 1) );
+        
+        refresh();
+    }
+    
+    void setIndex (int newIndex) override
+    {
+        selected_index = newIndex;
+        
+        osc_msg.clear();
+        
+        m_font.setTypefaceName(choices[selected_index]);
+        osc_msg.addString( m_font.toString() );
+        
+        change_callback( osc_msg );
+        
+        cout << "FONT SELECTION ISN'T COMPLETE YET, \n need to add size and style for conversion to str storage" <<  endl;
+    }
+    
+    int getIndex() const override
+    {
+        return selected_index;
+    }
+    
+    
+private:
+    OSCMessage      osc_msg;
+    osc_callback_t  change_callback;
+    
+    
+    Font            m_font;
+    
+    int             selected_index = 0;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OSCFontMenu)
     
 };

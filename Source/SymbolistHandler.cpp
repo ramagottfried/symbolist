@@ -415,6 +415,8 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     executeUpdateCallback( score.getSymbolPosition( s ) );
     
     main_component_ptr->getPageComponent()->drawTimePoints();
+    
+    c->repaint();
 }
 
 

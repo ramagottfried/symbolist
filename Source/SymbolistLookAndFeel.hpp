@@ -25,6 +25,9 @@ public:
         setColour(PopupMenu::textColourId, Colours::black );
         setColour(PopupMenu::backgroundColourId, Colour::fromFloatRGBA(0.9, 0.9, 0.9, 1) );
 
+        setColour(ToggleButton::textColourId, Colours::black );
+        setColour(ToggleButton::tickColourId, Colours::black );
+        setColour(ToggleButton::tickDisabledColourId, Colours::black );
         
         // these don't have an effect due to needing to be set in the TextProp comp
         

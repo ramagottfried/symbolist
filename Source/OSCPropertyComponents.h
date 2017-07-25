@@ -247,6 +247,58 @@ private:
 };
 
 
+class OSCOnOffButton : public BooleanPropertyComponent
+{
+public:
+   
+    OSCOnOffButton( const String& _addr,
+                    OSCMessage& msg,
+                    osc_callback_t change_fn ) :
+    BooleanPropertyComponent (_addr, "true", "false"),
+    osc_msg(msg)
+    {
+        change_callback = change_fn;
+        
+        setState( msg[0].getInt32() > 0 );
+        
+        setColour(BooleanPropertyComponent::outlineColourId , Colours::black );
+        setColour(BooleanPropertyComponent::backgroundColourId, Colours::transparentWhite );
+
+    }
+    
+    void setState( bool newState ) override
+    {
+        state = newState;
+        refresh();
+
+    }
+    
+    bool getState() const override
+    {
+        return state;
+    }
+    
+    void buttonClicked (Button* b) override
+    {
+        setState ( !state );
+        
+        osc_msg.clear();
+        osc_msg.addInt32( (int)getState() );
+        
+        change_callback( osc_msg );
+    }
+    
+private:
+
+    OSCMessage      osc_msg;
+    osc_callback_t  change_callback;
+        
+    bool            state = 0;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OSCOnOffButton)
+};
+
+
 class StaffSelectionButton : public ButtonPropertyComponent
 {
 public:

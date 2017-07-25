@@ -83,7 +83,7 @@ void SymbolPropertiesPanel::createOSCview ()
             }
             else if( test_addr == "fill" )
             {
-                ; // make check box for fill
+                properties.add( new OSCOnOffButton( addr, msg, change_callback_fn) );
             }
             else if( msg[0].isString() )
             {

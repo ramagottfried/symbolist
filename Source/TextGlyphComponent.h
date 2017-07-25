@@ -88,11 +88,11 @@ private:
     String      m_text = "T";
     Font        m_font = Font( Font::getDefaultSerifFontName(), 20.0f, Font::plain );
     
-    float       m_extrakerning = 0;
+    float       m_extrakerning = 0.0;
     float       m_horz_scale = 1.0;
     
     
-    float       m_width_offset = 24;
+    float       m_width_offset = 10;
     float       m_x_offset = m_width_offset / 2;
     
     ScopedPointer<EditableTextObj>    textobj;

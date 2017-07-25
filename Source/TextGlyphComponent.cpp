@@ -129,6 +129,20 @@ void TextGlphComponent::importFromSymbol( const Symbol& s )
         m_font = Font::fromString( s.getOSCMessageValue(pos).getString() );
     }
 
+    pos = s.getOSCMessagePos("/kerning");
+    if( pos != -1 )
+    {
+        m_extrakerning = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(pos) );
+    }
+
+    pos = s.getOSCMessagePos("/h_scale");
+    if( pos != -1 )
+    {
+        m_horz_scale = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(pos) );
+    }
+    
+    m_font = m_font.withExtraKerningFactor( m_extrakerning ).withHorizontalScale( m_horz_scale );
+    
     textobj->setFont( m_font );
     textobj->setText( m_text, sendNotificationSync );
     
@@ -159,6 +173,20 @@ int TextGlphComponent::addSymbolMessages( Symbol* s, const String &base_address 
         messages_added++;
     }
     
+    addr = base_address + "/kerning";
+    if( s->getOSCMessagePos(addr) == -1 )
+    {
+        s->addOSCMessage( addr, m_extrakerning );
+        messages_added++;
+    }
+
+    addr = base_address + "/h_scale";
+    if( s->getOSCMessagePos(addr) == -1 )
+    {
+        s->addOSCMessage( addr, m_horz_scale );
+        messages_added++;
+    }
+    
     return messages_added;
 }
 
@@ -185,7 +213,9 @@ void TextGlphComponent::setWidthInPixels(float w)
         float current_scale = m_font.getHorizontalScale();
         
         if( current_scale > 0 )
+        {
             m_font.setHorizontalScale( dst_scale / current_scale );
+        }
     }
     
 }

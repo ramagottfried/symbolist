@@ -39,6 +39,8 @@ public:
     
     void paint ( Graphics& g ) override;
     void resized () override;
+    void resizeToFit(int x, int y, int w, int h) override;
+    bool intersectRect( Rectangle<int> rect) override;
     
     void mouseUp(const MouseEvent& event) override;
     void mouseMove(const MouseEvent& event) override;
@@ -52,12 +54,8 @@ public:
     void setMaximalBounds () override;
     void updatePathBounds ();
     
-    
     Path mergePathArray();
     void makePathArrayFromPath(const Path &p);
-    
-    void resizeToFit(int x, int y, int w, int h) override;
-    bool intersectRect( Rectangle<int> rect) override;
 
     void setEditMode(bool val) override;
     void updatePathFromPreview ();

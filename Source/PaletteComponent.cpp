@@ -42,7 +42,7 @@ void PaletteButton::paint (Graphics& g)
     graphic_comp->setSymbolColor( button_color );
     
     g.setColour( button_color );
-    g.drawRect(getLocalBounds());
+    g.drawRect( getLocalBounds() );
 
 }
 

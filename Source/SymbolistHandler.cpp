@@ -15,17 +15,18 @@ SymbolistHandler::SymbolistHandler()
     float symbol_size = 30.0;
     float symbol_pos = 0.0;
     
-    Symbol* s1 = new Symbol("circle", symbol_pos, symbol_pos, symbol_size, symbol_size);
+    Symbol* s1 = new Symbol("text", symbol_pos, symbol_pos, 20 , 20);
     palette.addDefaultItem(s1);
     
-    Symbol* s2 = new Symbol("rectangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
+    Symbol* s2 = new Symbol("circle", symbol_pos, symbol_pos, symbol_size, symbol_size);
     palette.addDefaultItem(s2);
     
-    Symbol* s3 = new Symbol("triangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
+    Symbol* s3 = new Symbol("rectangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
     palette.addDefaultItem(s3);
     
-    Symbol* s5 = new Symbol("text", 20.0, 20.0, symbol_size, symbol_size);
-    palette.addDefaultItem(s5);
+    Symbol* s4 = new Symbol("triangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
+    palette.addDefaultItem(s4);
+    
 }
 
 SymbolistHandler::~SymbolistHandler()

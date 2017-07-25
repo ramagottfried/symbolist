@@ -73,15 +73,27 @@ public:
     int addSymbolMessages( Symbol* s, const String &base_address ) override;
 
     void resized() override;
+    void resizeToFit(int x, int y, int w, int h) override;
+    void setWidthInPixels(float w);
     
     String getSymbolTypeStr() const override { return "text"; }
     
     void updateText( String str);
 
+    void setFont( Font f ){ m_font = f; }
+    
+
 private:
     
-    String      m_text = "text";
-    Font        m_font;
+    String      m_text = "T";
+    Font        m_font = Font( Font::getDefaultSerifFontName(), 20.0f, Font::plain );
+    
+    float       m_extrakerning = 0;
+    float       m_horz_scale = 1.0;
+    
+    
+    float       m_width_offset = 24;
+    float       m_x_offset = m_width_offset / 2;
     
     ScopedPointer<EditableTextObj>    textobj;
     

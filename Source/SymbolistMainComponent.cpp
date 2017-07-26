@@ -157,7 +157,7 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
     
     else if (   key == KeyPress ('v', ModifierKeys::altModifier, 0) ) { scoreView.getEditedComponent()->flipSelectedSymbols(0); }
     
-    else if (   key == KeyPress ('h', ModifierKeys::commandModifier, 0) ) { scoreView.getEditedComponent()->flipSelectedSymbols(1); }
+    else if (   key == KeyPress ('h', ModifierKeys::altModifier, 0) ) { scoreView.getEditedComponent()->flipSelectedSymbols(1); }
     
     else if (   key == KeyPress::spaceKey ) { symbolist_handler->executeTransportCallback(1); }
     

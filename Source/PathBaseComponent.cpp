@@ -758,9 +758,10 @@ void PathBaseComponent::h_flip()
                                                      m_path_centroid.getX(),
                                                      m_path_centroid.getY()  ) );
     
-    //auto actualBounds = tranformAndGetBoundsInParent( m_path );
     m_path.applyTransform( AffineTransform().verticalFlip( m_path_bounds.getHeight() ) );
-    m_path.applyTransform( AffineTransform().translated( m_path_origin ) );
+    
+    auto newrect = m_path_bounds.getRealPathBounds( m_path ).expanded( strokeType.getStrokeThickness() );
+    m_path.applyTransform( AffineTransform().translated( -newrect.getPosition() ) );
     
     makePathArrayFromPath(m_path);
     updateHandlePositions();
@@ -771,12 +772,12 @@ void PathBaseComponent::h_flip()
 
 void PathBaseComponent::v_flip()
 {
-    
     Path m_path = mergePathArray();
     
-    // auto actualBounds = tranformAndGetBoundsInParent(m_path);
     m_path.applyTransform( AffineTransform().verticalFlip( m_path_bounds.getHeight() ) );
-    m_path.applyTransform( AffineTransform().translated( m_path_origin ) );
+    auto newrect = m_path_bounds.getRealPathBounds( m_path ).expanded( strokeType.getStrokeThickness() );
+    
+    m_path.applyTransform( AffineTransform().translated( -newrect.getPosition() ) );
  
     makePathArrayFromPath(m_path);
     updateHandlePositions();

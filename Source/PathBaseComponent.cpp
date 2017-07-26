@@ -54,7 +54,7 @@ Path PathBaseComponent::mergePathArray()
     Path p;
     for (int np = 0 ; np < m_path_array.size(); np++ )
     {
-        p.addPath(*m_path_array[np]);
+        p.addPath(*(m_path_array[np]));
     }
     return p;
 }
@@ -93,13 +93,26 @@ void PathBaseComponent::makePathArrayFromPath(const Path &p)
 
 void PathBaseComponent::resizeToFit(int x, int y, int w, int h)
 {
+    // input bounds are for the visible path, not the handles...
+    cout << "PathBaseComponent::resizeToFit " << w << " " << h << " " << m_path_bounds.getWidth() << " " << m_path_bounds.getHeight() << endl;
     Rectangle<int> r = Rectangle<int>(x,y,w,h).reduced( strokeType.getStrokeThickness() );
-    if( r.getWidth() > 0 && r.getHeight() > 0)
+
+    if( r.getWidth() > 0 && r.getHeight() > 0 && m_path_bounds.getWidth() > 0 && m_path_bounds.getHeight() > 0)
     {
+        
+        float w_scale = (float)r.getWidth() / m_path_bounds.getWidth();
+        float h_scale = (float)r.getHeight() / m_path_bounds.getHeight();
+
         Path temp = mergePathArray();
-        temp.scaleToFit(r.getX(), r.getY(), r.getWidth(), r.getHeight(), false );
+        
+        Rectangle<float> tmp_bounds = m_path_bounds.getRealPathBounds( temp ).expanded( strokeType.getStrokeThickness() );
+        Point<float> newpos = tmp_bounds.getPosition();
+        
+        temp.applyTransform( AffineTransform().scale(w_scale, h_scale).translated(-newpos.x, -newpos.y) );
+
         makePathArrayFromPath(temp);
         updateHandlePositions();
+        updatePathBounds();
     }
 }
 
@@ -110,7 +123,10 @@ void PathBaseComponent::resized()
     
     if( ! in_edit_mode )
     {
-        resizeToFit(getLocalBounds().getX(), getLocalBounds().getY(), getLocalBounds().getWidth(), getLocalBounds().getHeight());
+        resizeToFit(getLocalBounds().getX(),
+                    getLocalBounds().getY(),
+                    getLocalBounds().getWidth(),
+                    getLocalBounds().getHeight());
     }
 }
 
@@ -184,6 +200,7 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
 
 void PathBaseComponent::importFromSymbol(const Symbol &s)
 {
+    cout << "PathBaseComponent::importFromSymbol" << endl;
     BaseComponent::importFromSymbol(s);
 
     cleanupPathArray();
@@ -226,9 +243,12 @@ void PathBaseComponent::updatePathBounds ()
     }
     m_path_bounds.setBounds(minx,miny, maxx-minx, maxy-miny);
     */
-    
+    cout << "PathBaseComponent::updatePathBounds" << endl;
     Path temp = mergePathArray();
+    
     m_path_bounds.getRealPathBounds( temp );
+    cout << "real bounds " << m_path_bounds.getWidth() << " " << m_path_bounds.getHeight() << endl;
+    
     m_path_origin = m_path_bounds.getPosition();
     m_path_centroid = m_path_bounds.getCentre();
 }

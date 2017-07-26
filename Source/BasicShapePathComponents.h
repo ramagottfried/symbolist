@@ -53,6 +53,7 @@ class BasicShapePathComponent : public PathBaseComponent
         int fill_pos = s.getOSCMessagePos("/fill");
         if( fill_pos != -1  )
             m_fill = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(fill_pos) );
+            
     }
     
     void updatePathPoints() override
@@ -84,6 +85,8 @@ public:
             cleanupPathArray();
             m_path_array.add(new Path());
             m_path_array.getLast()->addEllipse(area);
+            
+            updatePathBounds();
         }
         else
             PathBaseComponent::importFromSymbol(s);
@@ -113,6 +116,8 @@ public:
             cleanupPathArray();
             m_path_array.add(new Path());
             m_path_array.getLast()->addRectangle(area);
+            updatePathBounds();
+
         }
         else
             PathBaseComponent::importFromSymbol(s);
@@ -143,6 +148,8 @@ public:
             cleanupPathArray();
             m_path_array.add(new Path());
             m_path_array.getLast()->addTriangle( area.getBottomLeft(), Point<float>(area.getCentreX(), area.getY()), area.getBottomRight());
+            updatePathBounds();
+
         }
         else
             PathBaseComponent::importFromSymbol(s);

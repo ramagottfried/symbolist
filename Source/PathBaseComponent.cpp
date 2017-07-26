@@ -108,7 +108,7 @@ void PathBaseComponent::resizeToFit(int x, int y, int w, int h)
         Rectangle<float> tmp_bounds = m_path_bounds.getRealPathBounds( temp ).expanded( strokeType.getStrokeThickness() );
         Point<float> newpos = tmp_bounds.getPosition();
         
-        temp.applyTransform( AffineTransform().scale(w_scale, h_scale).translated(-newpos.x, -newpos.y) );
+        temp.applyTransform( AffineTransform().scale(w_scale, h_scale).translated( x - newpos.x, y - newpos.y ) );
 
         makePathArrayFromPath(temp);
         updateHandlePositions();
@@ -775,8 +775,8 @@ void PathBaseComponent::v_flip()
     Path m_path = mergePathArray();
     
     m_path.applyTransform( AffineTransform().verticalFlip( m_path_bounds.getHeight() ) );
-    auto newrect = m_path_bounds.getRealPathBounds( m_path ).expanded( strokeType.getStrokeThickness() );
     
+    auto newrect = m_path_bounds.getRealPathBounds( m_path ).expanded( strokeType.getStrokeThickness() );
     m_path.applyTransform( AffineTransform().translated( -newrect.getPosition() ) );
  
     makePathArrayFromPath(m_path);

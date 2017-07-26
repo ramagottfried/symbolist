@@ -239,12 +239,17 @@ void PathBaseComponent::setMinimalBounds ()
 {
     //float strokeOffset = strokeType.getStrokeThickness() * 0.5;
     Path m_path = mergePathArray();
+    
     m_path_bounds.getRealPathBounds(m_path);
+    
     Rectangle<float> symbol_bounds = m_path_bounds.expanded( strokeType.getStrokeThickness() );
     m_path.applyTransform(AffineTransform::translation(- symbol_bounds.getX(), - symbol_bounds.getY() ));
+    
     makePathArrayFromPath(m_path);
+    
     setBounds( 0, 0, symbol_bounds.getWidth(), symbol_bounds.getHeight() );
     setTopLeftPosition(symbol_bounds.getX(), symbol_bounds.getY());
+    
     updatePathBounds();
 }
 
@@ -620,16 +625,18 @@ void PathBaseComponent::abortDrawPath (  )
 // inside an existing Component we're editing the path...
 void PathBaseComponent::mouseAddClick ( const MouseEvent& event )
 {
+    auto pt = PathBaseComponent::shiftConstrainMouseAngle( path_handles.getLast(), event );
+    
     if( in_edit_mode )
     {
         if ( !drawing ) // we were NOT already in a draw process
         {
-            addHandle(PathHandle::start , event.x, event.y);
+            addHandle(PathHandle::start , pt.x, pt.y);
         }
         else
         {
             path_handles.getLast()->setEnd(false);
-            addHandle(PathHandle::anchor, event.x, event.y);
+            addHandle(PathHandle::anchor, pt.x, pt.y);
             path_handles.getLast()->setEnd(true);
             updatePathPoints();
         }

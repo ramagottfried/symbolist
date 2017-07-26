@@ -34,7 +34,8 @@ void EditableTextObjListener::editorShown (Label* l, TextEditor& t)
 
 void EditableTextObjListener::editorHidden (Label* l, TextEditor& t)
 {
-    
+    //owner->setBounds( owner->getBounds().expanded(2) );
+
 }
 
 

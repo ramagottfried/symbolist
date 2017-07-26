@@ -37,8 +37,8 @@ void SymbolPropertiesPanel::change_callback( const OSCMessage& msg)
     
     symbolist_handler->updateSymbolFromInspector( symbol_component );
     
-    cout << "*********************** updated bundle from inspector ********** " << endl;
-    s->printBundle();
+    //cout << "*********************** updated bundle from inspector ********** " << endl;
+    //s->printBundle();
     
 }
 
@@ -64,7 +64,7 @@ void SymbolPropertiesPanel::createOSCview ()
             
             const String& test_addr = *addr_arr.end();
             
-            cout << test_addr << endl;
+            // cout << test_addr << endl;
             
             if( test_addr == "color" )  // should have separate selection for stroke color and the other stroke parameters
             {

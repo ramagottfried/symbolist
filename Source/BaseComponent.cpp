@@ -326,14 +326,18 @@ void BaseComponent::setMaximalBounds ()
 
 void BaseComponent::recursiveMaximizeBounds()
 {
-    if ( ! isTopLevelComponent() )  ((BaseComponent*) getParentComponent())->recursiveMaximizeBounds();
+    if ( ! isTopLevelComponent() )
+        ((BaseComponent*) getParentComponent())->recursiveMaximizeBounds();
+    
     setMaximalBounds();
 }
 
 void BaseComponent::recursiveShrinkBounds()
 {
     setMinimalBounds();
-    if ( ! isTopLevelComponent() ) ((BaseComponent*) getParentComponent())->recursiveShrinkBounds();
+    
+    if ( ! isTopLevelComponent() )
+        ((BaseComponent*) getParentComponent())->recursiveShrinkBounds();
 }
 
 /************************

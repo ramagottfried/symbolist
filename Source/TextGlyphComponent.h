@@ -92,7 +92,7 @@ private:
     float       m_horz_scale = 1.0;
     
     
-    float       m_width_offset = 10;
+    float       m_width_offset = 12;
     float       m_x_offset = m_width_offset / 2;
     
     ScopedPointer<EditableTextObj>    textobj;

@@ -30,6 +30,8 @@ public:
     void paint ( Graphics& g ) override;
     bool intersectRect( Rectangle<int> rect) override;
     
+    void updateRelativeAttributes() override;
+
 private :
     
 };

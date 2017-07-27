@@ -94,9 +94,8 @@ void PathBaseComponent::makePathArrayFromPath(const Path &p)
 void PathBaseComponent::resizeToFit(int x, int y, int w, int h)
 {
     // input bounds are for the visible path, not the handles...
-    cout << "PathBaseComponent::resizeToFit " << w << " " << h << " " << m_path_bounds.getWidth() << " " << m_path_bounds.getHeight() << endl;
     Rectangle<int> r = Rectangle<int>(x,y,w,h).reduced( strokeType.getStrokeThickness() );
-    printRect(r, "r");
+    
     if( r.getWidth() > 0 && r.getHeight() > 0 && m_path_bounds.getWidth() > 0 && m_path_bounds.getHeight() > 0)
     {
         
@@ -200,7 +199,7 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
 
 void PathBaseComponent::importFromSymbol(const Symbol &s)
 {
-    cout << "PathBaseComponent::importFromSymbol" << endl;
+    //cout << "PathBaseComponent::importFromSymbol" << endl;
     BaseComponent::importFromSymbol(s);
 
     cleanupPathArray();
@@ -243,17 +242,13 @@ void PathBaseComponent::updatePathBounds ()
     }
     m_path_bounds.setBounds(minx,miny, maxx-minx, maxy-miny);
     */
-    cout << "PathBaseComponent::updatePathBounds" << endl;
+    
     Path temp = mergePathArray();
     
     m_path_bounds.getRealPathBounds( temp );
-    cout << "real bounds " << m_path_bounds.getWidth() << " " << m_path_bounds.getHeight() << endl;
-    
     m_path_origin = m_path_bounds.getPosition();
     m_path_centroid = m_path_bounds.getCentre();
 }
-
-
 
 void PathBaseComponent::setMinimalBounds ()
 {
@@ -292,8 +287,11 @@ void PathBaseComponent::setEditMode( bool val )
     {
         ScoreComponent* sc = ((ScoreComponent*)getParentComponent());
         sc->addToSelection(this);
+        
         removeHandles();
-        if ( m_path_array.isEmpty() ) sc->deleteSelectedComponents();
+        
+        if ( m_path_array.isEmpty() )
+            sc->deleteSelectedComponents();
     }
 }
 
@@ -660,6 +658,7 @@ void PathBaseComponent::mouseAddClick ( const MouseEvent& event )
             path_handles.getLast()->setEnd(true);
             updatePathPoints();
         }
+        
         updatePathBounds();
         repaint();
     }

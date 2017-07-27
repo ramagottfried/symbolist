@@ -100,9 +100,11 @@ public:
     virtual bool isInEditMode() override;
     bool isSelected(){ return is_selected; }
     
+    
+    // this is all stuff for dealing with groups, maybe should be moved to SymbolGroupComponent?
     void updateRelativePos();
     void updateRelativeSize();
-    void updateRelativeAttributes();
+    virtual void updateRelativeAttributes(); // << now virtual since only groups have to update sub comps
     void updateSubcomponents();
     void addSubcomponent( SymbolistComponent *c ) override;
     bool inPlaceForRelativeUpdates();

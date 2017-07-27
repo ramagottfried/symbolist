@@ -85,6 +85,8 @@ protected:
     Colour                      preview_stroke_color = Colours::cornflowerblue ;
     
     Point<float>                m_path_origin;
+    
+    // note: path_handles are also stored as subcomponents in the main score, to use the selection system... maybe not both necessary...
     Array<PathHandle*>          path_handles;
     PathHandle*                 rotation_handle = NULL;
     //Point<float>                m_prev_drag;

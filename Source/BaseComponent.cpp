@@ -185,7 +185,7 @@ void BaseComponent::importFromSymbol( const Symbol &s )
     } else {
         
         String typeStr = s.getOSCMessageValue(typeMessagePos).getString();
-        cout << "Importing BaseComponent from Symbol: " << typeStr << endl;
+//        cout << "Importing BaseComponent from Symbol: " << typeStr << endl;
         
         
         int x_pos = s.getOSCMessagePos("/x");
@@ -200,7 +200,7 @@ void BaseComponent::importFromSymbol( const Symbol &s )
             float w = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(w_pos) );
             float h = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(h_pos) );
             
-            cout << "x " << x  << " y " << y << " w " << w << endl;
+//            cout << "x " << x  << " y " << y << " w " << w << endl;
             
             setBoundsFromSymbol( x , y , w , h);
         }
@@ -378,13 +378,16 @@ void BaseComponent::updateRelativeAttributes()
     updateRelativePos();
     updateRelativeSize();
     
+    /*
     if( in_edit_mode )
     {
+        // because we're overrideing the mouseClickAdd for editing, we end up adding extra subcomponents instead
         for ( int i = 0; i < getNumSubcomponents(); i++ )
         {
             ((BaseComponent*)getSubcomponent(i))->updateRelativeAttributes();
         }
     }
+     */
 }
 
 void BaseComponent::resizeToFit(int x, int y, int w, int h)
@@ -481,7 +484,7 @@ void BaseComponent::mouseDown( const MouseEvent& event )
     m_down = event.position;
 
     if ( in_edit_mode || getMainMouseMode() == UI_EditType::draw )
-        getPageComponent()->mouseDown( event );
+        ScoreComponent::mouseDown( event );
     else
     {
         

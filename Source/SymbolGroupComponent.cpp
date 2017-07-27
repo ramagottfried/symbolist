@@ -57,6 +57,23 @@ void SymbolGroupComponent::setEditMode( bool val )
     }
 }
 
+void SymbolGroupComponent::updateRelativeAttributes()
+{
+    updateRelativePos();
+    updateRelativeSize();
+    
+    // called by notify modify when exiting edit mode
+    // overridden here to iterate through subcomponent since only groups have subcomponents
+    
+    if( in_edit_mode )
+    {
+        for ( int i = 0; i < getNumSubcomponents(); i++ )
+        {
+            ((BaseComponent*)getSubcomponent(i))->updateRelativeAttributes();
+        }
+    }
+}
+
 
 bool SymbolGroupComponent::intersectRect( Rectangle<int> rect)
 {

@@ -612,9 +612,7 @@ void BaseComponent::paint ( Graphics& g )
 {
     if( in_edit_mode )
     {
-        g.setColour( Colour::fromFloatRGBA(1.0f,1.0f,1.0f,0.7f)  );
-        g.fillRect( getLocalBounds() );
-        g.setColour( Colour::fromFloatRGBA(0.8f,0.8f,0.8f,0.5f)  );
+        g.setColour( Colour::fromFloatRGBA(1.0f,1.0f,1.0f,0.9f)  );
         g.fillRect( getLocalBounds() );
     }
     

@@ -786,6 +786,7 @@ void PathBaseComponent::v_flip()
     makePathArrayFromPath(m_path);
     updateHandlePositions();
     updatePathBounds();
+    
     repaint();
 }
 

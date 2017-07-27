@@ -84,7 +84,37 @@ bool SymbolGroupComponent::intersectRect( Rectangle<int> rect)
     return false;
 }
 
+void SymbolGroupComponent::h_flip()
+{
+    for (int i = 0; i < getNumSubcomponents(); i++ )
+    {
+        auto b = ((BaseComponent *)getSubcomponent(i));
+        b->h_flip();
+        
+        auto rel_b = b->getRelativeBounds();
+        auto new_x = 1.0 - (rel_b.getX() + rel_b.getWidth());
+        rel_b.setX( new_x );
+        
+        b->setRelativeBounds( rel_b );
+    }
+    updateSubcomponents();
+}
 
+void SymbolGroupComponent::v_flip()
+{
+    for (int i = 0; i < getNumSubcomponents(); i++ )
+    {
+        auto b = ((BaseComponent *)getSubcomponent(i));
+        b->v_flip();
+        
+        auto rel_b = b->getRelativeBounds();
+        auto new_y = 1.0 - (rel_b.getY() + rel_b.getHeight());
+        rel_b.setY( new_y );
+        
+        b->setRelativeBounds( rel_b );
+    }
+    updateSubcomponents();
+}
 
 /*============================*
  * SYMBOL MANAGEMENT

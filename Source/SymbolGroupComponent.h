@@ -31,6 +31,9 @@ public:
     bool intersectRect( Rectangle<int> rect) override;
     
     void updateRelativeAttributes() override;
+    
+    void h_flip() override;
+    void v_flip() override;
 
 private :
     

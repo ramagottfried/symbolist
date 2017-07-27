@@ -109,6 +109,19 @@ public:
     void addSubcomponent( SymbolistComponent *c ) override;
     bool inPlaceForRelativeUpdates();
     
+    inline void setRelativeBounds( Rectangle<float> rect )
+    {
+        relative_x = rect.getX();
+        relative_y = rect.getY();
+        relative_w = rect.getWidth();
+        relative_h = rect.getHeight();
+    }
+    
+    inline Rectangle<float> getRelativeBounds()
+    {
+        return Rectangle<float>( relative_x, relative_y, relative_w, relative_h );
+    }
+    
 protected:
     
     // score structure

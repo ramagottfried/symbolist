@@ -483,7 +483,7 @@ void BaseComponent::mouseDown( const MouseEvent& event )
 {
     m_down = event.position;
 
-    if ( in_edit_mode || getMainMouseMode() == UI_EditType::draw )
+    if ( in_edit_mode || ( isTopLevelComponent() && getMainMouseMode() == UI_EditType::draw) )
         ScoreComponent::mouseDown( event );
     else
     {
@@ -561,7 +561,7 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
 void BaseComponent::mouseUp( const MouseEvent& event )
 {
     
-    if ( in_edit_mode || getMainMouseMode() == UI_EditType::draw )
+    if ( in_edit_mode || ( isTopLevelComponent() && getMainMouseMode() == UI_EditType::draw ) )
         ScoreComponent::mouseUp(event);
     else
     {

@@ -62,8 +62,10 @@ void PageComponent::exitEditMode( )
 
 ScoreComponent* PageComponent::getEditedComponent()
 {
-    if ( edited_component == NULL ) return this;
-    else return edited_component;
+    if ( edited_component == NULL )
+        return this;
+    else
+        return edited_component;
 }
 
 

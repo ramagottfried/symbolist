@@ -296,11 +296,13 @@
 		11CE00151EC3231E00E4F624 /* symbol-components */ = {
 			isa = PBXGroup;
 			children = (
-				1107B3DB1EF1751900E2DFA9 /* TextGlyphComponent.cpp */,
-				1107B3DC1EF1751900E2DFA9 /* TextGlyphComponent.h */,
-				11D86B8F1EEAF9FD00681F6D /* BasicShapePathComponents.h */,
 				11CE00651EC4B90700E4F624 /* BaseComponent.h */,
 				118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */,
+				11D86B8A1EEAEF7900681F6D /* PathBaseComponent.h */,
+				11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */,
+				11D86B8F1EEAF9FD00681F6D /* BasicShapePathComponents.h */,
+				1107B3DB1EF1751900E2DFA9 /* TextGlyphComponent.cpp */,
+				1107B3DC1EF1751900E2DFA9 /* TextGlyphComponent.h */,
 				444C43A41EE4A748000C6F69 /* SymbolGroupComponent.h */,
 				444C43A31EE4A748000C6F69 /* SymbolGroupComponent.cpp */,
 			);
@@ -318,8 +320,6 @@
 		444572681EFA67BE00A7DECD /* path-tools */ = {
 			isa = PBXGroup;
 			children = (
-				11D86B8A1EEAEF7900681F6D /* PathBaseComponent.h */,
-				11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */,
 				1107B3E01EF2D2BA00E2DFA9 /* PathHandleComponent.h */,
 				1107B3DF1EF2D2BA00E2DFA9 /* PathHandleComponent.cpp */,
 				1107B3E71EF5388500E2DFA9 /* PathInfo.cpp */,

@@ -96,7 +96,7 @@ void PathBaseComponent::resizeToFit(int x, int y, int w, int h)
     // input bounds are for the visible path, not the handles...
     cout << "PathBaseComponent::resizeToFit " << w << " " << h << " " << m_path_bounds.getWidth() << " " << m_path_bounds.getHeight() << endl;
     Rectangle<int> r = Rectangle<int>(x,y,w,h).reduced( strokeType.getStrokeThickness() );
-
+    printRect(r, "r");
     if( r.getWidth() > 0 && r.getHeight() > 0 && m_path_bounds.getWidth() > 0 && m_path_bounds.getHeight() > 0)
     {
         

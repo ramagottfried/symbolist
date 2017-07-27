@@ -9,7 +9,7 @@ void SymbolGroupComponent::paint ( Graphics& g )
 {
     BaseComponent::paint( g );
     g.setColour( Colour::fromRGB(240,240,240) ) ;
-    const Rectangle<int> b = ((BaseComponent*) this)->getLocalBounds();
+    const Rectangle<int> b = ((BaseComponent*)this)->getLocalBounds();
     g.drawRect(b);
 }
 
@@ -120,15 +120,20 @@ void SymbolGroupComponent::importFromSymbol( const Symbol &s )
     if ( pos >= 0 )
     {
         int n_symbols = s.getOSCMessageValue(pos).getInt32();
- //       std::cout << "Importing Group of " << n_symbols << " symbols..." << std::endl;
+ 
+        std::cout << "Importing Group of " << n_symbols << " symbols..." << std::endl;
         for (int i = 0; i < n_symbols; i++ )
         {
             String filter = "/subsymbol/" + String(i+1) ;   // we start at 1 .. (?)
-            //cout << "IMPORT FROM: " << filter << endl;
+            
+            cout << "IMPORT FROM: " << filter << endl;
             Symbol sub_s = s.makeSubSymbol( filter );
             BaseComponent* c = getSymbolistHandler()->makeComponentFromSymbol( &sub_s , false );
-            if ( c != NULL) addSubcomponent( c );
-            else cout << "Error importing subsymbol #" << i << endl;
+            
+            if ( c != NULL)
+                addSubcomponent( c );
+            else
+                cout << "Error importing subsymbol #" << i << endl;
         }
     }
 }

@@ -52,8 +52,9 @@ void PageComponent::exitEditMode( )
     if ( edited_component != NULL )
     {
         edited_component->recursiveShrinkBounds();
-        edited_component->setEditMode(false);
         edited_component->reportModification();
+        // reportModificaiton must be before setting Edit mode to handle case of repositioned sub symbols
+        edited_component->setEditMode(false);
         edited_component = NULL;
     }
 }

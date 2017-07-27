@@ -359,27 +359,31 @@ bool BaseComponent::inPlaceForRelativeUpdates()
 
 void BaseComponent::updateRelativePos()
 {
-        Rectangle<int> container_bounds = getParentComponent()->getBounds();
-        relative_x = getPosition().x / (float) (container_bounds.getWidth());
-        relative_y = getPosition().y / (float) (container_bounds.getHeight());
+    Rectangle<int> container_bounds = getParentComponent()->getBounds();
+    relative_x = getPosition().x / (float) (container_bounds.getWidth());
+    relative_y = getPosition().y / (float) (container_bounds.getHeight());
 }
 
 // update the relative size according to container
 // call this after a resize
 void BaseComponent::updateRelativeSize()
 {
-        Rectangle<int> container_bounds = getParentComponent()->getBounds();
-        relative_w = getWidth() / (float) (container_bounds.getWidth());
-        relative_h = getHeight() / (float) (container_bounds.getHeight());
+    Rectangle<int> container_bounds = getParentComponent()->getBounds();
+    relative_w = getWidth() / (float) (container_bounds.getWidth());
+    relative_h = getHeight() / (float) (container_bounds.getHeight());
 }
 
 void BaseComponent::updateRelativeAttributes()
 {
     updateRelativePos();
     updateRelativeSize();
-    for ( int i = 0; i < getNumSubcomponents(); i++ )
+    
+    if( in_edit_mode )
     {
-        ((BaseComponent*)getSubcomponent(i))->updateRelativeAttributes();
+        for ( int i = 0; i < getNumSubcomponents(); i++ )
+        {
+            ((BaseComponent*)getSubcomponent(i))->updateRelativeAttributes();
+        }
     }
 }
 
@@ -393,12 +397,15 @@ void BaseComponent::resizeToFit(int x, int y, int w, int h)
 // call this from container at resize
 void BaseComponent::updateSubcomponents ()
 {
-    //float relative_x, relative_y, relative_w, relative_h;
     for ( int i = 0; i < getNumSubcomponents(); i++ )
     {
         BaseComponent* c = (BaseComponent*)getSubcomponent(i);
-        c->setTopLeftPosition(c->relative_x * getWidth(),c->relative_y * getHeight() );
-        c->setSize(c->relative_w * getWidth(),c->relative_h * getHeight() );
+        
+        c->setBounds(c->relative_x * getWidth(),
+                     c->relative_y * getHeight(),
+                     c->relative_w * getWidth(),
+                     c->relative_h * getHeight());
+
         c->updateSubcomponents();
     }
 }
@@ -406,6 +413,7 @@ void BaseComponent::updateSubcomponents ()
 void BaseComponent::addSubcomponent( SymbolistComponent *c )
 {
     ScoreComponent::addSubcomponent( c );
+    
     if ( ((BaseComponent*)c)->inPlaceForRelativeUpdates() )
     {
         ((BaseComponent*)c)->updateRelativePos();

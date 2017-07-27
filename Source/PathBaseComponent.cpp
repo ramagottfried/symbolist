@@ -663,6 +663,11 @@ void PathBaseComponent::mouseAddClick ( const MouseEvent& event )
         updatePathBounds();
         repaint();
     }
+    else if( getMainMouseMode() == UI_EditType::draw )
+    {
+        // pass event to page/score if there should be a new path added
+        getPageComponent()->mouseAddClick( event );
+    }
 }
 
 
@@ -683,7 +688,7 @@ void PathBaseComponent::mouseDoubleClick(const MouseEvent& event)
 void PathBaseComponent::mouseUp(const MouseEvent& event)
 {
     BaseComponent::mouseUp(event);
-    
+
     if( in_edit_mode && event.mods.isCommandDown() )
     {
         drawing = true;

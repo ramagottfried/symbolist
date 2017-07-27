@@ -82,7 +82,9 @@ public:
 
     void setFont( Font f ){ m_font = f; }
     
-
+    // override to avoid entering edit mode
+    void mouseDoubleClick(const MouseEvent& event) override {}
+    
 private:
     
     String      m_text = "T";

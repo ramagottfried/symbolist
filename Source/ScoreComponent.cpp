@@ -321,6 +321,7 @@ void ScoreComponent::mouseAddClick ( const MouseEvent& event )
 
     if ( getMainDrawMode() == UI_DrawType::from_template )
     {
+
         Symbol* symbol_template = getSymbolistHandler()->getCurrentSymbol();
         
         /* creates a new symbol with the same settings as the symbol_template
@@ -347,7 +348,8 @@ void ScoreComponent::mouseAddClick ( const MouseEvent& event )
         c->mouseAddClick( event.getEventRelativeTo(c) );
     }
 
-    if ( ! top_level ) c->reportModification();
+    if ( ! top_level )
+        c->reportModification();
     
     // deselect other items and select this one
     //addToSelection( c );
@@ -358,14 +360,12 @@ void ScoreComponent::mouseAddClick ( const MouseEvent& event )
 void ScoreComponent::mouseDown ( const MouseEvent& event )
 {
     UI_EditType ed = getMainMouseMode();
-    
     if( ed == selection )
     {
         beginLassoSelection( event.getPosition() );
     }
     else if( ed == draw )
     {
-//        getSymbolistHandler()->symbolistAPI_closeInspectorWindow();
         mouseAddClick( event.getEventRelativeTo(getPageComponent()) );
     }
 }
@@ -390,7 +390,8 @@ void ScoreComponent::mouseUp ( const MouseEvent& event )
     {
         // when the mousedown on this triggered an entry to edit mode, we might want to pass the mouse up there, too
         ScoreComponent* sc = getPageComponent()->getEditedComponent();
-        if ( sc != this ) sc->mouseUp(event.getEventRelativeTo( sc ));
+        if ( sc != this )
+            sc->mouseUp(event.getEventRelativeTo( sc ));
     }
 }
 

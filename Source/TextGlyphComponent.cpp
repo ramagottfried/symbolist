@@ -239,3 +239,4 @@ void TextGlphComponent::updateText( String str)
     m_text = str;
     resized();
 }
+

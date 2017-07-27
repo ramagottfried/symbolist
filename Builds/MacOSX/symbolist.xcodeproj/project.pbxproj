@@ -331,14 +331,14 @@
 		44DFA0951ED2C96600A6847A /* window-components */ = {
 			isa = PBXGroup;
 			children = (
-				11CE005D1EC4B31200E4F624 /* ScoreComponent.h */,
-				11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */,
 				445A661F1EDABDED00E2ADA2 /* SymbolistComponent.h */,
 				444CD9021EDDAF1B001AC03A /* SymbolistComponent.cpp */,
-				118C38EE1EC61404006FF4A1 /* PaletteComponent.h */,
-				118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */,
+				11CE005D1EC4B31200E4F624 /* ScoreComponent.h */,
+				11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */,
 				444C43A01EE4A2E4000C6F69 /* PageComponent.h */,
 				444C439F1EE4A2E4000C6F69 /* PageComponent.cpp */,
+				118C38EE1EC61404006FF4A1 /* PaletteComponent.h */,
+				118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */,
 				1186489A1EFAC44100904672 /* ScoreCursor.cpp */,
 				1186489B1EFAC44100904672 /* ScoreCursor.h */,
 				118648A01EFBB5D500904672 /* TimePointGUI.cpp */,

@@ -9,6 +9,8 @@
 class TimePointGUI : public SymbolistComponent
 {
 public:
+    TimePointGUI(){}
+    ~TimePointGUI(){}
     
     void paint( Graphics& g ) override
     {
@@ -28,4 +30,6 @@ public:
     
 private:
     
+    //==============================================================================
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimePointGUI)
 };

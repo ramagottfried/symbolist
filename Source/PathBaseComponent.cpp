@@ -186,8 +186,10 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
         s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/time/duration", s->pixelsToTime( sub_bounds.getWidth() ) ) );
         
         s->addOSCMessage ((String(base_address) += "/fill") ,   m_fill   );
+
+        s->addOSCMessage ((String(base_address) += "/stroke/thickness") ,   strokeType.getStrokeThickness()  );
         
-        messages_added += 5 ;
+        messages_added += 6 ;
     }
     
     return messages_added;
@@ -214,9 +216,14 @@ void PathBaseComponent::importFromSymbol(const Symbol &s)
         m_path_array.add(subp);
     }
 
-    int fill_pos = s.getOSCMessagePos("/fill");
-    if( fill_pos != -1  )
-        m_fill = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(fill_pos) );
+    int pos = s.getOSCMessagePos("/fill");
+    if( pos != -1  )
+        m_fill = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(pos) );
+    
+    pos = s.getOSCMessagePos("/stroke/thickness");
+    if( pos != -1  )
+        strokeType.setStrokeThickness( Symbol::getOSCValueAsFloat( s.getOSCMessageValue(pos) ) );
+    
     
     
     updatePathBounds();

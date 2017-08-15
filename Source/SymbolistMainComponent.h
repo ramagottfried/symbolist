@@ -10,6 +10,7 @@
 #include "BaseComponent.h"
 
 #include "SymbolPropertiesPanel.h"
+#include "MouseModeComponent.hpp"
 
 #include "SymbolistLookAndFeel.hpp"
 
@@ -51,6 +52,9 @@ public:
     inline PageComponent* getPageComponent() override { return (PageComponent*)score_viewport.getViewedComponent(); }
     inline SymbolistHandler* getSymbolistHandler() override { return symbolist_handler; }
     inline Viewport* getViewer() { return &score_viewport; }
+    Rectangle<float> getViewRect();
+    Rectangle<float> getZoomedRect();
+
     inline ModifierKeys* getCurrentMods(){ return &current_mods; }
     
     /*********************************************
@@ -77,7 +81,9 @@ private:
     ModifierKeys        current_mods;
 
     ScopedPointer<SymbolPropertiesPanel>    inspector;
+    MouseModeComponent                      mouseModeView;
 
+    
     SymbolistLookAndFeel    look_and_feel;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainComponent)

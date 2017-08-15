@@ -20,6 +20,8 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
     
     paletteView.selectPaletteButton(-1);
     addAndMakeVisible(paletteView);
+    addAndMakeVisible(mouseModeView);
+
     
     inspector = new SymbolPropertiesPanel(sh);
 
@@ -48,8 +50,10 @@ void SymbolistMainComponent::resized()
     auto w = getWidth();
     auto h = getHeight();
     
-    score_viewport.setBounds (50, 0, w-50, h );
+    
     paletteView.setBounds( 0, 0, 50, h );
+    score_viewport.setBounds( 50, 0, w-50, h );
+    mouseModeView.setBounds( 50, h-25, w-50, 25 );
     
     if( inspector->isVisible() )
     {
@@ -89,6 +93,16 @@ void SymbolistMainComponent::zoom( float delta )
     repaint();
 }
 
+Rectangle<float> SymbolistMainComponent::getZoomedRect()
+{
+    return score_viewport.getViewArea().toFloat() / m_zoom;
+}
+
+Rectangle<float> SymbolistMainComponent::getViewRect()
+{
+    return score_viewport.getViewArea().toFloat();
+}
+
 
 /***************************
  * edit/drax modes
@@ -97,7 +111,9 @@ void SymbolistMainComponent::zoom( float delta )
 void SymbolistMainComponent::setMouseMode( UI_EditType m )
 {
     mouse_mode = m;
-    scoreView.repaint();
+    mouseModeView.setMouseMode( m );
+    
+    //scoreView.repaint();
 }
 
 UI_EditType SymbolistMainComponent::getMouseMode()
@@ -108,7 +124,8 @@ UI_EditType SymbolistMainComponent::getMouseMode()
 void SymbolistMainComponent::setDrawMode( UI_DrawType m )
 {
     draw_mode = m;
-    scoreView.repaint();
+    mouseModeView.setDrawMode(m);
+    //scoreView.repaint();
 }
 
 UI_DrawType SymbolistMainComponent::getDrawMode()
@@ -176,8 +193,8 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
 
     else if (   key == KeyPress('c', ModifierKeys::commandModifier, 0) ) { symbolist_handler->copySelectedToClipBoard(); }
     else if (   key == KeyPress('v', ModifierKeys::commandModifier, 0) ) { symbolist_handler->newFromClipBoard(); }
-    else if (   key == KeyPress('-') ) { zoom( -0.01 ); }
-    else if (   key == KeyPress('=') ) { zoom(  0.01) ; }
+    else if (   key == KeyPress('-') ) { zoom( -0.1 ); }
+    else if (   key == KeyPress('=') ) { zoom(  0.1) ; }
     
     return true;
 }

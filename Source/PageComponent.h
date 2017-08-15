@@ -1,13 +1,4 @@
-//
-//  PageComponent.hpp
-//  symbolist
-//
-//  Created by Jean Bresson on 04/06/2017.
-//
-//
-
-#ifndef PageComponent_hpp
-#define PageComponent_hpp
+#pragma once
 
 #include "ScoreComponent.h"
 #include "BaseComponent.h"
@@ -58,5 +49,3 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PageComponent)
 };
 
-
-#endif /* PageComponent_hpp */

@@ -89,29 +89,7 @@ void PageComponent::paint (Graphics& g)
 {
     g.fillAll ( Colours::white );
 
-    g.setFont (Font (16.0f));
-    g.setColour (Colours::grey);
-    
-    String msg;
-    
-    
-    if ( getMainMouseMode() == UI_EditType::selection )
-    {
-        msg = " select " ;
-    }
-    else if ( getMainDrawMode() == UI_DrawType::from_template )
-    {
-        msg = " draw " ;
-        msg += getSymbolistHandler()->getCurrentSymbol()->getType();
-    }
-    else
-    {
-            msg += " draw lines " ;
-    }
-    
-    auto visibleBounds = getMainComponent()->getViewer()->getViewArea();
-    
-    g.drawText (msg, visibleBounds , Justification::bottom, false);
+    auto visibleBounds = getMainComponent()->getViewRect() ;
     
     String timestr = " t = ";
     timestr += (String) (getSymbolistHandler()->getCurrentTime()) ;

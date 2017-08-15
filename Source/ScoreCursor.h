@@ -8,6 +8,9 @@ class ScoreCursor : public SymbolistComponent
 {
 public:
     
+    ScoreCursor(){}
+    ~ScoreCursor(){}
+    
     void paint( Graphics& g ) override
     {
         g.setColour( Colours::lightblue );
@@ -53,4 +56,7 @@ private:
     float           m_playpoint = 1;
     
     Point<float>    m_down;
+    
+    //==============================================================================
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScoreCursor)
 };

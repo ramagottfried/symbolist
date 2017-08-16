@@ -42,6 +42,14 @@ class BasicShapePathComponent : public PathBaseComponent
                 messages_added++;
             }
             
+            addr = base_address + "/stroke/thickness";
+            if( s->getOSCMessagePos(addr) == -1 )
+            {
+                s->addOSCMessage( addr,         strokeType.getStrokeThickness() );
+                messages_added++;
+            }
+
+            
         }
        
         return messages_added;
@@ -50,9 +58,15 @@ class BasicShapePathComponent : public PathBaseComponent
     void importFromSymbol(const Symbol &s) override
     {
         BaseComponent::importFromSymbol(s);
-        int fill_pos = s.getOSCMessagePos("/fill");
-        if( fill_pos != -1  )
-            m_fill = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(fill_pos) );
+        
+        int pos = s.getOSCMessagePos("/fill");
+        if( pos != -1  )
+            m_fill = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(pos) );
+            
+        pos = s.getOSCMessagePos("/stroke/thickness");
+        if( pos != -1  )
+            strokeType.setStrokeThickness( Symbol::getOSCValueAsFloat( s.getOSCMessageValue(pos) ) );
+
             
     }
     
@@ -81,6 +95,7 @@ public:
         if( !modif_flag )
         {
             BasicShapePathComponent::importFromSymbol(s);
+            
             auto area = getLocalBounds().toFloat().reduced( strokeWeight );
             cleanupPathArray();
             m_path_array.add(new Path());
@@ -144,6 +159,7 @@ public:
         if( !modif_flag )
         {
             BasicShapePathComponent::importFromSymbol(s);
+            
             auto area = getLocalBounds().toFloat().reduced( strokeWeight );
             cleanupPathArray();
             m_path_array.add(new Path());

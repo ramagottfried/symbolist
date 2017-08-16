@@ -413,3 +413,61 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OSCFontMenu)
     
 };
+
+class NonEditableTextObj : public Label
+{
+public:
+    NonEditableTextObj( String str) :
+    Label( String(), str )
+    {
+        setEditable (false, false, false);
+        setColour(textColourId, Colours::black );
+        setColour(backgroundColourId, Colours::transparentWhite );
+        setColour(outlineColourId, Colour::fromFloatRGBA(0., 0., 0., 0.4)  );
+        Font f = getFont();
+        f.setItalic(true);
+        setFont( f );
+    }
+    
+    ~NonEditableTextObj(){}
+    
+private:
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NonEditableTextObj)
+    
+};
+
+        
+class OSCValueDisplay  : public PropertyComponent
+{
+public:
+    OSCValueDisplay ( const String& _addr, OSCMessage& msg ) :
+    PropertyComponent (_addr), osc_msg(msg)
+    {
+        
+        String str;
+        
+        if( msg[0].isString() )
+            str = msg[0].getString();
+        else if( msg[0].isFloat32() )
+            str = (String)msg[0].getFloat32();
+        else if( msg[0].isInt32() )
+            str = (String)msg[0].getInt32();
+        
+        label = new NonEditableTextObj( str );
+        addAndMakeVisible(label);
+        
+        refresh();
+    }
+    
+    ~OSCValueDisplay(){}
+    
+    void refresh() override {}
+    
+    
+private:
+    OSCMessage      osc_msg;
+    ScopedPointer<NonEditableTextObj> label;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OSCValueDisplay)
+};

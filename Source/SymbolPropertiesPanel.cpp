@@ -87,6 +87,14 @@ void SymbolPropertiesPanel::createOSCview ()
             {
                 properties.add( new OSCOnOffButton( addr, msg, change_callback_fn) );
             }
+            else if( test_addr == "type" )
+            {
+                properties.add( new OSCValueDisplay( addr, msg) );
+            }
+            else if( test_addr == "id" )
+            {
+                properties.add( new OSCValueDisplay( addr, msg) );
+            }
             else if( msg[0].isString() )
             {
                 properties.add( new OSCTextProperty( addr, msg, change_callback_fn) );

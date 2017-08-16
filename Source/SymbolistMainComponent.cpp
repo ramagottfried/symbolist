@@ -29,10 +29,12 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
     inspector = new SymbolPropertiesPanel(sh);
 
     // the main component will receive key events from the subviews
-    paletteView.addKeyListener(this);
-    scoreView.addKeyListener(this);
-    setWantsKeyboardFocus(true);
-    addKeyListener(this);
+    //paletteView.addKeyListener(this);
+    //scoreView.addKeyListener(this);
+    
+    //setWantsKeyboardFocus(true);
+    
+    //addKeyListener(this);
     
     setSize (600, 400);
     
@@ -53,11 +55,12 @@ void SymbolistMainComponent::resized()
     auto w = getWidth();
     auto h = getHeight();
     
+    auto menuH = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
     
     paletteView.setBounds( 0, 0, 50, h );
-    score_viewport.setBounds( 50, 100, w-50, h );
+    score_viewport.setBounds( 50, menuH, w-50, h );
     mouseModeView.setBounds( 50, h-25, w-50, 25 );
-    menu.setBounds(50, 0, w-50, 100 );
+    menu.setBounds(50, 0, w-50, menuH );
     
     if( inspector->isVisible() )
     {
@@ -153,10 +156,13 @@ void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
 }
 
 /***************************
- * main hub for key actions
+ * main hub for key actions (now handled by
  ***************************/
+
+    /*
 bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
 {
+
     String desc = key.getTextDescription();
     cout << "keyPressed: " << desc << endl;;
    
@@ -199,11 +205,11 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
     else if (   key == KeyPress('v', ModifierKeys::commandModifier, 0) ) { symbolist_handler->newFromClipBoard(); }
     else if (   key == KeyPress('-') ) { zoom( -0.1 ); }
     else if (   key == KeyPress('=') ) { zoom(  0.1) ; }
-    
+
     return true;
 }
 
-
+    */
 
 
 //==============================================================================
@@ -230,7 +236,13 @@ void SymbolistMainComponent::getAllCommands (Array<CommandID>& commands)
         cmd_toggleInspector,
         cmd_addToPalette,
         cmd_copy,
-        cmd_paste
+        cmd_paste,
+        cmd_flipH,
+        cmd_flipV,
+        cmd_zoomIn,
+        cmd_zoomOut,
+        cmd_esc,
+        cmd_playmsg
     };
     
     commands.addArray (ids, numElementsInArray (ids));
@@ -240,48 +252,78 @@ void SymbolistMainComponent::getCommandInfo (CommandID commandID, ApplicationCom
 {
     //cout << "SymbolistMainComponent::getCommandInfo " << endl;
 
-    const String generalCategory ("General");
-    const String demosCategory ("Edit");
+   // const String generalCategory ("View");
+    //const String demosCategory ("Edit");
     
     switch (commandID)
     {
         case cmd_group:
-            result.setInfo ("Group Selected", "Shows the previous demo in the list", demosCategory, 0);
+            result.setInfo ("group selected", String(), String(), 0);
             result.addDefaultKeypress ('g', ModifierKeys::commandModifier);
             break;
             
         case cmd_ungroup:
-            result.setInfo ("Ungroup Selected", "Shows the next demo in the list", demosCategory, 0);
+            result.setInfo ("ungroup selected", String(), String(), 0);
             result.addDefaultKeypress ('u', ModifierKeys::commandModifier);
             break;
             
         case cmd_deleteSelected:
-            result.setInfo ("Delete Selected", "Shows the 'Welcome' demo", demosCategory, 0);
-            result.addDefaultKeypress ( KeyPress::deleteKey, NULL );
+            result.setInfo ("delete selected", String(), String(), 0);
+            result.addDefaultKeypress ( KeyPress::deleteKey, ModifierKeys::noModifiers );
             break;
             
         case cmd_toggleInspector:
-            result.setInfo ("Inspector", "Shows the 'Animation' demo", demosCategory, 0);
-            result.addDefaultKeypress ('i', NULL );
+            result.setInfo ("open/close inspector", String(), String(), 0);
+            result.addDefaultKeypress ('i', ModifierKeys::noModifiers );
             break;
             
         case cmd_addToPalette:
-            result.setInfo ("Add Selected To Palette", "Shows the next demo in the list", demosCategory, 0);
-            result.addDefaultKeypress ('w', NULL );
+            result.setInfo ("add selected To palette", String(), String(), 0);
+            result.addDefaultKeypress ('w', ModifierKeys::noModifiers );
             break;
             
         case cmd_copy:
-            result.setInfo ("Copy to clipboard", "Shows the 'Welcome' demo", demosCategory, 0);
+            result.setInfo ("copy", String(),String(), 0);
             result.addDefaultKeypress ( 'c', ModifierKeys::commandModifier );
             break;
             
         case cmd_paste:
-            result.setInfo ("Paste from clipboard", "Shows the 'Animation' demo", demosCategory, 0);
+            result.setInfo ("paste", String(),String(), 0);
             result.addDefaultKeypress ('v', ModifierKeys::commandModifier );
             break;
             
+        case cmd_flipH:
+            result.setInfo ("flip horizontally",String(),String(), 0);
+            result.addDefaultKeypress ('h', ModifierKeys::altModifier );
+            break;
+            
+        case cmd_flipV:
+            result.setInfo ("flip vertically", String(),String(), 0);
+            result.addDefaultKeypress ('v', ModifierKeys::altModifier );
+            break;
+            
+        case cmd_zoomIn:
+            result.setInfo ("zoom in", String(),String(), 0);
+            result.addDefaultKeypress ( '=', ModifierKeys::noModifiers );
+            break;
+            
+        case cmd_zoomOut:
+            result.setInfo ("zoom out", String(),String(), 0);
+            result.addDefaultKeypress ('-',  ModifierKeys::noModifiers );
+            break;
+            
+        case cmd_esc:
+            result.setInfo ("deselect", String(), String(), 0);
+            result.addDefaultKeypress (KeyPress::escapeKey,  ModifierKeys::noModifiers );
+            break;
+            
+        case cmd_playmsg:
+            result.setInfo ("send transport start message", String(), String(), 0);
+            result.addDefaultKeypress (KeyPress::spaceKey,  ModifierKeys::noModifiers );
+            break;
+            
         default:
-            result.setInfo ("no idea!", "does something!", demosCategory, 0);
+            result.setInfo ("undefined", "", "", 0);
 
             break;
     }
@@ -320,6 +362,36 @@ bool SymbolistMainComponent::perform (const InvocationInfo& info)
                 
             case cmd_paste:
                 symbolist_handler->newFromClipBoard();
+                break;
+                
+            case cmd_flipH:
+                scoreView.getEditedComponent()->flipSelectedSymbols(1);
+                break;
+                
+            case cmd_flipV:
+                scoreView.getEditedComponent()->flipSelectedSymbols(0);
+                break;
+                
+            case cmd_zoomIn:
+                zoom( 0.1 );
+                break;
+                
+            case cmd_zoomOut:
+                zoom( -0.1 );
+                break;
+
+            case cmd_esc:
+                scoreView.getEditedComponent()->unselectAllComponents();
+                scoreView.exitEditMode();
+                
+                symbolist_handler->executeTransportCallback(0); // = stop
+                symbolist_handler->symbolistAPI_setTime(0);
+                
+                scoreView.repaint();
+                break;
+                
+            case cmd_playmsg:
+                symbolist_handler->executeTransportCallback(1);
                 break;
                 
             default:

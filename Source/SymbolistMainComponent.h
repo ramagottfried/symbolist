@@ -20,7 +20,7 @@
  * It is also the node and pointer for interaction with the library
  */
 
-class SymbolistMainComponent : public SymbolistComponent, public KeyListener, public ApplicationCommandTarget
+class SymbolistMainComponent : public SymbolistComponent, public ApplicationCommandTarget
 {
 
 public:
@@ -39,7 +39,6 @@ public:
     void resized() override;
     void zoom( float delta );
     
-    bool keyPressed (const KeyPress& key, Component* originatingComponent) override;
     void modifierKeysChanged (const ModifierKeys& modifiers) override;
 
     void setMouseMode( UI_EditType m );
@@ -79,7 +78,13 @@ public:
         cmd_toggleInspector         = 0x2001,
         cmd_addToPalette            = 0x2002,
         cmd_copy                    = 0x2003,
-        cmd_paste                   = 0x2004
+        cmd_paste                   = 0x2004,
+        cmd_flipH                   = 0x2005,
+        cmd_flipV                   = 0x2006,
+        cmd_zoomIn                  = 0x2007,
+        cmd_zoomOut                 = 0x2008,
+        cmd_esc                     = 0x2009,
+        cmd_playmsg                 = 0x2010
     };
     
     ApplicationCommandTarget* getNextCommandTarget() override;

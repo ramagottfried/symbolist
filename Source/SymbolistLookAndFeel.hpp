@@ -12,6 +12,11 @@ public:
         
         // not sure why this has to be set twice, once here and again in the OSC property components ? weird
         
+        setColour( TextButton::buttonColourId, Colours::transparentWhite );
+        setColour( TextButton::textColourOffId, Colours::black );
+        setColour( TextButton::buttonOnColourId, Colour::fromFloatRGBA(0., 0., 0., 0.4) );
+        setColour( TextButton::textColourOnId, Colours::white );
+        
         setColour( PropertyComponent::backgroundColourId, Colours::transparentWhite );
         setColour( PropertyComponent::labelTextColourId, Colours::black );
         
@@ -132,6 +137,22 @@ public:
 
         g.drawRect (label.getLocalBounds());
 
+    }
+    
+    void drawMenuBarBackground (Graphics& g, int width, int height,
+                                bool, MenuBarComponent& menuBar) override
+    {
+        const auto colour = menuBar.findColour (TextButton::buttonColourId).withAlpha (0.4f);
+        
+        Rectangle<int> r (width, height);
+        
+        g.setColour (colour.contrasting (0.15f));
+        g.fillRect  (r.removeFromTop (1));
+        g.fillRect  (r.removeFromBottom (1));
+        
+        //g.setGradientFill (ColourGradient (colour, 0, 0, colour.darker (0.2f), 0, (float) height, false));
+        g.setGradientFill (ColourGradient ( Colours::white, 0, 0, (Colours::white).darker (0.01f), 0, (float)height, false));
+        g.fillRect (r);
     }
     
 private:

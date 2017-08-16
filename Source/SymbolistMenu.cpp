@@ -5,7 +5,6 @@
 SymbolistMenu::SymbolistMenu()
 {
     addAndMakeVisible (menuBar = new MenuBarComponent (this));
-    
     setApplicationCommandManagerToWatch (&SymbolistMainWindow::getApplicationCommandManager());
 }
 
@@ -28,7 +27,7 @@ void SymbolistMenu::resized()
 //==============================================================================
 StringArray SymbolistMenu::getMenuBarNames()
 {
-    const char* const names[] = { "File", "Edit", "Look-and-feel", "Tabs", "Misc", nullptr };
+    const char* const names[] = { "file", "edit", "view", "io", nullptr };
     
     return StringArray (names);
 }
@@ -38,7 +37,7 @@ PopupMenu SymbolistMenu::getMenuForIndex (int menuIndex, const String& /*menuNam
     ApplicationCommandManager* commandManager = &SymbolistMainWindow::getApplicationCommandManager();
     
     PopupMenu menu;
-    cout << "SymbolistMenu::getMenuForIndex " << menuIndex << " " << commandManager << endl;
+    // cout << "SymbolistMenu::getMenuForIndex " << menuIndex << " " << commandManager << endl;
 
     if (menuIndex == 0)
     {
@@ -47,6 +46,9 @@ PopupMenu SymbolistMenu::getMenuForIndex (int menuIndex, const String& /*menuNam
     }
     else if (menuIndex == 1)
     {
+        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_esc);
+        
+        menu.addSeparator();
 
         menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_copy);
         menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_paste);
@@ -56,15 +58,25 @@ PopupMenu SymbolistMenu::getMenuForIndex (int menuIndex, const String& /*menuNam
 
         menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_group);
         menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_ungroup);
-        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_addToPalette);
-
+        
         menu.addSeparator();
         
-        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_toggleInspector);
+        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_addToPalette);
         
     }
-    
-    
+    else if (menuIndex == 2)
+    {
+        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_zoomIn);
+        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_zoomOut);
+        menu.addSeparator();
+        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_toggleInspector);
+
+    }
+    else if (menuIndex == 3)
+    {
+        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_playmsg);
+    }
+
     return menu;
 }
 
@@ -74,7 +86,7 @@ void SymbolistMenu::menuItemSelected (int menuItemID, int /*topLevelMenuIndex*/)
     
     // most of our menu items are invoked automatically as commands, but we can handle the
     // other special cases here..
-    
+/*
     if (menuItemID == 6000)
     {
 #if JUCE_MAC
@@ -107,4 +119,5 @@ void SymbolistMenu::menuItemSelected (int menuItemID, int /*topLevelMenuIndex*/)
     {
         sendChangeMessage();
     }
+ */
 }

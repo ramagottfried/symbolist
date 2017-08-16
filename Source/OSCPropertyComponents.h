@@ -421,7 +421,7 @@ public:
     Label( String(), str )
     {
         setEditable (false, false, false);
-        setColour(textColourId, Colours::black );
+        setColour(textColourId, Colour::fromFloatRGBA(0., 0., 0., 0.4) );
         setColour(backgroundColourId, Colours::transparentWhite );
         setColour(outlineColourId, Colour::fromFloatRGBA(0., 0., 0., 0.4)  );
         Font f = getFont();

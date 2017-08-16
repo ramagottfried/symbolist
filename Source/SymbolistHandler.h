@@ -70,10 +70,15 @@ public:
     
     float getCurrentTime() { return current_time; }
     
+    /*********************************************
+     * INSPECTOR IO
+     *********************************************/
+    
     void addToInspector( BaseComponent *c);
     void clearInspector();
     
     void updateSymbolFromInspector( BaseComponent *c );
+    const StringArray getStaves() { return score.getStaves(); }
     
     /*********************************************
      * PALETTE AND SYMBOL CONSTRUCTOR

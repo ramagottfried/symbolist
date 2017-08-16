@@ -53,8 +53,9 @@ public:
 
     const Array<Symbol*> getSymbolsByValue( const String& address, const String& value );
 
-    
     const TimePointArray* getTimePointArray() const { return &time_points; }
+    
+    const StringArray getStaves();
     
 private:
     

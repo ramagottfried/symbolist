@@ -170,6 +170,25 @@ void Score::importScoreFromOSC(int n, odot_bundle **bundle_array)
 }
 
 
+const StringArray Score::getStaves()
+{
+    StringArray staves;
+    
+    for( auto s : score_symbols )
+    {
+        int pos = s->getOSCMessagePos("/objectType");
+        if( pos != -1 && s->getOSCMessageValue(pos).getString() == "staff" )
+        {
+            pos = s->getOSCMessagePos("/name");
+            if( pos != -1 )
+            {
+                staves.add( s->getOSCMessageValue(pos).getString() );
+            }
+        }
+        
+    }
+    return staves;
+}
 
 
 /*

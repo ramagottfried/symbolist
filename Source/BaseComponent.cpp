@@ -79,17 +79,21 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
     
     String addr;
 
-    addr = base_address + "/name";
-    if( s->getOSCMessagePos(addr) == -1 )
-    {
-        s->addOSCMessage( addr,         name );
-        messages_added++;
-    }
-    
     addr = base_address + "/id";
     if( s->getOSCMessagePos(addr) == -1 )
     {
         s->addOSCMessage( addr,          getComponentID() );
+        
+        if( name.isEmpty() )
+            name = getComponentID();
+        
+        messages_added++;
+    }
+    
+    addr = base_address + "/name";
+    if( s->getOSCMessagePos(addr) == -1 )
+    {
+        s->addOSCMessage( addr,         name );
         messages_added++;
     }
     

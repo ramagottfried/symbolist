@@ -37,6 +37,10 @@ void SymbolPropertiesPanel::change_callback( const OSCMessage& msg)
     
     symbolist_handler->updateSymbolFromInspector( symbol_component );
     
+    
+    if( msg.getAddressPattern() == "/objectType" )
+        setInspectorObject( symbol_component );
+    
     //cout << "*********************** updated bundle from inspector ********** " << endl;
     //s->printBundle();
     
@@ -46,6 +50,7 @@ void SymbolPropertiesPanel::createOSCview ()
 {
     properties.clear();
 
+    
     if( symbol_component )
     {
         Symbol *s = symbol_component->getScoreSymbolPointer();
@@ -81,7 +86,11 @@ void SymbolPropertiesPanel::createOSCview ()
             }
             else if( test_addr == "staff" )
             {
-                properties.add( new OSCTextProperty( addr, msg, change_callback_fn) );
+                int pos = s->getOSCMessagePos("/objectType");
+                if( pos != -1 && s->getOSCMessageValue("/objectType").getString() == "object" )
+                {
+                    properties.add( new OSCOptionMenu ( addr, msg, change_callback_fn, symbolist_handler->getStaves() ) );
+                }
             }
             else if( test_addr == "fill" )
             {
@@ -92,6 +101,14 @@ void SymbolPropertiesPanel::createOSCview ()
                 properties.add( new OSCValueDisplay( addr, msg) );
             }
             else if( test_addr == "id" )
+            {
+                properties.add( new OSCValueDisplay( addr, msg) );
+            }
+            else if( test_addr == "num_sub_paths" )
+            {
+                properties.add( new OSCValueDisplay( addr, msg) );
+            }
+            else if( test_addr == "length" )
             {
                 properties.add( new OSCValueDisplay( addr, msg) );
             }

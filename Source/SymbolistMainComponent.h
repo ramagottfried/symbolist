@@ -11,7 +11,7 @@
 
 #include "SymbolPropertiesPanel.h"
 #include "MouseModeComponent.hpp"
-
+#include "SymbolistMenu.hpp"
 #include "SymbolistLookAndFeel.hpp"
 
 /*
@@ -20,7 +20,7 @@
  * It is also the node and pointer for interaction with the library
  */
 
-class SymbolistMainComponent : public SymbolistComponent, public KeyListener
+class SymbolistMainComponent : public SymbolistComponent, public KeyListener, public ApplicationCommandTarget
 {
 
 public:
@@ -64,6 +64,29 @@ public:
     inline void clearInspector(){ inspector->clearInspector(); }
     inline void setInspectorObject( BaseComponent *c ){ inspector->setInspectorObject( c ); }
 
+
+    //==============================================================================
+    // The following methods implement the ApplicationCommandTarget interface, allowing
+    // this window to publish a set of actions it can perform, and which can be mapped
+    // onto menus, keypresses, etc.
+    
+    
+    enum CommandIDs
+    {
+        cmd_group                   = 0x2100,
+        cmd_ungroup                 = 0x2101,
+        cmd_deleteSelected          = 0x2000,
+        cmd_toggleInspector         = 0x2001,
+        cmd_addToPalette            = 0x2002,
+        cmd_copy                    = 0x2003,
+        cmd_paste                   = 0x2004
+    };
+    
+    ApplicationCommandTarget* getNextCommandTarget() override;
+    void getAllCommands (Array<CommandID>& commands) override;
+    void getCommandInfo (CommandID commandID, ApplicationCommandInfo& result) override;
+    bool perform (const InvocationInfo& info) override;
+    
 private:
     
     UI_EditType      mouse_mode = selection;
@@ -75,7 +98,8 @@ private:
     PageComponent       scoreView;
     
     PaletteComponent    paletteView ;
-    
+    SymbolistMenu       menu;
+
     float               m_zoom = 1.0f;
     
     ModifierKeys        current_mods;
@@ -85,6 +109,8 @@ private:
 
     
     SymbolistLookAndFeel    look_and_feel;
+    
+
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainComponent)
 };

@@ -1,5 +1,7 @@
 
 #include "SymbolistMainComponent.h"
+#include "SymbolistMainWindow.h"
+
 
 SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
 {
@@ -22,6 +24,7 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
     addAndMakeVisible(paletteView);
     addAndMakeVisible(mouseModeView);
 
+    addAndMakeVisible(menu);
     
     inspector = new SymbolPropertiesPanel(sh);
 
@@ -52,8 +55,9 @@ void SymbolistMainComponent::resized()
     
     
     paletteView.setBounds( 0, 0, 50, h );
-    score_viewport.setBounds( 50, 0, w-50, h );
+    score_viewport.setBounds( 50, 100, w-50, h );
     mouseModeView.setBounds( 50, h-25, w-50, 25 );
+    menu.setBounds(50, 0, w-50, 100 );
     
     if( inspector->isVisible() )
     {
@@ -202,7 +206,129 @@ bool SymbolistMainComponent::keyPressed (const KeyPress& key, Component* origina
 
 
 
+//==============================================================================
+// The following methods implement the ApplicationCommandTarget interface, allowing
+// this window to publish a set of actions it can perform, and which can be mapped
+// onto menus, keypresses, etc.
 
+ApplicationCommandTarget* SymbolistMainComponent::getNextCommandTarget()
+{
+    // this will return the next parent component that is an ApplicationCommandTarget (in this
+    // case, there probably isn't one, but it's best to use this method in your own apps).
+    return findFirstTargetParentComponent();
+}
+
+void SymbolistMainComponent::getAllCommands (Array<CommandID>& commands)
+{
+    //cout << "SymbolistMainComponent::getAllCommands " << endl;
+    
+    // this returns the set of all commands that this target can perform..
+    const CommandID ids[] = {
+        cmd_group,
+        cmd_ungroup,
+        cmd_deleteSelected,
+        cmd_toggleInspector,
+        cmd_addToPalette,
+        cmd_copy,
+        cmd_paste
+    };
+    
+    commands.addArray (ids, numElementsInArray (ids));
+}
+
+void SymbolistMainComponent::getCommandInfo (CommandID commandID, ApplicationCommandInfo& result)
+{
+    //cout << "SymbolistMainComponent::getCommandInfo " << endl;
+
+    const String generalCategory ("General");
+    const String demosCategory ("Edit");
+    
+    switch (commandID)
+    {
+        case cmd_group:
+            result.setInfo ("Group Selected", "Shows the previous demo in the list", demosCategory, 0);
+            result.addDefaultKeypress ('g', ModifierKeys::commandModifier);
+            break;
+            
+        case cmd_ungroup:
+            result.setInfo ("Ungroup Selected", "Shows the next demo in the list", demosCategory, 0);
+            result.addDefaultKeypress ('u', ModifierKeys::commandModifier);
+            break;
+            
+        case cmd_deleteSelected:
+            result.setInfo ("Delete Selected", "Shows the 'Welcome' demo", demosCategory, 0);
+            result.addDefaultKeypress ( KeyPress::deleteKey, NULL );
+            break;
+            
+        case cmd_toggleInspector:
+            result.setInfo ("Inspector", "Shows the 'Animation' demo", demosCategory, 0);
+            result.addDefaultKeypress ('i', NULL );
+            break;
+            
+        case cmd_addToPalette:
+            result.setInfo ("Add Selected To Palette", "Shows the next demo in the list", demosCategory, 0);
+            result.addDefaultKeypress ('w', NULL );
+            break;
+            
+        case cmd_copy:
+            result.setInfo ("Copy to clipboard", "Shows the 'Welcome' demo", demosCategory, 0);
+            result.addDefaultKeypress ( 'c', ModifierKeys::commandModifier );
+            break;
+            
+        case cmd_paste:
+            result.setInfo ("Paste from clipboard", "Shows the 'Animation' demo", demosCategory, 0);
+            result.addDefaultKeypress ('v', ModifierKeys::commandModifier );
+            break;
+            
+        default:
+            result.setInfo ("no idea!", "does something!", demosCategory, 0);
+
+            break;
+    }
+}
+
+bool SymbolistMainComponent::perform (const InvocationInfo& info)
+{
+  //  if ( getMainComponent() )
+    {
+        switch (info.commandID)
+        {
+                
+            case cmd_group:
+                scoreView.getEditedComponent()->groupSelectedSymbols();
+                break;
+                
+            case cmd_ungroup:
+                scoreView.getEditedComponent()->ungroupSelectedSymbols();
+                break;
+                
+            case cmd_deleteSelected:
+                scoreView.getEditedComponent()->deleteSelectedComponents();
+                break;
+                
+            case cmd_toggleInspector:
+                toggleInspector();
+                break;
+                
+            case cmd_addToPalette:
+                scoreView.getEditedComponent()->addSelectedSymbolsToPalette();
+                break;
+                
+            case cmd_copy:
+                symbolist_handler->copySelectedToClipBoard();
+                break;
+                
+            case cmd_paste:
+                symbolist_handler->newFromClipBoard();
+                break;
+                
+            default:
+                return false;
+        }
+    }
+    
+    return true;
+}
 
 
 

@@ -76,6 +76,11 @@
 		11CE00581EC328EC00E4F624 /* SymbolistMainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00531EC328EC00E4F624 /* SymbolistMainComponent.cpp */; };
 		11CE005E1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */; };
 		11CE005F1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */; };
+		11D123591F4471EA00A5EA5B /* ToolBarComp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D123571F4471EA00A5EA5B /* ToolBarComp.cpp */; };
+		11D1235C1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D1235A1F44796800A5EA5B /* SymbolistMenu.cpp */; };
+		11D1235D1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D1235A1F44796800A5EA5B /* SymbolistMenu.cpp */; };
+		11D1235E1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D1235A1F44796800A5EA5B /* SymbolistMenu.cpp */; };
+		11D1235F1F44796800A5EA5B /* SymbolistMenu.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11D1235B1F44796800A5EA5B /* SymbolistMenu.hpp */; };
 		11D86B8B1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */; };
 		11D86B8C1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */; };
 		27D1022754DD8B9BF3100BB7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A18855981466E65AB497B9D /* QuartzCore.framework */; };
@@ -156,6 +161,10 @@
 		11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreComponent.cpp; path = ../../Source/ScoreComponent.cpp; sourceTree = "<group>"; };
 		11CE005D1EC4B31200E4F624 /* ScoreComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreComponent.h; path = ../../Source/ScoreComponent.h; sourceTree = "<group>"; };
 		11CE00651EC4B90700E4F624 /* BaseComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BaseComponent.h; path = ../../Source/BaseComponent.h; sourceTree = "<group>"; };
+		11D123571F4471EA00A5EA5B /* ToolBarComp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToolBarComp.cpp; path = ../../Source/ToolBarComp.cpp; sourceTree = "<group>"; };
+		11D123581F4471EA00A5EA5B /* ToolBarComp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ToolBarComp.hpp; path = ../../Source/ToolBarComp.hpp; sourceTree = "<group>"; };
+		11D1235A1F44796800A5EA5B /* SymbolistMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolistMenu.cpp; path = ../../Source/SymbolistMenu.cpp; sourceTree = "<group>"; };
+		11D1235B1F44796800A5EA5B /* SymbolistMenu.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SymbolistMenu.hpp; path = ../../Source/SymbolistMenu.hpp; sourceTree = "<group>"; };
 		11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PathBaseComponent.cpp; path = ../../Source/PathBaseComponent.cpp; sourceTree = "<group>"; };
 		11D86B8A1EEAEF7900681F6D /* PathBaseComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PathBaseComponent.h; path = ../../Source/PathBaseComponent.h; sourceTree = "<group>"; };
 		11D86B8F1EEAF9FD00681F6D /* BasicShapePathComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicShapePathComponents.h; path = ../../Source/BasicShapePathComponents.h; sourceTree = "<group>"; };
@@ -334,6 +343,22 @@
 			name = "test-app";
 			sourceTree = "<group>";
 		};
+		11D123561F44712800A5EA5B /* tool-ui-components */ = {
+			isa = PBXGroup;
+			children = (
+				118C38EE1EC61404006FF4A1 /* PaletteComponent.h */,
+				118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */,
+				111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */,
+				111A261B1F40B0C200D3713C /* MouseModeComponent.hpp */,
+				111A26201F40CBAD00D3713C /* time-components */,
+				11D123571F4471EA00A5EA5B /* ToolBarComp.cpp */,
+				11D123581F4471EA00A5EA5B /* ToolBarComp.hpp */,
+				11D1235A1F44796800A5EA5B /* SymbolistMenu.cpp */,
+				11D1235B1F44796800A5EA5B /* SymbolistMenu.hpp */,
+			);
+			name = "tool-ui-components";
+			sourceTree = "<group>";
+		};
 		444572681EFA67BE00A7DECD /* path-tools */ = {
 			isa = PBXGroup;
 			children = (
@@ -345,7 +370,7 @@
 			name = "path-tools";
 			sourceTree = "<group>";
 		};
-		44DFA0951ED2C96600A6847A /* window-components */ = {
+		44DFA0951ED2C96600A6847A /* page-score-components */ = {
 			isa = PBXGroup;
 			children = (
 				445A661F1EDABDED00E2ADA2 /* SymbolistComponent.h */,
@@ -354,12 +379,8 @@
 				11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */,
 				444C43A01EE4A2E4000C6F69 /* PageComponent.h */,
 				444C439F1EE4A2E4000C6F69 /* PageComponent.cpp */,
-				118C38EE1EC61404006FF4A1 /* PaletteComponent.h */,
-				118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */,
-				111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */,
-				111A261B1F40B0C200D3713C /* MouseModeComponent.hpp */,
 			);
-			name = "window-components";
+			name = "page-score-components";
 			sourceTree = "<group>";
 		};
 		5BA2DB05C7718E6A683CC674 /* symbolist */ = {
@@ -414,8 +435,8 @@
 				118C38E11EC5C39F006FF4A1 /* score */,
 				444572681EFA67BE00A7DECD /* path-tools */,
 				11CE00151EC3231E00E4F624 /* symbol-components */,
-				111A26201F40CBAD00D3713C /* time-components */,
-				44DFA0951ED2C96600A6847A /* window-components */,
+				44DFA0951ED2C96600A6847A /* page-score-components */,
+				11D123561F44712800A5EA5B /* tool-ui-components */,
 				11B71DE11F0AD8EA00CDE209 /* property-panel */,
 				117556381ED30F0F00203B67 /* main */,
 				11CE00431EC3275500E4F624 /* test-app */,
@@ -454,6 +475,7 @@
 			files = (
 				118353491F26AD0600DB1DF5 /* SymbolistLookAndFeel.hpp in Headers */,
 				118648991EFA811800904672 /* TimePointArray.h in Headers */,
+				11D1235F1F44796800A5EA5B /* SymbolistMenu.hpp in Headers */,
 				111A261F1F40B0C200D3713C /* MouseModeComponent.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -600,6 +622,7 @@
 				1107B4031EF7D55D00E2DFA9 /* SymbolistMainWindow.cpp in Sources */,
 				1107B3F91EF7D55D00E2DFA9 /* PathInfo.cpp in Sources */,
 				1107B3FE1EF7D55D00E2DFA9 /* PaletteComponent.cpp in Sources */,
+				11D1235E1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */,
 				1186486B1EF7E68200904672 /* include_juce_osc.cpp in Sources */,
 				1186486E1EF7E68B00904672 /* include_juce_events.mm in Sources */,
 			);
@@ -626,6 +649,7 @@
 				11B71DD21F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */,
 				1186489D1EFAC44100904672 /* ScoreCursor.cpp in Sources */,
 				118C38DF1EC5BC4F006FF4A1 /* Score.cpp in Sources */,
+				11D1235D1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */,
 				444CD9041EDDAF1B001AC03A /* SymbolistComponent.cpp in Sources */,
 				44CFE03E1EC3789C009135F8 /* include_juce_gui_basics.mm in Sources */,
 				1107B3EA1EF5388500E2DFA9 /* PathInfo.cpp in Sources */,
@@ -650,6 +674,7 @@
 			files = (
 				446363941EC6F4960054CB6D /* OSCIO.cpp in Sources */,
 				11CE005E1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */,
+				11D123591F4471EA00A5EA5B /* ToolBarComp.cpp in Sources */,
 				AC7BC43E089630154F7F79D6 /* include_juce_core.mm in Sources */,
 				118353461F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp in Sources */,
 				52B193FE560B5C8022529FF5 /* include_juce_data_structures.mm in Sources */,
@@ -664,6 +689,7 @@
 				8D57C4E2ADEA2935AAB91AAC /* include_juce_graphics.mm in Sources */,
 				1186489C1EFAC44100904672 /* ScoreCursor.cpp in Sources */,
 				111A261C1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */,
+				11D1235C1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */,
 				118C38DE1EC5BC4F006FF4A1 /* Score.cpp in Sources */,
 				444CD9031EDDAF1B001AC03A /* SymbolistComponent.cpp in Sources */,
 				41C3942D9A94933B560F98F2 /* include_juce_gui_basics.mm in Sources */,

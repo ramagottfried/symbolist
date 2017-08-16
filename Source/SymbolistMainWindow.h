@@ -10,7 +10,7 @@
  ************************************************/
 
 
-class SymbolistMainWindow : public DocumentWindow
+class SymbolistMainWindow : public DocumentWindow, private AsyncUpdater
 {
     
 public:
@@ -19,8 +19,12 @@ public:
     ~SymbolistMainWindow ();
     
     SymbolistMainComponent* getMainComponent();
-    
+    static ApplicationCommandManager& getApplicationCommandManager();
+
+    void handleAsyncUpdate() override;
+
     void closeButtonPressed() override;
+
     
 protected:
 

@@ -2,10 +2,10 @@
 #include "types.h"
 #include "SymbolistMainWindow.h"
 
+static ScopedPointer<ApplicationCommandManager> applicationCommandManager;
 
-SymbolistMainWindow::SymbolistMainWindow (SymbolistHandler *sh) : DocumentWindow ( "symbolist",
-                                                                                  Colours::white,
-                                                                DocumentWindow::allButtons)
+SymbolistMainWindow::SymbolistMainWindow (SymbolistHandler *sh) :
+    DocumentWindow ( "symbolist", Colours::white, DocumentWindow::allButtons)
 {
     // default stuff copied from Juce
     setUsingNativeTitleBar (true);
@@ -14,14 +14,43 @@ SymbolistMainWindow::SymbolistMainWindow (SymbolistHandler *sh) : DocumentWindow
     centreWithSize (getWidth(), getHeight());
     setVisible (true);
     setResizable(true, true);
+    
+    addKeyListener( getApplicationCommandManager().getKeyMappings() );
+    
+    triggerAsyncUpdate();
+
 }
 
 SymbolistMainWindow::~SymbolistMainWindow ()
 {
     main_component = nullptr;
+    applicationCommandManager = nullptr;
+
     cout << "freeing main window " << this << " allocated main_component is now " << main_component << endl;
 }
 
+ApplicationCommandManager& SymbolistMainWindow::getApplicationCommandManager()
+{
+    if (applicationCommandManager == nullptr)
+        applicationCommandManager = new ApplicationCommandManager();
+    
+    {
+//        applicationCommandManager->getKeyMappings()->resetToDefaultMappings();
+
+    }
+    return *applicationCommandManager;
+}
+
+void SymbolistMainWindow::handleAsyncUpdate()
+{
+    cout << "SymbolistMainWindow::handleAsyncUpdate " << endl;
+    // This registers all of our commands with the command manager but has to be done after the window has
+    // been created so we can find the number of rendering engines available
+    auto& commandManager = SymbolistMainWindow::getApplicationCommandManager();
+    
+    commandManager.registerAllCommandsForTarget (main_component);
+    commandManager.registerAllCommandsForTarget (JUCEApplication::getInstance());
+}
 
 SymbolistMainComponent* SymbolistMainWindow::getMainComponent()
 {

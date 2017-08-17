@@ -138,4 +138,41 @@ void SymbolPropertiesPanel::setInspectorObject( BaseComponent *c )
     createOSCview();
 }
 
+void SymbolPropertiesPanel::clearInspector()
+{
+    if( !symbol_inspector.isEmpty() )
+    {
+        symbol_inspector.clear();
+    }
+    
+    symbol_component = nullptr;
+}
+
+void SymbolPropertiesPanel::paint (Graphics& g)
+{
+    // background
+    g.fillAll ( Colour::fromFloatRGBA(0.95, 0.95, 0.95, 0.7) );
+    
+    // left separator line
+    g.setColour( Colours::lightgrey );
+    g.drawLine( 0, 0, 0, getHeight() );
+    
+    g.fillRect(0, 0, getWidth(), title_offset) ;
+    
+    g.drawLine( 0, title_offset, getWidth(), title_offset);
+    
+    // title
+    g.setColour( Colours::white );
+    auto f = g.getCurrentFont();
+    f.setItalic(true);
+    g.setFont( f );
+    g.drawText("object inspector", 4, 0, getWidth()-8, title_offset, Justification::left);
+}
+
+void SymbolPropertiesPanel::resized() 
+{
+    auto local = getLocalBounds().reduced(4);
+    symbol_inspector.setSize(local.getWidth(), local.getHeight() - title_offset);
+    symbol_inspector.setTopLeftPosition(local.getX(), local.getY() + title_offset);
+}
 

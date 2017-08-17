@@ -16,29 +16,12 @@ class SymbolPropertiesPanel   : public Component
 public:
     SymbolPropertiesPanel(SymbolistHandler *sh );
     
-    void paint (Graphics& g) override
-    {
-        g.fillAll ( Colour::fromFloatRGBA(0.95, 0.95, 0.95, 0.7) );
-        g.setColour( Colours::lightgrey );
-        g.drawLine( 0, 0, 0, getHeight() );
-    }
-    
-    void resized() override
-    {
-        symbol_inspector.setBounds( getLocalBounds().reduced (4) );
-    }
+    void paint (Graphics& g) override;
+    void resized() override;
     
     SymbolistHandler* getSymbolistHandler(){ return symbolist_handler; }
     
-    void clearInspector()
-    {
-        if( !symbol_inspector.isEmpty() )
-        {
-            symbol_inspector.clear();
-        }
-        
-        symbol_component = nullptr;
-    }
+    void clearInspector();
     
     void setInspectorObject( BaseComponent *c );
     void createOSCview ();
@@ -54,6 +37,9 @@ private:
     osc_callback_t              change_callback_fn;
     
     SymbolistHandler*           symbolist_handler;
+    
+    int title_offset = 25;
+
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolPropertiesPanel)
 };

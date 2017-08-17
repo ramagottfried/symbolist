@@ -11,7 +11,7 @@ SymbolistMenu::SymbolistMenu()
 SymbolistMenu::~SymbolistMenu()
 {
 #if JUCE_MAC
-    MenuBarModel::setMacMainMenu (nullptr);
+  //  MenuBarModel::setMacMainMenu (nullptr);
 #endif
     
     PopupMenu::dismissAllActiveMenus();

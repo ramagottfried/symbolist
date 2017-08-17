@@ -6,6 +6,12 @@
 #include "SymbolistHandler.h"
 
 
+/*
+ * note: time point display should be aligned with staff it refers to (i.e. the default score shouldn't be "in time")
+ * for the time point diplay it might be nice to view it in the staff it refers to? or maybe as an overlay on top of the staff...
+ *
+ */
+
 class TimePointGUI : public SymbolistComponent
 {
 public:

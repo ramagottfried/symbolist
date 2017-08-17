@@ -96,9 +96,12 @@ public:
     bool isStandalone(){ return in_standalone; };
 
     const TimePointArray* getTimePointArray() const { return score.getTimePointArray(); }
+    void removeTimePointsForSymbol( Symbol *s ){ score.removeSymbolTimePoints( s ); }
     
     void copySelectedToClipBoard();
     void newFromClipBoard();
+    
+    
 private:
     
     Score score ;

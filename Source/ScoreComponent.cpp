@@ -176,7 +176,6 @@ void ScoreComponent::deleteSelectedComponents()
 }
 
 
-
 void ScoreComponent::groupSelectedSymbols()
 {
     
@@ -197,8 +196,11 @@ void ScoreComponent::groupSelectedSymbols()
         
         // create a list from selected items
         vector< SymbolistComponent *> items;
-        for( SymbolistComponent *c : selected_components ) { items.push_back(c); }
         
+        for( SymbolistComponent *c : selected_components )
+        {
+                items.push_back(c);
+        }
         unselectAllComponents();
         
         Symbol* s = new Symbol("group", minx, miny, maxx-minx, maxy-miny);
@@ -214,6 +216,11 @@ void ScoreComponent::groupSelectedSymbols()
         {
             SymbolistComponent *c = *it ;
             
+            // if this component is of type BaseComponent, remove it's time points if they exist
+            if( auto bc = dynamic_cast<BaseComponent*>(c) )
+                sh->removeTimePointsForSymbol( bc->getScoreSymbolPointer() );
+                
+
             // sets the position now relative to the group
             Rectangle<int> compBounds = c->getBounds();
             

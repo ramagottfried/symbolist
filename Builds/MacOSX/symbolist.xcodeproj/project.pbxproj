@@ -32,7 +32,6 @@
 		111A261C1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */; };
 		111A261D1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */; };
 		111A261E1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */; };
-		111A261F1F40B0C200D3713C /* MouseModeComponent.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 111A261B1F40B0C200D3713C /* MouseModeComponent.hpp */; };
 		118353461F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118353441F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp */; };
 		118353471F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118353441F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp */; };
 		118353481F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118353441F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp */; };
@@ -81,6 +80,8 @@
 		11D1235D1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D1235A1F44796800A5EA5B /* SymbolistMenu.cpp */; };
 		11D1235E1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D1235A1F44796800A5EA5B /* SymbolistMenu.cpp */; };
 		11D1235F1F44796800A5EA5B /* SymbolistMenu.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11D1235B1F44796800A5EA5B /* SymbolistMenu.hpp */; };
+		11D123601F4583B800A5EA5B /* ToolBarComp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D123571F4471EA00A5EA5B /* ToolBarComp.cpp */; };
+		11D123611F4583B900A5EA5B /* ToolBarComp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D123571F4471EA00A5EA5B /* ToolBarComp.cpp */; };
 		11D86B8B1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */; };
 		11D86B8C1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */; };
 		27D1022754DD8B9BF3100BB7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A18855981466E65AB497B9D /* QuartzCore.framework */; };
@@ -476,7 +477,6 @@
 				118353491F26AD0600DB1DF5 /* SymbolistLookAndFeel.hpp in Headers */,
 				118648991EFA811800904672 /* TimePointArray.h in Headers */,
 				11D1235F1F44796800A5EA5B /* SymbolistMenu.hpp in Headers */,
-				111A261F1F40B0C200D3713C /* MouseModeComponent.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -602,6 +602,7 @@
 				118648701EF7E68B00904672 /* include_juce_gui_basics.mm in Sources */,
 				4425D3071EF8599300B8BF1C /* SymbolistHandler.cpp in Sources */,
 				1107B3FD1EF7D55D00E2DFA9 /* SymbolGroupComponent.cpp in Sources */,
+				11D123611F4583B900A5EA5B /* ToolBarComp.cpp in Sources */,
 				1186486D1EF7E68B00904672 /* include_juce_data_structures.mm in Sources */,
 				1107B3F41EF7D54E00E2DFA9 /* OSCIO.cpp in Sources */,
 				11B71DD31F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */,
@@ -636,6 +637,7 @@
 				11CE005F1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */,
 				44EE9BBE1EC37D3E0021C5A8 /* Main.cpp in Sources */,
 				44CFE03D1EC3789C009135F8 /* include_juce_graphics.mm in Sources */,
+				11D123601F4583B800A5EA5B /* ToolBarComp.cpp in Sources */,
 				11CE00581EC328EC00E4F624 /* SymbolistMainComponent.cpp in Sources */,
 				44B718B21EDD9D010039884E /* Symbol.cpp in Sources */,
 				4425D3061EF8599300B8BF1C /* SymbolistHandler.cpp in Sources */,

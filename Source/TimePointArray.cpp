@@ -31,8 +31,8 @@ void TimePointArray::removeSymbolTimePoints( Symbol *s)
     
     if( !match )
     {
-        cout << " could not find existing timepoint at time " << start_t << endl;
-        printTimePoints();
+        // cout << " could not find existing timepoint at time " << start_t << endl;
+        // printTimePoints();
         return;
     }
     

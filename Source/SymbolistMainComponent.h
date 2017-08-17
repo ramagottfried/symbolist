@@ -84,7 +84,8 @@ public:
         cmd_zoomIn                  = 0x2007,
         cmd_zoomOut                 = 0x2008,
         cmd_esc                     = 0x2009,
-        cmd_playmsg                 = 0x2010
+        cmd_playmsg                 = 0x2010 // to do ,
+        //cmd_toggleCursor            = 0x2011
     };
     
     ApplicationCommandTarget* getNextCommandTarget() override;

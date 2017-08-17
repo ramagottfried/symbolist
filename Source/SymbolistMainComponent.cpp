@@ -344,7 +344,7 @@ bool SymbolistMainComponent::perform (const InvocationInfo& info)
                 
                 symbolist_handler->executeTransportCallback(0); // = stop
                 symbolist_handler->symbolistAPI_setTime(0);
-                
+                symbolist_handler->clearInspector();
                 scoreView.repaint();
                 break;
                 

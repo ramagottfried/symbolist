@@ -114,7 +114,7 @@ private:
     
     // main component, allocated and owned by main window
     // the main view of the editor (could be embedded in a foreign app independently of the window)
-    SymbolistMainComponent*             main_component_ptr;
+    SymbolistMainComponent*             main_component_ptr = nullptr;
     
     // the main view of the editor (could be embedded in a foreign app independently of the window)
 

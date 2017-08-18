@@ -10,12 +10,7 @@ SymbolistMenu::SymbolistMenu()
 
 SymbolistMenu::~SymbolistMenu()
 {
-#if JUCE_MAC
-  //  MenuBarModel::setMacMainMenu (nullptr);
-#endif
-    
     PopupMenu::dismissAllActiveMenus();
-    
 }
 
 void SymbolistMenu::resized()

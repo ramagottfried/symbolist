@@ -262,6 +262,31 @@ Point<float> TimePointArray::lookupPathPoint( const Symbol *s, const int pathIDX
     return p.getPointAlongPath( path_time );
 }
 
+Point<float> TimePointArray::lookupPathPoint( const Symbol *s, String& path_base_addr , const float t )
+{
+    OSCBundle b = *(s->getOSCBundle());
+    
+    String path_addr = path_base_addr + "/str" ;
+    int path_oscpos = s->getOSCMessagePos( path_addr );
+    if( s->symbol_parse_error( path_oscpos, path_addr) ) return Point<float>();
+    
+    
+    String pathlen_addr = path_base_addr + "/length" ;
+    int pathlen_oscpos = s->getOSCMessagePos( pathlen_addr );
+    if( s->symbol_parse_error( pathlen_oscpos, pathlen_addr ) ) return Point<float>();
+    
+    
+    String path_str = s->getOSCMessageValue(path_oscpos).getString();
+    Path p;
+    p.restoreFromString( path_str );
+    
+    float length = s->getOSCValueAsFloat( s->getOSCMessageValue(pathlen_oscpos) );
+//    float path_time = ((t - start) / dur) * length;;
+    //    cout << t << " " << ((t - start) / dur) << " " << length << endl;
+    
+    return p.getPointAlongPath( t * length );
+}
+
 vector<const Symbol *> TimePointArray::getNoteOffs( const SymbolTimePoint *prev_tpoint , const SymbolTimePoint *tpoint   )
 {
     
@@ -300,14 +325,113 @@ bool TimePointArray::isNewSym( const Symbol *s , const SymbolTimePoint *prev_tpo
 {
     if( prev_tpoint )
     {
-        for (auto prv : prev_tpoint->symbols_at_time )
+        for (int i = 0; i < prev_tpoint->symbols_at_time.size(); i++ )
         {
+            auto prv = prev_tpoint->symbols_at_time[i];
             if( s == prv )
                 return false;
         }
     }
     
     return true;
+}
+
+
+void TimePointArray::groupPathLookup( const Symbol *s, const String& output_prefix, const String& groupsymbol_addr, float time_ratio, OSCBundle& bndl )
+{
+    // all paths within group are read in terms of the time span of the top level group
+    // paths are scaled in terms of their bounding box, *or* if the bounding box of the group containing them
+    // --- in the case of path within a group within a group, the scaling would be in terms of the first containing group
+    
+
+    // for example subsymbol_addr could be "/subsymbol/1/subsymbol/2"
+
+    // cout << "groupPathLookup " << groupsymbol_addr << endl;
+    
+    String group_name;
+    int groupname_pos = s->getOSCMessagePos( groupsymbol_addr + "/name" );
+    if( groupname_pos != -1 )
+    {
+        group_name = "/" + s->getOSCMessageValue(groupname_pos).getString();
+    }
+    
+    int nsym_oscpos = s->getOSCMessagePos( groupsymbol_addr + "/numsymbols" );
+    if( s->symbol_parse_error( nsym_oscpos, groupsymbol_addr + "/numsymbols") )
+    {
+        cout << "error number of grouped symbols not found" << endl;
+    }
+    else
+    {
+        int nsymbols = Symbol::getOSCValueAsInt( s->getOSCMessageValue(nsym_oscpos) );
+        
+        for( int subsym_idx = 0; subsym_idx < nsymbols; subsym_idx++)
+        {
+            String subsym_addr = groupsymbol_addr + "/subsymbol/" + String(subsym_idx+1);
+            
+            // cout << "    subsym_addr " << subsym_addr << endl;
+
+            int pos = s->getOSCMessagePos( subsym_addr  + "/type" );
+            if( pos != -1 )
+            {
+                if( s->getOSCMessageValue(pos).getString() == "path" )
+                {
+                    // maybe move this part below to another function...
+                    int npath_oscpos = s->getOSCMessagePos( subsym_addr + "/num_sub_paths" );
+                    if( s->symbol_parse_error( npath_oscpos, subsym_addr + "/num_sub_paths") )
+                    {
+                        cout << "error /num subpaths not found" << endl;
+                    }
+                    else
+                    {
+                        int npaths = Symbol::getOSCValueAsInt( s->getOSCMessageValue(npath_oscpos) );
+                        
+                        for( int p_idx = 0; p_idx < npaths; p_idx++)
+                        {
+                            auto path_addr = subsym_addr + "/path/" + String(p_idx);
+                            auto xy = lookupPathPoint(s, path_addr, time_ratio );
+                            
+                            float w = 0, h = 0;
+                            
+                            int w_pos = s->getOSCMessagePos(groupsymbol_addr + "/w" );
+                            if( w_pos != -1 )
+                            {
+                                w = s->getOSCValueAsFloat( s->getOSCMessageValue(w_pos) );
+                            }
+                            int h_pos = s->getOSCMessagePos(groupsymbol_addr + "/h" );
+                            if( h_pos != -1 )
+                            {
+                                h = s->getOSCValueAsFloat( s->getOSCMessageValue(h_pos) );
+                            }
+                            
+                            if( w > 0 && h > 0 )
+                            {
+                                
+                                String path_name;
+                                int name_pos = s->getOSCMessagePos(subsym_addr + "/name");
+                                if( name_pos != -1 )
+                                    path_name = "/" + s->getOSCMessageValue(name_pos).getString();
+                                
+//                                cout << "name: " << path_name << endl;
+                                // use group name first, otherwise, if there is path name, use that.
+                                if( group_name.isNotEmpty() || path_name.isNotEmpty() )
+                                    bndl.addElement( OSCMessage( output_prefix + group_name + path_name + "/lookup/xy", xy.x / w, xy.y / h) );
+                                else
+                                    bndl.addElement( OSCMessage( output_prefix + "/path/" + (String)p_idx + "/lookup/xy", xy.x / w, xy.y / h) );
+                                    
+
+                            }
+                            
+                        }
+                    }
+                }
+                else if( s->getOSCMessageValue(pos).getString() == "group" )
+                {
+                    groupPathLookup(s, output_prefix + group_name, subsym_addr, time_ratio, bndl );
+                }
+            }
+            
+        }
+    }
 }
 
 
@@ -329,16 +453,16 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
             // ignore symbols if after endpoint
             if( current_time <= s->getEndTime() )
             {
-                
+                String staff_name;
                 float staff_x = 0, staff_y = 0;
                 
                 int staff_pos = s->getOSCMessagePos( "/staff" );
                 if( staff_pos != -1 )
                 {
-                    String staff_name = s->getOSCMessageValue( staff_pos ).getString();
+                    staff_name = s->getOSCMessageValue( staff_pos ).getString();
                     if( staff_name.isNotEmpty() )
                     {
-                        cout << "staff name " << staff_name << endl;
+                        // cout << "staff name " << staff_name << endl;
                         
                         String addr = "/name";
                         auto found_staves = score_ptr->getSymbolsByValue( addr, staff_name );
@@ -353,11 +477,21 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                     }
                 }
                 
+                String s_prefix = "/staff/" + staff_name + "/" + String(count);
                 
-                String s_prefix = prefix + String(count);
-
+                float time_ratio = (current_time - s->getTime()) / s->getDuration() ;
+                bndl.addElement( OSCMessage( s_prefix + "/time/ratio", time_ratio ) );
+                
                 float offset_time = current_time - s->getTime();
 
+                String toplevel_name;
+                int name_pos = s->getOSCMessagePos( "/name" );
+                if( name_pos != -1 )
+                {
+                    toplevel_name = s->getOSCMessageValue(name_pos).getString();
+                }
+                
+                
                 if( s->getType() == "path" )
                 {
                     // maybe move this part below to another function...
@@ -369,8 +503,6 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                     else
                     {
                         int npaths = Symbol::getOSCValueAsInt( s->getOSCMessageValue(npath_oscpos) );
-
-                        OSCBundle b = *(s->getOSCBundle());
                         
                         for( int i = 0; i < npaths; i++)
                         {
@@ -397,8 +529,10 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                     }
 
                 }
-                float time_ratio = (current_time - s->getTime()) / s->getDuration() ;
-                bndl.addElement( OSCMessage( s_prefix + "/time/ratio", time_ratio ) );
+                else if( s->getType() == "group" )
+                {
+                    groupPathLookup(s, s_prefix, String(), time_ratio, bndl);
+                }
                 
                 auto s_bndl = *(s->getOSCBundle());
 
@@ -407,7 +541,7 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                     OSCMessage msg = osc.getMessage();
                     
                     String msg_addr = msg.getAddressPattern().toString();
-                    String newaddr = s_prefix + msg_addr;
+                    String newaddr = s_prefix + "/" + toplevel_name + msg_addr;
 
                     if( msg_addr == "/x" )
                     {

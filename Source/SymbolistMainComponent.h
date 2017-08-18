@@ -48,7 +48,7 @@ public:
     
     
     // Redefine these from SymbolistComponent
-    inline PageComponent* getPageComponent() override { return (PageComponent*)score_viewport.getViewedComponent(); }
+    inline PageComponent* getPageComponent() override { return dynamic_cast<PageComponent*>( score_viewport.getViewedComponent() ); }
     inline SymbolistHandler* getSymbolistHandler() override { return symbolist_handler; }
     inline Viewport* getViewer() { return &score_viewport; }
     Rectangle<float> getViewRect();

@@ -138,7 +138,7 @@ void SymbolistHandler::symbolistAPI_setOneSymbol( odot_bundle *bundle)
     s->importFromOSC( bundle );
     score.addSymbol(s);
     
-    if ( main_component_ptr != NULL )
+    if ( main_component_ptr != nullptr )
     {
         BaseComponent* c = makeComponentFromSymbol( s , false);
         main_component_ptr->getPageComponent()->addSubcomponent(c);

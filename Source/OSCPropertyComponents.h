@@ -10,7 +10,7 @@ class OSCFloatValueSlider : public SliderPropertyComponent
 {
 public:
     OSCFloatValueSlider ( const String& _addr, OSCMessage& msg, osc_callback_t change_fn )
-    : SliderPropertyComponent (_addr, 0.0, 1000.0, 0.0001), osc_msg(msg)
+    : SliderPropertyComponent (_addr, -1000.0, 1000.0, 0.0001), osc_msg(msg)
     {
         change_callback = change_fn;
         slider.setColour(Slider::textBoxTextColourId, Colours::black );

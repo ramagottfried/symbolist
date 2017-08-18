@@ -9,6 +9,7 @@
 /*
  * note: time point display should be aligned with staff it refers to (i.e. the default score shouldn't be "in time")
  * for the time point diplay it might be nice to view it in the staff it refers to? or maybe as an overlay on top of the staff...
+ * also note that the time points should scale with the score zoom, which means that possibly they *should* be children of the page component --- or even, children of the Staff component
  *
  */
 
@@ -27,13 +28,9 @@ public:
             g.fillEllipse( t->time * 100.0f, getHeight() / 2, 2, 2);
         }
     }
-    
-    void resized() override
-    {
-        auto parent = getParentComponent();
-        setBounds(0, parent->getBottom() - 50,  parent->getWidth(), 50 );
-    }
-    
+
+    bool hitTest (int x, int y) override { return false; }
+
 private:
     
     //==============================================================================

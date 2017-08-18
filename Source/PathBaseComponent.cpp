@@ -830,8 +830,11 @@ void PathBaseComponent::paint ( Graphics& g )
     
     BaseComponent::paint(g);
     
-    int cur_t,local_t = 0;
+
     g.setColour( getCurrentColor() );
+    
+    /*
+    int cur_t,local_t = 0;
     float strok = strokeType.getStrokeThickness();
     
     if ( isTopLevelComponent() )
@@ -846,6 +849,7 @@ void PathBaseComponent::paint ( Graphics& g )
             g.setColour( Colours::indianred );
         }
     }
+    */
     
     // to do: add other stroke options
     //float dashes[] = {1.0, 2.0};
@@ -859,7 +863,8 @@ void PathBaseComponent::paint ( Graphics& g )
         for ( int np = 0; np < m_path_array.size(); np++)
         {
             g.strokePath(*m_path_array[np], strokeType );
-            if( m_fill ) g.fillPath(*m_path_array[np]);
+            if( m_fill )
+                g.fillPath(*m_path_array[np]);
         }
     }
     else
@@ -869,7 +874,8 @@ void PathBaseComponent::paint ( Graphics& g )
         {
             //std::cout << "DRAW " << getComponentID() << " -- " << np << std::endl;
             g.strokePath(*m_path_array[np], strokeType );
-            if( m_fill ) g.fillPath(*m_path_array[np]);
+            if( m_fill )
+                g.fillPath(*m_path_array[np]);
         }
         
         if( !m_preview_path.isEmpty() )

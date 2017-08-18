@@ -6,17 +6,16 @@
 void TimePointArray::printTimePoints()
 {
     cout << "-------- timepoint list ----------" << endl;
-    int count = 0;
-    for( auto t : (*this) )
+    for(int i = 0; i < size(); i++ )
     {
-        cout << "timepoint " << count << " " << t->time << " nsyms " << t->symbols_at_time.size() << endl;
+        auto t = (*this)[i];
+        cout << "timepoint " << i << " " << t->time << " nsyms " << t->symbols_at_time.size() << endl;
         
         int symcount = 0;
         for( auto sym : t->symbols_at_time )
         {
             cout << symcount++ << " " << sym << " " << sym->getOSCBundle()->size() << endl;
         }
-        count++;
     }
 }
 
@@ -26,20 +25,26 @@ void TimePointArray::removeSymbolTimePoints( Symbol *s)
 
     float start_t = s->getTime();
     
+    if( start_t == -1 )
+    {
+        //cout << " start time is not set skipping " << endl;
+        return;
+    }
+    
     bool match = false;
     int idx = getTimePointInsertIndex( start_t, match );
     
     if( !match )
     {
-        // cout << " could not find existing timepoint at time " << start_t << endl;
-        // printTimePoints();
+         cout << " could not find existing timepoint at time " << start_t << endl;
+         printTimePoints();
         return;
     }
     
     float t = start_t;
     float end_t = s->getEndTime();
     
-//    cout << s << " " << t << " " << end_t << endl;
+    //cout << "\n\nremoving time points for " << s << " start " << t << " end " << end_t << " idx " << idx << " of " << size() << endl;
     
     vector<SymbolTimePoint *> points_to_remove;
     
@@ -47,7 +52,11 @@ void TimePointArray::removeSymbolTimePoints( Symbol *s)
     {
         t = (*this)[idx]->time;
         
-        if( t > end_t ) break;
+        if( t > end_t && !f_almost_equal( t, end_t ) )
+        {
+            //cout << " t " << t << " > or != " << end_t << endl;
+            break;
+        }
         
         vector<Symbol*> *vec = &((*this)[idx]->symbols_at_time);
 
@@ -56,12 +65,12 @@ void TimePointArray::removeSymbolTimePoints( Symbol *s)
 
         // if no other symbol at this time point start or end here, we should fully delete it
         int other_start_or_end = 0;
-        if( t == start_t || t == end_t )
+        if( f_almost_equal( t, start_t ) || f_almost_equal( t, end_t ) )
         {
             for (auto it = vec->begin(); it != vec->end(); it++ )
             {
-              //  cout << "start/end test for " << (*it) << " t " << t << " == " << (*it)->getTime() << " " << (*it)->getEndTime() << endl;
-                if( (*it)->getTime() == t || (*it)->getEndTime() == t )
+//                cout << "start/end test for " << (*it) << " t " << t << " == " << (*it)->getTime() << " " << (*it)->getEndTime() << endl;
+                if( f_almost_equal( (*it)->getTime(), t ) || f_almost_equal( (*it)->getEndTime(), t ) )
                     other_start_or_end = 1;
             }
             if (!other_start_or_end)
@@ -69,7 +78,7 @@ void TimePointArray::removeSymbolTimePoints( Symbol *s)
 
         }
         
-    //    cout << "vector size " << vec->size() << " at " << t << " " << other_start_or_end  <<  " " << end_t << endl;
+        // cout << "vector size " << vec->size() << " at " << t << " " << other_start_or_end  <<  " " << end_t << endl;
         if( vec->size() == 0 )
             points_to_remove.emplace_back( (*this)[idx] );
         
@@ -82,7 +91,7 @@ void TimePointArray::removeSymbolTimePoints( Symbol *s)
         removeObject( *rm, true );
     }
     
-//    printTimePoints();
+  // printTimePoints();
 }
 
 
@@ -96,32 +105,26 @@ void TimePointArray::addSymbolTimePoints( Symbol *s )
     
     
     
-    // for the staff process, we might want to look this up here
-/*
-    int staff_pos = s->getOSCMessagePos( "/staff" );
-    if( staff_pos != -1 )
-    {
-        String staff_name = s->getOSCMessageValue( staff_pos ).getString();
-        if( staff_name.isNotEmpty() )
-        {
-            String addr = "/name";
-            auto found_staves = score_ptr->getSymbolsByValue( addr, staff_name );
-            
-            Symbol *staff = found_staves.getFirst();
-            
-            staff_x = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/x") );
-            staff_y = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/y") );
-            
-        }
-    }
-  */
-    
-    
     int staff_pos = s->getOSCMessagePos( "/staff" );
     if( staff_pos == -1 || s->getOSCMessageValue( staff_pos ).getString().isEmpty() ) return;
+
+    String staff_name = s->getOSCMessageValue( staff_pos ).getString();
+
+    auto found_staves = score_ptr->getSymbolsByValue( "/name", staff_name );
+    if( found_staves.isEmpty() ) return;
     
-    float start_t = s->getTime();
-    float end_t = s->getEndTime();
+    Symbol *staff = found_staves.getFirst();
+    
+    float staff_x = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/x") );
+    
+    float start_x = Symbol::getOSCValueAsFloat( s->getOSCMessageValue("/x") ) - staff_x;
+    float dur_x = Symbol::getOSCValueAsFloat( s->getOSCMessageValue("/w") );
+    float end_x = start_x + dur_x;
+
+    s->setTimeAndDurationFromRelPix(start_x, dur_x);
+
+    float start_t = s->pixelsToTime(start_x);
+    float end_t = s->pixelsToTime(end_x);
     
     int start_idx = addSymbol_atTime( s, start_t );
     int end_idx = addSymbol_atTime( s, end_t );
@@ -131,8 +134,7 @@ void TimePointArray::addSymbolTimePoints( Symbol *s )
         (*this)[ i ]->addSymbol( s );
     }
     
-    
-//    printTimePoints();
+    // printTimePoints();
 
 }
 

@@ -64,6 +64,19 @@ public:
     inline void setInspectorObject( BaseComponent *c ){ inspector->setInspectorObject( c ); }
 
 
+    void setTimePoint( float t )
+    {
+        //score_cursor.setPlayPoint( t );
+        getPageComponent()->setTimePoint(t);
+    }
+    
+    void drawTimePoints()
+    {
+        getPageComponent()->drawTimePoints();
+        //time_pointGUI.repaint();
+    }
+    
+    
     //==============================================================================
     // The following methods implement the ApplicationCommandTarget interface, allowing
     // this window to publish a set of actions it can perform, and which can be mapped
@@ -94,29 +107,32 @@ public:
     bool perform (const InvocationInfo& info) override;
     
 private:
+    SymbolistHandler*       symbolist_handler = nullptr; // (not allocated here)
+    SymbolistLookAndFeel    look_and_feel;
     
-    UI_EditType      mouse_mode = selection;
-    UI_DrawType      draw_mode = free_draw;
-
-    SymbolistHandler*   symbolist_handler = nullptr; // (not allocated here)
-    
-    Viewport            score_viewport;
-    PageComponent       scoreView;
-    
-    PaletteComponent    paletteView ;
-    SymbolistMenu       menu;
-
-    float               m_zoom = 1.0f;
-    
-    ModifierKeys        current_mods;
-
+    /************************************************************************
+     * UI elements
+     ************************************************************************/
+    Viewport                                score_viewport;
+    PageComponent                           scoreView;
+    PaletteComponent                        paletteView ;
+    SymbolistMenu                           menu;
     ScopedPointer<SymbolPropertiesPanel>    inspector;
     MouseModeComponent                      mouseModeView;
 
+/* still in page for now...
+    ScoreCursor         score_cursor;
+    TimePointGUI        time_pointGUI;
+*/
+    int palette_w = 50;
+    int menu_h; // set internally
     
-    SymbolistLookAndFeel    look_and_feel;
+    float            m_zoom = 1.0f;
+    ModifierKeys     current_mods;
+
+    UI_EditType      mouse_mode = selection;
+    UI_DrawType      draw_mode = free_draw;
     
 
-    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainComponent)
 };

@@ -25,9 +25,17 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
     addAndMakeVisible(mouseModeView);
 
     addAndMakeVisible(menu);
+    menu_h = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
     
     inspector = new SymbolPropertiesPanel(sh);
 
+    
+    /*
+    addAndMakeVisible(score_cursor);
+    addAndMakeVisible(time_pointGUI);
+    */
+    
+    
     // the main component will receive key events from the subviews
     //paletteView.addKeyListener(this);
     //scoreView.addKeyListener(this);
@@ -55,18 +63,21 @@ void SymbolistMainComponent::resized()
     auto w = getWidth();
     auto h = getHeight();
     
-    auto menuH = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
+    menu_h = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
     
-    paletteView.setBounds( 0, 0, 50, h );
-    score_viewport.setBounds( 50, menuH, w-50, h );
-    mouseModeView.setBounds( 50, h-25, w-50, 25 );
-    menu.setBounds(50, 0, w-50, menuH );
+    paletteView.setBounds( 0, 0, palette_w, h );
+    score_viewport.setBounds( palette_w, menu_h, w-palette_w, h );
+    mouseModeView.setBounds( palette_w, h-25, w-palette_w, 25 );
+    menu.setBounds(palette_w, 0, w-palette_w, menu_h );
     
     if( inspector->isVisible() )
     {
-        inspector->setSize(400, h - score_viewport.getScrollBarThickness() - menuH);
-        inspector->setTopRightPosition( w - score_viewport.getScrollBarThickness(), menuH );
+        inspector->setSize(400, h - score_viewport.getScrollBarThickness() - menu_h);
+        inspector->setTopRightPosition( w - score_viewport.getScrollBarThickness(), menu_h );
     }
+    
+//    score_cursor.setBounds( score_cursor.getPlayPoint() * 100, menu_h, 50, getHeight()-menu_h );
+//    time_pointGUI.setBounds(palette_w, getBottom() - 50, getWidth()-palette_w, 50);
 }
 
 void SymbolistMainComponent::updatePaletteView()

@@ -11,10 +11,7 @@ Symbol::Symbol (const String & type, float x, float y, float w, float h)
     addOSCMessage("/y",     y);
     addOSCMessage("/w",     w);
     addOSCMessage("/h",     h);
-    
-    addOSCMessage("/time/start",        pixelsToTime( x ) );
-    addOSCMessage("/time/duration",     pixelsToTime( w ) );
-    
+    // add name?
 }
 
 
@@ -57,12 +54,21 @@ String Symbol::getType()
 
 float Symbol::getTime() const
 {
-    return getOSCMessageValue("/time/start").getFloat32();
+    int pos = getOSCMessagePos("/time/start");
+    if( pos == -1 )
+        return -1;
+    else
+        return getOSCMessageValue(pos).getFloat32();
 }
 
 float Symbol::getDuration() const
 {
-    return getOSCMessageValue("/time/duration").getFloat32();
+    int pos = getOSCMessagePos("/time/duration");
+    if( pos == -1 )
+        return -1;
+    else
+
+    return getOSCMessageValue(pos).getFloat32();
 }
 
 float Symbol::getEndTime() const
@@ -115,9 +121,7 @@ void Symbol::setPosition( const Point<float> pos )
     for (auto osc : osc_bundle )
     {
         if( !osc.getMessage().getAddressPattern().toString().equalsIgnoreCase( "/x" ) &&
-            !osc.getMessage().getAddressPattern().toString().equalsIgnoreCase( "/y" ) &&
-            !osc.getMessage().getAddressPattern().toString().equalsIgnoreCase( "/time/start" ) &&
-            !osc.getMessage().getAddressPattern().toString().equalsIgnoreCase( "/time/duration" ) )
+            !osc.getMessage().getAddressPattern().toString().equalsIgnoreCase( "/y" ) )
         {
             new_bundle.addElement(osc);
         }
@@ -127,14 +131,32 @@ void Symbol::setPosition( const Point<float> pos )
     
     addOSCMessage(String("/x"), pos.getX() );
     addOSCMessage(String("/y"), pos.getY() );
-    
-    addOSCMessage(String("/time/start"), pos.getX() * 0.01f );
-    addOSCMessage(String("/time/duration"), getOSCMessageValue("/w").getFloat32() * 0.01f );
 
     //printBundle();
 }
 
+void Symbol::setTimeAndDurationFromRelPix( const float start_x, const float dur_x )
+{
+    OSCBundle new_bundle;
+    
+    // there must be a better way to do this!
+    for (auto osc : osc_bundle )
+    {
+        if(!osc.getMessage().getAddressPattern().toString().equalsIgnoreCase( "/time/start" ) &&
+           !osc.getMessage().getAddressPattern().toString().equalsIgnoreCase( "/time/duration" ) )
+        {
+            new_bundle.addElement(osc);
+        }
+    }
+    
+    osc_bundle = new_bundle;
+    
+    cout << "setting " << pixelsToTime(start_x) << " " << pixelsToTime(dur_x) << endl;
+    
+    addOSCMessage(String("/time/start"),    pixelsToTime(start_x) );
+    addOSCMessage(String("/time/duration"), pixelsToTime(dur_x) );
 
+}
 
 int Symbol::getOSCMessagePos(const String &address) const
 {

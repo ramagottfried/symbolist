@@ -82,6 +82,10 @@
 		11D1235F1F44796800A5EA5B /* SymbolistMenu.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11D1235B1F44796800A5EA5B /* SymbolistMenu.hpp */; };
 		11D123601F4583B800A5EA5B /* ToolBarComp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D123571F4471EA00A5EA5B /* ToolBarComp.cpp */; };
 		11D123611F4583B900A5EA5B /* ToolBarComp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D123571F4471EA00A5EA5B /* ToolBarComp.cpp */; };
+		11D123661F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D123641F46E4BA00A5EA5B /* OutputViewer.cpp */; };
+		11D123671F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D123641F46E4BA00A5EA5B /* OutputViewer.cpp */; };
+		11D123681F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D123641F46E4BA00A5EA5B /* OutputViewer.cpp */; };
+		11D123691F46E4BA00A5EA5B /* OutputViewer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11D123651F46E4BA00A5EA5B /* OutputViewer.hpp */; };
 		11D86B8B1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */; };
 		11D86B8C1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */; };
 		27D1022754DD8B9BF3100BB7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A18855981466E65AB497B9D /* QuartzCore.framework */; };
@@ -166,6 +170,8 @@
 		11D123581F4471EA00A5EA5B /* ToolBarComp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ToolBarComp.hpp; path = ../../Source/ToolBarComp.hpp; sourceTree = "<group>"; };
 		11D1235A1F44796800A5EA5B /* SymbolistMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolistMenu.cpp; path = ../../Source/SymbolistMenu.cpp; sourceTree = "<group>"; };
 		11D1235B1F44796800A5EA5B /* SymbolistMenu.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SymbolistMenu.hpp; path = ../../Source/SymbolistMenu.hpp; sourceTree = "<group>"; };
+		11D123641F46E4BA00A5EA5B /* OutputViewer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OutputViewer.cpp; path = ../../Source/OutputViewer.cpp; sourceTree = "<group>"; };
+		11D123651F46E4BA00A5EA5B /* OutputViewer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = OutputViewer.hpp; path = ../../Source/OutputViewer.hpp; sourceTree = "<group>"; };
 		11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PathBaseComponent.cpp; path = ../../Source/PathBaseComponent.cpp; sourceTree = "<group>"; };
 		11D86B8A1EEAEF7900681F6D /* PathBaseComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PathBaseComponent.h; path = ../../Source/PathBaseComponent.h; sourceTree = "<group>"; };
 		11D86B8F1EEAF9FD00681F6D /* BasicShapePathComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicShapePathComponents.h; path = ../../Source/BasicShapePathComponents.h; sourceTree = "<group>"; };
@@ -275,6 +281,8 @@
 				1186489B1EFAC44100904672 /* ScoreCursor.h */,
 				118648A01EFBB5D500904672 /* TimePointGUI.cpp */,
 				118648A11EFBB5D500904672 /* TimePointGUI.h */,
+				11D123641F46E4BA00A5EA5B /* OutputViewer.cpp */,
+				11D123651F46E4BA00A5EA5B /* OutputViewer.hpp */,
 			);
 			name = "time-components";
 			sourceTree = "<group>";
@@ -356,6 +364,7 @@
 				11D123581F4471EA00A5EA5B /* ToolBarComp.hpp */,
 				11D1235A1F44796800A5EA5B /* SymbolistMenu.cpp */,
 				11D1235B1F44796800A5EA5B /* SymbolistMenu.hpp */,
+				11B71DE11F0AD8EA00CDE209 /* property-panel */,
 			);
 			name = "tool-ui-components";
 			sourceTree = "<group>";
@@ -438,7 +447,6 @@
 				11CE00151EC3231E00E4F624 /* symbol-components */,
 				44DFA0951ED2C96600A6847A /* page-score-components */,
 				11D123561F44712800A5EA5B /* tool-ui-components */,
-				11B71DE11F0AD8EA00CDE209 /* property-panel */,
 				117556381ED30F0F00203B67 /* main */,
 				11CE00431EC3275500E4F624 /* test-app */,
 			);
@@ -475,6 +483,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				118353491F26AD0600DB1DF5 /* SymbolistLookAndFeel.hpp in Headers */,
+				11D123691F46E4BA00A5EA5B /* OutputViewer.hpp in Headers */,
 				118648991EFA811800904672 /* TimePointArray.h in Headers */,
 				11D1235F1F44796800A5EA5B /* SymbolistMenu.hpp in Headers */,
 			);
@@ -621,6 +630,7 @@
 				11B71DD91F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
 				118648711EF7E68B00904672 /* include_juce_gui_extra.mm in Sources */,
 				1107B4031EF7D55D00E2DFA9 /* SymbolistMainWindow.cpp in Sources */,
+				11D123681F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */,
 				1107B3F91EF7D55D00E2DFA9 /* PathInfo.cpp in Sources */,
 				1107B3FE1EF7D55D00E2DFA9 /* PaletteComponent.cpp in Sources */,
 				11D1235E1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */,
@@ -634,6 +644,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				446363951EC6F4960054CB6D /* OSCIO.cpp in Sources */,
+				11D123671F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */,
 				11CE005F1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */,
 				44EE9BBE1EC37D3E0021C5A8 /* Main.cpp in Sources */,
 				44CFE03D1EC3789C009135F8 /* include_juce_graphics.mm in Sources */,
@@ -702,6 +713,7 @@
 				118648961EFA811800904672 /* TimePointArray.cpp in Sources */,
 				11B71DD71F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
 				1107B3DD1EF1751900E2DFA9 /* TextGlyphComponent.cpp in Sources */,
+				11D123661F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */,
 				1107B3E11EF2D2BA00E2DFA9 /* PathHandleComponent.cpp in Sources */,
 				F94D2D6E7B944172DB771A09 /* include_juce_gui_extra.mm in Sources */,
 				44A3C1EE1EC317BE00C4AD14 /* symbolist.cpp in Sources */,

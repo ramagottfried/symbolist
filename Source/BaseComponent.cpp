@@ -145,7 +145,8 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
         s->addOSCMessage( addr ,        b.getHeight() );
         messages_added++;
     }
-    
+   
+    /*
     addr = base_address + "/time/start";
     if( s->getOSCMessagePos(addr) == -1 )
     {
@@ -159,6 +160,7 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
         s->addOSCMessage( addr,   s->pixelsToTime( b.getWidth() ) );
         messages_added++;
     }
+    */
     
     addr = base_address + "/color";
     if( s->getOSCMessagePos(addr) == -1 )

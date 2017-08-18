@@ -77,7 +77,7 @@ void PageComponent::resized ()
     }
     
     score_cursor.setBounds( score_cursor.getPlayPoint() * 100, 0, 50, getHeight() );
-    time_pointGUI.setBounds(0, getBottom() - 50, getWidth(), 50);
+    time_pointGUI.setBounds(0, 50, getWidth(), 50);
 }
 
 

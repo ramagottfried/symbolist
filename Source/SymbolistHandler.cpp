@@ -207,7 +207,7 @@ void SymbolistHandler::symbolistAPI_setTime(float time_ms)
     
     if ( main_component_ptr != NULL)
     {
-        main_component_ptr->getPageComponent()->setTimePoint( time_ms );
+        main_component_ptr->setTimePoint( time_ms );
         main_component_ptr->repaint();
     }
 }
@@ -370,7 +370,7 @@ void SymbolistHandler::addSymbolToScore ( BaseComponent* c )
     
     executeUpdateCallback( -1 );
     
-    main_component_ptr->getPageComponent()->drawTimePoints();
+    main_component_ptr->drawTimePoints();
 }
 
 void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
@@ -394,7 +394,7 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
     executeUpdateCallback( -1 );
     
     if( main_component_ptr )
-        main_component_ptr->getPageComponent()->drawTimePoints();
+        main_component_ptr->drawTimePoints();
 }
 
 
@@ -414,7 +414,7 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     score.addSymbolTimePoints( s );
     executeUpdateCallback( score.getSymbolPosition( s ) );
     
-    main_component_ptr->getPageComponent()->drawTimePoints();
+    main_component_ptr->drawTimePoints();
     
     c->repaint();
 }

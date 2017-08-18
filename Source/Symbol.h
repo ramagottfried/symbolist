@@ -66,6 +66,8 @@ public:
     void setID( const String& str );
     String getID();
     
+    void setTimeAndDurationFromRelPix( const float start_x, const float dur_x );
+
     inline float pixelsToTime( const float f ) const
     {
         return f * m_pixels_to_time;

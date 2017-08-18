@@ -63,7 +63,7 @@ public:
 
     int addSymbol_atTime( Symbol *s, float t);
     
-    bool f_almost_equal(float x, float y, int ulp)
+    inline bool f_almost_equal(float x, float y, int ulp = 2)
     {
         // the machine epsilon has to be scaled to the magnitude of the values used
         // and multiplied by the desired precision in ULPs (units in the last place)
@@ -72,10 +72,9 @@ public:
         || std::abs(x-y) < std::numeric_limits<float>::min();
     }
     
-    // f_almost_equal(a_t, b_t, 2)
     inline int compareTimes( float a_t, float b_t )
     {
-        return ( a_t < b_t ? 1 : ( a_t == b_t ? 0 : -1 ) );
+        return ( a_t < b_t ? 1 : ( f_almost_equal(a_t, b_t) ? 0 : -1 ) );
     }
 
     odot_bundle *getSymbolsAtTime( float t );

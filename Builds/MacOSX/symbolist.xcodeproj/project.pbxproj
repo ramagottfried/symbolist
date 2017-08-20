@@ -29,6 +29,10 @@
 		1107B4011EF7D55D00E2DFA9 /* SymbolistComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 444CD9021EDDAF1B001AC03A /* SymbolistComponent.cpp */; };
 		1107B4021EF7D55D00E2DFA9 /* SymbolistMainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00531EC328EC00E4F624 /* SymbolistMainComponent.cpp */; };
 		1107B4031EF7D55D00E2DFA9 /* SymbolistMainWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 446388D41EC34DC90038CFCB /* SymbolistMainWindow.cpp */; };
+		110B9F9D1F4778D100E9D593 /* Staff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 110B9F9B1F4778D100E9D593 /* Staff.cpp */; };
+		110B9F9E1F4778D100E9D593 /* Staff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 110B9F9B1F4778D100E9D593 /* Staff.cpp */; };
+		110B9F9F1F4778D100E9D593 /* Staff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 110B9F9B1F4778D100E9D593 /* Staff.cpp */; };
+		110B9FA01F4778D100E9D593 /* Staff.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 110B9F9C1F4778D100E9D593 /* Staff.hpp */; };
 		111A261C1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */; };
 		111A261D1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */; };
 		111A261E1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */; };
@@ -141,6 +145,8 @@
 		1107B3E71EF5388500E2DFA9 /* PathInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PathInfo.cpp; path = ../../Source/PathInfo.cpp; sourceTree = "<group>"; };
 		1107B3E81EF5388500E2DFA9 /* PathInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PathInfo.h; path = ../../Source/PathInfo.h; sourceTree = "<group>"; };
 		1107B3EF1EF7D53100E2DFA9 /* libsymbolist.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsymbolist.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		110B9F9B1F4778D100E9D593 /* Staff.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Staff.cpp; path = ../../Source/Staff.cpp; sourceTree = "<group>"; };
+		110B9F9C1F4778D100E9D593 /* Staff.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Staff.hpp; path = ../../Source/Staff.hpp; sourceTree = "<group>"; };
 		111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MouseModeComponent.cpp; path = ../../Source/MouseModeComponent.cpp; sourceTree = "<group>"; };
 		111A261B1F40B0C200D3713C /* MouseModeComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = MouseModeComponent.hpp; path = ../../Source/MouseModeComponent.hpp; sourceTree = "<group>"; };
 		118353441F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolistLookAndFeel.cpp; path = ../../Source/SymbolistLookAndFeel.cpp; sourceTree = "<group>"; };
@@ -274,6 +280,17 @@
 			name = "Juce Library Code";
 			sourceTree = "<group>";
 		};
+		110B9F9A1F47784F00E9D593 /* staff-time */ = {
+			isa = PBXGroup;
+			children = (
+				118648941EFA811800904672 /* TimePointArray.cpp */,
+				118648951EFA811800904672 /* TimePointArray.h */,
+				110B9F9B1F4778D100E9D593 /* Staff.cpp */,
+				110B9F9C1F4778D100E9D593 /* Staff.hpp */,
+			);
+			name = "staff-time";
+			sourceTree = "<group>";
+		};
 		111A26201F40CBAD00D3713C /* time-components */ = {
 			isa = PBXGroup;
 			children = (
@@ -311,8 +328,6 @@
 				44B718AF1EDD9D010039884E /* Symbol.cpp */,
 				118C38DD1EC5BC4F006FF4A1 /* Score.h */,
 				118C38DC1EC5BC4F006FF4A1 /* Score.cpp */,
-				118648941EFA811800904672 /* TimePointArray.cpp */,
-				118648951EFA811800904672 /* TimePointArray.h */,
 			);
 			name = score;
 			sourceTree = "<group>";
@@ -443,6 +458,7 @@
 				44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */,
 				446363961EC8EF9C0054CB6D /* types.h */,
 				118C38E11EC5C39F006FF4A1 /* score */,
+				110B9F9A1F47784F00E9D593 /* staff-time */,
 				444572681EFA67BE00A7DECD /* path-tools */,
 				11CE00151EC3231E00E4F624 /* symbol-components */,
 				44DFA0951ED2C96600A6847A /* page-score-components */,
@@ -482,6 +498,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				110B9FA01F4778D100E9D593 /* Staff.hpp in Headers */,
 				118353491F26AD0600DB1DF5 /* SymbolistLookAndFeel.hpp in Headers */,
 				11D123691F46E4BA00A5EA5B /* OutputViewer.hpp in Headers */,
 				118648991EFA811800904672 /* TimePointArray.h in Headers */,
@@ -617,6 +634,7 @@
 				11B71DD31F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */,
 				1107B3F61EF7D55D00E2DFA9 /* Score.cpp in Sources */,
 				1186489E1EFAC44100904672 /* ScoreCursor.cpp in Sources */,
+				110B9F9F1F4778D100E9D593 /* Staff.cpp in Sources */,
 				1107B4011EF7D55D00E2DFA9 /* SymbolistComponent.cpp in Sources */,
 				111A261E1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */,
 				1107B3FA1EF7D55D00E2DFA9 /* PathHandleComponent.cpp in Sources */,
@@ -669,6 +687,7 @@
 				11D86B8C1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */,
 				44C0729F1EC4AF8C0028D5F8 /* include_juce_osc.cpp in Sources */,
 				118648A31EFBB5D500904672 /* TimePointGUI.cpp in Sources */,
+				110B9F9E1F4778D100E9D593 /* Staff.cpp in Sources */,
 				118648971EFA811800904672 /* TimePointArray.cpp in Sources */,
 				1107B3DE1EF1751900E2DFA9 /* TextGlyphComponent.cpp in Sources */,
 				1107B3E21EF2D45500E2DFA9 /* PathHandleComponent.cpp in Sources */,
@@ -700,6 +719,7 @@
 				11B71DD11F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */,
 				118C38E31EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */,
 				8D57C4E2ADEA2935AAB91AAC /* include_juce_graphics.mm in Sources */,
+				110B9F9D1F4778D100E9D593 /* Staff.cpp in Sources */,
 				1186489C1EFAC44100904672 /* ScoreCursor.cpp in Sources */,
 				111A261C1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */,
 				11D1235C1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */,

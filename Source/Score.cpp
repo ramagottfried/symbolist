@@ -23,6 +23,7 @@ void Score::removeAllSymbols()
 {
     score_symbols.clear(1);
     time_points.clear(1);
+    staves.clear();
 }
 
 
@@ -32,7 +33,10 @@ void Score::removeAllSymbols()
 void Score::addSymbol(Symbol *symbol)
 {
     score_symbols.addSorted( score_sorter, symbol );
+    
+    staves.addStaff( symbol );
     time_points.addSymbolTimePoints( symbol );
+    
     
   //  symbol->setID( symbol->getType() + "_" + (String)getSize() );
 }
@@ -50,6 +54,7 @@ void Score::removeSymbol(Symbol *symbol)
     {
         if( symbol == score_symbols[i] )
         {
+            staves.removeStaff( symbol );
             score_symbols.remove(i);
             return;
         }
@@ -170,9 +175,15 @@ void Score::importScoreFromOSC(int n, odot_bundle **bundle_array)
 }
 
 
+void Score::convertToStaff( Symbol *s )
+{
+    s->setOSCAddrAndValue( "/objectType", "staff" );
+    staves.addStaff( s );
+}
+
 const StringArray Score::getStaves()
 {
-    StringArray staves;
+    StringArray staveStrs;
     
     for( auto s : score_symbols )
     {
@@ -182,12 +193,12 @@ const StringArray Score::getStaves()
             pos = s->getOSCMessagePos("/name");
             if( pos != -1 )
             {
-                staves.add( s->getOSCMessageValue(pos).getString() );
+                staveStrs.add( s->getOSCMessageValue(pos).getString() );
             }
         }
         
     }
-    return staves;
+    return staveStrs;
 }
 
 

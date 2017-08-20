@@ -438,6 +438,28 @@ void SymbolistHandler::updateSymbolFromInspector( BaseComponent *c)
     modifySymbolInScore( c );
 }
 
+void SymbolistHandler::convertSelectedToStaff()
+{
+    auto c = main_component_ptr->getPageComponent()->getSelectedItems();
+    if( c.size() > 1 )
+    {
+        main_component_ptr->getPageComponent()->groupSelectedSymbols();
+    }
+    
+    auto g = main_component_ptr->getPageComponent()->getSelectedItems().getFirst();
+    
+    auto staff_c = dynamic_cast<BaseComponent*>(g);
+    if( staff_c )
+    {
+        auto sym = staff_c->getScoreSymbolPointer();
+        score.convertToStaff( sym );
+        
+    }
+
+    
+}
+
+
 
 void SymbolistHandler::copySelectedToClipBoard()
 {

@@ -53,7 +53,11 @@ PopupMenu SymbolistMenu::getMenuForIndex (int menuIndex, const String& /*menuNam
 
         menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_group);
         menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_ungroup);
+
+        menu.addSeparator();
         
+        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_objToStaff);
+
         menu.addSeparator();
         
         menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_addToPalette);

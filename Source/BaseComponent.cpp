@@ -84,8 +84,9 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
     {
         s->addOSCMessage( addr,          getComponentID() );
         
-        if( name.isEmpty() )
-            name = getComponentID();
+    // no default name for now
+      //  if( name.isEmpty() )
+      //      name = getComponentID();
         
         messages_added++;
     }
@@ -242,6 +243,8 @@ void BaseComponent::importFromSymbol( const Symbol &s )
         if( staffname_pos != -1 )
         {
             staff_name = s.getOSCMessageValue(staffname_pos).getString();
+            if( staff_name == "<none>" )
+                staff_name = "";
         }
         
         int objtype_pos = s.getOSCMessagePos("/objectType");

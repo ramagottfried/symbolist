@@ -5,6 +5,7 @@
 #include "types.h"
 #include "Symbol.h"
 #include "TimePointArray.h"
+#include "Staff.cpp"
 
 using namespace std;
 
@@ -56,14 +57,17 @@ public:
     const TimePointArray* getTimePointArray() const { return &time_points; }
     
     const StringArray getStaves();
+    void convertToStaff( Symbol *s );
     
 private:
     
     OwnedArray<Symbol>          score_symbols;
+    
     TimePointArray              time_points;
+    SortedStaves                staves;
     
     ScoreSorter                 score_sorter;
-
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Score)
 };

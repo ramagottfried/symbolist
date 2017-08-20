@@ -8,6 +8,7 @@
 
 using namespace std;
 
+class Score;
 
 struct SymbolTimePoint
 {
@@ -40,8 +41,6 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolTimePoint)
     
 };
-
-class Score;
 
 class TimePointArray : public OwnedArray<SymbolTimePoint>
 {
@@ -90,7 +89,7 @@ public:
     
     vector<const Symbol *> getNoteOffs( const SymbolTimePoint *prev_tpoint , const SymbolTimePoint *tpoint   );
     bool isNewSym( const Symbol *s , const SymbolTimePoint *prev_tpoint   );
-
+    
 private:
     
     int current_point = 0;

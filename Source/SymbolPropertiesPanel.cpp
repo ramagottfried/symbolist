@@ -89,7 +89,10 @@ void SymbolPropertiesPanel::createOSCview ()
                 int pos = s->getOSCMessagePos("/objectType");
                 if( pos != -1 && s->getOSCMessageValue("/objectType").getString() == "object" )
                 {
-                    properties.add( new OSCOptionMenu ( addr, msg, change_callback_fn, symbolist_handler->getStaves() ) );
+                    StringArray staves = symbolist_handler->getStaves();
+                    staves.insert(0, String("<none>") );
+                    
+                    properties.add( new OSCOptionMenu ( addr, msg, change_callback_fn, staves ) );
                 }
             }
             else if( test_addr == "fill" )

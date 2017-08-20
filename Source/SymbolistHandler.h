@@ -80,6 +80,8 @@ public:
     void updateSymbolFromInspector( BaseComponent *c );
     const StringArray getStaves() { return score.getStaves(); }
     
+    void convertSelectedToStaff();
+    
     /*********************************************
      * PALETTE AND SYMBOL CONSTRUCTOR
      *********************************************/

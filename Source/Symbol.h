@@ -64,10 +64,15 @@ public:
     
     void setPosition( const Point<float> pos );
     void setID( const String& str );
+    void setName( const String& str );
+
     String getID();
     
     void setTimeAndDurationFromRelPix( const float start_x, const float dur_x );
 
+    void setOSCAddrAndValue( const String& addr, const String& value  );
+    void setOSCAddrAndValue( const String& addr, const float value  );
+    
     inline float pixelsToTime( const float f ) const
     {
         return f * m_pixels_to_time;

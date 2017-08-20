@@ -14,7 +14,6 @@ Symbol::Symbol (const String & type, float x, float y, float w, float h)
     // add name?
 }
 
-
 void Symbol::setID( const String& str )
 {
     int pos = getOSCMessagePos("/id");
@@ -40,6 +39,49 @@ String Symbol::getID()
 {
     return getOSCMessageValue("/id").getString();
 }
+
+void Symbol::setOSCAddrAndValue( const String& addr, const String& value  )
+{
+    int pos = getOSCMessagePos(addr);
+    if( pos == -1 )
+        addOSCMessage(addr, value );
+    else
+    {
+        OSCBundle newBundle;
+        for( auto osc_m_iter : osc_bundle )
+        {
+            auto i_msg = osc_m_iter.getMessage();
+            if( i_msg.getAddressPattern().toString() == addr )
+                newBundle.addElement(OSCBundle::Element(OSCMessage(OSCAddressPattern(addr), value)));
+            else
+                newBundle.addElement( i_msg );
+        }
+        osc_bundle = newBundle;
+        
+    }
+}
+
+void Symbol::setOSCAddrAndValue( const String& addr, const float value  )
+{
+    int pos = getOSCMessagePos(addr);
+    if( pos == -1 )
+        addOSCMessage(addr, value );
+    else
+    {
+        OSCBundle newBundle;
+        for( auto osc_m_iter : osc_bundle )
+        {
+            auto i_msg = osc_m_iter.getMessage();
+            if( i_msg.getAddressPattern().toString() == addr )
+                newBundle.addElement(OSCBundle::Element(OSCMessage(OSCAddressPattern(addr), value)));
+            else
+                newBundle.addElement( i_msg );
+        }
+        osc_bundle = newBundle;
+        
+    }
+}
+
 
 
 String Symbol::getObjectType()

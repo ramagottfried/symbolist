@@ -197,7 +197,8 @@ void SymbolistMainComponent::getAllCommands (Array<CommandID>& commands)
         cmd_zoomIn,
         cmd_zoomOut,
         cmd_esc,
-        cmd_playmsg
+        cmd_playmsg,
+        cmd_objToStaff
     };
     
     commands.addArray (ids, numElementsInArray (ids));
@@ -277,6 +278,10 @@ void SymbolistMainComponent::getCommandInfo (CommandID commandID, ApplicationCom
             result.addDefaultKeypress (KeyPress::spaceKey,  ModifierKeys::noModifiers );
             break;
             
+        case cmd_objToStaff:
+            result.setInfo ("convert selected to staff", String(), String(), 0);
+            result.addDefaultKeypress ('s',  ModifierKeys::noModifiers );
+            break;
         default:
             result.setInfo ("undefined", "", "", 0);
 
@@ -363,6 +368,9 @@ bool SymbolistMainComponent::perform (const InvocationInfo& info)
                 symbolist_handler->executeTransportCallback(1);
                 break;
                 
+            case cmd_objToStaff:
+                symbolist_handler->convertSelectedToStaff();
+                break;
             default:
                 return false;
         }

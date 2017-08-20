@@ -217,9 +217,14 @@ void ScoreComponent::groupSelectedSymbols()
             SymbolistComponent *c = *it ;
             
             // if this component is of type BaseComponent, remove it's time points if they exist
-            if( auto bc = dynamic_cast<BaseComponent*>(c) )
-                sh->removeTimePointsForSymbol( bc->getScoreSymbolPointer() );
-                
+            try{
+                if( auto bc = dynamic_cast<BaseComponent*>(c) ) // << not sure why this throws an error...
+                    sh->removeTimePointsForSymbol( bc->getScoreSymbolPointer() );
+            }
+            catch(errc)
+            {
+                ;
+            }
 
             // sets the position now relative to the group
             Rectangle<int> compBounds = c->getBounds();

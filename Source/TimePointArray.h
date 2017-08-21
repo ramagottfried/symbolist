@@ -6,6 +6,8 @@
 // SYMBOL Timepoint
 //============================
 
+// for lookup, we probably want to change this to use the ID instead fo the name
+
 using namespace std;
 
 class Score;
@@ -35,6 +37,7 @@ struct SymbolTimePoint
     
     float           time;
     vector<Symbol*> symbols_at_time;
+    Symbol *        staff_ref; // << add reference to staff for timepoint (a timepoint can only be on one staff)
 
     
 private:

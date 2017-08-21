@@ -403,16 +403,23 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     Symbol *s = c->getScoreSymbolPointer();
     assert ( s != NULL ) ; // that's not normal
     
-    //cout << c << " ---> modifySymbolInScore " << s << endl;
+    cout << c << " ---> modifySymbolInScore " << s << endl;
     //s->printBundle();
     //printRect(c->getBounds(), "component");
 
+    // Probably move some of this to the score:
+    
     score.removeSymbolTimePoints( s );
     s->clearOSCBundle();
     
     c->addSymbolMessages( s , String("") );
     score.addSymbolTimePoints( s );
     executeUpdateCallback( score.getSymbolPosition( s ) );
+    
+    if( s->getObjectType() == "staff" )
+    {
+        score.updateStaves();
+    }
     
     main_component_ptr->drawTimePoints();
     
@@ -454,9 +461,11 @@ void SymbolistHandler::convertSelectedToStaff()
         auto sym = staff_c->getScoreSymbolPointer();
         score.convertToStaff( sym );
         
+        staff_c->importFromSymbol( *sym );
+        // main_component_ptr->setInspectorObject(staff_c);
+;
+        
     }
-
-    
 }
 
 

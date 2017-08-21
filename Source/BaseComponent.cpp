@@ -466,11 +466,11 @@ void BaseComponent::resized ()
     
     if( is_selected )
     {
-        ((ScoreComponent*) getParentComponent())->reportModificationForSelectedSymbols();
+        ((ScoreComponent*)getParentComponent())->reportModificationForSelectedSymbols();
     }
 }
 
-void BaseComponent::moved () {}
+void BaseComponent::moved (){}
 
 /************************
  * MOUSE INTERACTIONS

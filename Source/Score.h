@@ -5,7 +5,7 @@
 #include "types.h"
 #include "Symbol.h"
 #include "TimePointArray.h"
-#include "Staff.cpp"
+#include "SortedStaves.hpp"
 
 using namespace std;
 
@@ -58,6 +58,11 @@ public:
     
     const StringArray getStaves();
     void convertToStaff( Symbol *s );
+    
+    void updateStaves()
+    {
+        staves.resetTimes();
+    }
     
 private:
     

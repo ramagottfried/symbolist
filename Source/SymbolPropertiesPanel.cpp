@@ -38,8 +38,9 @@ void SymbolPropertiesPanel::change_callback( const OSCMessage& msg)
     symbolist_handler->updateSymbolFromInspector( symbol_component );
     
     // refresh inspector if object type is changed (to hide /staff if the object is a staff)
-    if( msg.getAddressPattern() == "/objectType" )
-        setInspectorObject( symbol_component );
+    //if( msg.getAddressPattern() == "/objectType" )
+    
+    setInspectorObject( symbol_component );
     
     //cout << "*********************** updated bundle from inspector ********** " << endl;
     //s->printBundle();

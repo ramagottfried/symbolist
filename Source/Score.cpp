@@ -183,6 +183,10 @@ void Score::convertToStaff( Symbol *s )
 
 const StringArray Score::getStaves()
 {
+    
+    // not sure if /name or /id should be used here...
+    // possibly, the name is the name that is used for output more than creating links between objects...
+    
     StringArray staveStrs;
     
     for( auto s : score_symbols )

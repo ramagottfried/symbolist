@@ -59,10 +59,7 @@ public:
     const StringArray getStaves();
     void convertToStaff( Symbol *s );
     
-    void updateStaves()
-    {
-        staves.resetTimes();
-    }
+    void updateStaves(Symbol *moved_stave);
     
 private:
     

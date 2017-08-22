@@ -181,6 +181,43 @@ void Score::convertToStaff( Symbol *s )
     staves.addStaff( s );
 }
 
+void Score::updateStaves(Symbol *moved_stave)
+{
+    // need to update positions for all symbols on staff...
+    // for now just going to update everything
+    
+    String staff_name;
+    int pos = moved_stave->getOSCMessagePos("/name");
+    if( pos != -1)
+    {
+        staff_name = moved_stave->getOSCMessageValue(pos).getString();
+    }
+    
+    if( staff_name.isEmpty() )
+        return;
+        
+    for( auto s : score_symbols )
+    {
+        pos = s->getOSCMessagePos("/staff");
+        if( pos != -1 )
+        {
+           if( s->getOSCMessageValue(pos).getString() == staff_name )
+           {
+               ;
+               /*
+               s->get
+               s->setPosition(<#const Point<float> pos#>)
+                */
+           }
+            
+        }
+        
+    }
+    
+    staves.resetTimes();
+    time_points.resetTimes();
+}
+
 const StringArray Score::getStaves()
 {
     

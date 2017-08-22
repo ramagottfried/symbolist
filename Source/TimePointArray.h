@@ -14,10 +14,11 @@ class Score;
 
 struct SymbolTimePoint
 {
-    SymbolTimePoint(Symbol * s, float t)
+    SymbolTimePoint(Symbol * s, float t, Symbol *staff)
     {
         addSymbol( s );
         time = t;
+        staff_ref = staff;
     }
     
     ~SymbolTimePoint(){ cout << "deleting timepoint " << time << endl; }
@@ -63,7 +64,7 @@ public:
     void addSymbolTimePoints( Symbol *s );
     void removeSymbolTimePoints( Symbol *s);
 
-    int addSymbol_atTime( Symbol *s, float t);
+    int addSymbol_atTime( Symbol *s, float t, Symbol *staff);
     
     inline bool f_almost_equal(float x, float y, int ulp = 2)
     {
@@ -92,6 +93,8 @@ public:
     
     vector<const Symbol *> getNoteOffs( const SymbolTimePoint *prev_tpoint , const SymbolTimePoint *tpoint   );
     bool isNewSym( const Symbol *s , const SymbolTimePoint *prev_tpoint   );
+    
+    void resetTimes();
     
 private:
     

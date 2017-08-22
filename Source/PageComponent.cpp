@@ -20,7 +20,8 @@ PageComponent::~PageComponent() {}
 void PageComponent::addSubcomponent( SymbolistComponent *c )
 {
     ScoreComponent::addSubcomponent( c );
-    if ( ((BaseComponent*) c)->getScoreSymbolPointer() != NULL )
+    
+    if ( ((BaseComponent*)c)->getScoreSymbolPointer() != NULL )
     {
         getSymbolistHandler()->addSymbolToScore( ((BaseComponent*) c) );
     }
@@ -28,10 +29,11 @@ void PageComponent::addSubcomponent( SymbolistComponent *c )
 
 void PageComponent::removeSubcomponent( SymbolistComponent *c )
 {
-    if ( ((BaseComponent*) c)->getScoreSymbolPointer() != NULL )
+    if ( ((BaseComponent*)c)->getScoreSymbolPointer() != NULL )
     {
         getSymbolistHandler()->removeSymbolFromScore( ((BaseComponent*) c) );
     }
+    
     ScoreComponent::removeSubcomponent( c );
 }
 

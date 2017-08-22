@@ -95,6 +95,28 @@ void TimePointArray::removeSymbolTimePoints( Symbol *s)
 }
 
 
+void TimePointArray::resetTimes()
+{
+    for( int i = 0; i < size(); i++ )
+    {
+        auto t = (*this)[i];
+        
+        Symbol *staff = t->staff_ref;
+        
+        float staff_x = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/x") );
+        
+        auto vec = t->symbols_at_time;
+        for( auto it = vec.begin(); it != vec.end(); it++ )
+        {
+            Symbol *s = *it;
+            float start_x = Symbol::getOSCValueAsFloat( s->getOSCMessageValue("/x") ) - staff_x;
+            float dur_x = Symbol::getOSCValueAsFloat( s->getOSCMessageValue("/w") );
+            s->setTimeAndDurationFromRelPix(start_x, dur_x);
+        }
+    }
+}
+
+
 void TimePointArray::addSymbolTimePoints( Symbol *s )
 {
     // 0) check if the symbol has a staff reference, if not ignore it
@@ -110,7 +132,7 @@ void TimePointArray::addSymbolTimePoints( Symbol *s )
 
     String staff_name = s->getOSCMessageValue( staff_pos ).getString();
 
-    auto found_staves = score_ptr->getSymbolsByValue( "/name", staff_name );
+    auto found_staves = score_ptr->getSymbolsByValue( "/name", staff_name ); // << maybe we should use /ID instead?
     if( found_staves.isEmpty() ) return;
     
     Symbol *staff = found_staves.getFirst();
@@ -126,8 +148,8 @@ void TimePointArray::addSymbolTimePoints( Symbol *s )
     float start_t = s->pixelsToTime(start_x);
     float end_t = s->pixelsToTime(end_x);
     
-    int start_idx = addSymbol_atTime( s, start_t );
-    int end_idx = addSymbol_atTime( s, end_t );
+    int start_idx = addSymbol_atTime( s, start_t, staff );
+    int end_idx = addSymbol_atTime( s, end_t, staff );
     
     for( int i = (start_idx + 1); i < end_idx; i++ )
     {
@@ -138,7 +160,7 @@ void TimePointArray::addSymbolTimePoints( Symbol *s )
 
 }
 
-int TimePointArray::addSymbol_atTime( Symbol *s, float time)
+int TimePointArray::addSymbol_atTime( Symbol *s, float time, Symbol *staff)
 {
     
     bool match;
@@ -149,7 +171,7 @@ int TimePointArray::addSymbol_atTime( Symbol *s, float time)
     }
     else
     {
-        auto newTimePoint = insert( idx, new SymbolTimePoint( s, time ) );  // otherwise, create new point and check previous for continuing points
+        auto newTimePoint = insert( idx, new SymbolTimePoint( s, time, staff ) );  // otherwise, create new point and check previous for continuing points
 
         if( idx - 1 >= 0 )
         {

@@ -83,6 +83,7 @@ void SortedStaves::resetTimes()
         sym->setOSCAddrAndValue( "/time/duration", time );
         
         cout << time << endl;
+        
     }
     
     

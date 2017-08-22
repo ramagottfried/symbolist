@@ -103,6 +103,8 @@ public:
     void copySelectedToClipBoard();
     void newFromClipBoard();
     
+    // temp
+    void updateStavePosition( BaseComponent *c );
     
 private:
     

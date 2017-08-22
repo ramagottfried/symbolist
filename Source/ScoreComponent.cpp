@@ -199,17 +199,14 @@ void ScoreComponent::groupSelectedSymbols()
         
         for( SymbolistComponent *c : selected_components )
         {
-                items.push_back(c);
+            items.push_back(c);
         }
         unselectAllComponents();
         
         Symbol* s = new Symbol("group", minx, miny, maxx-minx, maxy-miny);
         auto sh = getSymbolistHandler();
-        SymbolGroupComponent *group = (SymbolGroupComponent*) sh->makeComponentFromSymbol( s , creating_a_top_level_group );
-        
-//        cout << "group bundle pre:" << endl;
-//        group->getScoreSymbolPointer()->printBundle();
-        
+        SymbolGroupComponent *group = (SymbolGroupComponent*)sh->makeComponentFromSymbol( s , creating_a_top_level_group );
+                
         Rectangle<int> groupBounds( minx, miny, maxx-minx, maxy-miny );
         
         for ( auto it = items.begin(); it != items.end(); it++ )
@@ -217,13 +214,22 @@ void ScoreComponent::groupSelectedSymbols()
             SymbolistComponent *c = *it ;
             
             // if this component is of type BaseComponent, remove it's time points if they exist
-            try{
-                if( auto bc = dynamic_cast<BaseComponent*>(c) ) // << not sure why this throws an error...
-                    sh->removeTimePointsForSymbol( bc->getScoreSymbolPointer() );
+            try
+            {
+                if( auto bc = dynamic_cast<BaseComponent*>(c) ) // not sure why this throws an error...
+                {
+                    auto sym = bc->getScoreSymbolPointer();
+                    if( sym )  // this fails within groups becuase subcomponents do not have score symbols...
+                    {
+                        sh->removeTimePointsForSymbol( sym );
+                    }
+                    
+                }
             }
             catch(errc)
             {
-                ;
+                cout << "error: cannot group non-BaseComponent types";
+                return;
             }
 
             // sets the position now relative to the group
@@ -233,7 +239,9 @@ void ScoreComponent::groupSelectedSymbols()
                          compBounds.getY() - groupBounds.getY(),
                          compBounds.getWidth(), compBounds.getHeight());
             
-            ((ScoreComponent*)c->getParentComponent())->removeSubcomponent( c ); // the parent is not necessarily 'this' (selected_items can be indirect children...)
+            // the parent is not necessarily 'this' (selected_items can be indirect children...)
+            ((ScoreComponent*)c->getParentComponent())->removeSubcomponent( c );
+            
             group->addSubcomponent( c );
         }
         

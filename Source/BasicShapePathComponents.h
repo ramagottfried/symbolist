@@ -6,7 +6,8 @@
 
 class BasicShapePathComponent : public PathBaseComponent
 {
-    public :
+    
+public:
     
     BasicShapePathComponent() = default;
     ~BasicShapePathComponent() = default;
@@ -76,9 +77,9 @@ class BasicShapePathComponent : public PathBaseComponent
         modif_flag = true;
     }
     
-    protected :
+protected:
     
-        bool modif_flag = false;
+    bool modif_flag = false;
 };
 
 class CirclePathComponent : public BasicShapePathComponent

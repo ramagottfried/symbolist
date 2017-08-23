@@ -82,6 +82,7 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
     addr = base_address + "/id";
     if( s->getOSCMessagePos(addr) == -1 )
     {
+        cout << addr << " " << getComponentID() << endl;
         s->addOSCMessage( addr,          getComponentID() );
         
     // no default name for now

@@ -175,9 +175,9 @@ void Score::importScoreFromOSC(int n, odot_bundle **bundle_array)
 }
 
 
-void Score::convertToStaff( Symbol *s )
+void Score::addStaff( Symbol *s )
 {
-    s->setOSCAddrAndValue( "/objectType", "staff" );
+    //s->setOSCAddrAndValue( "/type", "staff" );
     staves.addStaff( s );
 }
 

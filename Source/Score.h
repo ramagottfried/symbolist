@@ -57,7 +57,7 @@ public:
     const TimePointArray* getTimePointArray() const { return &time_points; }
     
     const StringArray getStaves();
-    void convertToStaff( Symbol *s );
+    void addStaff( Symbol *s );
     
     void updateStaves(Symbol *moved_stave);
     

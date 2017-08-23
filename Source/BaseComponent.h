@@ -125,7 +125,8 @@ public:
 protected:
     
     // score structure
-    Symbol*         score_symbol;   // poiner to the score symbol (set when this is a topLevel symbol, NULL otherwise)
+    
+    Symbol*         score_symbol = NULL;   // pointer to the score symbol (set when this is a topLevel symbol, NULL otherwise)
     
     String          name;
     String          staff_name;

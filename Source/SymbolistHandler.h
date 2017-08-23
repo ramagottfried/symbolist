@@ -105,7 +105,7 @@ public:
     
     // temp
     void updateStavePosition( BaseComponent *c );
-    
+    void addStaffSymbolToScore( Symbol *s );
 private:
     
     Score score ;

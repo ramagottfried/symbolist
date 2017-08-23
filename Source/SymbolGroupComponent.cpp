@@ -137,7 +137,7 @@ int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_addre
     
     if( s->getOSCMessagePos(addr) == -1 && (getNumSubcomponents() > 0) )
     {
-        s->addOSCMessage( addr,     (int)getNumSubcomponents() );
+        s->addOSCMessage( addr, (int)getNumSubcomponents() );
         messages_added++;
     }
     

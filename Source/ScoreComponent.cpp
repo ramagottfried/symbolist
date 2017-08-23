@@ -3,7 +3,7 @@
 #include "ScoreComponent.h"
 #include "SymbolistMainComponent.h"
 #include "SymbolGroupComponent.h"
-
+#include "StaffComponent.hpp"
 
 ScoreComponent::ScoreComponent() {}
 
@@ -175,10 +175,64 @@ void ScoreComponent::deleteSelectedComponents()
     }
 }
 
+void ScoreComponent::createStaffFromSelected()
+{
+    auto page_comp = getPageComponent();
+
+    bool creating_a_top_level_group = ( this == page_comp );
+    
+    if( !creating_a_top_level_group )
+    {
+        cout << "must be top level to create staff " << endl;
+        return;
+    }
+    
+    auto sel = page_comp->getSelectedItems();
+    if( sel.size() > 1 )
+    {
+        page_comp->groupSelectedSymbols();
+    }
+    
+    auto staff_ref_comp = dynamic_cast<BaseComponent*>(page_comp->getSelectedItems().getFirst());
+    if( staff_ref_comp )
+    {
+        Symbol ref_sym = *(staff_ref_comp->getScoreSymbolPointer());
+        cout << "STAFF SYMBOL " << endl;
+
+        ref_sym.printBundle();
+       // if( ref_sym )
+        {
+            Symbol* staff_sym = new Symbol("staff", staff_ref_comp->getX(), staff_ref_comp->getY(), staff_ref_comp->getWidth(), staff_ref_comp->getHeight() );
+            
+            auto sh = getSymbolistHandler();
+            StaffComponent *staff_comp = (StaffComponent *)sh->makeComponentFromSymbol( staff_sym, true );
+
+            // remove from parent, and then attach to the new parent component
+            // the parent is not necessarily 'this' (selected_items can be indirect children...)
+            ((ScoreComponent*)staff_ref_comp->getParentComponent())->removeSubcomponent( staff_ref_comp );
+            
+            // sets the position now relative to the group
+            staff_ref_comp->setBounds(0, 0, staff_ref_comp->getWidth(), staff_ref_comp->getHeight() );
+            
+            // add subcomponent to the parent staff component
+            staff_comp->addSubcomponent( staff_ref_comp );
+            
+            // once the subcomponent is in place, the staff symbol can be updated
+            staff_comp->addSymbolMessages( staff_sym , String("") );
+            
+            // add the staff symbol to the score's stave array
+            sh->addStaffSymbolToScore( staff_sym );
+            
+            addSubcomponent(staff_comp);
+            addToSelection(staff_comp);
+        
+        }
+    }
+    
+}
 
 void ScoreComponent::groupSelectedSymbols()
 {
-    
     bool creating_a_top_level_group = ( this == getPageComponent() );
     
     if ( selected_components.size() > 1 )

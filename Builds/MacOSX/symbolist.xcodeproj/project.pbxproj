@@ -353,12 +353,12 @@
 				11D86B8A1EEAEF7900681F6D /* PathBaseComponent.h */,
 				11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */,
 				11D86B8F1EEAF9FD00681F6D /* BasicShapePathComponents.h */,
-				1107B3DB1EF1751900E2DFA9 /* TextGlyphComponent.cpp */,
 				1107B3DC1EF1751900E2DFA9 /* TextGlyphComponent.h */,
+				1107B3DB1EF1751900E2DFA9 /* TextGlyphComponent.cpp */,
 				444C43A41EE4A748000C6F69 /* SymbolGroupComponent.h */,
 				444C43A31EE4A748000C6F69 /* SymbolGroupComponent.cpp */,
-				114027C81F4B185E00A9B8C4 /* StaffComponent.cpp */,
 				114027C91F4B185E00A9B8C4 /* StaffComponent.hpp */,
+				114027C81F4B185E00A9B8C4 /* StaffComponent.cpp */,
 			);
 			name = "symbol-components";
 			sourceTree = "<group>";

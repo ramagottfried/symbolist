@@ -1,16 +1,6 @@
-//
-//  GroupComponent.hpp
-//  symbolist
-//
-//  Created by Jean Bresson on 04/06/2017.
-//
-//
-
-#ifndef SymbolGroupComponent_h
-#define SymbolGroupComponent_h
+#pragma once
 
 #include "BaseComponent.h"
-#include "Symbol.h"
 
 class SymbolGroupComponent : public BaseComponent
 {
@@ -37,7 +27,7 @@ public:
 
 private :
     
+    //==============================================================================
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolGroupComponent)
 };
 
-
-#endif

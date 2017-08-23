@@ -44,8 +44,12 @@ public:
     void deleteSelectedComponents();
 
     void translateSelectedComponents( Point<int> delta_xy );
+    
     void groupSelectedSymbols();
     void ungroupSelectedSymbols();
+    
+    void createStaffFromSelected();
+
     void flipSelectedSymbols( int axis );
     
     void addSelectedSymbolsToPalette();
@@ -53,7 +57,6 @@ public:
     void mouseDown ( const MouseEvent& event ) override;
     void mouseDrag ( const MouseEvent& event ) override;
     void mouseUp ( const MouseEvent& event ) override;
-    
     
     virtual void mouseAddClick ( const MouseEvent& event );
     

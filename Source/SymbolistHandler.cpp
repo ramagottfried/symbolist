@@ -3,6 +3,7 @@
 
 #include "SymbolistMainWindow.h"
 
+#include "StaffComponent.hpp"
 #include "SymbolGroupComponent.h"
 #include "BasicShapePathComponents.h"
 #include "PathBaseComponent.h"
@@ -290,7 +291,8 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
     
     int typeMessagePos = s->getOSCMessagePos("/type");
     
-    if ( typeMessagePos == -1 ) {
+    if ( typeMessagePos == -1 )
+    {
         
         cout << "Could not find '/type' message in OSC Bundle.. (size=" << s->getOSCBundle()->size() << ")" << endl;
         return NULL;
@@ -314,6 +316,8 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
             c = new TextGlphComponent();
         } else if (typeStr.equalsIgnoreCase(String("group"))) {
             c = new SymbolGroupComponent();
+        } else if (typeStr.equalsIgnoreCase(String("staff"))) {
+            c = new StaffComponent();
         } else {
             cout << "Unknown symbol type : " << typeStr << endl;
             c = NULL;
@@ -333,8 +337,11 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
                 {
                   //  c->setComponentID( s->getID() ); // << ID is not set yet... not super clean right now
                     c->setComponentID( c->getSymbolTypeStr() + "_" + (String)main_component_ptr->getPageComponent()->getNumSubcomponents() );
+                    cout << "setting ID " <<  c->getComponentID()  << endl;
                     s->setID( c->getComponentID() );
                 }
+                cout << "attaching symbol " << s->getType() << endl;
+                
                 c->setScoreSymbolPointer( s );
                 
             }
@@ -514,28 +521,13 @@ void SymbolistHandler::updateSymbolFromInspector( BaseComponent *c)
 
 void SymbolistHandler::convertSelectedToStaff()
 {
-    auto c = main_component_ptr->getPageComponent()->getSelectedItems();
-    if( c.size() > 1 )
-    {
-        main_component_ptr->getPageComponent()->groupSelectedSymbols();
-    }
-    
-    auto g = main_component_ptr->getPageComponent()->getSelectedItems().getFirst();
-    
-    auto staff_c = dynamic_cast<BaseComponent*>(g);
-    if( staff_c )
-    {
-        auto sym = staff_c->getScoreSymbolPointer();
-        score.convertToStaff( sym );
-        
-        staff_c->importFromSymbol( *sym );
-        // main_component_ptr->setInspectorObject(staff_c);
-;
-        
-    }
+    main_component_ptr->getPageComponent()->createStaffFromSelected();
 }
 
-
+void SymbolistHandler::addStaffSymbolToScore( Symbol *s )
+{
+    score.addStaff(s);
+}
 
 void SymbolistHandler::copySelectedToClipBoard()
 {

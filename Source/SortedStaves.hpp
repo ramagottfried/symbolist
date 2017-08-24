@@ -39,6 +39,8 @@ public:
     void resetTimes();
     void addStaff( Symbol *s);
     
+    StringArray getStaveNames();
+    
 private:
     
     vector<Symbol*>     staves;

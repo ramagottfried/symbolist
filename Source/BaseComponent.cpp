@@ -82,7 +82,6 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
     addr = base_address + "/id";
     if( s->getOSCMessagePos(addr) == -1 )
     {
-        cout << addr << " " << getComponentID() << endl;
         s->addOSCMessage( addr,          getComponentID() );
         
     // no default name for now
@@ -103,13 +102,6 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
     if( s->getOSCMessagePos(addr) == -1 )
     {
         s->addOSCMessage( addr,         staff_name );
-        messages_added++;
-    }
-    
-    addr = base_address + "/objectType";
-    if( s->getOSCMessagePos(addr) == -1 )
-    {
-        s->addOSCMessage( addr,         object_type );
         messages_added++;
     }
     
@@ -248,12 +240,6 @@ void BaseComponent::importFromSymbol( const Symbol &s )
                 staff_name = "";
         }
         
-        int objtype_pos = s.getOSCMessagePos("/objectType");
-        if( objtype_pos != -1 )
-        {
-            object_type = s.getOSCMessageValue(objtype_pos).getString();
-        }
-
     }
 }
 

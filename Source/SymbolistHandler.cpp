@@ -335,15 +335,13 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
             {                
                 if( main_component_ptr != NULL )
                 {
-                  //  c->setComponentID( s->getID() ); // << ID is not set yet... not super clean right now
                     c->setComponentID( c->getSymbolTypeStr() + "_" + (String)main_component_ptr->getPageComponent()->getNumSubcomponents() );
-                    cout << "setting ID " <<  c->getComponentID()  << endl;
                     s->setID( c->getComponentID() );
                 }
-                cout << "attaching symbol " << s->getType() << endl;
                 
                 c->setScoreSymbolPointer( s );
-                
+                score.addStaff( s ); // << /type checked internally and added if staff
+
             }
         }
         
@@ -410,7 +408,7 @@ void SymbolistHandler::updateStavePosition( BaseComponent *c )
     Symbol *s = c->getScoreSymbolPointer();
     assert ( s != NULL ) ; // that's not normal
     
-    if( s->getObjectType() == "staff" )
+    if( s->getType() == "staff" )
     {
         
         String staff_name;
@@ -477,9 +475,9 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     Symbol *s = c->getScoreSymbolPointer();
     assert ( s != NULL ) ; // that's not normal
     
-//    cout << c << " ---> modifySymbolInScore " << s << endl;
-//    s->printBundle();
-//    printRect(c->getBounds(), "component");
+    cout << c << " ---> modifySymbolInScore " << s << endl;
+    s->printBundle();
+    printRect(c->getBounds(), "component");
 
     
     score.removeSymbolTimePoints( s );
@@ -489,11 +487,13 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     score.addSymbolTimePoints( s );
     
     executeUpdateCallback( score.getSymbolPosition( s ) );
-    
+
+    /*
     if( s->getObjectType() == "staff" )
     {
         score.updateStaves( s );
     }
+    */
     
     main_component_ptr->drawTimePoints();
     
@@ -515,8 +515,9 @@ void SymbolistHandler::clearInspector()
 void SymbolistHandler::updateSymbolFromInspector( BaseComponent *c)
 {
     c->importFromSymbol( *c->getScoreSymbolPointer() );
-    
     modifySymbolInScore( c );
+    
+    
 }
 
 void SymbolistHandler::convertSelectedToStaff()

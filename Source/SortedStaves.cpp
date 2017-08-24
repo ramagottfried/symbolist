@@ -92,7 +92,7 @@ void SortedStaves::resetTimes()
 
 void SortedStaves::addStaff( Symbol *s)
 {
-    int pos = s->getOSCMessagePos("/objectType");
+    int pos = s->getOSCMessagePos("/type");
     if( pos == -1 || s->getOSCMessageValue(pos).getString() != "staff" )
         return;
     
@@ -118,4 +118,16 @@ void SortedStaves::addStaff( Symbol *s)
         s->setOSCAddrAndValue( "/name", "staff_" + (String)staves.size() );
     }
     
+}
+
+StringArray SortedStaves::getStaveNames()
+{
+    StringArray names;
+    
+    for( auto s : staves )
+    {
+        names.add( s->getID() );
+    }
+    
+    return names;
 }

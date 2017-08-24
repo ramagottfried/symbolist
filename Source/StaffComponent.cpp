@@ -11,12 +11,12 @@ void StaffComponent::importFromSymbol( const Symbol &s )
     
     BaseComponent::importFromSymbol(s);
     
-    String filter = "/staffSybmol";
+    String filter = "/staffSymbol";
     
     int pos = s.getOSCMessagePos(filter+"/type");
     if( pos == -1 )
     {
-        cout << "no /staffSybmol/type found" << endl;
+        cout << "no /staffSymbol/type found" << endl;
         return;
     }
     
@@ -27,7 +27,7 @@ void StaffComponent::importFromSymbol( const Symbol &s )
         addSubcomponent( c );
     else
         cout << "Error importing staffSymbol " << endl;
-    
+        
 }
 
 int StaffComponent::addSymbolMessages( Symbol* s, const String &base_address )

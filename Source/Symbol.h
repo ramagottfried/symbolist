@@ -24,7 +24,6 @@ public:
     }
     
     String      getType();
-    String      getObjectType();
     
     const OSCBundle *getOSCBundle () const { return &osc_bundle; }
     void        setOSCBundle (OSCBundle *b) { osc_bundle = *b; }

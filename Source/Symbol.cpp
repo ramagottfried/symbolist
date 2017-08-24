@@ -82,13 +82,6 @@ void Symbol::setOSCAddrAndValue( const String& addr, const float value  )
     }
 }
 
-
-
-String Symbol::getObjectType()
-{
-    return getOSCMessageValue("/objectType").getString();
-}
-
 String Symbol::getType()
 {
     return getOSCMessageValue("/type").getString();

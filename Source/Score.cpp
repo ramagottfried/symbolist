@@ -224,11 +224,14 @@ const StringArray Score::getStaves()
     // not sure if /name or /id should be used here...
     // possibly, the name is the name that is used for output more than creating links between objects...
     
+    return staves.getStaveNames();
+
+    /*
     StringArray staveStrs;
-    
+
     for( auto s : score_symbols )
     {
-        int pos = s->getOSCMessagePos("/objectType");
+        int pos = s->getOSCMessagePos("/type");
         if( pos != -1 && s->getOSCMessageValue(pos).getString() == "staff" )
         {
             pos = s->getOSCMessagePos("/name");
@@ -240,6 +243,7 @@ const StringArray Score::getStaves()
         
     }
     return staveStrs;
+     */
 }
 
 

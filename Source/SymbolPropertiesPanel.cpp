@@ -34,16 +34,18 @@ void SymbolPropertiesPanel::change_callback( const OSCMessage& msg)
     }
     
     s->setOSCBundle( &newBundle );
+    cout << "UPDATE " << endl;
+    s->printBundle();
     
     symbolist_handler->updateSymbolFromInspector( symbol_component );
     
     // refresh inspector if object type is changed (to hide /staff if the object is a staff)
     //if( msg.getAddressPattern() == "/objectType" )
     
-    setInspectorObject( symbol_component );
+   // setInspectorObject( symbol_component );
     
     //cout << "*********************** updated bundle from inspector ********** " << endl;
-    //s->printBundle();
+
     
 }
 
@@ -80,15 +82,10 @@ void SymbolPropertiesPanel::createOSCview ()
             {
                 properties.add( new OSCFontMenu ( addr, msg, change_callback_fn, Font::findAllTypefaceNames() ) );
             }
-            else if( test_addr == "objectType" ) // << this should be something like: /objectType : "staff"
-            {
-                StringArray choices = {"object", "staff"};
-                properties.add( new OSCOptionMenu ( addr, msg, change_callback_fn, choices ) );
-            }
             else if( test_addr == "staff" )
             {
-                int pos = s->getOSCMessagePos("/objectType");
-                if( pos != -1 && s->getOSCMessageValue("/objectType").getString() == "object" )
+                int pos = s->getOSCMessagePos("/type");
+                if( pos != -1 && s->getOSCMessageValue(pos).getString() != "staff" )
                 {
                     StringArray staves = symbolist_handler->getStaves();
                     staves.insert(0, String("<none>") );

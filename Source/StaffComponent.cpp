@@ -32,20 +32,7 @@ void StaffComponent::importFromSymbol( const Symbol &s )
 
 int StaffComponent::addSymbolMessages( Symbol* s, const String &base_address )
 {
-    cout << "current bundle " << endl;
-    if( auto current_s = getScoreSymbolPointer() )
-    {
-        current_s->printBundle();
-    }
-    else
-    {
-        cout << "no current bundle " << endl;
-    }
-    
     int messages_added = BaseComponent::addSymbolMessages( s, base_address );
-    
-    cout << "addSymbolMessages pre symbol bundle, nsubs " << getNumSubcomponents() << endl;
-    s->printBundle();
     
     String addr = base_address + "/staffSymbol";
     if( getNumSubcomponents() && s->getOSCMessagePos(addr) == -1 )
@@ -53,8 +40,6 @@ int StaffComponent::addSymbolMessages( Symbol* s, const String &base_address )
         auto sub_c = getSubcomponent(0);
         if( sub_c )
         {
-            cout << "addSymbolMessages for subcomponent at addr " << addr << endl;
-
             messages_added += ((BaseComponent*)sub_c)->addSymbolMessages( s, addr );
         }
         else
@@ -63,9 +48,40 @@ int StaffComponent::addSymbolMessages( Symbol* s, const String &base_address )
         }
     }
     
-
-    cout << "current --s-- (not attached) bundle " << endl;
-    s->printBundle();
     return messages_added;
 }
 
+void StaffComponent::mouseDown( const MouseEvent& event )
+{
+    BaseComponent::mouseDown(event);
+    
+    if( is_selected )
+    {
+        auto page = getPageComponent();
+
+        for( BaseComponent *c : symbols_on_staff )
+        {
+            page->addToSelection( c );
+        }
+    }
+}
+
+
+void StaffComponent::paint ( Graphics& g )
+{
+    BaseComponent::paint( g );
+ 
+    if( draw_timepoints )
+    {
+        auto timepoints = getSymbolistHandler()->getTimePointArray();
+        
+        float start_t = getScoreSymbolPointer()->getTime();
+        float end_t = start_t + getScoreSymbolPointer()->getDuration();
+        
+        for( auto t : (*timepoints) )
+        {
+            if( t->time >= start_t && t->time <= end_t )
+                g.fillEllipse( (t->time - start_t) * 100.0f, getHeight() / 2, 2, 2);
+        }
+    }
+}

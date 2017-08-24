@@ -341,8 +341,11 @@ void ScoreComponent::ungroupSelectedSymbols()
 
 void ScoreComponent::translateSelectedComponents( Point<int> delta_xy )
 {
+    cout << "num selected " << selected_components.size() << endl;
+
     for ( auto c : selected_components )
     {
+        cout << "name " << c->getComponentID() << endl;
         c->setTopLeftPosition( c->getPosition() + delta_xy );
     }
 }

@@ -174,26 +174,35 @@ void Score::importScoreFromOSC(int n, odot_bundle **bundle_array)
     std::cout << "===IMPORT DONE" << std::endl;
 }
 
+/***********************************
+ * Staff/Stave handling
+ ***********************************/
 
 void Score::addStaff( Symbol *s )
 {
-    //s->setOSCAddrAndValue( "/type", "staff" );
     staves.addStaff( s );
 }
 
 void Score::updateStaves(Symbol *moved_stave)
 {
+
+    int pos = moved_stave->getOSCMessagePos("/type");
+    if( moved_stave->getOSCMessageValue(pos).getString() != "staff" )
+        return;
+    
+    
+    /*  updating positions should be done from the staff component
+     
     // need to update positions for all symbols on staff...
     // for now just going to update everything
-    
-    String staff_name;
-    int pos = moved_stave->getOSCMessagePos("/name");
+    String staff_id;
+    pos = moved_stave->getOSCMessagePos("/id");
     if( pos != -1)
     {
-        staff_name = moved_stave->getOSCMessageValue(pos).getString();
+        staff_id = moved_stave->getOSCMessageValue(pos).getString();
     }
     
-    if( staff_name.isEmpty() )
+    if( staff_id.isEmpty() )
         return;
         
     for( auto s : score_symbols )
@@ -201,18 +210,16 @@ void Score::updateStaves(Symbol *moved_stave)
         pos = s->getOSCMessagePos("/staff");
         if( pos != -1 )
         {
-           if( s->getOSCMessageValue(pos).getString() == staff_name )
+           if( s->getOSCMessageValue(pos).getString() == staff_id )
            {
                ;
-               /*
-               s->get
-               s->setPosition(<#const Point<float> pos#>)
-                */
+
            }
             
         }
         
     }
+    */
     
     staves.resetTimes();
     time_points.resetTimes();
@@ -220,30 +227,7 @@ void Score::updateStaves(Symbol *moved_stave)
 
 const StringArray Score::getStaves()
 {
-    
-    // not sure if /name or /id should be used here...
-    // possibly, the name is the name that is used for output more than creating links between objects...
-    
     return staves.getStaveNames();
-
-    /*
-    StringArray staveStrs;
-
-    for( auto s : score_symbols )
-    {
-        int pos = s->getOSCMessagePos("/type");
-        if( pos != -1 && s->getOSCMessageValue(pos).getString() == "staff" )
-        {
-            pos = s->getOSCMessagePos("/name");
-            if( pos != -1 )
-            {
-                staveStrs.add( s->getOSCMessageValue(pos).getString() );
-            }
-        }
-        
-    }
-    return staveStrs;
-     */
 }
 
 
@@ -258,21 +242,3 @@ void Score::deleteOdotBundleArray(odot_bundle** bundle_array, int size)
 }
 */
 
-/*
-void Score::sortScore()
-{
-    auto sorted = score_symbols;
-    std::sort(sorted.begin(),
-              sorted.end(),
-              [](Symbol *a, Symbol *b) { return (a->getTime() < b->getTime()); } );
-    
-    for (auto e : sorted )
-    {
-        std::cout << e->getOSCMessageValue("/x").getFloat32() << " " << e->getTime() << std::endl;
-    }
-    
-}
-
-
-
-*/

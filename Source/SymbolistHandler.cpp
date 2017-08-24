@@ -375,7 +375,6 @@ void SymbolistHandler::addSymbolToScore ( BaseComponent* c )
     
     executeUpdateCallback( -1 );
     
-    main_component_ptr->drawTimePoints();
 }
 
 void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
@@ -398,8 +397,6 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
     c->setScoreSymbolPointer( NULL );
     executeUpdateCallback( -1 );
     
-    if( main_component_ptr )
-        main_component_ptr->drawTimePoints();
 }
 
 
@@ -488,14 +485,8 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     
     executeUpdateCallback( score.getSymbolPosition( s ) );
 
-    /*
-    if( s->getObjectType() == "staff" )
-    {
-        score.updateStaves( s );
-    }
-    */
+    score.updateStaves( s );
     
-    main_component_ptr->drawTimePoints();
     
     c->repaint();
 }

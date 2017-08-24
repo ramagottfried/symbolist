@@ -70,12 +70,6 @@ public:
         getPageComponent()->setTimePoint(t);
     }
     
-    void drawTimePoints()
-    {
-        getPageComponent()->drawTimePoints();
-        //time_pointGUI.repaint();
-    }
-    
     
     //==============================================================================
     // The following methods implement the ApplicationCommandTarget interface, allowing

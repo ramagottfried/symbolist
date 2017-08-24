@@ -132,7 +132,7 @@ void TimePointArray::addSymbolTimePoints( Symbol *s )
 
     String staff_name = s->getOSCMessageValue( staff_pos ).getString();
 
-    auto found_staves = score_ptr->getSymbolsByValue( "/name", staff_name ); // << maybe we should use /ID instead?
+    auto found_staves = score_ptr->getSymbolsByValue( "/id", staff_name ); // << maybe we should use /ID instead?
     if( found_staves.isEmpty() ) return;
     
     Symbol *staff = found_staves.getFirst();
@@ -488,7 +488,7 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                     {
                         // cout << "staff name " << staff_name << endl;
                         
-                        String addr = "/name";
+                        String addr = "/id";
                         auto found_staves = score_ptr->getSymbolsByValue( addr, staff_name );
                         
                         if( found_staves.size() > 0 )

@@ -2,8 +2,9 @@
 
 #include "ScoreComponent.h"
 #include "BaseComponent.h"
+#include "StaffComponent.hpp"
+
 #include "ScoreCursor.h"
-#include "TimePointGUI.h"
 
 class PageComponent : public ScoreComponent
 {
@@ -33,9 +34,11 @@ public:
         score_cursor.setPlayPoint( t );
     }
     
-    void drawTimePoints()
+        StaffComponent *getStave( String& name )
     {
-        time_pointGUI.repaint();
+        auto c = findChildWithID(name);
+        return dynamic_cast<StaffComponent*>(c); // hopefully null if not a StaffComponent
+        
     }
     
 private:
@@ -43,7 +46,6 @@ private:
     BaseComponent*      edited_component;
     
     ScoreCursor         score_cursor;
-    TimePointGUI        time_pointGUI;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PageComponent)

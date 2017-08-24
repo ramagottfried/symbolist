@@ -39,10 +39,23 @@ public:
     void importFromSymbol( const Symbol &s ) override;
     int addSymbolMessages( Symbol* s, const String &base_address ) override;
 
+    void paint ( Graphics& g ) override;
+
+    void addOjbectToStave( BaseComponent *c)
+    {
+        symbols_on_staff.emplace_back(c);
+        cout << "added " << c << endl;
+    }
+    
+    void mouseDown( const MouseEvent& event ) override;
+    
+    // add move system, where symbols on staff are moved also
+    
 private:
     
     vector<BaseComponent*>  symbols_on_staff;
     
+    bool    draw_timepoints = true;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StaffComponent)

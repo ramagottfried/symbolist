@@ -61,9 +61,6 @@
 		1186489C1EFAC44100904672 /* ScoreCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1186489A1EFAC44100904672 /* ScoreCursor.cpp */; };
 		1186489D1EFAC44100904672 /* ScoreCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1186489A1EFAC44100904672 /* ScoreCursor.cpp */; };
 		1186489E1EFAC44100904672 /* ScoreCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1186489A1EFAC44100904672 /* ScoreCursor.cpp */; };
-		118648A21EFBB5D500904672 /* TimePointGUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118648A01EFBB5D500904672 /* TimePointGUI.cpp */; };
-		118648A31EFBB5D500904672 /* TimePointGUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118648A01EFBB5D500904672 /* TimePointGUI.cpp */; };
-		118648A41EFBB5D500904672 /* TimePointGUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118648A01EFBB5D500904672 /* TimePointGUI.cpp */; };
 		118C38DE1EC5BC4F006FF4A1 /* Score.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38DC1EC5BC4F006FF4A1 /* Score.cpp */; };
 		118C38DF1EC5BC4F006FF4A1 /* Score.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38DC1EC5BC4F006FF4A1 /* Score.cpp */; };
 		118C38E31EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */; };
@@ -157,8 +154,6 @@
 		118648951EFA811800904672 /* TimePointArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimePointArray.h; path = ../../Source/TimePointArray.h; sourceTree = "<group>"; };
 		1186489A1EFAC44100904672 /* ScoreCursor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreCursor.cpp; path = ../../Source/ScoreCursor.cpp; sourceTree = "<group>"; };
 		1186489B1EFAC44100904672 /* ScoreCursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreCursor.h; path = ../../Source/ScoreCursor.h; sourceTree = "<group>"; };
-		118648A01EFBB5D500904672 /* TimePointGUI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TimePointGUI.cpp; path = ../../Source/TimePointGUI.cpp; sourceTree = "<group>"; };
-		118648A11EFBB5D500904672 /* TimePointGUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimePointGUI.h; path = ../../Source/TimePointGUI.h; sourceTree = "<group>"; };
 		118C38DC1EC5BC4F006FF4A1 /* Score.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Score.cpp; path = ../../Source/Score.cpp; sourceTree = "<group>"; };
 		118C38DD1EC5BC4F006FF4A1 /* Score.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Score.h; path = ../../Source/Score.h; sourceTree = "<group>"; };
 		118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BaseComponent.cpp; path = ../../Source/BaseComponent.cpp; sourceTree = "<group>"; };
@@ -298,8 +293,6 @@
 			children = (
 				1186489A1EFAC44100904672 /* ScoreCursor.cpp */,
 				1186489B1EFAC44100904672 /* ScoreCursor.h */,
-				118648A01EFBB5D500904672 /* TimePointGUI.cpp */,
-				118648A11EFBB5D500904672 /* TimePointGUI.h */,
 				11D123641F46E4BA00A5EA5B /* OutputViewer.cpp */,
 				11D123651F46E4BA00A5EA5B /* OutputViewer.hpp */,
 			);
@@ -643,7 +636,6 @@
 				1107B4021EF7D55D00E2DFA9 /* SymbolistMainComponent.cpp in Sources */,
 				1107B3F51EF7D55D00E2DFA9 /* Symbol.cpp in Sources */,
 				1107B4001EF7D55D00E2DFA9 /* ScoreComponent.cpp in Sources */,
-				118648A41EFBB5D500904672 /* TimePointGUI.cpp in Sources */,
 				114027C61F49C21E00A9B8C4 /* SortedStaves.cpp in Sources */,
 				1107B3F71EF7D55D00E2DFA9 /* TextGlyphComponent.cpp in Sources */,
 				118648981EFA811800904672 /* TimePointArray.cpp in Sources */,
@@ -690,7 +682,6 @@
 				1107B3EA1EF5388500E2DFA9 /* PathInfo.cpp in Sources */,
 				11D86B8C1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */,
 				44C0729F1EC4AF8C0028D5F8 /* include_juce_osc.cpp in Sources */,
-				118648A31EFBB5D500904672 /* TimePointGUI.cpp in Sources */,
 				118648971EFA811800904672 /* TimePointArray.cpp in Sources */,
 				1107B3DE1EF1751900E2DFA9 /* TextGlyphComponent.cpp in Sources */,
 				1107B3E21EF2D45500E2DFA9 /* PathHandleComponent.cpp in Sources */,
@@ -733,7 +724,6 @@
 				11D86B8B1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */,
 				114027C41F49C21E00A9B8C4 /* SortedStaves.cpp in Sources */,
 				44C0729E1EC4AF870028D5F8 /* include_juce_osc.cpp in Sources */,
-				118648A21EFBB5D500904672 /* TimePointGUI.cpp in Sources */,
 				118648961EFA811800904672 /* TimePointArray.cpp in Sources */,
 				11B71DD71F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
 				1107B3DD1EF1751900E2DFA9 /* TextGlyphComponent.cpp in Sources */,

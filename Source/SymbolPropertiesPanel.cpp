@@ -39,8 +39,9 @@ void SymbolPropertiesPanel::change_callback( const OSCMessage& msg)
     
     symbolist_handler->updateSymbolFromInspector( symbol_component );
     
-    // refresh inspector if object type is changed (to hide /staff if the object is a staff)
-    //if( msg.getAddressPattern() == "/objectType" )
+    // if the action was to set a staff, we need to add this symbol to the stave
+    if( msg.getAddressPattern() == "/staff" )
+        ;
     
    // setInspectorObject( symbol_component );
     

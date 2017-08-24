@@ -205,8 +205,13 @@ void BaseComponent::importFromSymbol( const Symbol &s )
             setBoundsFromSymbol( x , y , w , h);
         }
         else
+        {
+            // Allow for the case where the score is specified in terms of time and staff type name...
+            
             cout << "***** couldn't find x y w or h values " << endl;
-    
+            
+            
+        }
         
         int color_pos = s.getOSCMessagePos("/color");
         if( color_pos != -1  )
@@ -238,6 +243,19 @@ void BaseComponent::importFromSymbol( const Symbol &s )
             staff_name = s.getOSCMessageValue(staffname_pos).getString();
             if( staff_name == "<none>" )
                 staff_name = "";
+            
+            if( staff_name.isNotEmpty() )
+            {
+                auto staff_component = getPageComponent()->getStave(staff_name);
+                staff_component->addOjbectToStave( this );
+                staff = staff_component;
+            }
+            /*
+                to do:
+                if staff is specified, search for the symbol pointer and attach it
+             
+             
+             */
         }
         
     }
@@ -455,9 +473,14 @@ void BaseComponent::resized ()
     {
         ((ScoreComponent*)getParentComponent())->reportModificationForSelectedSymbols();
     }
+    
+    if( staff )
+    {
+        staff->repaint();
+    }
 }
 
-void BaseComponent::moved (){}
+void BaseComponent::moved () {}
 
 /************************
  * MOUSE INTERACTIONS
@@ -580,6 +603,11 @@ void BaseComponent::mouseUp( const MouseEvent& event )
     
     if( is_alt_copying )
         is_alt_copying = false;
+    
+    if( staff )
+    {
+        staff->repaint();
+    }
     
 }
 

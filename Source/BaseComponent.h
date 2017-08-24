@@ -130,7 +130,10 @@ protected:
     
     String          name;
     String          staff_name;
-    String          object_type = "object";
+    
+    BaseComponent   *staff = nullptr; // place holder ...
+    // when loaded, if staff exists attach it
+    // when staff is loaded, scan score and try to find symbols with matching staff names and attach them
     
     // parameters
     float           strokeWeight = 2;

@@ -49,7 +49,7 @@ public:
     void ungroupSelectedSymbols();
     
     void createStaffFromSelected();
-
+    
     void flipSelectedSymbols( int axis );
     
     void addSelectedSymbolsToPalette();

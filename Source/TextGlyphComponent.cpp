@@ -47,7 +47,7 @@ EditableTextObj::EditableTextObj(BaseComponent *c) : Label( String(), String() )
     setColour( Label::backgroundColourId, Colours::transparentWhite );
     setMinimumHorizontalScale(1.0f);
     
-    listener = new EditableTextObjListener((TextGlphComponent*)c);
+    listener = new EditableTextObjListener( (TextGlphComponent*)c );
     addListener(listener);
     
 }

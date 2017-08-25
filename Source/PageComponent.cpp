@@ -2,6 +2,7 @@
 #include "PageComponent.h"
 #include "SymbolistMainComponent.h"
 
+
 PageComponent::PageComponent()
 {
     setComponentID("PageComponent");
@@ -34,6 +35,51 @@ void PageComponent::removeSubcomponent( SymbolistComponent *c )
     }
     
     ScoreComponent::removeSubcomponent( c );
+}
+
+
+void PageComponent::enterStaffSelMode()
+{
+    exitEditMode();
+
+    for( auto c : subcomponents )
+    {
+        BaseComponent* b = dynamic_cast<BaseComponent*>(c); // << if it's a staff the dynamic_cast prob isn't necessary
+        if( b )
+        {
+            if( b->getSymbolTypeStr() == "staff" )
+            {
+                b->setStaffSelectionMode( true );
+            }
+            else
+            {
+                if( b->componentSelected() )
+                {
+                    b->setStaffSelectionMode( true );
+                }
+                else
+                {
+                    b->setStaffSelectionMode( false );
+                    b->setVisible(false);
+
+                }
+            }
+        }
+       
+    }
+}
+
+void PageComponent::exitStaffSelMode()
+{
+    for( auto c : subcomponents )
+    {
+        BaseComponent* b = dynamic_cast<BaseComponent*>(c);
+        if( b )
+        {
+            b->setStaffSelectionMode( false );
+            b->setVisible(true);
+        }
+    }
 }
 
 

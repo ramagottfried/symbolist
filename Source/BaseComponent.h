@@ -24,7 +24,8 @@ class BaseComponent : public ScoreComponent
 public:
     
     BaseComponent() = default;
-    ~BaseComponent() = default;
+    ~BaseComponent();
+    
 
     virtual int addSymbolMessages( Symbol* s, const String &base_address );
     virtual void importFromSymbol( const Symbol &s );
@@ -122,15 +123,27 @@ public:
         return Rectangle<float>( relative_x, relative_y, relative_w, relative_h );
     }
     
+    inline void setStaffSelectionMode( bool state )
+    {
+        in_staff_selection_mode = state;
+    }
+
+    inline void setStaff( BaseComponent* c)
+    {
+        staff_name = c->getScoreSymbolPointer()->getID();
+        staff = c;
+        cout << "/t/t ------------------------- \n" << this << " attched to staff " << staff_name << " " << staff << endl;
+    }
+    
 protected:
     
     // score structure
-    
     Symbol*         score_symbol = NULL;   // pointer to the score symbol (set when this is a topLevel symbol, NULL otherwise)
     
     String          name;
     String          staff_name;
     
+    // staff attachement
     BaseComponent   *staff = nullptr; // place holder ...
     // when loaded, if staff exists attach it
     // when staff is loaded, scan score and try to find symbols with matching staff names and attach them
@@ -156,6 +169,7 @@ protected:
     Colour          sel_color = Colours::cornflowerblue;
     
     bool            in_edit_mode = false;
+    bool            in_staff_selection_mode = false;
 
     bool            is_alt_copying = false;
     Point<float>    m_prev_event;

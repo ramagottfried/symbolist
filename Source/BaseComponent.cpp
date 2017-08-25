@@ -3,11 +3,21 @@
 #include "PageComponent.h"
 #include "ScoreComponent.h"
 #include "SymbolistMainComponent.h"
+#include "StaffComponent.hpp"
 
 // do we need this ?
 template <typename T> void printPoint(Point<T> point, String name = "point" )
 {
     std::cout << name << " " << point.getX() << " " << point.getY() << "\n";
+}
+
+
+BaseComponent::~BaseComponent()
+{
+    if( staff )
+    {
+        ((StaffComponent*)staff)->removeStaffOjbect(this);
+    }
 }
 
 
@@ -98,18 +108,21 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
         messages_added++;
     }
     
-    addr = base_address + "/staff";
-    if( s->getOSCMessagePos(addr) == -1 )
-    {
-        s->addOSCMessage( addr,         staff_name );
-        messages_added++;
-    }
-    
     addr = base_address + "/type";
     if( s->getOSCMessagePos(addr) == -1 )
     {
         s->addOSCMessage( addr,         getSymbolTypeStr());
         messages_added++;
+    }
+
+    if( getSymbolTypeStr() != "staff ")
+    {
+        addr = base_address + "/staff";
+        if( s->getOSCMessagePos(addr) == -1 )
+        {
+            s->addOSCMessage( addr,         staff_name );
+            messages_added++;
+        }
     }
     
     addr = base_address + "/x";
@@ -490,8 +503,6 @@ bool BaseComponent::respondsToMouseEvents()
 {
     return ( isTopLevelComponent() || ((BaseComponent*)getParentComponent())->isInEditMode() );
 }
-
-
 
 void BaseComponent::mouseMove( const MouseEvent& event )
 {

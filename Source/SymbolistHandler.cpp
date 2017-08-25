@@ -473,8 +473,8 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     assert ( s != NULL ) ; // that's not normal
     
     cout << c << " ---> modifySymbolInScore " << s << endl;
-    s->printBundle();
-    printRect(c->getBounds(), "component");
+    // s->printBundle();
+    // printRect(c->getBounds(), "component");
 
     
     score.removeSymbolTimePoints( s );

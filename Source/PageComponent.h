@@ -25,16 +25,19 @@ public:
     void exitEditMode();
     ScoreComponent* getEditedComponent();
     
+    void enterStaffSelMode();
+    void exitStaffSelMode();
+    
     // Juce Callbacks
     void resized () override;
     void paint (Graphics& g) override;
     
-    void setTimePoint( float t )
+    inline void setTimePoint( float t )
     {
         score_cursor.setPlayPoint( t );
     }
     
-        StaffComponent *getStave( String& name )
+    inline StaffComponent *getStave( String& name )
     {
         auto c = findChildWithID(name);
         return dynamic_cast<StaffComponent*>(c); // hopefully null if not a StaffComponent

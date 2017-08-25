@@ -41,15 +41,18 @@ public:
 
     void paint ( Graphics& g ) override;
 
-    void addOjbectToStave( BaseComponent *c)
+    inline void addOjbectToStave( BaseComponent *c)
     {
         symbols_on_staff.emplace_back(c);
-        cout << "added " << c << endl;
+    }
+    
+    inline void removeStaffOjbect( BaseComponent *c)
+    {
+        symbols_on_staff.erase( remove( symbols_on_staff.begin(), symbols_on_staff.end(), c ), symbols_on_staff.end() );
     }
     
     void mouseDown( const MouseEvent& event ) override;
     
-    // add move system, where symbols on staff are moved also
     
 private:
     

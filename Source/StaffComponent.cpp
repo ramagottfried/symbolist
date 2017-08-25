@@ -53,16 +53,36 @@ int StaffComponent::addSymbolMessages( Symbol* s, const String &base_address )
 
 void StaffComponent::mouseDown( const MouseEvent& event )
 {
-    BaseComponent::mouseDown(event);
-    
-    if( is_selected )
+    if( in_staff_selection_mode )
     {
-        auto page = getPageComponent();
-
-        for( BaseComponent *c : symbols_on_staff )
+        for( auto s : getPageComponent()->getSelectedItems() )
         {
-            page->addToSelection( c );
+            BaseComponent *c = dynamic_cast<BaseComponent*>(s);
+            if( c )
+            {
+                if( c->getSymbolTypeStr() != "staff" )
+                {
+                    addOjbectToStave(c);
+                    c->setStaff(this);
+                    getSymbolistHandler()->modifySymbolInScore(c);
+                }
+            }
         }
+    }
+    else
+    {
+        BaseComponent::mouseDown(event);
+        
+        if( is_selected )
+        {
+            auto page = getPageComponent();
+            
+            for( BaseComponent *c : symbols_on_staff )
+            {
+                page->addToSelection( c );
+            }
+        }
+
     }
 }
 
@@ -83,5 +103,19 @@ void StaffComponent::paint ( Graphics& g )
             if( t->time >= start_t && t->time <= end_t )
                 g.fillEllipse( (t->time - start_t) * 100.0f, getHeight() / 2, 2, 2);
         }
+    }
+    
+    if( in_staff_selection_mode )
+    {
+        g.setColour( Colours::lightblue );
+        g.fillRect( getLocalBounds() );
+        
+        auto f = g.getCurrentFont();
+        f.setItalic(true);
+        f.setHeight( 10 );
+        g.setFont( f );
+        
+        g.setColour( Colours::black );
+        g.drawText( getScoreSymbolPointer()->getID(), getLocalBounds().reduced(10), Justification::centredLeft );
     }
 }

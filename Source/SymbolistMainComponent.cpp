@@ -198,7 +198,8 @@ void SymbolistMainComponent::getAllCommands (Array<CommandID>& commands)
         cmd_zoomOut,
         cmd_esc,
         cmd_playmsg,
-        cmd_objToStaff
+        cmd_objToStaff,
+        cmd_attachToStaff
     };
     
     commands.addArray (ids, numElementsInArray (ids));
@@ -282,6 +283,12 @@ void SymbolistMainComponent::getCommandInfo (CommandID commandID, ApplicationCom
             result.setInfo ("convert selected to staff", String(), String(), 0);
             result.addDefaultKeypress ('s',  ModifierKeys::noModifiers );
             break;
+            
+        case cmd_attachToStaff:
+            result.setInfo ("attached selected to staff", String(), String(), 0);
+            result.addDefaultKeypress ('s',  ModifierKeys::altModifier );
+            break;
+            
         default:
             result.setInfo ("undefined", "", "", 0);
 
@@ -357,10 +364,12 @@ bool SymbolistMainComponent::perform (const InvocationInfo& info)
             case cmd_esc:
                 scoreView.getEditedComponent()->unselectAllComponents();
                 scoreView.exitEditMode();
+                scoreView.exitStaffSelMode();
                 
                 symbolist_handler->executeTransportCallback(0); // = stop
                 symbolist_handler->symbolistAPI_setTime(0);
                 symbolist_handler->clearInspector();
+
                 scoreView.repaint();
                 break;
                 
@@ -371,6 +380,12 @@ bool SymbolistMainComponent::perform (const InvocationInfo& info)
             case cmd_objToStaff:
                 symbolist_handler->convertSelectedToStaff();
                 break;
+                
+            case cmd_attachToStaff:
+                scoreView.enterStaffSelMode();
+                scoreView.repaint();
+                break;
+                
             default:
                 return false;
         }

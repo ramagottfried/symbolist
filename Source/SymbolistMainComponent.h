@@ -92,7 +92,9 @@ public:
         cmd_zoomOut                 = 0x2008,
         cmd_esc                     = 0x2009,
         cmd_playmsg                 = 0x2010,
-        cmd_objToStaff              = 0x2011 // to do ,
+        cmd_objToStaff              = 0x2011,
+        cmd_attachToStaff           = 0x2012
+        // to do ,
         //cmd_toggleCursor            = 0x2011
     };
     

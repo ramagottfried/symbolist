@@ -70,7 +70,21 @@ void ScoreComponent::reportModificationForSelectedSymbols()
     }
 }
 
+void ScoreComponent::selectedToFront()
+{
+    for( SymbolistComponent *c : selected_components )
+    {
+        c->toFront(true);
+    }
+}
 
+void ScoreComponent::selectedToBack()
+{
+    for( SymbolistComponent *c : selected_components )
+    {
+        c->toBack();
+    }
+}
 
 /*****************
  * Custom lasso tool

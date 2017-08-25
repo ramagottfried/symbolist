@@ -289,6 +289,16 @@ void SymbolistMainComponent::getCommandInfo (CommandID commandID, ApplicationCom
             result.addDefaultKeypress ('s',  ModifierKeys::altModifier );
             break;
             
+        case cmd_selectedToFront:
+            result.setInfo ("selected object to front layer", String(), String(), 0);
+            result.addDefaultKeypress (']',  ModifierKeys::altModifier );
+            break;
+            
+        case cmd_selectedToBack:
+            result.setInfo ("selected object to back layer", String(), String(), 0);
+            result.addDefaultKeypress ('[',  ModifierKeys::altModifier );
+            break;
+            
         default:
             result.setInfo ("undefined", "", "", 0);
 
@@ -386,6 +396,13 @@ bool SymbolistMainComponent::perform (const InvocationInfo& info)
                 scoreView.repaint();
                 break;
                 
+            case cmd_selectedToFront:
+                scoreView.selectedToFront();
+                break;
+                
+            case cmd_selectedToBack:
+                scoreView.selectedToBack();
+                break;
             default:
                 return false;
         }

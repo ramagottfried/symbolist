@@ -70,36 +70,6 @@ public:
         getPageComponent()->setTimePoint(t);
     }
     
-    
-    //==============================================================================
-    // The following methods implement the ApplicationCommandTarget interface, allowing
-    // this window to publish a set of actions it can perform, and which can be mapped
-    // onto menus, keypresses, etc.
-    
-    
-    enum CommandIDs
-    {
-        cmd_group                   = 0x2100,
-        cmd_ungroup                 = 0x2101,
-        cmd_deleteSelected          = 0x2000,
-        cmd_toggleInspector         = 0x2001,
-        cmd_addToPalette            = 0x2002,
-        cmd_copy                    = 0x2003,
-        cmd_paste                   = 0x2004,
-        cmd_flipH                   = 0x2005,
-        cmd_flipV                   = 0x2006,
-        cmd_zoomIn                  = 0x2007,
-        cmd_zoomOut                 = 0x2008,
-        cmd_esc                     = 0x2009,
-        cmd_playmsg                 = 0x2010,
-        cmd_objToStaff              = 0x2011,
-        cmd_attachToStaff           = 0x2012,
-        cmd_selectedToFront         = 0x2013,
-        cmd_selectedToBack          = 0x2014
-        // to do ,
-        //cmd_toggleCursor            = 0x2011
-    };
-    
     ApplicationCommandTarget* getNextCommandTarget() override;
     void getAllCommands (Array<CommandID>& commands) override;
     void getCommandInfo (CommandID commandID, ApplicationCommandInfo& result) override;

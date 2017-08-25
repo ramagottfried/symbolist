@@ -1,6 +1,7 @@
 
 #include "SymbolistMenu.hpp"
 #include "SymbolistMainWindow.h"
+#include "SymbolistMainComponent.h"
 
 SymbolistMenu::SymbolistMenu()
 {
@@ -18,6 +19,240 @@ void SymbolistMenu::resized()
     Rectangle<int> area (getLocalBounds());
     menuBar->setBounds (area.removeFromTop (LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight()));
 }
+
+void SymbolistMenu::getAllCommands (Array<CommandID>& commands)
+{
+    // this returns the set of all commands that this target can perform..
+    const CommandID ids[] = {
+        cmd_group,
+        cmd_ungroup,
+        cmd_deleteSelected,
+        cmd_toggleInspector,
+        cmd_addToPalette,
+        cmd_copy,
+        cmd_paste,
+        cmd_flipH,
+        cmd_flipV,
+        cmd_zoomIn,
+        cmd_zoomOut,
+        cmd_esc,
+        cmd_playmsg,
+        cmd_objToStaff,
+        cmd_attachToStaff,
+        cmd_selectedToFront,
+        cmd_selectedToBack
+    };
+    
+    commands.addArray (ids, numElementsInArray (ids));
+}
+
+void SymbolistMenu::getCommandInfo (CommandID commandID, ApplicationCommandInfo& result)
+{
+    switch (commandID)
+    {
+        case cmd_group:
+            result.setInfo ("group selected", String(), String(), 0);
+            result.addDefaultKeypress ('g', ModifierKeys::commandModifier);
+            break;
+            
+        case cmd_ungroup:
+            result.setInfo ("ungroup selected", String(), String(), 0);
+            result.addDefaultKeypress ('u', ModifierKeys::commandModifier);
+            break;
+            
+        case cmd_deleteSelected:
+            result.setInfo ("delete selected", String(), String(), 0);
+            result.addDefaultKeypress ( KeyPress::backspaceKey, ModifierKeys::noModifiers );
+            break;
+            
+        case cmd_toggleInspector:
+            result.setInfo ("open/close inspector", String(), String(), 0);
+            result.addDefaultKeypress ('i', ModifierKeys::noModifiers );
+            break;
+            
+        case cmd_addToPalette:
+            result.setInfo ("add selected To palette", String(), String(), 0);
+            result.addDefaultKeypress ('w', ModifierKeys::noModifiers );
+            break;
+            
+        case cmd_copy:
+            result.setInfo ("copy", String(),String(), 0);
+            result.addDefaultKeypress ( 'c', ModifierKeys::commandModifier );
+            break;
+            
+        case cmd_paste:
+            result.setInfo ("paste", String(),String(), 0);
+            result.addDefaultKeypress ('v', ModifierKeys::commandModifier );
+            break;
+            
+        case cmd_flipH:
+            result.setInfo ("flip horizontally",String(),String(), 0);
+            result.addDefaultKeypress ('h', ModifierKeys::altModifier );
+            break;
+            
+        case cmd_flipV:
+            result.setInfo ("flip vertically", String(),String(), 0);
+            result.addDefaultKeypress ('v', ModifierKeys::altModifier );
+            break;
+            
+        case cmd_zoomIn:
+            result.setInfo ("zoom in", String(),String(), 0);
+            result.addDefaultKeypress ( '=', ModifierKeys::noModifiers );
+            break;
+            
+        case cmd_zoomOut:
+            result.setInfo ("zoom out", String(),String(), 0);
+            result.addDefaultKeypress ('-',  ModifierKeys::noModifiers );
+            break;
+            
+        case cmd_esc:
+            result.setInfo ("deselect", String(), String(), 0);
+            result.addDefaultKeypress (KeyPress::escapeKey,  ModifierKeys::noModifiers );
+            break;
+            
+        case cmd_playmsg:
+            result.setInfo ("send transport start message", String(), String(), 0);
+            result.addDefaultKeypress (KeyPress::spaceKey,  ModifierKeys::noModifiers );
+            break;
+            
+        case cmd_objToStaff:
+            result.setInfo ("convert selected to staff", String(), String(), 0);
+            result.addDefaultKeypress ('s',  ModifierKeys::noModifiers );
+            break;
+            
+        case cmd_attachToStaff:
+            result.setInfo ("attached selected to staff", String(), String(), 0);
+            result.addDefaultKeypress ('s',  ModifierKeys::altModifier );
+            break;
+            
+        case cmd_selectedToFront:
+            result.setInfo ("selected object to front layer", String(), String(), 0);
+            result.addDefaultKeypress (']',  ModifierKeys::altModifier );
+            break;
+            
+        case cmd_selectedToBack:
+            result.setInfo ("selected object to back layer", String(), String(), 0);
+            result.addDefaultKeypress ('[',  ModifierKeys::altModifier );
+            break;
+            
+        default:
+            result.setInfo ("undefined", "", "", 0);
+            
+            break;
+    }
+    
+    
+    /*
+     // Palette selection not currently in use
+     else if (   key == KeyPress('c')) { // would be better to type a number and that selects the nth palete item..
+     symbolist_handler->setCurrentSymbol(0);
+     paletteView.selectPaletteButton(0);
+     }
+     
+     else if (   key == KeyPress('p') ) {
+     symbolist_handler->setCurrentSymbol(1);
+     paletteView.selectPaletteButton(1);
+     }
+     */
+}
+
+bool SymbolistMenu::perform (const juce::ApplicationCommandTarget::InvocationInfo& info)
+{
+    SymbolistMainComponent *main = (SymbolistMainComponent *)getParentComponent();
+    
+    if ( main )
+    {
+        PageComponent *score = main->getPageComponent();
+
+        if( !score )
+            return false;
+        
+        switch (info.commandID)
+        {
+            case cmd_group:
+                score->getEditedComponent()->groupSelectedSymbols();
+                break;
+                
+            case cmd_ungroup:
+                score->getEditedComponent()->ungroupSelectedSymbols();
+                break;
+                
+            case cmd_deleteSelected:
+                score->getEditedComponent()->deleteSelectedComponents();
+                break;
+                
+            case cmd_toggleInspector:
+                main->toggleInspector();
+                break;
+                
+            case cmd_addToPalette:
+                score->getEditedComponent()->addSelectedSymbolsToPalette();
+                break;
+                
+            case cmd_copy:
+                main->getSymbolistHandler()->copySelectedToClipBoard();
+                break;
+                
+            case cmd_paste:
+                main->getSymbolistHandler()->newFromClipBoard();
+                break;
+                
+            case cmd_flipH:
+                score->getEditedComponent()->flipSelectedSymbols(1);
+                break;
+                
+            case cmd_flipV:
+                score->getEditedComponent()->flipSelectedSymbols(0);
+                break;
+                
+            case cmd_zoomIn:
+                main->zoom( 0.1 );
+                break;
+                
+            case cmd_zoomOut:
+                main->zoom( -0.1 );
+                break;
+                
+            case cmd_esc:
+                score->getEditedComponent()->unselectAllComponents();
+                score->exitEditMode();
+                score->exitStaffSelMode();
+                
+                main->getSymbolistHandler()->executeTransportCallback(0); // = stop
+                main->getSymbolistHandler()->symbolistAPI_setTime(0);
+                main->getSymbolistHandler()->clearInspector();
+                
+                score->repaint();
+                break;
+                
+            case cmd_playmsg:
+                main->getSymbolistHandler()->executeTransportCallback(1);
+                break;
+                
+            case cmd_objToStaff:
+                main->getSymbolistHandler()->convertSelectedToStaff();
+                break;
+                
+            case cmd_attachToStaff:
+                score->enterStaffSelMode();
+                score->repaint();
+                break;
+                
+            case cmd_selectedToFront:
+                score->selectedToFront();
+                break;
+                
+            case cmd_selectedToBack:
+                score->selectedToBack();
+                break;
+            default:
+                return false;
+        }
+    }
+    
+    return true;
+}
+
 
 //==============================================================================
 StringArray SymbolistMenu::getMenuBarNames()
@@ -41,45 +276,45 @@ PopupMenu SymbolistMenu::getMenuForIndex (int menuIndex, const String& /*menuNam
     }
     else if (menuIndex == 1)
     {
-        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_esc);
+        menu.addCommandItem (commandManager, cmd_esc);
         
         menu.addSeparator();
 
-        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_copy);
-        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_paste);
-        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_deleteSelected);
+        menu.addCommandItem (commandManager, cmd_copy);
+        menu.addCommandItem (commandManager, cmd_paste);
+        menu.addCommandItem (commandManager, cmd_deleteSelected);
         
         menu.addSeparator();
 
-        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_group);
-        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_ungroup);
+        menu.addCommandItem (commandManager, cmd_group);
+        menu.addCommandItem (commandManager, cmd_ungroup);
 
         menu.addSeparator();
         
-        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_objToStaff);
-        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_attachToStaff);
+        menu.addCommandItem (commandManager, cmd_objToStaff);
+        menu.addCommandItem (commandManager, cmd_attachToStaff);
         
         menu.addSeparator();
         
-        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_selectedToFront);
-        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_selectedToBack);
+        menu.addCommandItem (commandManager, cmd_selectedToFront);
+        menu.addCommandItem (commandManager, cmd_selectedToBack);
         
         menu.addSeparator();
         
-        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_addToPalette);
+        menu.addCommandItem (commandManager, cmd_addToPalette);
         
     }
     else if (menuIndex == 2)
     {
-        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_zoomIn);
-        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_zoomOut);
+        menu.addCommandItem (commandManager, cmd_zoomIn);
+        menu.addCommandItem (commandManager, cmd_zoomOut);
         menu.addSeparator();
-        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_toggleInspector);
+        menu.addCommandItem (commandManager, cmd_toggleInspector);
 
     }
     else if (menuIndex == 3)
     {
-        menu.addCommandItem (commandManager, SymbolistMainComponent::cmd_playmsg);
+        menu.addCommandItem (commandManager, cmd_playmsg);
     }
 
     return menu;

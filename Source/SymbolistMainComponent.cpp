@@ -199,7 +199,9 @@ void SymbolistMainComponent::getAllCommands (Array<CommandID>& commands)
         cmd_esc,
         cmd_playmsg,
         cmd_objToStaff,
-        cmd_attachToStaff
+        cmd_attachToStaff,
+        cmd_selectedToFront,
+        cmd_selectedToBack
     };
     
     commands.addArray (ids, numElementsInArray (ids));

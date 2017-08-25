@@ -70,6 +70,9 @@ public:
         getPageComponent()->setTimePoint(t);
     }
     
+    /*********************************************
+     * Application keyboard command wrapper (actual commands are set in SybolistMenu)
+     *********************************************/
     ApplicationCommandTarget* getNextCommandTarget() override;
     void getAllCommands (Array<CommandID>& commands) override;
     void getCommandInfo (CommandID commandID, ApplicationCommandInfo& result) override;
@@ -85,14 +88,10 @@ private:
     Viewport                                score_viewport;
     PageComponent                           scoreView;
     PaletteComponent                        paletteView ;
-    SymbolistMenu                           menu;
+    SymbolistMenu                           menu; //<<  application commands are set here
     ScopedPointer<SymbolPropertiesPanel>    inspector;
     MouseModeComponent                      mouseModeView;
 
-/* still in page for now...
-    ScoreCursor         score_cursor;
-    TimePointGUI        time_pointGUI;
-*/
     int palette_w = 50;
     int menu_h; // set internally
     

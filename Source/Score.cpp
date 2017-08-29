@@ -6,7 +6,10 @@
 #include <vector>
 
 
-Score::Score() : time_points(this) {}
+Score::Score() : time_points(this)
+{
+    cout << "score " << this << " " << score_symbols.size() << endl;
+}
 
 Score::Score( int n, odot_bundle **bundle_array ) : time_points(this)
 {

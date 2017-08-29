@@ -81,6 +81,7 @@ void BaseComponent::createAndAttachSymbol()
     setScoreSymbolPointer( s );
 }
 
+// addSymbolMessages outputs the component's values into the symbol
 int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
 {
     int messages_added = 0;
@@ -89,18 +90,6 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
     
     String addr;
 
-    addr = base_address + "/id";
-    if( s->getOSCMessagePos(addr) == -1 )
-    {
-        s->addOSCMessage( addr,          getComponentID() );
-        
-    // no default name for now
-      //  if( name.isEmpty() )
-      //      name = getComponentID();
-        
-        messages_added++;
-    }
-    
     addr = base_address + "/name";
     if( s->getOSCMessagePos(addr) == -1 )
     {
@@ -115,6 +104,21 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
         messages_added++;
     }
 
+
+    addr = base_address + "/id";
+    if( s->getOSCMessagePos(addr) == -1 )
+    {
+        s->addOSCMessage( addr,          getComponentID() );
+        
+    // no default name for now
+      //  if( name.isEmpty() )
+      //      name = getComponentID();
+        
+        messages_added++;
+    }
+    
+    
+   
     if( getSymbolTypeStr() != "staff ")
     {
         addr = base_address + "/staff";
@@ -220,11 +224,9 @@ void BaseComponent::importFromSymbol( const Symbol &s )
         else
         {
             // Allow for the case where the score is specified in terms of time and staff type name...
-            
             cout << "***** couldn't find x y w or h values " << endl;
-            
-            
         }
+        
         
         int color_pos = s.getOSCMessagePos("/color");
         if( color_pos != -1  )
@@ -244,11 +246,20 @@ void BaseComponent::importFromSymbol( const Symbol &s )
             }
         }
         
+
         int name_pos = s.getOSCMessagePos("/name");
         if( name_pos != -1 )
-        {
             name = s.getOSCMessageValue(name_pos).getString();
-        }
+        else
+            name = typeStr;
+
+        
+        // set /id via component ID
+        if( isVisible() )
+            setSymbolID();
+        else
+            setComponentID( name + "_palette");
+        
         
         int staffname_pos = s.getOSCMessagePos("/staff");
         if( staffname_pos != -1 )
@@ -257,57 +268,82 @@ void BaseComponent::importFromSymbol( const Symbol &s )
             if( staff_name == "<none>" )
                 staff_name = "";
             
-            if( staff_name.isNotEmpty() )
-            {
-                PageComponent *pc = getPageComponent();
-                if( pc ) // << page will not be found until addAndMakeVisible is called
-                {
-                    auto c = pc->getSubcomponentByID(staff_name);
-                    StaffComponent* staff_component = dynamic_cast<StaffComponent*>(c);
-                    if( staff_component )
-                    {
-                        staff_component->addOjbectToStave( this );
-                        staff = staff_component;
-                    }
-                }
-            }
-            /*
-                to do:
-                if staff is specified, search for the symbol pointer and attach it
-             
-             
-             */
+            attachToStaff();
         }
         
     }
 }
 
-void BaseComponent::parentHierarchyChanged()
+void BaseComponent::setSymbolID()
 {
     PageComponent *pc = getPageComponent();
-
     if( pc )
     {
         Symbol *s = getScoreSymbolPointer();
-        if( s && s->getType() == "staff" )
+
+        if( s )
         {
-            if( 0 )
-                ;
-        }
-        else
-        {
-            if( staff_name.isNotEmpty() )
+            String typeStr = s->getType();
+            
+            String id;
+            int id_pos = s->getOSCMessagePos("/id");
+            if( id_pos != -1 )
             {
-                auto c = pc->getSubcomponentByID(staff_name);
-                StaffComponent* staff_component = dynamic_cast<StaffComponent*>(c);
-                if( staff_component )
-                {
-                    staff_component->addOjbectToStave( this );
-                    staff = staff_component;
-                }
+                id = s->getOSCMessageValue(id_pos).getString();
             }
+            
+
+            if( id.isEmpty() || getComponentID() != id || id == (typeStr + "_palette")  || id == (name + "_palette") || !id.contains(name))
+            {
+                // if there is a name use this for the id
+                // for the id, check to see if there are others with this name and then increment 1
+                
+        //        cout << "if check" << endl;
+                auto sh = getSymbolistHandler();
+                int count = sh->symbolNameCount( name );
+                
+                id = name + "_" + (String)count;
+                
+                while( !sh->uniqueIDCheck( id ) )
+                {
+                    id = name + "_" + (String)(count++);
+                }
+                
+            }
+            
+            setComponentID( id );
+            s->setID(id);
+            //cout << "setting ID "<< id << endl;
         }
     }
+}
+
+void BaseComponent::attachToStaff()
+{
+    PageComponent *pc = getPageComponent();
+    if( pc )
+    {
+
+        if( staff_name.isNotEmpty() )
+        {
+            auto c = pc->getSubcomponentByID( staff_name );
+            StaffComponent* staff_component = dynamic_cast<StaffComponent*>(c);
+            if( staff_component )
+            {
+                staff_component->addOjbectToStave( this );
+                staff = staff_component;
+            }
+        }
+        
+    }
+}
+
+// a component can't access the score until it's been added and made visible, so we wait to process the the naming
+void BaseComponent::parentHierarchyChanged()
+{
+//    cout << "BaseComponent::parentHierarchyChanged" << endl;
+    setSymbolID();
+    attachToStaff();
 }
 
 

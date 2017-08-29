@@ -55,7 +55,8 @@ public:
     float getTime() const ;
     float getDuration() const ;
     float getEndTime() const ;
-
+    String getName() const;
+    
     bool hitTest( float t )
     {
         return (t >= getTime() && t <= getEndTime());
@@ -66,6 +67,7 @@ public:
     void setName( const String& str );
 
     String getID();
+    String getSaff();
     
     void setTimeAndDurationFromRelPix( const float start_x, const float dur_x );
 
@@ -86,6 +88,7 @@ public:
     {
         return pixelsToTime( getOSCValueAsFloat( getOSCMessageValue("/x") ) );
     }
+    
     
 private:
     

@@ -106,9 +106,21 @@ public:
     // temp
     void updateStavePosition( BaseComponent *c );
     void addStaffSymbolToScore( Symbol *s );
+    
+    int symbolNameCount( String& name )
+    {
+        return score.getNameCount( name );
+    }
+    
+    bool uniqueIDCheck( String& name )
+    {
+        return !score.idExists( name );
+    }
+    
 private:
     
-    Score score ;
+    
+    Score score;
 
     // the palette is an array of symbol 'templates'
     SymbolistPalette                    palette;

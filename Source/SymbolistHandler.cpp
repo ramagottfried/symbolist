@@ -28,6 +28,7 @@ SymbolistHandler::SymbolistHandler()
     Symbol* s4 = new Symbol("triangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
     palette.addDefaultItem(s4);
     
+    cout << "symbolist handler " << this << endl;
 }
 
 SymbolistHandler::~SymbolistHandler()
@@ -332,12 +333,14 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
             c->addSymbolMessages( s, "" );
             
             if ( attach_the_symbol )
-            {                
+            {
+                /*
                 if( main_component_ptr != NULL )
                 {
                     c->setComponentID( c->getSymbolTypeStr() + "_" + (String)main_component_ptr->getPageComponent()->getNumSubcomponents() );
                     s->setID( c->getComponentID() );
                 }
+                */
                 
                 c->setScoreSymbolPointer( s );
                 score.addStaff( s ); // << /type checked internally and added if staff
@@ -481,14 +484,19 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     s->clearOSCBundle();
     
     c->addSymbolMessages( s , String("") );
-    score.addSymbolTimePoints( s );
     
-    executeUpdateCallback( score.getSymbolPosition( s ) );
-
+    score.addSymbolTimePoints( s );
     score.updateStaves( s );
     
+    executeUpdateCallback( score.getSymbolPosition( s ) );
     
     c->repaint();
+
+    /*
+    if( BaseComponent* staff = c->getStaff() )
+        staff->repaint();
+    */
+    
 }
 
 

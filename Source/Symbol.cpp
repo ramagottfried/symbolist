@@ -40,6 +40,11 @@ String Symbol::getID()
     return getOSCMessageValue("/id").getString();
 }
 
+String Symbol::getName() const
+{
+    return getOSCMessageValue("/name").getString();
+}
+
 void Symbol::setOSCAddrAndValue( const String& addr, const String& value  )
 {
     int pos = getOSCMessagePos(addr);
@@ -81,6 +86,20 @@ void Symbol::setOSCAddrAndValue( const String& addr, const float value  )
         
     }
 }
+
+
+String Symbol::getSaff()
+{
+    int pos = getOSCMessagePos("/staff");
+    if( pos != -1 )
+    {
+        return getOSCMessageValue(pos).getString();
+    }
+    
+    return String();
+
+}
+
 
 String Symbol::getType()
 {

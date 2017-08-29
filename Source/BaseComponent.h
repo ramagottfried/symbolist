@@ -26,10 +26,12 @@ public:
     BaseComponent() = default;
     ~BaseComponent();
     
-    void parentHierarchyChanged() override;
-    
     virtual int addSymbolMessages( Symbol* s, const String &base_address );
     virtual void importFromSymbol( const Symbol &s );
+    
+    void parentHierarchyChanged() override;
+    void setSymbolID();
+
     
     void paint ( Graphics& g ) override;
     
@@ -136,6 +138,14 @@ public:
         cout << "/t/t ------------------------- \n" << this << " attched to staff " << staff_name << " " << staff << endl;
     }
     
+    inline  BaseComponent* getStaff()
+    {
+        return staff;
+    }
+    
+    
+    void attachToStaff();
+
 protected:
     
     // score structure

@@ -82,6 +82,25 @@ void PageComponent::exitStaffSelMode()
     }
 }
 
+vector<BaseComponent*> PageComponent::getSubcomponentsByStaff( String& staff_name )
+{
+    vector<BaseComponent*> objects;
+    Symbol *s = NULL;
+    for( int i = 0; i < subcomponents.size(); i++ )
+    {
+        BaseComponent *c = dynamic_cast<BaseComponent*>(subcomponents[i]);
+        if( c )
+        {
+            s = c->getScoreSymbolPointer();
+            
+            if( s->getSaff() == staff_name )
+                objects.emplace_back( c );
+        }
+    }
+    
+    return objects;
+}
+
 
 void PageComponent::enterEditMode( BaseComponent* c )
 {

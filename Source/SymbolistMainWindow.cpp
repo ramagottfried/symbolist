@@ -50,6 +50,7 @@ void SymbolistMainWindow::handleAsyncUpdate()
     
     commandManager.registerAllCommandsForTarget (main_component);
     commandManager.registerAllCommandsForTarget (JUCEApplication::getInstance());
+    
 }
 
 SymbolistMainComponent* SymbolistMainWindow::getMainComponent()

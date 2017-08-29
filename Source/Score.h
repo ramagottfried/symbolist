@@ -61,6 +61,29 @@ public:
     
     void updateStaves(Symbol *moved_stave);
     
+    int getNameCount( String& name )
+    {
+        int count = 0;
+        for( Symbol *s : score_symbols )
+        {
+            if( s->getName() == name )
+                count++;
+        }
+    
+        return count;
+    }
+    
+    bool idExists( String& idStr )
+    {
+        for( Symbol *s : score_symbols )
+        {
+            if( s->getID() == idStr )
+                return true;
+        }
+        
+        return false;
+    }
+    
 private:
     
     OwnedArray<Symbol>          score_symbols;

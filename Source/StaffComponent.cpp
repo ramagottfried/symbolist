@@ -51,6 +51,29 @@ int StaffComponent::addSymbolMessages( Symbol* s, const String &base_address )
     return messages_added;
 }
 
+void StaffComponent::parentHierarchyChanged()
+{
+    BaseComponent::parentHierarchyChanged();
+    
+    PageComponent *pc = getPageComponent();
+    if( pc )
+    {
+        if( Symbol *s = getScoreSymbolPointer() )
+        {
+            String id = s->getID();
+        
+            auto objects = pc->getSubcomponentsByStaff( id );
+            for( auto o : objects )
+            {
+                addOjbectToStave( o );
+            }
+            
+            objects.clear();
+        }
+    }
+    // repaint();
+}
+
 void StaffComponent::selectComponent()
 {
     SymbolGroupComponent::selectComponent();

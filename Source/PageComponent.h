@@ -47,6 +47,9 @@ public:
         return dynamic_cast<StaffComponent*>(c); // hopefully null if not a StaffComponent
         
     }
+    
+    vector<BaseComponent*> getSubcomponentsByStaff( String& staff_name );
+
 
 private:
     

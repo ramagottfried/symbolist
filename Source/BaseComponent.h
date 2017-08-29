@@ -26,7 +26,8 @@ public:
     BaseComponent() = default;
     ~BaseComponent();
     
-
+    void parentHierarchyChanged() override;
+    
     virtual int addSymbolMessages( Symbol* s, const String &base_address );
     virtual void importFromSymbol( const Symbol &s );
     

@@ -41,6 +41,9 @@ public:
 
     void paint ( Graphics& g ) override;
 
+    void selectComponent() override;
+    void deselectComponent() override;
+    
     inline void addOjbectToStave( BaseComponent *c)
     {
         symbols_on_staff.emplace_back(c);

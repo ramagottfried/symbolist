@@ -51,6 +51,24 @@ int StaffComponent::addSymbolMessages( Symbol* s, const String &base_address )
     return messages_added;
 }
 
+void StaffComponent::selectComponent()
+{
+    SymbolGroupComponent::selectComponent();
+    
+    auto page = getPageComponent();
+    for( BaseComponent *c : symbols_on_staff )
+    {
+        page->addToSelection( c );
+    }
+    
+}
+
+void StaffComponent::deselectComponent()
+{
+    SymbolGroupComponent::deselectComponent();
+}
+
+
 void StaffComponent::mouseDown( const MouseEvent& event )
 {
     if( in_staff_selection_mode )

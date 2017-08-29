@@ -23,7 +23,9 @@ public:
     bool componentSelected();
     
     const size_t    getNumSubcomponents( );
-    SymbolistComponent*  getSubcomponent( int i );
+    SymbolistComponent* getSubcomponent( int i );
+    SymbolistComponent* getSubcomponentByID( String& id );
+
     virtual void    addSubcomponent( SymbolistComponent *c );
     virtual void    removeSubcomponent( SymbolistComponent *c );
     virtual void    clearAllSubcomponents();

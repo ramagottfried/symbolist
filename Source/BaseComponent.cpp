@@ -259,9 +259,17 @@ void BaseComponent::importFromSymbol( const Symbol &s )
             
             if( staff_name.isNotEmpty() )
             {
-                auto staff_component = getPageComponent()->getStave(staff_name);
-                staff_component->addOjbectToStave( this );
-                staff = staff_component;
+                PageComponent *pc = getPageComponent();
+                if( pc ) // << page will not be found until addAndMakeVisible is called
+                {
+                    auto c = pc->getSubcomponentByID(staff_name);
+                    StaffComponent* staff_component = dynamic_cast<StaffComponent*>(c);
+                    if( staff_component )
+                    {
+                        staff_component->addOjbectToStave( this );
+                        staff = staff_component;
+                    }
+                }
             }
             /*
                 to do:
@@ -273,6 +281,35 @@ void BaseComponent::importFromSymbol( const Symbol &s )
         
     }
 }
+
+void BaseComponent::parentHierarchyChanged()
+{
+    PageComponent *pc = getPageComponent();
+
+    if( pc )
+    {
+        Symbol *s = getScoreSymbolPointer();
+        if( s && s->getType() == "staff" )
+        {
+            if( 0 )
+                ;
+        }
+        else
+        {
+            if( staff_name.isNotEmpty() )
+            {
+                auto c = pc->getSubcomponentByID(staff_name);
+                StaffComponent* staff_component = dynamic_cast<StaffComponent*>(c);
+                if( staff_component )
+                {
+                    staff_component->addOjbectToStave( this );
+                    staff = staff_component;
+                }
+            }
+        }
+    }
+}
+
 
 void BaseComponent::setBoundsFromSymbol( float x, float y , float w , float h)
 {

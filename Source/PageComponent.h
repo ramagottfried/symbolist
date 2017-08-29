@@ -39,11 +39,15 @@ public:
     
     inline StaffComponent *getStave( String& name )
     {
+        
+        cout << "num child comps " << getNumChildComponents() << endl;
+        return nullptr;
+        
         auto c = findChildWithID(name);
         return dynamic_cast<StaffComponent*>(c); // hopefully null if not a StaffComponent
         
     }
-    
+
 private:
     
     BaseComponent*      edited_component;

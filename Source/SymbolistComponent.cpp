@@ -8,7 +8,7 @@
 // redefined in PageComponent and MAincomponent
 PageComponent* SymbolistComponent::getPageComponent()
 {
-    PageComponent* pc = findParentComponentOfClass<PageComponent>() ;
+    PageComponent* pc = findParentComponentOfClass<PageComponent>();
     return pc;
 }
 
@@ -38,6 +38,18 @@ SymbolistMainComponent* SymbolistComponent::getMainComponent()
 const size_t SymbolistComponent::getNumSubcomponents()
 {
     return subcomponents.size() ;
+}
+
+SymbolistComponent* SymbolistComponent::getSubcomponentByID( String& id )
+{
+    
+    for( int i = 0; i < subcomponents.size(); i++ )
+    {
+        if( subcomponents[i]->getComponentID() == id )
+            return subcomponents[i];
+    }
+    
+    return nullptr;
 }
 
 SymbolistComponent* SymbolistComponent::getSubcomponent( int i )

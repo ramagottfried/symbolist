@@ -20,8 +20,8 @@ ScoreComponent::~ScoreComponent()
 
 void ScoreComponent::addToSelection(SymbolistComponent *c)
 {
-    selected_components.add(c);
-    c->selectComponent();
+    if( selected_components.addIfNotAlreadyThere(c) )
+        c->selectComponent();
 }
 
 void ScoreComponent::removeFromSelection(SymbolistComponent *c)
@@ -224,7 +224,7 @@ void ScoreComponent::createStaffFromSelected()
         ((ScoreComponent*)staff_ref_comp->getParentComponent())->removeSubcomponent( staff_ref_comp );
         
         // sets the position now relative to the group
-        staff_ref_comp->setBounds(0, 0, staff_ref_comp->getWidth(), staff_ref_comp->getHeight() );
+        staff_ref_comp->setBounds( 0, 0, staff_ref_comp->getWidth(), staff_ref_comp->getHeight() );
         
         // add subcomponent to the parent staff component
         staff_comp->addSubcomponent( staff_ref_comp );
@@ -355,11 +355,8 @@ void ScoreComponent::ungroupSelectedSymbols()
 
 void ScoreComponent::translateSelectedComponents( Point<int> delta_xy )
 {
-    cout << "num selected " << selected_components.size() << endl;
-
     for ( auto c : selected_components )
     {
-        cout << "name " << c->getComponentID() << endl;
         c->setTopLeftPosition( c->getPosition() + delta_xy );
     }
 }

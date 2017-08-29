@@ -537,6 +537,8 @@ void SymbolistHandler::newFromClipBoard()
     
     for( auto s : clipboard )
     {
+        cout << " SymbolistHandler::newFromClipBoard " << endl;
+        cout << s->getID() << endl;
         BaseComponent *c = makeComponentFromSymbol( new Symbol(*s), true );
         if ( c != NULL)
         {

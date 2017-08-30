@@ -214,6 +214,24 @@ void SymbolistHandler::symbolistAPI_setTime(float time_ms)
     }
 }
 
+StaffComponent* SymbolistHandler::getStaveAtTime( float time )
+{
+    if( Symbol *stave_sym = score.getStaveAtTime( time ) )
+    {
+        Component *c =  main_component_ptr->getPageComponent()->findChildWithID( stave_sym->getID() );
+        if( c )
+        {
+            StaffComponent *staff = dynamic_cast<StaffComponent*>(c);
+            if( staff )
+            {
+                return staff;
+            }
+        }
+    }
+    
+    return NULL;
+}
+
 odot_bundle* SymbolistHandler::symbolistAPI_getSymbolsAtTime( float t )
 {
     return score.getSymbolsAtTime(t);
@@ -424,9 +442,9 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     // update the symbol with the component's current state
     c->addSymbolMessages( s , String("") );
     
-    // if the type is "staff" resort the stave order and update time point array
     if( s->getType() == "staff" )
     {
+        // if the type is "staff" resort the stave order and update time point array
         score.updateStavesAndTimepoints();
     }
     else
@@ -439,11 +457,6 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     executeUpdateCallback( score.getSymbolPosition( s ) );
     
     c->repaint();
-
-    /*
-    if( BaseComponent* staff = c->getStaff() )
-        staff->repaint();
-    */
     
 }
 

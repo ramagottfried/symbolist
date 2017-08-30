@@ -7,6 +7,7 @@ PageComponent::PageComponent()
 {
     setComponentID("PageComponent");
     edited_component = NULL;
+    addAndMakeVisible(score_cursor);
 }
 
 PageComponent::~PageComponent() {}
@@ -141,6 +142,7 @@ void PageComponent::resized ()
         edited_component->recursiveMaximizeBounds();
     }
     
+    score_cursor.setBounds( score_cursor.getPlayPoint() * 100, 0, 50, getHeight() );
 }
 
 

@@ -66,8 +66,8 @@ public:
 
     void setTimePoint( float t )
     {
-        //score_cursor.setPlayPoint( t );
-        // getPageComponent()->setTimePoint(t);
+        // score_cursor.setPlayPoint( t );
+        getPageComponent()->setTimePoint(t);
     }
     
     /*********************************************

@@ -94,6 +94,13 @@ public:
     bool isNewSym( const Symbol *s , const SymbolTimePoint *prev_tpoint   );
     
     void resetTimes();
+
+    inline void reset()
+    {
+        clear();
+        prev_timepoint = nullptr;
+    }
+
     
 private:
     

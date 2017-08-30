@@ -10,6 +10,7 @@
 class SymbolistMainWindow;
 class SymbolistMainComponent;
 class BaseComponent;
+class StaffComponent;
 
 class SymbolPropertiesPanel;
 
@@ -81,7 +82,8 @@ public:
     const StringArray getStaves() { return score.getStaves(); }
     
     void convertSelectedToStaff();
-    
+    StaffComponent* getStaveAtTime( float time );
+
     /*********************************************
      * PALETTE AND SYMBOL CONSTRUCTOR
      *********************************************/

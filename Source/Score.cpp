@@ -230,7 +230,7 @@ void Score::updateStavesAndTimepoints()
     
     // sort staves and set times for each stave
     staves.resetTimes();
-    time_points.clear();
+    time_points.reset();
     
     // add the symbols
     
@@ -240,6 +240,12 @@ void Score::updateStavesAndTimepoints()
     }
     
 }
+
+Symbol *Score::getStaveAtTime( float time )
+{
+    return staves.getStaveAtTime(time);
+}
+
 
 const StringArray Score::getStaves()
 {

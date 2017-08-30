@@ -41,6 +41,8 @@ public:
     
     StringArray getStaveNames();
     
+    Symbol *getStaveAtTime(float time);
+    
 private:
     
     vector<Symbol*>     staves;

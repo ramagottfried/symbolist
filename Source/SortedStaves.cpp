@@ -122,6 +122,24 @@ void SortedStaves::addStaff( Symbol *s)
     
 }
 
+Symbol *SortedStaves::getStaveAtTime(float time)
+{
+    
+    if( staves.size() == 0 || time < 0 || time > staves.back()->getEndTime() )
+        return NULL;
+    
+    cout << "end time " << staves.back()->getEndTime() << endl;
+    
+    for( auto s : staves )
+    {
+        if( time >= s->getTime() && time <= s->getEndTime() )
+            return s;
+    }
+    
+    return NULL;
+}
+
+
 StringArray SortedStaves::getStaveNames()
 {
     StringArray names;

@@ -32,6 +32,22 @@ public:
     void resized () override;
     void paint (Graphics& g) override;
     
+    void setTimePoint( float t )
+    {
+        /*
+        auto staff = getSymbolistHandler()->getStaveAtTime(t);
+        if( staff )
+        {
+            Symbol* sym = staff->getScoreSymbolPointer();
+            
+            float play_t = t - sym->getTime();
+            float play_x = sym->timeToPixels( play_t );
+            score_cursor.setBounds( play_x, staff->getY() + (staff->getHeight() * 0.5), 5, staff->getHeight()+5 );
+        }
+        */
+        score_cursor.setPlayPoint( t );
+    }
+    
     inline StaffComponent *getStave( String& name )
     {
         
@@ -49,6 +65,8 @@ public:
 private:
     
     BaseComponent*      edited_component;
+    
+    ScoreCursor         score_cursor;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PageComponent)

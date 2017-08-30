@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SymbolistComponent.h"
+#include "StaffComponent.hpp"
 
 using namespace std;
 
@@ -9,6 +10,7 @@ class ScoreCursor : public SymbolistComponent
 public:
     
     ScoreCursor(){}
+    
     ~ScoreCursor(){}
     
     void paint( Graphics& g ) override
@@ -21,6 +23,7 @@ public:
     void mouseDrag( const MouseEvent& event ) override
     {
         float x = event.getEventRelativeTo( getParentComponent() ).position.getX();
+        
         m_playpoint = x * 0.01f;
         
         auto sh = getSymbolistHandler();
@@ -41,19 +44,37 @@ public:
     
     void resized() override
     {
-        setBounds( m_playpoint * 100.0f, 0, 5, getLocalBounds().getHeight() );
+        // setPlayPoint( m_playpoint );
     }
     
     void setPlayPoint( float t )
     {
         m_playpoint = t;
-        setBounds( m_playpoint * 100.0f, 0, 5, getLocalBounds().getHeight() );
+        
+        auto staff = getSymbolistHandler()->getStaveAtTime(t);
+        if( !staff )
+        {
+            setVisible(false);
+        }
+        else if( display )
+        {
+            setVisible(true);
+
+            Symbol* sym = staff->getScoreSymbolPointer();
+            
+            float play_t = t - sym->getTime();
+            auto staff_b = staff->getBoundsInParent();
+            float play_x = staff_b.getX() + sym->timeToPixels( play_t );
+            
+            setBounds( play_x, staff_b.getY()-5, 5, staff_b.getHeight()+5 );
+        }
     }
     
     inline float getPlayPoint(){ return m_playpoint; }
     
 private:
     float           m_playpoint = 1;
+    bool            display = true;
     
     Point<float>    m_down;
     

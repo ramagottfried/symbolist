@@ -402,91 +402,39 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
     
 }
 
-
-void SymbolistHandler::updateStavePosition( BaseComponent *c )
-{
-    Symbol *s = c->getScoreSymbolPointer();
-    assert ( s != NULL ) ; // that's not normal
-    
-    if( s->getType() == "staff" )
-    {
-        
-        String staff_name;
-        int pos = s->getOSCMessagePos("/name");
-        if( pos != -1)
-        {
-            staff_name = s->getOSCMessageValue(pos).getString();
-        }
-        
-        if( staff_name.isEmpty() )
-            return;
-        
-        PageComponent *pc = main_component_ptr->getPageComponent();
-        
-        for( int i = 0; i < pc->getNumSubcomponents(); i++ )
-        {
-            auto comp = pc->getSubcomponent(i);
-            BaseComponent *bc = dynamic_cast<BaseComponent*>(comp);
-            if( bc != NULL )
-            {
-                Symbol *sym = bc->getScoreSymbolPointer();
-                
-                pos = sym->getOSCMessagePos("/staff");
-                if( pos != -1 )
-                {
-                    if( sym->getOSCMessageValue(pos).getString() == staff_name )
-                    {
-                        // update subcomponent position based on relative time
-                        // ... or maybe easier to use the delta position of the staff and adjust subcomponents from that...
-                        // ... or even easier, would be for the symbols to actually be subcomponents of the STAFF duh
-                        
-                        float sym_start = sym->getTime();
-                        float sym_dur = sym->getDuration();
-                        
-                        
-                        auto staff_xy = c->getPosition().toFloat();
-                        auto bc_xy = bc->getPosition().toFloat();
-
-                        
-                        
-                        auto bc_rel_xy = bc_xy - staff_xy;
-                        
-                        sym->setTimeAndDurationFromRelPix(bc_rel_xy.getX(), bc_rel_xy.getY() );
-
-                    
-                    }
-                    
-                }
-            }
-        }
-        
-        score.updateStaves( s );
-
-    }
-    else
-    {
-        
-    }
-
-}
-
+/*
+ *  the component has changed, and so we need to update it's symbol bundle
+ */
 void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
 {
+    // get pointer to symbol attached to component
     Symbol *s = c->getScoreSymbolPointer();
-    assert ( s != NULL ) ; // that's not normal
+    assert ( s != NULL ) ;
     
-    cout << c << " ---> modifySymbolInScore " << s << endl;
-    // s->printBundle();
+    cout << c << " ---> modifySymbolInScore " << s->getID() << endl;
     // printRect(c->getBounds(), "component");
 
     
+    // remove current time point for symbol, or if stave remove all symbol timepoints on stave
     score.removeSymbolTimePoints( s );
+    
+    // clear the bundle attached to the component (since the component has been updated)
     s->clearOSCBundle();
     
+    // update the symbol with the component's current state
     c->addSymbolMessages( s , String("") );
     
-    score.addSymbolTimePoints( s );
-    score.updateStaves( s );
+    // if the type is "staff" resort the stave order and update time point array
+    if( s->getType() == "staff" )
+    {
+        score.updateStavesAndTimepoints();
+    }
+    else
+    {
+        // if the type is not a staff, add the time points for the symbol
+        score.addSymbolTimePoints( s );
+    }
+    
     
     executeUpdateCallback( score.getSymbolPosition( s ) );
     
@@ -524,10 +472,7 @@ void SymbolistHandler::convertSelectedToStaff()
     main_component_ptr->getPageComponent()->createStaffFromSelected();
 }
 
-void SymbolistHandler::addStaffSymbolToScore( Symbol *s )
-{
-    score.addStaff(s);
-}
+
 
 void SymbolistHandler::copySelectedToClipBoard()
 {

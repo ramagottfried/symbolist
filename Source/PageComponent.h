@@ -32,11 +32,6 @@ public:
     void resized () override;
     void paint (Graphics& g) override;
     
-    inline void setTimePoint( float t )
-    {
-        score_cursor.setPlayPoint( t );
-    }
-    
     inline StaffComponent *getStave( String& name )
     {
         
@@ -54,8 +49,6 @@ public:
 private:
     
     BaseComponent*      edited_component;
-    
-    ScoreCursor         score_cursor;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PageComponent)

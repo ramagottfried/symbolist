@@ -201,15 +201,20 @@ void ScoreComponent::createStaffFromSelected()
         return;
     }
     
+    
     auto sel = page_comp->getSelectedItems();
     if( sel.size() > 1 )
     {
         page_comp->groupSelectedSymbols();
     }
     
+    
     auto staff_ref_comp = dynamic_cast<BaseComponent*>(page_comp->getSelectedItems().getFirst());
     if( staff_ref_comp )
     {
+        if( staff_ref_comp->getSymbolTypeStr() == "staff" )
+            return;
+        
         Symbol ref_sym = *(staff_ref_comp->getScoreSymbolPointer());
         
         Symbol* staff_sym = new Symbol("staff", staff_ref_comp->getX(), staff_ref_comp->getY(), staff_ref_comp->getWidth(), staff_ref_comp->getHeight() );

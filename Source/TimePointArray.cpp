@@ -19,8 +19,24 @@ void TimePointArray::printTimePoints()
     }
 }
 
+void TimePointArray::removeStaffAndSymbolTimePoints( Symbol *s )
+{
+    if( s->getType() == "staff" )
+    {
+        for( int i = 0; i < size(); i++ )
+        {
+            auto t = (*this)[i];
+            if( t->staff_ref == s )
+            {
+                remove(i);
+            }
+        }
+    }
+    else
+        removeSymbolTimePoints(s);
+}
 
-void TimePointArray::removeSymbolTimePoints( Symbol *s)
+void TimePointArray::removeSymbolTimePoints( Symbol *s )
 {
 
     float start_t = s->getTime();
@@ -94,9 +110,10 @@ void TimePointArray::removeSymbolTimePoints( Symbol *s)
   // printTimePoints();
 }
 
-
+// this is only reseting the /time/start for the symbols, not the timepoints, the timepoints should probably be deleted and then recreated, since we reset the symbol when it is modified in the score...
 void TimePointArray::resetTimes()
 {
+
     for( int i = 0; i < size(); i++ )
     {
         auto t = (*this)[i];
@@ -104,15 +121,22 @@ void TimePointArray::resetTimes()
         Symbol *staff = t->staff_ref;
         
         float staff_x = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/x") );
-        
+        float staff_start_t = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/time/start") );
+
         auto vec = t->symbols_at_time;
+        
+        float sym_start_t = 0;
         for( auto it = vec.begin(); it != vec.end(); it++ )
         {
             Symbol *s = *it;
             float start_x = Symbol::getOSCValueAsFloat( s->getOSCMessageValue("/x") ) - staff_x;
             float dur_x = Symbol::getOSCValueAsFloat( s->getOSCMessageValue("/w") );
-            s->setTimeAndDurationFromRelPix(start_x, dur_x);
+            
+            sym_start_t = staff_start_t + s->pixelsToTime(start_x);
+            
+            s->setTimeAndDuration(sym_start_t, s->pixelsToTime(dur_x) );
         }
+        
     }
 }
 
@@ -125,15 +149,18 @@ void TimePointArray::addSymbolTimePoints( Symbol *s )
     // 3) check previous start-1 and end-1 points for continuing symbols to add to new start/end points
     // 4) iterate forward from start to end point and add this symbol to all preexisting time points
     
-    
+    //cout << "TimePointArray::addSymbolTimePoints " << s << endl;
     
     int staff_pos = s->getOSCMessagePos( "/staff" );
-    if( staff_pos == -1 || s->getOSCMessageValue( staff_pos ).getString().isEmpty() ) return;
+    if( staff_pos == -1 || s->getOSCMessageValue( staff_pos ).getString().isEmpty() )
+        return;
 
     String staff_name = s->getOSCMessageValue( staff_pos ).getString();
 
-    auto found_staves = score_ptr->getSymbolsByValue( "/id", staff_name ); // << maybe we should use /ID instead?
-    if( found_staves.isEmpty() ) return;
+    auto found_staves = score_ptr->getSymbolsByValue( "/id", staff_name );
+    if( found_staves.isEmpty() )
+        return;
+    
     
     Symbol *staff = found_staves.getFirst();
     
@@ -143,10 +170,14 @@ void TimePointArray::addSymbolTimePoints( Symbol *s )
     float dur_x = Symbol::getOSCValueAsFloat( s->getOSCMessageValue("/w") );
     float end_x = start_x + dur_x;
 
-    s->setTimeAndDurationFromRelPix(start_x, dur_x);
-
-    float start_t = s->pixelsToTime(start_x);
-    float end_t = s->pixelsToTime(end_x);
+    float staff_start = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/time/start") );
+    
+    float start_t = staff_start + s->pixelsToTime(start_x);
+    float end_t = staff_start + s->pixelsToTime(end_x);
+    
+    s->setTimeAndDuration(start_t, s->pixelsToTime(dur_x) );
+    
+    cout << "adding timepoints on " << staff_name << " " << staff_start << " t start " << start_t << endl;
     
     int start_idx = addSymbol_atTime( s, start_t, staff );
     int end_idx = addSymbol_atTime( s, end_t, staff );

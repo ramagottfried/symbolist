@@ -4,6 +4,11 @@
 #include "PageComponent.h"
 #include "ScoreComponent.h"
 
+StaffComponent::~StaffComponent()
+{
+    // delete time points on staff...
+}
+
 
 void StaffComponent::importFromSymbol( const Symbol &s )
 {

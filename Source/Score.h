@@ -60,7 +60,8 @@ public:
     void addStaff( Symbol *s );
     
     void updateStaves(Symbol *moved_stave);
-    
+    void updateStavesAndTimepoints();
+
     int getNameCount( String& name )
     {
         int count = 0;

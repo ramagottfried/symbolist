@@ -323,7 +323,6 @@ void BaseComponent::attachToStaff()
     PageComponent *pc = getPageComponent();
     if( pc )
     {
-
         if( staff_name.isNotEmpty() )
         {
             auto c = pc->getSubcomponentByID( staff_name );

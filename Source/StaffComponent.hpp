@@ -32,7 +32,8 @@ class StaffComponent : public SymbolGroupComponent
 {
 public:
     StaffComponent() = default;
-    ~StaffComponent() = default;
+    ~StaffComponent();
+    // when a staff is deleted we should probably remove the time points also
     
     virtual String getSymbolTypeStr() const override { return "staff"; }
     

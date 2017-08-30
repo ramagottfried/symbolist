@@ -103,9 +103,6 @@ public:
     void copySelectedToClipBoard();
     void newFromClipBoard();
     
-    // temp
-    void updateStavePosition( BaseComponent *c );
-    void addStaffSymbolToScore( Symbol *s );
     
     int symbolNameCount( String& name )
     {

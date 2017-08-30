@@ -70,6 +70,7 @@ public:
     String getSaff();
     
     void setTimeAndDurationFromRelPix( const float start_x, const float dur_x );
+    void setTimeAndDuration( const float start_t, const float dur_t );
 
     void setOSCAddrAndValue( const String& addr, const String& value  );
     void setOSCAddrAndValue( const String& addr, const float value  );

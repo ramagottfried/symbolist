@@ -114,7 +114,7 @@ odot_bundle *Score::getSymbolsAtTime( float t )
 
 void Score::removeSymbolTimePoints( Symbol *s )
 {
-    time_points.removeSymbolTimePoints( s );
+    time_points.removeStaffAndSymbolTimePoints( s );
 }
 
 void Score::addSymbolTimePoints( Symbol *s )
@@ -186,6 +186,10 @@ void Score::addStaff( Symbol *s )
     staves.addStaff( s );
 }
 
+/***********************************
+ * called when staff is moved
+ ***********************************/
+
 void Score::updateStaves(Symbol *moved_stave)
 {
 
@@ -193,39 +197,48 @@ void Score::updateStaves(Symbol *moved_stave)
     if( moved_stave->getOSCMessageValue(pos).getString() != "staff" )
         return;
     
+    // 1. remove time points for moved stave
+    // 2. resort the staves
+    // 3. add time points for sybols on the stave
     
-    /*  updating positions should be done from the staff component
-     
-    // need to update positions for all symbols on staff...
-    // for now just going to update everything
-    String staff_id;
-    pos = moved_stave->getOSCMessagePos("/id");
-    if( pos != -1)
-    {
-        staff_id = moved_stave->getOSCMessageValue(pos).getString();
-    }
+    // remove (this is done already in the modifySymbolInScore symbolist handler function)
+    // time_points.removeStaffAndSymbolTimePoints(moved_stave);
     
-    if( staff_id.isEmpty() )
-        return;
-        
+    // sort staves and set times for each stave
+    staves.resetTimes();
+    
+    // add the symbols
+    
+    String staff_id = moved_stave->getID();
     for( auto s : score_symbols )
     {
-        pos = s->getOSCMessagePos("/staff");
-        if( pos != -1 )
+        if( s->getSaff() == staff_id )
         {
-           if( s->getOSCMessageValue(pos).getString() == staff_id )
-           {
-               ;
-
-           }
-            
+            time_points.addSymbolTimePoints(s);
         }
-        
     }
-    */
     
+    // time_points.resetTimes();
+}
+
+/*
+ *  called when a stave is moved to update all timepoints, could be optimized in the future
+ */
+
+void Score::updateStavesAndTimepoints()
+{
+    
+    // sort staves and set times for each stave
     staves.resetTimes();
-    time_points.resetTimes();
+    time_points.clear();
+    
+    // add the symbols
+    
+    for( auto s : score_symbols )
+    {
+        time_points.addSymbolTimePoints(s);
+    }
+    
 }
 
 const StringArray Score::getStaves()

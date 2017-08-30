@@ -212,6 +212,30 @@ void Symbol::setTimeAndDurationFromRelPix( const float start_x, const float dur_
 
 }
 
+void Symbol::setTimeAndDuration( const float start_t, const float dur_t )
+{
+    OSCBundle new_bundle;
+    
+    // there must be a better way to do this!
+    for (auto osc : osc_bundle )
+    {
+        if(!osc.getMessage().getAddressPattern().toString().equalsIgnoreCase( "/time/start" ) &&
+           !osc.getMessage().getAddressPattern().toString().equalsIgnoreCase( "/time/duration" ) )
+        {
+            new_bundle.addElement(osc);
+        }
+    }
+    
+    osc_bundle = new_bundle;
+    
+    cout << "setting time " << pixelsToTime(start_t) << " " << pixelsToTime(dur_t) << endl;
+    
+    addOSCMessage(String("/time/start"),   start_t );
+    addOSCMessage(String("/time/duration"), dur_t );
+    
+}
+
+
 int Symbol::getOSCMessagePos(const String &address) const
 {
     for (int i = 0; (i < osc_bundle.size()) ; i++)

@@ -77,7 +77,11 @@ void SortedStaves::resetTimes()
         float w = Symbol::getOSCValueAsFloat( sym->getOSCMessageValue("/w") );
         
         sym->setOSCAddrAndValue( "/time/start", time );
+        
+        cout << "staff time " << time << " ";
+        
         time += sym->pixelsToTime(w) ;
+        
         sym->setOSCAddrAndValue( "/time/duration", time );
         
         cout << time << endl;

@@ -6,8 +6,6 @@
 // SYMBOL Timepoint
 //============================
 
-// for lookup, we probably want to change this to use the ID instead fo the name
-
 using namespace std;
 
 class Score;
@@ -63,6 +61,7 @@ public:
     
     void addSymbolTimePoints( Symbol *s );
     void removeSymbolTimePoints( Symbol *s);
+    void removeStaffAndSymbolTimePoints( Symbol *s);
 
     int addSymbol_atTime( Symbol *s, float t, Symbol *staff);
     

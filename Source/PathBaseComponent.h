@@ -63,8 +63,9 @@ public:
     
     void h_flip() override;
     void v_flip() override;
-    void rotatePath ( float theta );
+    void rotatePath ( float theta, bool accum = true );
     void rotatePath ( float theta, float ax, float ay );
+    virtual void accumTheta ( float theta ) {}
     
     
     inline Rectangle<float> getPathBounds() { return m_path_bounds; }
@@ -93,7 +94,7 @@ protected:
     
     Point<float>                m_path_centroid;
     Sym_PathBounds              m_path_bounds;
-    
+        
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PathBaseComponent)

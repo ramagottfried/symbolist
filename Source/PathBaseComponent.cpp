@@ -800,6 +800,7 @@ void PathBaseComponent::v_flip()
 
 void PathBaseComponent::rotatePath ( float theta, float ax, float ay )
 {
+    accumTheta(theta);
     Path m_path = mergePathArray();
     m_path.applyTransform( AffineTransform().rotation( theta, ax, ay ) );
     makePathArrayFromPath(m_path);
@@ -809,8 +810,11 @@ void PathBaseComponent::rotatePath ( float theta, float ax, float ay )
 }
 
 
-void PathBaseComponent::rotatePath ( float theta )
+void PathBaseComponent::rotatePath ( float theta, bool accum )
 {
+    if( accum )
+        accumTheta(theta);
+    
     Path m_path = mergePathArray();
     m_path.applyTransform( AffineTransform().rotation( theta, m_path_centroid.getX(), m_path_centroid.getY()  ) );
     makePathArrayFromPath(m_path);

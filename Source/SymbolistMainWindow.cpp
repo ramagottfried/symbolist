@@ -43,7 +43,8 @@ ApplicationCommandManager& SymbolistMainWindow::getApplicationCommandManager()
 
 void SymbolistMainWindow::handleAsyncUpdate()
 {
-    cout << "SymbolistMainWindow::handleAsyncUpdate " << endl;
+    // cout << "SymbolistMainWindow::handleAsyncUpdate " << endl;
+    
     // This registers all of our commands with the command manager but has to be done after the window has
     // been created so we can find the number of rendering engines available
     auto& commandManager = SymbolistMainWindow::getApplicationCommandManager();

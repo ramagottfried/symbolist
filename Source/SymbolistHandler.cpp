@@ -429,7 +429,7 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     Symbol *s = c->getScoreSymbolPointer();
     assert ( s != NULL ) ;
     
-    cout << c << " ---> modifySymbolInScore " << s->getID() << endl;
+    // cout << c << " ---> modifySymbolInScore " << s->getID() << endl;
     // printRect(c->getBounds(), "component");
 
     

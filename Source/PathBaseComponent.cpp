@@ -93,14 +93,14 @@ void PathBaseComponent::makePathArrayFromPath(const Path &p)
 
 void PathBaseComponent::resizeToFit(int x, int y, int w, int h)
 {
+    
     // input bounds are for the visible path, not the handles...
     Rectangle<int> r = Rectangle<int>(x,y,w,h).reduced( strokeType.getStrokeThickness() );
     
-    if( r.getWidth() > 0 && r.getHeight() > 0 && m_path_bounds.getWidth() > 0 && m_path_bounds.getHeight() > 0)
+    if( r.getWidth() > 0 && r.getHeight() > 0 )
     {
-        
-        float w_scale = (float)r.getWidth() / m_path_bounds.getWidth();
-        float h_scale = (float)r.getHeight() / m_path_bounds.getHeight();
+        float w_scale = (m_path_bounds.getWidth()   > 0)    ? (float)r.getWidth()   / m_path_bounds.getWidth()  : 1;
+        float h_scale = (m_path_bounds.getHeight()  > 0)    ? (float)r.getHeight()  / m_path_bounds.getHeight() : 1;
 
         Path temp = mergePathArray();
         

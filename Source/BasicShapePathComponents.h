@@ -28,7 +28,7 @@ public:
         p.applyTransform( AffineTransform().rotation( -m_rotation, pbounds.getCentreX(), pbounds.getCentreY()  ) );
         auto pb = pbounds.getRealPathBounds( p ).expanded( strokeType.getStrokeThickness() );
         
-        return Rectangle<float>( b.getCentreX(), b.getCentreY(), pb.getWidth(), pb.getHeight() );
+        return Rectangle<float>( b.getX(), b.getCentreY(), pb.getWidth(), pb.getHeight() );
     }
     
     virtual Rectangle<float> drawAndRotateShape(float cx, float cy, float w, float h) = 0;
@@ -41,7 +41,7 @@ public:
         m_h = h;
         
         auto bounds = drawAndRotateShape(x, y, w, h).expanded( strokeType.getStrokeThickness() );
-        setBounds( x - (w * 0.5), y - (h * 0.5), bounds.getWidth() , bounds.getHeight() );
+        setBounds( x , y - (h * 0.5), bounds.getWidth() , bounds.getHeight() );
     }
     
     

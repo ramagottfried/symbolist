@@ -12,7 +12,6 @@ using namespace std ;
 
 PaletteButton::PaletteButton( int i, Symbol *s)
 {
-    cout << "new palette button " << this << endl;
     button_id = i;
     graphic_comp = getSymbolistHandler()->makeComponentFromSymbol(s,false);
     setComponentID("PaletteButton");
@@ -48,7 +47,6 @@ void PaletteButton::paint (Graphics& g)
 
 void PaletteButton::mouseDown ( const MouseEvent& event )
 {
-    cout << "PaletteButton::mouseDown" << endl;
     PaletteComponent* pv = (PaletteComponent*) getParentComponent();
     pv->selectPaletteButton(button_id);
 }
@@ -65,7 +63,7 @@ PaletteComponent::PaletteComponent()
 
 PaletteComponent::~PaletteComponent()
 {
-    cout << "deleting all children of palette " << this << endl;
+    // cout << "deleting all children of palette " << this << endl;
     deleteAllChildren();
 }
 

@@ -284,6 +284,7 @@ void PathBaseComponent::setMaximalBounds ()
     makePathArrayFromPath(m_path);
     updatePathBounds();
     
+    cout << "PathBaseComponent::setMaximalBounds" << endl;
     makeHandlesFromPath();
 }
 
@@ -306,7 +307,8 @@ void PathBaseComponent::setEditMode( bool val )
 void PathBaseComponent::unselectAllComponents()
 {
     ScoreComponent::unselectAllComponents();
-    if ( rotation_handle != NULL ) removeFromSelection(rotation_handle);
+    if ( rotation_handle != NULL )
+        removeFromSelection(rotation_handle);
 }
 
 /******************
@@ -399,12 +401,29 @@ void PathBaseComponent::makeHandlesFromPath()
         }
         updatePathBounds();
         
+        if( m_path_bounds.getWidth() > 0 || m_path_bounds.getHeight() > 0 )
+        {
+            updateRotationHandle();
+        }
+    }
+}
+
+void PathBaseComponent::updateRotationHandle()
+{
+    updatePathBounds();
+
+    if( !rotation_handle )
+    {
         float length = max( m_path_bounds.getHeight(), m_path_bounds.getWidth() ) * 0.5 + 5;
         rotation_handle = new PathHandle( PathHandle::rotate, m_path_centroid.getX(), m_path_centroid.getY() + length );
         addAndMakeVisible( rotation_handle );
     }
+    else
+    {
+        float length = max( m_path_bounds.getHeight(), m_path_bounds.getWidth() ) * 0.5 + 5;
+        rotation_handle->setCentrePosition( m_path_centroid.getX(), m_path_centroid.getY() + length );
+    }
 }
-
 
 void PathBaseComponent::removeSubcomponent(SymbolistComponent* h)
 {
@@ -428,6 +447,7 @@ void PathBaseComponent::removeHandles()
     if ( getMainComponent() != NULL && rotation_handle != NULL )
     {
         delete rotation_handle;
+        rotation_handle = NULL;
     }
 }
 
@@ -515,7 +535,7 @@ void PathBaseComponent::updatePathPoints()
             }
             else // normal case
             {
-            m_path_array.getLast()->lineTo( current_handle->getBounds().toFloat().getCentre() );
+                m_path_array.getLast()->lineTo( current_handle->getBounds().toFloat().getCentre() );
             }
         }
         
@@ -660,10 +680,14 @@ void PathBaseComponent::mouseAddClick ( const MouseEvent& event )
         }
         else
         {
+            m_preview_path.clear();
+            
             path_handles.getLast()->setEnd(false);
             addHandle(PathHandle::anchor, pt.x, pt.y);
             path_handles.getLast()->setEnd(true);
+            
             updatePathPoints();
+            updateRotationHandle();
         }
         
         updatePathBounds();

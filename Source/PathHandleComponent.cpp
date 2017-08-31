@@ -14,7 +14,7 @@ PathHandle::PathHandle( handleType type, float x, float y)
 
 Point<float> PathHandle::getCenter () const
 {
-    return Point<float>(getX()+m_size*0.5,getY()+m_size*0.5);
+    return Point<float>( getX() + m_size*0.5, getY() + m_size*0.5);
 }
 
 void PathHandle::mouseDown( const MouseEvent& event )

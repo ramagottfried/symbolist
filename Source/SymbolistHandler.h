@@ -50,7 +50,8 @@ public:
     void symbolistAPI_setPaletteSymbols(int n, odot_bundle **bundle_array);
     
     void symbolistAPI_setTime(float time_ms);
-
+    void symbolistAPI_toggleTimeCusor();
+    
     odot_bundle* symbolistAPI_getSymbolsAtTime(float t);
     odot_bundle* symbolistAPI_getScoreBundle();
     

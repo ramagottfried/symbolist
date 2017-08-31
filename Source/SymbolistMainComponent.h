@@ -66,9 +66,9 @@ public:
 
     void setTimePoint( float t )
     {
-        // score_cursor.setPlayPoint( t );
         getPageComponent()->setTimePoint(t);
     }
+    
     
     /*********************************************
      * Application keyboard command wrapper (actual commands are set in SybolistMenu)

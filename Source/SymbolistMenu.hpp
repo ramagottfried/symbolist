@@ -40,9 +40,8 @@ public:
         cmd_objToStaff              = 0x2011,
         cmd_attachToStaff           = 0x2012,
         cmd_selectedToFront         = 0x2013,
-        cmd_selectedToBack          = 0x2014
-        // to do ,
-        //cmd_toggleCursor            = 0x2011
+        cmd_selectedToBack          = 0x2014,
+        cmd_toggleCursor            = 0x2015
     };
     
 private:

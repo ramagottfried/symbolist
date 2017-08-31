@@ -48,6 +48,11 @@ public:
         score_cursor.setPlayPoint( t );
     }
     
+    void toggleCursorDisplay()
+    {
+        score_cursor.toggleDisplayState();
+    }
+    
     inline StaffComponent *getStave( String& name )
     {
         

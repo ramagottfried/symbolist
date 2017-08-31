@@ -40,7 +40,8 @@ void SymbolistMenu::getAllCommands (Array<CommandID>& commands)
         cmd_objToStaff,
         cmd_attachToStaff,
         cmd_selectedToFront,
-        cmd_selectedToBack
+        cmd_selectedToBack,
+        cmd_toggleCursor
     };
     
     commands.addArray (ids, numElementsInArray (ids));
@@ -134,6 +135,12 @@ void SymbolistMenu::getCommandInfo (CommandID commandID, ApplicationCommandInfo&
             result.setInfo ("selected object to back layer", String(), String(), 0);
             result.addDefaultKeypress ('[',  ModifierKeys::altModifier );
             break;
+            
+        case cmd_toggleCursor:
+            result.setInfo ("toggle time cursor view", String(), String(), 0);
+            result.addDefaultKeypress ('t',  ModifierKeys::noModifiers );
+            break;
+            
             
         default:
             result.setInfo ("undefined", "", "", 0);
@@ -245,6 +252,11 @@ bool SymbolistMenu::perform (const juce::ApplicationCommandTarget::InvocationInf
             case cmd_selectedToBack:
                 score->selectedToBack();
                 break;
+                
+            case cmd_toggleCursor:
+                main->getSymbolistHandler()->symbolistAPI_toggleTimeCusor();
+                break;
+                
             default:
                 return false;
         }
@@ -310,6 +322,7 @@ PopupMenu SymbolistMenu::getMenuForIndex (int menuIndex, const String& /*menuNam
         menu.addCommandItem (commandManager, cmd_zoomOut);
         menu.addSeparator();
         menu.addCommandItem (commandManager, cmd_toggleInspector);
+        menu.addCommandItem (commandManager, cmd_toggleCursor);
 
     }
     else if (menuIndex == 3)

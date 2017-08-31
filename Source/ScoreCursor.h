@@ -15,9 +15,12 @@ public:
     
     void paint( Graphics& g ) override
     {
-        g.setColour( Colours::lightblue );
-        auto b = getLocalBounds();
-        g.drawLine( b.getCentreX(), 0, b.getCentreX(), b.getBottom() );
+        if( display )
+        {
+            g.setColour( Colours::lightblue );
+            auto b = getLocalBounds();
+            g.drawLine( b.getCentreX(), 0, b.getCentreX(), b.getBottom() );
+        }
     }
     
     void mouseDrag( const MouseEvent& event ) override
@@ -47,6 +50,12 @@ public:
         // setPlayPoint( m_playpoint );
     }
     
+    void toggleDisplayState()
+    {
+        display = !display;
+        repaint();
+    }
+    
     void setPlayPoint( float t )
     {
         m_playpoint = t;
@@ -68,13 +77,14 @@ public:
             
             setBounds( play_x, staff_b.getY()-5, 5, staff_b.getHeight()+5 );
         }
+        repaint();
     }
     
     inline float getPlayPoint(){ return m_playpoint; }
     
 private:
     float           m_playpoint = 1;
-    bool            display = true;
+    bool            display = false;
     
     Point<float>    m_down;
     

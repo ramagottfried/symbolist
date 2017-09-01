@@ -258,7 +258,7 @@ void BaseComponent::importFromSymbol( const Symbol &s )
         if( isVisible() )
             setSymbolID();
         else
-            setComponentID( name + "_palette");
+            setComponentID( name + "/palette");
         
         
         int staffname_pos = s.getOSCMessagePos("/staff");
@@ -293,7 +293,7 @@ void BaseComponent::setSymbolID()
             }
             
 
-            if( id.isEmpty() || getComponentID() != id || id == (typeStr + "_palette")  || id == (name + "_palette") || !id.contains(name))
+            if( id.isEmpty() || getComponentID() != id || id == (typeStr + "/palette")  || id == (name + "/palette") || !id.contains(name))
             {
                 // if there is a name use this for the id
                 // for the id, check to see if there are others with this name and then increment 1
@@ -302,11 +302,11 @@ void BaseComponent::setSymbolID()
                 auto sh = getSymbolistHandler();
                 int count = sh->symbolNameCount( name );
                 
-                id = name + "_" + (String)count;
+                id = name + "/" + (String)count;
                 
                 while( !sh->uniqueIDCheck( id ) )
                 {
-                    id = name + "_" + (String)(count++);
+                    id = name + "/" + (String)(count++);
                 }
                 
             }
@@ -586,7 +586,9 @@ void BaseComponent::mouseDown( const MouseEvent& event )
     m_down = event.position;
 
     if ( in_edit_mode || ( isTopLevelComponent() && getMainMouseMode() == UI_EditType::draw) )
+    {
         ScoreComponent::mouseDown( event );
+    }
     else
     {
         

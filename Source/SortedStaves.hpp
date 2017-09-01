@@ -42,6 +42,7 @@ public:
     StringArray getStaveNames();
     
     Symbol *getStaveAtTime(float time);
+    const Symbol *getStaveByID( const String& id );
     
 private:
     

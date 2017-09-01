@@ -62,7 +62,8 @@ public:
     void updateStaves(Symbol *moved_stave);
     void updateStavesAndTimepoints();
     Symbol *getStaveAtTime( float time );
-    
+    const Symbol* getStaveByID( const String& id );
+
     int getNameCount( String& name )
     {
         int count = 0;

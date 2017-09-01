@@ -53,6 +53,11 @@ public:
         score_cursor.toggleDisplayState();
     }
     
+    void updateTimeCursor()
+    {
+        score_cursor.repaint();
+    }
+    
     inline StaffComponent *getStave( String& name )
     {
         

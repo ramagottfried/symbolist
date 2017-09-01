@@ -85,7 +85,7 @@ public:
     // override to avoid entering edit mode
     void mouseDoubleClick(const MouseEvent& event) override {}
     
-private:
+protected:
     
     String      m_text = "T";
     Font        m_font = Font( "Times", 20.0f, Font::plain );

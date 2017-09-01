@@ -138,6 +138,8 @@ void TimePointArray::resetTimes()
         }
         
     }
+    
+    prev_timepoint = nullptr;
 }
 
 
@@ -508,31 +510,31 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
             // ignore symbols if after endpoint
             if( current_time <= s->getEndTime() )
             {
-                String staff_name;
+                String staff_name = "default";
+                String staff_id;
                 float staff_x = 0, staff_y = 0;
                 
                 int staff_pos = s->getOSCMessagePos( "/staff" );
                 if( staff_pos != -1 )
                 {
-                    staff_name = s->getOSCMessageValue( staff_pos ).getString();
-                    if( staff_name.isNotEmpty() )
+                    staff_id = s->getOSCMessageValue( staff_pos ).getString();
+                    if( staff_id.isNotEmpty() )
                     {
                         // cout << "staff name " << staff_name << endl;
                         
                         String addr = "/id";
-                        auto found_staves = score_ptr->getSymbolsByValue( addr, staff_name );
+                        const Symbol *staff = score_ptr->getStaveByID( staff_id );
                         
-                        if( found_staves.size() > 0 )
+                        if( staff != NULL )
                         {
-                            Symbol *staff = found_staves.getFirst();
-                            
                             staff_x = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/x") );
                             staff_y = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/y") );
+                            staff_name = staff->getName();
                         }
                     }
                 }
                 
-                String s_prefix = "/staff/" + staff_name + "/" + String(count);
+                String s_prefix = "/staff/" + staff_name + "/event/" + String(count);
                 
                 float time_ratio = (current_time - s->getTime()) / s->getDuration() ;
                 bndl.addElement( OSCMessage( s_prefix + "/time/ratio", time_ratio ) );

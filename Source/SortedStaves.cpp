@@ -128,7 +128,7 @@ Symbol *SortedStaves::getStaveAtTime(float time)
     if( staves.size() == 0 || time < 0 || time > staves.back()->getEndTime() )
         return NULL;
     
-    cout << "end time " << staves.back()->getEndTime() << endl;
+    // cout << "end time " << staves.back()->getEndTime() << endl;
     
     for( auto s : staves )
     {
@@ -139,6 +139,19 @@ Symbol *SortedStaves::getStaveAtTime(float time)
     return NULL;
 }
 
+const Symbol *SortedStaves::getStaveByID( const String& id )
+{
+    if( staves.size() == 0 || id.isEmpty() )
+        return NULL;
+    
+    for( auto s : staves )
+    {
+        if( s->getID() == id )
+            return s;
+    }
+    
+    return NULL;
+}
 
 StringArray SortedStaves::getStaveNames()
 {

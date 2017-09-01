@@ -32,8 +32,7 @@ class StaffComponent : public SymbolGroupComponent
 {
 public:
     StaffComponent() = default;
-    ~StaffComponent();
-    // when a staff is deleted we should probably remove the time points also
+    ~StaffComponent() = default;
     
     virtual String getSymbolTypeStr() const override { return "staff"; }
     
@@ -57,13 +56,14 @@ public:
     }
     
     void mouseDown( const MouseEvent& event ) override;
+    void mouseDrag( const MouseEvent& event ) override;
     
     
 private:
     
     vector<BaseComponent*>  symbols_on_staff;
     
-    bool    draw_timepoints = true;
+    bool    draw_timepoints = false;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StaffComponent)

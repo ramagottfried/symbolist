@@ -209,7 +209,7 @@ void SymbolistHandler::symbolistAPI_setTime(float time_ms)
     
     if ( main_component_ptr != NULL)
     {
-        main_component_ptr->getPageComponent()->setTimePoint( time_ms );
+        main_component_ptr->setTimePoint( time_ms );
     }
 }
 
@@ -217,7 +217,7 @@ void SymbolistHandler::symbolistAPI_toggleTimeCusor()
 {
     if ( main_component_ptr != NULL)
     {
-        main_component_ptr->getPageComponent()->toggleCursorDisplay();
+        main_component_ptr->toggleTimeAndCursorDisplay();
     }
 }
 

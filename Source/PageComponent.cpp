@@ -153,11 +153,10 @@ void PageComponent::resized ()
 void PageComponent::paint (Graphics& g)
 {
     g.fillAll ( Colours::white );
-
+/*
     auto visibleBounds = getMainComponent()->getViewRect() ;
-    
     String timestr = " t = ";
     timestr += (String) (getSymbolistHandler()->getCurrentTime()) ;
     g.drawText (timestr, visibleBounds , Justification::topLeft, false);
-  
+  */
 }

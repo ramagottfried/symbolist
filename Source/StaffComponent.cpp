@@ -4,11 +4,6 @@
 #include "PageComponent.h"
 #include "ScoreComponent.h"
 
-StaffComponent::~StaffComponent()
-{
-    // delete time points on staff...
-}
-
 
 void StaffComponent::importFromSymbol( const Symbol &s )
 {
@@ -117,20 +112,31 @@ void StaffComponent::mouseDown( const MouseEvent& event )
     }
     else
     {
-        BaseComponent::mouseDown(event);
-        
-        if( is_selected )
-        {
-            auto page = getPageComponent();
-            
-            for( BaseComponent *c : symbols_on_staff )
-            {
-                page->addToSelection( c );
-            }
-        }
-
+       BaseComponent::mouseDown(event);
     }
 }
+
+void StaffComponent::mouseDrag( const MouseEvent& event )
+{
+    auto page = getPageComponent();
+
+    if( is_selected && event.getDistanceFromDragStart() > 5 )
+    {
+        
+//        cout << "StaffComponent::mouseDrag teste " << event.getDistanceFromDragStart() << endl;
+
+        for( BaseComponent *c : symbols_on_staff )
+        {
+            page->addToSelection( c );
+        }
+        
+    }
+    
+    BaseComponent::mouseDrag( event );
+    
+    page->updateTimeCursor();
+}
+
 
 
 void StaffComponent::paint ( Graphics& g )

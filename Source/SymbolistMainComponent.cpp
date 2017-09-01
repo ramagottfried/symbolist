@@ -23,7 +23,8 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
     paletteView.selectPaletteButton(-1);
     addAndMakeVisible(paletteView);
     addAndMakeVisible(mouseModeView);
-
+    addChildComponent(timeDisplayView);
+    
     addAndMakeVisible(menu);
     menu_h = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
     
@@ -69,6 +70,7 @@ void SymbolistMainComponent::resized()
     score_viewport.setBounds( palette_w, menu_h, w-palette_w, h );
     mouseModeView.setBounds( palette_w, h-25, w-palette_w, 25 );
     menu.setBounds(palette_w, 0, w-palette_w, menu_h );
+    timeDisplayView.setBounds(palette_w, menu_h+2, 12, 13);
     
     if( inspector->isVisible() )
     {

@@ -161,6 +161,12 @@ const Array<Symbol*> Score::getSymbolsByValue( const String& address, const Stri
     return matched;
 }
 
+
+const Symbol* Score::getStaveByID( const String& id )
+{
+    return staves.getStaveByID( id );
+}
+
 /***********************************
  * OSC encoding/decoding
  ***********************************/

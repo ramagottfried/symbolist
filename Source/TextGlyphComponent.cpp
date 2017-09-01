@@ -9,7 +9,6 @@ void TextEditorObjListener::textEditorTextChanged (TextEditor& t)
 
 void EditableTextObjListener::labelTextChanged (Label* l)
 {
-    cout << l->getText() << endl;
     owner->updateText( l->getText() );
 }
 
@@ -236,7 +235,11 @@ void TextGlphComponent::resizeToFit(int x, int y, int w, int h)
 
 void TextGlphComponent::updateText( String str)
 {
-    m_text = str;
-    resized();
+    if( m_text != str )
+    {
+        m_text = str;
+        textobj->setText (m_text, sendNotificationSync );
+        resized();
+    }
 }
 

@@ -74,6 +74,10 @@
 		11B71DD71F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */; };
 		11B71DD81F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */; };
 		11B71DD91F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */; };
+		11C442D01F585C1B00F2E9B6 /* TimeDisplay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11C442CE1F585C1B00F2E9B6 /* TimeDisplay.cpp */; };
+		11C442D11F585C1B00F2E9B6 /* TimeDisplay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11C442CE1F585C1B00F2E9B6 /* TimeDisplay.cpp */; };
+		11C442D21F585C1B00F2E9B6 /* TimeDisplay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11C442CE1F585C1B00F2E9B6 /* TimeDisplay.cpp */; };
+		11C442D31F585C1B00F2E9B6 /* TimeDisplay.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11C442CF1F585C1B00F2E9B6 /* TimeDisplay.hpp */; };
 		11CE00571EC328EC00E4F624 /* SymbolistMainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00531EC328EC00E4F624 /* SymbolistMainComponent.cpp */; };
 		11CE00581EC328EC00E4F624 /* SymbolistMainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00531EC328EC00E4F624 /* SymbolistMainComponent.cpp */; };
 		11CE005E1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */; };
@@ -163,6 +167,8 @@
 		11B71DD01F098F1400CDE209 /* SymbolPropertiesPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SymbolPropertiesPanel.h; path = ../../Source/SymbolPropertiesPanel.h; sourceTree = "<group>"; };
 		11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OSCPropertyComponents.cpp; path = ../../Source/OSCPropertyComponents.cpp; sourceTree = "<group>"; };
 		11B71DD61F0AA83A00CDE209 /* OSCPropertyComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OSCPropertyComponents.h; path = ../../Source/OSCPropertyComponents.h; sourceTree = "<group>"; };
+		11C442CE1F585C1B00F2E9B6 /* TimeDisplay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TimeDisplay.cpp; path = ../../Source/TimeDisplay.cpp; sourceTree = "<group>"; };
+		11C442CF1F585C1B00F2E9B6 /* TimeDisplay.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TimeDisplay.hpp; path = ../../Source/TimeDisplay.hpp; sourceTree = "<group>"; };
 		11CE00201EC3271700E4F624 /* symbolist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = symbolist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11CE00511EC328DE00E4F624 /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Main.cpp; path = ../../Source/Main.cpp; sourceTree = "<group>"; };
 		11CE00531EC328EC00E4F624 /* SymbolistMainComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolistMainComponent.cpp; path = ../../Source/SymbolistMainComponent.cpp; sourceTree = "<group>"; };
@@ -291,6 +297,8 @@
 		111A26201F40CBAD00D3713C /* time-components */ = {
 			isa = PBXGroup;
 			children = (
+				11C442CE1F585C1B00F2E9B6 /* TimeDisplay.cpp */,
+				11C442CF1F585C1B00F2E9B6 /* TimeDisplay.hpp */,
 				1186489A1EFAC44100904672 /* ScoreCursor.cpp */,
 				1186489B1EFAC44100904672 /* ScoreCursor.h */,
 				11D123641F46E4BA00A5EA5B /* OutputViewer.cpp */,
@@ -495,6 +503,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11C442D31F585C1B00F2E9B6 /* TimeDisplay.hpp in Headers */,
 				114027C71F49C21E00A9B8C4 /* SortedStaves.hpp in Headers */,
 				114027CD1F4B185E00A9B8C4 /* StaffComponent.hpp in Headers */,
 			);
@@ -634,6 +643,7 @@
 				1107B3FA1EF7D55D00E2DFA9 /* PathHandleComponent.cpp in Sources */,
 				1107B3FF1EF7D55D00E2DFA9 /* PageComponent.cpp in Sources */,
 				1107B4021EF7D55D00E2DFA9 /* SymbolistMainComponent.cpp in Sources */,
+				11C442D21F585C1B00F2E9B6 /* TimeDisplay.cpp in Sources */,
 				1107B3F51EF7D55D00E2DFA9 /* Symbol.cpp in Sources */,
 				1107B4001EF7D55D00E2DFA9 /* ScoreComponent.cpp in Sources */,
 				114027C61F49C21E00A9B8C4 /* SortedStaves.cpp in Sources */,
@@ -664,6 +674,7 @@
 				11CE00581EC328EC00E4F624 /* SymbolistMainComponent.cpp in Sources */,
 				44B718B21EDD9D010039884E /* Symbol.cpp in Sources */,
 				114027C51F49C21E00A9B8C4 /* SortedStaves.cpp in Sources */,
+				11C442D11F585C1B00F2E9B6 /* TimeDisplay.cpp in Sources */,
 				4425D3061EF8599300B8BF1C /* SymbolistHandler.cpp in Sources */,
 				444C43A21EE4A2E4000C6F69 /* PageComponent.cpp in Sources */,
 				111A261D1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */,
@@ -719,6 +730,7 @@
 				11D1235C1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */,
 				118C38DE1EC5BC4F006FF4A1 /* Score.cpp in Sources */,
 				444CD9031EDDAF1B001AC03A /* SymbolistComponent.cpp in Sources */,
+				11C442D01F585C1B00F2E9B6 /* TimeDisplay.cpp in Sources */,
 				41C3942D9A94933B560F98F2 /* include_juce_gui_basics.mm in Sources */,
 				1107B3E91EF5388500E2DFA9 /* PathInfo.cpp in Sources */,
 				11D86B8B1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */,

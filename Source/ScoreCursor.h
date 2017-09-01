@@ -15,7 +15,7 @@ public:
     
     void paint( Graphics& g ) override
     {
-        if( display )
+        if( display && m_playpoint >= 0 )
         {
             g.setColour( Colours::lightblue );
             auto b = getLocalBounds();
@@ -53,7 +53,8 @@ public:
     void toggleDisplayState()
     {
         display = !display;
-        repaint();
+        if( display )
+            setPlayPoint(m_playpoint);
     }
     
     void setPlayPoint( float t )
@@ -83,7 +84,7 @@ public:
     inline float getPlayPoint(){ return m_playpoint; }
     
 private:
-    float           m_playpoint = 1;
+    float           m_playpoint = -1;
     bool            display = false;
     
     Point<float>    m_down;

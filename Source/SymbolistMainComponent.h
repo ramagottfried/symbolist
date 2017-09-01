@@ -11,6 +11,8 @@
 
 #include "SymbolPropertiesPanel.h"
 #include "MouseModeComponent.hpp"
+#include "TimeDisplay.hpp"
+
 #include "SymbolistMenu.hpp"
 #include "SymbolistLookAndFeel.hpp"
 
@@ -67,8 +69,14 @@ public:
     void setTimePoint( float t )
     {
         getPageComponent()->setTimePoint(t);
+        timeDisplayView.setTime(t);
     }
     
+    void toggleTimeAndCursorDisplay()
+    {
+        timeDisplayView.toggleView();
+        getPageComponent()->toggleCursorDisplay();
+    }
     
     /*********************************************
      * Application keyboard command wrapper (actual commands are set in SybolistMenu)
@@ -91,6 +99,8 @@ private:
     SymbolistMenu                           menu; //<<  application commands are set here
     ScopedPointer<SymbolPropertiesPanel>    inspector;
     MouseModeComponent                      mouseModeView;
+    
+    TimeDisplayComponent                    timeDisplayView;
 
     int palette_w = 50;
     int menu_h; // set internally

@@ -1,0 +1,27 @@
+;;;===========================================================================
+;;; Symbolist
+;;; graphical notation editor (om version)
+;;; J. Bresson, R. Gottfried (2017)
+;;;===========================================================================
+
+(:om-lib
+ 
+ (:version 0.1)
+
+ (:doc "graphical notation editor (om version)")
+
+ (:author " J. Bresson, R. Gottfried (2017)")
+
+;;; SOURCE FILES TO LOAD
+(:source-files
+  (:pathname (:directory (:relative "sources" "c-lib")) (:name "load-symbolist"))
+  (:pathname (:directory (:relative "sources")) (:name "sym-score"))
+)
+
+;;; DECLATRED SYMBOLS VISIBLE AND ACCESSIBLE THROUGH THE OM PACKAGE TREE
+(:symbols
+  (:classes sym-score)
+ )
+)
+
+

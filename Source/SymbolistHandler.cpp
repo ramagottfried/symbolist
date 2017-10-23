@@ -282,6 +282,13 @@ odot_bundle* SymbolistHandler::symbolistAPI_getScoreBundle()
     return score.getScoreBundle();
 }
 
+/*
+odot_bundle* SymbolistHandler::symbolistAPI_getTimePointBundle()
+{
+    return score.getScoreBundle();
+}
+*/
+
 void SymbolistHandler::symbolistAPI_clearScore()
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope

@@ -37,7 +37,7 @@ public:
     void removeStaff( Symbol *s);
     static bool compareStaves (const Symbol* a, const Symbol* b);
     void resetTimes();
-    void addStaff( Symbol *s);
+    bool addStaff( Symbol *s);
     
     StringArray getStaveNames();
     

@@ -37,8 +37,22 @@ void Score::addSymbol(Symbol *symbol)
 {
     score_symbols.addSorted( score_sorter, symbol );
     
-    staves.addStaff( symbol );
+    bool newstaff = staves.addStaff( symbol ) ;
     time_points.addSymbolTimePoints( symbol );
+
+    if( newstaff )
+    {
+        for( auto s : score_symbols )
+        {
+            if( s->getSaff() == symbol->getID() ) // this should look up by name not nameID, in the timepoints the staves should be combined,... although then I guess the types of clef could change? leaving as id for now, but this is uninituitive to set from outside the editor
+            {
+                //time_points.removeSymbolTimePoints(s);
+                time_points.addSymbolTimePoints( s );
+            }
+        }
+    }
+    
+    
     
     
   //  symbol->setID( symbol->getType() + "_" + (String)getSize() );

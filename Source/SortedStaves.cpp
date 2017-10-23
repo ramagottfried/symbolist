@@ -92,11 +92,11 @@ void SortedStaves::resetTimes()
     
 }
 
-void SortedStaves::addStaff( Symbol *s)
+bool SortedStaves::addStaff( Symbol *s)
 {
     int pos = s->getOSCMessagePos("/type");
     if( pos == -1 || s->getOSCMessageValue(pos).getString() != "staff" )
-        return;
+        return 0;
     
     removeStaff(s);
     
@@ -119,6 +119,8 @@ void SortedStaves::addStaff( Symbol *s)
     {
         s->setOSCAddrAndValue( "/name", "staff_" + (String)staves.size() );
     }
+    
+    return 1;
     
 }
 

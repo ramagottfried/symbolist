@@ -132,6 +132,39 @@ odot_bundle* SymbolistHandler::symbolistAPI_getSymbol(int n)
     return score.getSymbol(n)->exportToOSC();
 }
 
+StringArray SymbolistHandler::symbolistAPI_getSymbolString(int n)
+{
+    odot_bundle *bndl = score.getSymbol(n)->exportToOSC();
+    OSCReader osc( bndl->data, bndl->len );
+ 
+    OSCBundle osc_b = osc.readBundle( osc.getTotalLength()  );
+    
+    String prefix = "/symbol/";
+    StringArray str_array;
+    for( auto e : osc_b )
+    {
+        OSCMessage msg = e.getMessage();
+        String str;
+        
+        str = prefix + String(n) + msg.getAddressPattern().toString();
+        for( auto arg : msg )
+        {
+            auto type = arg.getType();
+            if( type == OSCTypes::int32 )
+                str +=  + " " + (String)arg.getInt32();
+            else if( type == OSCTypes::float32 )
+                str +=  + " " + (String)arg.getFloat32();
+            else if( type == OSCTypes::string )
+                str +=  + " \"" + (String)arg.getString() + "\"";
+
+        }
+        str_array.add(str);
+    }
+    
+    return str_array;
+}
+
+
 void SymbolistHandler::symbolistAPI_setOneSymbol( odot_bundle *bundle)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope

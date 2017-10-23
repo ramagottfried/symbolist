@@ -40,6 +40,13 @@
 		114027CB1F4B185E00A9B8C4 /* StaffComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 114027C81F4B185E00A9B8C4 /* StaffComponent.cpp */; };
 		114027CC1F4B185E00A9B8C4 /* StaffComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 114027C81F4B185E00A9B8C4 /* StaffComponent.cpp */; };
 		114027CD1F4B185E00A9B8C4 /* StaffComponent.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 114027C91F4B185E00A9B8C4 /* StaffComponent.hpp */; };
+		116F87741F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */; };
+		116F87751F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */; };
+		116F87761F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */; };
+		116F87771F9D04B90062EE91 /* ScoreBundleViewer.h in Headers */ = {isa = PBXBuildFile; fileRef = 116F87731F9D04B90062EE91 /* ScoreBundleViewer.h */; };
+		116F877A1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87781F9D04FC0062EE91 /* PropertyPanelTabs.cpp */; };
+		116F877B1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87781F9D04FC0062EE91 /* PropertyPanelTabs.cpp */; };
+		116F877C1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87781F9D04FC0062EE91 /* PropertyPanelTabs.cpp */; };
 		118353461F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118353441F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp */; };
 		118353471F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118353441F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp */; };
 		118353481F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118353441F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp */; };
@@ -152,6 +159,10 @@
 		114027C31F49C21E00A9B8C4 /* SortedStaves.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SortedStaves.hpp; path = ../../Source/SortedStaves.hpp; sourceTree = "<group>"; };
 		114027C81F4B185E00A9B8C4 /* StaffComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StaffComponent.cpp; path = ../../Source/StaffComponent.cpp; sourceTree = "<group>"; };
 		114027C91F4B185E00A9B8C4 /* StaffComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = StaffComponent.hpp; path = ../../Source/StaffComponent.hpp; sourceTree = "<group>"; };
+		116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreBundleViewer.cpp; path = ../../Source/ScoreBundleViewer.cpp; sourceTree = "<group>"; };
+		116F87731F9D04B90062EE91 /* ScoreBundleViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreBundleViewer.h; path = ../../Source/ScoreBundleViewer.h; sourceTree = "<group>"; };
+		116F87781F9D04FC0062EE91 /* PropertyPanelTabs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PropertyPanelTabs.cpp; path = ../../Source/PropertyPanelTabs.cpp; sourceTree = "<group>"; };
+		116F87791F9D04FC0062EE91 /* PropertyPanelTabs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyPanelTabs.h; path = ../../Source/PropertyPanelTabs.h; sourceTree = "<group>"; };
 		118353441F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolistLookAndFeel.cpp; path = ../../Source/SymbolistLookAndFeel.cpp; sourceTree = "<group>"; };
 		118353451F26AD0600DB1DF5 /* SymbolistLookAndFeel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SymbolistLookAndFeel.hpp; path = ../../Source/SymbolistLookAndFeel.hpp; sourceTree = "<group>"; };
 		118648941EFA811800904672 /* TimePointArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TimePointArray.cpp; path = ../../Source/TimePointArray.cpp; sourceTree = "<group>"; };
@@ -342,6 +353,10 @@
 				11B71DD01F098F1400CDE209 /* SymbolPropertiesPanel.h */,
 				11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */,
 				11B71DD61F0AA83A00CDE209 /* OSCPropertyComponents.h */,
+				116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */,
+				116F87731F9D04B90062EE91 /* ScoreBundleViewer.h */,
+				116F87781F9D04FC0062EE91 /* PropertyPanelTabs.cpp */,
+				116F87791F9D04FC0062EE91 /* PropertyPanelTabs.h */,
 			);
 			name = "property-panel";
 			sourceTree = "<group>";
@@ -506,6 +521,7 @@
 				11C442D31F585C1B00F2E9B6 /* TimeDisplay.hpp in Headers */,
 				114027C71F49C21E00A9B8C4 /* SortedStaves.hpp in Headers */,
 				114027CD1F4B185E00A9B8C4 /* StaffComponent.hpp in Headers */,
+				116F87771F9D04B90062EE91 /* ScoreBundleViewer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -643,6 +659,7 @@
 				1107B3FA1EF7D55D00E2DFA9 /* PathHandleComponent.cpp in Sources */,
 				1107B3FF1EF7D55D00E2DFA9 /* PageComponent.cpp in Sources */,
 				1107B4021EF7D55D00E2DFA9 /* SymbolistMainComponent.cpp in Sources */,
+				116F87761F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */,
 				11C442D21F585C1B00F2E9B6 /* TimeDisplay.cpp in Sources */,
 				1107B3F51EF7D55D00E2DFA9 /* Symbol.cpp in Sources */,
 				1107B4001EF7D55D00E2DFA9 /* ScoreComponent.cpp in Sources */,
@@ -652,6 +669,7 @@
 				11B71DD91F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
 				118648711EF7E68B00904672 /* include_juce_gui_extra.mm in Sources */,
 				1107B4031EF7D55D00E2DFA9 /* SymbolistMainWindow.cpp in Sources */,
+				116F877C1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */,
 				11D123681F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */,
 				1107B3F91EF7D55D00E2DFA9 /* PathInfo.cpp in Sources */,
 				1107B3FE1EF7D55D00E2DFA9 /* PaletteComponent.cpp in Sources */,
@@ -693,6 +711,8 @@
 				1107B3EA1EF5388500E2DFA9 /* PathInfo.cpp in Sources */,
 				11D86B8C1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */,
 				44C0729F1EC4AF8C0028D5F8 /* include_juce_osc.cpp in Sources */,
+				116F87751F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */,
+				116F877B1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */,
 				118648971EFA811800904672 /* TimePointArray.cpp in Sources */,
 				1107B3DE1EF1751900E2DFA9 /* TextGlyphComponent.cpp in Sources */,
 				1107B3E21EF2D45500E2DFA9 /* PathHandleComponent.cpp in Sources */,
@@ -730,6 +750,7 @@
 				11D1235C1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */,
 				118C38DE1EC5BC4F006FF4A1 /* Score.cpp in Sources */,
 				444CD9031EDDAF1B001AC03A /* SymbolistComponent.cpp in Sources */,
+				116F87741F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */,
 				11C442D01F585C1B00F2E9B6 /* TimeDisplay.cpp in Sources */,
 				41C3942D9A94933B560F98F2 /* include_juce_gui_basics.mm in Sources */,
 				1107B3E91EF5388500E2DFA9 /* PathInfo.cpp in Sources */,
@@ -739,6 +760,7 @@
 				118648961EFA811800904672 /* TimePointArray.cpp in Sources */,
 				11B71DD71F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
 				1107B3DD1EF1751900E2DFA9 /* TextGlyphComponent.cpp in Sources */,
+				116F877A1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */,
 				11D123661F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */,
 				1107B3E11EF2D2BA00E2DFA9 /* PathHandleComponent.cpp in Sources */,
 				F94D2D6E7B944172DB771A09 /* include_juce_gui_extra.mm in Sources */,

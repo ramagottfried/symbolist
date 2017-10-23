@@ -33,8 +33,16 @@ void StaffComponent::importFromSymbol( const Symbol &s )
 int StaffComponent::addSymbolMessages( Symbol* s, const String &base_address )
 {
     int messages_added = BaseComponent::addSymbolMessages( s, base_address );
-    
-    String addr = base_address + "/staffSymbol";
+
+    String addr;// = base_address + "/numsymbols";
+    /*
+    if( s->getOSCMessagePos(addr) == -1 && (getNumSubcomponents() > 0) )
+    {
+        s->addOSCMessage( addr, (int)getNumSubcomponents() );
+        messages_added++;
+    }
+    */
+    addr = base_address + "/staffSymbol";
     if( getNumSubcomponents() && s->getOSCMessagePos(addr) == -1 )
     {
         auto sub_c = getSubcomponent(0);

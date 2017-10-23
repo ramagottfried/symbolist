@@ -9,7 +9,7 @@
 #include "PaletteComponent.h"
 #include "BaseComponent.h"
 
-#include "SymbolPropertiesPanel.h"
+#include "PropertyPanelTabs.h"
 #include "MouseModeComponent.hpp"
 #include "TimeDisplay.hpp"
 
@@ -97,7 +97,7 @@ private:
     PageComponent                           scoreView;
     PaletteComponent                        paletteView ;
     SymbolistMenu                           menu; //<<  application commands are set here
-    ScopedPointer<SymbolPropertiesPanel>    inspector;
+    ScopedPointer<PropertyPanelTabs>        inspector;
     MouseModeComponent                      mouseModeView;
     
     TimeDisplayComponent                    timeDisplayView;

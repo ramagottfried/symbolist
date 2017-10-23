@@ -28,7 +28,7 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
     addAndMakeVisible(menu);
     menu_h = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
     
-    inspector = new SymbolPropertiesPanel(sh);
+    inspector = new PropertyPanelTabs(sh);
 
     
     /*

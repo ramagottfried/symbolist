@@ -41,6 +41,8 @@ public:
     
     int symbolistAPI_getNumSymbols();
     odot_bundle* symbolistAPI_getSymbol(int n);
+    StringArray symbolistAPI_getSymbolString(int n);
+    
     void symbolistAPI_setOneSymbol( odot_bundle *bundle);
     void symbolistAPI_setSymbols(int n, odot_bundle **bundle_array);
     

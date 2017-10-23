@@ -87,7 +87,7 @@ public:
     Point<float> lookupPathPoint( const Symbol *s, const int pathIDX, const float t, const float start, const float dur );
     Point<float> lookupPathPoint( const Symbol *s, String& path_base_addr , const float t );
 
-    void groupPathLookup( const Symbol *s, const String& output_prefix, const String& subsymbol_addr, float time_ratio, OSCBundle& bndl );
+    void groupLookup( const Symbol *s, const String& output_prefix, const String& subsymbol_addr, float time_ratio, OSCBundle& bndl );
 
     
     vector<const Symbol *> getNoteOffs( const SymbolTimePoint *prev_tpoint , const SymbolTimePoint *tpoint   );
@@ -109,7 +109,7 @@ private:
     
     Score   *score_ptr = nullptr;
     
-    const SymbolTimePoint*    prev_timepoint = nullptr;
+    const SymbolTimePoint*    prev_timepoint = NULL;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimePointArray)
 };

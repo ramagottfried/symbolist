@@ -298,7 +298,6 @@ void BaseComponent::setSymbolID()
                 // if there is a name use this for the id
                 // for the id, check to see if there are others with this name and then increment 1
                 
-        //        cout << "if check" << endl;
                 auto sh = getSymbolistHandler();
                 int count = sh->symbolNameCount( name );
                 
@@ -308,6 +307,8 @@ void BaseComponent::setSymbolID()
                 {
                     id = name + "/" + (String)(count++);
                 }
+                
+                cout << "id check " << id << endl;
                 
             }
             

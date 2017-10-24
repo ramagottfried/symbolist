@@ -396,7 +396,13 @@ bool TimePointArray::isNewSym( const Symbol *s , const SymbolTimePoint *prev_tpo
 }
 
 
-void TimePointArray::groupLookup( const Symbol *s, const String& output_prefix, const String& groupsymbol_addr, float time_ratio, OSCBundle& bndl )
+void TimePointArray::groupLookup( const Symbol *s,
+                                 const String& output_prefix,
+                                 const String& groupsymbol_addr,
+                                 double parent_x,
+                                 double parent_y,
+                                 float time_ratio,
+                                 OSCBundle& bndl)
 {
 
     // s                = main root symbol (not subbundle)
@@ -419,12 +425,59 @@ void TimePointArray::groupLookup( const Symbol *s, const String& output_prefix, 
 
     // cout << "groupPathLookup " << groupsymbol_addr << endl;
     
+    
+  //  cout << "in output_prefix" << output_prefix << " groupsymbol_addr " << groupsymbol_addr << endl;
+    
     String group_name;
     int groupname_pos = s->getOSCMessagePos( groupsymbol_addr + "/name" );
     if( groupname_pos != -1 )
     {
         group_name = "/" + s->getOSCMessageValue(groupname_pos).getString();
     }
+    
+    OSCBundle s_bndl = *(s->getOSCBundle());
+    
+    float this_x = parent_x, this_y = parent_y;
+    
+    for ( auto osc : s_bndl )
+    {
+        OSCMessage msg = osc.getMessage();
+        String msg_addr = msg.getAddressPattern().toString();
+        
+        if( groupsymbol_addr.isNotEmpty() && !msg_addr.startsWith(groupsymbol_addr) )
+        {
+            continue;
+        }
+        
+        String newaddr = output_prefix + group_name + msg_addr.fromFirstOccurrenceOf(groupsymbol_addr, false, true);;
+       /*
+        cout << "pre subsymbol * " << " output prefix: " <<  output_prefix << endl;;
+        cout << "pre subsymbol * \t group_name " <<  group_name<< endl;
+        cout << "pre subsymbol * \t msg_addr: " << msg_addr<< endl;
+        */
+        if( msg_addr == "/x" )
+        {
+            this_x = Symbol::getOSCValueAsFloat( msg[0] ) - parent_x;
+            bndl.addElement( OSCMessage( newaddr, this_x ) );
+            //cout << "pre subsymbol * added \t >> newaddr: " << newaddr << endl;
+        }
+        else if( msg_addr == "/y" )
+        {
+            this_y = Symbol::getOSCValueAsFloat( msg[0] ) - parent_y;
+            bndl.addElement( OSCMessage( newaddr, this_y ) );
+            //cout << "pre subsymbol * added \t >> newaddr: " << newaddr << endl;
+        }
+        else if( !msg_addr.startsWith(groupsymbol_addr + "/subsymbol") )
+        {
+            // cout << "not subsymbol " << msg_addr << endl;
+            msg.setAddressPattern(newaddr);
+            bndl.addElement(msg);
+            //cout << "pre subsymbol * added \t >> newaddr: " << newaddr << endl;
+        }
+    }
+
+    
+    
     
     int nsym_oscpos = s->getOSCMessagePos( groupsymbol_addr + "/numsymbols" );
     if( s->symbol_parse_error( nsym_oscpos, groupsymbol_addr + "/numsymbols") )
@@ -433,8 +486,6 @@ void TimePointArray::groupLookup( const Symbol *s, const String& output_prefix, 
         return;
     }
     
-    OSCBundle s_bndl = *(s->getOSCBundle());
-
     int nsymbols = Symbol::getOSCValueAsInt( s->getOSCMessageValue(nsym_oscpos) );
     
     
@@ -450,9 +501,27 @@ void TimePointArray::groupLookup( const Symbol *s, const String& output_prefix, 
         if( subsymtype_pos != -1 )
         {
             
+            String subsymbol_name;
+            int subname_pos = s->getOSCMessagePos(subsym_addr + "/name");
+            if( subname_pos != -1 )
+                subsymbol_name = s->getOSCMessageValue(subname_pos).getString();
+            
+            
+            StringArray subsym_addr_tok;
+            subsym_addr_tok.addTokens(subsym_addr, "/", "");
+            subsym_addr_tok.removeEmptyStrings();
+            
+            int subsym_last_element_idx = subsym_addr_tok.size() - 1;
+            /*
+            cout << "* " << subsym_id << " output prefix: " <<  output_prefix << endl;;
+            cout << "\t group_name " <<  group_name<< endl;
+            cout << "\t subsym_addr: " << subsym_addr<< endl;
+            cout << "\t >> next prefix: " << output_prefix + group_name + "/subsymbol/" + subsym_id << endl;
+             */
+            
             if( s->getOSCMessageValue(subsymtype_pos).getString() == "group" )
             {
-                groupLookup(s, output_prefix + group_name, subsym_addr, time_ratio, bndl );
+                groupLookup(s, output_prefix + group_name + "/subsymbol/" + subsym_id , subsym_addr, this_x, this_y, time_ratio, bndl );
             }
             else
             {
@@ -462,35 +531,30 @@ void TimePointArray::groupLookup( const Symbol *s, const String& output_prefix, 
                 // iterate bundle and match addresses for this subsymbol
                 // add to output bundle with /name inserted
                 
-                String subsymbol_name;
-                int subname_pos = s->getOSCMessagePos(subsym_addr + "/name");
-                if( subname_pos != -1 )
-                    subsymbol_name = s->getOSCMessageValue(subname_pos).getString();
-                
-                
-                StringArray subsym_addr_tok;
-                subsym_addr_tok.addTokens(subsym_addr, "/", "");
-                int last_element_idx = subsym_addr_tok.size() - 1;
-                
                 for ( auto osc : s_bndl )
                 {
                     OSCMessage msg = osc.getMessage();
                     String msg_addr = msg.getAddressPattern().toString();
                     
+                    if( !msg_addr.startsWith(subsym_addr) )
+                    {
+                        continue;
+                    }
+                    
                     StringArray msg_tok;
                     msg_tok.addTokens (msg_addr, "/", "");
+                    msg_tok.removeEmptyStrings();
                     
-                    if( strncmp(msg_addr.getCharPointer(), subsym_addr.getCharPointer(), subsym_addr.length() ) == 0 )
-                    {
+                    //cout << "\t test msg_addr " << msg_addr << endl;
 
-                        msg_tok.insert( last_element_idx+1, subsymbol_name );
-                        String newaddr = output_prefix + group_name + msg_tok.joinIntoString("/");
-                        
-                        //cout << subsym_addr << " match " << msg_addr  << " new addr " << newaddr << endl;
+                    msg_tok.insert( subsym_last_element_idx+1, subsymbol_name );
+                    String newaddr = output_prefix + group_name + "/" + msg_tok.joinIntoString("/", subsym_last_element_idx - 1);
+                    
+                    //cout << "\t + subsymbol msg_addr " << msg_addr<< endl;
+                    //cout << "\t + newaddr " << newaddr << endl;
 
-                        msg.setAddressPattern( newaddr );
-                        bndl.addElement( msg );
-                    }
+                    msg.setAddressPattern( newaddr );
+                    bndl.addElement( msg );
                     
                 }
 
@@ -640,32 +704,33 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                 }
                 else if( s->getType() == "group" )
                 {
-                    groupLookup(s, s_prefix, String(), time_ratio, bndl);
+                    groupLookup(s, s_prefix, String(), staff_x, staff_y, time_ratio, bndl );
                 }
-                
-                
-                OSCBundle s_bndl = *(s->getOSCBundle());
-
-                for ( auto osc : s_bndl )
+                else
                 {
-                    OSCMessage msg = osc.getMessage();
-                    
-                    String msg_addr =  msg.getAddressPattern().toString();
-                    String newaddr = s_prefix + "/" + toplevel_name + msg_addr;
-                    
-                    if( msg_addr == "/x" )
+                
+                    OSCBundle s_bndl = *(s->getOSCBundle());
+
+                    for ( auto osc : s_bndl )
                     {
-                        bndl.addElement( OSCMessage( newaddr, Symbol::getOSCValueAsFloat( msg[0] ) - staff_x )  );
-                    }
-                    else if( msg_addr == "/y" )
-                    {
-                        bndl.addElement( OSCMessage( newaddr, Symbol::getOSCValueAsFloat( msg[0] ) - staff_y )  );
-                    }
-                    else if( strncmp(msg_addr.getCharPointer(), "/subsymbol", 10) != 0)
-                    {
-                        // cout << "not subsymbol " << msg_addr << endl;
-                        msg.setAddressPattern(newaddr);
-                        bndl.addElement(msg);
+                        OSCMessage msg = osc.getMessage();
+                        
+                        String msg_addr =  msg.getAddressPattern().toString();
+                        String newaddr = s_prefix + "/" + toplevel_name + msg_addr;
+                        
+                        if( msg_addr == "/x" )
+                        {
+                            bndl.addElement( OSCMessage( newaddr, Symbol::getOSCValueAsFloat( msg[0] ) - staff_x )  );
+                        }
+                        else if( msg_addr == "/y" )
+                        {
+                            bndl.addElement( OSCMessage( newaddr, Symbol::getOSCValueAsFloat( msg[0] ) - staff_y )  );
+                        }
+                        else
+                        {
+                            msg.setAddressPattern(newaddr);
+                            bndl.addElement(msg);
+                        }
                     }
                 }
                 
@@ -681,7 +746,7 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
             }
            // else
             //{
-                ;
+    //            ;
     //             cout << "skipped sym " << s << " endpt: " << s->getEndTime() << endl;
             //}
         }

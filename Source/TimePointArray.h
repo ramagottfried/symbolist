@@ -87,8 +87,13 @@ public:
     Point<float> lookupPathPoint( const Symbol *s, const int pathIDX, const float t, const float start, const float dur );
     Point<float> lookupPathPoint( const Symbol *s, String& path_base_addr , const float t );
 
-    void groupLookup( const Symbol *s, const String& output_prefix, const String& subsymbol_addr, float time_ratio, OSCBundle& bndl );
-
+    void groupLookup( const Symbol *s,
+                                     const String& output_prefix,
+                                     const String& groupsymbol_addr,
+                                     double parent_x,
+                                     double parent_y,
+                                     float time_ratio,
+                                     OSCBundle& bndl);
     
     vector<const Symbol *> getNoteOffs( const SymbolTimePoint *prev_tpoint , const SymbolTimePoint *tpoint   );
     bool isNewSym( const Symbol *s , const SymbolTimePoint *prev_tpoint   );

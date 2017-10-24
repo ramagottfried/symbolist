@@ -136,6 +136,29 @@ void Score::addSymbolTimePoints( Symbol *s )
     time_points.addSymbolTimePoints( s );
 }
 
+
+odot_bundle* Score::getDurationBundle()
+{
+    auto last = time_points.getLast();
+    if( !last )
+        return NULL;
+    
+    OSCBundle bndl;
+    bndl.addElement( OSCMessage("/time/duration", (float)last->time ));
+    
+    OSCWriter w ;
+    w.writeBundle( bndl );
+    size_t size = w.getDataSize();
+    
+    odot_bundle *bundle = new odot_bundle;
+    bundle->len = static_cast<long>(size);
+    bundle->data = new char[size];
+    
+    std::memcpy(bundle->data, w.getData() ,size );
+    return bundle;
+
+}
+
 /***********************************
  * Get the Nth Symbol of the Score
  ***********************************/

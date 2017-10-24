@@ -54,6 +54,8 @@ SYMBOLIST_API void symbolistSetPaletteSymbols(void* symbolist_handler, int n, od
 SYMBOLIST_API void symbolistClearScore(void* symbolist_handler);
 SYMBOLIST_API void symbolistSetTime(void* symbolist_handler, float time_ms);
 
+SYMBOLIST_API odot_bundle* symbolistGetDurationBundle(void* symbolist_handler);
+
 SYMBOLIST_API odot_bundle* symbolistGetSymbolsAtTime(void* symbolist_handler, float t);
 SYMBOLIST_API odot_bundle* symbolistGetScoreBundle(void* symbolist_handler );
 

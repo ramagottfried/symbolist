@@ -64,6 +64,9 @@ public:
     Symbol *getStaveAtTime( float time );
     const Symbol* getStaveByID( const String& id );
 
+    odot_bundle* getDurationBundle();
+
+    
     int getNameCount( String& name )
     {
         int count = 0;

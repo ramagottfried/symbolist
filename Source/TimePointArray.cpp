@@ -139,6 +139,7 @@ void TimePointArray::resetTimes()
         
     }
     
+    voice_staff_vector.clear();
     prev_timepoint = NULL;
 }
 
@@ -191,6 +192,7 @@ void TimePointArray::addSymbolTimePoints( Symbol *s )
     
     // printTimePoints();
     prev_timepoint = NULL;
+    voice_staff_vector.clear();
 
 }
 
@@ -395,6 +397,96 @@ bool TimePointArray::isNewSym( const Symbol *s , const SymbolTimePoint *prev_tpo
     return true;
 }
 
+
+pair<size_t, int> TimePointArray::setNoteOff( const Symbol *s)
+{
+    size_t i = 0;
+    for( ; i < voice_staff_vector.size(); i++ )
+    {
+        if(voice_staff_vector[i].first == s )
+        {
+            voice_staff_vector[i].first = NULL;
+            return pair<size_t, bool>(i, -1); // was playing, and now is off
+        }
+    }
+    
+    return pair<size_t, bool>(-1, -1); // not found (already turned off)
+
+}
+
+
+pair<size_t, int> TimePointArray::getVoiceNumberState( const Symbol *s, const SymbolTimePoint *tpoint )
+{
+    size_t i = 0;
+    for( ; i < voice_staff_vector.size(); i++ )
+    {
+        if(voice_staff_vector[i].first == s )
+        {
+            if( current_time > s->getEndTime() )
+                return pair<size_t, bool>(i, -1); // was playing but is now past end
+            else
+                return pair<size_t, bool>(i, 0); // still playing
+
+        }
+    }
+    
+    // new voice, find first unused value in vector, and log the symbol and staff reference
+    for( i = 0; i < voice_staff_vector.size(); i++ )
+    {
+        if(voice_staff_vector[i].first == NULL )
+        {
+            voice_staff_vector[i] = pair<const Symbol*, const Symbol*>( s, tpoint->staff_ref );
+            return pair<size_t, bool>(i, 1); // new voice
+        }
+    }
+    
+    // no open voices, make a new one (i was incremented already by the loop)
+    voice_staff_vector.emplace_back( pair<const Symbol*, const Symbol*>( s, tpoint->staff_ref ) );
+    return pair<size_t, bool>(i, 1); // new voice
+}
+
+vector< pair<size_t, const Symbol*> > TimePointArray::getNoteOffs( const SymbolTimePoint *p )
+{
+    vector<pair<size_t, const Symbol*>> offs;
+    
+    if( p )
+    {
+        bool found;
+        for( size_t i = 0; i < voice_staff_vector.size(); i++)
+        {
+            if( !voice_staff_vector[i].first )
+                continue;
+            
+            found = false;
+            for( auto s : p->symbols_at_time )
+            {
+                if( s == voice_staff_vector[i].first )
+                {
+                    found = true;
+                    break;
+                }
+            }
+            
+            if( !found )
+            {
+                offs.emplace_back( pair<size_t, const Symbol*>(i, voice_staff_vector[i].second ));
+                voice_staff_vector[i].first = NULL;
+            }
+        }
+    }
+    else
+    {
+        for( size_t i = 0; i < voice_staff_vector.size(); i++)
+        {
+            if( !voice_staff_vector[i].first )
+                continue;
+            
+            offs.emplace_back( pair<size_t, const Symbol*>(i, voice_staff_vector[i].second ));
+            voice_staff_vector[i].first = NULL;
+        }
+    }
+    return offs;
+}
 
 void TimePointArray::groupLookup( const Symbol *s,
                                  const String& output_prefix,
@@ -613,7 +705,8 @@ void TimePointArray::groupLookup( const Symbol *s,
 odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint  )
 {
     OSCBundle bndl;
-    bndl.addElement( OSCMessage("/time/lookup", (float)current_time));
+    bndl.addElement( OSCMessage("/time/lookup", (float)current_time) );
+    bndl.addElement( OSCMessage("/time/end", (float)getLast()->time) );
     
     String prefix = "/symbolsAtTime/";
 
@@ -624,14 +717,34 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
         int count = 0;
         for (auto s : vec )
         {
+
+            const Symbol *staff = tpoint->staff_ref;
+            String staff_name = staff->getName();
+
             
-            // ignore symbols if after endpoint
-            if( current_time <= s->getEndTime() )
+            if( current_time > s->getEndTime() )
             {
-                String staff_name = "default";
-                String staff_id;
-                float staff_x = 0, staff_y = 0;
+                pair<size_t, int> voice_num_state = setNoteOff( s );
+                if( voice_num_state.first != -1 ) // voice number is set to -1 if not found
+                {
+                    String s_prefix = "/staff/" + staff->getName() + "/voice/" + String(voice_num_state.first);
+                    bndl.addElement( OSCMessage( s_prefix + "/state", -1 ) );
+                }
+            }
+            else
+            {
+                pair<size_t, int> voice_num_state = getVoiceNumberState( s, tpoint );
+                String s_prefix = "/staff/" + staff->getName() + "/voice/" + String(voice_num_state.first);
                 
+                bndl.addElement( OSCMessage( s_prefix + "/state", (int)voice_num_state.second ) );
+                // staff is already stored in timepoint so we could probably removed the staff check here...
+                
+                //String staff_name = "default";
+                //String staff_id;
+                float staff_x = 0, staff_y = 0;
+                staff_x = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/x") );
+                staff_y = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/y") );
+                /*
                 int staff_pos = s->getOSCMessagePos( "/staff" );
                 if( staff_pos != -1 )
                 {
@@ -649,8 +762,7 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                         }
                     }
                 }
-                
-                String s_prefix = "/staff/" + staff_name + "/event/" + String(count);
+                */
                 
                 float time_ratio = (current_time - s->getTime()) / s->getDuration() ;
                 bndl.addElement( OSCMessage( s_prefix + "/time/ratio", time_ratio ) );
@@ -734,14 +846,6 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                     }
                 }
                 
-
-                
-                if ( isNewSym(s, prev_timepoint ) )
-                    bndl.addElement( OSCMessage( s_prefix + "/state", 1 ) );
-                else
-                    bndl.addElement( OSCMessage( s_prefix + "/state", 0 ) );
-
-                
                 count++;
             }
            // else
@@ -752,10 +856,10 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
         }
     }
     
-    auto offs = getNoteOffs( prev_timepoint, tpoint );
+    auto offs = getNoteOffs( tpoint );
     for( int i = 0; i < offs.size(); i++ )
     {
-        String s_prefix = prefix + String(i);
+        String s_prefix = "/staff/" + offs[i].second->getName() + "/voice/" + String(offs[i].first);
         bndl.addElement( OSCMessage( s_prefix + "/state", -1 ) );
     }
     

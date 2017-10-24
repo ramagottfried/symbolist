@@ -58,6 +58,7 @@ public:
     odot_bundle* symbolistAPI_getScoreBundle();
     //odot_bundle* symbolistAPI_getTimePointBundle();
 
+    odot_bundle* symbolistAPI_getdurationBundle();
     
     void symbolistAPI_clearScore();
     

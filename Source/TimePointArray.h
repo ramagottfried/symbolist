@@ -12,7 +12,7 @@ class Score;
 
 struct SymbolTimePoint
 {
-    SymbolTimePoint(Symbol * s, float t, Symbol *staff)
+    SymbolTimePoint(Symbol * s, double t, Symbol *staff)
     {
         addSymbol( s );
         time = t;
@@ -34,7 +34,7 @@ struct SymbolTimePoint
         symbols_at_time.emplace_back( s );
     }
     
-    float           time;
+    double           time;
     vector<Symbol*> symbols_at_time;
     Symbol *        staff_ref; // << add reference to staff for timepoint (a timepoint can only be on one staff)
 
@@ -98,6 +98,10 @@ public:
     vector<const Symbol *> getNoteOffs( const SymbolTimePoint *prev_tpoint , const SymbolTimePoint *tpoint   );
     bool isNewSym( const Symbol *s , const SymbolTimePoint *prev_tpoint   );
     
+    pair<size_t, int> getVoiceNumberState( const Symbol *s, const SymbolTimePoint *tpoint );
+    pair<size_t, int> setNoteOff( const Symbol *s);
+    vector< pair<size_t, const Symbol*> > getNoteOffs( const SymbolTimePoint *p );
+
     void resetTimes();
 
     inline void reset()
@@ -114,7 +118,10 @@ private:
     
     Score   *score_ptr = nullptr;
     
-    const SymbolTimePoint*    prev_timepoint = NULL;
+    const SymbolTimePoint*      prev_timepoint = NULL;
     
+    vector< pair<const Symbol*,const Symbol*>>  voice_staff_vector;
+
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimePointArray)
 };

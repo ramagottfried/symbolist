@@ -180,6 +180,15 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
         messages_added++;
     }
     
+    /* // not sure how to best do this yet
+    addr = base_address + "/lambda";
+    if( s->getOSCMessagePos(addr) == -1 )
+    {
+        s->addOSCMessage( addr,         lambda );
+        messages_added++;
+    }
+     */
+    
 //    cout << "*********** START BASE ADD DATA ************ " << endl;
 //    s->printBundle();
     
@@ -271,6 +280,13 @@ void BaseComponent::importFromSymbol( const Symbol &s )
             attachToStaff();
         }
         
+        /* // not sure how to best do this yet
+        int lambda_pos = s.getOSCMessagePos("/lambda");
+        if( lambda_pos != -1 )
+        {
+            lambda = s.getOSCMessageValue(lambda_pos).getString();
+        }
+        */
     }
 }
 

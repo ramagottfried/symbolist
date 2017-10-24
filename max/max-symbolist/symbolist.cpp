@@ -77,6 +77,13 @@ void symbolist_getSymbols_at_time( t_symbolist *x, double time )
 
 }
 
+void symbolist_getDuration( t_symbolist *x )
+{
+    odot_bundle *bndl = symbolistGetDurationBundle( x->symbolist_handler);
+    if( bndl )
+        symbolist_outletOSC( x->player_outlet, bndl->len, bndl->data );
+    
+}
 
 void symbolist_setSymbol( t_symbolist *x, t_symbol *msg, int argc, t_atom *argv )
 {
@@ -218,6 +225,8 @@ void ext_main(void* unused)
     class_addmethod(c, (method)symbolist_setSymbol,             "FullPacket",   A_GIMME, 0);
 
     class_addmethod(c, (method)symbolist_getSymbols_at_time,    "time",         A_FLOAT, 0);
+    class_addmethod(c, (method)symbolist_getDuration,           "getduration",  0);
+    
     class_addmethod(c, (method)symbolist_get_symbol,            "getsymbol",    A_LONG, 0);
     
     class_addmethod(c, (method)symbolist_clearScore,            "clear",        0);

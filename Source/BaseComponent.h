@@ -153,6 +153,7 @@ protected:
     
     String          name;
     String          staff_name;
+    String          lambda;
     
     // staff attachement
     BaseComponent   *staff = nullptr; // place holder ...

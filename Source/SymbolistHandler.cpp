@@ -277,6 +277,13 @@ odot_bundle* SymbolistHandler::symbolistAPI_getSymbolsAtTime( float t )
     return score.getSymbolsAtTime(t);
 }
 
+
+odot_bundle* SymbolistHandler::symbolistAPI_getdurationBundle()
+{
+    return score.getDurationBundle();
+}
+
+
 odot_bundle* SymbolistHandler::symbolistAPI_getScoreBundle()
 {
     return score.getScoreBundle();

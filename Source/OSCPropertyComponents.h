@@ -209,8 +209,9 @@ class OSCTextProperty : public TextPropertyComponent
 public:
     OSCTextProperty(    const String& _addr,
                         OSCMessage& msg,
-                        osc_callback_t change_fn ) :
-    TextPropertyComponent( _addr, 0, false ),
+                        osc_callback_t change_fn,
+                        bool multiline = false ) :
+    TextPropertyComponent( _addr, 0, multiline ),
     osc_msg(msg)
     {
         change_callback = change_fn;

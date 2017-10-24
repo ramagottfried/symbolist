@@ -111,6 +111,12 @@ void symbolistSetTime(void* symbolist_handler, float time_ms)
     static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setTime(time_ms);
 }
 
+odot_bundle* symbolistGetDurationBundle(void* symbolist_handler)
+{
+    return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getdurationBundle();
+}
+
+
 odot_bundle* symbolistGetSymbolsAtTime(void* symbolist_handler, float t)
 {
     return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getSymbolsAtTime( t );

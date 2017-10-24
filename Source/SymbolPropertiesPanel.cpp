@@ -114,6 +114,10 @@ void SymbolPropertiesPanel::createOSCview ()
             {
                 properties.add( new OSCValueDisplay( addr, msg) );
             }
+           /* else if( test_addr == "lambda" )
+            {
+                properties.add( new OSCTextProperty( addr, msg, change_callback_fn, true ) );
+            }*/
             else if( msg[0].isString() )
             {
                 properties.add( new OSCTextProperty( addr, msg, change_callback_fn) );

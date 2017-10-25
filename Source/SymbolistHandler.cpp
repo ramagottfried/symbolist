@@ -319,7 +319,7 @@ void SymbolistHandler::executeCloseCallback()
 
 void SymbolistHandler::executeUpdateCallback(int arg)
 {
-    cout << "executeUpdateCallback" << endl;
+    //cout << "executeUpdateCallback" << endl;
     if (myUpdateCallback) { myUpdateCallback( this, arg ); }
 }
 
@@ -462,7 +462,7 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
     Symbol *s = c->getScoreSymbolPointer();
     assert ( s != NULL ) ; // that's not normal
     
-    cout << "removeSymbolFromScore" << endl;
+    // cout << "removeSymbolFromScore" << endl;
     //s->printBundle();
 
     if( main_component_ptr )
@@ -559,8 +559,8 @@ void SymbolistHandler::newFromClipBoard()
     
     for( auto s : clipboard )
     {
-        cout << " SymbolistHandler::newFromClipBoard " << endl;
-        cout << s->getID() << endl;
+        // cout << " SymbolistHandler::newFromClipBoard " << endl;
+        // cout << s->getID() << endl;
         BaseComponent *c = makeComponentFromSymbol( new Symbol(*s), true );
         if ( c != NULL)
         {

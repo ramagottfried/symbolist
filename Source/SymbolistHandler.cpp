@@ -181,6 +181,7 @@ void SymbolistHandler::symbolistAPI_setOneSymbol( odot_bundle *bundle)
     }
     else
     {
+        executeUpdateCallback( -1 ); // if the windows is open, this is called from the component creation routine
         cout << "main component is NULL" << endl;
     }
 }
@@ -318,6 +319,7 @@ void SymbolistHandler::executeCloseCallback()
 
 void SymbolistHandler::executeUpdateCallback(int arg)
 {
+    cout << "executeUpdateCallback" << endl;
     if (myUpdateCallback) { myUpdateCallback( this, arg ); }
 }
 

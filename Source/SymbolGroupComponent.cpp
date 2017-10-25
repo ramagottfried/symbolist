@@ -5,6 +5,25 @@
 #include "ScoreComponent.h"
 
 
+bool SymbolGroupComponent::hitTest (int x, int y)
+{
+    if( in_edit_mode || is_selected )
+    {
+        return true; // true in edit mode for drawing?
+    }
+    
+    for (int i = 0; i < getNumSubcomponents(); i++ )
+    {
+        if( getSubcomponent(i)->hitTest(x, y) )
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+
 void SymbolGroupComponent::paint ( Graphics& g )
 {
     BaseComponent::paint( g );

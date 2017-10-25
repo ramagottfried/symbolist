@@ -613,7 +613,7 @@ void PathBaseComponent::updatePathPoints()
 
 bool PathBaseComponent::hitTest (int x, int y)
 {
-    if( in_edit_mode || is_selected ) return true; // why ?
+    if( in_edit_mode || is_selected ) return true;
     else
     {
         for ( int np = 0; np < m_path_array.size(); np++ )

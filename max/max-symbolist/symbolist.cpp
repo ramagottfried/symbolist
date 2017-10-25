@@ -54,6 +54,24 @@ void symbolist_closecallback ( void * sc )
     }
 }
 
+void symbolist_updatecallback( void * sc, int n )
+{
+    for( auto x : symbolist_objects )
+    {
+        if( x->symbolist_handler == sc )
+        {
+            t_object *jp;
+            t_max_err err = object_obex_lookup(x, gensym("#P"), (t_object **)&jp);
+            if( !err )
+                jpatcher_set_dirty(jp, true);
+            
+        }
+    }
+    
+}
+
+
+
 void symbolist_qset_time( t_symbolist *x )
 {
     critical_enter(x->lock);
@@ -204,7 +222,8 @@ void *symbolist_new(t_symbol *s, long argc, t_atom *argv)
         x->player_outlet = outlet_new(x, "FullPacket" );
         
         symbolistRegisterCloseCallback( x->symbolist_handler, &symbolist_closecallback );
-
+        symbolistRegisterUpdateCallback( x->symbolist_handler, &symbolist_updatecallback);
+        
     }
     return (x);
 }

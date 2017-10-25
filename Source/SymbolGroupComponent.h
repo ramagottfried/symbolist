@@ -22,6 +22,8 @@ public:
     
     void updateRelativeAttributes() override;
     
+    bool hitTest (int x, int y) override;
+    
     void h_flip() override;
     void v_flip() override;
 

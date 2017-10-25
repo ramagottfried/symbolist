@@ -99,16 +99,16 @@ void ScoreComponent::beginLassoSelection(Point<int> position)
 
 void ScoreComponent::dragLassoSelection(Point<int> position)
 {
-    
     s_lasso.update( position.getX(), position.getY() );
 
+    // this slows things down noticably where there are a lot of objects selected
     unselectAllComponents();
     
     for (int i = 0; i < getNumSubcomponents(); ++i)
     {
-        SymbolistComponent* cc =  getSubcomponent(i);
-        
-        if (cc->intersectRect( s_lasso.getBounds() ))
+        SymbolistComponent* cc = getSubcomponent(i);
+    
+        if (!cc->componentSelected() && cc->intersectRect( s_lasso.getBounds() ))
         {
             addToSelection( cc );
         }

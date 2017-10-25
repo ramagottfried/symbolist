@@ -85,13 +85,13 @@ void StaffComponent::parentHierarchyChanged()
 void StaffComponent::selectComponent()
 {
     SymbolGroupComponent::selectComponent();
-    
+    /*
     auto page = getPageComponent();
     for( BaseComponent *c : symbols_on_staff )
     {
         page->addToSelection( c );
     }
-    
+    */
 }
 
 void StaffComponent::deselectComponent()
@@ -128,7 +128,7 @@ void StaffComponent::mouseDrag( const MouseEvent& event )
 {
     auto page = getPageComponent();
 
-    if( is_selected && event.getDistanceFromDragStart() > 5 )
+    if( is_selected )
     {
         
 //        cout << "StaffComponent::mouseDrag teste " << event.getDistanceFromDragStart() << endl;

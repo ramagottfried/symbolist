@@ -49,6 +49,7 @@ public:
     void mouseDownSelection( const MouseEvent& event );
     virtual bool intersectRect( Rectangle<int> rect);
 
+    virtual void setEditMode(bool val) {}
     virtual bool isInEditMode(){ return false; }
 
     virtual void updateRelativeAttributes() {} // << virtual to avoid class type checking later

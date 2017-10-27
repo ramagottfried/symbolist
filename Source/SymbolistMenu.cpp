@@ -41,7 +41,11 @@ void SymbolistMenu::getAllCommands (Array<CommandID>& commands)
         cmd_attachToStaff,
         cmd_selectedToFront,
         cmd_selectedToBack,
-        cmd_toggleCursor
+        cmd_toggleCursor,
+        cmd_nudgeLeft,
+        cmd_nudgeRight,
+        cmd_nudgeUp,
+        cmd_nudgeDown
     };
     
     commands.addArray (ids, numElementsInArray (ids));
@@ -94,6 +98,26 @@ void SymbolistMenu::getCommandInfo (CommandID commandID, ApplicationCommandInfo&
         case cmd_flipV:
             result.setInfo ("flip vertically", String(),String(), 0);
             result.addDefaultKeypress ('v', ModifierKeys::altModifier );
+            break;
+            
+        case cmd_nudgeLeft:
+            result.setInfo ("move selected to the left", String(),String(), 0);
+            result.addDefaultKeypress ( KeyPress::leftKey, ModifierKeys::altModifier );
+            break;
+            
+        case cmd_nudgeRight:
+            result.setInfo ("move selected to the right", String(),String(), 0);
+            result.addDefaultKeypress ( KeyPress::rightKey, ModifierKeys::altModifier );
+            break;
+            
+        case cmd_nudgeUp:
+            result.setInfo ("move selected upwards", String(),String(), 0);
+            result.addDefaultKeypress ( KeyPress::upKey, ModifierKeys::altModifier );
+            break;
+            
+        case cmd_nudgeDown:
+            result.setInfo ("move selected downwards", String(),String(), 0);
+            result.addDefaultKeypress ( KeyPress::downKey, ModifierKeys::altModifier );
             break;
             
         case cmd_zoomIn:
@@ -205,11 +229,27 @@ bool SymbolistMenu::perform (const juce::ApplicationCommandTarget::InvocationInf
                 break;
                 
             case cmd_flipH:
-                score->getEditedComponent()->flipSelectedSymbols(1);
+                score->flipSelectedSymbols(1);
                 break;
                 
             case cmd_flipV:
-                score->getEditedComponent()->flipSelectedSymbols(0);
+                score->flipSelectedSymbols(0);
+                break;
+                
+            case cmd_nudgeLeft:
+                score->nudgeSelected(0);
+                break;
+            
+            case cmd_nudgeRight:
+                score->nudgeSelected(1);
+                break;
+            
+            case cmd_nudgeUp:
+                score->nudgeSelected(2);
+                break;
+            
+            case cmd_nudgeDown:
+                score->nudgeSelected(3);
                 break;
                 
             case cmd_zoomIn:
@@ -295,6 +335,15 @@ PopupMenu SymbolistMenu::getMenuForIndex (int menuIndex, const String& /*menuNam
         menu.addCommandItem (commandManager, cmd_copy);
         menu.addCommandItem (commandManager, cmd_paste);
         menu.addCommandItem (commandManager, cmd_deleteSelected);
+       
+        menu.addSeparator();
+        
+        menu.addCommandItem (commandManager, cmd_flipH);
+        menu.addCommandItem (commandManager, cmd_flipV);
+        menu.addCommandItem (commandManager, cmd_nudgeLeft);
+        menu.addCommandItem (commandManager, cmd_nudgeRight);
+        menu.addCommandItem (commandManager, cmd_nudgeUp);
+        menu.addCommandItem (commandManager, cmd_nudgeDown);
         
         menu.addSeparator();
 

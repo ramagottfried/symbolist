@@ -410,6 +410,20 @@ const Colour BaseComponent::getCurrentColor()
 /* Expanding/srinking   */
 /************************/
 
+Rectangle<int> BaseComponent::getMinimalBounds()
+{
+    int minx = getWidth(), maxx = 0, miny = getHeight(), maxy = 0;
+    for( int i = 0; i < getNumSubcomponents(); i++)
+    {
+        Rectangle<int> compBounds = getSubcomponent(i)->getBounds();
+        minx =  min( minx, compBounds.getX() );
+        miny =  min( miny, compBounds.getY() );
+        maxx =  max( maxx, compBounds.getRight() );
+        maxy =  max( maxy, compBounds.getBottom() );
+    }
+    return Rectangle<int>(minx, miny, maxx-minx, maxy-miny);
+}
+
 void BaseComponent::setMinimalBounds () {
     int minx = getWidth(), maxx = 0, miny = getHeight(), maxy = 0;
     for( int i = 0; i < getNumSubcomponents(); i++)
@@ -535,7 +549,7 @@ void BaseComponent::addSubcomponent( SymbolistComponent *c )
     
     if ( ((BaseComponent*)c)->inPlaceForRelativeUpdates() )
     {
-        cout << "BaseComponent::addSubcomponent" << endl;
+//        cout << "BaseComponent::addSubcomponent" << endl;
         ((BaseComponent*)c)->updateRelativeAttributes();
     }
 }

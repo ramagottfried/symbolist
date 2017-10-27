@@ -179,6 +179,7 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
     */
     
     Point<int> mouse_delta = e.getPosition() - prev_pos;
+    
     prev_pos = e.getPosition();
     
     if( e.mods.isAltDown() ) // drag + alt = rotate
@@ -212,7 +213,7 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
     else
     {
         
-        const Rectangle<int> scaledBounds( mouseZone.resizeRectangleBy (getBounds(), mouse_delta) );
+        const Rectangle<int> scaledBounds = mouseZone.resizeRectangleBy( getBounds(), mouse_delta );
         
         // printRect(scaledBounds, "scaledBounds");
         
@@ -247,8 +248,10 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
                 }
                 else
                 {
-                  
+                 //   bool tmp = (*it)->isInEditMode();
+//                    (*it)->setEditMode(true);
                     (*it)->setBounds(getX() + new_rel_x, getY() + new_rel_y, new_w, new_h);
+  //                  (*it)->setEditMode(tmp);
                 }
                 
             }

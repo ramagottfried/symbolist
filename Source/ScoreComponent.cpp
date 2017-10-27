@@ -73,6 +73,7 @@ void ScoreComponent::clearAllSubcomponents()
 
 void ScoreComponent::reportModificationForSelectedSymbols()
 {
+    // cout << "void ScoreComponent::reportModificationForSelectedSymbols()" << endl;
     for( SymbolistComponent *c : selected_components )
     {
         ((BaseComponent*)c)->reportModification();
@@ -387,7 +388,24 @@ void ScoreComponent::flipSelectedSymbols( int axis )
     }
 }
 
-
+void ScoreComponent::nudgeSelected(int direction)
+{
+    switch(direction)
+    {
+        case 0:
+            translateSelectedComponents( Point<int>(-1,0) );
+            break;
+        case 1:
+            translateSelectedComponents( Point<int>(1,0) );
+            break;
+        case 2:
+            translateSelectedComponents( Point<int>(0,-1) );
+            break;
+        case 3:
+            translateSelectedComponents( Point<int>(0,1) );
+            break;
+    }
+}
 
 void ScoreComponent::addSelectedSymbolsToPalette( )
 {

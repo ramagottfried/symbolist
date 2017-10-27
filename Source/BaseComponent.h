@@ -81,6 +81,8 @@ public:
     virtual void setBoundsFromSymbol( float x, float y , float w , float h);
         
     virtual void setMinimalBounds ();
+    Rectangle<int> getMinimalBounds();
+
     virtual void setMaximalBounds ();
     
     virtual void resizeToFit(int x, int y, int w, int h);
@@ -88,7 +90,7 @@ public:
     void selectComponent() override;
     void deselectComponent() override;
     
-    virtual void setEditMode(bool val);
+    virtual void setEditMode(bool val) override;
     virtual bool isInEditMode() override;
     bool isSelected(){ return is_selected; }
     

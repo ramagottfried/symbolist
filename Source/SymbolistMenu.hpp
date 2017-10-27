@@ -41,7 +41,11 @@ public:
         cmd_attachToStaff           = 0x2012,
         cmd_selectedToFront         = 0x2013,
         cmd_selectedToBack          = 0x2014,
-        cmd_toggleCursor            = 0x2015
+        cmd_toggleCursor            = 0x2015,
+        cmd_nudgeLeft               = 0x2016,
+        cmd_nudgeRight              = 0x2017,
+        cmd_nudgeUp                 = 0x2018,
+        cmd_nudgeDown               = 0x2019
     };
     
 private:

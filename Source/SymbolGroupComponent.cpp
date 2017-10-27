@@ -136,6 +136,64 @@ void SymbolGroupComponent::v_flip()
     updateSubcomponents();
 }
 
+void SymbolGroupComponent::resized ()
+{
+    auto pc = getPageComponent();
+    if ( !in_edit_mode && pc && ( pc->getEditedComponent() == pc|| pc->getEditedComponent() == getParentComponent() ) )
+    {
+        updateSubcomponents ();
+    }
+    
+    if( is_selected )
+    {
+        ((ScoreComponent*)getParentComponent())->reportModificationForSelectedSymbols();
+    }
+    
+    if( staff )
+    {
+        staff->repaint();
+    }
+}
+
+void SymbolGroupComponent::rotateScoreComponent(float theta, float ax, float ay)
+{
+    // cout << "group rotate ref point " << ax - getX() << " " << ay - getY() << endl;
+    
+    int minx = getParentWidth(), maxx = 0, miny = getParentHeight(), maxy = 0;
+
+    for (int i = 0; i < getNumSubcomponents(); i++ )
+    {
+        auto b = ((BaseComponent *)getSubcomponent(i));
+        b->rotateScoreComponent(theta, ax - getX(), ay - getY() );
+        
+        minx =  min( minx, getX() + b->getX() );
+        miny =  min( miny, getY() + b->getY() );
+        maxx =  max( maxx, getX() + b->getRight() );
+        maxy =  max( maxy, getY() + b->getBottom() );
+        
+    }
+    
+    int offsetX = minx - getX();
+    int offsetY = miny - getY();
+
+    for (int i = 0; i < getNumSubcomponents(); i++ )
+    {
+        auto sub = getSubcomponent(i);
+        sub->setTopLeftPosition(sub->getX() - offsetX, sub->getY() - offsetY );
+    }
+
+    //printRect(getBounds(), "current bounds");
+    //printRect(Rectangle<int>( minx + offsetX, miny + offsetY, maxx-minx, maxy-miny), "min group bounds");
+
+    auto temp = in_edit_mode;
+    in_edit_mode = true;
+    setTopLeftPosition( getX() + offsetX, getY() + offsetY);
+    setSize(maxx-minx, maxy-miny); // n.b. resize function updates relative attributes
+    in_edit_mode = temp;
+
+}
+
+
 /*============================*
  * SYMBOL MANAGEMENT
  *============================*/

@@ -852,7 +852,7 @@ void PathBaseComponent::rotatePath ( float theta, bool accum )
 
 void PathBaseComponent::rotateScoreComponent(float theta, float ax, float ay)
 {
-    // cout << theta << " " << ax - getX() << " " << ay - getY() << endl;
+    // cout << "path rotate ref point" << " " << ax - getX() << " " << ay - getY() << endl;
     
     //printRect(m_path_bounds, "m_path_bounds 1");
     
@@ -875,6 +875,8 @@ void PathBaseComponent::rotateScoreComponent(float theta, float ax, float ay)
     in_edit_mode = true;
     setBounds( symbol_bounds + getPosition() );
     in_edit_mode = temp;
+    
+    //printRect( symbol_bounds + getPosition(), "new path bounds ");
 }
 
 

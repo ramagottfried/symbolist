@@ -55,6 +55,8 @@ public:
     
     void flipSelectedSymbols( int axis );
     
+    void nudgeSelected( int direction );
+    
     void addSelectedSymbolsToPalette();
     
     void mouseDown ( const MouseEvent& event ) override;

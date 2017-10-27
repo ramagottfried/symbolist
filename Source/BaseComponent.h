@@ -35,8 +35,8 @@ public:
     void moved () override;
     void resized () override;
 
-    virtual void h_flip() {}
-    virtual void v_flip() {}
+    virtual void h_flip(float ax, float ay) {}
+    virtual void v_flip(float ax, float ay) {}
     
     // these are standard interactions
     void mouseEnter( const MouseEvent& event ) override {};

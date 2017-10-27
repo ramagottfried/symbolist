@@ -63,10 +63,8 @@ public:
     void updatePathFromPreview ();
     void abortDrawPath();
     
-    void h_flip() override;
-    void v_flip() override;
-    
-    
+    void h_flip(float ax, float ay) override;
+    void v_flip(float ax, float ay) override;
 
     void rotatePath ( float theta, bool accum = true );
     void rotatePath ( float theta, float ax, float ay );

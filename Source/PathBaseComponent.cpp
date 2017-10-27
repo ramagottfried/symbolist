@@ -788,9 +788,10 @@ void PathBaseComponent::mouseDrag( const MouseEvent& event )
  * Transformations
  *****************/
 
-void PathBaseComponent::h_flip()
+void PathBaseComponent::h_flip(float ax, float ay)
 {
     Path m_path = mergePathArray();
+    
     m_path.applyTransform( AffineTransform().rotated( float_Pi,
                                                      m_path_centroid.getX(),
                                                      m_path_centroid.getY()  ) );
@@ -807,7 +808,7 @@ void PathBaseComponent::h_flip()
     
 }
 
-void PathBaseComponent::v_flip()
+void PathBaseComponent::v_flip(float ax, float ay)
 {
     Path m_path = mergePathArray();
     

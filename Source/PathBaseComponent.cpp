@@ -122,10 +122,12 @@ void PathBaseComponent::resized()
     
     if( ! in_edit_mode )
     {
+        
         resizeToFit(getLocalBounds().getX(),
                     getLocalBounds().getY(),
                     getLocalBounds().getWidth(),
                     getLocalBounds().getHeight());
+    
     }
 }
 
@@ -848,6 +850,33 @@ void PathBaseComponent::rotatePath ( float theta, bool accum )
 }
 
 
+void PathBaseComponent::rotateScoreComponent(float theta, float ax, float ay)
+{
+    // cout << theta << " " << ax - getX() << " " << ay - getY() << endl;
+    
+    //printRect(m_path_bounds, "m_path_bounds 1");
+    
+    accumTheta(theta);
+    
+    Path m_path = mergePathArray();
+    m_path.applyTransform( AffineTransform().rotation( theta, ax - getX(), ay - getY()) );
+    makePathArrayFromPath(m_path);
+    updatePathBounds();
+    
+    //printRect(m_path_bounds, "m_path_bounds 2");
+    
+    Rectangle<int> symbol_bounds = m_path_bounds.expanded( strokeType.getStrokeThickness() ).toNearestInt();
+    m_path.applyTransform(AffineTransform::translation(-symbol_bounds.getX(), -symbol_bounds.getY() ));
+    makePathArrayFromPath(m_path);
+    updatePathBounds();
+    
+    //printRect(m_path_bounds, "m_path_bounds 3");
+    auto temp = in_edit_mode;
+    in_edit_mode = true;
+    setBounds( symbol_bounds + getPosition() );
+    in_edit_mode = temp;
+}
+
 
 /******************
  * Paint
@@ -916,6 +945,11 @@ void PathBaseComponent::paint ( Graphics& g )
         {
             drawHandlesLines(g);
         }
+        
+        /*
+        auto c = getLocalBounds().getCentre();
+        g.drawEllipse(c.getX()-2, c.getY()-2, 4, 4, 1);
+         */
     }
 }
 

@@ -6,18 +6,6 @@
 #include "SymbolistComponent.h"
 #include "ScoreComponent.h"
 
-template <typename T>
-void printRect( const Rectangle<T> &rect, const String &name = "rect" )
-{
-    std::cout << name << " " << rect.getX() << " " << rect.getY() << " " << rect.getWidth() << " " << rect.getHeight() << std::endl ;
-}
-
-template <typename T>
-void printPoint(Point<T> point, const String &name = "point" )
-{
-    std::cout << name << " " << point.getX() << " " << point.getY() << "\n";
-}
-
 
 class BaseComponent : public ScoreComponent
 {
@@ -108,7 +96,8 @@ public:
     // this is all stuff for dealing with groups, maybe should be moved to SymbolGroupComponent?
     void updateRelativePos();
     void updateRelativeSize();
-    virtual void updateRelativeAttributes(); // << now virtual since only groups have to update sub comps
+    virtual void updateRelativeAttributes() override;
+
     void updateSubcomponents();
     void addSubcomponent( SymbolistComponent *c ) override;
     bool inPlaceForRelativeUpdates();
@@ -168,9 +157,6 @@ protected:
     Point<float>    m_down;
     Colour          current_color = Colours::black;
 
-    ScopedPointer<ResizableBorderComponent> resizableBorder;
-    ComponentBoundsConstrainer              constrainer;
-    
     float           relative_x = 0.0, relative_y = 0.0 , relative_w = 1.0 , relative_h = 1.0 ;  // values between 0.0 and 1.0 relative to the size of its container
     int             resize_mode = 0; // 0 = scale symbol to bounds, 1 = scale spacing (not resizing)
     float           m_min_size = 5;

@@ -5,7 +5,13 @@
 #include "SymbolGroupComponent.h"
 #include "StaffComponent.hpp"
 
-ScoreComponent::ScoreComponent() {}
+ScoreComponent::ScoreComponent()
+{
+    addChildComponent( sel_resize_boarder = new EditSelectionBox(&selected_components) );
+    sel_resize_boarder->setBorderThickness( BorderSize<int>(6) );
+    sel_resize_boarder->setAlwaysOnTop(true);
+    sel_resize_boarder->setVisible(false);
+}
 
 ScoreComponent::~ScoreComponent()
 {
@@ -22,12 +28,15 @@ void ScoreComponent::addToSelection(SymbolistComponent *c)
 {
     if( selected_components.addIfNotAlreadyThere(c) )
         c->selectComponent();
+    
+    sel_resize_boarder->updateEditSelBox();
 }
 
 void ScoreComponent::removeFromSelection(SymbolistComponent *c)
 {
     c->deselectComponent();
     selected_components.removeAllInstancesOf(c);
+    sel_resize_boarder->updateEditSelBox();
 }
 
 void ScoreComponent::selectAllComponents()
@@ -364,6 +373,7 @@ void ScoreComponent::translateSelectedComponents( Point<int> delta_xy )
     {
         c->setTopLeftPosition( c->getPosition() + delta_xy );
     }
+    sel_resize_boarder->updateEditSelBox();
 }
 
 void ScoreComponent::flipSelectedSymbols( int axis )

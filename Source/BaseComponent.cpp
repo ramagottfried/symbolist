@@ -376,7 +376,6 @@ void BaseComponent::setBoundsFromSymbol( float x, float y , float w , float h)
 void BaseComponent::selectComponent()
 {
     SymbolistComponent::selectComponent();
-    //resizableBorder->setVisible( true ); // this makes the resizable border apera also in multiple selection
     
     if( isTopLevelComponent() )
         getSymbolistHandler()->addToInspector( this );
@@ -384,7 +383,6 @@ void BaseComponent::selectComponent()
 
 void BaseComponent::deselectComponent()
 {
-    resizableBorder->setVisible( false );
     SymbolistComponent::deselectComponent();
 }
 
@@ -492,6 +490,7 @@ void BaseComponent::updateRelativeSize()
 
 void BaseComponent::updateRelativeAttributes()
 {
+    
     updateRelativePos();
     updateRelativeSize();
     
@@ -536,8 +535,8 @@ void BaseComponent::addSubcomponent( SymbolistComponent *c )
     
     if ( ((BaseComponent*)c)->inPlaceForRelativeUpdates() )
     {
-        ((BaseComponent*)c)->updateRelativePos();
-        ((BaseComponent*)c)->updateRelativeSize();
+        cout << "BaseComponent::addSubcomponent" << endl;
+        ((BaseComponent*)c)->updateRelativeAttributes();
     }
 }
 
@@ -550,28 +549,7 @@ void BaseComponent::resized ()
     {
             updateSubcomponents ();
     }
-    
-    if( !resizableBorder ) // << probably better to initialize the resizable border somewhere else...
-    {
-        constrainer.setMinimumSize ( m_min_size, m_min_size );
-        addChildComponent( resizableBorder = new ResizableBorderComponent(this, &constrainer) );
-        resizableBorder->setBorderThickness( BorderSize<int>(6) );
-        resizableBorder->setAlwaysOnTop(true);
-    }
-    
-    
-    if( getMainComponent() && getMainComponent()->getCurrentMods()->isShiftDown() )
-    {
-        auto xovery = (double)resizableBorder->getWidth() / (double)resizableBorder->getHeight();
-        constrainer.setFixedAspectRatio( xovery );
-    }
-    else
-    {
-        constrainer.setFixedAspectRatio( 0.0 );
-    }
-        
-    resizableBorder->setBounds( getLocalBounds() );
-    
+   
     if( is_selected )
     {
         ((ScoreComponent*)getParentComponent())->reportModificationForSelectedSymbols();
@@ -692,7 +670,6 @@ void BaseComponent::mouseUp( const MouseEvent& event )
         {
             if( is_selected && getMainMouseMode() == selection )
             {
-                resizableBorder->setVisible( true ); // here instead of the select callback makes it only when the symbol is clicked alone
                 repaint();
             }
             ((ScoreComponent*) getParentComponent())->reportModificationForSelectedSymbols();

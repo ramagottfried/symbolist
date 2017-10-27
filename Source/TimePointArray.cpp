@@ -140,7 +140,7 @@ void TimePointArray::resetTimes()
     }
     
     voice_staff_vector.clear();
-    prev_timepoint = NULL;
+    current_point = 0;
 }
 
 
@@ -191,7 +191,7 @@ void TimePointArray::addSymbolTimePoints( Symbol *s )
     }
     
     // printTimePoints();
-    prev_timepoint = NULL;
+    current_point = 0;
     voice_staff_vector.clear();
 
 }
@@ -445,9 +445,9 @@ pair<size_t, int> TimePointArray::getVoiceNumberState( const Symbol *s, const Sy
     return pair<size_t, bool>(i, 1); // new voice
 }
 
-vector< pair<size_t, const Symbol*> > TimePointArray::getNoteOffs( const SymbolTimePoint *p )
+vector< tuple<size_t, const Symbol*, const Symbol*> > TimePointArray::getNoteOffs( const SymbolTimePoint *p )
 {
-    vector<pair<size_t, const Symbol*>> offs;
+    vector< tuple<size_t, const Symbol*, const Symbol*>> offs;
     
     if( p )
     {
@@ -469,7 +469,7 @@ vector< pair<size_t, const Symbol*> > TimePointArray::getNoteOffs( const SymbolT
             
             if( !found )
             {
-                offs.emplace_back( pair<size_t, const Symbol*>(i, voice_staff_vector[i].second ));
+                offs.emplace_back( tuple<size_t, const Symbol*, const Symbol*>(i, voice_staff_vector[i].first, voice_staff_vector[i].second ));
                 voice_staff_vector[i].first = NULL;
             }
         }
@@ -481,7 +481,7 @@ vector< pair<size_t, const Symbol*> > TimePointArray::getNoteOffs( const SymbolT
             if( !voice_staff_vector[i].first )
                 continue;
             
-            offs.emplace_back( pair<size_t, const Symbol*>(i, voice_staff_vector[i].second ));
+            offs.emplace_back( tuple<size_t, const Symbol*, const Symbol*>(i, voice_staff_vector[i].first, voice_staff_vector[i].second ));
             voice_staff_vector[i].first = NULL;
         }
     }
@@ -721,20 +721,26 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
             const Symbol *staff = tpoint->staff_ref;
             String staff_name = staff->getName();
 
+            String toplevel_name;
+            int name_pos = s->getOSCMessagePos( "/name" );
+            if( name_pos != -1 )
+            {
+                toplevel_name = s->getOSCMessageValue(name_pos).getString();
+            }
             
             if( current_time > s->getEndTime() )
             {
                 pair<size_t, int> voice_num_state = setNoteOff( s );
                 if( voice_num_state.first != -1 ) // voice number is set to -1 if not found
                 {
-                    String s_prefix = "/staff/" + staff->getName() + "/voice/" + String(voice_num_state.first);
+                    String s_prefix = "/staff/" + staff->getName() + "/voice/" + String(voice_num_state.first) + "/" + toplevel_name;
                     bndl.addElement( OSCMessage( s_prefix + "/state", -1 ) );
                 }
             }
             else
             {
                 pair<size_t, int> voice_num_state = getVoiceNumberState( s, tpoint );
-                String s_prefix = "/staff/" + staff->getName() + "/voice/" + String(voice_num_state.first);
+                String s_prefix = "/staff/" + staff->getName() + "/voice/" + String(voice_num_state.first) + "/" + toplevel_name;
                 
                 bndl.addElement( OSCMessage( s_prefix + "/state", (int)voice_num_state.second ) );
                 // staff is already stored in timepoint so we could probably removed the staff check here...
@@ -768,13 +774,6 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                 bndl.addElement( OSCMessage( s_prefix + "/time/ratio", time_ratio ) );
                 
                 float offset_time = current_time - s->getTime();
-
-                String toplevel_name;
-                int name_pos = s->getOSCMessagePos( "/name" );
-                if( name_pos != -1 )
-                {
-                    toplevel_name = s->getOSCMessageValue(name_pos).getString();
-                }
                 
                 
                 if( s->getType() == "path" )
@@ -816,7 +815,8 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                 }
                 else if( s->getType() == "group" )
                 {
-                    groupLookup(s, s_prefix, String(), staff_x, staff_y, time_ratio, bndl );
+                    String group_prefix = "/staff/" + staff->getName() + "/voice/" + String(voice_num_state.first);
+                    groupLookup(s, group_prefix, String(), staff_x, staff_y, time_ratio, bndl );
                 }
                 else
                 {
@@ -828,7 +828,7 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                         OSCMessage msg = osc.getMessage();
                         
                         String msg_addr =  msg.getAddressPattern().toString();
-                        String newaddr = s_prefix + "/" + toplevel_name + msg_addr;
+                        String newaddr = s_prefix + msg_addr;
                         
                         if( msg_addr == "/x" )
                         {
@@ -856,10 +856,10 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
         }
     }
     
-    auto offs = getNoteOffs( tpoint );
+    vector< tuple<size_t, const Symbol*, const Symbol*> > offs = getNoteOffs( tpoint );
     for( int i = 0; i < offs.size(); i++ )
     {
-        String s_prefix = "/staff/" + offs[i].second->getName() + "/voice/" + String(offs[i].first);
+        String s_prefix = "/staff/" + get<2>(offs[i])->getName() + "/voice/" + String(get<0>(offs[i])) +"/"+ get<1>(offs[i])->getName();
         bndl.addElement( OSCMessage( s_prefix + "/state", -1 ) );
     }
     

@@ -27,6 +27,8 @@ public:
     void h_flip() override;
     void v_flip() override;
 
+    virtual void rotateScoreComponent(float theta, float ax, float ay) override { /* ... need to do this ... */}
+
 private :
     
     //==============================================================================

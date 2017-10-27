@@ -4,7 +4,22 @@
 #include "types.h"
 #include "SymbolistHandler.h"
 
+
 class PageComponent; // forward declaration of subclass
+
+
+template <typename T>
+void printRect( const Rectangle<T> &rect, const String &name = "rect" )
+{
+    std::cout << name << " " << rect.getX() << " " << rect.getY() << " " << rect.getWidth() << " " << rect.getHeight() << std::endl ;
+}
+
+template <typename T>
+void printPoint(Point<T> point, const String &name = "point" )
+{
+    std::cout << name << " " << point.getX() << " " << point.getY() << "\n";
+}
+
 
 class SymbolistComponent : public Component
 {
@@ -35,6 +50,9 @@ public:
     virtual bool intersectRect( Rectangle<int> rect);
 
     virtual bool isInEditMode(){ return false; }
+
+    virtual void updateRelativeAttributes() {} // << virtual to avoid class type checking later
+    virtual void rotateScoreComponent(float theta, float ax, float ay){}
 
 protected :
     

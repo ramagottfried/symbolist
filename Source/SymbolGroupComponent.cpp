@@ -91,6 +91,7 @@ void SymbolGroupComponent::updateRelativeAttributes()
             ((BaseComponent*)getSubcomponent(i))->updateRelativeAttributes();
         }
     }
+    
 }
 
 

@@ -100,7 +100,7 @@ public:
     
     pair<size_t, int> getVoiceNumberState( const Symbol *s, const SymbolTimePoint *tpoint );
     pair<size_t, int> setNoteOff( const Symbol *s);
-    vector< pair<size_t, const Symbol*> > getNoteOffs( const SymbolTimePoint *p );
+    vector< tuple<size_t, const Symbol*, const Symbol*> > getNoteOffs( const SymbolTimePoint *p );
 
     void resetTimes();
 

@@ -3,6 +3,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SymbolistComponent.h"
+#include "EditSelectionBox.h"
 
 class SymbolistLasso : public Component
 {
@@ -71,6 +72,9 @@ protected:
     void dragLassoSelection(Point<int> position);
     void endLassoSelection();
 
+    ScopedPointer<EditSelectionBox> sel_resize_boarder;
+
+    
 };
 
 

@@ -104,12 +104,12 @@ bool SymbolGroupComponent::intersectRect( Rectangle<int> rect)
     return false;
 }
 
-void SymbolGroupComponent::h_flip()
+void SymbolGroupComponent::h_flip(float ax, float ay)
 {
     for (int i = 0; i < getNumSubcomponents(); i++ )
     {
         auto b = ((BaseComponent *)getSubcomponent(i));
-        b->h_flip();
+        b->h_flip(ax, ay);
         
         auto rel_b = b->getRelativeBounds();
         auto new_x = 1.0 - (rel_b.getX() + rel_b.getWidth());
@@ -120,12 +120,12 @@ void SymbolGroupComponent::h_flip()
     updateSubcomponents();
 }
 
-void SymbolGroupComponent::v_flip()
+void SymbolGroupComponent::v_flip(float ax, float ay)
 {
     for (int i = 0; i < getNumSubcomponents(); i++ )
     {
         auto b = ((BaseComponent *)getSubcomponent(i));
-        b->v_flip();
+        b->v_flip(ax, ay);
         
         auto rel_b = b->getRelativeBounds();
         auto new_y = 1.0 - (rel_b.getY() + rel_b.getHeight());

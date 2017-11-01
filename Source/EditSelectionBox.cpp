@@ -117,6 +117,20 @@ void EditSelectionBox::mouseMove (const MouseEvent& e)
     updateMouseZone (e);
 }
 
+void EditSelectionBox::flipSelectedSymbols( int axis )
+{
+    auto center = getBounds().getCentre();
+    for ( auto c : *component_set )
+    {
+        if( axis == 0)
+            ((BaseComponent*)c)->v_flip( center.getX(), center.getY() );
+        else
+            ((BaseComponent*)c)->h_flip( center.getX(), center.getY() );
+    }
+    
+}
+
+
 Rectangle<int> EditSelectionBox::getSelectionBounds()
 {
     // get the position an bounds of the group

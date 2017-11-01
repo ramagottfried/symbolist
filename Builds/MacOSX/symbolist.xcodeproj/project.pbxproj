@@ -400,8 +400,6 @@
 				118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */,
 				111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */,
 				111A261B1F40B0C200D3713C /* MouseModeComponent.hpp */,
-				113DEE0A1FA1D7C600A45220 /* EditSelectionBox.cpp */,
-				113DEE0B1FA1D7C600A45220 /* EditSelectionBox.h */,
 				111A26201F40CBAD00D3713C /* time-components */,
 				11D123571F4471EA00A5EA5B /* ToolBarComp.cpp */,
 				11D123581F4471EA00A5EA5B /* ToolBarComp.hpp */,
@@ -426,6 +424,8 @@
 		44DFA0951ED2C96600A6847A /* page-score-components */ = {
 			isa = PBXGroup;
 			children = (
+				113DEE0A1FA1D7C600A45220 /* EditSelectionBox.cpp */,
+				113DEE0B1FA1D7C600A45220 /* EditSelectionBox.h */,
 				445A661F1EDABDED00E2ADA2 /* SymbolistComponent.h */,
 				444CD9021EDDAF1B001AC03A /* SymbolistComponent.cpp */,
 				11CE005D1EC4B31200E4F624 /* ScoreComponent.h */,

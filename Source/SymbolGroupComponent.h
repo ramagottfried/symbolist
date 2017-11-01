@@ -24,8 +24,8 @@ public:
     
     bool hitTest (int x, int y) override;
     
-    void h_flip() override;
-    void v_flip() override;
+    void h_flip(float ax, float ay) override;
+    void v_flip(float ax, float ay) override;
 
     virtual void rotateScoreComponent(float theta, float ax, float ay) override;
     

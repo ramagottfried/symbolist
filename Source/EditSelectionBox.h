@@ -118,6 +118,9 @@ public:
     Zone getCurrentZone() const noexcept                 { return mouseZone; }
     
     void updateEditSelBox();
+    Rectangle<int> getSelectionBounds();
+    void flipSelectedSymbols( int axis );
+
     
 protected:
     void paint (Graphics&) override;
@@ -140,7 +143,7 @@ private:
     Rectangle<int> original_bounds;
     
     void updateMouseZone (const MouseEvent&);
-    Rectangle<int> getSelectionBounds();
+
 
     int m_minw = 2;
     int m_minh = 2;

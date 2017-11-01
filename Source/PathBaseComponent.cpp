@@ -790,21 +790,31 @@ void PathBaseComponent::mouseDrag( const MouseEvent& event )
 
 void PathBaseComponent::h_flip(float ax, float ay)
 {
+    // cout << this << " h_flip " << ax - getX() << " " <<  ay - getY() << endl;
+
+    accumTheta(float_Pi);
+
     Path m_path = mergePathArray();
     
-    m_path.applyTransform( AffineTransform().rotated( float_Pi,
-                                                     m_path_centroid.getX(),
-                                                     m_path_centroid.getY()  ) );
+    m_path.applyTransform( AffineTransform().verticalFlip( round(ay - getY()) * 2.0 ) );
+    m_path.applyTransform( AffineTransform().rotation( float_Pi, round(ax - getX()), round(ay - getY())) );
     
-    m_path.applyTransform( AffineTransform().verticalFlip( m_path_bounds.getHeight() ) );
-    
-    auto newrect = m_path_bounds.getRealPathBounds( m_path ).expanded( strokeType.getStrokeThickness() );
+    auto newrect = m_path_bounds.getRealPathBounds( m_path ).toNearestInt().expanded( strokeType.getStrokeThickness() );
+
     m_path.applyTransform( AffineTransform().translated( -newrect.getPosition() ) );
-    
+
     makePathArrayFromPath(m_path);
-    updateHandlePositions();
     updatePathBounds();
-    repaint();
+    
+    //printRect(m_path_bounds, "m_path_bounds 3");
+    //printPoint(newrect.getPosition(), "newpos");
+    
+    //auto temp = in_edit_mode;
+    //in_edit_mode = true;
+    setBounds( newrect + getPosition());
+    //repaint();
+    //in_edit_mode = temp;
+    //printRect(newrect + getPosition(), "symbol_bounds");
     
 }
 
@@ -812,16 +822,23 @@ void PathBaseComponent::v_flip(float ax, float ay)
 {
     Path m_path = mergePathArray();
     
-    m_path.applyTransform( AffineTransform().verticalFlip( m_path_bounds.getHeight() ) );
+    m_path.applyTransform( AffineTransform().verticalFlip( round(ay - getY()) * 2.0 ) );
     
-    auto newrect = m_path_bounds.getRealPathBounds( m_path ).expanded( strokeType.getStrokeThickness() );
+    auto newrect = m_path_bounds.getRealPathBounds( m_path ).toNearestInt().expanded( strokeType.getStrokeThickness() );
+    
     m_path.applyTransform( AffineTransform().translated( -newrect.getPosition() ) );
- 
+    
     makePathArrayFromPath(m_path);
-    updateHandlePositions();
     updatePathBounds();
     
-    repaint();
+    //printRect(m_path_bounds, "m_path_bounds 3");
+    //printPoint(newrect.getPosition(), "newpos");
+    
+    //auto temp = in_edit_mode;
+    //in_edit_mode = true;
+    setBounds( newrect + getPosition());
+    //in_edit_mode = temp;
+    //printRect(newrect + getPosition(), "symbol_bounds");
 }
 
 
@@ -853,7 +870,7 @@ void PathBaseComponent::rotatePath ( float theta, bool accum )
 
 void PathBaseComponent::rotateScoreComponent(float theta, float ax, float ay)
 {
-    // cout << "path rotate ref point" << " " << ax - getX() << " " << ay - getY() << endl;
+    cout << this << " path rotate ref point" << " " << ax - getX() << " " << ay - getY() << endl;
     
     //printRect(m_path_bounds, "m_path_bounds 1");
     

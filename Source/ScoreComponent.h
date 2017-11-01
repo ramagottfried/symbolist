@@ -65,6 +65,9 @@ public:
     
     virtual void mouseAddClick ( const MouseEvent& event );
     
+    
+    Rectangle<int> getSelectionBounds();
+
 protected:
 
     Array<SymbolistComponent*>     selected_components;
@@ -74,7 +77,7 @@ protected:
     void dragLassoSelection(Point<int> position);
     void endLassoSelection();
 
-    ScopedPointer<EditSelectionBox> sel_resize_boarder;
+    ScopedPointer<EditSelectionBox> sel_resize_box;
 
     
 };

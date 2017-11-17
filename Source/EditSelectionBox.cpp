@@ -275,28 +275,30 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
         m_accum_theta += delta_rad;
         
         
-        
         // rotation preview needs work, for now just rotating the real thing
-        
+
         for( auto it = component_set->begin(); it != component_set->end(); it++ )
         {
             (*it)->rotateScoreComponent( delta_rad, centre.getX(), centre.getY() );
         }
+        setBounds( getSelectionBounds() );
         
+        /*
         for( int i = 0; i < preview_components.size(); i++ )
         {
             SymbolistComponent *b = preview_components[i];
-            //SymbolistComponent *c = (*component_set)[i];
+            SymbolistComponent *c = (*component_set)[i];
             
             auto relpt = original_bounds.getCentre() - original_bounds.getPosition();
             
-            b->rotateScoreComponent( delta_rad, relpt.getX() - b->getX(), relpt.getY() - b->getY() );
+            //b->rotateScoreComponent( delta_rad, relpt.getX() - c->getX(), relpt.getY() - c->getY() );
+            
+            b->setTransform( AffineTransform::rotation(theta, relpt.getX() - c->getX(), relpt.getY() - c->getY() ) );
         }
-        
         auto pbounds = getPreviewBounds();
         setCentrePosition( centre );
         setSize( pbounds.getWidth(), pbounds.getWidth() );
-        
+        */
         
     }
     else
@@ -322,10 +324,12 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
                 relative_x = (float)(c->getX() - original_bounds.getX());
                 relative_y = (float)(c->getY() - original_bounds.getY());
                 
-                b->setTopLeftPosition(relative_x * m_scale_w, relative_y * m_scale_h);
+                b->setTransform( AffineTransform::scale(m_scale_w, m_scale_h).translated(relative_x * m_scale_w, relative_y * m_scale_h) );
+                /*
+                b->setTopLeftPosition(, relative_y * m_scale_h);
                 b->setScoreComponentSize(c->getWidth(), c->getHeight());
                 b->scaleScoreComponent(m_scale_w, m_scale_h);
-                
+                */
             }
         }
     }

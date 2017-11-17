@@ -72,8 +72,12 @@ public:
     void importFromSymbol( const Symbol& s ) override;
     int addSymbolMessages( Symbol* s, const String &base_address ) override;
 
-    void resized() override;
-    void resizeToFit(int x, int y, int w, int h) override;
+//    void resized() override;
+    
+//    void resizeToFit(int x, int y, int w, int h) override;
+    virtual void scaleScoreComponent(float scale_w, float scale_h) override;
+//    virtual void rotateScoreComponent(float theta, float ax, float ay) override;
+    
     void setWidthInPixels(float w);
     
     String getSymbolTypeStr() const override { return "text"; }

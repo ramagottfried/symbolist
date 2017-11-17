@@ -51,7 +51,7 @@ void BaseComponent::reportModification()
         if ( isTopLevelComponent() )
         {
             getSymbolistHandler()->modifySymbolInScore( this );
-            updateRelativeAttributes();
+            // updateRelativeAttributes();
         }
         else
         {
@@ -473,97 +473,55 @@ void BaseComponent::recursiveShrinkBounds()
  * Component modification callbacks
  ************************/
 
-// We don't want this to happen while in edit_mode
-bool BaseComponent::inPlaceForRelativeUpdates()
-{
-    return ( getParentComponent() // we have a parent
-             && getParentComponent() != getPageComponent() // the parent is not the page
-             && ! ((BaseComponent*)getParentComponent())->isInEditMode() // the parent is not being edited
-             && ( getPageComponent() == NULL || getPageComponent()->getEditedComponent() ==  getPageComponent()) // the page component is being edited
-            ) ;
-}
-
-// update the relative pos according to container
-// call this after a move
-
-void BaseComponent::updateRelativePos()
-{
-    Rectangle<int> container_bounds = getParentComponent()->getBounds();
-    relative_x = getPosition().x / (float) (container_bounds.getWidth());
-    relative_y = getPosition().y / (float) (container_bounds.getHeight());
-}
-
-// update the relative size according to container
-// call this after a resize
-void BaseComponent::updateRelativeSize()
-{
-    Rectangle<int> container_bounds = getParentComponent()->getBounds();
-    relative_w = getWidth() / (float) (container_bounds.getWidth());
-    relative_h = getHeight() / (float) (container_bounds.getHeight());
-}
-
-void BaseComponent::updateRelativeAttributes()
-{
-    
-    updateRelativePos();
-    updateRelativeSize();
-    
-    /*
-    if( in_edit_mode )
-    {
-        // because we're overrideing the mouseClickAdd for editing, we end up adding extra subcomponents instead
-        for ( int i = 0; i < getNumSubcomponents(); i++ )
-        {
-            ((BaseComponent*)getSubcomponent(i))->updateRelativeAttributes();
-        }
-    }
-     */
-}
 
 void BaseComponent::resizeToFit(int x, int y, int w, int h)
 {
-    setBounds( x, y, w, h);
-    updateSubcomponents();
+    float scale_w = (float)w / (float)getWidth();
+    float scale_h = (float)h / (float)getHeight();
+    
+    setTopLeftPosition(x, y);
+    scaleScoreComponent(scale_w, scale_h);
 }
 
-// update the subcomponents according to their relative pos and size
-// call this from container at resize
-void BaseComponent::updateSubcomponents ()
+/***
+ *      repositions and sends scaling info to sub components
+ *      each sub class needs to have it's own handling of how to scale, and adjust its size
+ ***/
+void BaseComponent::scaleScoreComponent(float scale_w, float scale_h)
 {
+//    cout << "BaseComponent::scaleScoreComponent " << getSymbolTypeStr() << " " << this  << endl;
     for ( int i = 0; i < getNumSubcomponents(); i++ )
     {
         BaseComponent* c = (BaseComponent*)getSubcomponent(i);
-        
-        c->setBounds(c->relative_x * getWidth(),
-                     c->relative_y * getHeight(),
-                     c->relative_w * getWidth(),
-                     c->relative_h * getHeight());
-
-        c->updateSubcomponents();
+        c->setTopLeftPosition(c->getX() * scale_w, c->getY() * scale_h);
+        c->scaleScoreComponent(scale_w, scale_h);
     }
+
 }
 
-void BaseComponent::addSubcomponent( SymbolistComponent *c )
+/***
+ *      sets size without scaling
+ ***/
+void BaseComponent::setScoreComponentSize(int w, int h)
 {
-    ScoreComponent::addSubcomponent( c );
+    cout << "BaseComponent::setScoreComponentSize " << getSymbolTypeStr() << " " << this  << endl;
+    float this_w = (float)getWidth();
+    float this_h = (float)getHeight();
     
-    if ( ((BaseComponent*)c)->inPlaceForRelativeUpdates() )
+    for ( int i = 0; i < getNumSubcomponents(); i++ )
     {
-//        cout << "BaseComponent::addSubcomponent" << endl;
-        ((BaseComponent*)c)->updateRelativeAttributes();
+        BaseComponent* c = (BaseComponent*)getSubcomponent(i);
+        float scale_w = (float)c->getWidth() / this_w;
+        float scale_h = (float)c->getHeight() / this_h;
+        c->setSize(w * scale_w, h * scale_h);
     }
+    
+    setSize(w, h);
 }
 
 
 void BaseComponent::resized ()
 {
-    if ( getPageComponent() &&
-         (     getPageComponent()->getEditedComponent() == getPageComponent()
-            || getPageComponent()->getEditedComponent() == getParentComponent() ))
-    {
-            updateSubcomponents ();
-    }
-   
     if( is_selected )
     {
         ((ScoreComponent*)getParentComponent())->reportModificationForSelectedSymbols();

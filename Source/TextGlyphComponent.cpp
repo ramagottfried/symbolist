@@ -1,5 +1,6 @@
 
 #include "TextGlyphComponent.h"
+#include "SymbolistMainComponent.h"
 
 void TextEditorObjListener::textEditorTextChanged (TextEditor& t)
 {
@@ -14,6 +15,7 @@ void EditableTextObjListener::labelTextChanged (Label* l)
 
 void EditableTextObjListener::editorShown (Label* l, TextEditor& t)
 {
+    owner->setEditMode( true );
     t.addListener( editlistener );
     t.setBorder( l->getBorderSize() );
     t.setFont(  l->getFont() );
@@ -21,7 +23,7 @@ void EditableTextObjListener::editorShown (Label* l, TextEditor& t)
     t.setColour( TextEditor::shadowColourId, Colours::transparentWhite );
     t.setColour( TextEditor::focusedOutlineColourId, Colours::transparentWhite );
     t.setIndents(0, 4);
-    
+    //t.setMultiLine(true);
     // maybe use subtracted from...
     // const Rectangle<int> centreArea (border.subtractedFrom (fullSize));
 
@@ -34,6 +36,7 @@ void EditableTextObjListener::editorShown (Label* l, TextEditor& t)
 void EditableTextObjListener::editorHidden (Label* l, TextEditor& t)
 {
     //owner->setBounds( owner->getBounds().expanded(2) );
+    owner->setEditMode( false );
 
 }
 
@@ -191,10 +194,11 @@ int TextGlphComponent::addSymbolMessages( Symbol* s, const String &base_address 
 }
 
 
-void TextGlphComponent::resized()
-{
-    BaseComponent::resized();
-    
+//void TextGlphComponent::resized()
+//{
+//    BaseComponent::resized();
+
+    /*
     int h = getHeight();
     
     m_font.setHeight( h );
@@ -202,7 +206,8 @@ void TextGlphComponent::resized()
 
     setBounds(getX(), getY(), m_font.getStringWidth(m_text) + m_width_offset, h );
     textobj->setBounds( getLocalBounds().translated(m_x_offset, 0) );
-}
+    */
+//}
 
 void TextGlphComponent::setWidthInPixels(float w)
 {
@@ -219,7 +224,7 @@ void TextGlphComponent::setWidthInPixels(float w)
     }
     
 }
-
+/*
 void TextGlphComponent::resizeToFit(int x, int y, int w, int h)
 {
     if( w > 0 && h > 0)
@@ -232,14 +237,40 @@ void TextGlphComponent::resizeToFit(int x, int y, int w, int h)
         textobj->setBounds( getLocalBounds().translated(0, 0) );
     }
 }
+*/
+
+void TextGlphComponent::scaleScoreComponent(float scale_w, float scale_h)
+{
+    float newHeight = scale_h * getHeight();
+    m_font.setHeightWithoutChangingWidth( newHeight );
+    
+    float current_w = m_font.getStringWidthFloat(m_text);
+    if( current_w > 0 )
+    {
+        float current_scale = m_font.getHorizontalScale();
+        
+        if( current_scale > 0 )
+        {
+            m_font.setHorizontalScale( current_scale * scale_w );
+        }
+    }
+    
+    textobj->setFont( m_font );
+    setSize( m_font.getStringWidth(m_text), newHeight );
+    textobj->setBounds( getLocalBounds().translated(0, 0) );
+}
+
 
 void TextGlphComponent::updateText( String str)
 {
     if( m_text != str )
     {
         m_text = str;
-        textobj->setText (m_text, sendNotificationSync );
-        resized();
+        if( !in_edit_mode )
+            textobj->setText (m_text, sendNotificationAsync );
+        
+        setSize(m_font.getStringWidth(m_text), getHeight() );
+        textobj->setBounds( getLocalBounds().translated(m_x_offset, 0) );
     }
 }
 

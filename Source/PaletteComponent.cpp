@@ -38,7 +38,7 @@ void PaletteButton::paint (Graphics& g)
 {
     Colour button_color = selected ? Colours::black : Colour::fromFloatRGBA(0, 0, 0, 0.2);
     
-    graphic_comp->setSymbolColor( button_color );
+    graphic_comp->setSymbolComponentColor( button_color );
     
     g.setColour( button_color );
     g.drawRect( getLocalBounds() );

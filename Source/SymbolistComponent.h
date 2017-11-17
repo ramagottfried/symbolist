@@ -53,12 +53,13 @@ public:
     virtual bool isInEditMode(){ return false; }
 
     virtual void updateRelativeAttributes() {} // << virtual to avoid class type checking later
-    
+
+    virtual void scaleScoreComponent(float scale_w, float scale_h){}
     virtual void rotateScoreComponent(float theta, float ax, float ay){}
     virtual void h_flip(float ax, float ay) {}
     virtual void v_flip(float ax, float ay) {}
+    virtual void setScoreComponentSize(int w, int h) {}
     
-
 protected :
     
     bool is_selected = false;

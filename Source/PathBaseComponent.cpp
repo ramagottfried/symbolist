@@ -91,8 +91,11 @@ void PathBaseComponent::makePathArrayFromPath(const Path &p)
     }
 }
 
+/*
 void PathBaseComponent::resizeToFit(int x, int y, int w, int h)
 {
+    cout << "PathBaseComponent::resizeToFit" << endl;
+    BaseComponent::resizeToFit(x, y, w, h);
     
     // input bounds are for the visible path, not the handles...
     Rectangle<int> r = Rectangle<int>(x,y,w,h).reduced( strokeType.getStrokeThickness() );
@@ -114,12 +117,16 @@ void PathBaseComponent::resizeToFit(int x, int y, int w, int h)
         updatePathBounds();
     }
 }
+*/
 
 // Juce callback
 void PathBaseComponent::resized()
 {
+    cout << "PathBaseComponent::resized()" << endl;
+
     BaseComponent::resized();
     
+    /*
     if( ! in_edit_mode )
     {
         
@@ -128,7 +135,7 @@ void PathBaseComponent::resized()
                     getLocalBounds().getWidth(),
                     getLocalBounds().getHeight());
     
-    }
+    }*/
 }
 
 
@@ -189,7 +196,7 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
         
         s->addOSCMessage ((String(base_address) += "/fill") ,   m_fill   );
 
-        s->addOSCMessage ((String(base_address) += "/stroke/thickness") ,   strokeType.getStrokeThickness()  );
+        s->addOSCMessage ((String(base_address) += "/stroke/thickness") ,  strokeWeight  );
         
         messages_added += 6 ;
     }
@@ -224,8 +231,10 @@ void PathBaseComponent::importFromSymbol(const Symbol &s)
     
     pos = s.getOSCMessagePos("/stroke/thickness");
     if( pos != -1  )
-        strokeType.setStrokeThickness( Symbol::getOSCValueAsFloat( s.getOSCMessageValue(pos) ) );
-    
+    {
+        strokeWeight = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(pos) ) ;
+        strokeType.setStrokeThickness( strokeWeight );
+    }
     
     
     updatePathBounds();
@@ -898,6 +907,60 @@ void PathBaseComponent::rotateScoreComponent(float theta, float ax, float ay)
 }
 
 
+void PathBaseComponent::scaleScoreComponent(float scale_w, float scale_h)
+{
+    // resize is for the total bounds including the stroke offset
+    
+    if( scale_w > 0 && scale_h > 0 && getWidth() && getHeight() )
+    {
+        
+        BaseComponent::scaleScoreComponent(scale_w, scale_h);
+        
+         cout << "scale_w " << scale_w << " scale_h " << scale_h << endl;
+         cout << "target w " << scale_w * getWidth() << " target h " << scale_h * getHeight() << endl;
+        
+        float sw = 2.0 * strokeType.getStrokeThickness();
+        
+        // cout << "target w- " << scale_w * getWidth() - sw << " target h- " << scale_h * getHeight() - sw << endl;
+
+        
+        float new_w = scale_w * getWidth();
+        float new_h = scale_h * getHeight();
+        float new_path_w = new_w - sw;
+        float new_path_h = new_h - sw;
+        
+        float adj_scale_w = (new_path_w / m_path_bounds.getWidth() );
+        float adj_scale_h = (new_path_h / m_path_bounds.getHeight() );
+        
+        // printRect(m_path_bounds, "1 m_path_bounds");
+
+        Path m_path = mergePathArray();
+ 
+        m_path.applyTransform( AffineTransform().scale(adj_scale_w, adj_scale_h));
+        makePathArrayFromPath(m_path);
+        updatePathBounds();
+        
+        // printRect(m_path_bounds, "2 m_path_bounds");
+
+        Rectangle<float> symbol_bounds = m_path_bounds.expanded( strokeType.getStrokeThickness() );
+        m_path.applyTransform(AffineTransform::translation( -symbol_bounds.getPosition() ) );
+        
+        makePathArrayFromPath(m_path);
+        updateHandlePositions();
+        updatePathBounds();
+        
+        // printRect(m_path_bounds, "3 m_path_bounds");
+
+        auto temp = in_edit_mode;
+        in_edit_mode = true;
+        setSize(new_w, new_h );
+        // printRect(symbol_bounds.toNearestInt() + getPosition(), "new symb bounds");
+        in_edit_mode = temp;
+
+    }
+}
+
+
 /******************
  * Paint
  *****************/
@@ -907,8 +970,6 @@ void PathBaseComponent::paint ( Graphics& g )
     
     BaseComponent::paint(g);
     
-
-    g.setColour( getCurrentColor() );
     
     /*
     int cur_t,local_t = 0;
@@ -931,9 +992,10 @@ void PathBaseComponent::paint ( Graphics& g )
     // to do: add other stroke options
     //float dashes[] = {1.0, 2.0};
     //strokeType.createDashedStroke(p, p, dashes, 2 );
-    
-    strokeType.setStrokeThickness( strokeType.getStrokeThickness() );
-    
+  
+    g.setColour( getCurrentColor() );
+    strokeType.setStrokeThickness( strokeWeight );
+
     // workaround since we don't know which context we're in, draw and return if in palette
     if( getPageComponent() == NULL )
     {

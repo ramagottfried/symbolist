@@ -41,7 +41,7 @@ public:
     
     void paint ( Graphics& g ) override;
     void resized () override;
-    void resizeToFit(int x, int y, int w, int h) override;
+
     bool intersectRect( Rectangle<int> rect) override;
     
     void mouseUp(const MouseEvent& event) override;
@@ -66,13 +66,17 @@ public:
     void h_flip(float ax, float ay) override;
     void v_flip(float ax, float ay) override;
 
+    virtual void rotateScoreComponent(float theta, float ax, float ay) override;
+    virtual void scaleScoreComponent(float scale_w, float scale_h) override;
+    
+    // void resizeToFit(int x, int y, int w, int h) override;
+    
     void rotatePath ( float theta, bool accum = true );
     void rotatePath ( float theta, float ax, float ay );
     virtual void accumTheta ( float theta ) {}
     
     inline Rectangle<float> getPathBounds() { return m_path_bounds; }
 
-    virtual void rotateScoreComponent(float theta, float ax, float ay) override;
     
     
 protected:

@@ -92,6 +92,30 @@ void EditSelectionBox::paint (Graphics& g)
     {
         getLookAndFeel().drawResizableFrame (g, getWidth(), getHeight(), borderSize);
     }
+    
+    // use palette technique to draw copy of symbols
+    /*
+    //g.setColour( Colours::white.withAlpha(0.7f) );
+    //g.fillRect( getParentComponent()->getLocalBounds() );
+    for ( auto c : *component_set )
+    {
+        //g.saveState();
+
+        g.setColour( Colours::red );
+        float relative_x = (float)(c->getX() - original_bounds.getX());
+        float relative_y = (float)(c->getY() - original_bounds.getY());
+       // g.setOrigin(relative_x * m_scale_w, relative_y * m_scale_h);
+        g.drawRect(relative_x * m_scale_w, relative_y * m_scale_h, c->getWidth() * m_scale_w, c->getHeight() * m_scale_w);
+        
+        //g.addTransform( AffineTransform::scale(m_scale_w, m_scale_h));
+        //c->setPreview(true);
+        //c->paint(g);
+        //c->setPreview(false);
+        //c->repaint();
+
+        //g.restoreState();
+    }
+     */
 }
 
 void EditSelectionBox::updateEditSelBox()
@@ -146,6 +170,22 @@ Rectangle<int> EditSelectionBox::getSelectionBounds()
     return Rectangle<int>(minx, miny, maxx-minx, maxy-miny);
 }
 
+
+Rectangle<int> EditSelectionBox::getPreviewBounds()
+{
+    // get the position an bounds of the group
+    int minx = getParentWidth(), maxx = 0, miny = getParentHeight(), maxy = 0;
+    for( auto it = preview_components.begin(); it != preview_components.end(); it++ )
+    {
+        Rectangle<int> compBounds = (*it)->getBounds();
+        minx =  min( minx, compBounds.getX() );
+        miny =  min( miny, compBounds.getY() );
+        maxx =  max( maxx, compBounds.getRight() );
+        maxy =  max( maxy, compBounds.getBottom() );
+    }
+    return Rectangle<int>(minx, miny, maxx-minx, maxy-miny);
+}
+
 void EditSelectionBox::mouseDown (const MouseEvent& e)
 {
     if (component_set->size() == 0)
@@ -156,6 +196,25 @@ void EditSelectionBox::mouseDown (const MouseEvent& e)
     prev_pos = e.getPosition();
     
     original_bounds = getBounds();
+
+    SymbolistHandler *sh = (*component_set)[0]->getSymbolistHandler();
+    
+    for( int i = 0; i < component_set->size(); i++ )
+    {
+        BaseComponent* b = (BaseComponent*)(*component_set)[i];
+        Symbol* s = new Symbol();
+        //*b->getScoreSymbolPointer()
+        b->addSymbolMessages(s, "");
+        original_symbols.set(i, s);
+        
+        BaseComponent *newB = sh->makeComponentFromSymbol(s, false);
+        newB->setTopLeftPosition( b->getPosition() - getPosition() );
+        newB->setSize( b->getWidth(), b->getHeight() );
+        newB->setSymbolComponentColor(Colours::red);
+        preview_components.set(i, newB);
+        addAndMakeVisible( newB );
+    }
+    
     
     /*
     if( e.mods.isAltDown() )
@@ -200,7 +259,6 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
     {
         
         auto centre = original_bounds.getCentre();
-        
         auto delta = getPosition() + e.getPosition() - centre;
         //printPoint(delta, "delta");
 
@@ -214,71 +272,144 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
         
         auto delta_rad = theta - m_prev_theta;
         m_prev_theta = theta;
+        m_accum_theta += delta_rad;
         
-        //cout << theta << " " << delta_rad << endl;
+        
+        
+        // rotation preview needs work, for now just rotating the real thing
+        
         for( auto it = component_set->begin(); it != component_set->end(); it++ )
         {
             (*it)->rotateScoreComponent( delta_rad, centre.getX(), centre.getY() );
         }
         
-        setBounds( getSelectionBounds() );
+        for( int i = 0; i < preview_components.size(); i++ )
+        {
+            SymbolistComponent *b = preview_components[i];
+            //SymbolistComponent *c = (*component_set)[i];
+            
+            auto relpt = original_bounds.getCentre() - original_bounds.getPosition();
+            
+            b->rotateScoreComponent( delta_rad, relpt.getX() - b->getX(), relpt.getY() - b->getY() );
+        }
+        
+        auto pbounds = getPreviewBounds();
+        setCentrePosition( centre );
+        setSize( pbounds.getWidth(), pbounds.getWidth() );
+        
         
     }
     else
     {
-        
         const Rectangle<int> scaledBounds = mouseZone.resizeRectangleBy( getBounds(), mouse_delta );
+        m_scale_w = (float)scaledBounds.getWidth() / (float)original_bounds.getWidth();
+        m_scale_h = (float)scaledBounds.getHeight() / (float)original_bounds.getHeight();
         
-        // printRect(scaledBounds, "scaledBounds");
-        
-        float relative_x, relative_y , relative_w, relative_h;
+        setBounds( scaledBounds );
 
-        if (scaledBounds.getWidth() > m_minw && scaledBounds.getHeight() > m_minh )
+        float relative_x, relative_y;
+        
+        if (getWidth() > m_minw && getHeight() > m_minh )
         {
-            for( auto it = component_set->begin(); it != component_set->end(); it++ )
+            
+            for( int i = 0; i < component_set->size(); i++ )
             {
-                // printRect((*it)->getBounds(), "comp");
-
-                relative_x = (float)((*it)->getX() - getX()) / (float)getWidth();
-                relative_y = (float)((*it)->getY() - getY()) / (float)getHeight();
-                relative_w = (float)(*it)->getWidth() / (float)getWidth();
-                relative_h = (float)(*it)->getHeight() / (float)getHeight();
-
+                SymbolistComponent *c = (*component_set)[i];
+                SymbolistComponent *b = preview_components[i];
                 
-                int new_rel_x = roundToInt(relative_x * (float)scaledBounds.getWidth());
-                int new_rel_y = roundToInt(relative_y * (float)scaledBounds.getHeight());
-                int new_w = roundToInt(relative_w * (float)scaledBounds.getWidth());
-                int new_h = roundToInt(relative_h * (float)scaledBounds.getHeight());
+                // this is the current relative info for this component
+                // if there is only one component the original bounds should be the same
+                relative_x = (float)(c->getX() - original_bounds.getX());
+                relative_y = (float)(c->getY() - original_bounds.getY());
                 
-                //printRect(Rectangle<float>(relative_x, relative_y, relative_w, relative_h), "relative");
-
-                Component::Positioner* const pos = (*it)->getPositioner();
-                if (pos)
-                {
-                    pos->applyNewBounds (Rectangle<int>(getX() + new_rel_x,
-                                                        getY() + new_rel_y,
-                                                        new_w,
-                                                        new_h));
-                }
-                else
-                {
-                 //   bool tmp = (*it)->isInEditMode();
-//                    (*it)->setEditMode(true);
-                    (*it)->setBounds(getX() + new_rel_x, getY() + new_rel_y, new_w, new_h);
-  //                  (*it)->setEditMode(tmp);
-                }
+                b->setTopLeftPosition(relative_x * m_scale_w, relative_y * m_scale_h);
+                b->setScoreComponentSize(c->getWidth(), c->getHeight());
+                b->scaleScoreComponent(m_scale_w, m_scale_h);
                 
             }
-            
-    //        printRect( getSelectionBounds(), "selection bounds");
-            setBounds( getSelectionBounds() );
         }
     }
 }
 
-void EditSelectionBox::mouseUp (const MouseEvent&)
+void EditSelectionBox::mouseUp (const MouseEvent& e)
 {
+    cout << "\n\nEditSelectionBox::mouseUp\n\n" << endl;
+    printRect(original_bounds, "original edit box");
+    printRect(getBounds(), "scaled edit box");
+
+    if( e.mods.isAltDown() ) // drag + alt = rotate
+    {
+        // in the future, I'd like to have the preview be separate from the mouse up actual symbol manipulation
+        // but for now, I'm just spinning the object directly
+        /*
+        auto centre = original_bounds.getCentre();
+        for( auto it = component_set->begin(); it != component_set->end(); it++ )
+        {
+            (*it)->rotateScoreComponent( m_accum_theta, centre.getX(), centre.getY() );
+        }*/
+    }
+    else
+    {
+
+        if (getWidth() > m_minw && getHeight() > m_minh )
+        {
+            float scale_w = (float)getWidth() / (float)original_bounds.getWidth();
+            float scale_h = (float)getHeight() / (float)original_bounds.getHeight();
+
+            
+            for( auto it = component_set->begin(); it != component_set->end(); it++ )
+            {
+                
+                SymbolistComponent *c = (*it);
+                
+                // this is the current relative info for this component
+                float relative_x = (float)(c->getX() - original_bounds.getX());
+                float relative_y = (float)(c->getY() - original_bounds.getY());
+                
+                // ratio of current w/h to scaled selected w/h
+                // relative_w = (float)c->getWidth() / (float)getWidth();
+                // relative_h = (float)c->getHeight() / (float)getHeight();
+                
+                //printRect(c->getBounds(), "comp");
+                //printRect(Rectangle<float>(relative_x, relative_y, relative_w, relative_h), "relative");
+                
+                
+                int new_rel_x = roundToInt(relative_x * (float)getWidth());
+                int new_rel_y = roundToInt(relative_y * (float)getHeight());
+                // float new_w = roundToInt(relative_w * scale_w);
+                // float new_h = roundToInt(relative_h * scale_h);
+                
+                
+               // cout << relative_w << " " << new_w << " " << relative_h << " " << new_h << endl;
+               // cout << "\t vs w " << (scale_w * c->getWidth()) << " h " << (scale_h * c->getHeight()) << endl;
+                cout << "for comp " << c << " " << c->getSymbolTypeStr() << endl;
+                printPoint(c->getPosition(), "current");
+                cout << c << " relative_x " << relative_x << " new_rel_x " << new_rel_x << " new x " << c->getX() + new_rel_x << endl;
+                cout << c << " relative_y " << relative_y << " new_rel_y " << new_rel_y << " new y " << c->getY() + new_rel_y << endl;
+                
+                c->setTopLeftPosition(getX() + relative_x * m_scale_w, getY() + relative_y * m_scale_h);
+                c->scaleScoreComponent(scale_w, scale_h);
+                
+                Component::Positioner* const pos = c->getPositioner();
+                if (pos)
+                {
+                    cout << "positioner not supported, let rama know if you see this message printed" << endl;
+                }
+                
+            }
+        }
+    }
+    
+    removeAllChildren();
+    preview_components.clear();
+    
     m_prev_theta = -111;
+    m_accum_theta = 0;
+    m_scale_w = 1;
+    m_scale_h = 1;
+    
+    cout << "---- end EditSelectionBox::mouseUp\n\n" << endl;
+
 }
 
 bool EditSelectionBox::hitTest (int x, int y)

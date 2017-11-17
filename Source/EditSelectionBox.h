@@ -4,6 +4,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SymbolistComponent.h"
 #include "PathHandleComponent.h"
+#include "Symbol.h"
 
 // adapted from JUCE ResizableBoarderComponent
 class EditSelectionBox  : public Component
@@ -119,6 +120,8 @@ public:
     
     void updateEditSelBox();
     Rectangle<int> getSelectionBounds();
+    Rectangle<int> getPreviewBounds();
+
     void flipSelectedSymbols( int axis );
 
     
@@ -132,21 +135,27 @@ protected:
     bool hitTest (int x, int y) override;
     
 private:
-    Array<SymbolistComponent*>  * component_set;
-        
+    Array<SymbolistComponent*>  *component_set;
+    
+    OwnedArray<Symbol> original_symbols;
+    OwnedArray<SymbolistComponent> preview_components;
+    
     BorderSize<int> borderSize;
 
     Zone mouseZone;
     Point<int> prev_pos;
     float m_prev_theta = -111;
+    float m_accum_theta = 0;
     
     Rectangle<int> original_bounds;
     
     void updateMouseZone (const MouseEvent&);
 
-
     int m_minw = 2;
     int m_minh = 2;
+    
+    float m_scale_w = 1.0;
+    float m_scale_h = 1.0;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EditSelectionBox)
 };

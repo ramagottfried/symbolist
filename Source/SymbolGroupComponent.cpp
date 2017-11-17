@@ -76,25 +76,6 @@ void SymbolGroupComponent::setEditMode( bool val )
     }
 }
 
-void SymbolGroupComponent::updateRelativeAttributes()
-{
-    updateRelativePos();
-    updateRelativeSize();
-    
-    // called by notify modify when exiting edit mode
-    // overridden here to iterate through subcomponent since only groups have subcomponents
-    
-    if( in_edit_mode )
-    {
-        for ( int i = 0; i < getNumSubcomponents(); i++ )
-        {
-            ((BaseComponent*)getSubcomponent(i))->updateRelativeAttributes();
-        }
-    }
-    
-}
-
-
 bool SymbolGroupComponent::intersectRect( Rectangle<int> rect)
 {
     for (int i = 0; i < getNumSubcomponents(); i++ )
@@ -109,15 +90,8 @@ void SymbolGroupComponent::h_flip(float ax, float ay)
     for (int i = 0; i < getNumSubcomponents(); i++ )
     {
         auto b = ((BaseComponent *)getSubcomponent(i));
-        b->h_flip(ax, ay);
-        
-        auto rel_b = b->getRelativeBounds();
-        auto new_x = 1.0 - (rel_b.getX() + rel_b.getWidth());
-        rel_b.setX( new_x );
-        
-        b->setRelativeBounds( rel_b );
+        b->h_flip(ax - getX(), ay - getY());
     }
-    updateSubcomponents();
 }
 
 void SymbolGroupComponent::v_flip(float ax, float ay)
@@ -125,33 +99,7 @@ void SymbolGroupComponent::v_flip(float ax, float ay)
     for (int i = 0; i < getNumSubcomponents(); i++ )
     {
         auto b = ((BaseComponent *)getSubcomponent(i));
-        b->v_flip(ax, ay);
-        
-        auto rel_b = b->getRelativeBounds();
-        auto new_y = 1.0 - (rel_b.getY() + rel_b.getHeight());
-        rel_b.setY( new_y );
-        
-        b->setRelativeBounds( rel_b );
-    }
-    updateSubcomponents();
-}
-
-void SymbolGroupComponent::resized ()
-{
-    auto pc = getPageComponent();
-    if ( !in_edit_mode && pc && ( pc->getEditedComponent() == pc|| pc->getEditedComponent() == getParentComponent() ) )
-    {
-        updateSubcomponents ();
-    }
-    
-    if( is_selected )
-    {
-        ((ScoreComponent*)getParentComponent())->reportModificationForSelectedSymbols();
-    }
-    
-    if( staff )
-    {
-        staff->repaint();
+        b->v_flip(ax - getX(), ay - getY());
     }
 }
 
@@ -192,6 +140,14 @@ void SymbolGroupComponent::rotateScoreComponent(float theta, float ax, float ay)
     in_edit_mode = temp;
 
 }
+
+void SymbolGroupComponent::scaleScoreComponent(float scale_w, float scale_h)
+{
+    BaseComponent::scaleScoreComponent(scale_w, scale_h);
+    
+    setSize(getWidth() * scale_w, getHeight() * scale_h);
+}
+
 
 
 /*============================*

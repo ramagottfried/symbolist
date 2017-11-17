@@ -60,8 +60,8 @@ public:
     }
     
     // not very happy with therm "Symbol" here
-    inline void setSymbolStrokeWeight( float s ){ strokeWeight = s; }
-    inline void setSymbolColor( Colour c ){ sym_color = c; }
+    inline void setSymbolComponentStrokeWeight( float s ){ strokeWeight = s; }
+    inline void setSymbolComponentColor( Colour c ){ sym_color = c; }
     
     
     // helper functions
@@ -84,6 +84,9 @@ public:
     virtual void setMaximalBounds ();
     
     virtual void resizeToFit(int x, int y, int w, int h);
+    virtual void scaleScoreComponent(float scale_w, float scale_h) override;
+    virtual void setScoreComponentSize(int w, int h) override;
+
     
     void selectComponent() override;
     void deselectComponent() override;
@@ -94,26 +97,29 @@ public:
     
     
     // this is all stuff for dealing with groups, maybe should be moved to SymbolGroupComponent?
+    /*
     void updateRelativePos();
     void updateRelativeSize();
     virtual void updateRelativeAttributes() override;
+     bool inPlaceForRelativeUpdates();
+     void addSubcomponent( SymbolistComponent *c ) override;
+    //void updateSubcomponents();
+     inline void setRelativeBounds( Rectangle<float> rect )
+     {
+     relative_x = rect.getX();
+     relative_y = rect.getY();
+     relative_w = rect.getWidth();
+     relative_h = rect.getHeight();
+     }
+     
+     inline Rectangle<float> getRelativeBounds()
+     {
+     return Rectangle<float>( relative_x, relative_y, relative_w, relative_h );
+     }
+     
+*/
+    
 
-    void updateSubcomponents();
-    void addSubcomponent( SymbolistComponent *c ) override;
-    bool inPlaceForRelativeUpdates();
-    
-    inline void setRelativeBounds( Rectangle<float> rect )
-    {
-        relative_x = rect.getX();
-        relative_y = rect.getY();
-        relative_w = rect.getWidth();
-        relative_h = rect.getHeight();
-    }
-    
-    inline Rectangle<float> getRelativeBounds()
-    {
-        return Rectangle<float>( relative_x, relative_y, relative_w, relative_h );
-    }
     
     inline void setStaffSelectionMode( bool state )
     {

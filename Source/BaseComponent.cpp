@@ -476,6 +476,8 @@ void BaseComponent::recursiveShrinkBounds()
 
 void BaseComponent::resizeToFit(int x, int y, int w, int h)
 {
+    
+    cout << "resizeToFit " <<  getSymbolTypeStr() << " w " << w << " h " << h << endl;
     float scale_w = (float)w / (float)getWidth();
     float scale_h = (float)h / (float)getHeight();
     

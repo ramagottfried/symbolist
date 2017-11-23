@@ -241,23 +241,30 @@ void TextGlphComponent::resizeToFit(int x, int y, int w, int h)
 
 void TextGlphComponent::scaleScoreComponent(float scale_w, float scale_h)
 {
+    printRect(getBounds(), getSymbolTypeStr() + " pre");
+
     float newHeight = scale_h * getHeight();
     m_font.setHeightWithoutChangingWidth( newHeight );
     
     float current_w = m_font.getStringWidthFloat(m_text);
-    if( current_w > 0 )
-    {
-        float current_scale = m_font.getHorizontalScale();
-        
-        if( current_scale > 0 )
-        {
-            m_font.setHorizontalScale( current_scale * scale_w );
-        }
-    }
     
+    float current_scale = m_font.getHorizontalScale();
+    float targetWidth = scale_w * getWidth() - 1;
+    float fontscale = targetWidth / current_w;
+    
+//    cout << "h scale 1 " << current_scale << " text width " << current_w << endl;
+    
+    m_font.setHorizontalScale( current_scale * fontscale );
+
     textobj->setFont( m_font );
     setSize( m_font.getStringWidth(m_text), newHeight );
     textobj->setBounds( getLocalBounds().translated(0, 0) );
+    
+    /*
+    cout << "h scale 2 " << m_font.getHorizontalScale() << " width " << m_font.getStringWidth(m_text) << endl;
+    printRect(getBounds(), getSymbolTypeStr() + " post" );
+    printRect(textobj->getBounds(), getSymbolTypeStr() + " inner");
+     */
 }
 
 

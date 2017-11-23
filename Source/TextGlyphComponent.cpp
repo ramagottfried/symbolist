@@ -120,6 +120,8 @@ void TextGlphComponent::importFromSymbol( const Symbol& s )
 {
     BaseComponent::importFromSymbol(s);
     
+    //s.printBundle();
+    
     int pos = s.getOSCMessagePos("/text");
     if( pos != -1 )
     {
@@ -129,7 +131,9 @@ void TextGlphComponent::importFromSymbol( const Symbol& s )
     pos = s.getOSCMessagePos("/font");
     if( pos != -1 )
     {
-        m_font = Font::fromString( s.getOSCMessageValue(pos).getString() );
+        String fontStr = s.getOSCMessageValue(pos).getString();
+        //cout << fontStr << endl;
+        m_font = Font::fromString( fontStr );
     }
 
     pos = s.getOSCMessagePos("/kerning");
@@ -255,8 +259,8 @@ void TextGlphComponent::scaleScoreComponent(float scale_w, float scale_h)
     float fontscale = targetWidth / current_w;
     
 //    cout << "h scale 1 " << current_scale << " text width " << current_w << endl;
-    
-    m_font.setHorizontalScale( current_scale * fontscale );
+    m_horz_scale = current_scale * fontscale;
+    m_font.setHorizontalScale( m_horz_scale );
 
     textobj->setFont( m_font );
     setSize( newWidth, newHeight );

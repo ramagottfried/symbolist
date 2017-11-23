@@ -34,8 +34,8 @@ void SymbolPropertiesPanel::change_callback( const OSCMessage& msg)
     }
     
     s->setOSCBundle( &newBundle );
-    cout << "UPDATE " << endl;
-    s->printBundle();
+    //cout << "UPDATE " << endl;
+    //s->printBundle();
     
     symbolist_handler->updateSymbolFromInspector( symbol_component );
     

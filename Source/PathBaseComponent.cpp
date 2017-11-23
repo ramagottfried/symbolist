@@ -122,20 +122,17 @@ void PathBaseComponent::resizeToFit(int x, int y, int w, int h)
 // Juce callback
 void PathBaseComponent::resized()
 {
-    cout << "PathBaseComponent::resized()" << endl;
+//    cout << "PathBaseComponent::resized()" << endl;
 
     BaseComponent::resized();
     
-    /*
     if( ! in_edit_mode )
     {
-        
-        resizeToFit(getLocalBounds().getX(),
-                    getLocalBounds().getY(),
-                    getLocalBounds().getWidth(),
-                    getLocalBounds().getHeight());
-    
-    }*/
+        resizeToFit(getX(),
+                    getY(),
+                    getWidth(),
+                    getHeight());
+    }
 }
 
 

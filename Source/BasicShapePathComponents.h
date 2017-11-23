@@ -100,8 +100,11 @@ public:
                 
             pos = s.getOSCMessagePos("/stroke/thickness");
             if( pos != -1  )
-                strokeType.setStrokeThickness( Symbol::getOSCValueAsFloat( s.getOSCMessageValue(pos) ) );
-
+            {
+                strokeWeight = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(pos) );
+                strokeType.setStrokeThickness( strokeWeight );
+            }
+            
             // rotation needs to be set before BaseComponent::import calls setBoundsFromSymbol
             pos = s.getOSCMessagePos("/rotation");
             if( pos != -1  )

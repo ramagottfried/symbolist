@@ -241,9 +241,11 @@ void TextGlphComponent::resizeToFit(int x, int y, int w, int h)
 
 void TextGlphComponent::scaleScoreComponent(float scale_w, float scale_h)
 {
-    printRect(getBounds(), getSymbolTypeStr() + " pre");
+    //printRect(getBounds(), getSymbolTypeStr() + " pre");
 
     float newHeight = scale_h * getHeight();
+    float newWidth = scale_w * getWidth();
+
     m_font.setHeightWithoutChangingWidth( newHeight );
     
     float current_w = m_font.getStringWidthFloat(m_text);
@@ -257,7 +259,7 @@ void TextGlphComponent::scaleScoreComponent(float scale_w, float scale_h)
     m_font.setHorizontalScale( current_scale * fontscale );
 
     textobj->setFont( m_font );
-    setSize( m_font.getStringWidth(m_text), newHeight );
+    setSize( newWidth, newHeight );
     textobj->setBounds( getLocalBounds().translated(0, 0) );
     
     /*

@@ -532,8 +532,7 @@ void SymbolistHandler::updateSymbolFromInspector( BaseComponent *c)
 {
     c->importFromSymbol( *c->getScoreSymbolPointer() );
     modifySymbolInScore( c );
-    
-    
+    //repaint is called in modify symbol
 }
 
 void SymbolistHandler::convertSelectedToStaff()

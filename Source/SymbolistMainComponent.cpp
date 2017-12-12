@@ -11,6 +11,9 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
     
     symbolist_handler = sh;
     
+    setLookAndFeel( &look_and_feel );
+
+    
     updatePaletteView();
     
     score_viewport.setViewedComponent( &scoreView, false );
@@ -47,13 +50,15 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
     
     setSize (600, 400);
     
-    setLookAndFeel( &look_and_feel );
+    
 
 }
 
 
 SymbolistMainComponent::~SymbolistMainComponent()
 {
+    setLookAndFeel(nullptr);
+    
     paletteView.deleteAllChildren();
     inspector->removeAllChildren();
 }

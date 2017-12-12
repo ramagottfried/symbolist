@@ -8,7 +8,7 @@ public:
     
     SymbolistLookAndFeel()
     {
-        LookAndFeel_V4::LookAndFeel_V4();
+        //LookAndFeel_V4::LookAndFeel_V4();
         
         // not sure why this has to be set twice, once here and again in the OSC property components ? weird
         

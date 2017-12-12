@@ -187,9 +187,10 @@ int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address 
         s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/str",    p->toString())  );
         s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/length", p->getLength()) );
 
-        auto sub_bounds = Sym_PathBounds( *p );
-        s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/time/start",    s->pixelsToTime( sub_bounds.getX() ) ) );
-        s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/time/duration", s->pixelsToTime( sub_bounds.getWidth() ) ) );
+        /* time is set by staff now */
+//        auto sub_bounds = Sym_PathBounds( *p );
+//        s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/time/start",    s->pixelsToTime( sub_bounds.getX() ) ) );
+//        s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/time/duration", s->pixelsToTime( sub_bounds.getWidth() ) ) );
         
         s->addOSCMessage ((String(base_address) += "/fill") ,   m_fill   );
 

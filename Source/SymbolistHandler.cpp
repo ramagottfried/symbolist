@@ -59,24 +59,11 @@ void SymbolistHandler::symbolistAPI_freeSymbolist()
 void SymbolistHandler::symbolistAPI_openWindow()
 {
     
-   cout << "this thread " << Thread::getCurrentThread() << endl;
+    cout << "this thread " << Thread::getCurrentThread() << endl;
     cout << "this message manager instance  " << MessageManager::getInstance() << endl;
     
     const MessageManagerLock mml;
 
-  /*
-    //MessageManager::getInstance	();
-
-    
-    MessageManagerLock mml (Thread::getCurrentThread());
-    
-    if (! mml.lockWasGained())
-    {
-        printf("no lock!\n");
-        return; // another thread is trying to kill us!
-    }
-    */
-    
     main_window = new SymbolistMainWindow (this);
     main_component_ptr = main_window->getMainComponent();
 

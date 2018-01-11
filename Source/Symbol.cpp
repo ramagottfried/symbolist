@@ -4,6 +4,12 @@
 
 Symbol::Symbol () {};
 
+Symbol::Symbol(const Symbol& other)
+{
+    osc_bundle = other.osc_bundle;
+}
+
+
 Symbol::Symbol (const String & type, float x, float y, float w, float h)
 {
     addOSCMessage("/type",  type);

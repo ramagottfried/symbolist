@@ -11,6 +11,26 @@ Score::Score() : time_points(this)
     cout << "score " << this << " " << score_symbols.size() << endl;
 }
 
+Score::Score(Score& src) : time_points(this)
+{
+    
+    for( Symbol* s : src.score_symbols )
+    {
+        score_symbols.add( new Symbol(*s) );
+    }
+    
+    
+    for( SymbolTimePoint* t : src.time_points )
+    {
+        time_points.add( &(*t) );
+    }
+    
+    
+    staves = src.staves;
+    
+    cout << "copying score " << this << " " << score_symbols.size() << endl;
+}
+
 Score::Score( int n, odot_bundle **bundle_array ) : time_points(this)
 {
     importScoreFromOSC( n, bundle_array );

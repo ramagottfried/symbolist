@@ -45,7 +45,9 @@ void SymbolistMenu::getAllCommands (Array<CommandID>& commands)
         cmd_nudgeLeft,
         cmd_nudgeRight,
         cmd_nudgeUp,
-        cmd_nudgeDown
+        cmd_nudgeDown,
+        cmd_undo,
+        cmd_redo
     };
     
     commands.addArray (ids, numElementsInArray (ids));
@@ -165,6 +167,15 @@ void SymbolistMenu::getCommandInfo (CommandID commandID, ApplicationCommandInfo&
             result.addDefaultKeypress ('t',  ModifierKeys::noModifiers );
             break;
             
+        case cmd_undo:
+            result.setInfo ("undo", String(), String(), 0);
+            result.addDefaultKeypress ('z',  ModifierKeys::ctrlModifier );
+            break;
+            
+        case cmd_redo:
+            result.setInfo ("redo", String(), String(), 0);
+            result.addDefaultKeypress ('y',  ModifierKeys::ctrlModifier );
+            break;
             
         default:
             result.setInfo ("undefined", "", "", 0);
@@ -297,6 +308,14 @@ bool SymbolistMenu::perform (const juce::ApplicationCommandTarget::InvocationInf
                 main->getSymbolistHandler()->symbolistAPI_toggleTimeCusor();
                 break;
                 
+            case cmd_undo:
+                main->getSymbolistHandler()->undo();
+                break;
+            
+            case cmd_redo:
+                main->getSymbolistHandler()->redo();
+                break;
+                
             default:
                 return false;
         }
@@ -328,6 +347,9 @@ PopupMenu SymbolistMenu::getMenuForIndex (int menuIndex, const String& /*menuNam
     }
     else if (menuIndex == 1)
     {
+        menu.addCommandItem (commandManager, cmd_undo);
+        menu.addCommandItem (commandManager, cmd_redo);
+
         menu.addCommandItem (commandManager, cmd_esc);
         
         menu.addSeparator();

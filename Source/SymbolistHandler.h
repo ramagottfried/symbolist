@@ -86,7 +86,7 @@ public:
     void clearInspector();
     
     void updateSymbolFromInspector( BaseComponent *c );
-    const StringArray getStaves() { return score.getStaves(); }
+    const StringArray getStaves() { return score->getStaves(); }
     
     void convertSelectedToStaff();
     StaffComponent* getStaveAtTime( float time );
@@ -106,28 +106,39 @@ public:
     void inStandalone(){ in_standalone = true; };
     bool isStandalone(){ return in_standalone; };
 
-    const TimePointArray* getTimePointArray() const { return score.getTimePointArray(); }
-    void removeTimePointsForSymbol( Symbol *s ){ score.removeSymbolTimePoints( s ); }
+    const TimePointArray* getTimePointArray() const { return score->getTimePointArray(); }
+    void removeTimePointsForSymbol( Symbol *s ){ score->removeSymbolTimePoints( s ); }
     
     void copySelectedToClipBoard();
     void newFromClipBoard();
+
+    void log_score_change();
+    void push_undo_stack();
+    void push_redo_stack();
     
+    void undo();
+    void redo();
+
     
     int symbolNameCount( String& name )
     {
-        return score.getNameCount( name );
+        return score->getNameCount( name );
     }
     
     bool uniqueIDCheck( String& name )
     {
-        return !score.idExists( name );
+        return !score->idExists( name );
     }
     
 private:
     
     
-    Score score;
+    ScopedPointer<Score> score;
 
+    OwnedArray<Score> undo_stack;
+    OwnedArray<Score> redo_stack;
+    
+    
     // the palette is an array of symbol 'templates'
     SymbolistPalette                    palette;
     

@@ -29,6 +29,7 @@ class Score
 public:
     
     Score();
+    Score( Score& src );
     Score( int n, odot_bundle** bundle_array ) ;
     ~Score();
     
@@ -100,7 +101,7 @@ private:
     ScoreSorter                 score_sorter;
     
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Score)
+    JUCE_LEAK_DETECTOR (Score)
 };
 
 

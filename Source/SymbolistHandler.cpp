@@ -12,6 +12,8 @@
 
 SymbolistHandler::SymbolistHandler()
 {
+    score = new Score();
+    
     // create two default items
     float symbol_size = 30.0;
     float symbol_pos = 0.0;
@@ -36,6 +38,7 @@ SymbolistHandler::~SymbolistHandler()
     cout << "deleting symbolist handler, main comp pointer:" << main_component_ptr <<  " window " << main_window << endl;
     if ( main_component_ptr != NULL )
         symbolistAPI_closeWindow();
+    
     
 }
 
@@ -129,17 +132,17 @@ void SymbolistHandler::symbolistAPI_registerTransportCallback(symbolistTransport
 
 int SymbolistHandler::symbolistAPI_getNumSymbols()
 {
-    return static_cast<int>( score.getSize() );
+    return static_cast<int>( score->getSize() );
 }
 
 odot_bundle* SymbolistHandler::symbolistAPI_getSymbol(int n)
 {
-    return score.getSymbol(n)->exportToOSC();
+    return score->getSymbol(n)->exportToOSC();
 }
 
 StringArray SymbolistHandler::symbolistAPI_getSymbolString(int n)
 {
-    odot_bundle *bndl = score.getSymbol(n)->exportToOSC();
+    odot_bundle *bndl = score->getSymbol(n)->exportToOSC();
     OSCReader osc( bndl->data, bndl->len );
  
     OSCBundle osc_b = osc.readBundle( osc.getTotalLength()  );
@@ -176,7 +179,7 @@ void SymbolistHandler::symbolistAPI_setOneSymbol( odot_bundle *bundle)
     
     Symbol *s = new Symbol();
     s->importFromOSC( bundle );
-    score.addSymbol(s);
+    score->addSymbol(s);
     
     if ( main_component_ptr != nullptr )
     {
@@ -195,7 +198,7 @@ void SymbolistHandler::symbolistAPI_setSymbols(int n, odot_bundle **bundle_array
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
     
-    score.importScoreFromOSC(n, bundle_array);
+    score->importScoreFromOSC(n, bundle_array);
     
     if ( main_component_ptr != NULL)
     {
@@ -262,7 +265,7 @@ void SymbolistHandler::symbolistAPI_toggleTimeCusor()
 
 StaffComponent* SymbolistHandler::getStaveAtTime( float time )
 {
-    if( Symbol *stave_sym = score.getStaveAtTime( time ) )
+    if( Symbol *stave_sym = score->getStaveAtTime( time ) )
     {
         Component *c =  main_component_ptr->getPageComponent()->findChildWithID( stave_sym->getID() );
         if( c )
@@ -280,25 +283,25 @@ StaffComponent* SymbolistHandler::getStaveAtTime( float time )
 
 odot_bundle* SymbolistHandler::symbolistAPI_getSymbolsAtTime( float t )
 {
-    return score.getSymbolsAtTime(t);
+    return score->getSymbolsAtTime(t);
 }
 
 
 odot_bundle* SymbolistHandler::symbolistAPI_getdurationBundle()
 {
-    return score.getDurationBundle();
+    return score->getDurationBundle();
 }
 
 
 odot_bundle* SymbolistHandler::symbolistAPI_getScoreBundle()
 {
-    return score.getScoreBundle();
+    return score->getScoreBundle();
 }
 
 /*
 odot_bundle* SymbolistHandler::symbolistAPI_getTimePointBundle()
 {
-    return score.getScoreBundle();
+    return score->getScoreBundle();
 }
 */
 
@@ -310,7 +313,7 @@ void SymbolistHandler::symbolistAPI_clearScore()
     {
         main_component_ptr->getPageComponent()->clearAllSubcomponents();
     }
-    score.removeAllSymbols();
+    score->removeAllSymbols();
 }
 
 
@@ -422,7 +425,7 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
                 */
                 
                 c->setScoreSymbolPointer( s );
-                score.addStaff( s ); // << /type checked internally and added if staff
+                score->addStaff( s ); // << /type checked internally and added if staff
 
             }
         }
@@ -434,10 +437,10 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
 void SymbolistHandler::addComponentsFromScore ( )
 {
     // recreate and add components from score symbols
-    std::cout << "ADDING " << score.getSize() << " SYMBOLS" << std::endl;
-    for (int i = 0; i < score.getSize(); i++)
+    std::cout << "ADDING " << score->getSize() << " SYMBOLS" << std::endl;
+    for (int i = 0; i < score->getSize(); i++)
     {
-        Symbol *s = score.getSymbol(i);
+        Symbol *s = score->getSymbol(i);
         BaseComponent* c = makeComponentFromSymbol( s, false );
         main_component_ptr->getPageComponent()->addSubcomponent(c);
         c->setScoreSymbolPointer( s );
@@ -453,7 +456,9 @@ void SymbolistHandler::addSymbolToScore ( BaseComponent* c )
 {
     assert ( c->getScoreSymbolPointer() != NULL ) ;
     //cout << "ADDING SYMBOL FOR " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
-    score.addSymbol( c->getScoreSymbolPointer() );
+    log_score_change();
+
+    score->addSymbol( c->getScoreSymbolPointer() );
     
     executeUpdateCallback( -1 );
     
@@ -467,25 +472,31 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
     Symbol *s = c->getScoreSymbolPointer();
     assert ( s != NULL ) ; // that's not normal
     
+    log_score_change();
+
     // cout << "removeSymbolFromScore" << endl;
     //s->printBundle();
 
     if( main_component_ptr )
         main_component_ptr->clearInspector();
     
-    score.removeSymbolTimePoints( s );
-    score.removeSymbol( s );
+    score->removeSymbolTimePoints( s );
+    score->removeSymbol( s );
     
     c->setScoreSymbolPointer( NULL );
     executeUpdateCallback( -1 );
     
 }
 
+
 /*
  *  the component has changed, and so we need to update it's symbol bundle
  */
 void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
 {
+    
+    log_score_change();
+    
     // get pointer to symbol attached to component
     Symbol *s = c->getScoreSymbolPointer();
     assert ( s != NULL ) ;
@@ -495,7 +506,7 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
 
     
     // remove current time point for symbol, or if stave remove all symbol timepoints on stave
-    score.removeSymbolTimePoints( s );
+    score->removeSymbolTimePoints( s );
     
     // clear the bundle attached to the component (since the component has been updated)
     s->clearOSCBundle();
@@ -506,21 +517,91 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     if( s->getType() == "staff" )
     {
         // if the type is "staff" resort the stave order and update time point array
-        score.updateStavesAndTimepoints();
+        score->updateStavesAndTimepoints();
     }
     else
     {
         // if the type is not a staff, add the time points for the symbol
-        score.addSymbolTimePoints( s );
+        score->addSymbolTimePoints( s );
     }
     
     
-    executeUpdateCallback( score.getSymbolPosition( s ) );
+    executeUpdateCallback( score->getSymbolPosition( s ) );
     
     c->repaint();
     
 }
 
+
+/***
+ * called when something is changed, added, deleted (not but not undo)
+ ***/
+void SymbolistHandler::log_score_change()
+{
+    redo_stack.clear();
+    push_undo_stack();
+}
+
+
+void SymbolistHandler::push_undo_stack()
+{
+    undo_stack.add( new Score( *score ) );
+    
+    if( undo_stack.size() > 10 )
+    {
+        undo_stack.remove( 0 );
+    }
+}
+
+/***
+ * when undo is called, move current state to redo_stack
+ ***/
+void SymbolistHandler::push_redo_stack()
+{
+    redo_stack.add( new Score( *score ) );
+}
+
+
+void SymbolistHandler::undo()
+{
+    if( undo_stack.size() > 0 )
+    {
+        const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
+        
+        if ( main_component_ptr != NULL )
+        {
+            push_redo_stack();
+
+            main_component_ptr->getPageComponent()->clearAllSubcomponents();
+            score->removeAllSymbols();
+            score = undo_stack.removeAndReturn( undo_stack.size() - 1 );
+            
+            addComponentsFromScore();
+            main_component_ptr->repaint();
+        }
+        
+    }
+}
+
+void SymbolistHandler::redo()
+{
+    if( redo_stack.size() > 0 )
+    {
+        const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
+        
+        if ( main_component_ptr != NULL )
+        {
+            push_undo_stack();
+
+            main_component_ptr->getPageComponent()->clearAllSubcomponents();
+            score->removeAllSymbols();
+            score = redo_stack.removeAndReturn( redo_stack.size() - 1 );
+            addComponentsFromScore();
+            main_component_ptr->repaint();
+        }
+        
+    }
+}
 
 void SymbolistHandler::addToInspector( BaseComponent *c )
 {

@@ -17,7 +17,7 @@ public:
     
     Symbol();
     Symbol(const String &type, float x, float y, float w, float h );
-    Symbol(const Symbol& other) = default;
+    Symbol(const Symbol& other);
     ~Symbol()
     {
 //        std::cout << "deleting symbol " << this << std::endl;

@@ -45,7 +45,11 @@ public:
         cmd_nudgeLeft               = 0x2016,
         cmd_nudgeRight              = 0x2017,
         cmd_nudgeUp                 = 0x2018,
-        cmd_nudgeDown               = 0x2019
+        cmd_nudgeDown               = 0x2019,
+        cmd_undo                    = 0x2020,
+        cmd_redo                    = 0x2021
+
+
     };
     
 private:

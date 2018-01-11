@@ -202,7 +202,7 @@
 				LIBRARY_SEARCH_PATHS = ../../Builds/MacOSX/build/Debug/;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"-g",
 					"-DNO_TRANSLATION_SUPPORT",
@@ -269,13 +269,13 @@
 				LIBRARY_SEARCH_PATHS = ../../Builds/MacOSX/build/Debug/;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"-g",
 					"-DNO_TRANSLATION_SUPPORT",
 				);
 				OTHER_LDFLAGS = "@$(C74SUPPORT)/max-includes/c74_linker_flags.txt";
-				PRELINK_LIBS = ../../Builds/MacOSX/build/Debug/libsymbolist.a;
+				PRELINK_LIBS = ../../Builds/MacOSX/build/Release/libsymbolist.a;
 				SDKROOT = macosx;
 				VALID_ARCHS = "x86_64 i386";
 				WARNING_CFLAGS = (

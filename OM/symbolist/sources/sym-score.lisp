@@ -71,7 +71,7 @@
 (defmethod object-has-editor ((self sym-score)) t)
 (defmethod get-editor-class ((self sym-score)) 'sym-editor)
 
-(defclass sym-editor (OMEditor) 
+(defclass sym-editor (OMEditor play-editor-mixin) 
   ((symbolist-handler :accessor symbolist-handler :initform nil)))
 
 (defvar *symbolist-editors* nil)
@@ -80,6 +80,8 @@
   #'(lambda () (mapc '#(lambda (ed) (editor-close ed) sleep 1) *symbolist-editors*)))
 
 (add-om-exit-action 'close-all-symbolist-editors)
+
+; (symbolist::symbolistopenwindow (symbolist::symbolistNew))
 
 (defmethod open-editor-window ((self sym-editor))
   (if (symbolist-handler self)
@@ -100,6 +102,7 @@
       (push self *symbolist-editors*)
       (symbolist::symbolistWindowSetName s-editor (editor-window-title self))
       (symbolist::symbolist-register-callbacks s-editor)
+      
       (sym-score-free-score-pointer sscore score-ptr)
       
       nil)))
@@ -189,7 +192,7 @@
 
 
 (defmethod get-action-list-for-play ((self sym-score) interval &optional parent)
-  ;;; add some symboist time-updates
+  ;;; add some symbolist time-updates
   (let ((ed (find self *symbolist-editors* :key 'object-value)))
     (if (and ed (symbolist-handler ed))
         (sort 

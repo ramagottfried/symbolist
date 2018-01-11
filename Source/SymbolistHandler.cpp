@@ -50,6 +50,8 @@ SymbolistHandler::~SymbolistHandler()
 // return the new SymbolistHandler
 SymbolistHandler* SymbolistHandler::symbolistAPI_newSymbolist()
 {
+    cout << "this message manager instance  " << MessageManager::getInstance() << endl;
+
     return new SymbolistHandler ();
 }
 

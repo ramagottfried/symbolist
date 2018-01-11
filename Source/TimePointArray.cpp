@@ -791,6 +791,11 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                         for( int i = 0; i < npaths; i++)
                         {
                             
+                            auto path_addr ="/path/" + String(i);
+                            auto xy = lookupPathPoint(s, path_addr, time_ratio );
+                            bndl.addElement( OSCMessage( s_prefix + "/path/" + (String)i + "/lookup/xy", xy.x, xy.y ) );
+
+                            /*
                             String start_addr = "/path/" + String(i) + "/time/start" ;
                             int start_oscpos = s->getOSCMessagePos( start_addr );
                             s->symbol_parse_error( start_oscpos, start_addr );
@@ -808,6 +813,7 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                                 auto xy = lookupPathPoint( s, i, offset_time, start, dur );
                                 bndl.addElement( OSCMessage( s_prefix + "/path/" + (String)i + "/lookup/xy", xy.x, xy.y ) );
                             }
+                             */
 
                         }
                     }

@@ -505,6 +505,7 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     
     if( s->getType() == "staff" )
     {
+        cout << "type staff " << endl;
         // if the type is "staff" resort the stave order and update time point array
         score.updateStavesAndTimepoints();
     }

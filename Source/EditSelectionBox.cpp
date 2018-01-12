@@ -196,6 +196,7 @@ void EditSelectionBox::mouseDown (const MouseEvent& e)
     prev_pos = e.getPosition();
     
     original_bounds = getBounds();
+    printRect(original_bounds, "org bounds");
 
     SymbolistHandler *sh = (*component_set)[0]->getSymbolistHandler();
     
@@ -276,29 +277,40 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
         
         
         // rotation preview needs work, for now just rotating the real thing
-
+/*
         for( auto it = component_set->begin(); it != component_set->end(); it++ )
         {
             (*it)->rotateScoreComponent( delta_rad, centre.getX(), centre.getY() );
         }
         setBounds( getSelectionBounds() );
+*/
         
-        /*
+        // rotate offsets internally for it's current position,
+        // but since these are sub components we need to set the rotation point in terms relative to the parent bounds
+        auto centre_offset = centre - getPosition();
+
         for( int i = 0; i < preview_components.size(); i++ )
         {
             SymbolistComponent *b = preview_components[i];
-            SymbolistComponent *c = (*component_set)[i];
-            
-            auto relpt = original_bounds.getCentre() - original_bounds.getPosition();
-            
-            //b->rotateScoreComponent( delta_rad, relpt.getX() - c->getX(), relpt.getY() - c->getY() );
-            
-            b->setTransform( AffineTransform::rotation(theta, relpt.getX() - c->getX(), relpt.getY() - c->getY() ) );
+            b->rotateScoreComponent( delta_rad, centre_offset.getX(), centre_offset.getY() );
+
+         /* this was experimental version where I returned the unapplied bounds of the rotated path for the preview, the tranform is faster than actually rotating, but it's more complicated, and has some ugly side effects when scaling
+            b->setTransform( AffineTransform::rotation(theta, relpt.getX(), relpt.getY() ) );
+            b->setBounds( c->rotateScoreComponent( m_prev_theta, centre.getX(), centre.getY(), false ) );
+           */
         }
         auto pbounds = getPreviewBounds();
         setCentrePosition( centre );
         setSize( pbounds.getWidth(), pbounds.getWidth() );
-        */
+        
+        for( int i = 0; i < preview_components.size(); i++ )
+        {
+            SymbolistComponent *b = preview_components[i];
+            printPoint(b->getPosition(), "post pos");
+        //    b->setTopLeftPosition( b->getPosition() - pbounds.getPosition() );
+        }
+
+        printRect(getPreviewBounds() + getPosition(), "new bounds");
         
     }
     else
@@ -324,12 +336,12 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
                 relative_x = (float)(c->getX() - original_bounds.getX());
                 relative_y = (float)(c->getY() - original_bounds.getY());
                 
-                b->setTransform( AffineTransform::scale(m_scale_w, m_scale_h).translated(relative_x * m_scale_w, relative_y * m_scale_h) );
-                /*
-                b->setTopLeftPosition(, relative_y * m_scale_h);
+//                b->setTransform( AffineTransform::scale(m_scale_w, m_scale_h).translated(relative_x * m_scale_w, relative_y * m_scale_h) );
+
+                b->setTopLeftPosition(relative_x * m_scale_w, relative_y * m_scale_h);
                 b->setScoreComponentSize(c->getWidth(), c->getHeight());
                 b->scaleScoreComponent(m_scale_w, m_scale_h);
-                */
+
             }
         }
     }
@@ -343,14 +355,12 @@ void EditSelectionBox::mouseUp (const MouseEvent& e)
 
     if( e.mods.isAltDown() ) // drag + alt = rotate
     {
-        // in the future, I'd like to have the preview be separate from the mouse up actual symbol manipulation
-        // but for now, I'm just spinning the object directly
-        /*
         auto centre = original_bounds.getCentre();
         for( auto it = component_set->begin(); it != component_set->end(); it++ )
         {
-            (*it)->rotateScoreComponent( m_accum_theta, centre.getX(), centre.getY() );
-        }*/
+            SymbolistComponent *c = (*it);
+            c->rotateScoreComponent( m_accum_theta, centre.getX(), centre.getY() ); // rotateScoreComponent uses the coordinate system of the parent)
+        }
     }
     else
     {
@@ -403,6 +413,8 @@ void EditSelectionBox::mouseUp (const MouseEvent& e)
             }
         }
     }
+    
+    setBounds( getSelectionBounds() );
     
     removeAllChildren();
     preview_components.clear();

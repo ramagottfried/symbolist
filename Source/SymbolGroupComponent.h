@@ -25,7 +25,7 @@ public:
     void h_flip(float ax, float ay) override;
     void v_flip(float ax, float ay) override;
 
-    virtual void rotateScoreComponent(float theta, float ax, float ay) override;
+    virtual void rotateScoreComponent(float theta, float ax, float ay ) override;
     virtual void scaleScoreComponent(float scale_w, float scale_h) override;
 
 

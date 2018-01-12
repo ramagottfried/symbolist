@@ -103,6 +103,7 @@ void SymbolGroupComponent::v_flip(float ax, float ay)
     }
 }
 
+// note: rotateScoreComponent uses the coordinate system of the parent)
 void SymbolGroupComponent::rotateScoreComponent(float theta, float ax, float ay)
 {
     // cout << "group rotate ref point " << ax - getX() << " " << ay - getY() << endl;

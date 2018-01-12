@@ -874,18 +874,23 @@ void PathBaseComponent::rotatePath ( float theta, bool accum )
     repaint(); 
 }
 
-
-void PathBaseComponent::rotateScoreComponent(float theta, float ax, float ay)
+// note: rotateScoreComponent uses the coordinate system of the parent)
+void PathBaseComponent::rotateScoreComponent( float theta, float ax, float ay )
 {
+    
     cout << this << " path rotate ref point" << " " << ax - getX() << " " << ay - getY() << endl;
     
     //printRect(m_path_bounds, "m_path_bounds 1");
     
     accumTheta(theta);
     
+    // returns copy of merged class member path
     Path m_path = mergePathArray();
+    
+    // apply rotation
     m_path.applyTransform( AffineTransform().rotation( theta, ax - getX(), ay - getY()) );
-    makePathArrayFromPath(m_path);
+    
+    makePathArrayFromPath(m_path); // only needed if there are multiple subpaths, set class member (m_path_array)
     updatePathBounds();
     
     //printRect(m_path_bounds, "m_path_bounds 2");
@@ -901,9 +906,7 @@ void PathBaseComponent::rotateScoreComponent(float theta, float ax, float ay)
     setBounds( symbol_bounds + getPosition() );
     in_edit_mode = temp;
     
-    //printRect( symbol_bounds + getPosition(), "new path bounds ");
 }
-
 
 void PathBaseComponent::scaleScoreComponent(float scale_w, float scale_h)
 {

@@ -35,7 +35,8 @@ public:
     void addCubicSegment( const Path::Iterator& it, const float ax, const float ay);
     void addQuadraticSegment( const Path::Iterator& it, const float ax, const float ay);
 
-
+    Rectangle<float> getRect(){ return Rectangle<float>( getX(), getY(), getWidth(), getHeight() ); }
+    
 private:
     bool has_position = false;
 

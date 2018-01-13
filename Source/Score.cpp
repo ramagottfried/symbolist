@@ -19,11 +19,7 @@ Score::Score(Score& src) : time_points(this)
         score_symbols.add( new Symbol(*s) );
     }
     
-    
-    for( SymbolTimePoint* t : src.time_points )
-    {
-        time_points.add( &(*t) );
-    }
+    time_points = src.time_points;
     
     
     staves = src.staves;

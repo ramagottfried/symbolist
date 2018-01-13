@@ -16,15 +16,14 @@ Score::Score(Score& src) : time_points(this)
     
     for( Symbol* s : src.score_symbols )
     {
-        score_symbols.add( new Symbol(*s) );
+        Symbol *new_sym = new Symbol(*s);
+        score_symbols.add( new_sym );
+        addStaff( new_sym );
     }
     
-    time_points = src.time_points;
+    updateStavesAndTimepoints();
     
-    
-    staves = src.staves;
-    
-    cout << "copying score " << this << " " << score_symbols.size() << endl;
+    cout << "copying score " << this << " " << score_symbols.size() << " n staves " << staves.size() << endl;
 }
 
 Score::Score( int n, odot_bundle **bundle_array ) : time_points(this)

@@ -18,14 +18,14 @@ struct SymbolTimePoint
         time = t;
         staff_ref = staff;
     }
-    
+    /*
     SymbolTimePoint(SymbolTimePoint& src) // same as = default?
     {
         time = src.time;
         staff_ref = src.staff_ref;
         symbols_at_time = src.symbols_at_time;
     }
-    
+    */
     ~SymbolTimePoint(){ cout << "deleting timepoint " << time << endl; }
     
     void removeSymbol( Symbol * s)
@@ -47,7 +47,7 @@ struct SymbolTimePoint
 
     
 private:
-    JUCE_LEAK_DETECTOR (SymbolTimePoint)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolTimePoint)
     
 };
 
@@ -59,6 +59,7 @@ public:
         score_ptr = s;
     }
     
+    /*
     TimePointArray(TimePointArray& t)
     {
         score_ptr = t.score_ptr;
@@ -81,7 +82,7 @@ public:
         
         return *this;
     }
-    
+    */
     ~TimePointArray() = default;
     
     void printTimePoints();
@@ -153,5 +154,5 @@ private:
     vector< pair<const Symbol*,const Symbol*>>  voice_staff_vector;
 
 
-    JUCE_LEAK_DETECTOR (TimePointArray)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimePointArray)
 };

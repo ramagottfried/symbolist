@@ -29,7 +29,6 @@ class SortedStaves
 public:
     
     SortedStaves();
-    SortedStaves( SortedStaves& ) = default;
     ~SortedStaves();
     
     void clear();
@@ -49,7 +48,7 @@ private:
     
     vector<Symbol*>     staves;
     
-    JUCE_LEAK_DETECTOR (SortedStaves)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SortedStaves)
 };
 
 #endif /* SortedStaves_hpp */

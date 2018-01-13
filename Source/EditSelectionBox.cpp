@@ -300,14 +300,15 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
            */
         }
         auto pbounds = getPreviewBounds();
-        setCentrePosition( centre );
-        setSize( pbounds.getWidth(), pbounds.getWidth() );
+        //setCentrePosition( centre );
+        //setSize( pbounds.getWidth(), pbounds.getWidth() );
+        setBounds( pbounds + getPosition() );
         
         for( int i = 0; i < preview_components.size(); i++ )
         {
             SymbolistComponent *b = preview_components[i];
             printPoint(b->getPosition(), "post pos");
-        //    b->setTopLeftPosition( b->getPosition() - pbounds.getPosition() );
+            b->setTopLeftPosition( b->getPosition() - pbounds.getPosition() );
         }
 
         printRect(getPreviewBounds() + getPosition(), "new bounds");

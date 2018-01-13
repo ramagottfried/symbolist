@@ -174,7 +174,7 @@ void SymbolistMenu::getCommandInfo (CommandID commandID, ApplicationCommandInfo&
             
         case cmd_redo:
             result.setInfo ("redo", String(), String(), 0);
-            result.addDefaultKeypress ('y',  ModifierKeys::ctrlModifier );
+            result.addDefaultKeypress ('z',  ModifierKeys::shiftModifier | ModifierKeys::ctrlModifier );
             break;
             
         default:

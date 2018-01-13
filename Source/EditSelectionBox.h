@@ -94,19 +94,8 @@ public:
          */
         template <typename ValueType>
         Rectangle<ValueType> resizeRectangleBy (Rectangle<ValueType> original,
-                                                const Point<ValueType>& distance) const noexcept
-        {
-            if (isDraggingWholeObject())
-                return original + distance;
-            
-            if (isDraggingLeftEdge())   original.setLeft (jmin (original.getRight(), original.getX() + distance.x));
-                if (isDraggingRightEdge())  original.setWidth (jmax (ValueType(), original.getWidth() + distance.x));
-                    if (isDraggingTopEdge())    original.setTop (jmin (original.getBottom(), original.getY() + distance.y));
-                        if (isDraggingBottomEdge()) original.setHeight (jmax (ValueType(), original.getHeight() + distance.y));
-                            
-                            return original;
-        }
-        
+                                                const Point<ValueType>& distance) const noexcept;
+                
         /** Returns the raw flags for this zone. */
         int getZoneFlags() const noexcept               { return zone; }
         

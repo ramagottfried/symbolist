@@ -68,6 +68,35 @@ MouseCursor EditSelectionBox::Zone::getMouseCursor() const noexcept
     return mc;
 }
 
+
+template <typename ValueType>
+Rectangle<ValueType> EditSelectionBox::Zone::resizeRectangleBy (Rectangle<ValueType> original, const Point<ValueType>& distance) const noexcept
+{
+    if (isDraggingWholeObject())
+        return original + distance;
+    
+    if (isDraggingLeftEdge())
+    {
+        original.setLeft (jmin (original.getRight(), original.getX() + distance.x));
+    }
+    else if (isDraggingRightEdge())
+    {
+        original.setWidth (jmax (ValueType(), original.getWidth() + distance.x));
+    }
+    
+    if (isDraggingTopEdge())
+    {
+        original.setTop (jmin (original.getBottom(), original.getY() + distance.y));
+    }
+    else if (isDraggingBottomEdge())
+    {
+        original.setHeight (jmax (ValueType(), original.getHeight() + distance.y));
+    }
+    
+    return original;
+}
+
+
 //==============================================================================
 EditSelectionBox::EditSelectionBox ( Array<SymbolistComponent*>* const selected_component_array ) :
 borderSize (5), mouseZone (0)

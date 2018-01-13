@@ -930,6 +930,9 @@ void PathBaseComponent::scaleScoreComponent(float scale_w, float scale_h)
         float new_path_w = new_w - sw;
         float new_path_h = new_h - sw;
         
+        if( new_path_w < 1 ) new_path_w = 1;
+        if( new_path_h < 1 ) new_path_h = 1;
+        
         float adj_scale_w = (new_path_w / m_path_bounds.getWidth() );
         float adj_scale_h = (new_path_h / m_path_bounds.getHeight() );
         

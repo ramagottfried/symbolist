@@ -27,7 +27,8 @@ public:
 
     virtual void rotateScoreComponent(float theta, float ax, float ay ) override;
     virtual void scaleScoreComponent(float scale_w, float scale_h) override;
-
+    
+    virtual void setSymbolComponentColor( Colour c ) override;
 
 private :
     

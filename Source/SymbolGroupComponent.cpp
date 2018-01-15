@@ -24,6 +24,16 @@ bool SymbolGroupComponent::hitTest (int x, int y)
 }
 
 
+void SymbolGroupComponent::setSymbolComponentColor( Colour c )
+{
+    sym_color = c;
+    for( int i = 0; i < getNumSubcomponents(); i++ )
+    {
+        SymbolistComponent *sub = getSubcomponent( i );
+        sub->setSymbolComponentColor( c );
+    }
+}
+
 void SymbolGroupComponent::paint ( Graphics& g )
 {
     BaseComponent::paint( g );
@@ -144,7 +154,10 @@ void SymbolGroupComponent::rotateScoreComponent(float theta, float ax, float ay)
 
 void SymbolGroupComponent::scaleScoreComponent(float scale_w, float scale_h)
 {
-    BaseComponent::scaleScoreComponent(scale_w, scale_h);
+    
+    cout << "SymbolGroupComponent::scaleScoreComponent " << scale_w << " " << scale_h << endl;
+    
+    BaseComponent::scaleScoreComponent(scale_w, scale_h); //<< base component only scales subcomponents
     
     setSize(getWidth() * scale_w, getHeight() * scale_h);
 }

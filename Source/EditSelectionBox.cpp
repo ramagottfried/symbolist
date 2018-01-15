@@ -225,10 +225,10 @@ void EditSelectionBox::mouseDown (const MouseEvent& e)
     prev_pos = e.getPosition();
     
     original_bounds = getBounds();
-    printRect(original_bounds, "org bounds");
 
     SymbolistHandler *sh = (*component_set)[0]->getSymbolistHandler();
     
+    // make preview components
     for( int i = 0; i < component_set->size(); i++ )
     {
         BaseComponent* b = (BaseComponent*)(*component_set)[i];
@@ -263,11 +263,12 @@ void EditSelectionBox::mouseDown (const MouseEvent& e)
 
 void EditSelectionBox::mouseDrag (const MouseEvent& e)
 {
+    cout << "\n\nEditSelectionBox::mouseDrag\n\n" << endl;
+
     if (component_set->size() == 0)
     {
         return;
     }
-    
     
     /*
     if( e.mods.isShiftDown() )
@@ -342,11 +343,17 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
     }
     else
     {
+        
+        // to do: add flips for when the resize box changes directions (dragging right edge over the left edge, etc.)
+        
         const Rectangle<int> scaledBounds = mouseZone.resizeRectangleBy( getBounds(), mouse_delta );
         m_scale_w = (float)scaledBounds.getWidth() / (float)original_bounds.getWidth();
         m_scale_h = (float)scaledBounds.getHeight() / (float)original_bounds.getHeight();
         
-        setBounds( scaledBounds );
+        float relscale_w = (float)scaledBounds.getWidth() / (float)getWidth();
+        float relscale_h = (float)scaledBounds.getHeight() / (float)getHeight();
+        
+        setBounds( scaledBounds ); // << doing this before resize for a reason?
 
         float relative_x, relative_y;
         
@@ -355,6 +362,7 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
             
             for( int i = 0; i < component_set->size(); i++ )
             {
+                cout << i << endl;
                 SymbolistComponent *c = (*component_set)[i];
                 SymbolistComponent *b = preview_components[i];
                 
@@ -363,15 +371,23 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
                 relative_x = (float)(c->getX() - original_bounds.getX());
                 relative_y = (float)(c->getY() - original_bounds.getY());
                 
-//                b->setTransform( AffineTransform::scale(m_scale_w, m_scale_h).translated(relative_x * m_scale_w, relative_y * m_scale_h) );
-
+                // set top left for each as per it's original scale ratio
                 b->setTopLeftPosition(relative_x * m_scale_w, relative_y * m_scale_h);
-                b->setScoreComponentSize(c->getWidth(), c->getHeight());
+                
+                // b->scaleScoreComponent( relscale_w, relscale_h ); // << should be scaling with the delta not from the original
+                
+                b->setScoreComponentSize(c->getWidth(), c->getHeight()); // <<< this is maybe a problem
+                /// ^^ might be that setScoreComponentSize doesn't scale groups correctly
+                
                 b->scaleScoreComponent(m_scale_w, m_scale_h);
-
+                
             }
         }
+
     }
+    
+    cout << "---- end EditSelectionBox::mouseDrag\n\n" << endl;
+
 }
 
 void EditSelectionBox::mouseUp (const MouseEvent& e)
@@ -406,27 +422,6 @@ void EditSelectionBox::mouseUp (const MouseEvent& e)
                 // this is the current relative info for this component
                 float relative_x = (float)(c->getX() - original_bounds.getX());
                 float relative_y = (float)(c->getY() - original_bounds.getY());
-                
-                // ratio of current w/h to scaled selected w/h
-                // relative_w = (float)c->getWidth() / (float)getWidth();
-                // relative_h = (float)c->getHeight() / (float)getHeight();
-                
-                //printRect(c->getBounds(), "comp");
-                //printRect(Rectangle<float>(relative_x, relative_y, relative_w, relative_h), "relative");
-                
-                
-                int new_rel_x = roundToInt(relative_x * (float)getWidth());
-                int new_rel_y = roundToInt(relative_y * (float)getHeight());
-                // float new_w = roundToInt(relative_w * scale_w);
-                // float new_h = roundToInt(relative_h * scale_h);
-                
-                
-               // cout << relative_w << " " << new_w << " " << relative_h << " " << new_h << endl;
-               // cout << "\t vs w " << (scale_w * c->getWidth()) << " h " << (scale_h * c->getHeight()) << endl;
-                cout << "for comp " << c << " " << c->getSymbolTypeStr() << endl;
-                printPoint(c->getPosition(), "current");
-                cout << c << " relative_x " << relative_x << " new_rel_x " << new_rel_x << " new x " << c->getX() + new_rel_x << endl;
-                cout << c << " relative_y " << relative_y << " new_rel_y " << new_rel_y << " new y " << c->getY() + new_rel_y << endl;
                 
                 c->setTopLeftPosition(getX() + relative_x * m_scale_w, getY() + relative_y * m_scale_h);
                 c->scaleScoreComponent(scale_w, scale_h);

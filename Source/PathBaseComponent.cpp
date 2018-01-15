@@ -125,14 +125,15 @@ void PathBaseComponent::resized()
 //    cout << "PathBaseComponent::resized()" << endl;
 
     BaseComponent::resized();
-    
+   
+    /*
     if( ! in_edit_mode )
     {
         resizeToFit(getX(),
                     getY(),
                     getWidth(),
                     getHeight());
-    }
+    }*/
 }
 
 

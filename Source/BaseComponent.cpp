@@ -491,7 +491,7 @@ void BaseComponent::resizeToFit(int x, int y, int w, int h)
  ***/
 void BaseComponent::scaleScoreComponent(float scale_w, float scale_h)
 {
-//    cout << "BaseComponent::scaleScoreComponent " << getSymbolTypeStr() << " " << this  << endl;
+    cout << "BaseComponent::scaleScoreComponent " << getSymbolTypeStr() << " " << this << " " << scale_w << " " << scale_h << endl;
     for ( int i = 0; i < getNumSubcomponents(); i++ )
     {
         BaseComponent* c = (BaseComponent*)getSubcomponent(i);
@@ -506,7 +506,7 @@ void BaseComponent::scaleScoreComponent(float scale_w, float scale_h)
  ***/
 void BaseComponent::setScoreComponentSize(int w, int h)
 {
-    cout << "BaseComponent::setScoreComponentSize " << getSymbolTypeStr() << " " << this  << endl;
+    cout << "BaseComponent::setScoreComponentSize " << getSymbolTypeStr() << " " << this << " " << w << " " << h << endl;
     float this_w = (float)getWidth();
     float this_h = (float)getHeight();
     
@@ -519,6 +519,8 @@ void BaseComponent::setScoreComponentSize(int w, int h)
     }
     
     setSize(w, h);
+    
+    cout << "<<< end BaseComponent::setScoreComponentSize \n" << endl;
 }
 
 

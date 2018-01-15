@@ -60,9 +60,13 @@ public:
     virtual void v_flip(float ax, float ay) {}
     virtual void setScoreComponentSize(int w, int h) {}
     
+    virtual inline void setSymbolComponentColor( Colour c ){ sym_color = c; }
+    
 protected :
     
-    bool is_selected = false;
-    Array<SymbolistComponent*>     subcomponents;
+    bool                        is_selected = false;
+    Array<SymbolistComponent*>  subcomponents;
+    
+    Colour                      sym_color = Colours::black;
     
 };

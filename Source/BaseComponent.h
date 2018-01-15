@@ -60,8 +60,7 @@ public:
     }
     
     // not very happy with therm "Symbol" here
-    inline void setSymbolComponentStrokeWeight( float s ){ strokeWeight = s; }
-    inline void setSymbolComponentColor( Colour c ){ sym_color = c; }
+    virtual inline void setSymbolComponentStrokeWeight( float s ){ strokeWeight = s; }
     
     
     // helper functions
@@ -157,7 +156,6 @@ protected:
     
     // parameters
     float           strokeWeight = 2;
-    Colour          sym_color = Colours::black;
     
     // interaction
     Point<float>    m_down;

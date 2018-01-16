@@ -58,6 +58,8 @@ public:
     void mouseDown( const MouseEvent& event ) override;
     void mouseDrag( const MouseEvent& event ) override;
     
+    bool hitTest (int x, int y) override;
+    
     
 private:
     

@@ -122,7 +122,7 @@ void PathBaseComponent::resizeToFit(int x, int y, int w, int h)
 // Juce callback
 void PathBaseComponent::resized()
 {
-//    cout << "PathBaseComponent::resized()" << endl;
+    cout << "PathBaseComponent::resized() " << this << endl;
 
     BaseComponent::resized();
    
@@ -916,46 +916,51 @@ void PathBaseComponent::scaleScoreComponent(float scale_w, float scale_h)
     if( scale_w > 0 && scale_h > 0 && getWidth() && getHeight() )
     {
         
-        BaseComponent::scaleScoreComponent(scale_w, scale_h);
-        
-         cout << "scale_w " << scale_w << " scale_h " << scale_h << endl;
-         cout << "target w " << scale_w * getWidth() << " target h " << scale_h * getHeight() << endl;
+        //BaseComponent::scaleScoreComponent(scale_w, scale_h); // << prb
+        cout << "PathBaseComponent::scaleScoreComponent " << this << endl;
+        printRect(getBounds(), "compo bounds");
+        cout << "scale_w " << scale_w << " scale_h " << scale_h << endl;
+        cout << "target w " << scale_w * getWidth() << " target h " << scale_h * getHeight() << endl;
         
         float sw = 2.0 * strokeType.getStrokeThickness();
         
         // cout << "target w- " << scale_w * getWidth() - sw << " target h- " << scale_h * getHeight() - sw << endl;
 
         
-        float new_w = scale_w * getWidth();
-        float new_h = scale_h * getHeight();
-        float new_path_w = new_w - sw;
-        float new_path_h = new_h - sw;
+        float new_w = round( scale_w * getWidth() );
+        float new_h = round( scale_h * getHeight() );
+        float new_path_w = round(new_w - sw);
+        float new_path_h = round(new_h - sw);
         
         if( new_path_w < 1 ) new_path_w = 1;
         if( new_path_h < 1 ) new_path_h = 1;
         
-        float adj_scale_w = (new_path_w / m_path_bounds.getWidth() );
-        float adj_scale_h = (new_path_h / m_path_bounds.getHeight() );
+        float adj_scale_w = (new_path_w / round(m_path_bounds.getWidth()) );
+        float adj_scale_h = (new_path_h / round(m_path_bounds.getHeight()) );
         
-        // printRect(m_path_bounds, "1 m_path_bounds");
+        printRect(m_path_bounds, "1 m_path_bounds");
 
+        cout << "new_path wh " << new_path_w << " " << new_path_h << " sw " << sw << endl;
+        cout << "adj scale " << adj_scale_w << " " << adj_scale_h << endl;
+        
         Path m_path = mergePathArray();
  
-        m_path.applyTransform( AffineTransform().scale(adj_scale_w, adj_scale_h));
+        m_path.applyTransform( AffineTransform().scale(adj_scale_w, adj_scale_h) );
         makePathArrayFromPath(m_path);
         updatePathBounds();
         
-        // printRect(m_path_bounds, "2 m_path_bounds");
+        printRect(m_path_bounds, "2 m_path_bounds");
 
         Rectangle<float> symbol_bounds = m_path_bounds.expanded( strokeType.getStrokeThickness() );
-        m_path.applyTransform(AffineTransform::translation( -symbol_bounds.getPosition() ) );
+        m_path.applyTransform( AffineTransform::translation( -symbol_bounds.getPosition() ) );
         
         makePathArrayFromPath(m_path);
         updateHandlePositions();
         updatePathBounds();
         
-        // printRect(m_path_bounds, "3 m_path_bounds");
+        printRect(m_path_bounds, "3 m_path_bounds");
 
+        cout << "new size " << new_w << " " << new_h << endl;
         auto temp = in_edit_mode;
         in_edit_mode = true;
         setSize(new_w, new_h );
@@ -1032,11 +1037,13 @@ void PathBaseComponent::paint ( Graphics& g )
         {
             drawHandlesLines(g);
         }
-        
+
         /*
         auto c = getLocalBounds().getCentre();
         g.drawEllipse(c.getX()-2, c.getY()-2, 4, 4, 1);
+        g.drawRect( getLocalBounds() );
          */
+        
     }
 }
 

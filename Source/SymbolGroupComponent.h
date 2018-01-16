@@ -20,7 +20,7 @@ public:
     void paint ( Graphics& g ) override;
     bool intersectRect( Rectangle<int> rect) override;
     
-    bool hitTest (int x, int y) override;
+    virtual bool hitTest (int x, int y) override;
     
     void h_flip(float ax, float ay) override;
     void v_flip(float ax, float ay) override;

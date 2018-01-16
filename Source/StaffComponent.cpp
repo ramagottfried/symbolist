@@ -100,8 +100,21 @@ void StaffComponent::deselectComponent()
 }
 
 
+bool StaffComponent::hitTest (int x, int y)
+{
+    if( in_staff_selection_mode )
+    {
+        return true;
+    }
+    
+    return SymbolGroupComponent::hitTest ( x, y );
+    
+}
+
+
 void StaffComponent::mouseDown( const MouseEvent& event )
 {
+    
     if( in_staff_selection_mode )
     {
         for( auto s : getPageComponent()->getSelectedItems() )

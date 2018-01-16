@@ -346,6 +346,9 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
         
         // to do: add flips for when the resize box changes directions (dragging right edge over the left edge, etc.)
         
+        if( mouse_delta.isOrigin() )
+            return;
+        
         const Rectangle<int> scaledBounds = mouseZone.resizeRectangleBy( getBounds(), mouse_delta );
         m_scale_w = (float)scaledBounds.getWidth() / (float)original_bounds.getWidth();
         m_scale_h = (float)scaledBounds.getHeight() / (float)original_bounds.getHeight();
@@ -353,8 +356,12 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
         float relscale_w = (float)scaledBounds.getWidth() / (float)getWidth();
         float relscale_h = (float)scaledBounds.getHeight() / (float)getHeight();
         
+        printPoint(mouse_delta, "mouse delta");
+        cout << relscale_w << " " << relscale_h << endl;
+        
         setBounds( scaledBounds ); // << doing this before resize for a reason?
 
+        printRect(getBounds(), "edit box bounds");
         float relative_x, relative_y;
         
         if (getWidth() > m_minw && getHeight() > m_minh )
@@ -366,6 +373,8 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
                 SymbolistComponent *c = (*component_set)[i];
                 SymbolistComponent *b = preview_components[i];
                 
+                cout << "rel width " << (float)c->getWidth() / original_bounds.getWidth() << endl;;
+                
                 // this is the current relative info for this component
                 // if there is only one component the original bounds should be the same
                 relative_x = (float)(c->getX() - original_bounds.getX());
@@ -374,12 +383,16 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
                 // set top left for each as per it's original scale ratio
                 b->setTopLeftPosition(relative_x * m_scale_w, relative_y * m_scale_h);
                 
-                // b->scaleScoreComponent( relscale_w, relscale_h ); // << should be scaling with the delta not from the original
+                //b->scaleScoreComponent( relscale_w, relscale_h ); // << should be scaling with the delta not from the original
                 
                 b->setScoreComponentSize(c->getWidth(), c->getHeight()); // <<< this is maybe a problem
                 /// ^^ might be that setScoreComponentSize doesn't scale groups correctly
                 
                 b->scaleScoreComponent(m_scale_w, m_scale_h);
+                
+                
+                cout << "post rel width " << (float)b->getWidth() / getWidth() << endl;;
+
                 
             }
         }

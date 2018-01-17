@@ -127,7 +127,24 @@ private:
     Array<SymbolistComponent*>  *component_set;
     
     OwnedArray<Symbol> original_symbols;
-    OwnedArray<SymbolistComponent> preview_components;
+    
+    struct PreviewComp {
+    
+        PreviewComp(BaseComponent* newc, BaseComponent* src )
+        {
+            copy = newc;
+            org = src;
+        }
+        
+        ~PreviewComp(){}
+        
+        BaseComponent* copy;
+        BaseComponent* org;
+    };
+    
+    OwnedArray<PreviewComp> preview_components;
+    OwnedArray<SymbolistComponent> non_preview_components;
+    
     
     BorderSize<int> borderSize;
 

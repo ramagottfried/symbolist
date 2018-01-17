@@ -41,7 +41,7 @@ void PageComponent::removeSubcomponent( SymbolistComponent *c )
 void PageComponent::enterStaffSelMode()
 {
     exitEditMode();
-
+    
     for( auto c : subcomponents )
     {
         BaseComponent* b = dynamic_cast<BaseComponent*>(c); // << if it's a staff the dynamic_cast prob isn't necessary
@@ -67,10 +67,13 @@ void PageComponent::enterStaffSelMode()
         }
        
     }
+    
+    display_mode = staff;
 }
 
 void PageComponent::exitStaffSelMode()
 {
+
     for( auto c : subcomponents )
     {
         BaseComponent* b = dynamic_cast<BaseComponent*>(c);
@@ -80,6 +83,9 @@ void PageComponent::exitStaffSelMode()
             b->setVisible(true);
         }
     }
+    
+    display_mode = main;
+
 }
 
 vector<BaseComponent*> PageComponent::getSubcomponentsByStaff( String& staff_name )
@@ -110,6 +116,9 @@ void PageComponent::enterEditMode( BaseComponent* c )
     edited_component->setEditMode(true);
     edited_component->toFront(true);
     edited_component->recursiveMaximizeBounds();
+    
+    display_mode = edit;
+
 }
 
 
@@ -123,6 +132,9 @@ void PageComponent::exitEditMode( )
         edited_component->setEditMode(false);
         edited_component = NULL;
     }
+    
+    display_mode = main;
+
 }
 
 

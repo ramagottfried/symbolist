@@ -71,12 +71,17 @@ public:
     
     vector<BaseComponent*> getSubcomponentsByStaff( String& staff_name );
 
-
+    enum DisplayMode { main, edit, staff };
+    
+    DisplayMode getDisplayMode(){ return display_mode; }
+    
 private:
     
     BaseComponent*      edited_component;
-    
     ScoreCursor         score_cursor;
+    
+    DisplayMode         display_mode = main;
+    
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PageComponent)

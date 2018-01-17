@@ -162,23 +162,30 @@ void EditSelectionBox::updateEditSelBox()
 
 void EditSelectionBox::mouseEnter (const MouseEvent& e)
 {
+    if( !dynamic_cast<BaseComponent*>( (*component_set)[0] ) )
+        return;
+    
     updateMouseZone (e);
 }
 
 void EditSelectionBox::mouseMove (const MouseEvent& e)
 {
+    if( !dynamic_cast<BaseComponent*>( (*component_set)[0] ) )
+        return;
+    
     updateMouseZone (e);
 }
 
 void EditSelectionBox::flipSelectedSymbols( int axis )
 {
     auto center = getBounds().getCentre();
-    for ( auto c : *component_set )
+    for ( auto p : preview_components )
     {
+        BaseComponent *c = p->org;
         if( axis == 0)
-            ((BaseComponent*)c)->v_flip( center.getX(), center.getY() );
+            c->v_flip( center.getX(), center.getY() );
         else
-            ((BaseComponent*)c)->h_flip( center.getX(), center.getY() );
+            c->h_flip( center.getX(), center.getY() );
     }
     
 }
@@ -206,7 +213,7 @@ Rectangle<int> EditSelectionBox::getPreviewBounds()
     int minx = getParentWidth(), maxx = 0, miny = getParentHeight(), maxy = 0;
     for( auto it = preview_components.begin(); it != preview_components.end(); it++ )
     {
-        Rectangle<int> compBounds = (*it)->getBounds();
+        Rectangle<int> compBounds = (*it)->copy->getBounds();
         minx =  min( minx, compBounds.getX() );
         miny =  min( miny, compBounds.getY() );
         maxx =  max( maxx, compBounds.getRight() );
@@ -217,10 +224,14 @@ Rectangle<int> EditSelectionBox::getPreviewBounds()
 
 void EditSelectionBox::mouseDown (const MouseEvent& e)
 {
-    if (component_set->size() == 0)
+    if ( component_set->size() == 0 )
     {
         return;
     }
+    
+    bool in_edit_mode = (*component_set)[0]->getPageComponent()->getDisplayMode() == PageComponent::DisplayMode::edit;
+    
+    
     updateMouseZone (e);
     prev_pos = e.getPosition();
     
@@ -231,7 +242,21 @@ void EditSelectionBox::mouseDown (const MouseEvent& e)
     // make preview components
     for( int i = 0; i < component_set->size(); i++ )
     {
-        BaseComponent* b = (BaseComponent*)(*component_set)[i];
+        
+        SymbolistComponent* c = (*component_set)[i];
+        BaseComponent* b = dynamic_cast<BaseComponent*>( c );
+                                                        
+        if( !b )
+        {
+            non_preview_components.add( c );
+            c->mouseDown( e );
+            continue;
+        }
+        else if( in_edit_mode )
+        {
+            continue;
+        }
+        
         Symbol* s = new Symbol();
         //*b->getScoreSymbolPointer()
         b->addSymbolMessages(s, "");
@@ -241,7 +266,8 @@ void EditSelectionBox::mouseDown (const MouseEvent& e)
         newB->setTopLeftPosition( b->getPosition() - getPosition() );
         newB->setSize( b->getWidth(), b->getHeight() );
         newB->setSymbolComponentColor(Colours::red);
-        preview_components.set(i, newB);
+        
+        preview_components.set(i, new PreviewComp(newB, b));
         addAndMakeVisible( newB );
     }
     
@@ -265,10 +291,20 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
 {
     cout << "\n\nEditSelectionBox::mouseDrag\n\n" << endl;
 
-    if (component_set->size() == 0)
+    
+    
+    for( int i = 0; i < non_preview_components.size(); i++ )
+    {
+        non_preview_components[i]->mouseDrag( e );
+    }
+    
+    bool in_edit_mode = (*component_set)[0]->getPageComponent()->getDisplayMode() == PageComponent::DisplayMode::edit;
+    
+    if (preview_components.size() == 0 || in_edit_mode )
     {
         return;
     }
+    
     
     /*
     if( e.mods.isShiftDown() )
@@ -321,7 +357,7 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
 
         for( int i = 0; i < preview_components.size(); i++ )
         {
-            SymbolistComponent *b = preview_components[i];
+            SymbolistComponent *b = preview_components[i]->copy;
             b->rotateScoreComponent( delta_rad, centre_offset.getX(), centre_offset.getY() );
 
          /* this was experimental version where I returned the unapplied bounds of the rotated path for the preview, the tranform is faster than actually rotating, but it's more complicated, and has some ugly side effects when scaling
@@ -336,7 +372,7 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
         
         for( int i = 0; i < preview_components.size(); i++ )
         {
-            SymbolistComponent *b = preview_components[i];
+            SymbolistComponent *b = preview_components[i]->copy;
             b->setTopLeftPosition( b->getPosition() - pbounds.getPosition() );
         }
         
@@ -367,12 +403,13 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
         if (getWidth() > m_minw && getHeight() > m_minh )
         {
             
-            for( int i = 0; i < component_set->size(); i++ )
+            for( int i = 0; i < preview_components.size(); i++ )
             {
                 cout << i << endl;
-                SymbolistComponent *c = (*component_set)[i];
-                SymbolistComponent *b = preview_components[i];
                 
+                BaseComponent *b = preview_components[i]->copy;
+                BaseComponent *c = preview_components[i]->org;
+
                 cout << "rel width " << (float)c->getWidth() / original_bounds.getWidth() << endl;;
                 
                 // this is the current relative info for this component
@@ -406,15 +443,28 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
 void EditSelectionBox::mouseUp (const MouseEvent& e)
 {
     cout << "\n\nEditSelectionBox::mouseUp\n\n" << endl;
+    
+    for( int i = 0; i < non_preview_components.size(); i++ )
+    {
+        non_preview_components[i]->mouseUp( e );
+    }
+    
+    if (preview_components.size() == 0)
+    {
+        return;
+    }
+    
     printRect(original_bounds, "original edit box");
     printRect(getBounds(), "scaled edit box");
 
+    
     if( e.mods.isAltDown() ) // drag + alt = rotate
     {
         auto centre = original_bounds.getCentre();
-        for( auto it = component_set->begin(); it != component_set->end(); it++ )
+        for( auto it = preview_components.begin(); it != preview_components.end(); it++ )
         {
-            SymbolistComponent *c = (*it);
+            BaseComponent* c = (*it)->org;
+            
             c->rotateScoreComponent( m_accum_theta, centre.getX(), centre.getY() ); // rotateScoreComponent uses the coordinate system of the parent)
         }
     }
@@ -427,10 +477,10 @@ void EditSelectionBox::mouseUp (const MouseEvent& e)
             float scale_h = (float)getHeight() / (float)original_bounds.getHeight();
 
             
-            for( auto it = component_set->begin(); it != component_set->end(); it++ )
+            for( auto it = preview_components.begin(); it != preview_components.end(); it++ )
             {
                 
-                SymbolistComponent *c = (*it);
+                BaseComponent* c = (*it)->org;
                 
                 // this is the current relative info for this component
                 float relative_x = (float)(c->getX() - original_bounds.getX());

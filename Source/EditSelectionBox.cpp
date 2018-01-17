@@ -162,17 +162,15 @@ void EditSelectionBox::updateEditSelBox()
 
 void EditSelectionBox::mouseEnter (const MouseEvent& e)
 {
-    if( !dynamic_cast<BaseComponent*>( (*component_set)[0] ) )
-        return;
+    cout << "EditSelectionBox::mouseEnter" << endl;
     
     updateMouseZone (e);
 }
 
 void EditSelectionBox::mouseMove (const MouseEvent& e)
 {
-    if( !dynamic_cast<BaseComponent*>( (*component_set)[0] ) )
-        return;
-    
+    cout << "EditSelectionBox::mouseMove" << endl;
+
     updateMouseZone (e);
 }
 
@@ -224,12 +222,22 @@ Rectangle<int> EditSelectionBox::getPreviewBounds()
 
 void EditSelectionBox::mouseDown (const MouseEvent& e)
 {
+    // RAMA:
+    // probably should move iteration / test for preview / non_preview types to constructor, so then we can use that to handle mouse zones
+    // and better deal with path handles etc.
+    
     if ( component_set->size() == 0 )
     {
         return;
     }
     
-    bool in_edit_mode = (*component_set)[0]->getPageComponent()->getDisplayMode() == PageComponent::DisplayMode::edit;
+    SymbolistComponent* first = (*component_set)[0];
+    
+    bool in_edit_mode = 0;
+    if( first )
+    {
+        in_edit_mode = first->getPageComponent()->getDisplayMode() == PageComponent::DisplayMode::edit;
+    }
     
     
     updateMouseZone (e);
@@ -291,10 +299,9 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
 {
     cout << "\n\nEditSelectionBox::mouseDrag\n\n" << endl;
 
-    
-    
     for( int i = 0; i < non_preview_components.size(); i++ )
     {
+        cout << "--" << i << endl;
         non_preview_components[i]->mouseDrag( e );
     }
     
@@ -302,6 +309,8 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
     
     if (preview_components.size() == 0 || in_edit_mode )
     {
+        cout << "^^ EditSelectionBox::mouseDrag return" << endl;
+
         return;
     }
     
@@ -448,6 +457,9 @@ void EditSelectionBox::mouseUp (const MouseEvent& e)
     {
         non_preview_components[i]->mouseUp( e );
     }
+    
+    non_preview_components.clear(0);
+    
     
     if (preview_components.size() == 0)
     {

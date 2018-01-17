@@ -19,6 +19,8 @@ Point<float> PathHandle::getCenter () const
 
 void PathHandle::mouseDown( const MouseEvent& event )
 {
+    cout << "PathHandle::mouseDown " << this << endl;
+
     m_down = event.position;
     m_prev_theta = -111;
     
@@ -31,6 +33,8 @@ void PathHandle::mouseDown( const MouseEvent& event )
 
 void PathHandle::mouseDrag( const MouseEvent& event )
 {
+    cout << "PathHandle::mouseDrag " << this << endl;
+    
     PathBaseComponent* parent = (PathBaseComponent*)getParentComponent();
 
     Point<int> delta_xy = (event.position - m_down).toInt() ;

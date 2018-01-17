@@ -128,8 +128,9 @@ private:
     
     OwnedArray<Symbol> original_symbols;
     
-    struct PreviewComp {
+    class PreviewComp {
     
+    public:
         PreviewComp(BaseComponent* newc, BaseComponent* src )
         {
             copy = newc;
@@ -140,6 +141,10 @@ private:
         
         BaseComponent* copy;
         BaseComponent* org;
+        
+    private:
+        JUCE_LEAK_DETECTOR( PreviewComp )
+
     };
     
     OwnedArray<PreviewComp> preview_components;

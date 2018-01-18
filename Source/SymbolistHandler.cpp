@@ -575,6 +575,7 @@ void SymbolistHandler::undo()
         {
             push_redo_stack();
 
+            main_component_ptr->getPageComponent()->unselectAllComponents();
             main_component_ptr->getPageComponent()->clearAllSubcomponents();
             score->removeAllSymbols();
             score = undo_stack.removeAndReturn( undo_stack.size() - 1 );
@@ -595,7 +596,8 @@ void SymbolistHandler::redo()
         if ( main_component_ptr != NULL )
         {
             push_undo_stack();
-
+            
+            main_component_ptr->getPageComponent()->unselectAllComponents();
             main_component_ptr->getPageComponent()->clearAllSubcomponents();
             score->removeAllSymbols();
             score = redo_stack.removeAndReturn( redo_stack.size() - 1 );

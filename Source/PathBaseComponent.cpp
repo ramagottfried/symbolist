@@ -435,14 +435,76 @@ void PathBaseComponent::updateRotationHandle()
     }
 }
 
-void PathBaseComponent::removeSubcomponent(SymbolistComponent* h)
+
+void PathBaseComponent::subtractHandle( int i )
 {
-    for( int i = 0; i < path_handles.size(); i++ )
+    mergePathArray();
+    PathHandle *h = NULL, *prev = NULL;
+    
+    if ( in_edit_mode && !path_handles.isEmpty() ) // in principle path_handle is not empty if we're in edit mode..
     {
-        if( h == path_handles[i] ) path_handles.remove(i);
+        int n = 0;
+        
+        for ( int np = 0; np < m_path_array.size(); np++ )
+        {
+            Path* m_path = m_path_array[np];
+            Path::Iterator it( *m_path );
+            while( it.next() )
+            {
+                if (it.elementType == it.startNewSubPath)
+                {
+                    // if (n > 0 ) path_handles[n+1]->setEnd(true);
+                    h = path_handles[n++];
+                    
+                    prev = h;
+                }
+                else if (it.elementType == it.lineTo)
+                {
+                    path_handles[n++]->setCentrePosition(it.x1, it.y1);
+                }
+                else if (it.elementType == it.quadraticTo)
+                {
+                    path_handles[n++]->setCentrePosition(it.x1, it.y1);
+                    path_handles[n++]->setCentrePosition(it.x2, it.y2);
+                }
+                else if (it.elementType == it.cubicTo)
+                {
+                    path_handles[n++]->setCentrePosition(it.x1, it.y1);
+                    path_handles[n++]->setCentrePosition(it.x2, it.y2);
+                    path_handles[n++]->setCentrePosition(it.x3, it.y3);
+                }
+                else if( it.elementType == it.closePath )
+                {
+                    //path_handles[n]->setEnd(true);
+                    //path_handles[n]->setClosing(true);
+                }
+            }
+        }
     }
     
-    ScoreComponent::removeSubcomponent(h);
+    path_handles.remove(i);
+}
+
+
+void PathBaseComponent::removeSubcomponent(SymbolistComponent* h)
+{
+    // note: paths do not have subcomponents, only groups or staves
+    
+    for( int i = 0; i < path_handles.size(); i++ )
+    {
+        if( h == path_handles[i] )
+        {
+            path_handles.remove(i);
+
+            // we should to do subtraction a little more cleanly
+            
+            // one problem is that the JUCE Path only allows access to the points via the Path iterator, and that doesn't give you a prev(), so it's difficult to deal with the segment as a whole, probably we need to make our own version of the JUCE Path class.
+            
+//            subtractHandle( i );
+        }
+    }
+    
+    ScoreComponent::removeSubcomponent( h );
     updatePathPoints();
     updatePathBounds();
     repaint();
@@ -817,17 +879,22 @@ void PathBaseComponent::h_flip(float ax, float ay)
     //printRect(m_path_bounds, "m_path_bounds 3");
     //printPoint(newrect.getPosition(), "newpos");
     
-    //auto temp = in_edit_mode;
-    //in_edit_mode = true;
-    setBounds( newrect + getPosition());
-    //repaint();
-    //in_edit_mode = temp;
-    //printRect(newrect + getPosition(), "symbol_bounds");
+    auto newBounds = newrect + getPosition();
+    if( getBounds() != newBounds )
+    {
+        setBounds( newBounds );
+    }
+    else
+    {
+        reportModification();
+        repaint();
+    }
     
 }
 
 void PathBaseComponent::v_flip(float ax, float ay)
 {
+
     Path m_path = mergePathArray();
     
     m_path.applyTransform( AffineTransform().verticalFlip( round(ay - getY()) * 2.0 ) );
@@ -842,11 +909,16 @@ void PathBaseComponent::v_flip(float ax, float ay)
     //printRect(m_path_bounds, "m_path_bounds 3");
     //printPoint(newrect.getPosition(), "newpos");
     
-    //auto temp = in_edit_mode;
-    //in_edit_mode = true;
-    setBounds( newrect + getPosition());
-    //in_edit_mode = temp;
-    //printRect(newrect + getPosition(), "symbol_bounds");
+    auto newBounds = newrect + getPosition();
+    if( getBounds() != newBounds )
+    {
+        setBounds( newBounds );
+    }
+    else
+    {
+        reportModification();
+        repaint();
+    }
 }
 
 

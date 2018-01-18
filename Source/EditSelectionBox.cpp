@@ -106,6 +106,7 @@ borderSize (5), mouseZone (0)
 
 EditSelectionBox::~EditSelectionBox()
 {
+    non_preview_components.clear();
 }
 
 //==============================================================================
@@ -162,24 +163,19 @@ void EditSelectionBox::updateEditSelBox()
 
 void EditSelectionBox::mouseEnter (const MouseEvent& e)
 {
-    cout << "EditSelectionBox::mouseEnter" << endl;
-    
     updateMouseZone (e);
 }
 
 void EditSelectionBox::mouseMove (const MouseEvent& e)
 {
-    cout << "EditSelectionBox::mouseMove" << endl;
-
     updateMouseZone (e);
 }
 
 void EditSelectionBox::flipSelectedSymbols( int axis )
 {
     auto center = getBounds().getCentre();
-    for ( auto p : preview_components )
+    for ( auto c : *component_set )
     {
-        BaseComponent *c = p->org;
         if( axis == 0)
             c->v_flip( center.getX(), center.getY() );
         else
@@ -458,7 +454,7 @@ void EditSelectionBox::mouseUp (const MouseEvent& e)
         non_preview_components[i]->mouseUp( e );
     }
     
-    non_preview_components.clear(0);
+    non_preview_components.clear();
     
     
     if (preview_components.size() == 0)
@@ -553,7 +549,20 @@ void EditSelectionBox::updateMouseZone (const MouseEvent& e)
     
     if (mouseZone != newZone)
     {
+        bool in_edit_mode = 0;
+        
+        if( component_set->size() > 0 )
+            in_edit_mode = (*component_set)[0]->getPageComponent()->getDisplayMode() == PageComponent::DisplayMode::edit;
+
         mouseZone = newZone;
-        setMouseCursor (newZone.getMouseCursor());
+
+        if( in_edit_mode )
+        {
+            setMouseCursor( MouseCursor::NormalCursor );
+        }
+        else
+        {
+            setMouseCursor (newZone.getMouseCursor());
+        }
     }
 }

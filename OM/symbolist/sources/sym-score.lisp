@@ -22,17 +22,17 @@
         '< :key 'date)))
                                          
                                          
-(defclass! sym-score (data-stream named-object schedulable-object object-with-action)
+(defclass! symbolist (data-stream named-object schedulable-object object-with-action)
   ((symbols :accessor symbols :initarg :symbols :initform '() :documentation "a list of symbols in teh score (OSC bundles)")
    (palette-symbols :accessor palette-symbols :initform '() :documentation "a list of template symbols for the editing palette (OSC bundles)")
    (refresh-rate :accessor refresh-rate :initform 100 :documentation "a refresh-rate for time in the symbolist editor (ms)"))
   (:default-initargs :default-frame-type 'osc-bundle))
 
-(defmethod play-obj? ((self sym-score)) t)
+(defmethod play-obj? ((self symbolist)) t)
 
-(defmethod data-stream-frames-slot ((self sym-score)) 'symbols)
+(defmethod data-stream-frames-slot ((self symbolist)) 'symbols)
 
-(defmethod additional-class-attributes ((self sym-score)) '(palette-symbols refresh-rate))
+(defmethod additional-class-attributes ((self symbolist)) '(palette-symbols refresh-rate))
 
 
 (defun make-bundle-array-from-symbols (symbol-list)
@@ -48,14 +48,14 @@
     (odot::osc_bundle_s_deepFree (fli:dereference ptr :index i :type :pointer)))
   (fli:free-foreign-object ptr))
 
-(defmethod sym-score-make-score-pointer ((self sym-score))
+(defmethod symbolist-make-score-pointer ((self symbolist))
   (let ((ptr (make-bundle-array-from-symbols (symbols self))))
     (om-print-dbg "allocate pointer ~A for ~A (~D symbols)" 
                 (list ptr self (length (symbols self))) 
                 "SYMBOLIST")
     ptr))
                                
-(defmethod sym-score-free-score-pointer ((self sym-score) ptr)
+(defmethod symbolist-free-score-pointer ((self symbolist) ptr)
   (when ptr
     (om-print-dbg "free pointer ~A for ~A (~D symbols)" 
                   (list ptr self (length (symbols self))) 
@@ -68,8 +68,8 @@
 ;; EDITOR 
 ;;========================================================================
 
-(defmethod object-has-editor ((self sym-score)) t)
-(defmethod get-editor-class ((self sym-score)) 'sym-editor)
+(defmethod object-has-editor ((self symbolist)) t)
+(defmethod get-editor-class ((self symbolist)) 'sym-editor)
 
 (defclass sym-editor (OMEditor play-editor-mixin) 
   ((symbolist-handler :accessor symbolist-handler :initform nil)))
@@ -87,7 +87,7 @@
   (if (symbolist-handler self)
       (symbolist::symbolistWindowToFront (symbolist-handler self))
     (let* ((sscore (object-value self))
-           (score-ptr (sym-score-make-score-pointer sscore))
+           (score-ptr (symbolist-make-score-pointer sscore))
            (s-editor (symbolist::symbolistNew)))
       
       (symbolist::symbolistsetsymbols s-editor (length (symbols sscore)) score-ptr)
@@ -103,7 +103,7 @@
       (symbolist::symbolistWindowSetName s-editor (editor-window-title self))
       (symbolist::symbolist-register-callbacks s-editor)
       
-      (sym-score-free-score-pointer sscore score-ptr)
+      (symbolist-free-score-pointer sscore score-ptr)
       
       nil)))
 
@@ -124,7 +124,7 @@
 
 (defmethod update-to-editor ((self sym-editor) (from t)) 
   (when (symbolist-handler self)
-    (let ((ptr (sym-score-make-score-pointer (object-value self))))
+    (let ((ptr (symbolist-make-score-pointer (object-value self))))
       (symbolist::symbolistWindowSetName (symbolist-handler self) (editor-window-title self))
       (symbolist::symbolistSetSymbols (symbolist-handler self) (length (symbols (object-value self))) ptr)
       t
@@ -191,7 +191,7 @@
     (om-print "transport callback : editor not found" "SYMBOLIST"))))
 
 
-(defmethod get-action-list-for-play ((self sym-score) interval &optional parent)
+(defmethod get-action-list-for-play ((self symbolist) interval &optional parent)
   ;;; add some symbolist time-updates
   (let ((ed (find self *symbolist-editors* :key 'object-value)))
     (if (and ed (symbolist-handler ed))

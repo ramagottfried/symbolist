@@ -10,7 +10,7 @@
 
  (:doc "graphical notation editor (om version)")
 
- (:author " J. Bresson, R. Gottfried (2017)")
+ (:author "J. Bresson, R. Gottfried (2017)")
 
 ;;; SOURCE FILES TO LOAD
 (:source-files
@@ -20,7 +20,7 @@
 
 ;;; DECLATRED SYMBOLS VISIBLE AND ACCESSIBLE THROUGH THE OM PACKAGE TREE
 (:symbols
-  (:classes sym-score)
+  (:classes symbolist)
  )
 )
 

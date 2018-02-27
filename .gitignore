@@ -10,3 +10,8 @@ max/max-symbolist/build/
 .DS_Store
 *.zip
 *.64xfasl
+Doxygen/html/
+Builds/MacOSX/symbolist.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+Builds/MacOSX/symbolist.xcodeproj/project.xcworkspace/xcuserdata/
+Builds/MacOSX/symbolist.xcodeproj/xcuserdata/iampietro.xcuserdatad/
+max/max-symbolist/max-symbolist.xcodeproj/xcuserdata/iampietro.xcuserdatad/

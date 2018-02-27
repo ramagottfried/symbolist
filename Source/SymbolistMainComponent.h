@@ -79,7 +79,7 @@ public:
     }
     
     /*********************************************
-     * Application keyboard command wrapper (actual commands are set in SybolistMenu)
+     * Application keyboard command wrapper (actual commands are set in SymbolistMenu)
      *********************************************/
     ApplicationCommandTarget* getNextCommandTarget() override;
     void getAllCommands (Array<CommandID>& commands) override;

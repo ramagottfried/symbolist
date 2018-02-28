@@ -3,6 +3,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "OSCIO.h"
 #include "types.h"
+#include "osc_bundle_u.h"
 
 using namespace std;
 
@@ -20,6 +21,8 @@ public:
     Symbol(const Symbol& other);
     ~Symbol()
     {
+        t_osc_bndl_u *b = osc_bundle_u_alloc();
+        osc_bundle_u_free(b);
 //        std::cout << "deleting symbol " << this << std::endl;
     }
     

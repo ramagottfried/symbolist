@@ -7,12 +7,7 @@ Symbol::Symbol () {}
 
 Symbol::Symbol(const Symbol& other)
 {
-    
-    cout << "attempting copy " << endl;
     o_bundle = other.o_bundle;
-    
-    other.o_bundle.print();
-    o_bundle.print();
     
     osc_bundle = other.osc_bundle;
 }

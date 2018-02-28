@@ -2,23 +2,51 @@
 
 #include "Symbol.h"
 
-Symbol::Symbol () {};
+
+Symbol::Symbol () {}
 
 Symbol::Symbol(const Symbol& other)
 {
+    
+    cout << "attempting copy " << endl;
+    o_bundle = other.o_bundle;
+    
+    other.o_bundle.print();
+    o_bundle.print();
+    
     osc_bundle = other.osc_bundle;
 }
 
 
 Symbol::Symbol (const String & type, float x, float y, float w, float h)
 {
+    o_bundle.clear();
+
+    o_bundle.addOSCMessage( "/type", type );
+    o_bundle.addOSCMessage( "/x", x );
+    o_bundle.addOSCMessage( "/y", y );
+    o_bundle.addOSCMessage( "/w", w );
+    o_bundle.addOSCMessage( "/h", h );
+    
+    o_bundle.print();
+    
+    
+    String str = o_bundle.oscAddressGetString("/type");
+    if( str.isNotEmpty() )
+        cout << "string is " << str << endl;
+    
     addOSCMessage("/type",  type);
     addOSCMessage("/x",     x);
     addOSCMessage("/y",     y);
     addOSCMessage("/w",     w);
     addOSCMessage("/h",     h);
+    
+    
+    
     // add name?
 }
+
+Symbol::~Symbol() {}
 
 void Symbol::setID( const String& str )
 {
@@ -311,6 +339,7 @@ void Symbol::addOSCMessage( const String &address, const float value)
 
 void Symbol::addOSCMessage( const String &address, const int value)
 {
+    
     osc_bundle.addElement(OSCBundle::Element(OSCMessage(OSCAddressPattern(address), value)));
 }
 

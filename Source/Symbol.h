@@ -3,7 +3,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "OSCIO.h"
 #include "types.h"
-#include "osc_bundle_u.h"
+#include "OdotBundle.hpp"
 
 using namespace std;
 
@@ -19,12 +19,8 @@ public:
     Symbol();
     Symbol(const String &type, float x, float y, float w, float h );
     Symbol(const Symbol& other);
-    ~Symbol()
-    {
-        t_osc_bndl_u *b = osc_bundle_u_alloc();
-        osc_bundle_u_free(b);
-//        std::cout << "deleting symbol " << this << std::endl;
-    }
+    ~Symbol();
+    
     
     String      getType();
     
@@ -96,8 +92,10 @@ public:
     
 private:
     
-    OSCBundle   osc_bundle;
+    OSCBundle       osc_bundle;
     
+    OdotBundle      o_bundle;
+        
     float       m_pixels_to_time = 0.01f;
     float       m_time_to_pixels = 100.0f;
     

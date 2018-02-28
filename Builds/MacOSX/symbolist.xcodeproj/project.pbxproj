@@ -120,6 +120,10 @@
 		116A7EEA2046CFCD004B545D /* osc_vtable.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EC22046CFCD004B545D /* osc_vtable.h */; };
 		116A7EEB2046CFCD004B545D /* osc.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EC32046CFCD004B545D /* osc.h */; };
 		116A7EEC2046CFF2004B545D /* libsymbolist-libo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 116A7E412046CF62004B545D /* libsymbolist-libo.a */; };
+		116A7EEF2046DCAE004B545D /* OdotBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116A7EED2046DCAE004B545D /* OdotBundle.cpp */; };
+		116A7EF02046DCAE004B545D /* OdotBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116A7EED2046DCAE004B545D /* OdotBundle.cpp */; };
+		116A7EF12046DCAE004B545D /* OdotBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116A7EED2046DCAE004B545D /* OdotBundle.cpp */; };
+		116A7EF22046DCAE004B545D /* OdotBundle.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EEE2046DCAE004B545D /* OdotBundle.hpp */; };
 		116F87741F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */; };
 		116F87751F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */; };
 		116F87761F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */; };
@@ -334,6 +338,8 @@
 		116A7EC12046CFCD004B545D /* osc_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_util.h; path = ../../../libo/osc_util.h; sourceTree = "<group>"; };
 		116A7EC22046CFCD004B545D /* osc_vtable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_vtable.h; path = ../../../libo/osc_vtable.h; sourceTree = "<group>"; };
 		116A7EC32046CFCD004B545D /* osc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc.h; path = ../../../libo/osc.h; sourceTree = "<group>"; };
+		116A7EED2046DCAE004B545D /* OdotBundle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OdotBundle.cpp; path = ../../Source/OdotBundle.cpp; sourceTree = "<group>"; };
+		116A7EEE2046DCAE004B545D /* OdotBundle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = OdotBundle.hpp; path = ../../Source/OdotBundle.hpp; sourceTree = "<group>"; };
 		116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreBundleViewer.cpp; path = ../../Source/ScoreBundleViewer.cpp; sourceTree = "<group>"; };
 		116F87731F9D04B90062EE91 /* ScoreBundleViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreBundleViewer.h; path = ../../Source/ScoreBundleViewer.h; sourceTree = "<group>"; };
 		116F87781F9D04FC0062EE91 /* PropertyPanelTabs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PropertyPanelTabs.cpp; path = ../../Source/PropertyPanelTabs.cpp; sourceTree = "<group>"; };
@@ -624,6 +630,8 @@
 				44B718AF1EDD9D010039884E /* Symbol.cpp */,
 				118C38DD1EC5BC4F006FF4A1 /* Score.h */,
 				118C38DC1EC5BC4F006FF4A1 /* Score.cpp */,
+				116A7EED2046DCAE004B545D /* OdotBundle.cpp */,
+				116A7EEE2046DCAE004B545D /* OdotBundle.hpp */,
 			);
 			name = score;
 			sourceTree = "<group>";
@@ -804,6 +812,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				116A7EF22046DCAE004B545D /* OdotBundle.hpp in Headers */,
 				11C442D31F585C1B00F2E9B6 /* TimeDisplay.hpp in Headers */,
 				114027C71F49C21E00A9B8C4 /* SortedStaves.hpp in Headers */,
 				114027CD1F4B185E00A9B8C4 /* StaffComponent.hpp in Headers */,
@@ -1025,6 +1034,7 @@
 				118648981EFA811800904672 /* TimePointArray.cpp in Sources */,
 				11B71DD91F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
 				118648711EF7E68B00904672 /* include_juce_gui_extra.mm in Sources */,
+				116A7EF12046DCAE004B545D /* OdotBundle.cpp in Sources */,
 				1107B4031EF7D55D00E2DFA9 /* SymbolistMainWindow.cpp in Sources */,
 				116F877C1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */,
 				11D123681F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */,
@@ -1110,6 +1120,7 @@
 				1107B3EA1EF5388500E2DFA9 /* PathInfo.cpp in Sources */,
 				11D86B8C1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */,
 				44C0729F1EC4AF8C0028D5F8 /* include_juce_osc.cpp in Sources */,
+				116A7EF02046DCAE004B545D /* OdotBundle.cpp in Sources */,
 				116F87751F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */,
 				116F877B1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */,
 				118648971EFA811800904672 /* TimePointArray.cpp in Sources */,
@@ -1160,6 +1171,7 @@
 				44C0729E1EC4AF870028D5F8 /* include_juce_osc.cpp in Sources */,
 				118648961EFA811800904672 /* TimePointArray.cpp in Sources */,
 				11B71DD71F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
+				116A7EEF2046DCAE004B545D /* OdotBundle.cpp in Sources */,
 				1107B3DD1EF1751900E2DFA9 /* TextGlyphComponent.cpp in Sources */,
 				116F877A1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */,
 				11D123661F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */,

@@ -1,9 +1,7 @@
-
-
 #include "SymbolistComponent.h"
 #include "SymbolistMainComponent.h"
 
-// recursive methods for easy access to the top-level sore and main component
+// recursive methods for easy access to the top-level score and main component
 // from anywhere in the GUI
 // redefined in PageComponent and MAincomponent
 PageComponent* SymbolistComponent::getPageComponent()

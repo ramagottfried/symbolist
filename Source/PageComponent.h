@@ -58,7 +58,7 @@ public:
         score_cursor.repaint();
     }
     
-    inline StaffComponent *getStave( String& name )
+    inline StaffComponent *getStaffByName( String& name )
     {
         
         cout << "num child comps " << getNumChildComponents() << endl;

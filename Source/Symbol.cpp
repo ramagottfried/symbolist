@@ -12,21 +12,25 @@ Symbol::Symbol(const Symbol& other)
     osc_bundle = other.osc_bundle;
 }
 
+Symbol::Symbol(const OdotBundle& bundle)
+{
+    o_bundle = bundle;
+}
 
-Symbol::Symbol (const String & type, float x, float y, float w, float h)
+Symbol::Symbol(const String & type, float x, float y, float w, float h)
 {
     o_bundle.clear();
 
-    o_bundle.addOSCMessage( "/type", type );
-    o_bundle.addOSCMessage( "/x", x );
-    o_bundle.addOSCMessage( "/y", y );
-    o_bundle.addOSCMessage( "/w", w );
-    o_bundle.addOSCMessage( "/h", h );
+    o_bundle.addMessage( "/type", type );
+    o_bundle.addMessage( "/x", x );
+    o_bundle.addMessage( "/y", y );
+    o_bundle.addMessage( "/w", w );
+    o_bundle.addMessage( "/h", h );
     
     o_bundle.print();
     
     
-    String str = o_bundle.oscAddressGetString("/type");
+    String str = o_bundle.getMessage("/type").getString();
     if( str.isNotEmpty() )
         cout << "string is " << str << endl;
     
@@ -39,6 +43,11 @@ Symbol::Symbol (const String & type, float x, float y, float w, float h)
     
     
     // add name?
+}
+
+void Symbol::setBundle( OdotBundle& src)
+{
+    o_bundle = src;
 }
 
 Symbol::~Symbol() {}
@@ -170,6 +179,20 @@ bool Symbol::symbol_parse_error( int p, const String& address ) const
     return false;
 }
 
+const ScopedPointer<Symbol> Symbol::getSubSymbol( const String &base_address )
+{
+    const char *str = base_address.getCharPointer();
+    OdotMessage m = o_bundle.getMessage( str );
+    
+    OdotBundle b = m.getBundle();
+    return ScopedPointer<Symbol>( new Symbol( b ) );
+}
+
+void Symbol::addSubSymbol( const String &base_address, const Symbol& symbol )
+{
+    OdotBundle bndl_cpy( symbol.o_bundle );
+    o_bundle.addMessage( base_address.getCharPointer(), bndl_cpy );
+}
 
 // filter the symbol from base_address
 Symbol Symbol::makeSubSymbol( const String &base_address ) const
@@ -188,11 +211,15 @@ Symbol Symbol::makeSubSymbol( const String &base_address ) const
             {
                 m.addArgument( osc_bundle[i].getMessage()[mi] );
             }
-            s.addOSCMessage(m);
+//             s.addOSCMessage(m);
+            s.osc_bundle.addElement(m);
+
         }
     }
     return s;
 }
+
+
 
 void Symbol::setPosition( const Point<float> pos )
 {
@@ -317,6 +344,7 @@ int Symbol::getOSCValueAsInt(const OSCArgument& a)
         return 0;
 }
 
+/*
 void Symbol::addOSCMessage( const String &address )
 {
     osc_bundle.addElement(OSCBundle::Element(OSCMessage(OSCAddressPattern(address))));
@@ -326,22 +354,27 @@ void Symbol::addOSCMessage( const OSCMessage m )
 {
     osc_bundle.addElement(m);
 }
+*/
 
+/*
 void Symbol::addOSCMessage( const String &address, const float value)
 {
+    o_bundle.addOSCMessage(address, value);
     osc_bundle.addElement(OSCBundle::Element(OSCMessage(OSCAddressPattern(address), value)));
 }
 
 void Symbol::addOSCMessage( const String &address, const int value)
 {
-    
+    o_bundle.addOSCMessage(address, value);
     osc_bundle.addElement(OSCBundle::Element(OSCMessage(OSCAddressPattern(address), value)));
 }
 
 void Symbol::addOSCMessage( const String &address, const String &value)
 {
+    o_bundle.addOSCMessage(address, value);
     osc_bundle.addElement(OSCBundle::Element(OSCMessage(OSCAddressPattern(address), value)));
 }
+*/
 
 void Symbol::printBundle() const
 {

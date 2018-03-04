@@ -67,7 +67,7 @@ public:
             String addr = base_address + "/fill";
             if( s->getOSCMessagePos(addr) == -1 )
             {
-                s->addOSCMessage( addr,         m_fill );
+                s->addOSCMessage( addr,         (int)m_fill );
                 messages_added++;
             }
             

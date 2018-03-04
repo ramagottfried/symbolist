@@ -176,7 +176,10 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
     addr = base_address + "/color";
     if( s->getOSCMessagePos(addr) == -1 )
     {
-        s->addOSCMessage( OSCMessage( addr,   sym_color.getFloatRed(), sym_color.getFloatGreen(), sym_color.getFloatBlue(), sym_color.getFloatAlpha()  ) );
+        s->addOSCMessage(addr, sym_color.getFloatRed(), sym_color.getFloatGreen(), sym_color.getFloatBlue(), sym_color.getFloatAlpha() );
+        
+        // s->addOSCMessage( OSCMessage( addr,   sym_color.getFloatRed(), sym_color.getFloatGreen(), sym_color.getFloatBlue(), sym_color.getFloatAlpha()  ) );
+        
         messages_added++;
     }
     

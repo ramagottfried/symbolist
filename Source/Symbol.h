@@ -19,8 +19,14 @@ public:
     Symbol();
     Symbol(const String &type, float x, float y, float w, float h );
     Symbol(const Symbol& other);
+    Symbol( const OdotBundle& src );
+    void setBundle( OdotBundle& src);
+    
     ~Symbol();
     
+    const ScopedPointer<Symbol> getSubSymbol( const String &base_address );
+    
+    void addSubSymbol( const String &base_address, const Symbol& symbol );
     
     String      getType();
     
@@ -40,16 +46,29 @@ public:
     
     void printBundle() const;
     
-    void addOSCMessage( const String &address );
-    void addOSCMessage( const OSCMessage m );
-    void addOSCMessage( const String &address, const float value );
-    void addOSCMessage( const String &address, const int value );
-    void addOSCMessage( const String &address, const String &value );
+    //void addOSCMessage( const String &address );
+    
+    //void addOSCMessage( const OSCMessage m );
+    
+    
+    template<typename... Ts>
+    void addOSCMessage(const String& address, Ts... args)
+    {
+        o_bundle.addMessage( address.getCharPointer(), args... );
+    }
+    
+    
+ //   void addOSCMessage( const String &address, const float value );
+//    void addOSCMessage( const String &address, const int value );
+//    void addOSCMessage( const String &address, const String &value );
     
     odot_bundle*    exportToOSC();
     void            importFromOSC(odot_bundle *bundle);
     
     Symbol makeSubSymbol( const String &base_address ) const;
+    
+
+
     
     float getTime() const ;
     float getDuration() const ;

@@ -91,8 +91,8 @@ void PaletteComponent::buildFromPalette(SymbolistPalette* palette)
     // default "draw" buttons (only one for now)
     {
         Symbol s("path", 0, 0, d_bh, d_bw);
-        s.addOSCMessage( OSCMessage("/num_sub_paths", 1) );
-        s.addOSCMessage( OSCMessage("/path/0/str", String("m 4. 4. c 14. 2. 22. 8. 16. 14. c 12. 20. 14. 24. 20. 22.")) );
+        s.addOSCMessage( "/num_sub_paths", 1 );
+        s.addOSCMessage( "/path/0/str", String("m 4. 4. c 14. 2. 22. 8. 16. 14. c 12. 20. 14. 24. 20. 22.") );
         PaletteButton *pb = new PaletteButton(-1, &s);
         pb->setSize(d_bh , d_bw);
         pb->setCentrePosition( b_cX, b_cY);

@@ -24,7 +24,8 @@ public:
     
     ~Symbol();
     
-    const ScopedPointer<Symbol> getSubSymbol( const String &base_address );
+    const ScopedPointer<Symbol>
+    getSubSymbol( const String &base_address );
     
     void addSubSymbol( const String &base_address, const Symbol& symbol );
     
@@ -68,12 +69,15 @@ public:
     Symbol makeSubSymbol( const String &base_address ) const;
     
 
-
+    
     
     float getTime() const ;
     float getDuration() const ;
     float getEndTime() const ;
-    String getName() const;
+    String getName();
+    String getID();
+    String getSaff();
+    
     
     bool hitTest( float t )
     {
@@ -84,8 +88,7 @@ public:
     void setID( const String& str );
     void setName( const String& str );
 
-    String getID();
-    String getSaff();
+
     
     void setTimeAndDurationFromRelPix( const float start_x, const float dur_x );
     void setTimeAndDuration( const float start_t, const float dur_t );

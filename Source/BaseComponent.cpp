@@ -77,7 +77,7 @@ void BaseComponent::reportModification()
 void BaseComponent::createAndAttachSymbol()
 {
     Symbol *s = new Symbol();
-    addSymbolMessages( s , String("") );
+    addSymbolMessages( s );
     setScoreSymbolPointer( s );
 }
 

@@ -29,19 +29,6 @@ Symbol::Symbol(const String & type, float x, float y, float w, float h)
     
     o_bundle.print();
     
-    
-    String str = o_bundle.getMessage("/type").getString();
-    if( str.isNotEmpty() )
-        cout << "string is " << str << endl;
-    
-    addOSCMessage("/type",  type);
-    addOSCMessage("/x",     x);
-    addOSCMessage("/y",     y);
-    addOSCMessage("/w",     w);
-    addOSCMessage("/h",     h);
-    
-    
-    
     // add name?
 }
 
@@ -54,33 +41,17 @@ Symbol::~Symbol() {}
 
 void Symbol::setID( const String& str )
 {
-    int pos = getOSCMessagePos("/id");
-    if( pos == -1 )
-        addOSCMessage("/id",     str);
-    else
-    {
-        OSCBundle newBundle;
-        for( auto osc_m_iter : osc_bundle )
-        {
-            auto i_msg = osc_m_iter.getMessage();
-            if( i_msg.getAddressPattern().toString() == "/id" )
-                newBundle.addElement(OSCBundle::Element(OSCMessage(OSCAddressPattern("/id"), str)));
-            else
-                newBundle.addElement( i_msg );
-        }
-        osc_bundle = newBundle;
-        
-    }
+    o_bundle.addMessage( "/id", str );
 }
 
 String Symbol::getID()
 {
-    return getOSCMessageValue("/id").getString();
+    return o_bundle.getMessage("/id").getString();
 }
 
-String Symbol::getName() const
+String Symbol::getName()
 {
-    return getOSCMessageValue("/name").getString();
+    return o_bundle.getMessage("/name").getString();
 }
 
 void Symbol::setOSCAddrAndValue( const String& addr, const String& value  )
@@ -181,10 +152,7 @@ bool Symbol::symbol_parse_error( int p, const String& address ) const
 
 const ScopedPointer<Symbol> Symbol::getSubSymbol( const String &base_address )
 {
-    const char *str = base_address.getCharPointer();
-    OdotMessage m = o_bundle.getMessage( str );
-    
-    OdotBundle b = m.getBundle();
+    OdotBundle b = o_bundle.getMessage( base_address.getCharPointer() ).getBundle();
     return ScopedPointer<Symbol>( new Symbol( b ) );
 }
 
@@ -193,32 +161,6 @@ void Symbol::addSubSymbol( const String &base_address, const Symbol& symbol )
     OdotBundle bndl_cpy( symbol.o_bundle );
     o_bundle.addMessage( base_address.getCharPointer(), bndl_cpy );
 }
-
-// filter the symbol from base_address
-Symbol Symbol::makeSubSymbol( const String &base_address ) const
-{
-    Symbol s;
-    
-    for (int i = 0; (i < osc_bundle.size()) ; i++)
-    {
-        String addr = osc_bundle[i].getMessage().getAddressPattern().toString() ;
-        
-        if ( addr.startsWith( base_address ) && addr[base_address.length()] == '/' )
-        {
-            OSCMessage m (OSCAddressPattern(addr.substring(base_address.length())));
-
-            for (int mi = 0; mi < osc_bundle[i].getMessage().size(); mi++)
-            {
-                m.addArgument( osc_bundle[i].getMessage()[mi] );
-            }
-//             s.addOSCMessage(m);
-            s.osc_bundle.addElement(m);
-
-        }
-    }
-    return s;
-}
-
 
 
 void Symbol::setPosition( const Point<float> pos )

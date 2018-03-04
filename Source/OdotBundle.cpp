@@ -64,7 +64,7 @@ void OdotBundle::addMessage( const OdotMessage& msg )
     // but the sending OdotMessage will be empty...
     // ... make copy instead? ok yes, doing that...
     OdotMessage msg_cpy( msg );
-    osc_bundle_u_addMsg( ptr.get(), msg_cpy.release() );
+    osc_bundle_u_addMsgWithoutDups( ptr.get(), msg_cpy.release() );
 }
 
 void OdotBundle::clear()

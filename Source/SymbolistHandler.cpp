@@ -179,20 +179,74 @@ void SymbolistHandler::symbolistAPI_setOneSymbol( odot_bundle *bundle)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
     
+    cout << __func__ << endl;
+    
     Symbol *s = new Symbol();
     s->importFromOSC( bundle );
-    score->addSymbol(s);
     
-    if ( main_component_ptr != nullptr )
+    String type = s->getType();
+    if( type.isEmpty() )
+        return;
+    
+    String id = s->getID();
+
+    Symbol *existing_sym = score->lookupSymbolID( id );
+    if( existing_sym )
     {
-        BaseComponent* c = makeComponentFromSymbol( s , false);
-        main_component_ptr->getPageComponent()->addSubcomponent(c);
-        c->setScoreSymbolPointer( s );
+        score->updateExistingScoreSymbol( existing_sym, s );
+        
+        if ( main_component_ptr != nullptr )
+        {
+            auto pc = main_component_ptr->getPageComponent();
+            
+            BaseComponent *c = nullptr;
+            size_t numsubs = pc->getNumSubcomponents();
+            for( int i = 0; i < numsubs; i++ )
+            {
+                c = dynamic_cast<BaseComponent*>( pc->getSubcomponent(i) );
+
+                if( c && (c->getScoreSymbolPointer()->getID() == id) )
+                {
+                    cout << "found match" << endl;
+                    break;
+                }
+            }
+            
+            if( !c )
+            {
+                cout << "symbol found, but no matching component found " << endl;
+                return;
+            }
+            
+            c->importFromSymbol( *existing_sym ) ;
+            c->addSymbolMessages( existing_sym, "" );
+
+            executeUpdateCallback( score->getSymbolPosition( existing_sym ) );
+            
+            c->repaint();
+        }
+        else
+        {
+            executeUpdateCallback( -1 ); // if the windows is open, this is called from the component creation routine
+            // cout << "main component is NULL" << endl;
+        }
     }
     else
     {
-        executeUpdateCallback( -1 ); // if the windows is open, this is called from the component creation routine
-        cout << "main component is NULL" << endl;
+        cout << "no matching id found, adding new symbol " << endl;
+        score->addSymbol(s);
+        
+        if ( main_component_ptr != nullptr )
+        {
+            BaseComponent* c = makeComponentFromSymbol( s , false);
+            main_component_ptr->getPageComponent()->addSubcomponent(c);
+            c->setScoreSymbolPointer( s );
+        }
+        else
+        {
+            executeUpdateCallback( -1 ); // if the windows is open, this is called from the component creation routine
+            // cout << "main component is NULL" << endl;
+        }
     }
 }
 
@@ -651,7 +705,9 @@ void SymbolistHandler::newFromClipBoard()
     {
         // cout << " SymbolistHandler::newFromClipBoard " << endl;
         // cout << s->getID() << endl;
-        BaseComponent *c = makeComponentFromSymbol( new Symbol(*s), true );
+        Symbol *new_sym = new Symbol(*s);
+        new_sym->setID("");
+        BaseComponent *c = makeComponentFromSymbol( new_sym, true );
         if ( c != NULL)
         {
             pc->addSubcomponent( c );

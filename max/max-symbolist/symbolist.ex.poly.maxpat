@@ -38,14 +38,14 @@
 		"subpatcher_template" : "Default Max 7",
 		"boxes" : [ 			{
 				"box" : 				{
-					"id" : "obj-10",
-					"maxclass" : "newobj",
+					"id" : "obj-19",
+					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
-					"outlettype" : [ "int" ],
-					"patching_rect" : [ 320.0, 116.0, 29.5, 22.0 ],
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 336.5, 111.0, 46.5, 22.0 ],
 					"style" : "",
-					"text" : "- 1"
+					"text" : "-1"
 				}
 
 			}
@@ -206,7 +206,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 320.0, 56.0, 58.0, 22.0 ],
+					"patching_rect" : [ 320.0, 40.0, 58.0, 22.0 ],
 					"style" : "",
 					"text" : "loadbang"
 				}
@@ -245,7 +245,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "int" ],
-					"patching_rect" : [ 320.0, 89.0, 58.0, 22.0 ],
+					"patching_rect" : [ 320.0, 73.0, 58.0, 22.0 ],
 					"style" : "",
 					"text" : "thispoly~"
 				}
@@ -273,13 +273,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-3", 0 ],
 					"source" : [ "obj-1", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-18", 0 ],
-					"source" : [ "obj-10", 0 ]
 				}
 
 			}
@@ -336,7 +329,16 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-10", 0 ],
+					"destination" : [ "obj-18", 0 ],
+					"order" : 1,
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-19", 1 ],
+					"order" : 0,
 					"source" : [ "obj-2", 0 ]
 				}
 

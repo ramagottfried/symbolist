@@ -33,7 +33,7 @@ void PathHandle::mouseDown( const MouseEvent& event )
 
 void PathHandle::mouseDrag( const MouseEvent& event )
 {
-//    cout << "PathHandle::mouseDrag " << this << endl;
+    cout << "PathHandle::mouseDrag " << this << endl;
     
     PathBaseComponent* parent = (PathBaseComponent*)getParentComponent();
 

@@ -293,11 +293,11 @@ void EditSelectionBox::mouseDown (const MouseEvent& e)
 
 void EditSelectionBox::mouseDrag (const MouseEvent& e)
 {
-    cout << "\n\nEditSelectionBox::mouseDrag\n\n" << endl;
+//    cout << "\n\nEditSelectionBox::mouseDrag\n\n" << endl;
 
     for( int i = 0; i < non_preview_components.size(); i++ )
     {
-        cout << "--" << i << endl;
+//        cout << "--" << i << endl;
         non_preview_components[i]->mouseDrag( e );
     }
     
@@ -305,7 +305,7 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
     
     if (preview_components.size() == 0 || in_edit_mode )
     {
-        cout << "^^ EditSelectionBox::mouseDrag return" << endl;
+//        cout << "^^ EditSelectionBox::mouseDrag return" << endl;
 
         return;
     }
@@ -415,6 +415,11 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
                 BaseComponent *b = preview_components[i]->copy;
                 BaseComponent *c = preview_components[i]->org;
 
+                /* TEMPORARILY DISABLING PREVIEW SCALING FOR GROUPS AND STAFFS */
+                
+                if( c->getScoreSymbolPointer()->getType() == "group" || c->getScoreSymbolPointer()->getType() == "staff" )
+                    continue;
+                
                 cout << "rel width " << (float)c->getWidth() / original_bounds.getWidth() << endl;;
                 
                 // this is the current relative info for this component

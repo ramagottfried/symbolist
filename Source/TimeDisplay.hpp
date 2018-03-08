@@ -25,6 +25,7 @@ public:
     {
         display = !display;
         setVisible(display);
+        updateText( m_time_str );
     }
     
     bool hitTest (int x, int y) override { return false; }

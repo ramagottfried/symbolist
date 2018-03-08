@@ -14,7 +14,9 @@ PathBaseComponent::~PathBaseComponent()
 
 void PathBaseComponent::cleanupPathArray()
 {
-    for ( int np = 0; np < m_path_array.size(); np++ ) delete m_path_array[np] ;
+    for ( int np = 0; np < m_path_array.size(); np++ )
+        delete m_path_array[np] ;
+    
     m_path_array.clear();
 }
 
@@ -218,10 +220,27 @@ void PathBaseComponent::importFromSymbol(const Symbol &s)
     
     for ( int np = 0; np < n_subpaths ; np++ )
     {
-        Path* subp = new Path();
-        String path_str = s.getOSCMessageValue("/path/" + String(np) + "/str").getString();
-        subp->restoreFromString( path_str );
-        m_path_array.add(subp);
+        OSCArgument arg = s.getOSCMessageValue("/path/" + String(np) + "/str");
+        if( arg.isString() )
+        {
+            String path_str = arg.getString();
+            Path* subp = new Path();
+            subp->restoreFromString( path_str );
+            m_path_array.add(subp);
+        }
+        else
+        {
+            arg = s.getOSCMessageValue("/path/" + String(np) + "/svg");
+
+            if( arg.isString() )
+            {
+                String path_str = arg.getString();
+                Drawable::parseSVGPath( path_str );
+                Path* subp = new Path( Drawable::parseSVGPath( path_str ) );
+                m_path_array.add(subp);
+                updatePathBounds();
+            }
+        }
     }
 
     int pos = s.getOSCMessagePos("/fill");
@@ -742,10 +761,12 @@ void PathBaseComponent::abortDrawPath (  )
 // inside an existing Component we're editing the path...
 void PathBaseComponent::mouseAddClick ( const MouseEvent& event )
 {
-    auto pt = PathBaseComponent::shiftConstrainMouseAngle( path_handles.getLast(), event );
     
     if( in_edit_mode )
     {
+        
+        auto pt =  path_handles.size() > 0 ? PathBaseComponent::shiftConstrainMouseAngle( path_handles.getLast(), event ) : event.getPosition().toFloat();
+
         if ( !drawing ) // we were NOT already in a draw process
         {
             addHandle(PathHandle::start , pt.x, pt.y);
@@ -1007,8 +1028,8 @@ void PathBaseComponent::scaleScoreComponent(float scale_w, float scale_h)
         if( new_path_w < 1 ) new_path_w = 1;
         if( new_path_h < 1 ) new_path_h = 1;
         
-        float adj_scale_w = (new_path_w / round(m_path_bounds.getWidth()) );
-        float adj_scale_h = (new_path_h / round(m_path_bounds.getHeight()) );
+        float adj_scale_w = (new_path_w / (m_path_bounds.getWidth()  == 0 ? 1 : m_path_bounds.getWidth() ) );
+        float adj_scale_h = (new_path_h / (m_path_bounds.getHeight() == 0 ? 1 : m_path_bounds.getHeight()) );
         
         printRect(m_path_bounds, "1 m_path_bounds");
 

@@ -43,7 +43,11 @@ void Symbol::setID( const String& str )
 
 String Symbol::getID()
 {
-    return getOSCMessageValue("/id").getString();
+    OSCArgument arg = getOSCMessageValue("/id");
+    if( arg.isString() )
+        return arg.getString();
+    else
+        return String();
 }
 
 String Symbol::getName() const
@@ -109,7 +113,11 @@ String Symbol::getSaff()
 
 String Symbol::getType()
 {
-    return getOSCMessageValue("/type").getString();
+    OSCArgument arg = getOSCMessageValue("/type");
+    if( arg.isString() )
+        return arg.getString();
+    else
+        return String();
 }
 
 float Symbol::getTime() const

@@ -13,6 +13,8 @@
 		1186487F1EF7F6E400904672 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186487A1EF7F6E400904672 /* IOKit.framework */; };
 		118648801EF7F6E400904672 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186487B1EF7F6E400904672 /* QuartzCore.framework */; };
 		118648811EF7F6E400904672 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186487C1EF7F6E400904672 /* WebKit.framework */; };
+		11A29406204D4830000F49AB /* libo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A29405204D4830000F49AB /* libo.a */; };
+		11A29408204D483E000F49AB /* libomax.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A29407204D483E000F49AB /* libomax.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		1186487A1EF7F6E400904672 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		1186487B1EF7F6E400904672 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		1186487C1EF7F6E400904672 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		11A29405204D4830000F49AB /* libo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libo.a; path = ../../../libo/libo.a; sourceTree = "<group>"; };
+		11A29407204D483E000F49AB /* libomax.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libomax.a; path = ../../../libomax/libomax.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +35,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11A29408204D483E000F49AB /* libomax.a in Frameworks */,
+				11A29406204D4830000F49AB /* libo.a in Frameworks */,
 				118648811EF7F6E400904672 /* WebKit.framework in Frameworks */,
 				118648801EF7F6E400904672 /* QuartzCore.framework in Frameworks */,
 				1186487E1EF7F6E400904672 /* Cocoa.framework in Frameworks */,
@@ -63,6 +69,8 @@
 		118648771EF7F6D200904672 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				11A29407204D483E000F49AB /* libomax.a */,
+				11A29405204D4830000F49AB /* libo.a */,
 				118648781EF7F6E400904672 /* Carbon.framework */,
 				118648791EF7F6E400904672 /* Cocoa.framework */,
 				1186487A1EF7F6E400904672 /* IOKit.framework */,
@@ -204,7 +212,10 @@
 					../../Source,
 					"$(C74SUPPORT)/msp-includes",
 				);
-				LIBRARY_SEARCH_PATHS = ../../Builds/MacOSX/build/Debug/;
+				LIBRARY_SEARCH_PATHS = (
+					../../Builds/MacOSX/build/Debug/,
+					../../../libo,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -275,7 +286,10 @@
 					../../Source,
 					"$(C74SUPPORT)/msp-includes",
 				);
-				LIBRARY_SEARCH_PATHS = ../../Builds/MacOSX/build/Debug/;
+				LIBRARY_SEARCH_PATHS = (
+					../../Builds/MacOSX/build/Debug/,
+					../../../libo,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = NO;
@@ -306,13 +320,28 @@
 					"$(inherited)",
 				);
 				GENERATE_MASTER_OBJECT_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"../../../max-sdk/source/c74support/max-includes",
+					../../Source,
+					"$(C74SUPPORT)/msp-includes",
+					../../../libo,
+					../../../libomax,
+				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				LIBRARY_SEARCH_PATHS = (
+					../../Builds/MacOSX/build/Debug/,
+					../../../libo,
+					../../../libomax,
+				);
 				OTHER_CFLAGS = (
 					"-DNO_TRANSLATION_SUPPORT",
 					"-g",
 				);
 				OTHER_LDFLAGS = "@$(C74SUPPORT)/max-includes/c74_linker_flags.txt";
+				PRELINK_LIBS = "../../Builds/MacOSX/build/Debug/libsymbolist.a ../../../libomax/libomax.a ../../../libo/libo.a";
 				PRODUCT_BUNDLE_IDENTIFIER = "ircam.cnmat.zkm.yay.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -332,8 +361,22 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(C74SUPPORT)/max-includes/macho-prefix.pch";
 				GENERATE_MASTER_OBJECT_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"../../../max-sdk/source/c74support/max-includes",
+					../../Source,
+					"$(C74SUPPORT)/msp-includes",
+					../../../libo,
+					../../../libomax,
+				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				LIBRARY_SEARCH_PATHS = (
+					../../Builds/MacOSX/build/Debug/,
+					../../../libo,
+					../../../libomax,
+				);
 				OTHER_CFLAGS = (
 					"-DNO_TRANSLATION_SUPPORT",
 					"-g",

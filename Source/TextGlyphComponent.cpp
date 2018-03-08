@@ -201,16 +201,16 @@ int TextGlphComponent::addSymbolMessages( Symbol* s, const String &base_address 
 //void TextGlphComponent::resized()
 //{
 //    BaseComponent::resized();
-
-    /*
-    int h = getHeight();
-    
-    m_font.setHeight( h );
-    textobj->setFont( m_font );
-
-    setBounds(getX(), getY(), m_font.getStringWidth(m_text) + m_width_offset, h );
-    textobj->setBounds( getLocalBounds().translated(m_x_offset, 0) );
-    */
+//
+//    /*
+//    int h = getHeight();
+//    
+//    m_font.setHeight( h );
+//    textobj->setFont( m_font );
+//
+//    setBounds(getX(), getY(), m_font.getStringWidth(m_text) + m_width_offset, h );
+//    textobj->setBounds( getLocalBounds().translated(m_x_offset, 0) );
+//    */
 //}
 
 void TextGlphComponent::setWidthInPixels(float w)

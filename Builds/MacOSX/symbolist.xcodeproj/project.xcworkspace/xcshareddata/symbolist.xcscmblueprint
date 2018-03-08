@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "F48B0F6364D744A1AE41BF7029A24685D7D27F4E",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "73CD3912FF7E5D839C8BDA43B346354BE088DDE8" : 9223372036854775807,
+    "F48B0F6364D744A1AE41BF7029A24685D7D27F4E" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "9DD253EF-5E2E-47A0-8425-DE7F77FC7871",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "73CD3912FF7E5D839C8BDA43B346354BE088DDE8" : "libo\/",
+    "F48B0F6364D744A1AE41BF7029A24685D7D27F4E" : "symbolist\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "symbolist",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Builds\/MacOSX\/symbolist.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/CNMAT\/libo.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "73CD3912FF7E5D839C8BDA43B346354BE088DDE8"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/j-bresson\/symbolist.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F48B0F6364D744A1AE41BF7029A24685D7D27F4E"
+    }
+  ]
+}

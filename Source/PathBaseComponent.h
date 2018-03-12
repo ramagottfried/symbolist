@@ -15,10 +15,10 @@ public:
     static void printPath( Path p, const char* name = "path" );
     void cleanupPathArray();
     
-    int addSymbolMessages(Symbol* s, const String &base_address) override;
+    virtual void addSymbolMessages(Symbol* s ) override;
     virtual void importFromSymbol(const Symbol &s) override;
 
-    String getSymbolTypeStr() const override { return "path"; }
+    string getSymbolTypeStr() const override { return "path"; }
     
     Rectangle<float> symbol_export_bounds() override
     {

@@ -15,7 +15,7 @@ using namespace std;
 
 struct ScoreSorter
 {
-    static int compareElements (const Symbol* a, const Symbol* b)
+    static int compareElements ( Symbol* a, Symbol* b)
     {
         auto a_t = a->getTime();
         auto b_t = b->getTime();
@@ -53,7 +53,7 @@ public:
 
     odot_bundle *getScoreBundle();
 
-    const Array<Symbol*> getSymbolsByValue( const String& address, const String& value );
+    const Array<Symbol*> getSymbolsByValue( const string& address, const string& value );
 
     const TimePointArray* getTimePointArray() const { return &time_points; }
     
@@ -63,12 +63,12 @@ public:
     void updateStaves(Symbol *moved_stave);
     void updateStavesAndTimepoints();
     Symbol *getStaveAtTime( float time );
-    const Symbol* getStaveByID( const String& id );
+    const Symbol* getStaveByID( const string& id );
 
     odot_bundle* getDurationBundle();
 
     
-    int getNameCount( String& name )
+    int getNameCount( string& name )
     {
         int count = 0;
         for( Symbol *s : score_symbols )
@@ -80,7 +80,7 @@ public:
         return count;
     }
     
-    bool idExists( String& idStr )
+    bool idExists( string& idStr )
     {
         for( Symbol *s : score_symbols )
         {
@@ -94,6 +94,8 @@ public:
 private:
     
     OwnedArray<Symbol>          score_symbols;
+    
+    OdotBundle                  score_bundle;
     
     TimePointArray              time_points;
     SortedStaves                staves;

@@ -137,14 +137,16 @@ int SymbolistHandler::symbolistAPI_getNumSymbols()
     return static_cast<int>( score->getSize() );
 }
 
-odot_bundle* SymbolistHandler::symbolistAPI_getSymbol(int n)
+OdotBundle_s SymbolistHandler::symbolistAPI_getSymbol(int n)
 {
     return score->getSymbol(n)->exportToOSC();
 }
 
 StringArray SymbolistHandler::symbolistAPI_getSymbolString(int n)
 {
-    odot_bundle *bndl = score->getSymbol(n)->exportToOSC();
+    OdotBundle * bndl = score->getSymbol(n)->getBundle();
+    
+    
     OSCReader osc( bndl->data, bndl->len );
  
     OSCBundle osc_b = osc.readBundle( osc.getTotalLength()  );
@@ -171,7 +173,7 @@ StringArray SymbolistHandler::symbolistAPI_getSymbolString(int n)
         str_array.add(str);
     }
     
-    return str_array;
+    return StringArray();
 }
 
 
@@ -220,7 +222,7 @@ odot_bundle* SymbolistHandler::symbolistAPI_getPaletteSymbol(int n)
     return palette.getPaletteUserItem(n)->exportToOSC();
 }
 
-void SymbolistHandler::symbolistAPI_setOnePaletteSymbol( odot_bundle *bundle)
+void SymbolistHandler::symbolistAPI_setOnePaletteSymbol( Odot_bundle_s bundle)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
     

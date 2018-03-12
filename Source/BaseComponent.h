@@ -14,7 +14,7 @@ public:
     BaseComponent() = default;
     ~BaseComponent();
     
-    virtual int addSymbolMessages( Symbol* s, const String &base_address = "" );
+    virtual void addSymbolMessages( Symbol* s );
     virtual void importFromSymbol( const Symbol &s );
     
     void parentHierarchyChanged() override;
@@ -23,7 +23,8 @@ public:
     
     void paint ( Graphics& g ) override;
     
-    void setScoreSymbolPointer (Symbol* s) { score_symbol = s; }
+    void setScoreSymbolPointer (Symbol* s) { score_symbol = s; } // it shouldn't be possible to set the symbol without updating the whole component
+    
     Symbol* getScoreSymbolPointer () { return score_symbol; }
     void createAndAttachSymbol();
     
@@ -53,10 +54,11 @@ public:
     bool respondsToMouseEvents();
     
     virtual Rectangle<float> symbol_export_bounds(){ return getBounds().toFloat(); }
-    const String& symbol_export_name()
+    
+    const string symbol_export_name()
     {
         cout << "name " << getComponentID() <<  " " << getSymbolTypeStr() << endl;
-        return ( !name.isEmpty() ? name : getComponentID() );
+        return ( name.size() == 0 ? name : string( getComponentID().getCharPointer() ) );
     }
     
     // not very happy with therm "Symbol" here
@@ -145,9 +147,9 @@ protected:
     // score structure
     Symbol*         score_symbol = NULL;   // pointer to the score symbol (set when this is a topLevel symbol, NULL otherwise)
     
-    String          name;
-    String          staff_name;
-    String          lambda;
+    string          name;
+    string          staff_name;
+    string          lambda;
     
     // staff attachement
     BaseComponent   *staff = nullptr; // place holder ...

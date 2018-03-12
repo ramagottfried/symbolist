@@ -4,6 +4,7 @@
 #include "ScoreComponent.h"
 #include "SymbolistMainComponent.h"
 #include "StaffComponent.hpp"
+#include "OdotAtom.hpp"
 
 // do we need this ?
 template <typename T> void printPoint(Point<T> point, String name = "point" )
@@ -82,90 +83,31 @@ void BaseComponent::createAndAttachSymbol()
 }
 
 // addSymbolMessages outputs the component's values into the symbol
-int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
+void BaseComponent::addSymbolMessages( Symbol* s )
 {
-    int messages_added = 0;
-    
+    s->addMessage("/name", name );
+    s->addMessage("/type", getSymbolTypeStr() );
+    s->addMessage("/id", getComponentID() );
+    s->addMessage("/staff", staff_name );
+   
     auto b = symbol_export_bounds();
     
-    String addr;
+    s->addMessage("/x", b.getX() );
+    s->addMessage("/y", b.getY() );
+    s->addMessage("/w", b.getWidth() );
+    s->addMessage("/h", b.getHeight() );
+    s->addMessage("/color", sym_color.getFloatRed(), sym_color.getFloatGreen(), sym_color.getFloatBlue(), sym_color.getFloatAlpha() );
 
-    addr = base_address + "/name";
-    if( s->getOSCMessagePos(addr) == -1 )
-    {
-        s->addOSCMessage( addr,         name );
-        messages_added++;
-    }
-    
-    addr = base_address + "/type";
-    if( s->getOSCMessagePos(addr) == -1 )
-    {
-        s->addOSCMessage( addr,         getSymbolTypeStr());
-        messages_added++;
-    }
-
-
-    addr = base_address + "/id";
-    if( s->getOSCMessagePos(addr) == -1 )
-    {
-        s->addOSCMessage( addr,          getComponentID() );
-        
-    // no default name for now
-      //  if( name.isEmpty() )
-      //      name = getComponentID();
-        
-        messages_added++;
-    }
-    
-    
-   
-    if( getSymbolTypeStr() != "staff ")
-    {
-        addr = base_address + "/staff";
-        if( s->getOSCMessagePos(addr) == -1 )
-        {
-            s->addOSCMessage( addr,         staff_name );
-            messages_added++;
-        }
-    }
-    
-    addr = base_address + "/x";
-    if( s->getOSCMessagePos(addr) == -1 )
-    {
-        s->addOSCMessage( addr,         b.getX() );
-        messages_added++;
-    }
-    
-    addr = base_address + "/y";
-    if( s->getOSCMessagePos(addr) == -1 )
-    {
-        s->addOSCMessage( addr ,        b.getY() );
-        messages_added++;
-    }
-    
-    addr = base_address + "/w";
-    if( s->getOSCMessagePos(addr) == -1 )
-    {
-        s->addOSCMessage( addr ,        b.getWidth() );
-        messages_added++;
-    }
-    
-    addr = base_address + "/h";
-    if( s->getOSCMessagePos(addr) == -1 )
-    {
-        s->addOSCMessage( addr ,        b.getHeight() );
-        messages_added++;
-    }
    
     /*
-    addr = base_address + "/time/start";
+    addr = "/time/start";
     if( s->getOSCMessagePos(addr) == -1 )
     {
         s->addOSCMessage( addr,         s->pixelsToTime( b.getX() ) );
         messages_added++;
     }
 
-    addr = base_address + "/time/duration";
+    addr = "/time/duration";
     if( s->getOSCMessagePos(addr) == -1 )
     {
         s->addOSCMessage( addr,   s->pixelsToTime( b.getWidth() ) );
@@ -173,18 +115,10 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
     }
     */
     
-    addr = base_address + "/color";
-    if( s->getOSCMessagePos(addr) == -1 )
-    {
-        s->addOSCMessage(addr, sym_color.getFloatRed(), sym_color.getFloatGreen(), sym_color.getFloatBlue(), sym_color.getFloatAlpha() );
-        
-        // s->addOSCMessage( OSCMessage( addr,   sym_color.getFloatRed(), sym_color.getFloatGreen(), sym_color.getFloatBlue(), sym_color.getFloatAlpha()  ) );
-        
-        messages_added++;
-    }
+   
     
     /* // not sure how to best do this yet
-    addr = base_address + "/lambda";
+    addr = "/lambda";
     if( s->getOSCMessagePos(addr) == -1 )
     {
         s->addOSCMessage( addr,         lambda );
@@ -195,7 +129,6 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
 //    cout << "*********** START BASE ADD DATA ************ " << endl;
 //    s->printBundle();
     
-    return messages_added;
 }
 
 
@@ -205,84 +138,69 @@ int BaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
 
 void BaseComponent::importFromSymbol( const Symbol &s )
 {
-    int typeMessagePos = s.getOSCMessagePos("/type");
     
-    if ( typeMessagePos == -1 ) {
+    string typeStr = s.getMessage( "/type" ).getString();
+    if ( typeStr.size() == 0 ) {
         
-        cout << "BaseComponent import: Could not find '/type' message in OSC Bundle.. (size=" << s.getOSCBundle()->size() << ")" << endl;
-        
-    } else {
-        
-        String typeStr = s.getOSCMessageValue(typeMessagePos).getString();
-//        cout << "Importing BaseComponent from Symbol: " << typeStr << endl;
-        
-        
-        int x_pos = s.getOSCMessagePos("/x");
-        int y_pos = s.getOSCMessagePos("/y");
-        int w_pos = s.getOSCMessagePos("/w");
-        int h_pos = s.getOSCMessagePos("/h");
-        
-        if( x_pos != -1 && y_pos != -1 && w_pos != -1 && h_pos != -1  )
+        cout << "BaseComponent import: Could not find '/type' message in OSC Bundle.. (size=" << "insert bundle size here" << ")" << endl;
+        return;
+    }
+    
+    float x = s.getMessage("/x").getFloat();
+    float y = s.getMessage("/y").getFloat();
+    float w = s.getMessage("/w").getFloat();
+    float h = s.getMessage("/h").getFloat();
+    setBoundsFromSymbol( x , y , w , h);
+    
+    if( w == 0 || h == 0 )
+    {
+        // Allow for the case where the score is specified in terms of time and staff type name...
+        cout << "***** couldn't find x y w or h values " << endl;
+    }
+    
+    auto color_atoms = s.getMessage("/color").getAtoms();
+    if( color_atoms.size() )
+    {
+        if( color_atoms[0].getType() == OdotAtom::OdotAtomType::O_ATOM_STRING )
         {
-            float x = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(x_pos) );
-            float y = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(y_pos) );
-            float w = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(w_pos) );
-            float h = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(h_pos) );
-            
-//            cout << "x " << x  << " y " << y << " w " << w << endl;
-            
-            setBoundsFromSymbol( x , y , w , h);
+            sym_color = Colour::fromString( color_atoms[0].getString().c_str() );
         }
-        else
+        else if( color_atoms.size() == 4 )
         {
-            // Allow for the case where the score is specified in terms of time and staff type name...
-            cout << "***** couldn't find x y w or h values " << endl;
+            float r = color_atoms[0].getFloat() ;
+            float g = color_atoms[1].getFloat() ;
+            float b = color_atoms[2].getFloat() ;
+            float a = color_atoms[3].getFloat() ;
+            sym_color = Colour::fromFloatRGBA( r, g, b, a );
         }
-        
-        
-        int color_pos = s.getOSCMessagePos("/color");
-        if( color_pos != -1  )
+        else if( color_atoms.size() == 3 )
         {
-            auto bndl = *(s.getOSCBundle());
-            if( bndl[color_pos].getMessage().size() == 1 && bndl[color_pos].getMessage()[0].isString() )
-            {
-                sym_color = Colour::fromString( bndl[color_pos].getMessage()[0].getString() );
-            }
-            else if( bndl[color_pos].getMessage().size() == 4 )
-            {
-                float r = Symbol::getOSCValueAsFloat( bndl[color_pos].getMessage()[0] );
-                float g = Symbol::getOSCValueAsFloat( bndl[color_pos].getMessage()[1] );
-                float b = Symbol::getOSCValueAsFloat( bndl[color_pos].getMessage()[2] );
-                float a = Symbol::getOSCValueAsFloat( bndl[color_pos].getMessage()[3] );
-                sym_color = Colour::fromFloatRGBA( r, g, b, a );
-            }
+            float r = color_atoms[0].getFloat() ;
+            float g = color_atoms[1].getFloat() ;
+            float b = color_atoms[2].getFloat() ;
+            sym_color = Colour::fromFloatRGBA( r, g, b, 1.0 );
         }
+    }
+    
+    name = s.getMessage("/name").getString();
+    if( name.size() == 0 )
+    {
+        name = typeStr;
+    }
         
-
-        int name_pos = s.getOSCMessagePos("/name");
-        if( name_pos != -1 )
-            name = s.getOSCMessageValue(name_pos).getString();
-        else
-            name = typeStr;
-
+    // set /id via component ID
+    if( isVisible() )
+        setSymbolID();
+    else
+        setComponentID( name + "/palette");
+    
+    
+    staff_name = s.getMessage("/staff").getString();
+    if( staff_name == "<none>" )
+        staff_name = "";
         
-        // set /id via component ID
-        if( isVisible() )
-            setSymbolID();
-        else
-            setComponentID( name + "/palette");
-        
-        
-        int staffname_pos = s.getOSCMessagePos("/staff");
-        if( staffname_pos != -1 )
-        {
-            staff_name = s.getOSCMessageValue(staffname_pos).getString();
-            if( staff_name == "<none>" )
-                staff_name = "";
-            
-            attachToStaff();
-        }
-        
+    attachToStaff();
+    
         /* // not sure how to best do this yet
         int lambda_pos = s.getOSCMessagePos("/lambda");
         if( lambda_pos != -1 )
@@ -290,7 +208,6 @@ void BaseComponent::importFromSymbol( const Symbol &s )
             lambda = s.getOSCMessageValue(lambda_pos).getString();
         }
         */
-    }
 }
 
 void BaseComponent::setSymbolID()
@@ -302,17 +219,12 @@ void BaseComponent::setSymbolID()
 
         if( s )
         {
-            String typeStr = s->getType();
+            string typeStr = s->getType();
             
-            String id;
-            int id_pos = s->getOSCMessagePos("/id");
-            if( id_pos != -1 )
-            {
-                id = s->getOSCMessageValue(id_pos).getString();
-            }
+            string id = s->getMessage("/id").getString();
             
-
-            if( id.isEmpty() || getComponentID() != id || id == (typeStr + "/palette")  || id == (name + "/palette") || !id.contains(name))
+            // this was updated in the master branch
+            if( id.size() == 0 || getComponentID() != id || id == (typeStr + "/palette")  || id == (name + "/palette") || id.rfind( name ) == string::npos )
             {
                 // if there is a name use this for the id
                 // for the id, check to see if there are others with this name and then increment 1
@@ -320,11 +232,11 @@ void BaseComponent::setSymbolID()
                 auto sh = getSymbolistHandler();
                 int count = sh->symbolNameCount( name );
                 
-                id = name + "/" + (String)count;
+                id = name + "/" + to_string(count);
                 
                 while( !sh->uniqueIDCheck( id ) )
                 {
-                    id = name + "/" + (String)(count++);
+                    id = name + "/" + to_string(count++);
                 }
                 
                 cout << "id check " << id << endl;
@@ -343,7 +255,7 @@ void BaseComponent::attachToStaff()
     PageComponent *pc = getPageComponent();
     if( pc )
     {
-        if( staff_name.isNotEmpty() )
+        if( staff_name.size() != 0 )
         {
             auto c = pc->getSubcomponentByID( staff_name );
             StaffComponent* staff_component = dynamic_cast<StaffComponent*>(c);

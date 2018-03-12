@@ -168,22 +168,22 @@ void SymbolGroupComponent::scaleScoreComponent(float scale_w, float scale_h)
  * SYMBOL MANAGEMENT
  *============================*/
 
-int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_address )
+void SymbolGroupComponent::addSymbolMessages( Symbol* s )
 {
     
 //    cout << "SymbolGroupComponent::addSymbolMessages " << s << " " << base_address << " " << getNumSubcomponents() << endl;
     
-    int messages_added = BaseComponent::addSymbolMessages( s, base_address );
+    BaseComponent::addSymbolMessages( s );
     
-    String addr = base_address + "/numsymbols";
-    
-    /* 
+    s->addMessage( "/numsymbols", getNumSubcomponents() );
+
+    /*
      * the group symbol is created fist (with the default state), then added to, then updated,
      * so we need (getNumSubcomponents() > 0) to wait to set /numsymbols until after the symbol has been updated,
      * otherwise, /numsymbols gets stuck at 0
      */
     
-    if( s->getOSCMessagePos(addr) == -1 && (getNumSubcomponents() > 0) )
+    if( getNumSubcomponents() > 0) )
     {
         s->addOSCMessage( addr, (int)getNumSubcomponents() );
         messages_added++;
@@ -200,6 +200,12 @@ int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_addre
     }
     
     return messages_added;
+}
+
+void SymbolGroupComponent::addSubSymbol( Symbol* s )
+{
+    /// not implemented but I think this shoudl be separate from the add symbol messages
+    
 }
 
 

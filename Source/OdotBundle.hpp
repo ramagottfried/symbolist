@@ -4,6 +4,7 @@
 #include "OdotPointers.h"
 #include "OdotMessage.hpp"
 #include "OdotAtom.hpp"
+#include "OdotBundle_s.hpp"
 
 using namespace std;
 
@@ -25,6 +26,10 @@ public:
     }
 
     OdotBundle& operator= ( const OdotBundle& src );
+    
+    OdotBundle( OdotBundle&& src ) = default;
+    OdotBundle& operator=( OdotBundle&& src ) = default;
+    
     ~OdotBundle(){}
 
     template <typename... Ts>
@@ -41,16 +46,20 @@ public:
     void addMessage( vector<OdotMessage> msg_vec );
     void addMessage( const OdotMessage& msg );
     
-    OdotMessage getMessage( const char * address );
-    OdotMessage getMessage( const string& address ) { return getMessage( address.c_str() ); }
+    OdotMessage getMessage( const char * address ) const;
+    OdotMessage getMessage( const string& address ) const { return getMessage( address.c_str() ); }
     vector<OdotMessage> matchAddress( const char * address, int fullmatch = 1);
     
     void clear();
     void print( int level = 0 ) const;
+    
+    bool addressExists( const char * address );
     bool addressExists( const string& address );
     
     inline const t_osc_bndl_u * get_o_ptr() { return ptr.get(); }
     inline t_osc_bndl_u * release(){ return ptr.release(); }
+    
+    inline OdotBundle_s serialize(){ return OdotBundle_s( osc_bundle_u_serialize( ptr.get() ) ); }
 
 private:
     

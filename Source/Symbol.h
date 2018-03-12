@@ -17,84 +17,81 @@ class Symbol
 public:
     
     Symbol();
-    Symbol(const String &type, float x, float y, float w, float h );
+    Symbol(const string &type, float x, float y, float w, float h );
     Symbol(const Symbol& other);
     Symbol( const OdotBundle& src );
     void setBundle( OdotBundle& src);
     
+    Symbol& operator= ( const Symbol& src );
+    
+    // move
+    Symbol( Symbol&& src ) = default;
+    Symbol& operator=( Symbol&& src ) = default;
+    
     ~Symbol();
     
+    OdotMessage getMessage( const string &address ) const
+    {
+        return o_bundle.getMessage( address );
+    }
+    
     const ScopedPointer<Symbol>
-    getSubSymbol( const String &base_address );
+    getSubSymbol( const string &base_address );
     
-    void addSubSymbol( const String &base_address, const Symbol& symbol );
+    void addSubSymbol( const string &address, const Symbol& symbol );
+
+    template<typename... Ts>
+    void addMessage(const string& address, Ts... args)
+    {
+        o_bundle.addMessage( address, args... );
+    }
     
-    String      getType();
+    bool addressExists( const string& address )
+    {
+        return o_bundle.addressExists( address );
+    }
     
-    const OSCBundle *getOSCBundle () const { return &osc_bundle; }
-    void        setOSCBundle (OSCBundle *b) { osc_bundle = *b; }
-    void        clearOSCBundle () { osc_bundle = OSCBundle(); }
+    const OdotBundle *  getBundle () const {
+        return &o_bundle;
+    }
     
-    int         getOSCMessagePos(const String &address) const;
-    OSCArgument getOSCMessageValue(const int pos) const;
-    OSCArgument getOSCMessageValue(const String &address) const;
+    void setBundle (OdotBundle *b)
+    {
+        o_bundle = *b;
+    }
     
-    static float getOSCValueAsFloat(const OSCArgument& a) ;
-    static int getOSCValueAsInt(const OSCArgument& a) ;
+    void clearBundle () {
+        o_bundle.clear();
+    }
     
-    
-    bool symbol_parse_error( int p, const String& address ) const;
+    bool symbol_parse_error( int p, const string& address ) const;
     
     void printBundle() const;
-    
-    //void addOSCMessage( const String &address );
-    
-    //void addOSCMessage( const OSCMessage m );
-    
-    
-    template<typename... Ts>
-    void addOSCMessage(const String& address, Ts... args)
-    {
-        o_bundle.addMessage( address.getCharPointer(), args... );
-    }
-    
-    
- //   void addOSCMessage( const String &address, const float value );
-//    void addOSCMessage( const String &address, const int value );
-//    void addOSCMessage( const String &address, const String &value );
-    
-    odot_bundle*    exportToOSC();
-    void            importFromOSC(odot_bundle *bundle);
-    
-    Symbol makeSubSymbol( const String &base_address ) const;
-    
 
     
+    OdotBundle_s    exportToOSC();
+    void            importFromOSC( OdotBundle_s& s_bundle );
     
-    float getTime() const ;
-    float getDuration() const ;
-    float getEndTime() const ;
-    String getName();
-    String getID();
-    String getSaff();
+    Symbol makeSubSymbol( const string &base_address ) const;
     
     
-    bool hitTest( float t )
-    {
-        return (t >= getTime() && t <= getEndTime());
-    }
+    float getTime();
+    float getDuration();
+    float getEndTime();
+    string getName();
+    string getID();
+    string getSaff();
+    string getType();
+
     
     void setPosition( const Point<float> pos );
-    void setID( const String& str );
-    void setName( const String& str );
+    void setID( const string& str );
+    void setName( const string& str );
 
 
-    
     void setTimeAndDurationFromRelPix( const float start_x, const float dur_x );
     void setTimeAndDuration( const float start_t, const float dur_t );
 
-    void setOSCAddrAndValue( const String& addr, const String& value  );
-    void setOSCAddrAndValue( const String& addr, const float value  );
     
     inline float pixelsToTime( const float f ) const
     {
@@ -108,13 +105,18 @@ public:
     
     float calcTime() // << this should be dynamically settable somehow
     {
-        return pixelsToTime( getOSCValueAsFloat( getOSCMessageValue("/x") ) );
+        return pixelsToTime( o_bundle.getMessage("/x").getFloat() );
     }
+
     
+    // unused?
+    bool hitTest( float t )
+    {
+        return (t >= getTime() && t <= getEndTime());
+    }
+
     
 private:
-    
-    OSCBundle       osc_bundle;
     
     OdotBundle      o_bundle;
         

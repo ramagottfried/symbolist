@@ -49,7 +49,7 @@ public:
     
     /* ======= get values from message ======= */
     
-    string getAddress(){ return string( osc_message_u_getAddress( ptr.get() ) ); }
+    string getAddress() const { return string( osc_message_u_getAddress( ptr.get() ) ); }
     
     OdotAtom operator[](int i);
     
@@ -68,6 +68,8 @@ public:
 
     void appendValue( OdotMessage& msg );
     inline void appendValue( OdotAtom& atom ){ appendValue( atom.get_o_ptr() ); }
+    void appendValue( const OdotBundle& bndl );
+    
     inline void appendValue( const t_osc_bndl_u * bndl ){   osc_message_u_appendBndl_u( ptr.get(), (t_osc_bndl_u *)bndl ); }
     inline void appendValue( double val ){   osc_message_u_appendDouble( ptr.get(), val );           }
     inline void appendValue( float val ){    osc_message_u_appendFloat(  ptr.get(), val );           }

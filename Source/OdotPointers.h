@@ -5,6 +5,7 @@
 #include "osc_message_u.h"
 #include "osc_atom_u.h"
 #include "osc_bundle_u.h"
+#include "osc_bundle_s.h"
 
 #ifdef DEBUG
 #define D_(x) x
@@ -40,11 +41,20 @@ namespace odot
             if (ptr)
                 osc_bundle_u_free(ptr);
         }
+        
+        void operator()(t_osc_bndl_s* ptr)
+        {
+            //            D_(cout << "deleting bndl " << ptr << endl; )
+            
+            if (ptr)
+                osc_bundle_s_deepFree(ptr);
+        }
     };
 
     using OdotMessagePtr = std::unique_ptr<t_osc_msg_u,  OdotPtrDeleter>;
     using OdotAtomPtr    = std::unique_ptr<t_osc_atom_u, OdotPtrDeleter>;
     using OdotBundlePtr  = std::unique_ptr<t_osc_bndl_u, OdotPtrDeleter>;
+    using OdotBundlePtr_s  = std::unique_ptr<t_osc_bndl_s, OdotPtrDeleter>;
 
     
     static inline OdotMessagePtr newOdotMessagePtr() {
@@ -70,4 +80,13 @@ namespace odot
     static inline OdotBundlePtr newOdotBundlePtr( t_osc_bndl_u * src ) {
         return OdotBundlePtr( src, OdotPtrDeleter() );
     }
+    
+    static inline OdotBundlePtr_s newOdotBundlePtr_s() {
+        return OdotBundlePtr_s( osc_bundle_s_allocEmptyBundle(), OdotPtrDeleter() );
+    }
+    
+    static inline OdotBundlePtr_s newOdotBundlePtr_s( t_osc_bndl_s * src ) {
+        return OdotBundlePtr_s( src, OdotPtrDeleter() );
+    }
+
 }

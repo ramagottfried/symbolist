@@ -29,15 +29,15 @@ void SortedStaves::removeStaff( Symbol *s)
     resetTimes();
 }
 
-bool SortedStaves::compareStaves (const Symbol* a, const Symbol* b)
+bool SortedStaves::compareStaves ( Symbol* a, Symbol* b )
 {
-    auto a_x = Symbol::getOSCValueAsFloat( a->getOSCMessageValue("/x") );
-    auto a_y = Symbol::getOSCValueAsFloat( a->getOSCMessageValue("/y") );
-    auto a_x2 = a_x + Symbol::getOSCValueAsFloat( a->getOSCMessageValue("/w") );
+    auto a_x = a->getMessage("/x").getFloat() ;
+    auto a_y = a->getMessage("/y").getFloat() ;
+    auto a_x2 = a_x + a->getMessage("/w").getFloat();
     
     
-    auto b_x = Symbol::getOSCValueAsFloat( b->getOSCMessageValue("/x") );
-    auto b_y = Symbol::getOSCValueAsFloat( b->getOSCMessageValue("/y") );
+    auto b_x = b->getMessage("/x").getFloat() ;
+    auto b_y = b->getMessage("/y").getFloat() ;
     // auto b_x2 = b_x + Symbol::getOSCValueAsFloat( b->getOSCMessageValue("/w") );
     
     /*
@@ -74,15 +74,15 @@ void SortedStaves::resetTimes()
         
         Symbol *sym = *it;
                 
-        float w = Symbol::getOSCValueAsFloat( sym->getOSCMessageValue("/w") );
+        float w = sym->getMessage("/w").getFloat();
         
-        sym->setOSCAddrAndValue( "/time/start", time );
+        sym->addMessage( "/time/start", time );
         
         cout << "staff time " << time << " ";
         
         time += sym->pixelsToTime(w) ;
         
-        sym->setOSCAddrAndValue( "/time/duration", time );
+        sym->addMessage( "/time/duration", time );
         
         cout << time << endl;
         
@@ -94,8 +94,7 @@ void SortedStaves::resetTimes()
 
 bool SortedStaves::addStaff( Symbol *s)
 {
-    int pos = s->getOSCMessagePos("/type");
-    if( pos == -1 || s->getOSCMessageValue(pos).getString() != "staff" )
+    if( s->getMessage("/type").getString() != "staff" )
         return 0;
     
     removeStaff(s);
@@ -108,16 +107,10 @@ bool SortedStaves::addStaff( Symbol *s)
     // probably not the right place to deal with names.. maybe duplicates should be allowed?
     
     cout << "setting staff name -- size: " << staves.size() << endl;
-    String name;
-    auto name_pos = s->getOSCMessagePos("/name");
-    if( name_pos != -1 )
-    {
-        name = s->getOSCMessageValue(name_pos).getString();
-    }
-    
+    String name = s->getMessage("/name").getString();
     if( name.isEmpty() ) // for now allow  name == s->getID()
     {
-        s->setOSCAddrAndValue( "/name", "staff_" + (String)staves.size() );
+        s->addMessage( "/name", "staff_" + (String)staves.size() );
     }
     
     return 1;

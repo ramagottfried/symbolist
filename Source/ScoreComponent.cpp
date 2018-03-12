@@ -251,7 +251,7 @@ void ScoreComponent::createStaffFromSelected()
         
         // once the subcomponent is in place, the attached staff symbol can be updated
         // note: add symbol messages does not attache the symbol, it just adds the messages
-        staff_comp->addSymbolMessages( staff_sym , String("") );
+        staff_comp->addSymbolMessages( staff_sym );
         
         addSubcomponent(staff_comp);
         addToSelection(staff_comp);
@@ -330,7 +330,7 @@ void ScoreComponent::groupSelectedSymbols()
         
         if ( creating_a_top_level_group )
         {
-            group->addSymbolMessages( s , String("") );
+            group->addSymbolMessages( s );
         }
         else
         {
@@ -418,7 +418,7 @@ void ScoreComponent::addSelectedSymbolsToPalette( )
     {
         BaseComponent* c = (BaseComponent*)selected_components[i];
         Symbol* s = new Symbol();
-        c->addSymbolMessages(s, "");
+        c->addSymbolMessages( s );
         getSymbolistHandler()->getSymbolPalette()->addUserItem(s);
     }
     getMainComponent()->updatePaletteView();

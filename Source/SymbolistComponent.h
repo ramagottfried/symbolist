@@ -25,7 +25,7 @@ class SymbolistComponent : public Component
 {
 public:
     
-    virtual String getSymbolTypeStr() const { return " ??? " ; } ; // every component defines its type
+    virtual string getSymbolTypeStr() const { return string(" ??? ") ; } ; // every component defines its type
 
     virtual PageComponent* getPageComponent();
     virtual SymbolistHandler* getSymbolistHandler();
@@ -39,7 +39,7 @@ public:
     
     const size_t    getNumSubcomponents( );
     SymbolistComponent* getSubcomponent( int i );
-    SymbolistComponent* getSubcomponentByID( String& id );
+    SymbolistComponent* getSubcomponentByID( const string& id );
 
     virtual void    addSubcomponent( SymbolistComponent *c );
     virtual void    removeSubcomponent( SymbolistComponent *c );

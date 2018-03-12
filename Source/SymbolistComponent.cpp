@@ -38,7 +38,7 @@ const size_t SymbolistComponent::getNumSubcomponents()
     return subcomponents.size() ;
 }
 
-SymbolistComponent* SymbolistComponent::getSubcomponentByID( String& id )
+SymbolistComponent* SymbolistComponent::getSubcomponentByID( const string& id )
 {
     
     for( int i = 0; i < subcomponents.size(); i++ )

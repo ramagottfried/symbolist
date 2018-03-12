@@ -123,6 +123,12 @@ void OdotMessage::appendValue( OdotMessage& msg )
     appendValue( bndl.release() ); // the allocated atom now holds the memory
 }
 
+void OdotMessage::appendValue( const OdotBundle& bndl )
+{
+    OdotBundle b( bndl );
+    osc_message_u_appendBndl_u( ptr.get(), (t_osc_bndl_u *)OdotBundle( bndl ).release() );
+}
+
 vector<OdotAtom> OdotMessage::getAtoms()
 {
     vector<OdotAtom> atom_array;

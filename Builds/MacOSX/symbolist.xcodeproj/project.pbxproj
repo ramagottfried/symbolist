@@ -166,6 +166,10 @@
 		118C38E41EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */; };
 		118C38EF1EC61404006FF4A1 /* PaletteComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */; };
 		118C38F01EC61404006FF4A1 /* PaletteComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */; };
+		11A3939C20528799002C8916 /* OdotBundle_s.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A3939A20528799002C8916 /* OdotBundle_s.cpp */; };
+		11A3939D20528799002C8916 /* OdotBundle_s.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A3939A20528799002C8916 /* OdotBundle_s.cpp */; };
+		11A3939E20528799002C8916 /* OdotBundle_s.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A3939A20528799002C8916 /* OdotBundle_s.cpp */; };
+		11A3939F20528799002C8916 /* OdotBundle_s.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11A3939B20528799002C8916 /* OdotBundle_s.hpp */; };
 		11B71DCE1F09844300CDE209 /* symbolist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */; };
 		11B71DD11F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DCF1F098F1400CDE209 /* SymbolPropertiesPanel.cpp */; };
 		11B71DD21F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DCF1F098F1400CDE209 /* SymbolPropertiesPanel.cpp */; };
@@ -368,6 +372,8 @@
 		118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BaseComponent.cpp; path = ../../Source/BaseComponent.cpp; sourceTree = "<group>"; };
 		118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PaletteComponent.cpp; path = ../../Source/PaletteComponent.cpp; sourceTree = "<group>"; };
 		118C38EE1EC61404006FF4A1 /* PaletteComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PaletteComponent.h; path = ../../Source/PaletteComponent.h; sourceTree = "<group>"; };
+		11A3939A20528799002C8916 /* OdotBundle_s.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OdotBundle_s.cpp; path = ../../Source/OdotBundle_s.cpp; sourceTree = "<group>"; };
+		11A3939B20528799002C8916 /* OdotBundle_s.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = OdotBundle_s.hpp; path = ../../Source/OdotBundle_s.hpp; sourceTree = "<group>"; };
 		11B71DCF1F098F1400CDE209 /* SymbolPropertiesPanel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolPropertiesPanel.cpp; path = ../../Source/SymbolPropertiesPanel.cpp; sourceTree = "<group>"; };
 		11B71DD01F098F1400CDE209 /* SymbolPropertiesPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SymbolPropertiesPanel.h; path = ../../Source/SymbolPropertiesPanel.h; sourceTree = "<group>"; };
 		11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OSCPropertyComponents.cpp; path = ../../Source/OSCPropertyComponents.cpp; sourceTree = "<group>"; };
@@ -624,6 +630,8 @@
 			children = (
 				116A7EED2046DCAE004B545D /* OdotBundle.cpp */,
 				116A7EEE2046DCAE004B545D /* OdotBundle.hpp */,
+				11A3939A20528799002C8916 /* OdotBundle_s.cpp */,
+				11A3939B20528799002C8916 /* OdotBundle_s.hpp */,
 				116A7EF42047E99D004B545D /* OdotMessage.cpp */,
 				116A7EF52047E99D004B545D /* OdotMessage.hpp */,
 				116A7EFA2047ECB8004B545D /* OdotAtom.cpp */,
@@ -844,6 +852,7 @@
 				114027C71F49C21E00A9B8C4 /* SortedStaves.hpp in Headers */,
 				114027CD1F4B185E00A9B8C4 /* StaffComponent.hpp in Headers */,
 				116F87771F9D04B90062EE91 /* ScoreBundleViewer.h in Headers */,
+				11A3939F20528799002C8916 /* OdotBundle_s.hpp in Headers */,
 				116A7EF92047E99D004B545D /* OdotMessage.hpp in Headers */,
 				113DEE0F1FA1D7C600A45220 /* EditSelectionBox.h in Headers */,
 			);
@@ -1043,6 +1052,7 @@
 				11D123611F4583B900A5EA5B /* ToolBarComp.cpp in Sources */,
 				1186486D1EF7E68B00904672 /* include_juce_data_structures.mm in Sources */,
 				1107B3F41EF7D54E00E2DFA9 /* OSCIO.cpp in Sources */,
+				11A3939E20528799002C8916 /* OdotBundle_s.cpp in Sources */,
 				11B71DD31F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */,
 				1107B3F61EF7D55D00E2DFA9 /* Score.cpp in Sources */,
 				116A7EFE2047ECB8004B545D /* OdotAtom.cpp in Sources */,
@@ -1161,6 +1171,7 @@
 				116A7EF72047E99D004B545D /* OdotMessage.cpp in Sources */,
 				113DEE0D1FA1D7C600A45220 /* EditSelectionBox.cpp in Sources */,
 				44CFE03B1EC3789C009135F8 /* include_juce_data_structures.mm in Sources */,
+				11A3939D20528799002C8916 /* OdotBundle_s.cpp in Sources */,
 				44CFE0391EC377EA009135F8 /* SymbolistMainWindow.cpp in Sources */,
 				444C43A61EE4A748000C6F69 /* SymbolGroupComponent.cpp in Sources */,
 				11B71DCE1F09844300CDE209 /* symbolist.cpp in Sources */,
@@ -1184,6 +1195,7 @@
 				444C43A11EE4A2E4000C6F69 /* PageComponent.cpp in Sources */,
 				ECAB07494F266A96C75A7E47 /* include_juce_events.mm in Sources */,
 				446388D51EC34DC90038CFCB /* SymbolistMainWindow.cpp in Sources */,
+				11A3939C20528799002C8916 /* OdotBundle_s.cpp in Sources */,
 				11B71DD11F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */,
 				118C38E31EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */,
 				116A7EFC2047ECB8004B545D /* OdotAtom.cpp in Sources */,

@@ -120,81 +120,28 @@ void TextGlphComponent::importFromSymbol( const Symbol& s )
 {
     BaseComponent::importFromSymbol(s);
     
-    //s.printBundle();
+    m_text = s.getMessage("/text").getString();
+    m_font = Font::fromString( s.getMessage("/font").getString() );
+    m_extrakerning = s.getMessage("/kerning").getFloat();
+    m_horz_scale = s.getMessage("/h_scale").getFloat();
     
-    int pos = s.getOSCMessagePos("/text");
-    if( pos != -1 )
-    {
-        m_text = s.getOSCMessageValue(pos).getString();
-    }
-    
-    pos = s.getOSCMessagePos("/font");
-    if( pos != -1 )
-    {
-        String fontStr = s.getOSCMessageValue(pos).getString();
-        //cout << fontStr << endl;
-        m_font = Font::fromString( fontStr );
-    }
-
-    pos = s.getOSCMessagePos("/kerning");
-    if( pos != -1 )
-    {
-        m_extrakerning = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(pos) );
-    }
-
-    pos = s.getOSCMessagePos("/h_scale");
-    if( pos != -1 )
-    {
-        m_horz_scale = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(pos) );
-    }
-    
+    // init
     m_font = m_font.withExtraKerningFactor( m_extrakerning ).withHorizontalScale( m_horz_scale );
-    
     textobj->setFont( m_font );
     textobj->setText( m_text, sendNotificationSync );
-    
     setBounds(getX(), getY(), m_font.getStringWidth(m_text) + m_width_offset, m_font.getHeight() );
     textobj->setBounds( getLocalBounds().translated(m_x_offset, 0) );
 
 }
 
-int TextGlphComponent::addSymbolMessages( Symbol* s, const String &base_address )
+void TextGlphComponent::addSymbolMessages( Symbol* s )
 {
-    int messages_added = BaseComponent::addSymbolMessages( s, base_address );
+    BaseComponent::addSymbolMessages( s );
     
-    auto b = symbol_export_bounds();
-    
-    String addr;
-    
-    addr = base_address + "/text";
-    if( s->getOSCMessagePos(addr) == -1 )
-    {
-        s->addOSCMessage( addr, m_text );
-        messages_added++;
-    }
-
-    addr = base_address + "/font";
-    if( s->getOSCMessagePos(addr) == -1 )
-    {
-        s->addOSCMessage( addr, m_font.toString() );
-        messages_added++;
-    }
-    
-    addr = base_address + "/kerning";
-    if( s->getOSCMessagePos(addr) == -1 )
-    {
-        s->addOSCMessage( addr, m_extrakerning );
-        messages_added++;
-    }
-
-    addr = base_address + "/h_scale";
-    if( s->getOSCMessagePos(addr) == -1 )
-    {
-        s->addOSCMessage( addr, m_horz_scale );
-        messages_added++;
-    }
-    
-    return messages_added;
+    s->addMessage( "/text", m_text );
+    s->addMessage( "/font", m_font.toString() );
+    s->addMessage( "/kerning", m_extrakerning );
+    s->addMessage( "/h_scale", m_horz_scale );
 }
 
 

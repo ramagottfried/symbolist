@@ -115,13 +115,18 @@ void OdotBundle::print( int level ) const
 
 bool OdotBundle::addressExists( const string& address )
 {
+    return addressExists(address.c_str());
+}
+
+bool OdotBundle::addressExists( const char * address )
+{
     int res;
-    osc_bundle_u_addressExists( ptr.get(), (char *)address.c_str(), 1, &res );
+    osc_bundle_u_addressExists( ptr.get(), (char *)address, 1, &res );
     return (res == 1);
 }
 
 /* get first OSC Messages matching this address (full match) */
-OdotMessage OdotBundle::getMessage( const char * address )
+OdotMessage OdotBundle::getMessage( const char * address ) const
 {
 
     t_osc_bndl_it_u *it = osc_bndl_it_u_get( ptr.get() );

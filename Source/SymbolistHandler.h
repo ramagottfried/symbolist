@@ -40,16 +40,16 @@ public:
     void symbolistAPI_registerTransportCallback(symbolistTransportCallback c);
     
     int symbolistAPI_getNumSymbols();
-    odot_bundle* symbolistAPI_getSymbol(int n);
+    OdotBundle_s symbolistAPI_getSymbol(int n);
     StringArray symbolistAPI_getSymbolString(int n);
     
-    void symbolistAPI_setOneSymbol( odot_bundle *bundle);
-    void symbolistAPI_setSymbols(int n, odot_bundle **bundle_array);
+    void symbolistAPI_setOneSymbol( t_osc_bndl_s *bundle);
+    void symbolistAPI_setSymbols(int n, t_osc_bndl_s **bundle_array);
     
     int symbolistAPI_getNumPaletteSymbols();
     odot_bundle* symbolistAPI_getPaletteSymbol(int n);
-    void symbolistAPI_setOnePaletteSymbol( odot_bundle *bundle);
-    void symbolistAPI_setPaletteSymbols(int n, odot_bundle **bundle_array);
+    void symbolistAPI_setOnePaletteSymbol( t_osc_bndl_s *bundle);
+    void symbolistAPI_setPaletteSymbols(int n, t_osc_bndl_s **bundle_array);
     
     void symbolistAPI_setTime(float time_ms);
     void symbolistAPI_toggleTimeCusor();
@@ -120,12 +120,12 @@ public:
     void redo();
 
     
-    int symbolNameCount( String& name )
+    int symbolNameCount( string& name )
     {
         return score->getNameCount( name );
     }
     
-    bool uniqueIDCheck( String& name )
+    bool uniqueIDCheck( string& name )
     {
         return !score->idExists( name );
     }

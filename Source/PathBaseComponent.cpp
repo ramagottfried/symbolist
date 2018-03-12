@@ -171,36 +171,32 @@ bool PathBaseComponent::intersectRect( Rectangle<int> rect)
  * Can be overriden / completed by class-specific messages
  *****************/
 
-int PathBaseComponent::addSymbolMessages( Symbol* s, const String &base_address )
+void PathBaseComponent::addSymbolMessages( Symbol* s )
 {
-    int messages_added = 0 ;
 
-    messages_added += BaseComponent::addSymbolMessages( s, base_address );
+    BaseComponent::addSymbolMessages( s );
     
     int n_subpaths = m_path_array.size();
     
-    s->addOSCMessage( base_address + "/num_sub_paths", (int)n_subpaths );
-    messages_added += 1;
+    s->addMessage( "/num_sub_paths", n_subpaths );
     
     for ( int np = 0; np < n_subpaths ; np++ )
     {
         Path *p = m_path_array[np];
-        s->addOSCMessage( base_address + "/path/" + String(np) + "/str",    p->toString() );
-        s->addOSCMessage( base_address + "/path/" + String(np) + "/length", p->getLength() );
+        s->addMessage( "/path/" + to_string(np) + "/str",    p->toString() );
+        s->addMessage( "/path/" + to_string(np) + "/length", p->getLength() );
 
         /* time is set by staff now */
 //        auto sub_bounds = Sym_PathBounds( *p );
 //        s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/time/start",    s->pixelsToTime( sub_bounds.getX() ) ) );
 //        s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/time/duration", s->pixelsToTime( sub_bounds.getWidth() ) ) );
         
-        s->addOSCMessage ( base_address + "/fill" ,             (int)m_fill   );
+        s->addMessage ( "/fill" ,               m_fill   );
 
-        s->addOSCMessage ( base_address + "/stroke/thickness" ,  strokeWeight  );
+        s->addMessage ( "/stroke/thickness" ,   strokeWeight  );
         
-        messages_added += 6 ;
     }
     
-    return messages_added;
 }
 
 /******************
@@ -214,28 +210,20 @@ void PathBaseComponent::importFromSymbol(const Symbol &s)
 
     cleanupPathArray();
     
-    int n_subpaths = s.getOSCMessageValue("/num_sub_paths").getInt32();
+    int n_subpaths = s.getMessage("/num_sub_paths").getInt();
     
     for ( int np = 0; np < n_subpaths ; np++ )
     {
         Path* subp = new Path();
-        String path_str = s.getOSCMessageValue("/path/" + String(np) + "/str").getString();
-        subp->restoreFromString( path_str );
+        string path_str = s.getMessage("/path/" + to_string(np) + "/str").getString();
+        subp->restoreFromString( path_str.c_str() );
         m_path_array.add(subp);
     }
+    
+    m_fill = s.getMessage("/fill").getInt();
+    strokeWeight = s.getMessage("/stroke/thickness").getInt();
+    strokeType.setStrokeThickness( strokeWeight );
 
-    int pos = s.getOSCMessagePos("/fill");
-    if( pos != -1  )
-        m_fill = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(pos) );
-    
-    pos = s.getOSCMessagePos("/stroke/thickness");
-    if( pos != -1  )
-    {
-        strokeWeight = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(pos) ) ;
-        strokeType.setStrokeThickness( strokeWeight );
-    }
-    
-    
     updatePathBounds();
 }
 

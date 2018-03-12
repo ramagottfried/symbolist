@@ -13,7 +13,6 @@ Score::Score() : time_points(this)
 
 Score::Score(Score& src) : time_points(this)
 {
-    
     for( Symbol* s : src.score_symbols )
     {
         Symbol *new_sym = new Symbol(*s);
@@ -199,7 +198,7 @@ int Score::getSymbolPosition(Symbol *s)
     return score_symbols.indexOfSorted(score_sorter, s );
 }
 
-const Array<Symbol*> Score::getSymbolsByValue( const String& address, const String& value )
+const Array<Symbol*> Score::getSymbolsByValue( const string& address, const string& value )
 {
     Array<Symbol*> matched;
     for (auto s : score_symbols )
@@ -214,7 +213,7 @@ const Array<Symbol*> Score::getSymbolsByValue( const String& address, const Stri
 }
 
 
-const Symbol* Score::getStaveByID( const String& id )
+const Symbol* Score::getStaveByID( const string& id )
 {
     return staves.getStaveByID( id );
 }

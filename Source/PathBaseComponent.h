@@ -31,6 +31,9 @@ public:
     void addHandle( PathHandle::handleType type, float x, float y );
     void updateRotationHandle();
     
+    void subtractHandle( int i );
+
+    
     void addHandlesTo( Point<float> p, PathHandle* last );
     void insertHandleBefore( PathHandle* target );
     void makeHandlesFromPath();

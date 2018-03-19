@@ -50,6 +50,7 @@ void Score::removeAllSymbols()
  ***********************************/
 void Score::addSymbol(Symbol *symbol)
 {
+    
     score_symbols.addSorted( score_sorter, symbol );
     
     bool newstaff = staves.addStaff( symbol ) ;
@@ -66,9 +67,6 @@ void Score::addSymbol(Symbol *symbol)
             }
         }
     }
-    
-    
-    
     
   //  symbol->setID( symbol->getType() + "_" + (String)getSize() );
 }
@@ -96,6 +94,53 @@ void Score::removeSymbol(Symbol *symbol)
 }
 
 
+/***********************************
+ * Find Symbol By ID
+ ***********************************/
+Symbol * Score::lookupSymbolID( const String & id )
+{
+    if( id.isNotEmpty() )
+    {
+        for( auto s : score_symbols )
+        {
+            if( s->getID() == id )
+            {
+                return s;
+            }
+        }
+    }
+
+    return nullptr;
+}
+
+
+void Score::updateExistingScoreSymbol( Symbol * dst, Symbol * src )
+{
+    if( !dst || !src )
+        return;
+    
+    // remove current time point for symbol, or if stave remove all symbol timepoints on stave
+    removeSymbolTimePoints( dst );
+    
+    // clear the bundle attached to the component (since the component has been updated)
+    dst->clearOSCBundle();
+    
+    dst->setOSCBundle( (OSCBundle *)src->getOSCBundle() ); // sets by value
+    
+    if( dst->getType() == "staff" )
+    {
+        cout << "type staff " << endl;
+        // if the type is "staff" resort the stave order and update time point array
+        updateStavesAndTimepoints();
+    }
+    else
+    {
+        // if the type is not a staff, add the time points for the symbol
+        addSymbolTimePoints( dst );
+    }
+    
+
+}
 /***********************************
  * Create Single Bundle from Score Bundles
  ***********************************/

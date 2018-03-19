@@ -19,7 +19,7 @@ Point<float> PathHandle::getCenter () const
 
 void PathHandle::mouseDown( const MouseEvent& event )
 {
-    cout << "PathHandle::mouseDown " << this << endl;
+    // cout << "PathHandle::mouseDown " << this << endl;
 
     m_down = event.position;
     m_prev_theta = -111;

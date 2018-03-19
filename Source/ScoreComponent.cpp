@@ -27,9 +27,10 @@ ScoreComponent::~ScoreComponent()
 void ScoreComponent::addToSelection(SymbolistComponent *c)
 {
     if( selected_components.addIfNotAlreadyThere(c) )
+    {
         c->selectComponent();
-    
-    sel_resize_box->updateEditSelBox();
+        sel_resize_box->updateEditSelBox();
+    }
 }
 
 void ScoreComponent::removeFromSelection(SymbolistComponent *c)
@@ -51,8 +52,12 @@ void ScoreComponent::unselectAllComponents()
 {
     for (int i = 0 ; i < getNumSubcomponents(); i++ )
     {
-        removeFromSelection(getSubcomponent(i));
+        SymbolistComponent *c = getSubcomponent(i);
+        c->deselectComponent();
+        selected_components.removeAllInstancesOf(c);
     }
+    sel_resize_box->updateEditSelBox();
+
 }
 
 

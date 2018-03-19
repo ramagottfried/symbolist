@@ -181,8 +181,8 @@ public:
         m_path_array.add(new Path());
         m_path_array.getLast()->addRectangle(area);
         updatePathBounds();
-        //rotateScoreComponent(m_rotation, cx, cy);
-        rotatePath(m_rotation, false);
+        rotateScoreComponent(m_rotation, cx, cy);
+        //rotatePath(m_rotation, false);
         return m_path_bounds; // return bounds post rotation
     }
     
@@ -210,7 +210,8 @@ public:
         m_path_array.add(new Path());
         m_path_array.getLast()->addTriangle( area.getBottomLeft(), Point<float>(area.getCentreX(), area.getY()), area.getBottomRight());
         updatePathBounds();
-        rotatePath(m_rotation, false);
+        rotateScoreComponent(m_rotation, cx, cy);
+        //rotatePath(m_rotation, false);
         return m_path_bounds; // return bounds post rotation
     }
     

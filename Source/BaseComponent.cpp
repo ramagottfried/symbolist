@@ -292,6 +292,8 @@ void BaseComponent::importFromSymbol( const Symbol &s )
 
 void BaseComponent::setSymbolID()
 {
+    cout << __func__ << endl;
+    
     PageComponent *pc = getPageComponent();
     if( pc )
     {
@@ -306,10 +308,17 @@ void BaseComponent::setSymbolID()
             if( id_pos != -1 )
             {
                 id = s->getOSCMessageValue(id_pos).getString();
+//                cout << "found id " << id << endl;
             }
+/*            cout << " empty " << (int)id.isEmpty();
+            cout << " getComponentID() != id " << (getComponentID() != id);
+            cout << " id == (typeStr + \"/palette\") " << (id == (typeStr + "/palette"));
+            cout << " name + \"/palette\" " << (id == (name + "/palette"));
+            cout << " !contains name " << !id.contains(name) << endl;
+ */
+            // better would be to check if it exists 
             
-
-            if( id.isEmpty() || getComponentID() != id || id == (typeStr + "/palette")  || id == (name + "/palette") || !id.contains(name))
+            if( id.isEmpty() || id == (typeStr + "/palette")  || id == (name + "/palette") || !id.contains(name))
             {
                 // if there is a name use this for the id
                 // for the id, check to see if there are others with this name and then increment 1
@@ -324,13 +333,13 @@ void BaseComponent::setSymbolID()
                     id = name + "/" + (String)(count++);
                 }
                 
-                cout << "id check " << id << endl;
-                
+//                cout << "id check " << id << endl;
+
+                s->setID(id);
             }
             
             setComponentID( id );
-            s->setID(id);
-            //cout << "setting ID "<< id << endl;
+//            cout << "setting ID "<< id << endl;
         }
     }
 }

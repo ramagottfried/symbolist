@@ -106,6 +106,7 @@ borderSize (5), mouseZone (0)
 
 EditSelectionBox::~EditSelectionBox()
 {
+    non_preview_components.clear();
 }
 
 //==============================================================================
@@ -162,24 +163,19 @@ void EditSelectionBox::updateEditSelBox()
 
 void EditSelectionBox::mouseEnter (const MouseEvent& e)
 {
-    cout << "EditSelectionBox::mouseEnter" << endl;
-    
     updateMouseZone (e);
 }
 
 void EditSelectionBox::mouseMove (const MouseEvent& e)
 {
-    cout << "EditSelectionBox::mouseMove" << endl;
-
     updateMouseZone (e);
 }
 
 void EditSelectionBox::flipSelectedSymbols( int axis )
 {
     auto center = getBounds().getCentre();
-    for ( auto p : preview_components )
+    for ( auto c : *component_set )
     {
-        BaseComponent *c = p->org;
         if( axis == 0)
             c->v_flip( center.getX(), center.getY() );
         else
@@ -297,11 +293,11 @@ void EditSelectionBox::mouseDown (const MouseEvent& e)
 
 void EditSelectionBox::mouseDrag (const MouseEvent& e)
 {
-    cout << "\n\nEditSelectionBox::mouseDrag\n\n" << endl;
+//    cout << "\n\nEditSelectionBox::mouseDrag\n\n" << endl;
 
     for( int i = 0; i < non_preview_components.size(); i++ )
     {
-        cout << "--" << i << endl;
+//        cout << "--" << i << endl;
         non_preview_components[i]->mouseDrag( e );
     }
     
@@ -309,7 +305,7 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
     
     if (preview_components.size() == 0 || in_edit_mode )
     {
-        cout << "^^ EditSelectionBox::mouseDrag return" << endl;
+//        cout << "^^ EditSelectionBox::mouseDrag return" << endl;
 
         return;
     }
@@ -419,6 +415,11 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
                 BaseComponent *b = preview_components[i]->copy;
                 BaseComponent *c = preview_components[i]->org;
 
+                /* TEMPORARILY DISABLING PREVIEW SCALING FOR GROUPS AND STAFFS */
+                
+                if( c->getScoreSymbolPointer()->getType() == "group" || c->getScoreSymbolPointer()->getType() == "staff" )
+                    continue;
+                
                 cout << "rel width " << (float)c->getWidth() / original_bounds.getWidth() << endl;;
                 
                 // this is the current relative info for this component
@@ -458,7 +459,7 @@ void EditSelectionBox::mouseUp (const MouseEvent& e)
         non_preview_components[i]->mouseUp( e );
     }
     
-    non_preview_components.clear(0);
+    non_preview_components.clear();
     
     
     if (preview_components.size() == 0)
@@ -553,7 +554,20 @@ void EditSelectionBox::updateMouseZone (const MouseEvent& e)
     
     if (mouseZone != newZone)
     {
+        bool in_edit_mode = 0;
+        
+        if( component_set->size() > 0 )
+            in_edit_mode = (*component_set)[0]->getPageComponent()->getDisplayMode() == PageComponent::DisplayMode::edit;
+
         mouseZone = newZone;
-        setMouseCursor (newZone.getMouseCursor());
+
+        if( in_edit_mode )
+        {
+            setMouseCursor( MouseCursor::NormalCursor );
+        }
+        else
+        {
+            setMouseCursor (newZone.getMouseCursor());
+        }
     }
 }

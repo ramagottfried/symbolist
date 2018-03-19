@@ -25,18 +25,40 @@ public:
     
     void mouseDrag( const MouseEvent& event ) override
     {
-        float x = event.getEventRelativeTo( getParentComponent() ).position.getX();
-        
-        m_playpoint = x * 0.01f;
+        // todo: keep the mouse drag on the right staff (basically where it was before)
+        // then have to recalculate the playpoint accordingly
         
         auto sh = getSymbolistHandler();
+        
         if( sh )
         {
+            auto delta = event.getPosition() - m_prev_dragpoint;
+            m_playpoint += (delta.x * 0.01f);
+            m_prev_dragpoint = event.getPosition();
+            
+            auto staff = sh->getStaveAtTime( m_playpoint );
+            
+            if( !staff )
+                return;
+            
             sh->symbolistAPI_setTime( m_playpoint );
-            sh->symbolistAPI_getSymbolsAtTime( m_playpoint );
+            
+            // add output callback
+            // sh->symbolistAPI_getSymbolsAtTime( m_playpoint );
+            auto sym = staff->getScoreSymbolPointer();
+            float play_t = m_playpoint - sym->getTime();
+            auto staff_b = staff->getBoundsInParent();
+            float play_x = staff_b.getX() + sym->timeToPixels( play_t );
+            
+            float y = staff_b.getY()-5;
+            float h = staff_b.getHeight()+5;
+            h = (h > minimum_size ? h : minimum_size);
+            setBounds( play_x, y, 5, h );
+            
+//            float x = staff_c->getX() + event.position.getX();
+
+  //          setBounds( x, 0, 2, getLocalBounds().getHeight() );
         }
-        
-        setBounds( x, 0, 2, getLocalBounds().getHeight() );
 
     }
     
@@ -55,6 +77,8 @@ public:
         display = !display;
         if( display )
             setPlayPoint(m_playpoint);
+        else
+            repaint();
     }
     
     void setPlayPoint( float t )
@@ -76,7 +100,10 @@ public:
             auto staff_b = staff->getBoundsInParent();
             float play_x = staff_b.getX() + sym->timeToPixels( play_t );
             
-            setBounds( play_x, staff_b.getY()-5, 5, staff_b.getHeight()+5 );
+            float y = staff_b.getY()-5;
+            float h = staff_b.getHeight()+5;
+            h = (h > minimum_size ? h : minimum_size);
+            setBounds( play_x, y, 5, h );
         }
         repaint();
     }
@@ -88,6 +115,10 @@ private:
     bool            display = false;
     
     Point<float>    m_down;
+    
+    float           minimum_size = 50;
+    
+    Point<int>    m_prev_dragpoint;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScoreCursor)

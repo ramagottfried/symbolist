@@ -42,6 +42,9 @@ public:
     void removeSymbol(Symbol *s);
     void removeAllSymbols();
     
+    Symbol * lookupSymbolID( const String & id );
+    void updateExistingScoreSymbol( Symbol * dst, Symbol * src );
+    
     void importScoreFromOSC( int n, odot_bundle** bundle_array );
     
     //    void sortScore();

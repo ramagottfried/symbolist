@@ -148,7 +148,7 @@ private:
     };
     
     OwnedArray<PreviewComp> preview_components;
-    OwnedArray<SymbolistComponent> non_preview_components;
+    Array<SymbolistComponent*> non_preview_components;
     
     
     BorderSize<int> borderSize;

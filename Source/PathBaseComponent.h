@@ -5,6 +5,9 @@
 #include "PathHandleComponent.h"
 #include "PathInfo.h"
 
+/**
+ * Describes a graphic component composed of one or multiple paths.
+ */
 class PathBaseComponent : public BaseComponent 
 {
 public:
@@ -81,7 +84,10 @@ public:
     
 protected:
     
-    Array<Path*>             m_path_array;
+    /**
+     * An array containing the Path objects composing this PathBaseComponent.
+     */
+    Array<Path*>            m_path_array;
     
     PathStrokeType          strokeType = PathStrokeType(2.0) ;
     bool                    m_fill = false;
@@ -89,19 +95,30 @@ protected:
     Colour                  m_stroke_color;
     
     // editing objects
-    bool                        drawing = false;
-    Path                        m_preview_path;
-    Colour                      preview_stroke_color = Colours::cornflowerblue ;
+    bool                    drawing = false;
+    Path                    m_preview_path;
+    Colour                  preview_stroke_color = Colours::cornflowerblue ;
     
-    Point<float>                m_path_origin;
+    Point<float>            m_path_origin;
     
     // note: path_handles are also stored as subcomponents in the main score, to use the selection system... maybe not both necessary...
-    Array<PathHandle*>          path_handles;
-    PathHandle*                 rotation_handle = NULL;
-    //Point<float>                m_prev_drag;
+    /**
+     * An array containing PathHandle objects used to manipulate the paths
+     * composing this PathBaseComponent.
+     */
+    Array<PathHandle*>      path_handles;
     
-    Point<float>                m_path_centroid;
-    Sym_PathBounds              m_path_bounds;
+    /**
+     * A pointer to the PathHandle object controlling
+     * the rotation of this PathBaseComponent.
+     */
+    PathHandle*             rotation_handle = NULL;
+    
+    /**
+     * The centroid point of this PathBaseComponent.
+     */
+    Point<float>            m_path_centroid;
+    Sym_PathBounds          m_path_bounds;
         
 private:
     //==============================================================================

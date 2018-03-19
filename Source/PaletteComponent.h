@@ -6,9 +6,9 @@
 #include "Score.h"
 
 
-/*************************************
- * A graphical component of the palette.
- **************************************/
+/**
+ * Describes an element of the palette.
+ */
 class PaletteButton : public SymbolistComponent
 {
 
@@ -34,9 +34,9 @@ private:
 };
 
 
-/**************************************
- * Graphic view for the palette.
- **************************************/
+/**
+ * Describes the graphic component representing the palette.
+ */
 class PaletteComponent : public SymbolistComponent
 {
     

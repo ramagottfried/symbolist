@@ -57,8 +57,7 @@ private:
     
     
     //==============================================================================
-    class CustomMenuComponent   : public PopupMenu::CustomComponent,
-    private Timer
+    class CustomMenuComponent   : public PopupMenu::CustomComponent, private Timer
     {
     public:
         CustomMenuComponent()

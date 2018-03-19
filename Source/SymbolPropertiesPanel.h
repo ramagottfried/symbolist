@@ -11,7 +11,7 @@
 typedef std::function<void(const OSCMessage&)> osc_callback_t;
 
 
-class SymbolPropertiesPanel   : public Component
+class SymbolPropertiesPanel : public Component
 {
 public:
     SymbolPropertiesPanel(SymbolistHandler *sh );

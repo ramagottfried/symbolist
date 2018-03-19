@@ -3,7 +3,10 @@
 
 #include "PathBaseComponent.h"
 
-
+/**
+ * Describes a graphic component using a center point as its reference.
+ * Additionally, depending on their type, and rotation the w and h could be different...
+ */
 class BasicShapePathComponent : public PathBaseComponent
 {
     
@@ -11,12 +14,7 @@ public:
     
     BasicShapePathComponent() = default;
     ~BasicShapePathComponent() = default;
-    
-    /************
-     * Basic Shape Components use the center point as their reference
-     * additionally, depending on their type, and rotation the w and h could be different...
-     ************/
-    
+
     Rectangle<float> symbol_export_bounds() override
     {
         auto b = getBounds().toFloat();
@@ -134,6 +132,9 @@ protected:
     float m_w, m_h;
 };
 
+/**
+ * Describes graphic components representing a circle.
+ */
 class CirclePathComponent : public BasicShapePathComponent
 {
 public:
@@ -161,7 +162,9 @@ private:
     
 };
 
-
+/**
+ * Describes a graphic component representing a rectangle.
+ */
 class RectanglePathComponent : public BasicShapePathComponent
 {
 public:
@@ -188,7 +191,9 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (RectanglePathComponent)
 };
 
-
+/**
+ * Describes a graphic component representing a triangle.
+ */
 class TrianglePathComponent : public BasicShapePathComponent
 {
 public:

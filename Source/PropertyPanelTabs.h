@@ -5,7 +5,7 @@
 #include "ScoreBundleViewer.h"
 
 
-class PropertyPanelTabs   : public TabbedComponent//, private ChangeListener
+class PropertyPanelTabs   : public TabbedComponent
 {
 
 public:
@@ -32,7 +32,6 @@ private:
     
     SymbolistHandler*                       symbolist_handler;
     ScopedPointer<SymbolPropertiesPanel>    symbol_panel_tab;
-    //ScopedPointer<ScoreBundleViewPort>      bundle_view_tab;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PropertyPanelTabs)
 

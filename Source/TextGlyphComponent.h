@@ -40,7 +40,6 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EditableTextObjListener)
 };
 
-
 class EditableTextObj : public Label
 {
 public:
@@ -57,7 +56,6 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EditableTextObj)
 
 };
-
 
 class TextGlphComponent : public BaseComponent
 {

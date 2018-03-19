@@ -16,12 +16,11 @@
 #include "SymbolistMenu.hpp"
 #include "SymbolistLookAndFeel.hpp"
 
-/*
+/**
  * SymbolistMainComponent is the main controller of the application
  * managing the connection between data (score) and visualization/editing.
  * It is also the node and pointer for interaction with the library
  */
-
 class SymbolistMainComponent : public SymbolistComponent, public ApplicationCommandTarget
 {
 
@@ -87,6 +86,7 @@ public:
     bool perform (const InvocationInfo& info) override;
     
 private:
+    
     SymbolistHandler*       symbolist_handler = nullptr; // (not allocated here)
     SymbolistLookAndFeel    look_and_feel;
     

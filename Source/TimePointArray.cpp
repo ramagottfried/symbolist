@@ -773,9 +773,6 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                 float time_ratio = (current_time - s->getTime()) / s->getDuration() ;
                 bndl.addElement( OSCMessage( s_prefix + "/time/ratio", time_ratio ) );
                 
-                float offset_time = current_time - s->getTime();
-                
-                
                 if( s->getType() == "path" )
                 {
                     // maybe move this part below to another function...

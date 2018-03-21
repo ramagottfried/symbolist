@@ -277,9 +277,15 @@ void ScoreComponent::groupSelectedSymbols()
             maxx =  max( maxx, compBounds.getRight() );
             maxy =  max( maxy, compBounds.getBottom() );
         }
-        
-        OdotBundle groupBundle;
+
         auto sh = getSymbolistHandler();
+
+        Symbol * groupSymbol = new Symbol();
+        groupSymbol->setTypeXYWH( "group", minx, miny, maxx-minx, maxy-miny );
+        
+        SymbolGroupComponent *group = (SymbolGroupComponent*)sh->makeComponentFromSymbol( groupSymbol , creating_a_top_level_group );
+
+        int count = 0;
 
         for( SymbolistComponent *c : selected_components )
         {
@@ -289,78 +295,38 @@ void ScoreComponent::groupSelectedSymbols()
                 auto sym = bc->getScoreSymbolPointer();
                 if( sym )  // this fails within groups becuase subcomponents do not have score symbols...
                 {
+                    // copies bundles from subcomponent symbols and join into new group symbol
+                    groupSymbol->addMessage( "/symbol/" + to_string(count), *sym );
                     
-                    // acquire bundles from subcomponent symbols and join into new group symbol
-
+                    sh->removeSymbolFromScore( bc ); // ?? why do we need to remove the 
                     
+                    // sets the position now relative to the group
                     
+                    bc->setBounds(bc->getX() - minx,
+                                  bc->getY() - miny,
+                                  bc->getWidth(), bc->getHeight());
                     
+                    // the parent is not necessarily 'this' (selected_items can be indirect children...)
+                    ((ScoreComponent*)c->getParentComponent())->removeSubcomponent( bc );
                     
-                    sh->removeTimePointsForSymbol( sym );
+                    group->addSubcomponent( bc );
+                    
                 }
-                
             }
         }
-        
-        // create a list from selected items
-        vector< SymbolistComponent *> items;
-        
-        for( SymbolistComponent *c : selected_components )
-        {
-            items.push_back(c);
-        }
+
         unselectAllComponents();
         
-        Symbol* s = new Symbol();
-        s->setTypeXYWH( "group", minx, miny, maxx-minx, maxy-miny );
-        SymbolGroupComponent *group = (SymbolGroupComponent*)sh->makeComponentFromSymbol( s , creating_a_top_level_group );
-                
-        Rectangle<int> groupBounds( minx, miny, maxx-minx, maxy-miny );
-        
-        for ( auto it = items.begin(); it != items.end(); it++ )
-        {
-            SymbolistComponent *c = *it ;
-            
-            // if this component is of type BaseComponent, remove it's time points if they exist
-            try
-            {
-                if( auto bc = dynamic_cast<BaseComponent*>(c) ) // not sure why this throws an error...
-                {
-                    auto sym = bc->getScoreSymbolPointer();
-                    if( sym )  // this fails within groups becuase subcomponents do not have score symbols...
-                    {
-                        sh->removeTimePointsForSymbol( sym );
-                    }
-                    
-                }
-            }
-            catch(errc)
-            {
-                cout << "error: cannot group non-BaseComponent types";
-                return;
-            }
-
-            // sets the position now relative to the group
-            Rectangle<int> compBounds = c->getBounds();
-            
-            c->setBounds(compBounds.getX() - groupBounds.getX(),
-                         compBounds.getY() - groupBounds.getY(),
-                         compBounds.getWidth(), compBounds.getHeight());
-            
-            // the parent is not necessarily 'this' (selected_items can be indirect children...)
-            ((ScoreComponent*)c->getParentComponent())->removeSubcomponent( c );
-            
-            group->addSubcomponent( c );
-        }
-        
+        // I don't understand this part, is this because we might be grouping something within a group? seems like a potential crash? -- rama
         if ( creating_a_top_level_group )
         {
-            group->addSymbolMessages( s );
+            group->addSymbolMessages( groupSymbol );
         }
         else
         {
-            delete s;
+            delete groupSymbol;
         }
+        
         addSubcomponent( group );
         addToSelection( group );
         

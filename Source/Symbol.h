@@ -25,8 +25,8 @@ public:
     OdotBundle_s    exportToOSC();
     void            importFromOSC( OdotBundle_s& s_bundle );
     
-    float getTime();
-    float getDuration();
+    float getTime() const;
+    float getDuration() const;
     float getEndTime() const;
     string getName();
     string getID();

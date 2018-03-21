@@ -230,7 +230,7 @@ Symbol * SymbolistHandler::symbolistAPI_getPaletteSymbol(int n)
     return palette.getPaletteUserItem(n);
 }
 
-void SymbolistHandler::symbolistAPI_setOnePaletteSymbol( Odot_bundle_s bundle)
+void SymbolistHandler::symbolistAPI_setOnePaletteSymbol( OdotBundle_s bundle)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
     
@@ -240,13 +240,12 @@ void SymbolistHandler::symbolistAPI_setOnePaletteSymbol( Odot_bundle_s bundle)
     
 }
 
-void SymbolistHandler::symbolistAPI_setPaletteSymbols(int n, odot_bundle **bundle_array)
+void SymbolistHandler::symbolistAPI_setPaletteSymbols(int n, t_osc_bndl_s **bundle_array)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
     
     for (int i = 0; i < n ; i++) {
-        Symbol *s = new Symbol();
-        s->importFromOSC( bundle_array[i] );
+        Symbol *s = new Symbol( bundle_array[i] );
         palette.addUserItem(s);
     }
     if ( main_component_ptr != NULL )

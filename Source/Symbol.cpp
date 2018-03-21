@@ -40,17 +40,17 @@ string Symbol::getType()
     return getMessage("/staff").getString();
 }
 
-float Symbol::getTime()
+float Symbol::getTime() const
 {
     return getMessage("/time/start").getFloat();
 }
 
-float Symbol::getDuration()
+float Symbol::getDuration() const
 {
     return getMessage("/time/duration").getFloat();
 }
 
-float Symbol::getEndTime()
+float Symbol::getEndTime() const
 {
     return ( getTime() + getDuration() );
 }

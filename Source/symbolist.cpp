@@ -67,16 +67,16 @@ int symbolistGetNumSymbols(void* symbolist_handler)
     return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getNumSymbols();
 }
 
-odot_bundle* symbolistGetSymbol(void* symbolist_handler, int n)
+t_osc_bndl_s * symbolistGetSymbol(void* symbolist_handler, int n)
 {
-    return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getSymbol(n);
+    return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getSymbolBundle_s(n).release();
 }
-void symbolistSetOneSymbol(void* symbolist_handler, odot_bundle *bundle)
+void symbolistSetOneSymbol(void* symbolist_handler, t_osc_bndl_s *bundle)
 {
     static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setOneSymbol( bundle );
 }
 
-void symbolistSetSymbols(void* symbolist_handler, int n, odot_bundle **bundle_array)
+void symbolistSetSymbols(void* symbolist_handler, int n, t_osc_bndl_s **bundle_array)
 {
     static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setSymbols(n, bundle_array);
 }
@@ -86,17 +86,17 @@ int symbolistGetNumPaletteSymbols(void* symbolist_handler)
     return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getNumPaletteSymbols();
 }
 
-odot_bundle* symbolistGetPaletteSymbol(void* symbolist_handler, int n)
+t_osc_bndl_s* symbolistGetPaletteSymbol(void* symbolist_handler, int n)
 {
-    return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getPaletteSymbol(n);
+    return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getPaletteSymbol(n)->serialize().release();
 }
 
-void symbolistSetOnePaletteSymbol(void* symbolist_handler, odot_bundle *bundle)
+void symbolistSetOnePaletteSymbol(void* symbolist_handler, t_osc_bndl_s *bundle)
 {
     static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setOnePaletteSymbol( bundle );
 }
 
-void symbolistSetPaletteSymbols(void* symbolist_handler, int n, odot_bundle **bundle_array)
+void symbolistSetPaletteSymbols(void* symbolist_handler, int n, t_osc_bndl_s **bundle_array)
 {
     static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setPaletteSymbols(n, bundle_array);
 }
@@ -111,18 +111,18 @@ void symbolistSetTime(void* symbolist_handler, float time_ms)
     static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setTime(time_ms);
 }
 
-odot_bundle* symbolistGetDurationBundle(void* symbolist_handler)
+t_osc_bndl_s* symbolistGetDurationBundle(void* symbolist_handler)
 {
     return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getdurationBundle();
 }
 
 
-odot_bundle* symbolistGetSymbolsAtTime(void* symbolist_handler, float t)
+t_osc_bndl_s* symbolistGetSymbolsAtTime(void* symbolist_handler, float t)
 {
     return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getSymbolsAtTime( t );
 }
 
-odot_bundle* symbolistGetScoreBundle(void* symbolist_handler )
+t_osc_bndl_s* symbolistGetScoreBundle(void* symbolist_handler )
 {
     return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getScoreBundle();
 }

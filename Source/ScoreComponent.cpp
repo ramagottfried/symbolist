@@ -232,7 +232,8 @@ void ScoreComponent::createStaffFromSelected()
         
         Symbol ref_sym = *(staff_ref_comp->getScoreSymbolPointer());
         
-        Symbol* staff_sym = new Symbol("staff", staff_ref_comp->getX(), staff_ref_comp->getY(), staff_ref_comp->getWidth(), staff_ref_comp->getHeight() );
+        Symbol* staff_sym = new Symbol();
+        staff_sym->setTypeXYWH("staff", staff_ref_comp->getX(), staff_ref_comp->getY(), staff_ref_comp->getWidth(), staff_ref_comp->getHeight() );
         
         auto sh = getSymbolistHandler();
         
@@ -277,6 +278,30 @@ void ScoreComponent::groupSelectedSymbols()
             maxy =  max( maxy, compBounds.getBottom() );
         }
         
+        OdotBundle groupBundle;
+        auto sh = getSymbolistHandler();
+
+        for( SymbolistComponent *c : selected_components )
+        {
+            auto bc = dynamic_cast<BaseComponent*>(c);
+            if( bc )
+            {
+                auto sym = bc->getScoreSymbolPointer();
+                if( sym )  // this fails within groups becuase subcomponents do not have score symbols...
+                {
+                    
+                    // acquire bundles from subcomponent symbols and join into new group symbol
+
+                    
+                    
+                    
+                    
+                    sh->removeTimePointsForSymbol( sym );
+                }
+                
+            }
+        }
+        
         // create a list from selected items
         vector< SymbolistComponent *> items;
         
@@ -286,8 +311,8 @@ void ScoreComponent::groupSelectedSymbols()
         }
         unselectAllComponents();
         
-        Symbol* s = new Symbol("group", minx, miny, maxx-minx, maxy-miny);
-        auto sh = getSymbolistHandler();
+        Symbol* s = new Symbol();
+        s->setTypeXYWH( "group", minx, miny, maxx-minx, maxy-miny );
         SymbolGroupComponent *group = (SymbolGroupComponent*)sh->makeComponentFromSymbol( s , creating_a_top_level_group );
                 
         Rectangle<int> groupBounds( minx, miny, maxx-minx, maxy-miny );
@@ -462,7 +487,8 @@ void ScoreComponent::mouseAddClick ( const MouseEvent& event )
     }
     else
     {
-        Symbol* s = new Symbol("path", event.position.x, event.position.y, 40.0, 40.0) ;
+        Symbol* s = new Symbol();
+        s->setTypeXYWH( "path", event.position.x, event.position.y, 40.0, 40.0 ) ;
         c = sh->makeComponentFromSymbol( s , top_level );
         addSubcomponent( c );
         getPageComponent()->enterEditMode(c);

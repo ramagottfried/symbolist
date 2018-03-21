@@ -17,6 +17,8 @@ public:
     virtual void addSymbolMessages( Symbol* s );
     virtual void importFromSymbol( const Symbol &s );
     
+    Symbol exportSymbol();
+
     void parentHierarchyChanged() override;
     void setSymbolID();
 

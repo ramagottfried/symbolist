@@ -131,7 +131,55 @@ void BaseComponent::addSymbolMessages( Symbol* s )
     
 }
 
-
+Symbol BaseComponent::exportSymbol()
+{
+    Symbol s;
+    s.addMessage("/name", name );
+    s.addMessage("/type", getSymbolTypeStr() );
+    s.addMessage("/id", getComponentID() );
+    s.addMessage("/staff", staff_name );
+    
+    auto b = symbol_export_bounds();
+    
+    s.addMessage("/x", b.getX() );
+    s.addMessage("/y", b.getY() );
+    s.addMessage("/w", b.getWidth() );
+    s.addMessage("/h", b.getHeight() );
+    s.addMessage("/color", sym_color.getFloatRed(), sym_color.getFloatGreen(), sym_color.getFloatBlue(), sym_color.getFloatAlpha() );
+    
+    return s;
+    
+    /*
+     addr = "/time/start";
+     if( s->getOSCMessagePos(addr) == -1 )
+     {
+     s->addOSCMessage( addr,         s->pixelsToTime( b.getX() ) );
+     messages_added++;
+     }
+     
+     addr = "/time/duration";
+     if( s->getOSCMessagePos(addr) == -1 )
+     {
+     s->addOSCMessage( addr,   s->pixelsToTime( b.getWidth() ) );
+     messages_added++;
+     }
+     */
+    
+    
+    
+    /* // not sure how to best do this yet
+     addr = "/lambda";
+     if( s->getOSCMessagePos(addr) == -1 )
+     {
+     s->addOSCMessage( addr,         lambda );
+     messages_added++;
+     }
+     */
+    
+    //    cout << "*********** START BASE ADD DATA ************ " << endl;
+    //    s->printBundle();
+    
+}
 /******************
  * Imports components' data from the symbol's OSC bundle (can be overriden by sub-class)
  *****************/

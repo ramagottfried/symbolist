@@ -14,7 +14,7 @@ void TimePointArray::printTimePoints()
         int symcount = 0;
         for( auto sym : t->symbols_at_time )
         {
-            cout << symcount++ << " " << sym << " " << sym->getOSCBundle()->size() << endl;
+            cout << symcount++ << " " << sym << " " << sym->size() << endl;
         }
     }
 }
@@ -120,8 +120,8 @@ void TimePointArray::resetTimes()
         
         Symbol *staff = t->staff_ref;
         
-        float staff_x = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/x") );
-        float staff_start_t = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/time/start") );
+        float staff_x = staff->getMessage("/x").getFloat();
+        float staff_start_t = staff->getMessage("/time/start").getFloat();
 
         auto vec = t->symbols_at_time;
         
@@ -129,8 +129,8 @@ void TimePointArray::resetTimes()
         for( auto it = vec.begin(); it != vec.end(); it++ )
         {
             Symbol *s = *it;
-            float start_x = Symbol::getOSCValueAsFloat( s->getOSCMessageValue("/x") ) - staff_x;
-            float dur_x = Symbol::getOSCValueAsFloat( s->getOSCMessageValue("/w") );
+            float start_x = s->getMessage("/x").getFloat() - staff_x;
+            float dur_x = s->getMessage("/w").getFloat();
             
             sym_start_t = staff_start_t + s->pixelsToTime(start_x);
             
@@ -154,26 +154,24 @@ void TimePointArray::addSymbolTimePoints( Symbol *s )
     
     //cout << "TimePointArray::addSymbolTimePoints " << s << endl;
     
-    int staff_pos = s->getOSCMessagePos( "/staff" );
-    if( staff_pos == -1 || s->getOSCMessageValue( staff_pos ).getString().isEmpty() )
-        return;
+    string staff_name = s->getMessage( "/staff" ).getString();
 
-    String staff_name = s->getOSCMessageValue( staff_pos ).getString();
+    if( staff_name.size() == 0 )
+        return;
 
     auto found_staves = score_ptr->getSymbolsByValue( "/id", staff_name );
     if( found_staves.isEmpty() )
         return;
     
-    
     Symbol *staff = found_staves.getFirst();
     
-    float staff_x = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/x") );
+    float staff_x = staff->getMessage("/x").getFloat();
     
-    float start_x = Symbol::getOSCValueAsFloat( s->getOSCMessageValue("/x") ) - staff_x;
-    float dur_x = Symbol::getOSCValueAsFloat( s->getOSCMessageValue("/w") );
+    float start_x = s->getMessage("/x").getFloat() - staff_x;
+    float dur_x = s->getMessage("/w").getFloat();
     float end_x = start_x + dur_x;
 
-    float staff_start = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/time/start") );
+    float staff_start = staff->getMessage("/time/start").getFloat();
     
     float start_t = staff_start + s->pixelsToTime(start_x);
     float end_t = staff_start + s->pixelsToTime(end_x);
@@ -219,7 +217,7 @@ int TimePointArray::addSymbol_atTime( Symbol *s, float time, Symbol *staff)
             {
                 if( s == *prev_s ) continue;
                 
-                if( (*prev_s)->hitTest( time ) )
+                if( (*prev_s)->hitTestTime( time ) )
                 {
                     newTimePoint->addSymbol( *prev_s );
                 }
@@ -262,42 +260,23 @@ void TimePointArray::printBundle(OSCBundle bndl)
     
 }
 
-odot_bundle* symbolBundleToOdot( const OSCBundle& osc )
-{
-    OSCWriter w ;
-    w.writeBundle( osc );
-    size_t size = w.getDataSize();
-    
-    odot_bundle *bundle = new odot_bundle;
-    
-    bundle->len = static_cast<long>(size);
-    bundle->data = new char[size];
-    std::memcpy(bundle->data, w.getData() ,size );
-    
-    return bundle;
-}
 
 Point<float> TimePointArray::lookupPathPoint( const Symbol *s, const float t )
 {
-    OSCBundle b = *s->getOSCBundle();
+    string path_str = s->getMessage( "/path" ).getString();
+    if( path_str.size() == 0 )
+        return Point<float>();
     
-    int path_oscpos = s->getOSCMessagePos("/path");
-    if( s->symbol_parse_error( path_oscpos, "/path" ) ) return Point<float>();
+    float length = s->getMessage( "/pathlength" ).getFloat();
+    if( length == 0 )
+        return Point<float>();
     
-    int pathlen_oscpos = s->getOSCMessagePos("/pathlength");
-    if( s->symbol_parse_error( pathlen_oscpos, "/pathlength" ) ) return Point<float>();
-    
-    
-    String path_str = b[path_oscpos].getMessage()[0].getString();
     Path p;
-    p.restoreFromString( path_str );
-
-    float length = s->getOSCValueAsFloat( b[pathlen_oscpos].getMessage()[0] );
-    float path_time = t * length;;
+    p.restoreFromString( path_str.c_str() );
     
-    return p.getPointAlongPath( path_time );
+    return p.getPointAlongPath( t * length );
 }
-
+/*
 Point<float> TimePointArray::lookupPathPoint( const Symbol *s, const int pathIDX, const float t, const float start, const float dur )
 {
     OSCBundle b = *(s->getOSCBundle());
@@ -321,28 +300,20 @@ Point<float> TimePointArray::lookupPathPoint( const Symbol *s, const int pathIDX
 
     return p.getPointAlongPath( path_time );
 }
+*/
 
-Point<float> TimePointArray::lookupPathPoint( const Symbol *s, String& path_base_addr , const float t )
+Point<float> TimePointArray::lookupPathPoint( const Symbol *s, string& path_base_addr , const float t )
 {
-    OSCBundle b = *(s->getOSCBundle());
+    string path_str = s->getMessage( path_base_addr + "/str" ).getString();
+    if( path_str.size() == 0 )
+        return Point<float>();
     
-    String path_addr = path_base_addr + "/str" ;
-    int path_oscpos = s->getOSCMessagePos( path_addr );
-    if( s->symbol_parse_error( path_oscpos, path_addr) ) return Point<float>();
+    float length = s->getMessage( path_base_addr + "/length" ).getFloat();
+    if( length == 0 )
+        return Point<float>();
     
-    
-    String pathlen_addr = path_base_addr + "/length" ;
-    int pathlen_oscpos = s->getOSCMessagePos( pathlen_addr );
-    if( s->symbol_parse_error( pathlen_oscpos, pathlen_addr ) ) return Point<float>();
-    
-    
-    String path_str = s->getOSCMessageValue(path_oscpos).getString();
     Path p;
-    p.restoreFromString( path_str );
-    
-    float length = s->getOSCValueAsFloat( s->getOSCMessageValue(pathlen_oscpos) );
-//    float path_time = ((t - start) / dur) * length;;
-    //    cout << t << " " << ((t - start) / dur) << " " << length << endl;
+    p.restoreFromString( path_str.c_str() );
     
     return p.getPointAlongPath( t * length );
 }
@@ -702,13 +673,13 @@ void TimePointArray::groupLookup( const Symbol *s,
 }
 
 
-odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint  )
+OdotBundle_s TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint  )
 {
-    OSCBundle bndl;
-    bndl.addElement( OSCMessage("/time/lookup", (float)current_time) );
-    bndl.addElement( OSCMessage("/time/end", (float)getLast()->time) );
+    OdotBundle bndl;
+    bndl.addMessage("/time/lookup", current_time ) ;
+    bndl.addMessage("/time/end", getLast()->time ) ;
     
-    String prefix = "/symbolsAtTime/";
+    string prefix = "/symbolsAtTime/";
 
     if( tpoint != nullptr )
     {
@@ -719,22 +690,17 @@ odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
         {
 
             const Symbol *staff = tpoint->staff_ref;
-            String staff_name = staff->getName();
+            string staff_name = staff->getName();
 
-            String toplevel_name;
-            int name_pos = s->getOSCMessagePos( "/name" );
-            if( name_pos != -1 )
-            {
-                toplevel_name = s->getOSCMessageValue(name_pos).getString();
-            }
+            string toplevel_name = s->getMessage( "/name" ).getString();
             
             if( current_time > s->getEndTime() )
             {
                 pair<size_t, int> voice_num_state = setNoteOff( s );
                 if( voice_num_state.first != -1 ) // voice number is set to -1 if not found
                 {
-                    String s_prefix = "/staff/" + staff->getName() + "/voice/" + String(voice_num_state.first) + "/" + toplevel_name;
-                    bndl.addElement( OSCMessage( s_prefix + "/state", -1 ) );
+                    string s_prefix = "/staff/" + staff->getName() + "/voice/" + to_string(voice_num_state.first) + "/" + toplevel_name;
+                    bndl.addMessage( s_prefix + "/state", -1 );
                 }
             }
             else
@@ -930,14 +896,13 @@ int TimePointArray::lookupTimePoint( float t )
     return current_point;
 }
 
-odot_bundle *TimePointArray::getSymbolsAtTime( float t )
+OdotBundle_s TimePointArray::getSymbolsAtTime( float t )
 {
     if (size() == 0 )
         return nullptr;
     
     int idx = lookupTimePoint( t ); //<< also sets current time
     current_point = idx;
-
     
     if( idx >= 0 )
     {

@@ -1,5 +1,5 @@
 #include "OdotAtom.hpp"
-
+#include "OdotBundle.cpp"
 
 OdotAtom::OdotAtom()
 {
@@ -33,6 +33,16 @@ OdotAtom& OdotAtom::operator=( const OdotAtom& src )
     }
     
     return *this;
+}
+
+OdotBundle OdotAtom::getBundle()
+{
+    return OdotBundle( osc_atom_u_getBndl( ptr.get() ) );
+}
+
+t_osc_bndl_u * OdotAtom::getBundlePtr()
+{
+    return osc_atom_u_getBndl( ptr.get() );
 }
 
 OdotAtom::OdotAtomType OdotAtom::getType()

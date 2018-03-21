@@ -40,14 +40,16 @@ public:
     void symbolistAPI_registerTransportCallback(symbolistTransportCallback c);
     
     int symbolistAPI_getNumSymbols();
-    OdotBundle_s symbolistAPI_getSymbol(int n);
+    OdotBundle_s symbolistAPI_getSymbolBundle_s(int n);
+    Symbol * symbolistAPI_getSymbol(int n);
+
     StringArray symbolistAPI_getSymbolString(int n);
     
     void symbolistAPI_setOneSymbol( t_osc_bndl_s *bundle);
     void symbolistAPI_setSymbols(int n, t_osc_bndl_s **bundle_array);
     
     int symbolistAPI_getNumPaletteSymbols();
-    odot_bundle* symbolistAPI_getPaletteSymbol(int n);
+    Symbol* symbolistAPI_getPaletteSymbol(int n);
     void symbolistAPI_setOnePaletteSymbol( t_osc_bndl_s *bundle);
     void symbolistAPI_setPaletteSymbols(int n, t_osc_bndl_s **bundle_array);
     

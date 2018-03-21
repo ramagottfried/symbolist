@@ -115,8 +115,8 @@ public:
     
     int lookupTimePoint( float t );
     Point<float> lookupPathPoint( const Symbol *s, const float t );
-    Point<float> lookupPathPoint( const Symbol *s, const int pathIDX, const float t, const float start, const float dur );
-    Point<float> lookupPathPoint( const Symbol *s, String& path_base_addr , const float t );
+    //Point<float> lookupPathPoint( const Symbol *s, const int pathIDX, const float t, const float start, const float dur );
+    Point<float> lookupPathPoint( const Symbol *s, string& path_base_addr , const float t );
 
     void groupLookup( const Symbol *s,
                                      const String& output_prefix,

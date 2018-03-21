@@ -42,21 +42,21 @@ SYMBOLIST_API void symbolistWindowToFront(void* symbolist_handler);
 SYMBOLIST_API void symbolistWindowSetName(void* symbolist_handler, char *name);
 
 SYMBOLIST_API int  symbolistGetNumSymbols(void* symbolist_handler);
-SYMBOLIST_API odot_bundle* symbolistGetSymbol(void* symbolist_handler, int n);
-SYMBOLIST_API void symbolistSetOneSymbol(void* symbolist_handler, odot_bundle *bundle);
-SYMBOLIST_API void symbolistSetSymbols(void* symbolist_handler, int n, odot_bundle **bundle_array);
+SYMBOLIST_API t_osc_bndl_s * symbolistGetSymbol(void* symbolist_handler, int n);
+SYMBOLIST_API void symbolistSetOneSymbol(void* symbolist_handler, t_osc_bndl_s *bundle);
+SYMBOLIST_API void symbolistSetSymbols(void* symbolist_handler, int n, t_osc_bndl_s **bundle_array);
 
 SYMBOLIST_API int  symbolistGetNumPaletteSymbols(void* symbolist_handler);
-SYMBOLIST_API odot_bundle* symbolistGetPaletteSymbol(void* symbolist_handler, int n);
-SYMBOLIST_API void symbolistSetOnePaletteSymbol(void* symbolist_handler, odot_bundle *bundle);
-SYMBOLIST_API void symbolistSetPaletteSymbols(void* symbolist_handler, int n, odot_bundle **bundle_array);
+SYMBOLIST_API t_osc_bndl_s* symbolistGetPaletteSymbol(void* symbolist_handler, int n);
+SYMBOLIST_API void symbolistSetOnePaletteSymbol(void* symbolist_handler, t_osc_bndl_s *bundle);
+SYMBOLIST_API void symbolistSetPaletteSymbols(void* symbolist_handler, int n, t_osc_bndl_s **bundle_array);
 
 SYMBOLIST_API void symbolistClearScore(void* symbolist_handler);
 SYMBOLIST_API void symbolistSetTime(void* symbolist_handler, float time_ms);
 
-SYMBOLIST_API odot_bundle* symbolistGetDurationBundle(void* symbolist_handler);
+SYMBOLIST_API t_osc_bndl_s* symbolistGetDurationBundle(void* symbolist_handler);
 
-SYMBOLIST_API odot_bundle* symbolistGetSymbolsAtTime(void* symbolist_handler, float t);
-SYMBOLIST_API odot_bundle* symbolistGetScoreBundle(void* symbolist_handler );
+SYMBOLIST_API t_osc_bndl_s* symbolistGetSymbolsAtTime(void* symbolist_handler, float t);
+SYMBOLIST_API t_osc_bndl_s* symbolistGetScoreBundle(void* symbolist_handler );
 
 #endif /* symbolist_hpp */

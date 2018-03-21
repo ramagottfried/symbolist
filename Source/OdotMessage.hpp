@@ -63,6 +63,8 @@ public:
     
     /* ======= set message values ======= */
     
+    inline void rename( const string& name ) { osc_message_u_setAddress( ptr.get(), name.c_str() ); }
+    
     void appendValue( const t_osc_atom_u *atom );
     void appendValue( OdotBundle& bndl );
 

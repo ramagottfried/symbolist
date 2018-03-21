@@ -30,7 +30,7 @@ public:
     
     Score();
     Score( Score& src );
-    Score( int n, odot_bundle** bundle_array ) ;
+    Score( int n, t_osc_bndl_s** bundle_array ) ;
     ~Score();
     
     size_t getSize();
@@ -42,7 +42,7 @@ public:
     void removeSymbol(Symbol *s);
     void removeAllSymbols();
     
-    void importScoreFromOSC( int n, odot_bundle** bundle_array );
+    void importScoreFromOSC( int n, t_osc_bndl_s** bundle_array );
     
     //    void sortScore();
     
@@ -51,7 +51,9 @@ public:
     
     odot_bundle *getSymbolsAtTime( float t );
 
-    odot_bundle *getScoreBundle();
+    //odot_bundle *getScoreBundle();
+    
+    OdotBundle_s getScoreBundle_s();
 
     const Array<Symbol*> getSymbolsByValue( const string& address, const string& value );
 

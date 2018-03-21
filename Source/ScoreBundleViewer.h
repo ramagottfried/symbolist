@@ -27,6 +27,9 @@ public:
         
         for( int i = 0; i < num; i++ )
         {
+            Symbol * sym = symbolist_handler->symbolistAPI_getSymbol(i);
+            
+            
             StringArray strarray = symbolist_handler->symbolistAPI_getSymbolString( i );
             for( int j = 0; j < strarray.size(); j++ )
             {

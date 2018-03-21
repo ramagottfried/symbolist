@@ -18,16 +18,20 @@ SymbolistHandler::SymbolistHandler()
     float symbol_size = 30.0;
     float symbol_pos = 0.0;
     
-    Symbol* s1 = new Symbol("text", symbol_pos, symbol_pos, 20 , 20);
+    Symbol* s1 = new Symbol();
+    s1->setTypeXYWH("text", symbol_pos, symbol_pos, 20 , 20);
     palette.addDefaultItem(s1);
     
-    Symbol* s2 = new Symbol("circle", symbol_pos, symbol_pos, symbol_size, symbol_size);
+    Symbol* s2 = new Symbol();
+    s2->setTypeXYWH("circle", symbol_pos, symbol_pos, symbol_size, symbol_size);
     palette.addDefaultItem(s2);
     
-    Symbol* s3 = new Symbol("rectangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
+    Symbol* s3 = new Symbol();
+    s3->setTypeXYWH("rectangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
     palette.addDefaultItem(s3);
     
-    Symbol* s4 = new Symbol("triangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
+    Symbol* s4 = new Symbol();
+    s4->setTypeXYWH("triangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
     palette.addDefaultItem(s4);
     
     cout << "symbolist handler " << this << endl;
@@ -137,14 +141,19 @@ int SymbolistHandler::symbolistAPI_getNumSymbols()
     return static_cast<int>( score->getSize() );
 }
 
-OdotBundle_s SymbolistHandler::symbolistAPI_getSymbol(int n)
+Symbol * SymbolistHandler::symbolistAPI_getSymbol(int n)
 {
-    return score->getSymbol(n)->exportToOSC();
+    return score->getSymbol(n);
+}
+
+OdotBundle_s SymbolistHandler::symbolistAPI_getSymbolBundle_s(int n)
+{
+    return score->getSymbol(n)->serialize();
 }
 
 StringArray SymbolistHandler::symbolistAPI_getSymbolString(int n)
 {
-    OdotBundle * bndl = score->getSymbol(n)->getBundle();
+    Symbol * bndl = score->getSymbol(n);
     
     
     OSCReader osc( bndl->data, bndl->len );
@@ -177,12 +186,11 @@ StringArray SymbolistHandler::symbolistAPI_getSymbolString(int n)
 }
 
 
-void SymbolistHandler::symbolistAPI_setOneSymbol( odot_bundle *bundle)
+void SymbolistHandler::symbolistAPI_setOneSymbol( t_osc_bndl_s *bundle)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
     
-    Symbol *s = new Symbol();
-    s->importFromOSC( bundle );
+    Symbol *s = new Symbol( bundle );
     score->addSymbol(s);
     
     if ( main_component_ptr != nullptr )
@@ -198,7 +206,7 @@ void SymbolistHandler::symbolistAPI_setOneSymbol( odot_bundle *bundle)
     }
 }
 
-void SymbolistHandler::symbolistAPI_setSymbols(int n, odot_bundle **bundle_array)
+void SymbolistHandler::symbolistAPI_setSymbols(int n, t_osc_bndl_s **bundle_array)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
     
@@ -217,17 +225,17 @@ int SymbolistHandler::symbolistAPI_getNumPaletteSymbols()
     return static_cast<int>( palette.getPaletteNumUserItems() );
 }
 
-odot_bundle* SymbolistHandler::symbolistAPI_getPaletteSymbol(int n)
+Symbol * SymbolistHandler::symbolistAPI_getPaletteSymbol(int n)
 {
-    return palette.getPaletteUserItem(n)->exportToOSC();
+    return palette.getPaletteUserItem(n);
 }
 
 void SymbolistHandler::symbolistAPI_setOnePaletteSymbol( Odot_bundle_s bundle)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
     
-    Symbol *s = new Symbol();
-    s->importFromOSC( bundle );
+    Symbol *s = new Symbol( bundle );
+    
     palette.addUserItem(s);
     
 }
@@ -271,7 +279,7 @@ StaffComponent* SymbolistHandler::getStaveAtTime( float time )
 {
     if( Symbol *stave_sym = score->getStaveAtTime( time ) )
     {
-        Component *c =  main_component_ptr->getPageComponent()->findChildWithID( stave_sym->getID() );
+        Component *c = main_component_ptr->getPageComponent()->findChildWithID( stave_sym->getID().c_str() );
         if( c )
         {
             StaffComponent *staff = dynamic_cast<StaffComponent*>(c);
@@ -376,34 +384,32 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
     cout << "Creating component from Symbol: " ;
     //s->printBundle();
     
-    int typeMessagePos = s->getOSCMessagePos("/type");
+    string typeStr = s->getMessage("/type").getString();
     
-    if ( typeMessagePos == -1 )
+    if ( typeStr.size() == 0 )
     {
-        
-        cout << "Could not find '/type' message in OSC Bundle.. (size=" << s->getOSCBundle()->size() << ")" << endl;
+        cout << "Could not find '/type' message in OSC Bundle.. " << endl;
         return NULL;
         
     } else {
         
-        String typeStr = s->getOSCMessageValue(typeMessagePos).getString();
         cout << typeStr << std::endl;
         BaseComponent *c;
         
         // allocates component based on type, all are derived from the BaseComponent
-        if (typeStr.equalsIgnoreCase(String("circle"))) {
+        if ( typeStr == "circle" ) {
             c = new CirclePathComponent();
-        } else if (typeStr.equalsIgnoreCase(String("rectangle"))) {
+        } else if ( typeStr == "rectangle" ) {
             c = new RectanglePathComponent();
-        } else if (typeStr.equalsIgnoreCase(String("triangle"))) {
+        } else if ( typeStr =="triangle" ) {
             c = new TrianglePathComponent();
-        } else if (typeStr.equalsIgnoreCase(String("path"))) {
+        } else if ( typeStr == "path" ) {
             c = new PathBaseComponent();
-        } else if (typeStr.equalsIgnoreCase(String("text"))) {
+        } else if ( typeStr == "text" ) {
             c = new TextGlphComponent();
-        } else if (typeStr.equalsIgnoreCase(String("group"))) {
+        } else if ( typeStr == "group" ) {
             c = new SymbolGroupComponent();
-        } else if (typeStr.equalsIgnoreCase(String("staff"))) {
+        } else if ( typeStr == "staff" ) {
             c = new StaffComponent();
         } else {
             cout << "Unknown symbol type : " << typeStr << endl;
@@ -416,7 +422,7 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
             c->importFromSymbol( *s ) ;
             
             // initializes object specific messages if not present
-            c->addSymbolMessages( s, "" );
+            c->addSymbolMessages( s );
             
             if ( attach_the_symbol )
             {
@@ -513,10 +519,12 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     score->removeSymbolTimePoints( s );
     
     // clear the bundle attached to the component (since the component has been updated)
-    s->clearOSCBundle();
+    // don't have to clear, because the symbol is updated not in add symbol
+    // also we want to keep user data if any
+    // s->clear();
     
     // update the symbol with the component's current state
-    c->addSymbolMessages( s , String("") );
+    c->addSymbolMessages( s );
     
     if( s->getType() == "staff" )
     {

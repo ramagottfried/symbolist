@@ -1,99 +1,59 @@
-
-
 #include "Symbol.h"
 
-
-Symbol::Symbol () {}
-
-Symbol::Symbol(const Symbol& other)
+void Symbol::setTypeXYWH(const string & type, float x, float y, float w, float h)
 {
-    o_bundle = other.o_bundle;
-}
-
-Symbol::Symbol(const OdotBundle& bundle)
-{
-    o_bundle = bundle;
-}
-
-Symbol::Symbol(const string & type, float x, float y, float w, float h)
-{
-    o_bundle.clear();
-
-    o_bundle.addMessage( "/type", type );
-    o_bundle.addMessage( "/x", x );
-    o_bundle.addMessage( "/y", y );
-    o_bundle.addMessage( "/w", w );
-    o_bundle.addMessage( "/h", h );
     
-    o_bundle.print();
+    addMessage( "/type", type );
+    addMessage( "/x", x );
+    addMessage( "/y", y );
+    addMessage( "/w", w );
+    addMessage( "/h", h );
+    
+    print();
     
     // add name?
 }
 
-
-Symbol& Symbol::operator=( const Symbol& src )
+OdotBundle_s Symbol::exportToOSC()
 {
-    //    D_(cout << __func__  << "copy= \n";)
-    
-    if( this != &src )
-    {
-        o_bundle = src.o_bundle;
-    }
-    
-    return *this;
-}
-
-
-void Symbol::setBundle( OdotBundle& src)
-{
-    o_bundle = src;
-}
-
-Symbol::~Symbol() {}
-
-void Symbol::setID( const string& str )
-{
-    o_bundle.addMessage( "/id", str );
+    return serialize();
 }
 
 
 string Symbol::getID()
 {
-    return o_bundle.getMessage("/id").getString();
+    return getMessage("/id").getString();
 }
 
 string Symbol::getName()
 {
-    return o_bundle.getMessage("/name").getString();
+    return getMessage("/name").getString();
 }
-
 
 string Symbol::getSaff()
 {
-    return o_bundle.getMessage("/staff").getString();
+    return getMessage("/staff").getString();
 }
-
 
 string Symbol::getType()
 {
-    return o_bundle.getMessage("/staff").getString();
+    return getMessage("/staff").getString();
 }
 
 float Symbol::getTime()
 {
-    return o_bundle.getMessage("/time/start").getFloat();
+    return getMessage("/time/start").getFloat();
 }
 
 float Symbol::getDuration()
 {
-    return o_bundle.getMessage("/time/duration").getFloat();
+    return getMessage("/time/duration").getFloat();
 }
 
 float Symbol::getEndTime()
 {
     return ( getTime() + getDuration() );
 }
-
 
 bool Symbol::symbol_parse_error( int p, const string& address ) const
 {
@@ -104,19 +64,6 @@ bool Symbol::symbol_parse_error( int p, const string& address ) const
     }
     return false;
 }
-
-const ScopedPointer<Symbol> Symbol::getSubSymbol( const string &base_address )
-{
-    OdotBundle b = o_bundle.getMessage( base_address ).getBundle();
-    return ScopedPointer<Symbol>( new Symbol( b ) );
-}
-
-void Symbol::addSubSymbol( const string &address, const Symbol& symbol )
-{
-    OdotBundle bndl_cpy( symbol.o_bundle );
-    o_bundle.addMessage( address, bndl_cpy );
-}
-
 
 void Symbol::setPosition( const Point<float> pos )
 {
@@ -145,19 +92,4 @@ void Symbol::setTimeAndDuration( const float start_t, const float dur_t )
     
 }
 
-void Symbol::printBundle() const
-{
-    o_bundle.print();
-}
-
-OdotBundle_s Symbol::exportToOSC()
-{
-    
-    return o_bundle.serialize();
-}
-
-void Symbol::importFromOSC( OdotBundle_s& s_bundle )
-{
-    o_bundle = s_bundle.deserialize();
-}
 

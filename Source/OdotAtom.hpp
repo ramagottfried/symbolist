@@ -8,6 +8,8 @@
 
 using namespace std;
 
+class OdotBundle;
+
 class OdotAtom
 {
 public:
@@ -35,6 +37,9 @@ public:
     inline int getInt(){        return osc_atom_u_getInt( ptr.get() ); }
     inline string getString(){  return string( osc_atom_u_getStringPtr( ptr.get() ) ); }
     inline const char * getCharPtr(){  return osc_atom_u_getStringPtr( ptr.get() ); }
+    OdotBundle getBundle();
+    t_osc_bndl_u * getBundlePtr();
+
     
     enum OdotAtomType {
         O_ATOM_NONE,  // empty or unsupported type

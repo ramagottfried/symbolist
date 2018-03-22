@@ -265,6 +265,8 @@ void ScoreComponent::groupSelectedSymbols()
 {
     bool creating_a_top_level_group = ( this == getPageComponent() );
     
+    cout << "creating_a_top_level_group " << creating_a_top_level_group << " n selected " << selected_components.size() << endl;
+    
     if ( selected_components.size() > 1 )
     {
         // get the position an bounds of the group
@@ -283,8 +285,6 @@ void ScoreComponent::groupSelectedSymbols()
         Symbol * groupSymbol = new Symbol();
         groupSymbol->setTypeXYWH( "group", minx, miny, maxx-minx, maxy-miny );
         
-        SymbolGroupComponent *group = (SymbolGroupComponent*)sh->makeComponentFromSymbol( groupSymbol , creating_a_top_level_group );
-
         int count = 0;
 
         for( SymbolistComponent *c : selected_components )
@@ -293,30 +293,49 @@ void ScoreComponent::groupSelectedSymbols()
             if( bc )
             {
                 auto sym = bc->getScoreSymbolPointer();
-                if( sym )  // this fails within groups becuase subcomponents do not have score symbols...
+                if( sym->size() > 0 )  // this fails within groups becuase subcomponents do not have score symbols...
                 {
                     // copies bundles from subcomponent symbols and join into new group symbol
-                    groupSymbol->addMessage( "/subsymbol/" + to_string(count), *sym );
                     
-                    sh->removeSymbolFromScore( bc ); // ?? why do we need to remove the 
+                    sym->addMessage("/x", bc->getX() - minx);
+                    sym->addMessage("/y", bc->getY() - miny);
                     
+                    groupSymbol->addMessage( "/subsymbol/" + to_string(count++), *sym );
+                    
+                    groupSymbol->print();
+
                     // sets the position now relative to the group
-                    
+                   /*
                     bc->setBounds(bc->getX() - minx,
                                   bc->getY() - miny,
                                   bc->getWidth(), bc->getHeight());
+                    */
                     
+                    //sh->removeSymbolFromScore( bc );
                     // the parent is not necessarily 'this' (selected_items can be indirect children...)
-                    ((ScoreComponent*)c->getParentComponent())->removeSubcomponent( bc );
                     
-                    group->addSubcomponent( bc );
+                  //  group->addSubcomponent( bc );
                     
                 }
             }
         }
 
-        unselectAllComponents();
+        SymbolGroupComponent *group = (SymbolGroupComponent*)sh->makeComponentFromSymbol( groupSymbol , creating_a_top_level_group );
+
+        for( SymbolistComponent *c : selected_components )
+        {
+            auto bc = dynamic_cast<BaseComponent*>(c);
+            if( bc )
+            {
+                ((ScoreComponent*)c->getParentComponent())->removeSubcomponent( bc );
+            }
+        }
         
+        unselectAllComponents();
+
+        
+        
+        /*
         // I don't understand this part, is this because we might be grouping something within a group? seems like a potential crash? -- rama
         if ( creating_a_top_level_group )
         {
@@ -326,6 +345,7 @@ void ScoreComponent::groupSelectedSymbols()
         {
             delete groupSymbol;
         }
+        */
         
         addSubcomponent( group );
         addToSelection( group );

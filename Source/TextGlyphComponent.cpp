@@ -120,10 +120,17 @@ void TextGlphComponent::importFromSymbol( const Symbol& s )
 {
     BaseComponent::importFromSymbol(s);
     
-    m_text = s.getMessage("/text").getString();
-    m_font = Font::fromString( s.getMessage("/font").getString() );
-    m_extrakerning = s.getMessage("/kerning").getFloat();
-    m_horz_scale = s.getMessage("/h_scale").getFloat();
+    if( s.addressExists("/text") )
+        m_text = s.getMessage("/text").getString();
+    
+    if( s.addressExists("/font") )
+        m_font = Font::fromString( s.getMessage("/font").getString() );
+    
+    if( s.addressExists("/kerning") )
+        m_extrakerning = s.getMessage("/kerning").getFloat();
+    
+    if( s.addressExists("/h_scale") )
+        m_horz_scale = s.getMessage("/h_scale").getFloat();
     
     // init
     m_font = m_font.withExtraKerningFactor( m_extrakerning ).withHorizontalScale( m_horz_scale );

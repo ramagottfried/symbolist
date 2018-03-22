@@ -9,7 +9,7 @@ void Symbol::setTypeXYWH(const string & type, float x, float y, float w, float h
     addMessage( "/w", w );
     addMessage( "/h", h );
     
-    print();
+//    print();
     
     // add name?
 }
@@ -36,7 +36,7 @@ string Symbol::getSaff()
 
 string Symbol::getType()
 {
-    return getMessage("/staff").getString();
+    return getMessage("/type").getString();
 }
 
 float Symbol::getTime() const

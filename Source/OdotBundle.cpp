@@ -102,6 +102,7 @@ void OdotBundle::print( int level ) const
     while( osc_bndl_it_u_hasNext(it) )
     {
         t_osc_msg_u *msg = osc_bndl_it_u_next(it);
+
         cout << indent << osc_message_u_getAddress(msg);
 
         char buf[256];
@@ -206,12 +207,12 @@ void OdotBundle::getPrintStringArray( vector<string> &str, int level )
     osc_bndl_it_u_destroy(it);
 }
 
-bool OdotBundle::addressExists( const string& address )
+bool OdotBundle::addressExists( const string& address ) const
 {
     return addressExists(address.c_str());
 }
 
-bool OdotBundle::addressExists( const char * address )
+bool OdotBundle::addressExists( const char * address ) const
 {
     int res;
     osc_bundle_u_addressExists( ptr.get(), (char *)address, 1, &res );

@@ -15,7 +15,7 @@ Score::Score(Score& src) : time_points(this)
 {
     for( Symbol* s : src.score_symbols )
     {
-        Symbol *new_sym = new Symbol(*s);
+        Symbol *new_sym = new Symbol( s->get_o_ptr() );
         score_symbols.add( new_sym );
         addStaff( new_sym );
     }

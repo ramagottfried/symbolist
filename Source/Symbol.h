@@ -59,11 +59,8 @@ public:
         float start = getTime();
         return t >= start && t <= ( start + getDuration() );
     }
-    
-    string prettyPrint();
-    
+        
 private:
-    string  m_address;
     
     float       m_pixels_to_time = 0.01f;
     float       m_time_to_pixels = 100.0f;

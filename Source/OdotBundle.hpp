@@ -62,8 +62,8 @@ public:
     void getPrintString(string &str, int level = 0 );
     void getPrintStringArray(vector<string>& str, int level = 0 );
 
-    bool addressExists( const char * address );
-    bool addressExists( const string& address );
+    bool addressExists( const char * address ) const;
+    bool addressExists( const string& address ) const;
     
     inline const t_osc_bndl_u * get_o_ptr() const { return ptr.get(); }
     inline t_osc_bndl_u * release(){ return ptr.release(); }

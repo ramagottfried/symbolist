@@ -436,7 +436,7 @@ void SymbolistHandler::addSymbolToScore ( BaseComponent* c )
 {
     assert ( c->getScoreSymbolPointer() != NULL ) ;
     //cout << "ADDING SYMBOL FOR " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
-    log_score_change();
+    //log_score_change();
 
     score->addSymbol( c->getScoreSymbolPointer() );
         
@@ -452,10 +452,10 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
     Symbol *s = c->getScoreSymbolPointer();
     assert ( s != NULL ) ; // that's not normal
     
-    log_score_change();
+    // log_score_change();
 
     // cout << "removeSymbolFromScore" << endl;
-    //s->printBundle();
+    s->print();
 
     if( main_component_ptr )
         main_component_ptr->clearInspector();
@@ -475,7 +475,7 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
 void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
 {
     
-    log_score_change();
+    //log_score_change();
     
     // get pointer to symbol attached to component
     Symbol *s = c->getScoreSymbolPointer();
@@ -528,6 +528,9 @@ void SymbolistHandler::log_score_change()
 
 void SymbolistHandler::push_undo_stack()
 {
+    cout << "prev score :"<< endl;
+    score->print();
+    
     undo_stack.add( new Score( *score ) );
     
     if( undo_stack.size() > 10 )

@@ -1,4 +1,3 @@
-
 #include "BaseComponent.h"
 #include "PageComponent.h"
 #include "ScoreComponent.h"
@@ -353,7 +352,9 @@ void BaseComponent::attachToStaff()
         {
             auto c = pc->getSubcomponentByID( staff_name );
             StaffComponent* staff_component = dynamic_cast<StaffComponent*>(c);
-            if( staff_component )
+            
+            // Checks the downcast result.
+            if( staff_component != NULL )
             {
                 staff_component->addOjbectToStave( this );
                 staff = staff_component;
@@ -503,7 +504,7 @@ void BaseComponent::scaleScoreComponent(float scale_w, float scale_h)
     cout << "BaseComponent::scaleScoreComponent " << getSymbolTypeStr() << " " << this << " " << scale_w << " " << scale_h << endl;
     for ( int i = 0; i < getNumSubcomponents(); i++ )
     {
-        BaseComponent* c = (BaseComponent*)getSubcomponent(i);
+        BaseComponent* c = (BaseComponent*) getSubcomponent(i);
         c->setTopLeftPosition(c->getX() * scale_w, c->getY() * scale_h);
         c->scaleScoreComponent(scale_w, scale_h);
     }
@@ -521,7 +522,7 @@ void BaseComponent::setScoreComponentSize(int w, int h)
     
     for ( int i = 0; i < getNumSubcomponents(); i++ )
     {
-        BaseComponent* c = (BaseComponent*)getSubcomponent(i);
+        BaseComponent* c = (BaseComponent*) getSubcomponent(i);
         float scale_w = (float)c->getWidth() / this_w;
         float scale_h = (float)c->getHeight() / this_h;
         c->setSize(w * scale_w, h * scale_h);
@@ -537,7 +538,7 @@ void BaseComponent::resized ()
 {
     if( is_selected )
     {
-        ((ScoreComponent*)getParentComponent())->reportModificationForSelectedSymbols();
+        ((ScoreComponent*) getParentComponent())->reportModificationForSelectedSymbols();
     }
     
     if( staff )
@@ -554,7 +555,8 @@ void BaseComponent::moved () {}
 
 bool BaseComponent::respondsToMouseEvents()
 {
-    return ( isTopLevelComponent() || ((BaseComponent*)getParentComponent())->isInEditMode() );
+    BaseComponent* parent = (BaseComponent*) getParentComponent();
+    return ( isTopLevelComponent() || parent->isInEditMode() );
 }
 
 void BaseComponent::mouseMove( const MouseEvent& event )
@@ -573,7 +575,7 @@ void BaseComponent::mouseDown( const MouseEvent& event )
     else
     {
         
-        ScoreComponent* parent = ((ScoreComponent*)getParentComponent());
+        ScoreComponent* parent = (ScoreComponent*) getParentComponent();
         
         if ( respondsToMouseEvents() )
         {
@@ -589,7 +591,7 @@ void BaseComponent::mouseDown( const MouseEvent& event )
 void BaseComponent::altDragCopy( const MouseEvent& event  )
 {
     is_alt_copying = true;
-    ScoreComponent* parent = (ScoreComponent*)getParentComponent();
+    ScoreComponent* parent = (ScoreComponent*) getParentComponent();
     
     if ( ! componentSelected() )
         parent->addToSelection(this);
@@ -609,7 +611,7 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
     else
     {
         
-        ScoreComponent* parent = ( (ScoreComponent*) getParentComponent() );
+        ScoreComponent* parent = (ScoreComponent*)getParentComponent();
         
         if ( respondsToMouseEvents() )
         {

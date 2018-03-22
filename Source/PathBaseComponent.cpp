@@ -322,13 +322,19 @@ void PathBaseComponent::setEditMode( bool val )
     in_edit_mode = val;
     if ( val == false ) // = exit
     {
-        ScoreComponent* sc = ((ScoreComponent*)getParentComponent());
-        sc->addToSelection(this);
+        ScoreComponent* sc = dynamic_cast<ScoreComponent*>(getParentComponent());
         
-        removeHandles();
+        // Checks the downcast result.
+        if (sc != NULL)
+        {
+            sc->addToSelection(this);
+            
+            removeHandles();
+            
+            if ( m_path_array.isEmpty() )
+                sc->deleteSelectedComponents();
+        }
         
-        if ( m_path_array.isEmpty() )
-            sc->deleteSelectedComponents();
     }
 }
 

@@ -1,21 +1,51 @@
-
+#pragma once
 
 #ifndef SymbolistHandler_h
 #define SymbolistHandler_h
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "Controller.hpp"
+#include "SymbolistModel.hpp"
 
-#include "Score.h"
-
-class SymbolistMainWindow;
 class SymbolistMainComponent;
+class SymbolistMainWindow;
 class BaseComponent;
 class StaffComponent;
-
 class SymbolPropertiesPanel;
 
-class SymbolistHandler
+class SymbolistHandler : public virtual Controller<SymbolistModel, SymbolistMainComponent>
 {
+    
+    ScopedPointer<Score> score;
+    
+    // the palette is an array of symbol 'templates'
+    Palette palette;
+    
+    OwnedArray<Score> undo_stack;
+    OwnedArray<Score> redo_stack;
+    
+    // main window, allocated here in symbolist handler
+    ScopedPointer<SymbolistMainWindow> main_window;
+    
+    // main component, allocated and owned by main window
+    // the main view of the editor (could be embedded in a foreign app independently of the window)
+    SymbolistMainComponent* main_component_ptr = nullptr;
+    
+    // the main view of the editor (could be embedded in a foreign app independently of the window)
+    SymbolPropertiesPanel* inspector_ptr = nullptr;
+    
+    OwnedArray<Symbol> clipboard;
+    
+    // the current play-time in ms (change for float or long_int?)
+    float current_time = 0;
+    
+    // callbacks to the host environment
+    symbolistUpdateCallback myUpdateCallback = NULL;
+    symbolistCloseCallback myCloseCallback = NULL;
+    symbolistTransportCallback myTransportCallback = NULL;
+    
+    
+    bool in_standalone = false;
     
 public:
 
@@ -43,7 +73,7 @@ public:
     odot_bundle* symbolistAPI_getSymbol(int n);
     StringArray symbolistAPI_getSymbolString(int n);
     
-    void symbolistAPI_setOneSymbol( odot_bundle *bundle);
+    void symbolistAPI_setOneSymbol(odot_bundle *bundle);
     void symbolistAPI_setSymbols(int n, odot_bundle **bundle_array);
     
     int symbolistAPI_getNumPaletteSymbols();
@@ -56,7 +86,6 @@ public:
     
     odot_bundle* symbolistAPI_getSymbolsAtTime(float t);
     odot_bundle* symbolistAPI_getScoreBundle();
-    //odot_bundle* symbolistAPI_getTimePointBundle();
 
     odot_bundle* symbolistAPI_getdurationBundle();
     
@@ -76,7 +105,6 @@ public:
     void modifySymbolInScore ( BaseComponent* c ) ;
     
     float getCurrentTime() { return current_time; }
-    
     
     /*********************************************
      * INSPECTOR IO
@@ -98,7 +126,7 @@ public:
     void setCurrentSymbol(int n);
     int getCurrentSymbolIndex();
     Symbol* getCurrentSymbol();
-    SymbolistPalette* getSymbolPalette() { return &palette; }
+    Palette* getSymbolPalette() { return &palette; }
     
     BaseComponent* makeComponentFromSymbol( Symbol *s, bool attach_the_symbol );
     void addComponentsFromScore ();
@@ -130,41 +158,7 @@ public:
         return !score->idExists( name );
     }
     
-private:
-    
-    
-    ScopedPointer<Score> score;
-
-    OwnedArray<Score> undo_stack;
-    OwnedArray<Score> redo_stack;
-    
-    
-    // the palette is an array of symbol 'templates'
-    SymbolistPalette                    palette;
-    
-    // main window, allocated here in symbolist handler
-    ScopedPointer<SymbolistMainWindow>  main_window;
-    
-    // main component, allocated and owned by main window
-    // the main view of the editor (could be embedded in a foreign app independently of the window)
-    SymbolistMainComponent*             main_component_ptr = nullptr;
-    
-    // the main view of the editor (could be embedded in a foreign app independently of the window)
-
-    SymbolPropertiesPanel*              inspector_ptr = nullptr;
-    
-    OwnedArray<Symbol>   clipboard;
-    
-    // the current play-time in ms (change for float or long_int?)
-    float current_time = 0;
-    
-    // callbacks to the host environment
-    symbolistUpdateCallback myUpdateCallback = NULL;
-    symbolistCloseCallback myCloseCallback = NULL;
-    symbolistTransportCallback myTransportCallback = NULL;
-    
-    
-    bool in_standalone = false;
+    inline void update() override {}
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistHandler)
 };

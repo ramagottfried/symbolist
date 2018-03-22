@@ -200,9 +200,9 @@ void SymbolistMenu::getCommandInfo (CommandID commandID, ApplicationCommandInfo&
 
 bool SymbolistMenu::perform (const juce::ApplicationCommandTarget::InvocationInfo& info)
 {
-    SymbolistMainComponent *main = (SymbolistMainComponent *)getParentComponent();
+    SymbolistMainComponent* main = dynamic_cast<SymbolistMainComponent*>(getParentComponent());
     
-    if ( main )
+    if ( main != NULL )
     {
         PageComponent *score = main->getPageComponent();
 

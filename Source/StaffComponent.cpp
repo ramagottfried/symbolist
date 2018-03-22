@@ -45,10 +45,14 @@ int StaffComponent::addSymbolMessages( Symbol* s, const String &base_address )
     addr = base_address + "/staffSymbol";
     if( getNumSubcomponents() && s->getOSCMessagePos(addr) == -1 )
     {
-        auto sub_c = getSubcomponent(0);
-        if( sub_c )
+        auto firstSubComponent = getSubcomponent(0);
+        if( firstSubComponent )
         {
-            messages_added += ((BaseComponent*)sub_c)->addSymbolMessages( s, addr );
+            BaseComponent* castedFirstSubComponent = dynamic_cast<BaseComponent*>(firstSubComponent);
+            
+            // Checks downcast result.
+            if (castedFirstSubComponent != NULL)
+                messages_added += castedFirstSubComponent->addSymbolMessages( s, addr );
         }
         else
         {
@@ -120,7 +124,9 @@ void StaffComponent::mouseDown( const MouseEvent& event )
         for( auto s : getPageComponent()->getSelectedItems() )
         {
             BaseComponent *c = dynamic_cast<BaseComponent*>(s);
-            if( c )
+            
+            // Checks downcast result.
+            if( c != NULL )
             {
                 if( c->getSymbolTypeStr() != "staff" )
                 {

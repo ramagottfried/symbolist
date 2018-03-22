@@ -112,8 +112,10 @@ EditSelectionBox::~EditSelectionBox()
 //==============================================================================
 void EditSelectionBox::paint (Graphics& g)
 {
-    auto mc = ((SymbolistComponent*)getParentComponent())->getMainComponent();
-    if( mc && mc->getCurrentMods()->isAltDown() )
+    auto mainComponent = dynamic_cast<SymbolistComponent*>(getParentComponent())->getMainComponent();
+    
+    // Checks downcast result and alt modifier key status.
+    if( mainComponent != NULL && mainComponent->getCurrentMods()->isAltDown() )
     {
         //g.drawLine(prev_pos.getX(), prev_pos.getY(), getWidth() / 2, getWidth() / 2);
         getLookAndFeel().drawResizableFrame (g, getWidth(), getHeight(), borderSize);
@@ -232,9 +234,8 @@ void EditSelectionBox::mouseDown (const MouseEvent& e)
     bool in_edit_mode = 0;
     if( first )
     {
-        in_edit_mode = first->getPageComponent()->getDisplayMode() == PageComponent::DisplayMode::edit;
+        in_edit_mode = first->getPageComponent()->getDisplayMode() == PageComponent::DisplayMode::EDIT;
     }
-    
     
     updateMouseZone (e);
     prev_pos = e.getPosition();
@@ -250,29 +251,28 @@ void EditSelectionBox::mouseDown (const MouseEvent& e)
         SymbolistComponent* c = (*component_set)[i];
         BaseComponent* b = dynamic_cast<BaseComponent*>( c );
                                                         
-        if( !b )
+        if( b == NULL )
         {
             non_preview_components.add( c );
             c->mouseDown( e );
             continue;
         }
-        else if( in_edit_mode )
+        else if( !in_edit_mode )
         {
-            continue;
+            Symbol* s = new Symbol();
+            
+            b->addSymbolMessages(s, "");
+            original_symbols.set(i, s);
+            
+            BaseComponent *newB = sh->makeComponentFromSymbol(s, false);
+            newB->setTopLeftPosition( b->getPosition() - getPosition() );
+            newB->setSize( b->getWidth(), b->getHeight() );
+            newB->setSymbolComponentColor(Colours::red);
+            
+            preview_components.set(i, new PreviewComp(newB, b));
+            addAndMakeVisible( newB );
         }
         
-        Symbol* s = new Symbol();
-        //*b->getScoreSymbolPointer()
-        b->addSymbolMessages(s, "");
-        original_symbols.set(i, s);
-        
-        BaseComponent *newB = sh->makeComponentFromSymbol(s, false);
-        newB->setTopLeftPosition( b->getPosition() - getPosition() );
-        newB->setSize( b->getWidth(), b->getHeight() );
-        newB->setSymbolComponentColor(Colours::red);
-        
-        preview_components.set(i, new PreviewComp(newB, b));
-        addAndMakeVisible( newB );
     }
     
     
@@ -301,7 +301,7 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
         non_preview_components[i]->mouseDrag( e );
     }
     
-    bool in_edit_mode = (*component_set)[0]->getPageComponent()->getDisplayMode() == PageComponent::DisplayMode::edit;
+    bool in_edit_mode = (*component_set)[0]->getPageComponent()->getDisplayMode() == PageComponent::DisplayMode::EDIT;
     
     if (preview_components.size() == 0 || in_edit_mode )
     {
@@ -557,7 +557,7 @@ void EditSelectionBox::updateMouseZone (const MouseEvent& e)
         bool in_edit_mode = 0;
         
         if( component_set->size() > 0 )
-            in_edit_mode = (*component_set)[0]->getPageComponent()->getDisplayMode() == PageComponent::DisplayMode::edit;
+            in_edit_mode = (*component_set)[0]->getPageComponent()->getDisplayMode() == PageComponent::DisplayMode::EDIT;
 
         mouseZone = newZone;
 

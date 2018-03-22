@@ -508,25 +508,25 @@ void SymbolistHandler::addComponentsFromScore ( )
  * (CALLBACKS FROM USER ACTIONS)
  ********************************/
 
-void SymbolistHandler::addSymbolToScore ( BaseComponent* c )
+void SymbolistHandler::addSymbolToScore ( BaseComponent* component )
 {
-    assert ( c->getScoreSymbolPointer() != NULL ) ;
+    assert ( component->getScoreSymbolPointer() != NULL ) ;
     //cout << "ADDING SYMBOL FOR " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
     log_score_change();
 
-    score->addSymbol( c->getScoreSymbolPointer() );
+    score->addSymbol( component->getScoreSymbolPointer() );
     
     executeUpdateCallback( -1 );
     
 }
 
-void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
+void SymbolistHandler::removeSymbolFromScore ( BaseComponent* component )
 {
-    assert ( c->getScoreSymbolPointer() != NULL ) ;
+    assert ( component->getScoreSymbolPointer() != NULL ) ;
     //cout << "REMOVING SYMBOL OF " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
     
-    Symbol *s = c->getScoreSymbolPointer();
-    assert ( s != NULL ) ; // that's not normal
+    Symbol *symbol = component->getScoreSymbolPointer();
+    assert ( symbol != NULL ) ; // that's not normal
     
     log_score_change();
 
@@ -536,10 +536,10 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )
     if( main_component_ptr )
         main_component_ptr->clearInspector();
     
-    score->removeSymbolTimePoints( s );
-    score->removeSymbol( s );
+    score->removeSymbolTimePoints( symbol );
+    score->removeSymbol( symbol );
     
-    c->setScoreSymbolPointer( NULL );
+    component->setScoreSymbolPointer( NULL );
     executeUpdateCallback( -1 );
     
 }
@@ -693,7 +693,7 @@ void SymbolistHandler::copySelectedToClipBoard()
     
     for( auto c : main_component_ptr->getPageComponent()->getSelectedItems() )
     {
-        clipboard.add(new Symbol( *((BaseComponent*)c)->getScoreSymbolPointer()) );
+        clipboard.add(new Symbol( *(dynamic_cast<BaseComponent*>(c))->getScoreSymbolPointer()) );
     }
 }
 

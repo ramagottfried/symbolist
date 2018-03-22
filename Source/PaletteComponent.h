@@ -45,14 +45,14 @@ class PaletteComponent : public SymbolistComponent
     PaletteComponent();
     ~PaletteComponent();
     
-    void buildFromPalette(SymbolistPalette *palette);
+    void buildFromPalette(Palette *palette);
     void selectPaletteButton(int i);
     
     void paint (Graphics& g) override;
     
     private:
     
-    SymbolistPalette* palette_pointer;
+    Palette* palette_pointer;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PaletteComponent)
 

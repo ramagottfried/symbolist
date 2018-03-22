@@ -129,8 +129,15 @@ bool SymbolistComponent::componentSelected()
 
 Point<int> SymbolistComponent::positionRelativeTo(SymbolistComponent* to)
 {
-    if (to == getParentComponent() ) return getPosition() ;
-        else return getPosition() + ((SymbolistComponent*)getParentComponent())->positionRelativeTo(to);
+    SymbolistComponent* parentComponent = dynamic_cast<SymbolistComponent*>(getParentComponent());
+    if (to == getParentComponent())
+        return getPosition();
+    
+    // Checks downcast result.
+    else if(parentComponent != NULL)
+        return getPosition() + parentComponent->positionRelativeTo(to);
+    
+    return Point<int>(0, 0);
 }
 
 bool SymbolistComponent::intersectRect( Rectangle<int> rect)
@@ -141,24 +148,29 @@ bool SymbolistComponent::intersectRect( Rectangle<int> rect)
 // basic selection mechanism
 void SymbolistComponent::mouseDownSelection( const MouseEvent& event )
 {
-    ScoreComponent* parent = (ScoreComponent*)getParentComponent();
+    ScoreComponent* parent = dynamic_cast<ScoreComponent*>(getParentComponent());
     
-    if ( event.mods.isShiftDown() )
+    // Checks downcast exception.
+    if (parent != NULL)
     {
-        if ( componentSelected() )
-            parent->removeFromSelection(this);
-        else
-            parent->addToSelection(this);
-        
-    }
-    else
-    {
-        if ( ! componentSelected() )
+        if ( event.mods.isShiftDown() )
         {
-            parent->unselectAllComponents();
-            parent->addToSelection(this);
+            if ( componentSelected() )
+                parent->removeFromSelection(this);
+            else
+                parent->addToSelection(this);
+            
+        }
+        else
+        {
+            if ( ! componentSelected() )
+            {
+                parent->unselectAllComponents();
+                parent->addToSelection(this);
+            }
         }
     }
+    
 }
 
 

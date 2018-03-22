@@ -1,5 +1,7 @@
-
 #pragma once
+
+#ifndef SymbolistMainComponent_h
+#define SymbolistMainComponent_h
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
@@ -15,15 +17,49 @@
 
 #include "SymbolistMenu.hpp"
 #include "SymbolistLookAndFeel.hpp"
+#include "Observer.hpp"
 
 /**
- * SymbolistMainComponent is the main controller of the application
- * managing the connection between data (score) and visualization/editing.
- * It is also the node and pointer for interaction with the library
+ * SymbolistMainComponent is the main graphic component of the application.
+ *
  */
-class SymbolistMainComponent : public SymbolistComponent, public ApplicationCommandTarget
+class SymbolistMainComponent : public virtual SymbolistComponent,
+                               public virtual ApplicationCommandTarget,
+                               public virtual View<SymbolistModel, SymbolistHandler>
 {
-
+    
+    SymbolistHandler*    symbolist_handler = nullptr; // (not allocated here)
+    SymbolistLookAndFeel look_and_feel;
+    
+    /*******************************************************
+     *                      UI ELEMENTS                    *
+     *******************************************************/
+    
+    /**
+     * A graphic component which surrounds the PageComponent
+     * with scrollbars.
+     */
+    Viewport                         score_viewport;
+    
+    /**
+     * A graphic component representing the main page of the score.
+     */
+    PageComponent                    scoreView;
+    PaletteComponent                 paletteView;
+    SymbolistMenu                    menu; //<<  application commands are set here
+    ScopedPointer<PropertyPanelTabs> inspector;
+    MouseModeComponent               mouseModeView;
+    TimeDisplayComponent             timeDisplayView;
+    
+    int palette_w = 50;
+    int menu_h; // set internally
+    
+    float            m_zoom = 1.0f;
+    ModifierKeys     current_mods;
+    
+    UI_EditType      mouse_mode = selection;
+    UI_DrawType      draw_mode = free_draw;
+    
 public:
     
     SymbolistMainComponent(SymbolistHandler *sh);
@@ -32,7 +68,7 @@ public:
     static ScopedPointer<SymbolistMainComponent> createMainComponent(SymbolistHandler *sh);
     
     /*********************************************
-     * GUI FUNCTIONALITY AND TOOLS
+     *        GUI FUNCTIONALITY AND TOOLS        *
      *********************************************/
     void updatePaletteView();
     
@@ -58,7 +94,7 @@ public:
     inline ModifierKeys* getCurrentMods(){ return &current_mods; }
     
     /*********************************************
-     * Properties Panel (Inspector)
+     *        PROPERTIES PANEL (INSPECTOR)       *
      *********************************************/
     void toggleInspector();
     inline void clearInspector(){ inspector->clearInspector(); }
@@ -77,39 +113,18 @@ public:
         getPageComponent()->toggleCursorDisplay();
     }
     
-    /*********************************************
-     * Application keyboard command wrapper (actual commands are set in SymbolistMenu)
-     *********************************************/
+    /***********************************************************************************
+     * APPLICATION KEYBOARD COMMAND WRAPPER (ACTUAL COMMANDS ARE SET IN SymbolistMenu) *
+     ***********************************************************************************/
     ApplicationCommandTarget* getNextCommandTarget() override;
     void getAllCommands (Array<CommandID>& commands) override;
     void getCommandInfo (CommandID commandID, ApplicationCommandInfo& result) override;
     bool perform (const InvocationInfo& info) override;
     
-private:
-    
-    SymbolistHandler*       symbolist_handler = nullptr; // (not allocated here)
-    SymbolistLookAndFeel    look_and_feel;
-    
-    /************************************************************************
-     * UI elements
-     ************************************************************************/
-    Viewport                                score_viewport;
-    PageComponent                           scoreView;
-    PaletteComponent                        paletteView ;
-    SymbolistMenu                           menu; //<<  application commands are set here
-    ScopedPointer<PropertyPanelTabs>        inspector;
-    MouseModeComponent                      mouseModeView;
-    
-    TimeDisplayComponent                    timeDisplayView;
-
-    int palette_w = 50;
-    int menu_h; // set internally
-    
-    float            m_zoom = 1.0f;
-    ModifierKeys     current_mods;
-
-    UI_EditType      mouse_mode = selection;
-    UI_DrawType      draw_mode = free_draw;
+    /* Overrides the update method inherited from the Observer class. */
+    inline void update() override { repaint(); }
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainComponent)
 };
+
+#endif

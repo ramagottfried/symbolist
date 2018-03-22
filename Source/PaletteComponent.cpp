@@ -47,8 +47,13 @@ void PaletteButton::paint (Graphics& g)
 
 void PaletteButton::mouseDown ( const MouseEvent& event )
 {
-    PaletteComponent* pv = (PaletteComponent*) getParentComponent();
-    pv->selectPaletteButton(button_id);
+    PaletteComponent* pv = dynamic_cast<PaletteComponent*>(getParentComponent());
+    
+    // Checks the downcast result.
+    if (pv != NULL) {
+        pv->selectPaletteButton(button_id);
+    }
+    
 }
 
 
@@ -68,7 +73,7 @@ PaletteComponent::~PaletteComponent()
 }
 
 
-void PaletteComponent::buildFromPalette(SymbolistPalette* palette)
+void PaletteComponent::buildFromPalette(Palette* palette)
 {
     palette_pointer = palette;
     
@@ -129,13 +134,20 @@ void PaletteComponent::selectPaletteButton(int i)
 {
     for (int b = 0; b < getNumChildComponents(); b ++)
     {
-        PaletteButton *button = (PaletteButton*) getChildComponent(b);
-        if ( button->getID() == i ) button->setSelected(true);
-        else button->setSelected(false);
+        PaletteButton *button = dynamic_cast<PaletteButton*>(getChildComponent(b));
+        
+        // Checks the downcast result.
+        if (button != NULL) {
+            if ( button->getID() == i ) button->setSelected(true);
+            else button->setSelected(false);
+        }
+        
     }
     if ( i >= 0) palette_pointer->setSelectedItem(i);
     
-    SymbolistMainComponent* smc = (SymbolistMainComponent*)getParentComponent();
+    SymbolistMainComponent* smc = dynamic_cast<SymbolistMainComponent*>(getParentComponent());
+    
+    // Checks the downcast result.
     if ( smc != NULL )
     {
         if ( i >= 0) {

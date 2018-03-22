@@ -2,6 +2,8 @@
 
 #include "SymbolistComponent.h"
 
+using namespace std;
+
 class SymbolistMenu : public Component, public MenuBarModel, public ChangeBroadcaster
 {
 public:

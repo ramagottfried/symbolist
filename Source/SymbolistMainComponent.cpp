@@ -13,7 +13,6 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
     
     setLookAndFeel( &look_and_feel );
 
-    
     updatePaletteView();
     
     score_viewport.setViewedComponent( &scoreView, false );
@@ -49,9 +48,6 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
     //addKeyListener(this);
     
     setSize (600, 400);
-    
-    
-
 }
 
 
@@ -92,13 +88,12 @@ void SymbolistMainComponent::updatePaletteView()
     paletteView.buildFromPalette(symbolist_handler->getSymbolPalette());
 }
 
-
 void SymbolistMainComponent::toggleInspector()
 {
     if( !inspector->isVisible() )
     {
-        auto sel = getPageComponent()->getSelectedItems();
-        inspector->setInspectorObject( (BaseComponent *)sel.getLast() );
+        auto selectedItems = getPageComponent()->getSelectedItems();
+        inspector->setInspectorObject( dynamic_cast<BaseComponent*>(selectedItems.getLast()) );
         
         addAndMakeVisible(inspector);
         
@@ -139,8 +134,6 @@ void SymbolistMainComponent::setMouseMode( UI_EditType m )
 {
     mouse_mode = m;
     mouseModeView.setMouseMode( m );
-    
-    //scoreView.repaint();
 }
 
 UI_EditType SymbolistMainComponent::getMouseMode()
@@ -152,14 +145,12 @@ void SymbolistMainComponent::setDrawMode( UI_DrawType m )
 {
     draw_mode = m;
     mouseModeView.setDrawMode(m);
-    //scoreView.repaint();
 }
 
 UI_DrawType SymbolistMainComponent::getDrawMode()
 {
     return draw_mode ;
 }
-
 
 void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
 {

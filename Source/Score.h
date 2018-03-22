@@ -111,35 +111,6 @@ private:
 
 
 
-/**************************************
- * Non-graphic object : can be handle by the SymbolistMainComponent
- * even if the palette is not displayed in the window
- **************************************/
-class SymbolistPalette
-{
-public:
-    
-    SymbolistPalette(){};
-    ~SymbolistPalette()
-    {
-//        cout << "~SymbolistPalette" << this <<  endl;
-    }
 
-    void addDefaultItem( Symbol *s ) { default_items.add(s); }
-    void addUserItem( Symbol *s ) { user_items.add(s); }
-    Symbol* getPaletteDefaultItem( int i ) { return default_items[i] ; }
-    Symbol* getPaletteUserItem( int i ) { return user_items[i] ; }
-    int getPaletteNumDefaultItems() { return static_cast<int>( default_items.size() ) ; }
-    int getPaletteNumUserItems() { return static_cast<int>( user_items.size() ) ; }
-    int getSelectedItem() { return selected_item ; }
-    void setSelectedItem(int n) { selected_item = n; }
-    
-private :
-    
-    OwnedArray<Symbol> default_items;
-    OwnedArray<Symbol> user_items;
-    
-    int selected_item = 0;
-};
 
 

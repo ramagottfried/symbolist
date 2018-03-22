@@ -1,9 +1,11 @@
 #pragma once
 
+#ifndef SymbolistComponent_h
+#define SymbolistComponent_h
+
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "types.h"
 #include "SymbolistHandler.h"
-
 
 class PageComponent; // forward declaration of subclass
 
@@ -70,3 +72,5 @@ protected :
     Colour                      sym_color = Colours::black;
     
 };
+
+#endif

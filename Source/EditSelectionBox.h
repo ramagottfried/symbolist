@@ -1,5 +1,7 @@
-
 #pragma once
+
+#ifndef EditSelectionBox_h
+#define EditSelectionBox_h
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SymbolistComponent.h"
@@ -170,3 +172,5 @@ private:
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EditSelectionBox)
 };
+
+#endif

@@ -24,8 +24,11 @@ void PathHandle::mouseDown( const MouseEvent& event )
     m_down = event.position;
     m_prev_theta = -111;
     
-    PathBaseComponent* parent = (PathBaseComponent*)getParentComponent();
-    m_anchor_bounds = parent->getPathBounds();
+    PathBaseComponent* parent = dynamic_cast<PathBaseComponent*>(getParentComponent());
+    
+    // Checks the downcast result.
+    if (parent != NULL)
+        m_anchor_bounds = parent->getPathBounds();
     
     mouseDownSelection(event);
 }
@@ -35,38 +38,44 @@ void PathHandle::mouseDrag( const MouseEvent& event )
 {
     cout << "PathHandle::mouseDrag " << this << endl;
     
-    PathBaseComponent* parent = (PathBaseComponent*)getParentComponent();
-
-    Point<int> delta_xy = (event.position - m_down).toInt() ;
-    parent->translateSelectedComponents(delta_xy);
+    PathBaseComponent* parent = dynamic_cast<PathBaseComponent*>(getParentComponent());
     
+    // Checks the downcast result.
+    if (parent != NULL) {
+        
+        Point<int> delta_xy = (event.position - m_down).toInt() ;
+        parent->translateSelectedComponents(delta_xy);
+        
+        
+        if( h_type == rotate )
+        {
+            auto centre = m_anchor_bounds.getCentre();
+            
+            auto delta = centre - getBounds().getCentre().toFloat();
+            auto dx = delta.getX(), dy = delta.getY();
+            
+            auto dist = max( m_anchor_bounds.getHeight(), m_anchor_bounds.getWidth() ) * 0.5 + 5;
+            auto theta = atan2(dy, dx) - float_Pi;
+            
+            setCentrePosition( centre.getX() + cos(theta) * dist, centre.getY() + sin(theta) * dist );
+            
+            if( m_prev_theta == -111 ) m_prev_theta = theta;
+            
+            auto delta_rad = theta - m_prev_theta;
+            m_prev_theta = theta;
+            
+            parent->rotatePath( delta_rad, centre.getX(), centre.getY()  );
+            
+        }
+        else
+        {
+            parent->updatePathPoints();
+            parent->updatePathBounds();
+            parent->repaint();
+        }
+        
+    }
     
-    if( h_type == rotate )
-    {
-        auto centre = m_anchor_bounds.getCentre();
-
-        auto delta = centre - getBounds().getCentre().toFloat();
-        auto dx = delta.getX(), dy = delta.getY();
-
-        auto dist = max( m_anchor_bounds.getHeight(), m_anchor_bounds.getWidth() ) * 0.5 + 5;
-        auto theta = atan2(dy, dx) - float_Pi;
-        
-        setCentrePosition( centre.getX() + cos(theta) * dist, centre.getY() + sin(theta) * dist );
-        
-        if( m_prev_theta == -111 ) m_prev_theta = theta;
-        
-        auto delta_rad = theta - m_prev_theta;
-        m_prev_theta = theta;
-        
-        parent->rotatePath( delta_rad, centre.getX(), centre.getY()  );
-
-    }
-    else
-    {
-        parent->updatePathPoints();
-        parent->updatePathBounds();
-        parent->repaint();
-    }
 }
 
 
@@ -76,9 +85,15 @@ void PathHandle::mouseDoubleClick(const MouseEvent& event)
     {
         closing = !closing;
         
-        PathBaseComponent* parent = (PathBaseComponent*)getParentComponent();
-        parent->updatePathPoints();
-        parent->repaint();
+        PathBaseComponent* parent = dynamic_cast<PathBaseComponent*>(getParentComponent());
+        
+        // Checks the downcast result.
+        if (parent != NULL)
+        {
+            parent->updatePathPoints();
+            parent->repaint();
+        }
+        
     }
 }
 

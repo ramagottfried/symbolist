@@ -6,12 +6,25 @@
 
 #include "ScoreCursor.h"
 
-class PageComponent : public ScoreComponent
+/**
+ * Represents the page where all the graphic symbols
+ * of the score are drawn.
+ * PageComponent is a graphic component.
+ */
+class PageComponent : public virtual ScoreComponent
 {
+
+    BaseComponent* edited_component;
+    ScoreCursor    score_cursor;
+
 public:
-    
     PageComponent();
     ~PageComponent();
+    
+    /**
+     * Enumerates the different display modes used by the PageComponent class.
+     */
+    enum DisplayMode { MAIN, EDIT, STAFF };
     
     // Redefine this from SymbolistComponent
     inline PageComponent* getPageComponent() override { return this; };
@@ -34,17 +47,6 @@ public:
     
     void setTimePoint( float t )
     {
-        /*
-        auto staff = getSymbolistHandler()->getStaveAtTime(t);
-        if( staff )
-        {
-            Symbol* sym = staff->getScoreSymbolPointer();
-            
-            float play_t = t - sym->getTime();
-            float play_x = sym->timeToPixels( play_t );
-            score_cursor.setBounds( play_x, staff->getY() + (staff->getHeight() * 0.5), 5, staff->getHeight()+5 );
-        }
-        */
         score_cursor.setPlayPoint( t );
     }
     
@@ -71,18 +73,11 @@ public:
     
     vector<BaseComponent*> getSubcomponentsByStaff( String& staff_name );
 
-    enum DisplayMode { main, edit, staff };
-    
     DisplayMode getDisplayMode(){ return display_mode; }
     
 private:
-    
-    BaseComponent*      edited_component;
-    ScoreCursor         score_cursor;
-    
-    DisplayMode         display_mode = main;
-    
-    
+    DisplayMode         display_mode = MAIN;
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PageComponent)
 };

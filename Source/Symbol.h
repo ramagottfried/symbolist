@@ -1,5 +1,8 @@
-
 #pragma once
+
+#ifndef Symbol_h
+#define Symbol_h
+
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "OSCIO.h"
 #include "types.h"
@@ -102,3 +105,4 @@ private:
     
 };
 
+#endif

@@ -1,4 +1,3 @@
-
 #include "PageComponent.h"
 #include "SymbolistMainComponent.h"
 
@@ -21,17 +20,17 @@ void PageComponent::addSubcomponent( SymbolistComponent *c )
 {
     ScoreComponent::addSubcomponent( c );
     
-    if ( ((BaseComponent*)c)->getScoreSymbolPointer() != NULL )
+    if ( dynamic_cast<BaseComponent*>(c)->getScoreSymbolPointer() != NULL )
     {
-        getSymbolistHandler()->addSymbolToScore( ((BaseComponent*) c) );
+        getSymbolistHandler()->addSymbolToScore( dynamic_cast<BaseComponent*>(c) );
     }
 }
 
 void PageComponent::removeSubcomponent( SymbolistComponent *c )
 {
-    if ( ((BaseComponent*)c)->getScoreSymbolPointer() != NULL )
+    if ( dynamic_cast<BaseComponent*>(c)->getScoreSymbolPointer() != NULL )
     {
-        getSymbolistHandler()->removeSymbolFromScore( ((BaseComponent*) c) );
+        getSymbolistHandler()->removeSymbolFromScore( dynamic_cast<BaseComponent*>(c) );
     }
     
     ScoreComponent::removeSubcomponent( c );
@@ -68,7 +67,7 @@ void PageComponent::enterStaffSelMode()
        
     }
     
-    display_mode = staff;
+    display_mode = STAFF;
 }
 
 void PageComponent::exitStaffSelMode()
@@ -84,7 +83,7 @@ void PageComponent::exitStaffSelMode()
         }
     }
     
-    display_mode = main;
+    display_mode = MAIN;
 
 }
 
@@ -117,7 +116,7 @@ void PageComponent::enterEditMode( BaseComponent* c )
     edited_component->toFront(true);
     edited_component->recursiveMaximizeBounds();
     
-    display_mode = edit;
+    display_mode = EDIT;
 
 }
 
@@ -133,10 +132,9 @@ void PageComponent::exitEditMode( )
         edited_component = NULL;
     }
     
-    display_mode = main;
+    display_mode = MAIN;
 
 }
-
 
 ScoreComponent* PageComponent::getEditedComponent()
 {

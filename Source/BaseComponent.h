@@ -1,11 +1,14 @@
 #pragma once
 
+#ifndef BaseComponent_h
+#define BaseComponent_h
+
 #include "../JuceLibraryCode/JuceHeader.h"
 
 #include "Symbol.h"
 #include "SymbolistComponent.h"
 #include "ScoreComponent.h"
-
+#include <typeinfo>
 
 class BaseComponent : public ScoreComponent
 {
@@ -21,7 +24,7 @@ public:
     void setSymbolID();
 
     
-    void paint ( Graphics& g ) override;
+    void paint( Graphics& g ) override;
     
     void setScoreSymbolPointer (Symbol* s) { score_symbol = s; }
     Symbol* getScoreSymbolPointer () { return score_symbol; }
@@ -183,3 +186,4 @@ private:
     
 };
 
+#endif

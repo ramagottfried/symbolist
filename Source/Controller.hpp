@@ -17,35 +17,38 @@
 template <class ObservableClass, class ViewClass>
 class Controller : public virtual Observer {
     
-private:
-    ObservableClass model;
-    ViewClass view;
+    ScopedPointer<ObservableClass> model;
+    ScopedPointer<ViewClass> view;
     
 public:
+    /************************************************
+     *                 CONSTRUCTORS                 *
+     ************************************************/
+    
     /**
      * Controller's empty constructor.
      */
-    Controller();
-    
-    /**
-     * Controller's constructor specifying its model, and
-     * view as parameters.
-     */
-    Controller(ObservableClass model, ViewClass view) {
-        
+    inline Controller() {
         // Asserting that model and view parameters derive from the appropriated types
         static_assert(std::is_base_of<Observable, ObservableClass>::value, "type parameter of this class must derive from Observable");
         static_assert(std::is_base_of<Observer, ViewClass>::value, "type parameter of this class must derive from Observer");
-        
-        this->model = model;
-        this->view = view;
-        
     };
     
     /**
      * Controller's destructor.
      */
     virtual ~Controller() {};
+    
+    /*******************************************************
+     *                 GETTERS AND SETTERS                 *
+     *******************************************************/
+    inline virtual ScopedPointer<ObservableClass> getModel() { return model; }
+    inline virtual void setModel(ScopedPointer<ObservableClass> model) { this->model = model; }
+    
+    inline virtual ScopedPointer<ViewClass> getView() { return view; }
+    inline virtual void setModel(ScopedPointer<ViewClass> view) { this->view = view; }
+
+    
 };
 
 #endif /* Controller_hpp */

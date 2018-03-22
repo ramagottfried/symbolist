@@ -1,5 +1,3 @@
-
-
 #include "ScoreComponent.h"
 #include "SymbolistMainComponent.h"
 #include "SymbolGroupComponent.h"
@@ -79,9 +77,15 @@ void ScoreComponent::clearAllSubcomponents()
 void ScoreComponent::reportModificationForSelectedSymbols()
 {
     // cout << "void ScoreComponent::reportModificationForSelectedSymbols()" << endl;
-    for( SymbolistComponent *c : selected_components )
+    BaseComponent* baseComponent;
+    
+    for( SymbolistComponent *symbolistComponent : selected_components )
     {
-        ((BaseComponent*)c)->reportModification();
+        baseComponent = dynamic_cast<BaseComponent*>(symbolistComponent);
+        
+        // Checks downcast result.
+        if (baseComponent != NULL)
+            baseComponent->reportModification();
     }
 }
 
@@ -225,7 +229,9 @@ void ScoreComponent::createStaffFromSelected()
     
     
     auto staff_ref_comp = dynamic_cast<BaseComponent*>(page_comp->getSelectedItems().getFirst());
-    if( staff_ref_comp )
+    
+    // Checks downcast result.
+    if( staff_ref_comp != NULL )
     {
         if( staff_ref_comp->getSymbolTypeStr() == "staff" )
             return;
@@ -241,7 +247,11 @@ void ScoreComponent::createStaffFromSelected()
 
         // remove from parent (which also sets the ref_sym to null)
         // the parent is not necessarily 'this' (selected_items can be indirect children...)
-        ((ScoreComponent*)staff_ref_comp->getParentComponent())->removeSubcomponent( staff_ref_comp );
+        ScoreComponent* parentOfStaffRefComponent = dynamic_cast<ScoreComponent*>(staff_ref_comp->getParentComponent());
+        
+        // Checks downcast result.
+        if (parentOfStaffRefComponent != NULL)
+            parentOfStaffRefComponent->removeSubcomponent( staff_ref_comp );
         
         // sets the position now relative to the group
         staff_ref_comp->setBounds( 0, 0, staff_ref_comp->getWidth(), staff_ref_comp->getHeight() );
@@ -299,9 +309,12 @@ void ScoreComponent::groupSelectedSymbols()
             // if this component is of type BaseComponent, remove it's time points if they exist
             try
             {
-                if( auto bc = dynamic_cast<BaseComponent*>(c) ) // not sure why this throws an error...
+                BaseComponent* baseComponent = dynamic_cast<BaseComponent*>(c);
+                
+                // Checks downcast result.
+                if( baseComponent != NULL )
                 {
-                    auto sym = bc->getScoreSymbolPointer();
+                    auto sym = baseComponent->getScoreSymbolPointer();
                     if( sym )  // this fails within groups becuase subcomponents do not have score symbols...
                     {
                         sh->removeTimePointsForSymbol( sym );
@@ -323,7 +336,11 @@ void ScoreComponent::groupSelectedSymbols()
                          compBounds.getWidth(), compBounds.getHeight());
             
             // the parent is not necessarily 'this' (selected_items can be indirect children...)
-            ((ScoreComponent*)c->getParentComponent())->removeSubcomponent( c );
+            ScoreComponent* parentComponent = dynamic_cast<ScoreComponent*>(c->getParentComponent());
+            
+            // Checks downcast result.
+            if (parentComponent != NULL)
+                parentComponent->removeSubcomponent( c );
             
             group->addSubcomponent( c );
         }
@@ -347,28 +364,42 @@ void ScoreComponent::groupSelectedSymbols()
 
 void ScoreComponent::ungroupSelectedSymbols()
 {
-    vector< SymbolistComponent *> items;
-    for( SymbolistComponent *c : selected_components ) { items.push_back(c); }
+    vector<SymbolistComponent*> items;
+    for( SymbolistComponent *c : selected_components ) {
+        items.push_back(c);
+    }
     unselectAllComponents();
     
     for ( int i = 0; i < items.size(); i++ )
     {
-        BaseComponent* c = (BaseComponent*) items[i];
-        int n = ((int)c->getNumSubcomponents());
+        BaseComponent* c = dynamic_cast<BaseComponent*>(items[i]);
         
-        vector< SymbolistComponent *> subitems;
-        for ( int ii = 0 ; ii < n ; ii++ ) { subitems.push_back(c->getSubcomponent(ii)); }
-
-        for ( int ii = 0; ii < n ; ii++ )
+        // Checks downcast result.
+        if (c != NULL)
         {
-            BaseComponent* sc = (BaseComponent*) subitems[ii];
-            c->removeSubcomponent(sc);
-            if ( c->isTopLevelComponent() ) sc->createAndAttachSymbol() ;
-            addSubcomponent(sc);
-            sc->setTopLeftPosition(sc->getPosition().translated(c->getPosition().getX(), c->getPosition().getY()));
+            int n = ((int)c->getNumSubcomponents());
+            
+            vector< SymbolistComponent *> subitems;
+            for ( int ii = 0 ; ii < n ; ii++ ) { subitems.push_back(c->getSubcomponent(ii)); }
+            
+            for ( int ii = 0; ii < n ; ii++ )
+            {
+                BaseComponent* sc = dynamic_cast<BaseComponent*>(subitems[ii]);
+                
+                // Checks downcast result.
+                if (sc != NULL)
+                {
+                    c->removeSubcomponent(sc);
+                    if ( c->isTopLevelComponent() ) sc->createAndAttachSymbol() ;
+                    addSubcomponent(sc);
+                    sc->setTopLeftPosition(sc->getPosition().translated(c->getPosition().getX(), c->getPosition().getY()));
+                }
+        
+            }
+            
+            removeSubcomponent(c);
         }
         
-        removeSubcomponent(c);
     }
 }
 
@@ -416,10 +447,16 @@ void ScoreComponent::addSelectedSymbolsToPalette( )
 {
     for ( int i = 0; i < selected_components.size(); i++ )
     {
-        BaseComponent* c = (BaseComponent*)selected_components[i];
-        Symbol* s = new Symbol();
-        c->addSymbolMessages(s, "");
-        getSymbolistHandler()->getSymbolPalette()->addUserItem(s);
+        BaseComponent* c = dynamic_cast<BaseComponent*>(selected_components[i]);
+        
+        // Checks downcast result.
+        if (c != NULL)
+        {
+            Symbol* s = new Symbol();
+            c->addSymbolMessages(s, "");
+            getSymbolistHandler()->getSymbolPalette()->addUserItem(s);
+        }
+        
     }
     getMainComponent()->updatePaletteView();
 }

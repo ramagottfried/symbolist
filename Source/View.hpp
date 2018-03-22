@@ -1,10 +1,3 @@
-//
-//  View.hpp
-//  symbolist
-//
-//  Created by Vincent Iampietro on 20/03/2018.
-//
-
 #ifndef View_hpp
 #define View_hpp
 
@@ -16,41 +9,36 @@
 template <class ObservableClass, class ControllerClass>
 class View : public virtual Observer {
 
-private:
-    ObservableClass model;
-    ControllerClass controller;
+    ScopedPointer<ObservableClass> model;
+    ScopedPointer<ControllerClass> controller;
     
 public:
+    /************************************************
+     *                 CONSTRUCTORS                 *
+     ************************************************/
+    
     /**
      * View's empty constructor.
      */
-    View() {}
-    
-    /**
-     * View's constructor passing its model and controller
-     * as arguments.
-     *
-     * @param model      the model instance which is presented by this
-     *                   View instance.
-     *
-     * @param controller the controller instance which is linked with this
-     *                   View instance.
-     *
-     */
-    View(ObservableClass model, ControllerClass controller) {
-        
+    inline View() {
         // Asserting that model and controller parameters derive from the appropriated types
         static_assert(std::is_base_of<Observable, ObservableClass>::value, "type parameter of this class must derive from Observable");
         static_assert(std::is_base_of<Observer, ControllerClass>::value, "type parameter of this class must derive from Observer");
-        
-        this->model = model;
-        this->controller = controller;
     }
     
     /**
      * View's destructor method.
      */
     virtual ~View() {};
+    
+    /*******************************************************
+     *                 GETTERS AND SETTERS                 *
+     *******************************************************/
+    inline virtual ScopedPointer<ObservableClass> getModel() { return model; }
+    inline virtual void setModel(ScopedPointer<ObservableClass> model) { this->model = model; }
+    
+    inline virtual ScopedPointer<ControllerClass> getController() { return controller; }
+    inline virtual void setController(ScopedPointer<ControllerClass> controller) { this->controller = controller; }
     
 };
 

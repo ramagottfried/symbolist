@@ -1,4 +1,3 @@
-
 #include "types.h"
 #include "SymbolistMainWindow.h"
 
@@ -10,7 +9,7 @@ SymbolistMainWindow::SymbolistMainWindow (SymbolistHandler *sh) :
     // default stuff copied from Juce
     setUsingNativeTitleBar (true);
     main_component = new SymbolistMainComponent(sh);
-    setContentOwned (main_component , true );
+    setContentOwned (main_component , true);
     centreWithSize (getWidth(), getHeight());
     setVisible (true);
     setResizable(true, true);

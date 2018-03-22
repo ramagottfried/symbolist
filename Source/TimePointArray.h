@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef TimePointArray_h
+#define TimePointArray_h
+
 #include "Symbol.h"
 
 //============================
@@ -156,3 +159,5 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimePointArray)
 };
+
+#endif

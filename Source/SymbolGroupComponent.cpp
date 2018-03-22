@@ -72,16 +72,21 @@ void SymbolGroupComponent::setEditMode( bool val )
     
     if (val == false ) // exit
     {
-        ScoreComponent* sc = ((ScoreComponent*)getParentComponent());
-        sc->addToSelection(this);
+        ScoreComponent* sc = dynamic_cast<ScoreComponent*>(getParentComponent());
         
-        if ( getNumSubcomponents() == 1 )
+        // Checks downcast result.
+        if (sc != NULL)
         {
-            sc->ungroupSelectedSymbols();
-        }
-        else if ( getNumSubcomponents() == 0 )
-        {
-            sc->deleteSelectedComponents();
+            sc->addToSelection(this);
+            
+            if ( getNumSubcomponents() == 1 )
+            {
+                sc->ungroupSelectedSymbols();
+            }
+            else if ( getNumSubcomponents() == 0 )
+            {
+                sc->deleteSelectedComponents();
+            }
         }
     }
 }
@@ -99,8 +104,11 @@ void SymbolGroupComponent::h_flip(float ax, float ay)
 {
     for (int i = 0; i < getNumSubcomponents(); i++ )
     {
-        auto b = ((BaseComponent *)getSubcomponent(i));
-        b->h_flip(ax - getX(), ay - getY());
+        auto b = dynamic_cast<BaseComponent*>(getSubcomponent(i));
+        
+        // Checks the downcast result.
+        if (b != NULL)
+            b->h_flip(ax - getX(), ay - getY());
     }
 }
 
@@ -108,8 +116,11 @@ void SymbolGroupComponent::v_flip(float ax, float ay)
 {
     for (int i = 0; i < getNumSubcomponents(); i++ )
     {
-        auto b = ((BaseComponent *)getSubcomponent(i));
-        b->v_flip(ax - getX(), ay - getY());
+        auto b = dynamic_cast<BaseComponent*>(getSubcomponent(i));
+        
+        // Checks the downcast result.
+        if (b != NULL)
+            b->v_flip(ax - getX(), ay - getY());
     }
 }
 
@@ -122,13 +133,18 @@ void SymbolGroupComponent::rotateScoreComponent(float theta, float ax, float ay)
 
     for (int i = 0; i < getNumSubcomponents(); i++ )
     {
-        auto b = ((BaseComponent *)getSubcomponent(i));
-        b->rotateScoreComponent(theta, ax - getX(), ay - getY() );
+        auto b = dynamic_cast<BaseComponent*>(getSubcomponent(i));
         
-        minx =  min( minx, getX() + b->getX() );
-        miny =  min( miny, getY() + b->getY() );
-        maxx =  max( maxx, getX() + b->getRight() );
-        maxy =  max( maxy, getY() + b->getBottom() );
+        // Checks the downcast result.
+        if (b != NULL)
+        {
+            b->rotateScoreComponent(theta, ax - getX(), ay - getY() );
+            
+            minx =  min( minx, getX() + b->getX() );
+            miny =  min( miny, getY() + b->getY() );
+            maxx =  max( maxx, getX() + b->getRight() );
+            maxy =  max( maxy, getY() + b->getBottom() );
+        }
         
     }
     
@@ -189,13 +205,18 @@ int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_addre
         messages_added++;
     }
     
+    BaseComponent* subComponent;
     
     for (int i = 0; i < getNumSubcomponents(); i++)
     {
         addr = base_address + "/subsymbol/" + String(i+1);
         if( s->getOSCMessagePos(addr) == -1 )
         {
-            messages_added += ((BaseComponent*)getSubcomponent(i))->addSymbolMessages( s, addr );
+            subComponent = dynamic_cast<BaseComponent*>(getSubcomponent(i));
+            
+            // Checks downcast result.
+            if (subComponent != NULL)
+                messages_added += subComponent->addSymbolMessages( s, addr );
         }
     }
     

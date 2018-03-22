@@ -31,6 +31,10 @@
 		111A261C1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */; };
 		111A261D1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */; };
 		111A261E1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */; };
+		113980B3206449EA002A2408 /* OdotExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 113980B1206449EA002A2408 /* OdotExpr.cpp */; };
+		113980B4206449EA002A2408 /* OdotExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 113980B1206449EA002A2408 /* OdotExpr.cpp */; };
+		113980B5206449EA002A2408 /* OdotExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 113980B1206449EA002A2408 /* OdotExpr.cpp */; };
+		113980B6206449EA002A2408 /* OdotExpr.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 113980B2206449EA002A2408 /* OdotExpr.hpp */; };
 		113DEE0C1FA1D7C600A45220 /* EditSelectionBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 113DEE0A1FA1D7C600A45220 /* EditSelectionBox.cpp */; };
 		113DEE0D1FA1D7C600A45220 /* EditSelectionBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 113DEE0A1FA1D7C600A45220 /* EditSelectionBox.cpp */; };
 		113DEE0E1FA1D7C600A45220 /* EditSelectionBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 113DEE0A1FA1D7C600A45220 /* EditSelectionBox.cpp */; };
@@ -248,6 +252,8 @@
 		1107B3EF1EF7D53100E2DFA9 /* libsymbolist.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsymbolist.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MouseModeComponent.cpp; path = ../../Source/MouseModeComponent.cpp; sourceTree = "<group>"; };
 		111A261B1F40B0C200D3713C /* MouseModeComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = MouseModeComponent.hpp; path = ../../Source/MouseModeComponent.hpp; sourceTree = "<group>"; };
+		113980B1206449EA002A2408 /* OdotExpr.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = OdotExpr.cpp; path = ../../Source/OdotExpr.cpp; sourceTree = "<group>"; };
+		113980B2206449EA002A2408 /* OdotExpr.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = OdotExpr.hpp; path = ../../Source/OdotExpr.hpp; sourceTree = "<group>"; };
 		113DEE0A1FA1D7C600A45220 /* EditSelectionBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EditSelectionBox.cpp; path = ../../Source/EditSelectionBox.cpp; sourceTree = "<group>"; };
 		113DEE0B1FA1D7C600A45220 /* EditSelectionBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditSelectionBox.h; path = ../../Source/EditSelectionBox.h; sourceTree = "<group>"; };
 		114027C21F49C21E00A9B8C4 /* SortedStaves.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SortedStaves.cpp; path = ../../Source/SortedStaves.cpp; sourceTree = "<group>"; };
@@ -625,6 +631,8 @@
 		116A7EF32047E873004B545D /* odot-wrapper */ = {
 			isa = PBXGroup;
 			children = (
+				113980B1206449EA002A2408 /* OdotExpr.cpp */,
+				113980B2206449EA002A2408 /* OdotExpr.hpp */,
 				116A7EED2046DCAE004B545D /* OdotBundle.cpp */,
 				116A7EEE2046DCAE004B545D /* OdotBundle.hpp */,
 				11A3939A20528799002C8916 /* OdotBundle_s.cpp */,
@@ -844,6 +852,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				116A7EF22046DCAE004B545D /* OdotBundle.hpp in Headers */,
+				113980B6206449EA002A2408 /* OdotExpr.hpp in Headers */,
 				116A7EFF2047ECB8004B545D /* OdotAtom.hpp in Headers */,
 				11C442D31F585C1B00F2E9B6 /* TimeDisplay.hpp in Headers */,
 				114027C71F49C21E00A9B8C4 /* SortedStaves.hpp in Headers */,
@@ -1072,6 +1081,7 @@
 				118648711EF7E68B00904672 /* include_juce_gui_extra.mm in Sources */,
 				116A7EF12046DCAE004B545D /* OdotBundle.cpp in Sources */,
 				1107B4031EF7D55D00E2DFA9 /* SymbolistMainWindow.cpp in Sources */,
+				113980B5206449EA002A2408 /* OdotExpr.cpp in Sources */,
 				116F877C1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */,
 				11D123681F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */,
 				1107B3F91EF7D55D00E2DFA9 /* PathInfo.cpp in Sources */,
@@ -1170,6 +1180,7 @@
 				44CFE0391EC377EA009135F8 /* SymbolistMainWindow.cpp in Sources */,
 				444C43A61EE4A748000C6F69 /* SymbolGroupComponent.cpp in Sources */,
 				11B71DCE1F09844300CDE209 /* symbolist.cpp in Sources */,
+				113980B4206449EA002A2408 /* OdotExpr.cpp in Sources */,
 				118C38F01EC61404006FF4A1 /* PaletteComponent.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1213,6 +1224,7 @@
 				11B71DD71F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
 				116A7EEF2046DCAE004B545D /* OdotBundle.cpp in Sources */,
 				1107B3DD1EF1751900E2DFA9 /* TextGlyphComponent.cpp in Sources */,
+				113980B3206449EA002A2408 /* OdotExpr.cpp in Sources */,
 				116F877A1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */,
 				11D123661F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */,
 				1107B3E11EF2D2BA00E2DFA9 /* PathHandleComponent.cpp in Sources */,

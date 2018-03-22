@@ -27,7 +27,7 @@ public:
     
     inline int size() const { int i; osc_bundle_s_getMsgCount( osc_bundle_s_getLen( ptr.get() ), osc_bundle_s_getPtr( ptr.get() ), &i ); return i; }
     
-    inline const t_osc_bndl_s * get_o_ptr() const { return ptr.get(); }
+    inline t_osc_bndl_s * get_o_ptr() const { return ptr.get(); }
     inline t_osc_bndl_s * release(){ return ptr.release(); }
     
     OdotBundle deserialize() const;

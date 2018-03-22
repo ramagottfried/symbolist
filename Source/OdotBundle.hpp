@@ -5,6 +5,7 @@
 #include "OdotMessage.hpp"
 #include "OdotAtom.hpp"
 #include "OdotBundle_s.hpp"
+#include "OdotExpr.hpp"
 
 using namespace std;
 
@@ -74,6 +75,8 @@ public:
     inline t_osc_bndl_s * get_t_osc_bndl_s(){ return osc_bundle_u_serialize( ptr.get() ); }
 
     void unionWith( const OdotBundle& other );
+    
+    void applyExpr( const OdotExpr& expr );
     
 private:
     

@@ -70,6 +70,33 @@ void OdotBundle::unionWith( const OdotBundle& other )
     ptr = odot::newOdotBundlePtr( unioned );
 }
 
+void OdotBundle::applyExpr( const OdotExpr& expr )
+{
+    OdotBundle_s s_bndl = serialize();
+    
+    char *copy = NULL;
+    long copylen = osc_bundle_s_getLen( s_bndl.get_o_ptr() );
+    
+    int error = 0;
+    t_osc_expr *f = expr.get_o_ptr();
+    while(f){
+        t_osc_atom_ar_u *av = NULL;
+        error = osc_expr_eval( f, &copylen, &copy, &av, this );
+        if(av){
+            osc_atom_array_u_free(av);
+        }
+        if(error){
+            break;
+        }
+        f = osc_expr_next(f);
+    }
+    
+    if( !error )
+    {
+        *this = s_bndl.deserialize();
+    }
+}
+
 void OdotBundle::addMessage( vector<OdotMessage> msg_vec )
 {
     for( int i = 0; i < msg_vec.size(); i++ )

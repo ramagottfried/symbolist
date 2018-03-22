@@ -11,17 +11,15 @@ void StaffComponent::importFromSymbol( const Symbol &s )
     
     BaseComponent::importFromSymbol(s);
     
-    String filter = "/staffSymbol";
+    auto subsym = Symbol( s.getMessage( "/subsymbol" ).getBundle().get_o_ptr() ); // there can be only one staff subsymbol, must be grouped if multiple
     
-    int pos = s.getOSCMessagePos(filter+"/type");
-    if( pos == -1 )
+    if( subsym.size() == 0 )
     {
-        cout << "no /staffSymbol/type found" << endl;
+        cout << "no staff subsymbol found" << endl;
         return;
     }
     
-    Symbol sub_s = s.makeSubSymbol( filter );
-    BaseComponent* c = getSymbolistHandler()->makeComponentFromSymbol( &sub_s , false );
+    BaseComponent* c = getSymbolistHandler()->makeComponentFromSymbol( &subsym , false );
     
     if ( c != NULL)
         addSubcomponent( c );
@@ -30,25 +28,18 @@ void StaffComponent::importFromSymbol( const Symbol &s )
         
 }
 
-int StaffComponent::addSymbolMessages( Symbol* s, const String &base_address )
+void StaffComponent::addSymbolMessages( Symbol* s )
 {
-    int messages_added = BaseComponent::addSymbolMessages( s, base_address );
+    BaseComponent::addSymbolMessages( s );
 
-    String addr;// = base_address + "/numsymbols";
-    /*
-    if( s->getOSCMessagePos(addr) == -1 && (getNumSubcomponents() > 0) )
-    {
-        s->addOSCMessage( addr, (int)getNumSubcomponents() );
-        messages_added++;
-    }
-    */
-    addr = base_address + "/staffSymbol";
-    if( getNumSubcomponents() && s->getOSCMessagePos(addr) == -1 )
+    if( getNumSubcomponents() )
     {
         auto sub_c = getSubcomponent(0);
         if( sub_c )
         {
-            messages_added += ((BaseComponent*)sub_c)->addSymbolMessages( s, addr );
+            Symbol sub_sym;
+            ((BaseComponent*)sub_c)->addSymbolMessages( &sub_sym );
+            s->addMessage( "/subsymbol", sub_sym );
         }
         else
         {
@@ -56,7 +47,6 @@ int StaffComponent::addSymbolMessages( Symbol* s, const String &base_address )
         }
     }
     
-    return messages_added;
 }
 
 void StaffComponent::parentHierarchyChanged()

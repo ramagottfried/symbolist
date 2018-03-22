@@ -1,5 +1,6 @@
 #include "OdotBundle_s.hpp"
 #include "OdotBundle.hpp"
+#include "osc_bundle_iterator_s.h"
 
 OdotBundle_s::OdotBundle_s()
 {
@@ -35,11 +36,10 @@ OdotBundle_s& OdotBundle_s::operator=( const OdotBundle_s& src )
     return *this;
 }
 
-OdotBundle OdotBundle_s::deserialize()
+OdotBundle OdotBundle_s::deserialize() const
 {
     return OdotBundle( osc_bundle_s_deserialize( osc_bundle_s_getLen( ptr.get() ), osc_bundle_s_getPtr( ptr.get() ) ) );
 }
-
 
 void OdotBundle_s::print( int level ) const
 {

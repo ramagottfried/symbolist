@@ -42,25 +42,23 @@ public:
     int symbolistAPI_getNumSymbols();
     OdotBundle_s symbolistAPI_getSymbolBundle_s(int n);
     Symbol * symbolistAPI_getSymbol(int n);
-
-    StringArray symbolistAPI_getSymbolString(int n);
     
-    void symbolistAPI_setOneSymbol( t_osc_bndl_s *bundle);
-    void symbolistAPI_setSymbols(int n, t_osc_bndl_s **bundle_array);
+    void symbolistAPI_setOneSymbol( const OdotBundle_s& bundle);
+    void symbolistAPI_setSymbols(const OdotBundle_s& bundle_array);
     
     int symbolistAPI_getNumPaletteSymbols();
     Symbol* symbolistAPI_getPaletteSymbol(int n);
-    void symbolistAPI_setOnePaletteSymbol( t_osc_bndl_s *bundle);
-    void symbolistAPI_setPaletteSymbols(int n, t_osc_bndl_s **bundle_array);
+    void symbolistAPI_setOnePaletteSymbol( const OdotBundle_s& bundle);
+    void symbolistAPI_setPaletteSymbols(const OdotBundle_s& bundle_array);
     
     void symbolistAPI_setTime(float time_ms);
     void symbolistAPI_toggleTimeCusor();
     
-    odot_bundle* symbolistAPI_getSymbolsAtTime(float t);
-    odot_bundle* symbolistAPI_getScoreBundle();
+    OdotBundle_s symbolistAPI_getSymbolsAtTime(float t);
+    OdotBundle_s symbolistAPI_getScoreBundle();
     //odot_bundle* symbolistAPI_getTimePointBundle();
 
-    odot_bundle* symbolistAPI_getdurationBundle();
+    OdotBundle_s symbolistAPI_getdurationBundle();
     
     void symbolistAPI_clearScore();
     

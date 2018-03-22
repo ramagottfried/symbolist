@@ -175,67 +175,58 @@ void SymbolGroupComponent::addSymbolMessages( Symbol* s )
     
     BaseComponent::addSymbolMessages( s );
     
-    s->addMessage( "/numsymbols", getNumSubcomponents() );
+    s->addMessage( "/numsymbols", (int)getNumSubcomponents() );
 
     /*
      * the group symbol is created fist (with the default state), then added to, then updated,
      * so we need (getNumSubcomponents() > 0) to wait to set /numsymbols until after the symbol has been updated,
      * otherwise, /numsymbols gets stuck at 0
-     */
     
-    if( getNumSubcomponents() > 0) )
+    
+     i don't understand this again, commenting out to test
+    if( getNumSubcomponents() )
     {
-        s->addOSCMessage( addr, (int)getNumSubcomponents() );
-        messages_added++;
+        s->addMessage( addr, (int)getNumSubcomponents() );
     }
-    
+     */
     
     for (int i = 0; i < getNumSubcomponents(); i++)
     {
-        addr = base_address + "/subsymbol/" + String(i+1);
-        if( s->getOSCMessagePos(addr) == -1 )
-        {
-            messages_added += ((BaseComponent*)getSubcomponent(i))->addSymbolMessages( s, addr );
-        }
+        Symbol sub_sym;
+        ((BaseComponent*)getSubcomponent(i))->addSymbolMessages( &sub_sym );
+        s->addMessage( "/subsymbol/" + to_string(i), sub_sym );
     }
     
-    return messages_added;
 }
-
-void SymbolGroupComponent::addSubSymbol( Symbol* s )
-{
-    /// not implemented but I think this shoudl be separate from the add symbol messages
-    
-}
-
 
 void SymbolGroupComponent::importFromSymbol( const Symbol &s )
 {
-
     clearAllSubcomponents();
     
     BaseComponent::importFromSymbol(s);
     
-    int pos = s.getOSCMessagePos("/numsymbols");
+    auto subsymbols = s.matchAddress( "/subsymbol", false ); // later try /* with full match at default true
     
-    if ( pos >= 0 )
+    int count = 0;
+    for ( auto sub : subsymbols )
     {
-        int n_symbols = s.getOSCMessageValue(pos).getInt32();
- 
-        std::cout << "Importing Group of " << n_symbols << " symbols..." << std::endl;
-        for (int i = 0; i < n_symbols; i++ )
+        if( sub[0].isBundle() )
         {
-            String filter = "/subsymbol/" + String(i+1) ;   // we start at 1 .. (?)
+            cout << "IMPORT FROM: " << sub.getAddress() << endl;
+            Symbol sub_s( sub.getBundle().get_o_ptr() );
             
-            cout << "IMPORT FROM: " << filter << endl;
-            Symbol sub_s = s.makeSubSymbol( filter );
             BaseComponent* c = getSymbolistHandler()->makeComponentFromSymbol( &sub_s , false );
             
             if ( c != NULL)
+            {
                 addSubcomponent( c );
+                count++;
+            }
             else
-                cout << "Error importing subsymbol #" << i << endl;
+                cout << "Error importing subsymbol #" << count << endl;
         }
     }
+    
+    std::cout << "Imported Group of " << count << " symbols..." << std::endl;
 }
 

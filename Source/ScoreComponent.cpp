@@ -296,7 +296,7 @@ void ScoreComponent::groupSelectedSymbols()
                 if( sym )  // this fails within groups becuase subcomponents do not have score symbols...
                 {
                     // copies bundles from subcomponent symbols and join into new group symbol
-                    groupSymbol->addMessage( "/symbol/" + to_string(count), *sym );
+                    groupSymbol->addMessage( "/subsymbol/" + to_string(count), *sym );
                     
                     sh->removeSymbolFromScore( bc ); // ?? why do we need to remove the 
                     

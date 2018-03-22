@@ -1,5 +1,5 @@
 #include "OdotAtom.hpp"
-#include "OdotBundle.cpp"
+#include "OdotBundle.hpp"
 
 OdotAtom::OdotAtom()
 {
@@ -45,7 +45,16 @@ t_osc_bndl_u * OdotAtom::getBundlePtr()
     return osc_atom_u_getBndl( ptr.get() );
 }
 
-OdotAtom::OdotAtomType OdotAtom::getType()
+string OdotAtom::getString() const
+{
+    size_t len = osc_atom_u_getStringLen( ptr.get() );
+    char buf[ len ];
+    char *buf_ptr = buf;
+    osc_atom_u_getString( ptr.get(), len, &buf_ptr );
+    return string( buf_ptr );
+}
+
+OdotAtom::OdotAtomType OdotAtom::getType() const
 {
     switch ( osc_atom_u_getTypetag( ptr.get() ) )
     {

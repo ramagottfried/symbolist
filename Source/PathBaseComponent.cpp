@@ -183,7 +183,7 @@ void PathBaseComponent::addSymbolMessages( Symbol* s )
     for ( int np = 0; np < n_subpaths ; np++ )
     {
         Path *p = m_path_array[np];
-        s->addMessage( "/path/" + to_string(np) + "/str",    p->toString() );
+        s->addMessage( "/path/" + to_string(np) + "/str",    p->toString().getCharPointer() );
         s->addMessage( "/path/" + to_string(np) + "/length", p->getLength() );
 
         /* time is set by staff now */

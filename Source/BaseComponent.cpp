@@ -87,7 +87,7 @@ void BaseComponent::addSymbolMessages( Symbol* s )
 {
     s->addMessage("/name", name );
     s->addMessage("/type", getSymbolTypeStr() );
-    s->addMessage("/id", getComponentID() );
+    s->addMessage("/id", getComponentID().getCharPointer() );
     s->addMessage("/staff", staff_name );
    
     auto b = symbol_export_bounds();
@@ -136,7 +136,7 @@ Symbol BaseComponent::exportSymbol()
     Symbol s;
     s.addMessage("/name", name );
     s.addMessage("/type", getSymbolTypeStr() );
-    s.addMessage("/id", getComponentID() );
+    s.addMessage("/id", getComponentID().getCharPointer() );
     s.addMessage("/staff", staff_name );
     
     auto b = symbol_export_bounds();
@@ -292,7 +292,7 @@ void BaseComponent::setSymbolID()
             }
             
             setComponentID( id );
-            s->setID(id);
+            s->addMessage( "/id", id );
             //cout << "setting ID "<< id << endl;
         }
     }

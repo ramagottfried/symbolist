@@ -73,12 +73,12 @@ t_osc_bndl_s * symbolistGetSymbol(void* symbolist_handler, int n)
 }
 void symbolistSetOneSymbol(void* symbolist_handler, t_osc_bndl_s *bundle)
 {
-    static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setOneSymbol( bundle );
+    static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setOneSymbol( OdotBundle_s(bundle) );
 }
 
-void symbolistSetSymbols(void* symbolist_handler, int n, t_osc_bndl_s **bundle_array)
+void symbolistSetSymbols(void* symbolist_handler, t_osc_bndl_s *bundle_array)
 {
-    static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setSymbols(n, bundle_array);
+    static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setSymbols( OdotBundle_s(bundle_array) );
 }
 
 int symbolistGetNumPaletteSymbols(void* symbolist_handler)
@@ -96,9 +96,9 @@ void symbolistSetOnePaletteSymbol(void* symbolist_handler, t_osc_bndl_s *bundle)
     static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setOnePaletteSymbol( bundle );
 }
 
-void symbolistSetPaletteSymbols(void* symbolist_handler, int n, t_osc_bndl_s **bundle_array)
+void symbolistSetPaletteSymbols(void* symbolist_handler, t_osc_bndl_s *bundle_array)
 {
-    static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setPaletteSymbols(n, bundle_array);
+    static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_setPaletteSymbols( OdotBundle_s(bundle_array) );
 }
 
 void symbolistClearScore(void* symbolist_handler)
@@ -113,18 +113,18 @@ void symbolistSetTime(void* symbolist_handler, float time_ms)
 
 t_osc_bndl_s* symbolistGetDurationBundle(void* symbolist_handler)
 {
-    return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getdurationBundle();
+    return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getdurationBundle().release();
 }
 
 
 t_osc_bndl_s* symbolistGetSymbolsAtTime(void* symbolist_handler, float t)
 {
-    return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getSymbolsAtTime( t );
+    return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getSymbolsAtTime( t ).release();
 }
 
 t_osc_bndl_s* symbolistGetScoreBundle(void* symbolist_handler )
 {
-    return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getScoreBundle();
+    return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getScoreBundle().release();
 }
 
 

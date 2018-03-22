@@ -34,13 +34,16 @@ public:
     }
     
     inline float getFloat(){    return osc_atom_u_getFloat( ptr.get() ); }
+    inline double getDouble(){  return osc_atom_u_getDouble( ptr.get() ); }
     inline int getInt(){        return osc_atom_u_getInt( ptr.get() ); }
-    inline string getString(){  return string( osc_atom_u_getStringPtr( ptr.get() ) ); }
-    inline const char * getCharPtr(){  return osc_atom_u_getStringPtr( ptr.get() ); }
+    
+    string getString() const;
+    
+    // inline const char * getCharPtr(){  return osc_atom_u_getStringPtr( ptr.get() ); }
+    
     OdotBundle getBundle();
     t_osc_bndl_u * getBundlePtr();
 
-    
     enum OdotAtomType {
         O_ATOM_NONE,  // empty or unsupported type
         O_ATOM_FLOAT,
@@ -49,8 +52,14 @@ public:
         O_ATOM_STRING,
         O_ATOM_BUNDLE
     };
+
+    OdotAtomType getType() const;
     
-    OdotAtomType getType();
+    inline bool isString() const { return getType() == O_ATOM_STRING; }
+    inline bool isFloat() const { return getType() == O_ATOM_FLOAT; }
+    inline bool isInt() const { return getType() == O_ATOM_INT; }
+    inline bool isBundle() const { return getType() == O_ATOM_BUNDLE; }
+
     inline bool isEmpty(){ return (getType() == O_ATOM_NONE); }
     
     inline const t_osc_atom_u *get_o_ptr() { return ptr.get(); }

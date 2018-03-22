@@ -28,7 +28,7 @@ public:
     float getTime() const;
     float getDuration() const;
     float getEndTime() const;
-    string getName();
+    string getName() const;
     string getID();
     string getSaff();
     string getType();
@@ -60,6 +60,8 @@ public:
         float start = getTime();
         return t >= start && t <= ( start + getDuration() );
     }
+    
+    string prettyPrint();
     
 private:
     string  m_address;

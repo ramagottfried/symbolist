@@ -107,10 +107,10 @@ bool SortedStaves::addStaff( Symbol *s)
     // probably not the right place to deal with names.. maybe duplicates should be allowed?
     
     cout << "setting staff name -- size: " << staves.size() << endl;
-    String name = s->getMessage("/name").getString();
-    if( name.isEmpty() ) // for now allow  name == s->getID()
+    string name = s->getMessage("/name").getString();
+    if( name.empty() ) // for now allow  name == s->getID()
     {
-        s->addMessage( "/name", "staff_" + (String)staves.size() );
+        s->addMessage( "/name", "staff_" + to_string(staves.size() ) );
     }
     
     return 1;

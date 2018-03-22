@@ -14,7 +14,6 @@
 		1107B3E91EF5388500E2DFA9 /* PathInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1107B3E71EF5388500E2DFA9 /* PathInfo.cpp */; };
 		1107B3EA1EF5388500E2DFA9 /* PathInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1107B3E71EF5388500E2DFA9 /* PathInfo.cpp */; };
 		1107B3F31EF7D54800E2DFA9 /* symbolist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */; };
-		1107B3F41EF7D54E00E2DFA9 /* OSCIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 446363931EC6F4960054CB6D /* OSCIO.cpp */; };
 		1107B3F51EF7D55D00E2DFA9 /* Symbol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44B718AF1EDD9D010039884E /* Symbol.cpp */; };
 		1107B3F61EF7D55D00E2DFA9 /* Score.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38DC1EC5BC4F006FF4A1 /* Score.cpp */; };
 		1107B3F71EF7D55D00E2DFA9 /* TextGlyphComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1107B3DB1EF1751900E2DFA9 /* TextGlyphComponent.cpp */; };
@@ -208,8 +207,6 @@
 		444C43A61EE4A748000C6F69 /* SymbolGroupComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 444C43A31EE4A748000C6F69 /* SymbolGroupComponent.cpp */; };
 		444CD9031EDDAF1B001AC03A /* SymbolistComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 444CD9021EDDAF1B001AC03A /* SymbolistComponent.cpp */; };
 		444CD9041EDDAF1B001AC03A /* SymbolistComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 444CD9021EDDAF1B001AC03A /* SymbolistComponent.cpp */; };
-		446363941EC6F4960054CB6D /* OSCIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 446363931EC6F4960054CB6D /* OSCIO.cpp */; };
-		446363951EC6F4960054CB6D /* OSCIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 446363931EC6F4960054CB6D /* OSCIO.cpp */; };
 		446388CF1EC34B310038CFCB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26C36CB1C5754D666DE2579C /* Cocoa.framework */; };
 		446388D01EC34B3E0038CFCB /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87F9A8E8F628CFBD00805519 /* Carbon.framework */; };
 		446388D11EC34B7A0038CFCB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A18855981466E65AB497B9D /* QuartzCore.framework */; };
@@ -1051,7 +1048,6 @@
 				1107B3FD1EF7D55D00E2DFA9 /* SymbolGroupComponent.cpp in Sources */,
 				11D123611F4583B900A5EA5B /* ToolBarComp.cpp in Sources */,
 				1186486D1EF7E68B00904672 /* include_juce_data_structures.mm in Sources */,
-				1107B3F41EF7D54E00E2DFA9 /* OSCIO.cpp in Sources */,
 				11A3939E20528799002C8916 /* OdotBundle_s.cpp in Sources */,
 				11B71DD31F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */,
 				1107B3F61EF7D55D00E2DFA9 /* Score.cpp in Sources */,
@@ -1132,7 +1128,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				446363951EC6F4960054CB6D /* OSCIO.cpp in Sources */,
 				11D123671F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */,
 				11CE005F1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */,
 				44EE9BBE1EC37D3E0021C5A8 /* Main.cpp in Sources */,
@@ -1183,7 +1178,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				446363941EC6F4960054CB6D /* OSCIO.cpp in Sources */,
 				11CE005E1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */,
 				11D123591F4471EA00A5EA5B /* ToolBarComp.cpp in Sources */,
 				AC7BC43E089630154F7F79D6 /* include_juce_core.mm in Sources */,
@@ -1348,7 +1342,7 @@
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRELINK_LIBS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1376,7 +1370,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRELINK_LIBS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";

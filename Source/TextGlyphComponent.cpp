@@ -138,8 +138,8 @@ void TextGlphComponent::addSymbolMessages( Symbol* s )
 {
     BaseComponent::addSymbolMessages( s );
     
-    s->addMessage( "/text", m_text );
-    s->addMessage( "/font", m_font.toString() );
+    s->addMessage( "/text", m_text.getCharPointer() );
+    s->addMessage( "/font", m_font.toString().getCharPointer() );
     s->addMessage( "/kerning", m_extrakerning );
     s->addMessage( "/h_scale", m_horz_scale );
 }

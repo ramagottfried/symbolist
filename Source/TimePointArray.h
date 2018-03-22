@@ -110,21 +110,20 @@ public:
         return ( a_t < b_t ? 1 : ( f_almost_equal(a_t, b_t) ? 0 : -1 ) );
     }
 
-    odot_bundle *getSymbolsAtTime( float t );
-    odot_bundle *timePointStreamToOSC(const SymbolTimePoint *tpoint);
+    OdotBundle_s getSymbolsAtTime( float t );
+    OdotBundle_s timePointStreamToOSC(const SymbolTimePoint *tpoint);
     
     int lookupTimePoint( float t );
     Point<float> lookupPathPoint( const Symbol *s, const float t );
     //Point<float> lookupPathPoint( const Symbol *s, const int pathIDX, const float t, const float start, const float dur );
     Point<float> lookupPathPoint( const Symbol *s, string& path_base_addr , const float t );
 
-    void groupLookup( const Symbol *s,
-                                     const String& output_prefix,
-                                     const String& groupsymbol_addr,
-                                     double parent_x,
-                                     double parent_y,
-                                     float time_ratio,
-                                     OSCBundle& bndl);
+    void groupLookup(const Symbol *s,
+                     const string& output_prefix,
+                     double parent_x,
+                     double parent_y,
+                     float time_ratio,
+                     OdotBundle& bndl);
     
     vector<const Symbol *> getNoteOffs( const SymbolTimePoint *prev_tpoint , const SymbolTimePoint *tpoint   );
     bool isNewSym( const Symbol *s , const SymbolTimePoint *prev_tpoint   );

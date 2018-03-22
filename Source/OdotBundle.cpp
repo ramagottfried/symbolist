@@ -28,7 +28,7 @@ OdotBundle::OdotBundle( const t_osc_bndl_u * src )
 
 OdotBundle::OdotBundle( const OdotBundle_s& src )
 {
-    OdotBundle b( src );
+    OdotBundle b( src.get_o_ptr() );
     ptr = odot::newOdotBundlePtr( b.release() );
 }
 
@@ -130,6 +130,82 @@ void OdotBundle::print( int level ) const
 
 }
 
+void OdotBundle::getPrintString( string &str, int level )
+{
+    string indent = "";
+    for( int i = 0; i < level; i++ )
+        indent += "\t";
+    
+    t_osc_bndl_it_u *it = osc_bndl_it_u_get( ptr.get() );
+    while( osc_bndl_it_u_hasNext(it) )
+    {
+        t_osc_msg_u *msg = osc_bndl_it_u_next(it);
+        str += indent + osc_message_u_getAddress(msg);
+        
+        char buf[256];
+        char *buf_ptr = buf;
+        int argcount = osc_message_u_getArgCount(msg);
+        for( int i = 0; i < argcount; i++ )
+        {
+            t_osc_atom_u *a = osc_message_u_getArg(msg, i);
+            if( osc_atom_u_getTypetag(a) == OSC_BUNDLE_TYPETAG )
+            {
+                str += indent + "\t{ \n";
+                OdotBundle( osc_atom_u_getBndl(a) ).getPrintString( str, level+1 );
+                str += indent + " } ";
+            }
+            else
+            {
+                str += "\t";
+                osc_atom_u_getString( a, 256, &buf_ptr );
+                str += buf_ptr;
+            }
+        }
+        str += "\n";
+    }
+    osc_bndl_it_u_destroy(it);
+}
+
+void OdotBundle::getPrintStringArray( vector<string> &str, int level )
+{
+    string indent = "";
+    for( int i = 0; i < level; i++ )
+        indent += "\t";
+    
+    t_osc_bndl_it_u *it = osc_bndl_it_u_get( ptr.get() );
+    while( osc_bndl_it_u_hasNext(it) )
+    {
+        t_osc_msg_u *msg = osc_bndl_it_u_next(it);
+        
+        string line_str = indent + osc_message_u_getAddress(msg);
+        
+        char buf[256];
+        char *buf_ptr = buf;
+        int argcount = osc_message_u_getArgCount(msg);
+        
+        for( int i = 0; i < argcount; i++ )
+        {
+            t_osc_atom_u *a = osc_message_u_getArg(msg, i);
+            if( osc_atom_u_getTypetag(a) == OSC_BUNDLE_TYPETAG )
+            {
+                str.emplace_back( indent + "\t{" );
+                OdotBundle( osc_atom_u_getBndl(a) ).getPrintStringArray( str, level+1 );
+                str.emplace_back( indent + " } " );
+            }
+            else
+            {
+                line_str += "\t" ;
+                osc_atom_u_getString( a, 256, &buf_ptr );
+                line_str += buf_ptr;
+            }
+        }
+
+        str.emplace_back( line_str );
+        
+    }
+    osc_bndl_it_u_destroy(it);
+}
+
 bool OdotBundle::addressExists( const string& address )
 {
     return addressExists(address.c_str());
@@ -162,7 +238,7 @@ OdotMessage OdotBundle::getMessage( const char * address ) const
     return OdotMessage();
 }
 
-vector<OdotMessage> OdotBundle::matchAddress( const char * address, int fullmatch )
+vector<OdotMessage> OdotBundle::matchAddress( const char * address, int fullmatch ) const
 {
     vector<OdotMessage> ar;
     
@@ -194,7 +270,7 @@ vector<OdotMessage> OdotBundle::matchAddress( const char * address, int fullmatc
 }
 
 
-vector<OdotMessage> OdotBundle::getMessageArray()
+vector<OdotMessage> OdotBundle::getMessageArray() const
 {
     vector<OdotMessage> ar;
     ar.reserve( size() );

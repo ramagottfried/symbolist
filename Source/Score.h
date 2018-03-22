@@ -15,7 +15,7 @@ using namespace std;
 
 struct ScoreSorter
 {
-    static int compareElements ( Symbol* a, Symbol* b)
+    static int compareElements ( const Symbol* a, const Symbol* b)
     {
         auto a_t = a->getTime();
         auto b_t = b->getTime();
@@ -30,7 +30,7 @@ public:
     
     Score();
     Score( Score& src );
-    Score( int n, t_osc_bndl_s** bundle_array ) ;
+    Score( const OdotBundle_s& s_bundle ) ;
     ~Score();
     
     size_t getSize();
@@ -42,14 +42,14 @@ public:
     void removeSymbol(Symbol *s);
     void removeAllSymbols();
     
-    void importScoreFromOSC( int n, t_osc_bndl_s** bundle_array );
+    void importScoreFromOSC( const OdotBundle_s& s_bundle );
     
     //    void sortScore();
     
     void addSymbolTimePoints( Symbol *s );
     void removeSymbolTimePoints( Symbol *s );
     
-    odot_bundle *getSymbolsAtTime( float t );
+    OdotBundle_s getSymbolsAtTime( float t );
 
     //odot_bundle *getScoreBundle();
     
@@ -67,7 +67,7 @@ public:
     Symbol *getStaveAtTime( float time );
     const Symbol* getStaveByID( const string& id );
 
-    odot_bundle* getDurationBundle();
+    OdotBundle_s getDurationBundle();
 
     
     int getNameCount( string& name )

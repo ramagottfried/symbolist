@@ -33,7 +33,7 @@ public:
     OdotBundle& operator=( OdotBundle&& src ) = default;
     
     ~OdotBundle(){}
-
+    
     void addMessage( const OdotMessage& msg );
     
     template <typename... Ts>
@@ -50,19 +50,22 @@ public:
 
     OdotMessage getMessage( const char * address ) const;
     OdotMessage getMessage( const string& address ) const { return getMessage( address.c_str() ); }
-    vector<OdotMessage> getMessageArray();
+    vector<OdotMessage> getMessageArray() const;
+
+    vector<OdotMessage> matchAddress( const char * address, int fullmatch = 1) const;
+    inline vector<OdotMessage> matchAddress( const string& address, int fullmatch = 1) const { return matchAddress(address.c_str(), fullmatch); }
     
-    vector<OdotMessage> matchAddress( const char * address, int fullmatch = 1);
-    
-    int size(){ return osc_bundle_u_getMsgCount( ptr.get() ); }
+    int size() const { return osc_bundle_u_getMsgCount( ptr.get() ); }
     
     void clear();
     void print( int level = 0 ) const;
-    
+    void getPrintString(string &str, int level = 0 );
+    void getPrintStringArray(vector<string>& str, int level = 0 );
+
     bool addressExists( const char * address );
     bool addressExists( const string& address );
     
-    inline const t_osc_bndl_u * get_o_ptr() { return ptr.get(); }
+    inline const t_osc_bndl_u * get_o_ptr() const { return ptr.get(); }
     inline t_osc_bndl_u * release(){ return ptr.release(); }
     
     inline OdotBundle_s serialize(){ return OdotBundle_s( osc_bundle_u_serialize( ptr.get() ) ); }

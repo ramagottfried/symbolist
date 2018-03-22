@@ -19,13 +19,12 @@ OdotBundle_s Symbol::exportToOSC()
     return serialize();
 }
 
-
 string Symbol::getID()
 {
     return getMessage("/id").getString();
 }
 
-string Symbol::getName()
+string Symbol::getName() const
 {
     return getMessage("/name").getString();
 }
@@ -91,5 +90,7 @@ void Symbol::setTimeAndDuration( const float start_t, const float dur_t )
     addMessage("/time/duration", dur_t );
     
 }
+
+
 
 

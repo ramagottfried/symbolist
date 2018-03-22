@@ -56,7 +56,7 @@ OdotMessage& OdotMessage::operator=( const OdotMessage& src )
     return *this;
 }
 
-OdotAtom OdotMessage::operator[](int i)
+OdotAtom OdotMessage::operator[](int i) const
 {
     t_osc_atom_u *a = osc_message_u_getArg( ptr.get(), i );
     

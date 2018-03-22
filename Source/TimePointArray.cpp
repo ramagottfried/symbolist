@@ -459,20 +459,17 @@ vector< tuple<size_t, const Symbol*, const Symbol*> > TimePointArray::getNoteOff
     return offs;
 }
 
-void TimePointArray::groupLookup( const Symbol *s,
-                                 const String& output_prefix,
-                                 const String& groupsymbol_addr,
+void TimePointArray::groupLookup(const Symbol *s,
+                                 const string& output_prefix,  // parent prefix to prepend
                                  double parent_x,
                                  double parent_y,
                                  float time_ratio,
-                                 OSCBundle& bndl)
+                                 OdotBundle& bndl)
 {
 
-    // s                = main root symbol (not subbundle)
+    // s                = root symbol (not subbundle)
     
     // output_prefix    = prefix to be added to this level (previous level prefix + group name culled from the calling function)
-    
-    // groupsymbol_addr = root name for this level of group (i.e. if a group contains another group:  /group/subsymbol/0/ would be the root address for the sub group at /subsymbol/0
     
     // time ratio       = toplevel group time point
     
@@ -488,188 +485,89 @@ void TimePointArray::groupLookup( const Symbol *s,
 
     // cout << "groupPathLookup " << groupsymbol_addr << endl;
     
-    
   //  cout << "in output_prefix" << output_prefix << " groupsymbol_addr " << groupsymbol_addr << endl;
     
-    String group_name;
-    int groupname_pos = s->getOSCMessagePos( groupsymbol_addr + "/name" );
-    if( groupname_pos != -1 )
-    {
-        group_name = "/" + s->getOSCMessageValue(groupname_pos).getString();
-    }
+     //I'm not sure we need this groupsymbol address anymore since we're using subbundles now
+    string group_name = "/" + s->getMessage("/name").getString();
     
-    OSCBundle s_bndl = *(s->getOSCBundle());
+    vector<OdotMessage> msg_array = s->getMessageArray();
     
     float this_x = parent_x, this_y = parent_y;
     
-    for ( auto osc : s_bndl )
+    // iterate group symbol bundle messages
+    // adjust positions to be relative to the parent, and do path lookups
+    for ( auto msg : msg_array )
     {
-        OSCMessage msg = osc.getMessage();
-        String msg_addr = msg.getAddressPattern().toString();
-        
-        if( groupsymbol_addr.isNotEmpty() && !msg_addr.startsWith(groupsymbol_addr) )
-        {
-            continue;
-        }
-        
-        String newaddr = output_prefix + group_name + msg_addr.fromFirstOccurrenceOf(groupsymbol_addr, false, true);;
-       /*
-        cout << "pre subsymbol * " << " output prefix: " <<  output_prefix << endl;;
-        cout << "pre subsymbol * \t group_name " <<  group_name<< endl;
-        cout << "pre subsymbol * \t msg_addr: " << msg_addr<< endl;
-        */
+        string msg_addr = msg.getAddress();
+        string newaddr = output_prefix + group_name + msg_addr;
+
         if( msg_addr == "/x" )
         {
-            this_x = Symbol::getOSCValueAsFloat( msg[0] ) - parent_x;
-            bndl.addElement( OSCMessage( newaddr, this_x ) );
+            this_x = msg[0].getFloat() - parent_x;
+            bndl.addMessage( newaddr, this_x );
             //cout << "pre subsymbol * added \t >> newaddr: " << newaddr << endl;
         }
         else if( msg_addr == "/y" )
         {
-            this_y = Symbol::getOSCValueAsFloat( msg[0] ) - parent_y;
-            bndl.addElement( OSCMessage( newaddr, this_y ) );
+            this_y = msg[0].getFloat() - parent_y;
+            bndl.addMessage( newaddr, this_y ) ;
             //cout << "pre subsymbol * added \t >> newaddr: " << newaddr << endl;
         }
-        else if( !msg_addr.startsWith(groupsymbol_addr + "/subsymbol") )
+        else if( msg_addr.find("/subsymbol") == 0 && msg[0].getType() == OdotAtom::O_ATOM_BUNDLE )
         {
-            // cout << "not subsymbol " << msg_addr << endl;
-            msg.setAddressPattern(newaddr);
-            bndl.addElement(msg);
-            //cout << "pre subsymbol * added \t >> newaddr: " << newaddr << endl;
-        }
-    }
-
-    
-    
-    
-    int nsym_oscpos = s->getOSCMessagePos( groupsymbol_addr + "/numsymbols" );
-    if( s->symbol_parse_error( nsym_oscpos, groupsymbol_addr + "/numsymbols") )
-    {
-        cout << "error number of grouped symbols not found" << endl;
-        return;
-    }
-    
-    int nsymbols = Symbol::getOSCValueAsInt( s->getOSCMessageValue(nsym_oscpos) );
-    
-    
-    // iterate subsymbols and look for paths or subgroups
-    for( int subsym_idx = 0; subsym_idx < nsymbols; subsym_idx++)
-    {
-        String subsym_id = String(subsym_idx+1);
-        String subsym_addr = groupsymbol_addr + "/subsymbol/" + subsym_id;
-        
-        // cout << "    subsym_addr " << subsym_addr << endl;
-
-        int subsymtype_pos = s->getOSCMessagePos( subsym_addr  + "/type" );
-        if( subsymtype_pos != -1 )
-        {
-            
-            String subsymbol_name;
-            int subname_pos = s->getOSCMessagePos(subsym_addr + "/name");
-            if( subname_pos != -1 )
-                subsymbol_name = s->getOSCMessageValue(subname_pos).getString();
-            
-            
-            StringArray subsym_addr_tok;
-            subsym_addr_tok.addTokens(subsym_addr, "/", "");
-            subsym_addr_tok.removeEmptyStrings();
-            
-            int subsym_last_element_idx = subsym_addr_tok.size() - 1;
-            /*
-            cout << "* " << subsym_id << " output prefix: " <<  output_prefix << endl;;
-            cout << "\t group_name " <<  group_name<< endl;
-            cout << "\t subsym_addr: " << subsym_addr<< endl;
-            cout << "\t >> next prefix: " << output_prefix + group_name + "/subsymbol/" + subsym_id << endl;
-             */
-            
-            if( s->getOSCMessageValue(subsymtype_pos).getString() == "group" )
+            string type = s->getMessage("/type").getString();
+            if( type == "group" )
             {
-                groupLookup(s, output_prefix + group_name + "/subsymbol/" + subsym_id , subsym_addr, this_x, this_y, time_ratio, bndl );
+                groupLookup(s, output_prefix + group_name + msg_addr, this_x, this_y, time_ratio, bndl );
             }
-            else
+            else // ** note: this requires that groups cannot contain higher level types of groups (staves, etc.) **
             {
+                // if not a group, add the bundle with name prefix
+                string subsymbol_name = s->getMessage("/name").getString();
                 
-                // do name insertion here for all subsymbols at this level
-                
-                // iterate bundle and match addresses for this subsymbol
-                // add to output bundle with /name inserted
-                
-                for ( auto osc : s_bndl )
+                vector<OdotMessage> sub_msg_array = msg.getBundle().getMessageArray();
+                for( auto sub_msg : sub_msg_array )
                 {
-                    OSCMessage msg = osc.getMessage();
-                    String msg_addr = msg.getAddressPattern().toString();
-                    
-                    if( !msg_addr.startsWith(subsym_addr) )
-                    {
-                        continue;
-                    }
-                    
-                    StringArray msg_tok;
-                    msg_tok.addTokens (msg_addr, "/", "");
-                    msg_tok.removeEmptyStrings();
-                    
-                    //cout << "\t test msg_addr " << msg_addr << endl;
-
-                    msg_tok.insert( subsym_last_element_idx+1, subsymbol_name );
-                    String newaddr = output_prefix + group_name + "/" + msg_tok.joinIntoString("/", subsym_last_element_idx - 1);
-                    
-                    //cout << "\t + subsymbol msg_addr " << msg_addr<< endl;
-                    //cout << "\t + newaddr " << newaddr << endl;
-
-                    msg.setAddressPattern( newaddr );
-                    bndl.addElement( msg );
-                    
+                    sub_msg.rename( output_prefix + group_name + "/" + subsymbol_name + sub_msg.getAddress() );
+                    bndl.addMessage( sub_msg );
                 }
-
-                // add path lookup if it's a path
                 
-                if( s->getOSCMessageValue(subsymtype_pos).getString() == "path" )
+                if( type == "path" )
                 {
                     // maybe move this part below to another function...
-                    int npath_oscpos = s->getOSCMessagePos( subsym_addr + "/num_sub_paths" );
-                    if( s->symbol_parse_error( npath_oscpos, subsym_addr + "/num_sub_paths") )
+                    int npaths = s->getMessage( "/num_sub_paths" ).getInt();
+                    for( int p_idx = 0; p_idx < npaths; p_idx++)
                     {
-                        cout << "error /num subpaths not found" << endl;
-                    }
-                    else
-                    {
-                        int npaths = Symbol::getOSCValueAsInt( s->getOSCMessageValue(npath_oscpos) );
+                        auto path_addr = "/path/" + to_string(p_idx);
+                        auto xy = lookupPathPoint(s, path_addr, time_ratio );
                         
-                        for( int p_idx = 0; p_idx < npaths; p_idx++)
+                        float w = s->getMessage( "/w" ).getFloat();
+                        float h = s->getMessage( "/h" ).getFloat();
+                        
+                        if( w > 0 && h > 0 )
                         {
-                            auto path_addr = subsym_addr + "/path/" + String(p_idx);
-                            auto xy = lookupPathPoint(s, path_addr, time_ratio );
+                            // use group name first, otherwise, if there is subsymbol_name name, use that.
+                            if( !group_name.empty() || !subsymbol_name.empty() )
+                                bndl.addMessage( output_prefix + group_name + msg_addr +  "/" + subsymbol_name + "/lookup/xy", xy.x / w, xy.y / h) ;
+                            else
+                                bndl.addMessage( output_prefix + msg_addr + "/path/" + to_string(p_idx) + "/lookup/xy", xy.x / w, xy.y / h) ;
                             
-                            float w = 0, h = 0;
-                            
-                            int w_pos = s->getOSCMessagePos(groupsymbol_addr + "/w" );
-                            if( w_pos != -1 )
-                            {
-                                w = s->getOSCValueAsFloat( s->getOSCMessageValue(w_pos) );
-                            }
-                            int h_pos = s->getOSCMessagePos(groupsymbol_addr + "/h" );
-                            if( h_pos != -1 )
-                            {
-                                h = s->getOSCValueAsFloat( s->getOSCMessageValue(h_pos) );
-                            }
-                            
-                            if( w > 0 && h > 0 )
-                            {
-
-                                // use group name first, otherwise, if there is subsymbol_name name, use that.
-                                if( group_name.isNotEmpty() || subsymbol_name.isNotEmpty() )
-                                    bndl.addElement( OSCMessage( output_prefix + group_name +"/subsymbol/"+subsym_id+  "/"+subsymbol_name + "/lookup/xy", xy.x / w, xy.y / h) );
-                                else
-                                    bndl.addElement( OSCMessage( output_prefix + +"/subsymbol/"+subsym_id+ "/path/" + (String)p_idx + "/lookup/xy", xy.x / w, xy.y / h) );
-                                    
-
-                            }
                         }
                     }
                 }
+                
             }
         }
+        else
+        {
+            // cout << "not subsymbol " << msg_addr << endl;
+            msg.rename( newaddr );
+            bndl.addMessage( msg );
+            //cout << "pre subsymbol * added \t >> newaddr: " << newaddr << endl;
+        }
     }
+
+    
 }
 
 
@@ -706,114 +604,63 @@ OdotBundle_s TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
             else
             {
                 pair<size_t, int> voice_num_state = getVoiceNumberState( s, tpoint );
-                String s_prefix = "/staff/" + staff->getName() + "/voice/" + String(voice_num_state.first) + "/" + toplevel_name;
+                string s_prefix = "/staff/" + staff->getName() + "/voice/" + to_string(voice_num_state.first) + "/" + toplevel_name;
                 
-                bndl.addElement( OSCMessage( s_prefix + "/state", (int)voice_num_state.second ) );
+                bndl.addMessage( s_prefix + "/state", voice_num_state.second ) ;
                 // staff is already stored in timepoint so we could probably removed the staff check here...
                 
                 //String staff_name = "default";
                 //String staff_id;
                 float staff_x = 0, staff_y = 0;
-                staff_x = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/x") );
-                staff_y = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/y") );
-                /*
-                int staff_pos = s->getOSCMessagePos( "/staff" );
-                if( staff_pos != -1 )
-                {
-                    staff_id = s->getOSCMessageValue( staff_pos ).getString();
-                    if( staff_id.isNotEmpty() )
-                    {
-                        // cout << "staff name " << staff_name << endl;
-                        const Symbol *staff = score_ptr->getStaveByID( staff_id );
-                        
-                        if( staff != NULL )
-                        {
-                            staff_x = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/x") );
-                            staff_y = Symbol::getOSCValueAsFloat( staff->getOSCMessageValue("/y") );
-                            staff_name = staff->getName();
-                        }
-                    }
-                }
-                */
-                
+                staff_x = staff->getMessage("/x").getFloat();
+                staff_y = staff->getMessage("/y").getFloat();
+
                 float time_ratio = (current_time - s->getTime()) / s->getDuration() ;
-                bndl.addElement( OSCMessage( s_prefix + "/time/ratio", time_ratio ) );
+                bndl.addMessage( s_prefix + "/time/ratio", time_ratio );
                 
                 float offset_time = current_time - s->getTime();
                 
-                
                 if( s->getType() == "path" )
                 {
-                    // maybe move this part below to another function...
-                    int npath_oscpos = s->getOSCMessagePos( "/num_sub_paths" );
-                    if( s->symbol_parse_error( npath_oscpos, "/num_sub_paths") )
-                    {
-                        cout << "error /num subpaths not found" << endl;
-                    }
-                    else
-                    {
-                        int npaths = Symbol::getOSCValueAsInt( s->getOSCMessageValue(npath_oscpos) );
-                        
-                        for( int i = 0; i < npaths; i++)
-                        {
-                            
-                            auto path_addr ="/path/" + String(i);
-                            auto xy = lookupPathPoint(s, path_addr, time_ratio );
-                            bndl.addElement( OSCMessage( s_prefix + "/path/" + (String)i + "/lookup/xy", xy.x, xy.y ) );
+                    int npaths = s->getMessage( "/num_sub_paths" ).getInt();
 
-                            /*
-                            String start_addr = "/path/" + String(i) + "/time/start" ;
-                            int start_oscpos = s->getOSCMessagePos( start_addr );
-                            s->symbol_parse_error( start_oscpos, start_addr );
-                            
-                            float start = s->getOSCValueAsFloat( s->getOSCMessageValue(start_oscpos) );
-                            
-                            String duration_addr = "/path/" + String(i) + "/time/duration" ;
-                            int dur_oscpos = s->getOSCMessagePos( duration_addr );
-                            s->symbol_parse_error( dur_oscpos, duration_addr );
-                            
-                            float dur = s->getOSCValueAsFloat( s->getOSCMessageValue(dur_oscpos) );
-                            
-                            if (offset_time >= start && offset_time < (start + dur) )
-                            {
-                                auto xy = lookupPathPoint( s, i, offset_time, start, dur );
-                                bndl.addElement( OSCMessage( s_prefix + "/path/" + (String)i + "/lookup/xy", xy.x, xy.y ) );
-                            }
-                             */
+                    for( int i = 0; i < npaths; i++)
+                    {
+                        auto path_addr = "/path/" + to_string(i);
+                        auto xy = lookupPathPoint(s, path_addr, time_ratio );
+                        bndl.addMessage( s_prefix + "/path/" + to_string(i) + "/lookup/xy", xy.x, xy.y );
 
-                        }
                     }
 
                 }
                 else if( s->getType() == "group" )
                 {
-                    String group_prefix = "/staff/" + staff->getName() + "/voice/" + String(voice_num_state.first);
-                    groupLookup(s, group_prefix, String(), staff_x, staff_y, time_ratio, bndl );
+                    string group_prefix = "/staff/" + staff->getName() + "/voice/" + to_string(voice_num_state.first);
+                    groupLookup(s, group_prefix, staff_x, staff_y, time_ratio, bndl );
                 }
                 else
                 {
                 
-                    OSCBundle s_bndl = *(s->getOSCBundle());
+                    auto s_bndl_msgs = s->getMessageArray();
 
-                    for ( auto osc : s_bndl )
+                    for ( auto msg : s_bndl_msgs )
                     {
-                        OSCMessage msg = osc.getMessage();
                         
-                        String msg_addr =  msg.getAddressPattern().toString();
-                        String newaddr = s_prefix + msg_addr;
+                        string msg_addr = msg.getAddress();
+                        string newaddr = s_prefix + msg_addr;
                         
                         if( msg_addr == "/x" )
                         {
-                            bndl.addElement( OSCMessage( newaddr, Symbol::getOSCValueAsFloat( msg[0] ) - staff_x )  );
+                            bndl.addMessage( newaddr, msg[0].getFloat() - staff_x ) ;
                         }
                         else if( msg_addr == "/y" )
                         {
-                            bndl.addElement( OSCMessage( newaddr, Symbol::getOSCValueAsFloat( msg[0] ) - staff_y )  );
+                            bndl.addMessage( newaddr, msg[0].getFloat() - staff_y ) ;
                         }
                         else
                         {
-                            msg.setAddressPattern(newaddr);
-                            bndl.addElement(msg);
+                            msg.rename(newaddr);
+                            bndl.addMessage(msg);
                         }
                     }
                 }
@@ -831,13 +678,13 @@ OdotBundle_s TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
     vector< tuple<size_t, const Symbol*, const Symbol*> > offs = getNoteOffs( tpoint );
     for( int i = 0; i < offs.size(); i++ )
     {
-        String s_prefix = "/staff/" + get<2>(offs[i])->getName() + "/voice/" + String(get<0>(offs[i])) +"/"+ get<1>(offs[i])->getName();
-        bndl.addElement( OSCMessage( s_prefix + "/state", -1 ) );
+        string s_prefix = "/staff/" + get<2>(offs[i])->getName() + "/voice/" + to_string(get<0>(offs[i])) +"/"+ get<1>(offs[i])->getName();
+        bndl.addMessage( s_prefix + "/state", -1 );
     }
     
     prev_timepoint = tpoint;
-    //printBundle(bndl);
-    return symbolBundleToOdot( bndl );
+
+    return bndl.serialize();
 }
 
 int TimePointArray::lookupTimePoint( float t )

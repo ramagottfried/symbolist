@@ -151,42 +151,7 @@ OdotBundle_s SymbolistHandler::symbolistAPI_getSymbolBundle_s(int n)
     return score->getSymbol(n)->serialize();
 }
 
-StringArray SymbolistHandler::symbolistAPI_getSymbolString(int n)
-{
-    Symbol * bndl = score->getSymbol(n);
-    
-    
-    OSCReader osc( bndl->data, bndl->len );
- 
-    OSCBundle osc_b = osc.readBundle( osc.getTotalLength()  );
-    
-    String prefix = "/symbol/";
-    StringArray str_array;
-    for( auto e : osc_b )
-    {
-        OSCMessage msg = e.getMessage();
-        String str;
-        
-        str = prefix + String(n) + msg.getAddressPattern().toString();
-        for( auto arg : msg )
-        {
-            auto type = arg.getType();
-            if( type == OSCTypes::int32 )
-                str +=  + " " + (String)arg.getInt32();
-            else if( type == OSCTypes::float32 )
-                str +=  + " " + (String)arg.getFloat32();
-            else if( type == OSCTypes::string )
-                str +=  + " \"" + (String)arg.getString() + "\"";
-
-        }
-        str_array.add(str);
-    }
-    
-    return StringArray();
-}
-
-
-void SymbolistHandler::symbolistAPI_setOneSymbol( t_osc_bndl_s *bundle)
+void SymbolistHandler::symbolistAPI_setOneSymbol( const OdotBundle_s& bundle)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
     
@@ -206,11 +171,11 @@ void SymbolistHandler::symbolistAPI_setOneSymbol( t_osc_bndl_s *bundle)
     }
 }
 
-void SymbolistHandler::symbolistAPI_setSymbols(int n, t_osc_bndl_s **bundle_array)
+void SymbolistHandler::symbolistAPI_setSymbols( const OdotBundle_s& bundle_array)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
     
-    score->importScoreFromOSC(n, bundle_array);
+    score->importScoreFromOSC( bundle_array );
     
     if ( main_component_ptr != NULL)
     {
@@ -230,7 +195,7 @@ Symbol * SymbolistHandler::symbolistAPI_getPaletteSymbol(int n)
     return palette.getPaletteUserItem(n);
 }
 
-void SymbolistHandler::symbolistAPI_setOnePaletteSymbol( OdotBundle_s bundle)
+void SymbolistHandler::symbolistAPI_setOnePaletteSymbol( const OdotBundle_s& bundle)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
     
@@ -240,13 +205,19 @@ void SymbolistHandler::symbolistAPI_setOnePaletteSymbol( OdotBundle_s bundle)
     
 }
 
-void SymbolistHandler::symbolistAPI_setPaletteSymbols(int n, t_osc_bndl_s **bundle_array)
+void SymbolistHandler::symbolistAPI_setPaletteSymbols(const OdotBundle_s& bundle_array)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
     
-    for (int i = 0; i < n ; i++) {
-        Symbol *s = new Symbol( bundle_array[i] );
-        palette.addUserItem(s);
+    const OdotBundle bndl( bundle_array );
+    
+    for (auto msg : bndl.getMessageArray() )
+    {
+        if( msg[0].getType() == OdotAtom::O_ATOM_BUNDLE && msg.getAddress().find("/symbol") == 0 )
+        {
+            Symbol *s = new Symbol( msg.getBundle().get_o_ptr() );
+            palette.addUserItem(s);
+        }
     }
     if ( main_component_ptr != NULL )
     {
@@ -292,21 +263,21 @@ StaffComponent* SymbolistHandler::getStaveAtTime( float time )
     return NULL;
 }
 
-odot_bundle* SymbolistHandler::symbolistAPI_getSymbolsAtTime( float t )
+OdotBundle_s SymbolistHandler::symbolistAPI_getSymbolsAtTime( float t )
 {
     return score->getSymbolsAtTime(t);
 }
 
 
-odot_bundle* SymbolistHandler::symbolistAPI_getdurationBundle()
+OdotBundle_s SymbolistHandler::symbolistAPI_getdurationBundle()
 {
     return score->getDurationBundle();
 }
 
 
-odot_bundle* SymbolistHandler::symbolistAPI_getScoreBundle()
+OdotBundle_s SymbolistHandler::symbolistAPI_getScoreBundle()
 {
-    return score->getScoreBundle();
+    return score->getScoreBundle_s();
 }
 
 /*

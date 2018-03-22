@@ -7,8 +7,6 @@
 #include "OdotAtom.hpp"
 #include "OdotPointers.h"
 
-// added Juce String support
-#include "../JuceLibraryCode/JuceHeader.h"
 
 using namespace std;
 
@@ -51,11 +49,11 @@ public:
     
     string getAddress() const { return string( osc_message_u_getAddress( ptr.get() ) ); }
     
-    OdotAtom operator[](int i);
+    OdotAtom operator[](int i) const;
     
     vector<OdotAtom> getAtoms();
     
-    inline string getString(int argIndex = 0){ return string( osc_atom_u_getStringPtr( osc_message_u_getArg( ptr.get(), argIndex ) ) ); }
+    inline string getString(int argIndex = 0){ return ((*this)[argIndex]).getString(); }
     inline float getFloat(int argIndex = 0){ return  osc_atom_u_getFloat( osc_message_u_getArg( ptr.get(), argIndex ) ); }
     inline int getInt(int argIndex = 0){ return  osc_atom_u_getInt( osc_message_u_getArg( ptr.get(), argIndex ) ); }
     OdotBundle getBundle(int argIndex = 0);
@@ -77,19 +75,21 @@ public:
     inline void appendValue( float val ){    osc_message_u_appendFloat(  ptr.get(), val );           }
     inline void appendValue( int val ){      osc_message_u_appendInt32(  ptr.get(), val );           }
     inline void appendValue( string& val ){  osc_message_u_appendString( ptr.get(), val.c_str() );   }
+    inline void appendValue( const string& val ){  osc_message_u_appendString( ptr.get(), val.c_str() );   }
     inline void appendValue( const char * val ){   osc_message_u_appendString( ptr.get(), val );     }
     
     // Juce String add-on
-    inline void appendValue( String& val ){   osc_message_u_appendString( ptr.get(), val.getCharPointer() );     }
-    inline void appendValue( const String& val ){   osc_message_u_appendString( ptr.get(), val.getCharPointer() );     }
+//    inline void appendValue( String& val ){   osc_message_u_appendString( ptr.get(), val.getCharPointer() );     }
+//    inline void appendValue( const String& val ){   osc_message_u_appendString( ptr.get(), val.getCharPointer() );     }
 
-    
     template <typename... Ts>
     void  appendValueList(Ts&&... args)
     {
         using expand = int[];
         (void) expand { 0, ((void)appendValue( std::forward<Ts>(args) ), 0) ... };
     }
+    
+    inline void clear(){ osc_message_u_clearArgs( ptr.get() ); }
     
     /* ======= query ======= */
     

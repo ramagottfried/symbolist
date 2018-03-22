@@ -25,9 +25,9 @@ Score::Score(Score& src) : time_points(this)
     cout << "copying score " << this << " " << score_symbols.size() << " n staves " << staves.size() << endl;
 }
 
-Score::Score( int n, t_osc_bndl_s **bundle_array ) : time_points(this)
+Score::Score( const OdotBundle_s& s_bundle  ) : time_points(this)
 {
-    importScoreFromOSC( n, bundle_array );
+    importScoreFromOSC( s_bundle );
 }
 
 Score::~Score() {}
@@ -135,26 +135,16 @@ void Score::addSymbolTimePoints( Symbol *s )
 }
 
 
-odot_bundle* Score::getDurationBundle()
+OdotBundle_s Score::getDurationBundle()
 {
     auto last = time_points.getLast();
     if( !last )
         return NULL;
     
-    OSCBundle bndl;
-    bndl.addElement( OSCMessage("/time/duration", (float)last->time ));
+    OdotBundle bndl;
+    bndl.addMessage("/time/duration", last->time );
     
-    OSCWriter w ;
-    w.writeBundle( bndl );
-    size_t size = w.getDataSize();
-    
-    odot_bundle *bundle = new odot_bundle;
-    bundle->len = static_cast<long>(size);
-    bundle->data = new char[size];
-    
-    std::memcpy(bundle->data, w.getData() ,size );
-    return bundle;
-
+    return bndl.serialize();
 }
 
 /***********************************
@@ -207,14 +197,22 @@ const Symbol* Score::getStaveByID( const string& id )
  * OSC encoding/decoding
  ***********************************/
 
-void Score::importScoreFromOSC(int n, t_osc_bndl_s **bundle_array)
+void Score::importScoreFromOSC( const OdotBundle_s& s_bundle )
 {
     removeAllSymbols();
-    std::cout << "===IMPORTRING OSC (" << n << " symbols)" << std::endl;
-    for (int i = 0; i < n ; i++) {
-        Symbol *s = new Symbol( bundle_array[i] );
-        addSymbol(s);
+    
+    OdotBundle bundle( s_bundle ); //<< deserializes the bundle
+    
+    std::cout << "===IMPORTRING OSC (" << bundle.size() << " messages)" << std::endl;
+    for( auto msg : bundle.getMessageArray() )
+    {
+        if( msg.getAddress().find("/symbol") == 0 && msg[0].getType() == OdotAtom::O_ATOM_BUNDLE )
+        {
+            Symbol *s = new Symbol( msg.getBundle().get_o_ptr() );
+            addSymbol(s);
+        }
     }
+    
     std::cout << "===IMPORT DONE" << std::endl;
 }
 

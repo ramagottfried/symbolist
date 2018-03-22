@@ -4,12 +4,12 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SymbolPropertiesPanel.h"
 
-typedef std::function<void(const OSCMessage&)> osc_callback_t;
+typedef std::function<void(const OdotMessage&)> osc_callback_t;
 
 class OSCFloatValueSlider : public SliderPropertyComponent
 {
 public:
-    OSCFloatValueSlider ( const String& _addr, OSCMessage& msg, osc_callback_t change_fn )
+    OSCFloatValueSlider ( const string& _addr, OdotMessage& msg, osc_callback_t change_fn )
     : SliderPropertyComponent (_addr, -1000.0, 1000.0, 0.0001), osc_msg(msg)
     {
         change_callback = change_fn;
@@ -20,8 +20,8 @@ public:
     void setValue (double newValue) override
     {
         osc_msg.clear();
-        osc_msg.addFloat32((float)newValue);
-        
+        osc_msg.appendValue( (float)newValue );
+    
         slider.setValue ( newValue );
         
         change_callback( osc_msg );
@@ -29,12 +29,12 @@ public:
     
     virtual double getValue() const override
     {
-        return osc_msg[0].getFloat32();
+        return osc_msg[0].getDouble();
     }
     
     
 private:
-    OSCMessage      osc_msg;
+    OdotMessage      osc_msg;
     osc_callback_t  change_callback;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OSCFloatValueSlider)
@@ -44,7 +44,7 @@ private:
 class OSCIntValueSlider : public SliderPropertyComponent
 {
 public:
-    OSCIntValueSlider ( const String& _addr, OSCMessage& msg, osc_callback_t change_fn )
+    OSCIntValueSlider ( const string& _addr, OdotMessage& msg, osc_callback_t change_fn )
     : SliderPropertyComponent (_addr, 0, 1000, 1), osc_msg(msg)
     {
         change_callback = change_fn;
@@ -56,7 +56,7 @@ public:
     void setValue (double newValue) override
     {
         osc_msg.clear();
-        osc_msg.addInt32((int)newValue);
+        osc_msg.appendValue((int)newValue);
         
         slider.setValue ( newValue );
         
@@ -65,12 +65,12 @@ public:
     
     virtual double getValue() const override
     {
-        return (double)osc_msg[0].getInt32();
+        return (double)osc_msg[0].getInt();
     }
     
     
 private:
-    OSCMessage      osc_msg;
+    OdotMessage      osc_msg;
     osc_callback_t  change_callback;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OSCIntValueSlider)
@@ -80,21 +80,21 @@ private:
 class OSCColourSelectorButton  : public PropertyComponent, public ChangeListener, private ButtonListener
 {
 public:
-    OSCColourSelectorButton ( const String& _addr, OSCMessage& msg, osc_callback_t change_fn ) : PropertyComponent (_addr), osc_msg(msg)
+    OSCColourSelectorButton ( const string& _addr, OdotMessage& msg, osc_callback_t change_fn ) : PropertyComponent (_addr), osc_msg(msg)
     {
         change_callback = change_fn;
         addAndMakeVisible (button);
         button.setTriggeredOnMouseDown (true);
         button.addListener (this);
         
-        if( msg[0].isString() )
-            color = Colour::fromString( msg[0].getString() );
-        else if( msg.size() == 4 && msg[0].isFloat32() )
+        if( msg[0].getType() == OdotAtom::O_ATOM_STRING )
+            color = Colour::fromString( msg[0].getString().c_str() );
+        else if( msg.size() == 4 && msg[0].getType() == OdotAtom::O_ATOM_FLOAT )
         {
-            color = Colour::fromFloatRGBA(  msg[0].getFloat32(),
-                                            msg[1].getFloat32(),
-                                            msg[2].getFloat32(),
-                                            msg[3].getFloat32() );
+            color = Colour::fromFloatRGBA(  msg[0].getFloat(),
+                                            msg[1].getFloat(),
+                                            msg[2].getFloat(),
+                                            msg[3].getFloat() );
         }
         
         refresh();
@@ -134,7 +134,8 @@ public:
             color = cs->getCurrentColour();
             
             osc_msg.clear();
-            osc_msg.addString( color.toString() );
+            
+            osc_msg.appendValue( (const char *)color.toString().getCharPointer() );
             
             change_callback( osc_msg );
             
@@ -143,7 +144,7 @@ public:
     }
     
 private:
-    OSCMessage      osc_msg;
+    OdotMessage      osc_msg;
     osc_callback_t  change_callback;
 
     TextButton      button;
@@ -156,8 +157,8 @@ private:
 class OSCOptionMenu : public ChoicePropertyComponent
 {
 public:
-    OSCOptionMenu(  const String& _addr,
-                    OSCMessage& msg,
+    OSCOptionMenu(  const string& _addr,
+                    OdotMessage& msg,
                     osc_callback_t change_fn,
                     StringArray choiceList ) :
     ChoicePropertyComponent( _addr ),
@@ -166,7 +167,7 @@ public:
         choices = choiceList;
         change_callback = change_fn;
         
-        selected_index = choices.indexOf( msg[0].getString() );
+        selected_index = choices.indexOf( String( msg[0].getString() ) );
  
         getLookAndFeel().setColour(ComboBox::textColourId, Colours::black );
         getLookAndFeel().setColour(ComboBox::backgroundColourId, Colours::transparentWhite );
@@ -183,7 +184,7 @@ public:
         selected_index = newIndex;
 
         osc_msg.clear();
-        osc_msg.addString( choices[selected_index] );
+        osc_msg.appendValue( (const char *)choices[selected_index].getCharPointer() );
         
         change_callback( osc_msg );
     }
@@ -195,7 +196,7 @@ public:
     
     
 private:
-    OSCMessage      osc_msg;
+    OdotMessage      osc_msg;
     osc_callback_t  change_callback;
     
     int             selected_index = 0;
@@ -207,8 +208,8 @@ private:
 class OSCTextProperty : public TextPropertyComponent
 {
 public:
-    OSCTextProperty(    const String& _addr,
-                        OSCMessage& msg,
+    OSCTextProperty(    const string& _addr,
+                        OdotMessage& msg,
                         osc_callback_t change_fn,
                         bool multiline = false ) :
     TextPropertyComponent( _addr, 0, multiline ),
@@ -227,7 +228,7 @@ public:
         text = newText;
         
         osc_msg.clear();
-        osc_msg.addString( text );
+        osc_msg.appendValue( (const char *)text.getCharPointer() );
         
         change_callback( osc_msg );
 
@@ -238,7 +239,7 @@ public:
     }
     
 private:
-    OSCMessage      osc_msg;
+    OdotMessage     osc_msg;
     osc_callback_t  change_callback;
     
     String          text;
@@ -252,15 +253,15 @@ class OSCOnOffButton : public BooleanPropertyComponent
 {
 public:
    
-    OSCOnOffButton( const String& _addr,
-                    OSCMessage& msg,
+    OSCOnOffButton( const string& _addr,
+                    OdotMessage& msg,
                     osc_callback_t change_fn ) :
     BooleanPropertyComponent (_addr, "true", "false"),
     osc_msg(msg)
     {
         change_callback = change_fn;
         
-        setState( msg[0].getInt32() > 0 );
+        setState( msg[0].getInt() > 0 );
     }
     
     void setState( bool newState ) override
@@ -280,14 +281,14 @@ public:
         setState ( !state );
         
         osc_msg.clear();
-        osc_msg.addInt32( (int)getState() );
+        osc_msg.appendValue( (int)getState() );
         
         change_callback( osc_msg );
     }
     
 private:
 
-    OSCMessage      osc_msg;
+    OdotMessage      osc_msg;
     osc_callback_t  change_callback;
         
     bool            state = 0;
@@ -299,8 +300,8 @@ private:
 class StaffSelectionButton : public ButtonPropertyComponent
 {
 public:
-    StaffSelectionButton(   const String& _addr,
-                            OSCMessage& msg,
+    StaffSelectionButton(   const string& _addr,
+                            OdotMessage& msg,
                             osc_callback_t change_fn ) :
     ButtonPropertyComponent (_addr, true),
     osc_msg(msg)
@@ -344,7 +345,7 @@ public:
     
     
 private:
-    OSCMessage      osc_msg;
+    OdotMessage      osc_msg;
     osc_callback_t  change_callback;
     
     String          text;
@@ -359,8 +360,8 @@ private:
 class OSCFontMenu : public ChoicePropertyComponent
 {
 public:
-    OSCFontMenu(const String& _addr,
-                OSCMessage& msg,
+    OSCFontMenu(const string& _addr,
+                OdotMessage& msg,
                 osc_callback_t change_fn,
                 StringArray choiceList ) :
     ChoicePropertyComponent( _addr ),
@@ -388,8 +389,8 @@ public:
         
         osc_msg.clear();
         
-        m_font.setTypefaceName(choices[selected_index]);
-        osc_msg.addString( m_font.toString() );
+        m_font.setTypefaceName( choices[selected_index] );
+        osc_msg.appendValue( (const char *)m_font.toString().getCharPointer() );
         
         change_callback( osc_msg );
         
@@ -403,7 +404,7 @@ public:
     
     
 private:
-    OSCMessage      osc_msg;
+    OdotMessage      osc_msg;
     osc_callback_t  change_callback;
     
     
@@ -442,18 +443,11 @@ private:
 class OSCValueDisplay  : public PropertyComponent
 {
 public:
-    OSCValueDisplay ( const String& _addr, OSCMessage& msg ) :
+    OSCValueDisplay ( const string& _addr, OdotMessage& msg ) :
     PropertyComponent (_addr), osc_msg(msg)
     {
         
-        String str;
-        
-        if( msg[0].isString() )
-            str = msg[0].getString();
-        else if( msg[0].isFloat32() )
-            str = (String)msg[0].getFloat32();
-        else if( msg[0].isInt32() )
-            str = (String)msg[0].getInt32();
+        String str = msg[0].getString();
         
         label = new NonEditableTextObj( str );
         addAndMakeVisible(label);
@@ -467,7 +461,7 @@ public:
     
     
 private:
-    OSCMessage      osc_msg;
+    OdotMessage      osc_msg;
     ScopedPointer<NonEditableTextObj> label;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OSCValueDisplay)

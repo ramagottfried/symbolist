@@ -275,11 +275,10 @@ vector<OdotMessage> OdotBundle::getMessageArray() const
     vector<OdotMessage> ar;
     ar.reserve( size() );
     
-    int count = 0;
     t_osc_bndl_it_u *it = osc_bndl_it_u_get( ptr.get() );
     while( osc_bndl_it_u_hasNext(it) )
     {
-        ar[count++] = OdotMessage( osc_bndl_it_u_next(it) );
+        ar.emplace_back( OdotMessage( osc_bndl_it_u_next(it) ) );
     }
     osc_bndl_it_u_destroy(it);
     return ar;

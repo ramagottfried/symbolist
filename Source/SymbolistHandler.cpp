@@ -355,7 +355,7 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
     //s->printBundle();
     
     string typeStr = s->getMessage("/type").getString();
-    
+    cout << typeStr << endl;
     if ( typeStr.size() == 0 )
     {
         cout << "Could not find '/type' message in OSC Bundle.. " << endl;

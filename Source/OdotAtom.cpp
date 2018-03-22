@@ -48,7 +48,8 @@ t_osc_bndl_u * OdotAtom::getBundlePtr()
 string OdotAtom::getString() const
 {
     size_t len = osc_atom_u_getStringLen( ptr.get() );
-    char buf[ len ];
+    char buf[ len+1 ];
+    memset(&buf, '\0', len+1);
     char *buf_ptr = buf;
     osc_atom_u_getString( ptr.get(), len, &buf_ptr );
     return string( buf_ptr );

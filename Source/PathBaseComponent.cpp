@@ -222,6 +222,7 @@ void PathBaseComponent::importFromSymbol(const Symbol &s)
     
     m_fill = s.getMessage("/fill").getInt();
     strokeWeight = s.getMessage("/stroke/thickness").getInt();
+    strokeWeight = (strokeWeight == 0) ? 2 : strokeWeight;
     strokeType.setStrokeThickness( strokeWeight );
 
     updatePathBounds();

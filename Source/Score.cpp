@@ -33,6 +33,16 @@ Score::Score( const OdotBundle_s& s_bundle  ) : time_points(this)
 Score::~Score() {}
 
 
+void Score::print() const
+{
+    int count = 1;
+    for( auto s : score_symbols )
+    {
+        cout << "symbol : " << count << endl;
+        s->print();
+    }
+}
+
 /***********************************
  * Add a new Symbol in the Score
  ***********************************/

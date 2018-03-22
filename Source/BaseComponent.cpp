@@ -489,6 +489,8 @@ void BaseComponent::setScoreComponentSize(int w, int h)
 
 void BaseComponent::resized ()
 {
+    cout << __func__ << " " << getComponentID() << endl;
+    printRect( getBounds(), getComponentID()  );
     if( is_selected )
     {
         ((ScoreComponent*)getParentComponent())->reportModificationForSelectedSymbols();
@@ -653,6 +655,7 @@ void BaseComponent::mouseDoubleClick(const MouseEvent& event)
 
 void BaseComponent::paint ( Graphics& g )
 {
+
     if( in_edit_mode )
     {
         g.setColour( Colour::fromFloatRGBA(1.0f,1.0f,1.0f,0.9f)  );

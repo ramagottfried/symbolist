@@ -20,7 +20,6 @@ public:
 
     bool symbol_parse_error( int p, const string& address ) const;
     
-    void printBundle() const;
 
     OdotBundle_s    exportToOSC();
     void            importFromOSC( OdotBundle_s& s_bundle );

@@ -46,6 +46,8 @@ public:
     
     //    void sortScore();
     
+    void print() const;
+    
     void addSymbolTimePoints( Symbol *s );
     void removeSymbolTimePoints( Symbol *s );
     

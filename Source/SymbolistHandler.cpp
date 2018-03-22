@@ -352,7 +352,7 @@ Symbol* SymbolistHandler::getCurrentSymbol()
 BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_the_symbol)
 {
     cout << "Creating component from Symbol: " ;
-    //s->printBundle();
+    s->print();
     
     string typeStr = s->getMessage("/type").getString();
     cout << typeStr << endl;
@@ -439,7 +439,7 @@ void SymbolistHandler::addSymbolToScore ( BaseComponent* c )
     log_score_change();
 
     score->addSymbol( c->getScoreSymbolPointer() );
-    
+        
     executeUpdateCallback( -1 );
     
 }

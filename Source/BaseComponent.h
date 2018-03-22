@@ -21,7 +21,6 @@ public:
 
     void parentHierarchyChanged() override;
     void setSymbolID();
-
     
     void paint ( Graphics& g ) override;
     

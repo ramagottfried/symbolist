@@ -81,6 +81,8 @@ public:
             m_fill = s.getMessage("/fill").getInt();
             
             strokeWeight = s.getMessage("/stroke/thickness").getInt();
+            strokeWeight = (strokeWeight == 0) ? 2 : strokeWeight;
+
             strokeType.setStrokeThickness( strokeWeight );
             
             m_rotation = s.getMessage("/rotation").getFloat();

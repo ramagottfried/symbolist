@@ -302,7 +302,7 @@ void ScoreComponent::groupSelectedSymbols()
                     
                     groupSymbol->addMessage( "/subsymbol/" + to_string(count++), *sym );
                     
-                    groupSymbol->print();
+                    // groupSymbol->print();
 
                     // sets the position now relative to the group
                    /*
@@ -314,44 +314,17 @@ void ScoreComponent::groupSelectedSymbols()
                     //sh->removeSymbolFromScore( bc );
                     // the parent is not necessarily 'this' (selected_items can be indirect children...)
                     
-                  //  group->addSubcomponent( bc );
                     
                 }
             }
         }
 
         SymbolGroupComponent *group = (SymbolGroupComponent*)sh->makeComponentFromSymbol( groupSymbol , creating_a_top_level_group );
-
-        for( SymbolistComponent *c : selected_components )
-        {
-            auto bc = dynamic_cast<BaseComponent*>(c);
-            if( bc )
-            {
-                ((ScoreComponent*)c->getParentComponent())->removeSubcomponent( bc );
-            }
-        }
-        
-        unselectAllComponents();
-
-        
-        
-        /*
-        // I don't understand this part, is this because we might be grouping something within a group? seems like a potential crash? -- rama
-        if ( creating_a_top_level_group )
-        {
-            group->addSymbolMessages( groupSymbol );
-        }
-        else
-        {
-            delete groupSymbol;
-        }
-        */
-        
         addSubcomponent( group );
-        addToSelection( group );
         
-//        cout << "group bundle post: " << endl;
-//        group->getScoreSymbolPointer()->printBundle();
+        getPageComponent()->deleteSelectedComponents();
+        
+        addToSelection( group );
     }
 }
 

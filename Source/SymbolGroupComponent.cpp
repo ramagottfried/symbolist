@@ -195,7 +195,7 @@ void SymbolGroupComponent::addSymbolMessages( Symbol* s )
         Symbol sub_sym;
         ((BaseComponent*)getSubcomponent(i))->addSymbolMessages( &sub_sym );
         s->addMessage( "/subsymbol/" + to_string(i), sub_sym );
-        s->print();
+        //s->print();
     }
     
 }

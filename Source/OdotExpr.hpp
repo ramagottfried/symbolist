@@ -13,9 +13,12 @@ public:
     OdotExpr();
     OdotExpr( const OdotExpr& src );
     OdotExpr( const string& expr );
+    OdotExpr( const char * expr );
+
     OdotExpr( t_osc_expr * src );
     OdotExpr& operator=( const OdotExpr& src );
     OdotExpr& operator=( const string& expr );
+    OdotExpr& operator=( const char * expr );
 
     OdotExpr( OdotExpr&& src ) = default;
     OdotExpr& operator=( OdotExpr&& src ) = default;

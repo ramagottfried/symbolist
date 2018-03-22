@@ -77,7 +77,10 @@ public:
     void unionWith( const OdotBundle& other );
     
     void applyExpr( const OdotExpr& expr );
-    
+    inline void applyExpr( const string& expr ) { applyExpr( OdotExpr(expr) ); }
+    inline void applyExpr( const char * expr ) { applyExpr( OdotExpr(expr) ); }
+
+
 private:
     
     odot::OdotBundlePtr ptr;

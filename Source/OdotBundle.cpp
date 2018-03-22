@@ -3,6 +3,7 @@
 #include "osc_bundle_iterator_s.h"
 #include "osc_strfmt.h"
 #include "osc_match.h"
+#include "osc_mem.h"
 
 OdotBundle::OdotBundle()
 {
@@ -76,24 +77,32 @@ void OdotBundle::applyExpr( const OdotExpr& expr )
     
     char *copy = NULL;
     long copylen = osc_bundle_s_getLen( s_bndl.get_o_ptr() );
-    
-    int error = 0;
-    t_osc_expr *f = expr.get_o_ptr();
-    while(f){
-        t_osc_atom_ar_u *av = NULL;
-        error = osc_expr_eval( f, &copylen, &copy, &av, this );
-        if(av){
-            osc_atom_array_u_free(av);
-        }
-        if(error){
-            break;
-        }
-        f = osc_expr_next(f);
-    }
-    
-    if( !error )
+    copy = (char *)osc_mem_alloc( copylen );
+    if(copy)
     {
-        *this = s_bndl.deserialize();
+        memcpy(copy, osc_bundle_s_getPtr( s_bndl.get_o_ptr() ), copylen);
+        
+        int error = 0;
+        t_osc_expr *f = expr.get_o_ptr();
+        while(f){
+            t_osc_atom_ar_u *av = NULL;
+            error = osc_expr_eval( f, &copylen, &copy, &av, this );
+            if(av){
+                osc_atom_array_u_free(av);
+            }
+            if(error)
+            {
+                break;
+            }
+            f = osc_expr_next(f);
+        }
+        
+        if( !error )
+        {
+            ptr = odot::newOdotBundlePtr( osc_bundle_s_deserialize(copylen, copy) );
+        }
+        
+        osc_mem_free(copy);
     }
 }
 

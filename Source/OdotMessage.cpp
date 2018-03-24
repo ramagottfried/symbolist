@@ -112,9 +112,14 @@ void OdotMessage::appendValue( const t_osc_atom_u *atom )
     }
 }
 
+void OdotMessage::appendValue( const t_osc_bndl_u * bndl )
+{
+    osc_message_u_appendBndl_u( ptr.get(), (t_osc_bndl_u *)bndl );
+}
+
 void OdotMessage::appendValue( OdotBundle& bndl )
 {
-    appendValue( bndl.get_o_ptr() );
+    osc_message_u_appendBndl_u( ptr.get(), OdotBundle( bndl ).release() );
 }
 
 void OdotMessage::appendValue( OdotMessage& msg )
@@ -125,7 +130,6 @@ void OdotMessage::appendValue( OdotMessage& msg )
 
 void OdotMessage::appendValue( const OdotBundle& bndl )
 {
-    OdotBundle b( bndl );
     osc_message_u_appendBndl_u( ptr.get(), (t_osc_bndl_u *)OdotBundle( bndl ).release() );
 }
 

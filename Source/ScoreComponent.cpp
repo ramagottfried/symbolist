@@ -280,46 +280,31 @@ void ScoreComponent::groupSelectedSymbols()
             maxy =  max( maxy, compBounds.getBottom() );
         }
 
-        auto sh = getSymbolistHandler();
+        auto symbolistHandler = getSymbolistHandler();
 
-        Symbol * groupSymbol = new Symbol();
+        Symbol *groupSymbol = new Symbol();
         groupSymbol->setTypeXYWH( "group", minx, miny, maxx-minx, maxy-miny );
         
         int count = 0;
 
         for( SymbolistComponent *c : selected_components )
         {
-            auto bc = dynamic_cast<BaseComponent*>(c);
-            if( bc )
+            auto selectedComponent = dynamic_cast<BaseComponent*>(c);
+            if( selectedComponent != NULL )
             {
-                auto sym = bc->getScoreSymbolPointer();
-                if( sym->size() > 0 )  // this fails within groups becuase subcomponents do not have score symbols...
+                auto associatedSymbol = selectedComponent->getScoreSymbolPointer();
+                if( associatedSymbol->size() > 0 )  // this fails within groups because subcomponents do not have score symbols...
                 {
                     // copies bundles from subcomponent symbols and join into new group symbol
+                    associatedSymbol->addMessage("/x", selectedComponent->getX() - minx);
+                    associatedSymbol->addMessage("/y", selectedComponent->getY() - miny);
                     
-                    sym->addMessage("/x", bc->getX() - minx);
-                    sym->addMessage("/y", bc->getY() - miny);
-                    
-                    groupSymbol->addMessage( "/subsymbol/" + to_string(count++), *sym );
-                    
-                    // groupSymbol->print();
-
-                    // sets the position now relative to the group
-                   /*
-                    bc->setBounds(bc->getX() - minx,
-                                  bc->getY() - miny,
-                                  bc->getWidth(), bc->getHeight());
-                    */
-                    
-                    //sh->removeSymbolFromScore( bc );
-                    // the parent is not necessarily 'this' (selected_items can be indirect children...)
-                    
-                    
+                    groupSymbol->addMessage( "/subsymbol/" + to_string(count++), *associatedSymbol );
                 }
             }
         }
 
-        SymbolGroupComponent *group = (SymbolGroupComponent*)sh->makeComponentFromSymbol( groupSymbol , creating_a_top_level_group );
+        SymbolGroupComponent *group = (SymbolGroupComponent*)symbolistHandler->makeComponentFromSymbol( groupSymbol , creating_a_top_level_group );
         addSubcomponent( group );
         
         getPageComponent()->deleteSelectedComponents();

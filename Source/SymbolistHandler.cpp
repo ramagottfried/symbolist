@@ -354,63 +354,62 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
     cout << "Creating component from Symbol: " ;
     s->print();
     
-    string typeStr = s->getMessage("/type").getString();
-    cout << typeStr << endl;
-    if ( typeStr.size() == 0 )
+    string typeofSymbol = s->getMessage("/type").getString();
+    if ( typeofSymbol.size() == 0 )
     {
         cout << "Could not find '/type' message in OSC Bundle.. " << endl;
         return NULL;
         
     } else {
         
-        cout << typeStr << std::endl;
-        BaseComponent *c;
+        cout << typeofSymbol << std::endl;
+        BaseComponent *newComponent;
         
         // allocates component based on type, all are derived from the BaseComponent
-        if ( typeStr == "circle" ) {
-            c = new CirclePathComponent();
-        } else if ( typeStr == "rectangle" ) {
-            c = new RectanglePathComponent();
-        } else if ( typeStr =="triangle" ) {
-            c = new TrianglePathComponent();
-        } else if ( typeStr == "path" ) {
-            c = new PathBaseComponent();
-        } else if ( typeStr == "text" ) {
-            c = new TextGlphComponent();
-        } else if ( typeStr == "group" ) {
-            c = new SymbolGroupComponent();
-        } else if ( typeStr == "staff" ) {
-            c = new StaffComponent();
+        if ( typeofSymbol == "circle" ) {
+            newComponent = new CirclePathComponent();
+        } else if ( typeofSymbol == "rectangle" ) {
+            newComponent = new RectanglePathComponent();
+        } else if ( typeofSymbol =="triangle" ) {
+            newComponent = new TrianglePathComponent();
+        } else if ( typeofSymbol == "path" ) {
+            newComponent = new PathBaseComponent();
+        } else if ( typeofSymbol == "text" ) {
+            newComponent = new TextGlphComponent();
+        } else if ( typeofSymbol == "group" ) {
+            newComponent = new SymbolGroupComponent();
+        } else if ( typeofSymbol == "staff" ) {
+            newComponent = new StaffComponent();
         } else {
-            cout << "Unknown symbol type : " << typeStr << endl;
-            c = NULL;
+            cout << "Unknown symbol type : " << typeofSymbol << endl;
+            newComponent = NULL;
         }
         
-        if (c != NULL)
+        if (newComponent != NULL)
         {
             // reads base component symbol values, and sets component bounds for display
-            c->importFromSymbol( *s ) ;
+            newComponent->importFromSymbol( *s ) ;
             
             // initializes object specific messages if not present
-            c->addSymbolMessages( s );
+            newComponent->addSymbolMessages( s );
             
             if ( attach_the_symbol )
             {
                 /*
                 if( main_component_ptr != NULL )
                 {
-                    c->setComponentID( c->getSymbolTypeStr() + "_" + (String)main_component_ptr->getPageComponent()->getNumSubcomponents() );
-                    s->setID( c->getComponentID() );
+                    newComponent->setComponentID( newComponent->getSymbolTypeStr() + "_" + (String)main_component_ptr->getPageComponent()->getNumSubcomponents() );
+                    s->setID( newComponent->getComponentID() );
                 }
                 */
                 
-                c->setScoreSymbolPointer( s );
+                newComponent->setScoreSymbolPointer( s );
                 score->addStaff( s ); // << /type checked internally and added if staff
 
             }
         }
         
-        return c;
+        return newComponent;
     }
 }
 

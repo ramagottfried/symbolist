@@ -77,7 +77,8 @@ public:
         int count = 0;
         for( Symbol *s : score_symbols )
         {
-            if( s->getName() == name )
+            s->print();
+            if( s != NULL && s->getName() == name )
                 count++;
         }
     

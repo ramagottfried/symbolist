@@ -178,7 +178,7 @@ void SymbolGroupComponent::addSymbolMessages( Symbol* s )
     s->addMessage( "/numsymbols", (int)getNumSubcomponents() );
 
     /*
-     * the group symbol is created fist (with the default state), then added to, then updated,
+     * the group symbol is created first (with the default state), then added to, then updated,
      * so we need (getNumSubcomponents() > 0) to wait to set /numsymbols until after the symbol has been updated,
      * otherwise, /numsymbols gets stuck at 0
     

@@ -187,8 +187,8 @@ Symbol BaseComponent::exportSymbol()
 void BaseComponent::importFromSymbol( const Symbol &s )
 {
     
-    string typeStr = s.getMessage( "/type" ).getString();
-    if ( typeStr.size() == 0 ) {
+    string typeOfSymbol = s.getMessage( "/type" ).getString();
+    if ( typeOfSymbol.size() == 0 ) {
         
         cout << "BaseComponent import: Could not find '/type' message in OSC Bundle.. (size=" << "insert bundle size here" << ")" << endl;
         return;
@@ -233,7 +233,7 @@ void BaseComponent::importFromSymbol( const Symbol &s )
     name = s.getMessage("/name").getString();
     if( name.size() == 0 )
     {
-        name = typeStr;
+        name = typeOfSymbol;
     }
         
     // set /id via component ID
@@ -267,12 +267,12 @@ void BaseComponent::setSymbolID()
 
         if( s )
         {
-            string typeStr = s->getType();
+            string typeOfSymbol = s->getType();
             
             string id = s->getMessage("/id").getString();
             
             // this was updated in the master branch
-            if( id.size() == 0 || getComponentID() != id || id == (typeStr + "/palette")  || id == (name + "/palette") || id.rfind( name ) == string::npos )
+            if( id.size() == 0 || getComponentID() != id || id == (typeOfSymbol + "/palette")  || id == (name + "/palette") || id.rfind( name ) == string::npos )
             {
                 // if there is a name use this for the id
                 // for the id, check to see if there are others with this name and then increment 1

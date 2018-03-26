@@ -289,7 +289,6 @@ void BaseComponent::setSymbolID()
                 
 		// cout << "id check " << id << endl;
 
-                s->setID(id);
             }
             
             setComponentID( id );

@@ -123,7 +123,7 @@ public:
     int lookupTimePoint( float t );
     Point<float> lookupPathPoint( const Symbol *s, const float t );
     Point<float> lookupPathPoint( const Symbol *s, const int pathIDX, const float t, const float start, const float dur );
-    Point<float> lookupPathPoint( const Symbol *s, String& path_base_addr , const float t );
+    Point<float> lookupPathPoint( const Symbol *s, string& path_base_addr , const float t );
     
     /**
      * @param s                main root symbol (not subbundle)
@@ -144,13 +144,12 @@ public:
      * --- in the case of path within a group within a group, the scaling would be in terms of the first containing group.
      * For example subsymbol_addr could be "/subsymbol/1/subsymbol/2".
      */
-    void groupLookup( const Symbol *s,
-                      const String& output_prefix,
-                      const String& groupsymbol_addr,
-                      double parent_x,
-                      double parent_y,
-                      float time_ratio,
-                      OSCBundle& bndl);
+    void groupLookup(const Symbol *s,
+                     const string& output_prefix,
+                     double parent_x,
+                     double parent_y,
+                     float time_ratio,
+                     OdotBundle& bndl);
     
     vector<const Symbol *> getNoteOffs( const SymbolTimePoint *prev_tpoint , const SymbolTimePoint *tpoint   );
     bool isNewSym( const Symbol *s , const SymbolTimePoint *prev_tpoint   );

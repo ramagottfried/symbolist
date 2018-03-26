@@ -543,12 +543,7 @@ void TimePointArray::groupLookup(const Symbol *s,
     
 }
 
-<<<<<<< HEAD
-odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint  )
-=======
-
 OdotBundle_s TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint  )
->>>>>>> odot
 {
     OdotBundle bndl;
     bndl.addMessage("/time/lookup", current_time ) ;
@@ -595,11 +590,8 @@ OdotBundle_s TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint 
                 float time_ratio = (current_time - s->getTime()) / s->getDuration() ;
                 bndl.addMessage( s_prefix + "/time/ratio", time_ratio );
                 
-<<<<<<< HEAD
-=======
                 float offset_time = current_time - s->getTime();
-                
->>>>>>> odot
+            
                 if( s->getType() == "path" )
                 {
                     int npaths = s->getMessage( "/num_sub_paths" ).getInt();

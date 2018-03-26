@@ -633,7 +633,6 @@ void SymbolistHandler::newFromClipBoard()
         // cout << " SymbolistHandler::newFromClipBoard " << endl;
         // cout << s->getID() << endl;
         Symbol *new_sym = new Symbol(*s);
-        new_sym->setID("");
         BaseComponent *c = makeComponentFromSymbol( new_sym, true );
         if ( c != NULL)
         {

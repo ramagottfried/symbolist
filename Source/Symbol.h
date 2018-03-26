@@ -36,8 +36,6 @@ public:
     string getType();
     
     void setPosition( const Point<float> pos );
-    void setID( const string& str );
-    void setName( const string& str );
 
     void setTimeAndDurationFromRelPix( const float start_x, const float dur_x );
     void setTimeAndDuration( const float start_t, const float dur_t );

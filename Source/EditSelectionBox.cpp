@@ -261,7 +261,7 @@ void EditSelectionBox::mouseDown (const MouseEvent& e)
         {
             Symbol* s = new Symbol();
             
-            b->addSymbolMessages(s, "");
+            b->addSymbolMessages(s);
             original_symbols.set(i, s);
             
             BaseComponent *newB = sh->makeComponentFromSymbol(s, false);

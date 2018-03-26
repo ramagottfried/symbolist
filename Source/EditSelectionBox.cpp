@@ -273,6 +273,18 @@ void EditSelectionBox::mouseDown (const MouseEvent& e)
             addAndMakeVisible( newB );
         }
         
+        Symbol* s = new Symbol();
+        //*b->getScoreSymbolPointer()
+        b->addSymbolMessages( s );
+        original_symbols.set(i, s);
+        
+        BaseComponent *newB = sh->makeComponentFromSymbol(s, false);
+        newB->setTopLeftPosition( b->getPosition() - getPosition() );
+        newB->setSize( b->getWidth(), b->getHeight() );
+        newB->setSymbolComponentColor(Colours::red);
+        
+        preview_components.set(i, new PreviewComp(newB, b));
+        addAndMakeVisible( newB );
     }
     
     

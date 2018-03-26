@@ -25,12 +25,19 @@ public:
         int y = 20;
         int y_inr = 15;
         
+        string prefix = "/symbol/";
+        
         for( int i = 0; i < num; i++ )
         {
-            StringArray strarray = symbolist_handler->symbolistAPI_getSymbolString( i );
-            for( int j = 0; j < strarray.size(); j++ )
+            Symbol * sym = symbolist_handler->symbolistAPI_getSymbol(i);
+
+            
+            vector<string> msg_array;
+            sym->getPrintStringArray( msg_array );
+            
+            for( int j = 0; j < msg_array.size(); j++ )
             {
-                g.drawText(strarray[j], x, y, 400, 20, Justification::topLeft );
+                g.drawText( msg_array[j], x, y, 400, 20, Justification::topLeft );
                 y += y_inr;
             }
         }

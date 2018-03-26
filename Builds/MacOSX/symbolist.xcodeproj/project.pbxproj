@@ -14,7 +14,6 @@
 		1107B3E91EF5388500E2DFA9 /* PathInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1107B3E71EF5388500E2DFA9 /* PathInfo.cpp */; };
 		1107B3EA1EF5388500E2DFA9 /* PathInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1107B3E71EF5388500E2DFA9 /* PathInfo.cpp */; };
 		1107B3F31EF7D54800E2DFA9 /* symbolist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */; };
-		1107B3F41EF7D54E00E2DFA9 /* OSCIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 446363931EC6F4960054CB6D /* OSCIO.cpp */; };
 		1107B3F51EF7D55D00E2DFA9 /* Symbol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44B718AF1EDD9D010039884E /* Symbol.cpp */; };
 		1107B3F61EF7D55D00E2DFA9 /* Score.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38DC1EC5BC4F006FF4A1 /* Score.cpp */; };
 		1107B3F71EF7D55D00E2DFA9 /* TextGlyphComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1107B3DB1EF1751900E2DFA9 /* TextGlyphComponent.cpp */; };
@@ -32,6 +31,10 @@
 		111A261C1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */; };
 		111A261D1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */; };
 		111A261E1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */; };
+		113980B3206449EA002A2408 /* OdotExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 113980B1206449EA002A2408 /* OdotExpr.cpp */; };
+		113980B4206449EA002A2408 /* OdotExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 113980B1206449EA002A2408 /* OdotExpr.cpp */; };
+		113980B5206449EA002A2408 /* OdotExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 113980B1206449EA002A2408 /* OdotExpr.cpp */; };
+		113980B6206449EA002A2408 /* OdotExpr.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 113980B2206449EA002A2408 /* OdotExpr.hpp */; };
 		113DEE0C1FA1D7C600A45220 /* EditSelectionBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 113DEE0A1FA1D7C600A45220 /* EditSelectionBox.cpp */; };
 		113DEE0D1FA1D7C600A45220 /* EditSelectionBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 113DEE0A1FA1D7C600A45220 /* EditSelectionBox.cpp */; };
 		113DEE0E1FA1D7C600A45220 /* EditSelectionBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 113DEE0A1FA1D7C600A45220 /* EditSelectionBox.cpp */; };
@@ -44,6 +47,94 @@
 		114027CB1F4B185E00A9B8C4 /* StaffComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 114027C81F4B185E00A9B8C4 /* StaffComponent.cpp */; };
 		114027CC1F4B185E00A9B8C4 /* StaffComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 114027C81F4B185E00A9B8C4 /* StaffComponent.cpp */; };
 		114027CD1F4B185E00A9B8C4 /* StaffComponent.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 114027C91F4B185E00A9B8C4 /* StaffComponent.hpp */; };
+		116A7E792046CFB6004B545D /* osc_array.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E562046CFB6004B545D /* osc_array.c */; };
+		116A7E7A2046CFB6004B545D /* osc_atom_array_s.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E572046CFB6004B545D /* osc_atom_array_s.c */; };
+		116A7E7B2046CFB6004B545D /* osc_atom_array_u.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E582046CFB6004B545D /* osc_atom_array_u.c */; };
+		116A7E7C2046CFB6004B545D /* osc_atom_s.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E592046CFB6004B545D /* osc_atom_s.c */; };
+		116A7E7D2046CFB6004B545D /* osc_atom_u.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E5A2046CFB6004B545D /* osc_atom_u.c */; };
+		116A7E7E2046CFB6004B545D /* osc_bundle_iterator_s.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E5B2046CFB6004B545D /* osc_bundle_iterator_s.c */; };
+		116A7E7F2046CFB6004B545D /* osc_bundle_iterator_u.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E5C2046CFB6004B545D /* osc_bundle_iterator_u.c */; };
+		116A7E802046CFB6004B545D /* osc_bundle_s.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E5D2046CFB6004B545D /* osc_bundle_s.c */; };
+		116A7E812046CFB6004B545D /* osc_bundle_u.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E5E2046CFB6004B545D /* osc_bundle_u.c */; };
+		116A7E822046CFB6004B545D /* osc_dispatch.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E5F2046CFB6004B545D /* osc_dispatch.c */; };
+		116A7E832046CFB6004B545D /* osc_error.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E602046CFB6004B545D /* osc_error.c */; };
+		116A7E842046CFB6004B545D /* osc_expr_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E612046CFB6004B545D /* osc_expr_parser.c */; };
+		116A7E852046CFB6004B545D /* osc_expr_rec.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E622046CFB6004B545D /* osc_expr_rec.c */; };
+		116A7E862046CFB6004B545D /* osc_expr_scanner.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E632046CFB6004B545D /* osc_expr_scanner.c */; };
+		116A7E872046CFB6004B545D /* osc_expr.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E642046CFB6004B545D /* osc_expr.c */; };
+		116A7E882046CFB6004B545D /* osc_hashtab.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E652046CFB6004B545D /* osc_hashtab.c */; };
+		116A7E892046CFB6004B545D /* osc_legacy_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E662046CFB6004B545D /* osc_legacy_parser.c */; };
+		116A7E8A2046CFB6004B545D /* osc_legacy_scanner.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E672046CFB6004B545D /* osc_legacy_scanner.c */; };
+		116A7E8B2046CFB6004B545D /* osc_linkedlist.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E682046CFB6004B545D /* osc_linkedlist.c */; };
+		116A7E8C2046CFB6004B545D /* osc_match.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E692046CFB6004B545D /* osc_match.c */; };
+		116A7E8D2046CFB6004B545D /* osc_mem.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E6A2046CFB6004B545D /* osc_mem.c */; };
+		116A7E8E2046CFB6004B545D /* osc_message_iterator_s.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E6B2046CFB6004B545D /* osc_message_iterator_s.c */; };
+		116A7E8F2046CFB6004B545D /* osc_message_iterator_u.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E6C2046CFB6004B545D /* osc_message_iterator_u.c */; };
+		116A7E902046CFB6004B545D /* osc_message_s.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E6D2046CFB6004B545D /* osc_message_s.c */; };
+		116A7E912046CFB6004B545D /* osc_message_u.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E6E2046CFB6004B545D /* osc_message_u.c */; };
+		116A7E922046CFB6004B545D /* osc_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E6F2046CFB6004B545D /* osc_parser.c */; };
+		116A7E932046CFB6004B545D /* osc_query.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E702046CFB6004B545D /* osc_query.c */; };
+		116A7E942046CFB6004B545D /* osc_rset.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E712046CFB6004B545D /* osc_rset.c */; };
+		116A7E952046CFB6004B545D /* osc_scanner.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E722046CFB6004B545D /* osc_scanner.c */; };
+		116A7E962046CFB6004B545D /* osc_serial.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E732046CFB6004B545D /* osc_serial.c */; };
+		116A7E972046CFB6004B545D /* osc_strfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E742046CFB6004B545D /* osc_strfmt.c */; };
+		116A7E982046CFB6004B545D /* osc_timetag.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E752046CFB6004B545D /* osc_timetag.c */; };
+		116A7E992046CFB6004B545D /* osc_typetag.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E762046CFB6004B545D /* osc_typetag.c */; };
+		116A7E9A2046CFB6004B545D /* osc_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E772046CFB6004B545D /* osc_util.c */; };
+		116A7E9B2046CFB6004B545D /* osc_vtable.c in Sources */ = {isa = PBXBuildFile; fileRef = 116A7E782046CFB6004B545D /* osc_vtable.c */; };
+		116A7EC42046CFCD004B545D /* osc_array.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7E9C2046CFCD004B545D /* osc_array.h */; };
+		116A7EC52046CFCD004B545D /* osc_atom_array_s.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7E9D2046CFCD004B545D /* osc_atom_array_s.h */; };
+		116A7EC62046CFCD004B545D /* osc_atom_array_u.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7E9E2046CFCD004B545D /* osc_atom_array_u.h */; };
+		116A7EC72046CFCD004B545D /* osc_atom_s.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7E9F2046CFCD004B545D /* osc_atom_s.h */; };
+		116A7EC82046CFCD004B545D /* osc_atom_u.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EA02046CFCD004B545D /* osc_atom_u.h */; };
+		116A7EC92046CFCD004B545D /* osc_bundle_iterator_s.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EA12046CFCD004B545D /* osc_bundle_iterator_s.h */; };
+		116A7ECA2046CFCD004B545D /* osc_bundle_iterator_u.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EA22046CFCD004B545D /* osc_bundle_iterator_u.h */; };
+		116A7ECB2046CFCD004B545D /* osc_bundle_s.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EA32046CFCD004B545D /* osc_bundle_s.h */; };
+		116A7ECC2046CFCD004B545D /* osc_bundle_u.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EA42046CFCD004B545D /* osc_bundle_u.h */; };
+		116A7ECD2046CFCD004B545D /* osc_byteorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EA52046CFCD004B545D /* osc_byteorder.h */; };
+		116A7ECE2046CFCD004B545D /* osc_dispatch.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EA62046CFCD004B545D /* osc_dispatch.h */; };
+		116A7ECF2046CFCD004B545D /* osc_error.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EA72046CFCD004B545D /* osc_error.h */; };
+		116A7ED02046CFCD004B545D /* osc_expr_func.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EA82046CFCD004B545D /* osc_expr_func.h */; };
+		116A7ED12046CFCD004B545D /* osc_expr_parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EA92046CFCD004B545D /* osc_expr_parser.h */; };
+		116A7ED22046CFCD004B545D /* osc_expr_privatedecls.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EAA2046CFCD004B545D /* osc_expr_privatedecls.h */; };
+		116A7ED32046CFCD004B545D /* osc_expr_rec.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EAB2046CFCD004B545D /* osc_expr_rec.h */; };
+		116A7ED42046CFCD004B545D /* osc_expr_scanner.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EAC2046CFCD004B545D /* osc_expr_scanner.h */; };
+		116A7ED52046CFCD004B545D /* osc_expr.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EAD2046CFCD004B545D /* osc_expr.h */; };
+		116A7ED62046CFCD004B545D /* osc_hashtab.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EAE2046CFCD004B545D /* osc_hashtab.h */; };
+		116A7ED72046CFCD004B545D /* osc_legacy_parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EAF2046CFCD004B545D /* osc_legacy_parser.h */; };
+		116A7ED82046CFCD004B545D /* osc_legacy_scanner.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EB02046CFCD004B545D /* osc_legacy_scanner.h */; };
+		116A7ED92046CFCD004B545D /* osc_linkedlist.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EB12046CFCD004B545D /* osc_linkedlist.h */; };
+		116A7EDA2046CFCD004B545D /* osc_match.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EB22046CFCD004B545D /* osc_match.h */; };
+		116A7EDB2046CFCD004B545D /* osc_mem.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EB32046CFCD004B545D /* osc_mem.h */; };
+		116A7EDC2046CFCD004B545D /* osc_message_iterator_s.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EB42046CFCD004B545D /* osc_message_iterator_s.h */; };
+		116A7EDD2046CFCD004B545D /* osc_message_iterator_u.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EB52046CFCD004B545D /* osc_message_iterator_u.h */; };
+		116A7EDE2046CFCD004B545D /* osc_message_s.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EB62046CFCD004B545D /* osc_message_s.h */; };
+		116A7EDF2046CFCD004B545D /* osc_message_u.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EB72046CFCD004B545D /* osc_message_u.h */; };
+		116A7EE02046CFCD004B545D /* osc_parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EB82046CFCD004B545D /* osc_parser.h */; };
+		116A7EE12046CFCD004B545D /* osc_profile.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EB92046CFCD004B545D /* osc_profile.h */; };
+		116A7EE22046CFCD004B545D /* osc_query.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EBA2046CFCD004B545D /* osc_query.h */; };
+		116A7EE32046CFCD004B545D /* osc_rset.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EBB2046CFCD004B545D /* osc_rset.h */; };
+		116A7EE42046CFCD004B545D /* osc_scanner.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EBC2046CFCD004B545D /* osc_scanner.h */; };
+		116A7EE52046CFCD004B545D /* osc_serial.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EBD2046CFCD004B545D /* osc_serial.h */; };
+		116A7EE62046CFCD004B545D /* osc_strfmt.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EBE2046CFCD004B545D /* osc_strfmt.h */; };
+		116A7EE72046CFCD004B545D /* osc_timetag.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EBF2046CFCD004B545D /* osc_timetag.h */; };
+		116A7EE82046CFCD004B545D /* osc_typetag.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EC02046CFCD004B545D /* osc_typetag.h */; };
+		116A7EE92046CFCD004B545D /* osc_util.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EC12046CFCD004B545D /* osc_util.h */; };
+		116A7EEA2046CFCD004B545D /* osc_vtable.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EC22046CFCD004B545D /* osc_vtable.h */; };
+		116A7EEB2046CFCD004B545D /* osc.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EC32046CFCD004B545D /* osc.h */; };
+		116A7EEC2046CFF2004B545D /* libsymbolist-libo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 116A7E412046CF62004B545D /* libsymbolist-libo.a */; };
+		116A7EEF2046DCAE004B545D /* OdotBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116A7EED2046DCAE004B545D /* OdotBundle.cpp */; };
+		116A7EF02046DCAE004B545D /* OdotBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116A7EED2046DCAE004B545D /* OdotBundle.cpp */; };
+		116A7EF12046DCAE004B545D /* OdotBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116A7EED2046DCAE004B545D /* OdotBundle.cpp */; };
+		116A7EF22046DCAE004B545D /* OdotBundle.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EEE2046DCAE004B545D /* OdotBundle.hpp */; };
+		116A7EF62047E99D004B545D /* OdotMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116A7EF42047E99D004B545D /* OdotMessage.cpp */; };
+		116A7EF72047E99D004B545D /* OdotMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116A7EF42047E99D004B545D /* OdotMessage.cpp */; };
+		116A7EF82047E99D004B545D /* OdotMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116A7EF42047E99D004B545D /* OdotMessage.cpp */; };
+		116A7EF92047E99D004B545D /* OdotMessage.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EF52047E99D004B545D /* OdotMessage.hpp */; };
+		116A7EFC2047ECB8004B545D /* OdotAtom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116A7EFA2047ECB8004B545D /* OdotAtom.cpp */; };
+		116A7EFD2047ECB8004B545D /* OdotAtom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116A7EFA2047ECB8004B545D /* OdotAtom.cpp */; };
+		116A7EFE2047ECB8004B545D /* OdotAtom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116A7EFA2047ECB8004B545D /* OdotAtom.cpp */; };
+		116A7EFF2047ECB8004B545D /* OdotAtom.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 116A7EFB2047ECB8004B545D /* OdotAtom.hpp */; };
 		116F87741F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */; };
 		116F87751F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */; };
 		116F87761F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */; };
@@ -78,6 +169,10 @@
 		118C38E41EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */; };
 		118C38EF1EC61404006FF4A1 /* PaletteComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */; };
 		118C38F01EC61404006FF4A1 /* PaletteComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */; };
+		11A3939C20528799002C8916 /* OdotBundle_s.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A3939A20528799002C8916 /* OdotBundle_s.cpp */; };
+		11A3939D20528799002C8916 /* OdotBundle_s.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A3939A20528799002C8916 /* OdotBundle_s.cpp */; };
+		11A3939E20528799002C8916 /* OdotBundle_s.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A3939A20528799002C8916 /* OdotBundle_s.cpp */; };
+		11A3939F20528799002C8916 /* OdotBundle_s.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11A3939B20528799002C8916 /* OdotBundle_s.hpp */; };
 		11B71DCE1F09844300CDE209 /* symbolist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */; };
 		11B71DD11F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DCF1F098F1400CDE209 /* SymbolPropertiesPanel.cpp */; };
 		11B71DD21F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DCF1F098F1400CDE209 /* SymbolPropertiesPanel.cpp */; };
@@ -116,8 +211,6 @@
 		444C43A61EE4A748000C6F69 /* SymbolGroupComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 444C43A31EE4A748000C6F69 /* SymbolGroupComponent.cpp */; };
 		444CD9031EDDAF1B001AC03A /* SymbolistComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 444CD9021EDDAF1B001AC03A /* SymbolistComponent.cpp */; };
 		444CD9041EDDAF1B001AC03A /* SymbolistComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 444CD9021EDDAF1B001AC03A /* SymbolistComponent.cpp */; };
-		446363941EC6F4960054CB6D /* OSCIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 446363931EC6F4960054CB6D /* OSCIO.cpp */; };
-		446363951EC6F4960054CB6D /* OSCIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 446363931EC6F4960054CB6D /* OSCIO.cpp */; };
 		446388CF1EC34B310038CFCB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26C36CB1C5754D666DE2579C /* Cocoa.framework */; };
 		446388D01EC34B3E0038CFCB /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87F9A8E8F628CFBD00805519 /* Carbon.framework */; };
 		446388D11EC34B7A0038CFCB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A18855981466E65AB497B9D /* QuartzCore.framework */; };
@@ -171,12 +264,114 @@
 		1107B3EF1EF7D53100E2DFA9 /* libsymbolist.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsymbolist.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MouseModeComponent.cpp; path = ../../Source/MouseModeComponent.cpp; sourceTree = "<group>"; };
 		111A261B1F40B0C200D3713C /* MouseModeComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = MouseModeComponent.hpp; path = ../../Source/MouseModeComponent.hpp; sourceTree = "<group>"; };
+		113980B1206449EA002A2408 /* OdotExpr.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = OdotExpr.cpp; path = ../../Source/OdotExpr.cpp; sourceTree = "<group>"; };
+		113980B2206449EA002A2408 /* OdotExpr.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = OdotExpr.hpp; path = ../../Source/OdotExpr.hpp; sourceTree = "<group>"; };
 		113DEE0A1FA1D7C600A45220 /* EditSelectionBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EditSelectionBox.cpp; path = ../../Source/EditSelectionBox.cpp; sourceTree = "<group>"; };
 		113DEE0B1FA1D7C600A45220 /* EditSelectionBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditSelectionBox.h; path = ../../Source/EditSelectionBox.h; sourceTree = "<group>"; };
 		114027C21F49C21E00A9B8C4 /* SortedStaves.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SortedStaves.cpp; path = ../../Source/SortedStaves.cpp; sourceTree = "<group>"; };
 		114027C31F49C21E00A9B8C4 /* SortedStaves.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SortedStaves.hpp; path = ../../Source/SortedStaves.hpp; sourceTree = "<group>"; };
 		114027C81F4B185E00A9B8C4 /* StaffComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StaffComponent.cpp; path = ../../Source/StaffComponent.cpp; sourceTree = "<group>"; };
 		114027C91F4B185E00A9B8C4 /* StaffComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = StaffComponent.hpp; path = ../../Source/StaffComponent.hpp; sourceTree = "<group>"; };
+		116A7E412046CF62004B545D /* libsymbolist-libo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libsymbolist-libo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		116A7E452046CF8F004B545D /* osc_array.r */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.rez; name = osc_array.r; path = ../../../libo/osc_array.r; sourceTree = "<group>"; };
+		116A7E462046CF8F004B545D /* osc_atom_s.r */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.rez; name = osc_atom_s.r; path = ../../../libo/osc_atom_s.r; sourceTree = "<group>"; };
+		116A7E472046CF8F004B545D /* osc_atom_u.r */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.rez; name = osc_atom_u.r; path = ../../../libo/osc_atom_u.r; sourceTree = "<group>"; };
+		116A7E482046CF8F004B545D /* osc_bundle_iterator_s.r */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.rez; name = osc_bundle_iterator_s.r; path = ../../../libo/osc_bundle_iterator_s.r; sourceTree = "<group>"; };
+		116A7E492046CF8F004B545D /* osc_bundle_iterator_u.r */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.rez; name = osc_bundle_iterator_u.r; path = ../../../libo/osc_bundle_iterator_u.r; sourceTree = "<group>"; };
+		116A7E4A2046CF8F004B545D /* osc_bundle_s.r */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.rez; name = osc_bundle_s.r; path = ../../../libo/osc_bundle_s.r; sourceTree = "<group>"; };
+		116A7E4B2046CF8F004B545D /* osc_bundle_u.r */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.rez; name = osc_bundle_u.r; path = ../../../libo/osc_bundle_u.r; sourceTree = "<group>"; };
+		116A7E4C2046CF8F004B545D /* osc_expr_rec.r */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.rez; name = osc_expr_rec.r; path = ../../../libo/osc_expr_rec.r; sourceTree = "<group>"; };
+		116A7E4D2046CF8F004B545D /* osc_expr.r */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.rez; name = osc_expr.r; path = ../../../libo/osc_expr.r; sourceTree = "<group>"; };
+		116A7E4E2046CF8F004B545D /* osc_hashtab.r */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.rez; name = osc_hashtab.r; path = ../../../libo/osc_hashtab.r; sourceTree = "<group>"; };
+		116A7E4F2046CF8F004B545D /* osc_linkedlist.r */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.rez; name = osc_linkedlist.r; path = ../../../libo/osc_linkedlist.r; sourceTree = "<group>"; };
+		116A7E502046CF8F004B545D /* osc_message_iterator_s.r */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.rez; name = osc_message_iterator_s.r; path = ../../../libo/osc_message_iterator_s.r; sourceTree = "<group>"; };
+		116A7E512046CF8F004B545D /* osc_message_iterator_u.r */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.rez; name = osc_message_iterator_u.r; path = ../../../libo/osc_message_iterator_u.r; sourceTree = "<group>"; };
+		116A7E522046CF8F004B545D /* osc_message_s.r */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.rez; name = osc_message_s.r; path = ../../../libo/osc_message_s.r; sourceTree = "<group>"; };
+		116A7E532046CF8F004B545D /* osc_message_u.r */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.rez; name = osc_message_u.r; path = ../../../libo/osc_message_u.r; sourceTree = "<group>"; };
+		116A7E542046CF8F004B545D /* osc_rset.r */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.rez; name = osc_rset.r; path = ../../../libo/osc_rset.r; sourceTree = "<group>"; };
+		116A7E552046CF8F004B545D /* osc_vtable.r */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.rez; name = osc_vtable.r; path = ../../../libo/osc_vtable.r; sourceTree = "<group>"; };
+		116A7E562046CFB6004B545D /* osc_array.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_array.c; path = ../../../libo/osc_array.c; sourceTree = "<group>"; };
+		116A7E572046CFB6004B545D /* osc_atom_array_s.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_atom_array_s.c; path = ../../../libo/osc_atom_array_s.c; sourceTree = "<group>"; };
+		116A7E582046CFB6004B545D /* osc_atom_array_u.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_atom_array_u.c; path = ../../../libo/osc_atom_array_u.c; sourceTree = "<group>"; };
+		116A7E592046CFB6004B545D /* osc_atom_s.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_atom_s.c; path = ../../../libo/osc_atom_s.c; sourceTree = "<group>"; };
+		116A7E5A2046CFB6004B545D /* osc_atom_u.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_atom_u.c; path = ../../../libo/osc_atom_u.c; sourceTree = "<group>"; };
+		116A7E5B2046CFB6004B545D /* osc_bundle_iterator_s.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_bundle_iterator_s.c; path = ../../../libo/osc_bundle_iterator_s.c; sourceTree = "<group>"; };
+		116A7E5C2046CFB6004B545D /* osc_bundle_iterator_u.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_bundle_iterator_u.c; path = ../../../libo/osc_bundle_iterator_u.c; sourceTree = "<group>"; };
+		116A7E5D2046CFB6004B545D /* osc_bundle_s.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_bundle_s.c; path = ../../../libo/osc_bundle_s.c; sourceTree = "<group>"; };
+		116A7E5E2046CFB6004B545D /* osc_bundle_u.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_bundle_u.c; path = ../../../libo/osc_bundle_u.c; sourceTree = "<group>"; };
+		116A7E5F2046CFB6004B545D /* osc_dispatch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_dispatch.c; path = ../../../libo/osc_dispatch.c; sourceTree = "<group>"; };
+		116A7E602046CFB6004B545D /* osc_error.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_error.c; path = ../../../libo/osc_error.c; sourceTree = "<group>"; };
+		116A7E612046CFB6004B545D /* osc_expr_parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_expr_parser.c; path = ../../../libo/osc_expr_parser.c; sourceTree = "<group>"; };
+		116A7E622046CFB6004B545D /* osc_expr_rec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_expr_rec.c; path = ../../../libo/osc_expr_rec.c; sourceTree = "<group>"; };
+		116A7E632046CFB6004B545D /* osc_expr_scanner.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_expr_scanner.c; path = ../../../libo/osc_expr_scanner.c; sourceTree = "<group>"; };
+		116A7E642046CFB6004B545D /* osc_expr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_expr.c; path = ../../../libo/osc_expr.c; sourceTree = "<group>"; };
+		116A7E652046CFB6004B545D /* osc_hashtab.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_hashtab.c; path = ../../../libo/osc_hashtab.c; sourceTree = "<group>"; };
+		116A7E662046CFB6004B545D /* osc_legacy_parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_legacy_parser.c; path = ../../../libo/osc_legacy_parser.c; sourceTree = "<group>"; };
+		116A7E672046CFB6004B545D /* osc_legacy_scanner.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_legacy_scanner.c; path = ../../../libo/osc_legacy_scanner.c; sourceTree = "<group>"; };
+		116A7E682046CFB6004B545D /* osc_linkedlist.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_linkedlist.c; path = ../../../libo/osc_linkedlist.c; sourceTree = "<group>"; };
+		116A7E692046CFB6004B545D /* osc_match.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_match.c; path = ../../../libo/osc_match.c; sourceTree = "<group>"; };
+		116A7E6A2046CFB6004B545D /* osc_mem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_mem.c; path = ../../../libo/osc_mem.c; sourceTree = "<group>"; };
+		116A7E6B2046CFB6004B545D /* osc_message_iterator_s.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_message_iterator_s.c; path = ../../../libo/osc_message_iterator_s.c; sourceTree = "<group>"; };
+		116A7E6C2046CFB6004B545D /* osc_message_iterator_u.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_message_iterator_u.c; path = ../../../libo/osc_message_iterator_u.c; sourceTree = "<group>"; };
+		116A7E6D2046CFB6004B545D /* osc_message_s.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_message_s.c; path = ../../../libo/osc_message_s.c; sourceTree = "<group>"; };
+		116A7E6E2046CFB6004B545D /* osc_message_u.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_message_u.c; path = ../../../libo/osc_message_u.c; sourceTree = "<group>"; };
+		116A7E6F2046CFB6004B545D /* osc_parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_parser.c; path = ../../../libo/osc_parser.c; sourceTree = "<group>"; };
+		116A7E702046CFB6004B545D /* osc_query.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_query.c; path = ../../../libo/osc_query.c; sourceTree = "<group>"; };
+		116A7E712046CFB6004B545D /* osc_rset.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_rset.c; path = ../../../libo/osc_rset.c; sourceTree = "<group>"; };
+		116A7E722046CFB6004B545D /* osc_scanner.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_scanner.c; path = ../../../libo/osc_scanner.c; sourceTree = "<group>"; };
+		116A7E732046CFB6004B545D /* osc_serial.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_serial.c; path = ../../../libo/osc_serial.c; sourceTree = "<group>"; };
+		116A7E742046CFB6004B545D /* osc_strfmt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_strfmt.c; path = ../../../libo/osc_strfmt.c; sourceTree = "<group>"; };
+		116A7E752046CFB6004B545D /* osc_timetag.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_timetag.c; path = ../../../libo/osc_timetag.c; sourceTree = "<group>"; };
+		116A7E762046CFB6004B545D /* osc_typetag.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_typetag.c; path = ../../../libo/osc_typetag.c; sourceTree = "<group>"; };
+		116A7E772046CFB6004B545D /* osc_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_util.c; path = ../../../libo/osc_util.c; sourceTree = "<group>"; };
+		116A7E782046CFB6004B545D /* osc_vtable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_vtable.c; path = ../../../libo/osc_vtable.c; sourceTree = "<group>"; };
+		116A7E9C2046CFCD004B545D /* osc_array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_array.h; path = ../../../libo/osc_array.h; sourceTree = "<group>"; };
+		116A7E9D2046CFCD004B545D /* osc_atom_array_s.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_atom_array_s.h; path = ../../../libo/osc_atom_array_s.h; sourceTree = "<group>"; };
+		116A7E9E2046CFCD004B545D /* osc_atom_array_u.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_atom_array_u.h; path = ../../../libo/osc_atom_array_u.h; sourceTree = "<group>"; };
+		116A7E9F2046CFCD004B545D /* osc_atom_s.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_atom_s.h; path = ../../../libo/osc_atom_s.h; sourceTree = "<group>"; };
+		116A7EA02046CFCD004B545D /* osc_atom_u.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_atom_u.h; path = ../../../libo/osc_atom_u.h; sourceTree = "<group>"; };
+		116A7EA12046CFCD004B545D /* osc_bundle_iterator_s.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_bundle_iterator_s.h; path = ../../../libo/osc_bundle_iterator_s.h; sourceTree = "<group>"; };
+		116A7EA22046CFCD004B545D /* osc_bundle_iterator_u.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_bundle_iterator_u.h; path = ../../../libo/osc_bundle_iterator_u.h; sourceTree = "<group>"; };
+		116A7EA32046CFCD004B545D /* osc_bundle_s.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_bundle_s.h; path = ../../../libo/osc_bundle_s.h; sourceTree = "<group>"; };
+		116A7EA42046CFCD004B545D /* osc_bundle_u.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_bundle_u.h; path = ../../../libo/osc_bundle_u.h; sourceTree = "<group>"; };
+		116A7EA52046CFCD004B545D /* osc_byteorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_byteorder.h; path = ../../../libo/osc_byteorder.h; sourceTree = "<group>"; };
+		116A7EA62046CFCD004B545D /* osc_dispatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_dispatch.h; path = ../../../libo/osc_dispatch.h; sourceTree = "<group>"; };
+		116A7EA72046CFCD004B545D /* osc_error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_error.h; path = ../../../libo/osc_error.h; sourceTree = "<group>"; };
+		116A7EA82046CFCD004B545D /* osc_expr_func.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_expr_func.h; path = ../../../libo/osc_expr_func.h; sourceTree = "<group>"; };
+		116A7EA92046CFCD004B545D /* osc_expr_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_expr_parser.h; path = ../../../libo/osc_expr_parser.h; sourceTree = "<group>"; };
+		116A7EAA2046CFCD004B545D /* osc_expr_privatedecls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_expr_privatedecls.h; path = ../../../libo/osc_expr_privatedecls.h; sourceTree = "<group>"; };
+		116A7EAB2046CFCD004B545D /* osc_expr_rec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_expr_rec.h; path = ../../../libo/osc_expr_rec.h; sourceTree = "<group>"; };
+		116A7EAC2046CFCD004B545D /* osc_expr_scanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_expr_scanner.h; path = ../../../libo/osc_expr_scanner.h; sourceTree = "<group>"; };
+		116A7EAD2046CFCD004B545D /* osc_expr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_expr.h; path = ../../../libo/osc_expr.h; sourceTree = "<group>"; };
+		116A7EAE2046CFCD004B545D /* osc_hashtab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_hashtab.h; path = ../../../libo/osc_hashtab.h; sourceTree = "<group>"; };
+		116A7EAF2046CFCD004B545D /* osc_legacy_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_legacy_parser.h; path = ../../../libo/osc_legacy_parser.h; sourceTree = "<group>"; };
+		116A7EB02046CFCD004B545D /* osc_legacy_scanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_legacy_scanner.h; path = ../../../libo/osc_legacy_scanner.h; sourceTree = "<group>"; };
+		116A7EB12046CFCD004B545D /* osc_linkedlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_linkedlist.h; path = ../../../libo/osc_linkedlist.h; sourceTree = "<group>"; };
+		116A7EB22046CFCD004B545D /* osc_match.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_match.h; path = ../../../libo/osc_match.h; sourceTree = "<group>"; };
+		116A7EB32046CFCD004B545D /* osc_mem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_mem.h; path = ../../../libo/osc_mem.h; sourceTree = "<group>"; };
+		116A7EB42046CFCD004B545D /* osc_message_iterator_s.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_message_iterator_s.h; path = ../../../libo/osc_message_iterator_s.h; sourceTree = "<group>"; };
+		116A7EB52046CFCD004B545D /* osc_message_iterator_u.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_message_iterator_u.h; path = ../../../libo/osc_message_iterator_u.h; sourceTree = "<group>"; };
+		116A7EB62046CFCD004B545D /* osc_message_s.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_message_s.h; path = ../../../libo/osc_message_s.h; sourceTree = "<group>"; };
+		116A7EB72046CFCD004B545D /* osc_message_u.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_message_u.h; path = ../../../libo/osc_message_u.h; sourceTree = "<group>"; };
+		116A7EB82046CFCD004B545D /* osc_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_parser.h; path = ../../../libo/osc_parser.h; sourceTree = "<group>"; };
+		116A7EB92046CFCD004B545D /* osc_profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_profile.h; path = ../../../libo/osc_profile.h; sourceTree = "<group>"; };
+		116A7EBA2046CFCD004B545D /* osc_query.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_query.h; path = ../../../libo/osc_query.h; sourceTree = "<group>"; };
+		116A7EBB2046CFCD004B545D /* osc_rset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_rset.h; path = ../../../libo/osc_rset.h; sourceTree = "<group>"; };
+		116A7EBC2046CFCD004B545D /* osc_scanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_scanner.h; path = ../../../libo/osc_scanner.h; sourceTree = "<group>"; };
+		116A7EBD2046CFCD004B545D /* osc_serial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_serial.h; path = ../../../libo/osc_serial.h; sourceTree = "<group>"; };
+		116A7EBE2046CFCD004B545D /* osc_strfmt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_strfmt.h; path = ../../../libo/osc_strfmt.h; sourceTree = "<group>"; };
+		116A7EBF2046CFCD004B545D /* osc_timetag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_timetag.h; path = ../../../libo/osc_timetag.h; sourceTree = "<group>"; };
+		116A7EC02046CFCD004B545D /* osc_typetag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_typetag.h; path = ../../../libo/osc_typetag.h; sourceTree = "<group>"; };
+		116A7EC12046CFCD004B545D /* osc_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_util.h; path = ../../../libo/osc_util.h; sourceTree = "<group>"; };
+		116A7EC22046CFCD004B545D /* osc_vtable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_vtable.h; path = ../../../libo/osc_vtable.h; sourceTree = "<group>"; };
+		116A7EC32046CFCD004B545D /* osc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc.h; path = ../../../libo/osc.h; sourceTree = "<group>"; };
+		116A7EED2046DCAE004B545D /* OdotBundle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OdotBundle.cpp; path = ../../Source/OdotBundle.cpp; sourceTree = "<group>"; };
+		116A7EEE2046DCAE004B545D /* OdotBundle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = OdotBundle.hpp; path = ../../Source/OdotBundle.hpp; sourceTree = "<group>"; };
+		116A7EF42047E99D004B545D /* OdotMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OdotMessage.cpp; path = ../../Source/OdotMessage.cpp; sourceTree = "<group>"; };
+		116A7EF52047E99D004B545D /* OdotMessage.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = OdotMessage.hpp; path = ../../Source/OdotMessage.hpp; sourceTree = "<group>"; };
+		116A7EFA2047ECB8004B545D /* OdotAtom.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OdotAtom.cpp; path = ../../Source/OdotAtom.cpp; sourceTree = "<group>"; };
+		116A7EFB2047ECB8004B545D /* OdotAtom.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = OdotAtom.hpp; path = ../../Source/OdotAtom.hpp; sourceTree = "<group>"; };
+		116A7F35204C4F20004B545D /* OdotPointers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OdotPointers.h; path = ../../Source/OdotPointers.h; sourceTree = "<group>"; };
 		116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreBundleViewer.cpp; path = ../../Source/ScoreBundleViewer.cpp; sourceTree = "<group>"; };
 		116F87731F9D04B90062EE91 /* ScoreBundleViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreBundleViewer.h; path = ../../Source/ScoreBundleViewer.h; sourceTree = "<group>"; };
 		116F87781F9D04FC0062EE91 /* PropertyPanelTabs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PropertyPanelTabs.cpp; path = ../../Source/PropertyPanelTabs.cpp; sourceTree = "<group>"; };
@@ -192,6 +387,8 @@
 		118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BaseComponent.cpp; path = ../../Source/BaseComponent.cpp; sourceTree = "<group>"; };
 		118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PaletteComponent.cpp; path = ../../Source/PaletteComponent.cpp; sourceTree = "<group>"; };
 		118C38EE1EC61404006FF4A1 /* PaletteComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PaletteComponent.h; path = ../../Source/PaletteComponent.h; sourceTree = "<group>"; };
+		11A3939A20528799002C8916 /* OdotBundle_s.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OdotBundle_s.cpp; path = ../../Source/OdotBundle_s.cpp; sourceTree = "<group>"; };
+		11A3939B20528799002C8916 /* OdotBundle_s.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = OdotBundle_s.hpp; path = ../../Source/OdotBundle_s.hpp; sourceTree = "<group>"; };
 		11B71DCF1F098F1400CDE209 /* SymbolPropertiesPanel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolPropertiesPanel.cpp; path = ../../Source/SymbolPropertiesPanel.cpp; sourceTree = "<group>"; };
 		11B71DD01F098F1400CDE209 /* SymbolPropertiesPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SymbolPropertiesPanel.h; path = ../../Source/SymbolPropertiesPanel.h; sourceTree = "<group>"; };
 		11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OSCPropertyComponents.cpp; path = ../../Source/OSCPropertyComponents.cpp; sourceTree = "<group>"; };
@@ -281,10 +478,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		116A7E3E2046CF62004B545D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		11CE001D1EC3271700E4F624 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				116A7EEC2046CFF2004B545D /* libsymbolist-libo.a in Frameworks */,
 				446388D31EC34B980038CFCB /* IOKit.framework in Frameworks */,
 				446388D21EC34B840038CFCB /* WebKit.framework in Frameworks */,
 				446388D11EC34B7A0038CFCB /* QuartzCore.framework in Frameworks */,
@@ -348,9 +553,142 @@
 			name = "time-components";
 			sourceTree = "<group>";
 		};
+		116A7E3C2046CF3F004B545D /* libo */ = {
+			isa = PBXGroup;
+			children = (
+				116A7E452046CF8F004B545D /* osc_array.r */,
+				116A7E462046CF8F004B545D /* osc_atom_s.r */,
+				116A7E472046CF8F004B545D /* osc_atom_u.r */,
+				116A7E482046CF8F004B545D /* osc_bundle_iterator_s.r */,
+				116A7E492046CF8F004B545D /* osc_bundle_iterator_u.r */,
+				116A7E4A2046CF8F004B545D /* osc_bundle_s.r */,
+				116A7E4B2046CF8F004B545D /* osc_bundle_u.r */,
+				116A7E4C2046CF8F004B545D /* osc_expr_rec.r */,
+				116A7E4D2046CF8F004B545D /* osc_expr.r */,
+				116A7E4E2046CF8F004B545D /* osc_hashtab.r */,
+				116A7E4F2046CF8F004B545D /* osc_linkedlist.r */,
+				116A7E502046CF8F004B545D /* osc_message_iterator_s.r */,
+				116A7E512046CF8F004B545D /* osc_message_iterator_u.r */,
+				116A7E522046CF8F004B545D /* osc_message_s.r */,
+				116A7E532046CF8F004B545D /* osc_message_u.r */,
+				116A7E542046CF8F004B545D /* osc_rset.r */,
+				116A7E552046CF8F004B545D /* osc_vtable.r */,
+				116A7E9C2046CFCD004B545D /* osc_array.h */,
+				116A7E9D2046CFCD004B545D /* osc_atom_array_s.h */,
+				116A7E9E2046CFCD004B545D /* osc_atom_array_u.h */,
+				116A7E9F2046CFCD004B545D /* osc_atom_s.h */,
+				116A7EA02046CFCD004B545D /* osc_atom_u.h */,
+				116A7EA12046CFCD004B545D /* osc_bundle_iterator_s.h */,
+				116A7EA22046CFCD004B545D /* osc_bundle_iterator_u.h */,
+				116A7EA32046CFCD004B545D /* osc_bundle_s.h */,
+				116A7EA42046CFCD004B545D /* osc_bundle_u.h */,
+				116A7EA52046CFCD004B545D /* osc_byteorder.h */,
+				116A7EA62046CFCD004B545D /* osc_dispatch.h */,
+				116A7EA72046CFCD004B545D /* osc_error.h */,
+				116A7EA82046CFCD004B545D /* osc_expr_func.h */,
+				116A7EA92046CFCD004B545D /* osc_expr_parser.h */,
+				116A7EAA2046CFCD004B545D /* osc_expr_privatedecls.h */,
+				116A7EAB2046CFCD004B545D /* osc_expr_rec.h */,
+				116A7EAC2046CFCD004B545D /* osc_expr_scanner.h */,
+				116A7EAD2046CFCD004B545D /* osc_expr.h */,
+				116A7EAE2046CFCD004B545D /* osc_hashtab.h */,
+				116A7EAF2046CFCD004B545D /* osc_legacy_parser.h */,
+				116A7EB02046CFCD004B545D /* osc_legacy_scanner.h */,
+				116A7EB12046CFCD004B545D /* osc_linkedlist.h */,
+				116A7EB22046CFCD004B545D /* osc_match.h */,
+				116A7EB32046CFCD004B545D /* osc_mem.h */,
+				116A7EB42046CFCD004B545D /* osc_message_iterator_s.h */,
+				116A7EB52046CFCD004B545D /* osc_message_iterator_u.h */,
+				116A7EB62046CFCD004B545D /* osc_message_s.h */,
+				116A7EB72046CFCD004B545D /* osc_message_u.h */,
+				116A7EB82046CFCD004B545D /* osc_parser.h */,
+				116A7EB92046CFCD004B545D /* osc_profile.h */,
+				116A7EBA2046CFCD004B545D /* osc_query.h */,
+				116A7EBB2046CFCD004B545D /* osc_rset.h */,
+				116A7EBC2046CFCD004B545D /* osc_scanner.h */,
+				116A7EBD2046CFCD004B545D /* osc_serial.h */,
+				116A7EBE2046CFCD004B545D /* osc_strfmt.h */,
+				116A7EBF2046CFCD004B545D /* osc_timetag.h */,
+				116A7EC02046CFCD004B545D /* osc_typetag.h */,
+				116A7EC12046CFCD004B545D /* osc_util.h */,
+				116A7EC22046CFCD004B545D /* osc_vtable.h */,
+				116A7EC32046CFCD004B545D /* osc.h */,
+				116A7E562046CFB6004B545D /* osc_array.c */,
+				116A7E572046CFB6004B545D /* osc_atom_array_s.c */,
+				116A7E582046CFB6004B545D /* osc_atom_array_u.c */,
+				116A7E592046CFB6004B545D /* osc_atom_s.c */,
+				116A7E5A2046CFB6004B545D /* osc_atom_u.c */,
+				116A7E5B2046CFB6004B545D /* osc_bundle_iterator_s.c */,
+				116A7E5C2046CFB6004B545D /* osc_bundle_iterator_u.c */,
+				116A7E5D2046CFB6004B545D /* osc_bundle_s.c */,
+				116A7E5E2046CFB6004B545D /* osc_bundle_u.c */,
+				116A7E5F2046CFB6004B545D /* osc_dispatch.c */,
+				116A7E602046CFB6004B545D /* osc_error.c */,
+				116A7E612046CFB6004B545D /* osc_expr_parser.c */,
+				116A7E622046CFB6004B545D /* osc_expr_rec.c */,
+				116A7E632046CFB6004B545D /* osc_expr_scanner.c */,
+				116A7E642046CFB6004B545D /* osc_expr.c */,
+				116A7E652046CFB6004B545D /* osc_hashtab.c */,
+				116A7E662046CFB6004B545D /* osc_legacy_parser.c */,
+				116A7E672046CFB6004B545D /* osc_legacy_scanner.c */,
+				116A7E682046CFB6004B545D /* osc_linkedlist.c */,
+				116A7E692046CFB6004B545D /* osc_match.c */,
+				116A7E6A2046CFB6004B545D /* osc_mem.c */,
+				116A7E6B2046CFB6004B545D /* osc_message_iterator_s.c */,
+				116A7E6C2046CFB6004B545D /* osc_message_iterator_u.c */,
+				116A7E6D2046CFB6004B545D /* osc_message_s.c */,
+				116A7E6E2046CFB6004B545D /* osc_message_u.c */,
+				116A7E6F2046CFB6004B545D /* osc_parser.c */,
+				116A7E702046CFB6004B545D /* osc_query.c */,
+				116A7E712046CFB6004B545D /* osc_rset.c */,
+				116A7E722046CFB6004B545D /* osc_scanner.c */,
+				116A7E732046CFB6004B545D /* osc_serial.c */,
+				116A7E742046CFB6004B545D /* osc_strfmt.c */,
+				116A7E752046CFB6004B545D /* osc_timetag.c */,
+				116A7E762046CFB6004B545D /* osc_typetag.c */,
+				116A7E772046CFB6004B545D /* osc_util.c */,
+				116A7E782046CFB6004B545D /* osc_vtable.c */,
+			);
+			name = libo;
+			sourceTree = "<group>";
+		};
+		116A7EF32047E873004B545D /* odot-wrapper */ = {
+			isa = PBXGroup;
+			children = (
+				113980B1206449EA002A2408 /* OdotExpr.cpp */,
+				113980B2206449EA002A2408 /* OdotExpr.hpp */,
+				116A7EED2046DCAE004B545D /* OdotBundle.cpp */,
+				116A7EEE2046DCAE004B545D /* OdotBundle.hpp */,
+				11A3939A20528799002C8916 /* OdotBundle_s.cpp */,
+				11A3939B20528799002C8916 /* OdotBundle_s.hpp */,
+				116A7EF42047E99D004B545D /* OdotMessage.cpp */,
+				116A7EF52047E99D004B545D /* OdotMessage.hpp */,
+				116A7EFA2047ECB8004B545D /* OdotAtom.cpp */,
+				116A7EFB2047ECB8004B545D /* OdotAtom.hpp */,
+				116A7F35204C4F20004B545D /* OdotPointers.h */,
+			);
+			name = "odot-wrapper";
+			sourceTree = "<group>";
+		};
+		117556381ED30F0F00203B67 /* main */ = {
+			isa = PBXGroup;
+			children = (
+				4425D3031EF858C700B8BF1C /* SymbolistHandler.h */,
+				4425D3041EF8599300B8BF1C /* SymbolistHandler.cpp */,
+				44CFE0421EC37BA5009135F8 /* SymbolistMainWindow.h */,
+				446388D41EC34DC90038CFCB /* SymbolistMainWindow.cpp */,
+				44CFE0411EC37BA5009135F8 /* SymbolistMainComponent.h */,
+				11CE00531EC328EC00E4F624 /* SymbolistMainComponent.cpp */,
+				118353441F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp */,
+				118353451F26AD0600DB1DF5 /* SymbolistLookAndFeel.hpp */,
+			);
+			name = main;
+			sourceTree = "<group>";
+		};
 		118C38E11EC5C39F006FF4A1 /* score */ = {
 			isa = PBXGroup;
 			children = (
+				116A7EF32047E873004B545D /* odot-wrapper */,
 				447FFBF31EC60CB60001000D /* OSCIO.h */,
 				446363931EC6F4960054CB6D /* OSCIO.cpp */,
 				44B718B01EDD9D010039884E /* Symbol.h */,
@@ -459,6 +797,7 @@
 			isa = PBXGroup;
 			children = (
 				5BA2DB05C7718E6A683CC674 /* symbolist */,
+				116A7E3C2046CF3F004B545D /* libo */,
 				94B8138ECA97E6DE808F6129 /* Juce Modules */,
 				0B36EDC8D7DFF8BAF3E150D2 /* Juce Library Code */,
 				7D07A1619BB37DE0267F74A0 /* Resources */,
@@ -583,6 +922,7 @@
 				31AA60335333AFCFC2C433D3 /* symbolist.dylib */,
 				11CE00201EC3271700E4F624 /* symbolist.app */,
 				1107B3EF1EF7D53100E2DFA9 /* libsymbolist.a */,
+				116A7E412046CF62004B545D /* libsymbolist-libo.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -594,13 +934,65 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				116A7EF22046DCAE004B545D /* OdotBundle.hpp in Headers */,
+				113980B6206449EA002A2408 /* OdotExpr.hpp in Headers */,
+				116A7EFF2047ECB8004B545D /* OdotAtom.hpp in Headers */,
 				11C442D31F585C1B00F2E9B6 /* TimeDisplay.hpp in Headers */,
 				114027C71F49C21E00A9B8C4 /* SortedStaves.hpp in Headers */,
 				114027CD1F4B185E00A9B8C4 /* StaffComponent.hpp in Headers */,
 				116F87771F9D04B90062EE91 /* ScoreBundleViewer.h in Headers */,
+				11A3939F20528799002C8916 /* OdotBundle_s.hpp in Headers */,
+				116A7EF92047E99D004B545D /* OdotMessage.hpp in Headers */,
 				113DEE0F1FA1D7C600A45220 /* EditSelectionBox.h in Headers */,
 				75774FA92062A4D40069A89D /* Palette.hpp in Headers */,
 				75774FA12062960C0069A89D /* SymbolistModel.hpp in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		116A7E3F2046CF62004B545D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				116A7ED32046CFCD004B545D /* osc_expr_rec.h in Headers */,
+				116A7ED12046CFCD004B545D /* osc_expr_parser.h in Headers */,
+				116A7EE32046CFCD004B545D /* osc_rset.h in Headers */,
+				116A7EC42046CFCD004B545D /* osc_array.h in Headers */,
+				116A7EE22046CFCD004B545D /* osc_query.h in Headers */,
+				116A7EC82046CFCD004B545D /* osc_atom_u.h in Headers */,
+				116A7EDD2046CFCD004B545D /* osc_message_iterator_u.h in Headers */,
+				116A7EEA2046CFCD004B545D /* osc_vtable.h in Headers */,
+				116A7EC72046CFCD004B545D /* osc_atom_s.h in Headers */,
+				116A7ECA2046CFCD004B545D /* osc_bundle_iterator_u.h in Headers */,
+				116A7ECB2046CFCD004B545D /* osc_bundle_s.h in Headers */,
+				116A7ED22046CFCD004B545D /* osc_expr_privatedecls.h in Headers */,
+				116A7ED62046CFCD004B545D /* osc_hashtab.h in Headers */,
+				116A7EE42046CFCD004B545D /* osc_scanner.h in Headers */,
+				116A7EDF2046CFCD004B545D /* osc_message_u.h in Headers */,
+				116A7EE92046CFCD004B545D /* osc_util.h in Headers */,
+				116A7EE02046CFCD004B545D /* osc_parser.h in Headers */,
+				116A7ED92046CFCD004B545D /* osc_linkedlist.h in Headers */,
+				116A7EE52046CFCD004B545D /* osc_serial.h in Headers */,
+				116A7EE82046CFCD004B545D /* osc_typetag.h in Headers */,
+				116A7EE62046CFCD004B545D /* osc_strfmt.h in Headers */,
+				116A7EDB2046CFCD004B545D /* osc_mem.h in Headers */,
+				116A7ED82046CFCD004B545D /* osc_legacy_scanner.h in Headers */,
+				116A7ECD2046CFCD004B545D /* osc_byteorder.h in Headers */,
+				116A7EEB2046CFCD004B545D /* osc.h in Headers */,
+				116A7EE12046CFCD004B545D /* osc_profile.h in Headers */,
+				116A7EDC2046CFCD004B545D /* osc_message_iterator_s.h in Headers */,
+				116A7ED02046CFCD004B545D /* osc_expr_func.h in Headers */,
+				116A7EC62046CFCD004B545D /* osc_atom_array_u.h in Headers */,
+				116A7ED42046CFCD004B545D /* osc_expr_scanner.h in Headers */,
+				116A7EDA2046CFCD004B545D /* osc_match.h in Headers */,
+				116A7ECF2046CFCD004B545D /* osc_error.h in Headers */,
+				116A7ECE2046CFCD004B545D /* osc_dispatch.h in Headers */,
+				116A7EC92046CFCD004B545D /* osc_bundle_iterator_s.h in Headers */,
+				116A7ECC2046CFCD004B545D /* osc_bundle_u.h in Headers */,
+				116A7EC52046CFCD004B545D /* osc_atom_array_s.h in Headers */,
+				116A7ED72046CFCD004B545D /* osc_legacy_parser.h in Headers */,
+				116A7EDE2046CFCD004B545D /* osc_message_s.h in Headers */,
+				116A7EE72046CFCD004B545D /* osc_timetag.h in Headers */,
+				116A7ED52046CFCD004B545D /* osc_expr.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -622,6 +1014,23 @@
 			name = "symbolist - Static Library";
 			productName = libsymbolist;
 			productReference = 1107B3EF1EF7D53100E2DFA9 /* libsymbolist.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		116A7E402046CF62004B545D /* symbolist-libo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 116A7E422046CF62004B545D /* Build configuration list for PBXNativeTarget "symbolist-libo" */;
+			buildPhases = (
+				116A7E3D2046CF62004B545D /* Sources */,
+				116A7E3E2046CF62004B545D /* Frameworks */,
+				116A7E3F2046CF62004B545D /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "symbolist-libo";
+			productName = "symbolist-libo";
+			productReference = 116A7E412046CF62004B545D /* libsymbolist-libo.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		11CE001F1EC3271700E4F624 /* symbolist */ = {
@@ -669,6 +1078,10 @@
 					1107B3EE1EF7D53100E2DFA9 = {
 						CreatedOnToolsVersion = 6.3.1;
 					};
+					116A7E402046CF62004B545D = {
+						CreatedOnToolsVersion = 8.3.3;
+						ProvisioningStyle = Automatic;
+					};
 					11CE001F1EC3271700E4F624 = {
 						CreatedOnToolsVersion = 6.3.1;
 					};
@@ -689,6 +1102,7 @@
 				EA3AF3830D077C2067752836 /* symbolist - Dynamic Library */,
 				11CE001F1EC3271700E4F624 /* symbolist */,
 				1107B3EE1EF7D53100E2DFA9 /* symbolist - Static Library */,
+				116A7E402046CF62004B545D /* symbolist-libo */,
 			);
 		};
 /* End PBXProject section */
@@ -731,8 +1145,10 @@
 				1186486D1EF7E68B00904672 /* include_juce_data_structures.mm in Sources */,
 				1107B3F41EF7D54E00E2DFA9 /* OSCIO.cpp in Sources */,
 				75774FA6206296C50069A89D /* Palette.cpp in Sources */,
+				11A3939E20528799002C8916 /* OdotBundle_s.cpp in Sources */,
 				11B71DD31F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */,
 				1107B3F61EF7D55D00E2DFA9 /* Score.cpp in Sources */,
+				116A7EFE2047ECB8004B545D /* OdotAtom.cpp in Sources */,
 				114027CC1F4B185E00A9B8C4 /* StaffComponent.cpp in Sources */,
 				1186489E1EFAC44100904672 /* ScoreCursor.cpp in Sources */,
 				1107B4011EF7D55D00E2DFA9 /* SymbolistComponent.cpp in Sources */,
@@ -749,8 +1165,11 @@
 				1107B3F71EF7D55D00E2DFA9 /* TextGlyphComponent.cpp in Sources */,
 				118648981EFA811800904672 /* TimePointArray.cpp in Sources */,
 				11B71DD91F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
+				116A7EF82047E99D004B545D /* OdotMessage.cpp in Sources */,
 				118648711EF7E68B00904672 /* include_juce_gui_extra.mm in Sources */,
+				116A7EF12046DCAE004B545D /* OdotBundle.cpp in Sources */,
 				1107B4031EF7D55D00E2DFA9 /* SymbolistMainWindow.cpp in Sources */,
+				113980B5206449EA002A2408 /* OdotExpr.cpp in Sources */,
 				116F877C1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */,
 				11D123681F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */,
 				1107B3F91EF7D55D00E2DFA9 /* PathInfo.cpp in Sources */,
@@ -761,11 +1180,52 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		116A7E3D2046CF62004B545D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				116A7E922046CFB6004B545D /* osc_parser.c in Sources */,
+				116A7E962046CFB6004B545D /* osc_serial.c in Sources */,
+				116A7E812046CFB6004B545D /* osc_bundle_u.c in Sources */,
+				116A7E872046CFB6004B545D /* osc_expr.c in Sources */,
+				116A7E7C2046CFB6004B545D /* osc_atom_s.c in Sources */,
+				116A7E912046CFB6004B545D /* osc_message_u.c in Sources */,
+				116A7E7E2046CFB6004B545D /* osc_bundle_iterator_s.c in Sources */,
+				116A7E952046CFB6004B545D /* osc_scanner.c in Sources */,
+				116A7E7D2046CFB6004B545D /* osc_atom_u.c in Sources */,
+				116A7E8A2046CFB6004B545D /* osc_legacy_scanner.c in Sources */,
+				116A7E9B2046CFB6004B545D /* osc_vtable.c in Sources */,
+				116A7E7B2046CFB6004B545D /* osc_atom_array_u.c in Sources */,
+				116A7E7A2046CFB6004B545D /* osc_atom_array_s.c in Sources */,
+				116A7E792046CFB6004B545D /* osc_array.c in Sources */,
+				116A7E982046CFB6004B545D /* osc_timetag.c in Sources */,
+				116A7E8C2046CFB6004B545D /* osc_match.c in Sources */,
+				116A7E832046CFB6004B545D /* osc_error.c in Sources */,
+				116A7E7F2046CFB6004B545D /* osc_bundle_iterator_u.c in Sources */,
+				116A7E842046CFB6004B545D /* osc_expr_parser.c in Sources */,
+				116A7E852046CFB6004B545D /* osc_expr_rec.c in Sources */,
+				116A7E9A2046CFB6004B545D /* osc_util.c in Sources */,
+				116A7E862046CFB6004B545D /* osc_expr_scanner.c in Sources */,
+				116A7E8E2046CFB6004B545D /* osc_message_iterator_s.c in Sources */,
+				116A7E892046CFB6004B545D /* osc_legacy_parser.c in Sources */,
+				116A7E8D2046CFB6004B545D /* osc_mem.c in Sources */,
+				116A7E882046CFB6004B545D /* osc_hashtab.c in Sources */,
+				116A7E942046CFB6004B545D /* osc_rset.c in Sources */,
+				116A7E902046CFB6004B545D /* osc_message_s.c in Sources */,
+				116A7E992046CFB6004B545D /* osc_typetag.c in Sources */,
+				116A7E8B2046CFB6004B545D /* osc_linkedlist.c in Sources */,
+				116A7E802046CFB6004B545D /* osc_bundle_s.c in Sources */,
+				116A7E932046CFB6004B545D /* osc_query.c in Sources */,
+				116A7E822046CFB6004B545D /* osc_dispatch.c in Sources */,
+				116A7E972046CFB6004B545D /* osc_strfmt.c in Sources */,
+				116A7E8F2046CFB6004B545D /* osc_message_iterator_u.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		11CE001C1EC3271700E4F624 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				446363951EC6F4960054CB6D /* OSCIO.cpp in Sources */,
 				11D123671F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */,
 				11CE005F1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */,
 				44EE9BBE1EC37D3E0021C5A8 /* Main.cpp in Sources */,
@@ -788,6 +1248,7 @@
 				11B71DD21F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */,
 				1186489D1EFAC44100904672 /* ScoreCursor.cpp in Sources */,
 				118C38DF1EC5BC4F006FF4A1 /* Score.cpp in Sources */,
+				116A7EFD2047ECB8004B545D /* OdotAtom.cpp in Sources */,
 				11D1235D1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */,
 				75774FA5206296C50069A89D /* Palette.cpp in Sources */,
 				444CD9041EDDAF1B001AC03A /* SymbolistComponent.cpp in Sources */,
@@ -795,17 +1256,21 @@
 				1107B3EA1EF5388500E2DFA9 /* PathInfo.cpp in Sources */,
 				11D86B8C1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */,
 				44C0729F1EC4AF8C0028D5F8 /* include_juce_osc.cpp in Sources */,
+				116A7EF02046DCAE004B545D /* OdotBundle.cpp in Sources */,
 				116F87751F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */,
 				116F877B1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */,
 				118648971EFA811800904672 /* TimePointArray.cpp in Sources */,
 				1107B3DE1EF1751900E2DFA9 /* TextGlyphComponent.cpp in Sources */,
 				1107B3E21EF2D45500E2DFA9 /* PathHandleComponent.cpp in Sources */,
 				11B71DD81F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
+				116A7EF72047E99D004B545D /* OdotMessage.cpp in Sources */,
 				113DEE0D1FA1D7C600A45220 /* EditSelectionBox.cpp in Sources */,
 				44CFE03B1EC3789C009135F8 /* include_juce_data_structures.mm in Sources */,
+				11A3939D20528799002C8916 /* OdotBundle_s.cpp in Sources */,
 				44CFE0391EC377EA009135F8 /* SymbolistMainWindow.cpp in Sources */,
 				444C43A61EE4A748000C6F69 /* SymbolGroupComponent.cpp in Sources */,
 				11B71DCE1F09844300CDE209 /* symbolist.cpp in Sources */,
+				113980B4206449EA002A2408 /* OdotExpr.cpp in Sources */,
 				118C38F01EC61404006FF4A1 /* PaletteComponent.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -814,7 +1279,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				446363941EC6F4960054CB6D /* OSCIO.cpp in Sources */,
 				11CE005E1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */,
 				11D123591F4471EA00A5EA5B /* ToolBarComp.cpp in Sources */,
 				AC7BC43E089630154F7F79D6 /* include_juce_core.mm in Sources */,
@@ -826,8 +1290,10 @@
 				444C43A11EE4A2E4000C6F69 /* PageComponent.cpp in Sources */,
 				ECAB07494F266A96C75A7E47 /* include_juce_events.mm in Sources */,
 				446388D51EC34DC90038CFCB /* SymbolistMainWindow.cpp in Sources */,
+				11A3939C20528799002C8916 /* OdotBundle_s.cpp in Sources */,
 				11B71DD11F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */,
 				118C38E31EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */,
+				116A7EFC2047ECB8004B545D /* OdotAtom.cpp in Sources */,
 				114027CA1F4B185E00A9B8C4 /* StaffComponent.cpp in Sources */,
 				8D57C4E2ADEA2935AAB91AAC /* include_juce_graphics.mm in Sources */,
 				1186489C1EFAC44100904672 /* ScoreCursor.cpp in Sources */,
@@ -848,8 +1314,11 @@
 				44C0729E1EC4AF870028D5F8 /* include_juce_osc.cpp in Sources */,
 				118648961EFA811800904672 /* TimePointArray.cpp in Sources */,
 				75774FA4206296C50069A89D /* Palette.cpp in Sources */,
+				116A7EF62047E99D004B545D /* OdotMessage.cpp in Sources */,
 				11B71DD71F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
+				116A7EEF2046DCAE004B545D /* OdotBundle.cpp in Sources */,
 				1107B3DD1EF1751900E2DFA9 /* TextGlyphComponent.cpp in Sources */,
+				113980B3206449EA002A2408 /* OdotExpr.cpp in Sources */,
 				116F877A1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */,
 				11D123661F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */,
 				75774F9B206176790069A89D /* View.cpp in Sources */,
@@ -953,6 +1422,66 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		116A7E432046CF62004B545D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRELINK_LIBS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		116A7E442046CF62004B545D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRELINK_LIBS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -1134,6 +1663,7 @@
 					/juce_audio_plugin_client,
 					"$(inherited)",
 				);
+				PRELINK_LIBS = "";
 				PRODUCT_NAME = symbolist;
 				WARNING_CFLAGS = "-Wreorder";
 				ZERO_LINK = NO;
@@ -1221,6 +1751,7 @@
 					"$(inherited)",
 				);
 				ONLY_ACTIVE_ARCH = YES;
+				PRELINK_LIBS = "";
 				PRODUCT_NAME = symbolist;
 				WARNING_CFLAGS = "-Wreorder";
 				ZERO_LINK = NO;
@@ -1235,6 +1766,15 @@
 			buildConfigurations = (
 				1107B3F01EF7D53100E2DFA9 /* Debug */,
 				1107B3F11EF7D53100E2DFA9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		116A7E422046CF62004B545D /* Build configuration list for PBXNativeTarget "symbolist-libo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				116A7E432046CF62004B545D /* Debug */,
+				116A7E442046CF62004B545D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

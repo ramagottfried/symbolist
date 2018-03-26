@@ -35,7 +35,7 @@ public:
     size_t size();
     void erase( Symbol *s );
     void removeStaff( Symbol *s);
-    static bool compareStaves (const Symbol* a, const Symbol* b);
+    static bool compareStaves (Symbol* a, Symbol* b);
     void resetTimes();
     bool addStaff( Symbol *s);
     

@@ -14,23 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "11CE001F1EC3271700E4F624"
-               BuildableName = "symbolist.app"
-               BlueprintName = "symbolist"
-               ReferencedContainer = "container:symbolist.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "11CE00341EC3271700E4F624"
-               BuildableName = "symbolistTests.xctest"
-               BlueprintName = "symbolistTests"
+               BlueprintIdentifier = "116A7E402046CF62004B545D"
+               BuildableName = "libsymbolist-libo.a"
+               BlueprintName = "symbolist-libo"
                ReferencedContainer = "container:symbolist.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -43,26 +29,7 @@
       language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "11CE00341EC3271700E4F624"
-               BuildableName = "symbolistTests.xctest"
-               BlueprintName = "symbolistTests"
-               ReferencedContainer = "container:symbolist.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "11CE001F1EC3271700E4F624"
-            BuildableName = "symbolist.app"
-            BlueprintName = "symbolist"
-            ReferencedContainer = "container:symbolist.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -77,16 +44,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "11CE001F1EC3271700E4F624"
-            BuildableName = "symbolist.app"
-            BlueprintName = "symbolist"
+            BlueprintIdentifier = "116A7E402046CF62004B545D"
+            BuildableName = "libsymbolist-libo.a"
+            BlueprintName = "symbolist-libo"
             ReferencedContainer = "container:symbolist.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -96,16 +62,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "11CE001F1EC3271700E4F624"
-            BuildableName = "symbolist.app"
-            BlueprintName = "symbolist"
+            BlueprintIdentifier = "116A7E402046CF62004B545D"
+            BuildableName = "libsymbolist-libo.a"
+            BlueprintName = "symbolist-libo"
             ReferencedContainer = "container:symbolist.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

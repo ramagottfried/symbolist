@@ -184,73 +184,71 @@ void SymbolGroupComponent::scaleScoreComponent(float scale_w, float scale_h)
  * SYMBOL MANAGEMENT
  *============================*/
 
-int SymbolGroupComponent::addSymbolMessages( Symbol* s, const String &base_address )
+void SymbolGroupComponent::addSymbolMessages( Symbol* s )
 {
     
 //    cout << "SymbolGroupComponent::addSymbolMessages " << s << " " << base_address << " " << getNumSubcomponents() << endl;
     
-    int messages_added = BaseComponent::addSymbolMessages( s, base_address );
+    BaseComponent::addSymbolMessages( s );
     
-    String addr = base_address + "/numsymbols";
-    
-    /* 
-     * the group symbol is created fist (with the default state), then added to, then updated,
+    s->addMessage( "/numsymbols", (int)getNumSubcomponents() );
+
+    /*
+     * the group symbol is created first (with the default state), then added to, then updated,
      * so we need (getNumSubcomponents() > 0) to wait to set /numsymbols until after the symbol has been updated,
      * otherwise, /numsymbols gets stuck at 0
-     */
     
-    if( s->getOSCMessagePos(addr) == -1 && (getNumSubcomponents() > 0) )
+    
+     i don't understand this again, commenting out to test
+    if( getNumSubcomponents() )
     {
-        s->addOSCMessage( addr, (int)getNumSubcomponents() );
-        messages_added++;
+        s->addMessage( addr, (int)getNumSubcomponents() );
     }
-    
-    BaseComponent* subComponent;
+    */
+   
+    BaseComponent* subComponent; 
+    Symbol subSymbol;
     
     for (int i = 0; i < getNumSubcomponents(); i++)
     {
-        addr = base_address + "/subsymbol/" + String(i+1);
-        if( s->getOSCMessagePos(addr) == -1 )
-        {
-            subComponent = dynamic_cast<BaseComponent*>(getSubcomponent(i));
-            
-            // Checks downcast result.
-            if (subComponent != NULL)
-                messages_added += subComponent->addSymbolMessages( s, addr );
-        }
+        subComponent = dynamic_cast<BaseComponent*>(getSubcomponent(i));
+        if (subComponent != NULL)
+	{
+	   subComponent->addSymbolMessages( &subSymbol );
+	   s->addMessage( "/subsymbol/" + to_string(i), subSymbol );
+	}	
     }
     
-    return messages_added;
 }
-
 
 void SymbolGroupComponent::importFromSymbol( const Symbol &s )
 {
-
     clearAllSubcomponents();
     
     BaseComponent::importFromSymbol(s);
     
-    int pos = s.getOSCMessagePos("/numsymbols");
+    auto subsymbols = s.matchAddress( "/subsymbol", false ); // later try /* with full match at default true
     
-    if ( pos >= 0 )
+    int count = 0;
+    for ( auto sub : subsymbols )
     {
-        int n_symbols = s.getOSCMessageValue(pos).getInt32();
- 
-        std::cout << "Importing Group of " << n_symbols << " symbols..." << std::endl;
-        for (int i = 0; i < n_symbols; i++ )
+        if( sub[0].isBundle() )
         {
-            String filter = "/subsymbol/" + String(i+1) ;   // we start at 1 .. (?)
+            cout << "IMPORT FROM: " << sub.getAddress() << endl;
+            Symbol sub_s( sub.getBundle().get_o_ptr() );
             
-            cout << "IMPORT FROM: " << filter << endl;
-            Symbol sub_s = s.makeSubSymbol( filter );
             BaseComponent* c = getSymbolistHandler()->makeComponentFromSymbol( &sub_s , false );
             
             if ( c != NULL)
+            {
                 addSubcomponent( c );
+                count++;
+            }
             else
-                cout << "Error importing subsymbol #" << i << endl;
+                cout << "Error importing subsymbol #" << count << endl;
         }
     }
+    
+    std::cout << "Imported Group of " << count << " symbols..." << std::endl;
 }
 

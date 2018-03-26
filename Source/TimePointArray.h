@@ -117,8 +117,8 @@ public:
         return ( a_t < b_t ? 1 : ( f_almost_equal(a_t, b_t) ? 0 : -1 ) );
     }
 
-    odot_bundle *getSymbolsAtTime( float t );
-    odot_bundle *timePointStreamToOSC(const SymbolTimePoint *tpoint);
+    OdotBundle_s getSymbolsAtTime( float t );
+    OdotBundle_s timePointStreamToOSC(const SymbolTimePoint *tpoint);
     
     int lookupTimePoint( float t );
     Point<float> lookupPathPoint( const Symbol *s, const float t );

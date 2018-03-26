@@ -1,5 +1,5 @@
 #include "SymbolPropertiesPanel.h"
-
+#include "OSCPropertyComponents.h"
 
 SymbolPropertiesPanel::SymbolPropertiesPanel(SymbolistHandler *sh )
 {
@@ -17,30 +17,16 @@ SymbolPropertiesPanel::SymbolPropertiesPanel(SymbolistHandler *sh )
     getLookAndFeel().setColour(Label::backgroundWhenEditingColourId, Colours::transparentWhite  );
 }
 
-void SymbolPropertiesPanel::change_callback( const OSCMessage& msg)
+void SymbolPropertiesPanel::change_callback( const OdotMessage& msg)
 {
     Symbol *s = symbol_component->getScoreSymbolPointer();
-    const OSCBundle *bundle = s->getOSCBundle();
     
-    OSCBundle newBundle;
-    
-    for( auto osc_m_iter : *bundle )
-    {
-        auto i_msg = osc_m_iter.getMessage();
-        if( i_msg.getAddressPattern() == msg.getAddressPattern() )
-            newBundle.addElement( msg );
-        else
-            newBundle.addElement( i_msg );
-    }
-    
-    s->setOSCBundle( &newBundle );
-    //cout << "UPDATE " << endl;
-    //s->printBundle();
+    s->addMessage( msg ); // this overwrites any duplicate messages
     
     symbolist_handler->updateSymbolFromInspector( symbol_component );
     
     // if the action was to set a staff, we need to add this symbol to the stave
-    if( msg.getAddressPattern() == "/staff" )
+    if( msg.getAddress() == "/staff" )
         ;
     
    // setInspectorObject( symbol_component );
@@ -54,39 +40,33 @@ void SymbolPropertiesPanel::createOSCview ()
 {
     properties.clear();
 
-    
     if( symbol_component )
     {
         Symbol *s = symbol_component->getScoreSymbolPointer();
-        if( !s ) return;
+        if( !s )
+            return;
         
-        OSCBundle bndl = *s->getOSCBundle();
-        if ( bndl.isEmpty() )  return;
+        if ( !s->size() )  return;
 
-        for( int i = 0; i < bndl.size(); i++ )
+        
+        for( auto msg : s->getMessageArray() )
         {
-            auto msg = bndl[i].getMessage();
-            const String& addr = msg.getAddressPattern().toString();
+            const string& addr = msg.getAddress();
             
-            StringArray addr_arr = StringArray::fromTokens(addr, "/", "" );
-            addr_arr.removeEmptyStrings();
+            // skipping subbundles for now! need to fix this
             
-            const String& test_addr = *addr_arr.end();
             
-            // cout << test_addr << endl;
-            
-            if( test_addr == "color" )  // should have separate selection for stroke color and the other stroke parameters
+            if( addr == "/color" )  // should have separate selection for stroke color and the other stroke parameters
             {
                 properties.add( new OSCColourSelectorButton(addr, msg, change_callback_fn) );
             }
-            else if( test_addr == "font" )
+            else if( addr == "/font" )
             {
                 properties.add( new OSCFontMenu ( addr, msg, change_callback_fn, Font::findAllTypefaceNames() ) );
             }
-            else if( test_addr == "staff" )
+            else if( addr == "/staff" )
             {
-                int pos = s->getOSCMessagePos("/type");
-                if( pos != -1 && s->getOSCMessageValue(pos).getString() != "staff" )
+                if( s->getMessage("/type").getString() != "staff" )
                 {
                     StringArray staves = symbolist_handler->getStaves();
                     staves.insert(0, String("<none>") );
@@ -94,27 +74,27 @@ void SymbolPropertiesPanel::createOSCview ()
                     properties.add( new OSCOptionMenu ( addr, msg, change_callback_fn, staves ) );
                 }
             }
-            else if( test_addr == "fill" )
+            else if( addr == "/fill" )
             {
                 properties.add( new OSCOnOffButton( addr, msg, change_callback_fn) );
             }
-            else if( test_addr == "type" )
+            else if( addr == "/type" )
             {
                 properties.add( new OSCValueDisplay( addr, msg) );
             }
-            else if( test_addr == "id" )
+            else if( addr == "/id" )
             {
                 properties.add( new OSCValueDisplay( addr, msg) );
             }
-            else if( test_addr == "num_sub_paths" )
+            else if( addr == "/num_sub_paths" )
             {
                 properties.add( new OSCValueDisplay( addr, msg) );
             }
-            else if( test_addr == "length" )
+            else if( addr == "/length" )
             {
                 properties.add( new OSCValueDisplay( addr, msg) );
             }
-           /* else if( test_addr == "lambda" )
+           /* else if( addr == "lambda" )
             {
                 properties.add( new OSCTextProperty( addr, msg, change_callback_fn, true ) );
             }*/
@@ -122,11 +102,11 @@ void SymbolPropertiesPanel::createOSCview ()
             {
                 properties.add( new OSCTextProperty( addr, msg, change_callback_fn) );
             }
-            else if( msg[0].isFloat32() )
+            else if( msg[0].isFloat() )
             {
                 properties.add( new OSCFloatValueSlider( addr, msg, change_callback_fn ) );
             }
-            else if( msg[0].isInt32() )
+            else if( msg[0].isInt() )
             {
                 properties.add( new OSCIntValueSlider( addr, msg, change_callback_fn ) );
             }

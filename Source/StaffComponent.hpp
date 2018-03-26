@@ -26,10 +26,11 @@ public:
     StaffComponent() = default;
     ~StaffComponent() = default;
     
-    virtual String getSymbolTypeStr() const override { return "staff"; }
+    virtual string getSymbolTypeStr() const override { return "staff"; }
     
     void importFromSymbol( const Symbol &s ) override;
-    int addSymbolMessages( Symbol* s, const String &base_address ) override;
+    void addSymbolMessages( Symbol* s ) override;
+    
     void parentHierarchyChanged() override;
 
     void paint ( Graphics& g ) override;

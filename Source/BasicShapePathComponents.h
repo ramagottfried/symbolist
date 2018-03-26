@@ -49,73 +49,46 @@ public:
     }
 
 
-    int addSymbolMessages( Symbol* s, const String &base_address ) override
+    void addSymbolMessages( Symbol* s ) override
     {
-        int messages_added = 0;
-        
         if ( modif_flag )
         {   // becomes a normal path
-            messages_added += PathBaseComponent::addSymbolMessages( s, base_address );
+            PathBaseComponent::addSymbolMessages( s );
         }
         
         else
         {
-            messages_added += BaseComponent::addSymbolMessages( s, base_address );
+            BaseComponent::addSymbolMessages( s ) ;
 
-            String addr = base_address + "/fill";
-            if( s->getOSCMessagePos(addr) == -1 )
-            {
-                s->addOSCMessage( addr,         m_fill );
-                messages_added++;
-            }
             
-            addr = base_address + "/stroke/thickness";
-            if( s->getOSCMessagePos(addr) == -1 )
-            {
-                s->addOSCMessage( addr,         strokeType.getStrokeThickness() );
-                messages_added++;
-            }
+            s->addMessage ( "/fill" ,               m_fill   );
+            s->addMessage ( "/stroke/thickness" ,   strokeType.getStrokeThickness()   );
+            s->addMessage ( "/rotation" ,           m_rotation   );
 
-            addr = base_address + "/rotation";
-            if( s->getOSCMessagePos(addr) == -1 )
-            {
-                s->addOSCMessage( addr,         m_rotation );
-                messages_added++;
-            }
         }
        
-        return messages_added;
+
     }
     
     void importFromSymbol(const Symbol &s) override
     {
         if( !modif_flag )
         {
+           BaseComponent::importFromSymbol(s);
             
-            int pos = s.getOSCMessagePos("/fill");
-            if( pos != -1  )
-                m_fill = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(pos) );
-                
-            pos = s.getOSCMessagePos("/stroke/thickness");
-            if( pos != -1  )
-            {
-                strokeWeight = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(pos) );
-                strokeType.setStrokeThickness( strokeWeight );
-            }
+            m_fill = s.getMessage("/fill").getInt();
             
-            // rotation needs to be set before BaseComponent::import calls setBoundsFromSymbol
-            pos = s.getOSCMessagePos("/rotation");
-            if( pos != -1  )
-                m_rotation = Symbol::getOSCValueAsFloat( s.getOSCMessageValue(pos) );
+            strokeWeight = s.getMessage("/stroke/thickness").getInt();
+            strokeWeight = (strokeWeight == 0) ? 2 : strokeWeight;
+
+            strokeType.setStrokeThickness( strokeWeight );
             
+            m_rotation = s.getMessage("/rotation").getFloat();
             
-            BaseComponent::importFromSymbol(s);
             
         }
         else
             PathBaseComponent::importFromSymbol(s);
-
-
         
     }
     
@@ -142,7 +115,7 @@ public:
     CirclePathComponent() = default;
     ~CirclePathComponent() = default;
     
-    String getSymbolTypeStr() const override { return ( modif_flag ? "path" : "circle" ); }
+    string getSymbolTypeStr() const override { return ( modif_flag ? "path" : "circle" ); }
     
     Rectangle<float> drawAndRotateShape(float cx, float cy, float w, float h) override
     {
@@ -172,7 +145,7 @@ public:
     RectanglePathComponent() = default;
     ~RectanglePathComponent() = default;
 
-    String getSymbolTypeStr() const override { return ( modif_flag ? "path" : "rectangle" ) ; }
+    string getSymbolTypeStr() const override { return ( modif_flag ? "path" : "rectangle" ) ; }
 
     Rectangle<float> drawAndRotateShape(float cx, float cy, float w, float h) override
     {
@@ -201,7 +174,7 @@ public:
     TrianglePathComponent() = default;
     ~TrianglePathComponent() = default;
 
-    String getSymbolTypeStr() const override { return ( modif_flag ? "path" : "triangle" ); }
+    string getSymbolTypeStr() const override { return ( modif_flag ? "path" : "triangle" ); }
 
     Rectangle<float> drawAndRotateShape(float cx, float cy, float w, float h) override
     {

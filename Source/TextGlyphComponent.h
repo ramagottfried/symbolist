@@ -68,7 +68,7 @@ public:
     Rectangle<float> symbol_export_bounds() override;
     
     void importFromSymbol( const Symbol& s ) override;
-    int addSymbolMessages( Symbol* s, const String &base_address ) override;
+    void addSymbolMessages( Symbol* s ) override;
 
 //    void resized() override;
     
@@ -78,7 +78,7 @@ public:
     
     void setWidthInPixels(float w);
     
-    String getSymbolTypeStr() const override { return "text"; }
+    string getSymbolTypeStr() const override { return "text"; }
     
     void updateText( String str);
 
@@ -89,7 +89,7 @@ public:
     
 protected:
     
-    String      m_text = "T";
+    juce::String      m_text = "T";
     Font        m_font = Font( "Times", 20.0f, Font::plain );
     
     float       m_extrakerning = 0.0;

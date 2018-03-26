@@ -10,7 +10,7 @@
 #define types_h
 
 #include <vector>
-
+#include "osc_bundle_s.h"
 // the interchange structure used for OSC bundles
 // compatible with odot 'bundle_s' struct
 struct odot_bundle

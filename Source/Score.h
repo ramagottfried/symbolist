@@ -15,7 +15,7 @@ using namespace std;
 
 struct ScoreSorter
 {
-    static int compareElements (const Symbol* a, const Symbol* b)
+    static int compareElements ( const Symbol* a, const Symbol* b)
     {
         auto a_t = a->getTime();
         auto b_t = b->getTime();
@@ -34,7 +34,7 @@ public:
     
     Score();
     Score( Score& src );
-    Score( int n, odot_bundle** bundle_array ) ;
+    Score( const OdotBundle_s& s_bundle ) ;
     ~Score();
     
     size_t getSize();
@@ -49,18 +49,22 @@ public:
     Symbol * lookupSymbolID( const String & id );
     void updateExistingScoreSymbol( Symbol * dst, Symbol * src );
     
-    void importScoreFromOSC( int n, odot_bundle** bundle_array );
+    void importScoreFromOSC( const OdotBundle_s& s_bundle );
     
     //    void sortScore();
+    
+    void print() const;
     
     void addSymbolTimePoints( Symbol *s );
     void removeSymbolTimePoints( Symbol *s );
     
-    odot_bundle *getSymbolsAtTime( float t );
+    OdotBundle_s getSymbolsAtTime( float t );
 
-    odot_bundle *getScoreBundle();
+    //odot_bundle *getScoreBundle();
+    
+    OdotBundle_s getScoreBundle_s();
 
-    const Array<Symbol*> getSymbolsByValue( const String& address, const String& value );
+    const Array<Symbol*> getSymbolsByValue( const string& address, const string& value );
 
     const TimePointArray* getTimePointArray() const { return &time_points; }
     
@@ -70,24 +74,25 @@ public:
     void updateStaves(Symbol *moved_stave);
     void updateStavesAndTimepoints();
     Symbol *getStaveAtTime( float time );
-    const Symbol* getStaveByID( const String& id );
+    const Symbol* getStaveByID( const string& id );
 
-    odot_bundle* getDurationBundle();
+    OdotBundle_s getDurationBundle();
 
     
-    int getNameCount( String& name )
+    int getNameCount( string& name )
     {
         int count = 0;
         for( Symbol *s : score_symbols )
         {
-            if( s->getName() == name )
+            s->print();
+            if( s != NULL && s->getName() == name )
                 count++;
         }
     
         return count;
     }
     
-    bool idExists( String& idStr )
+    bool idExists( string& idStr )
     {
         for( Symbol *s : score_symbols )
         {

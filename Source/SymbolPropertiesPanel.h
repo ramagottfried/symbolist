@@ -4,12 +4,10 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SymbolistHandler.h"
 #include "BaseComponent.h"
-#include "OSCPropertyComponents.h"
 
 //==============================================================================
 
-typedef std::function<void(const OSCMessage&)> osc_callback_t;
-
+typedef std::function<void(const OdotMessage&)> osc_callback_t;
 
 class SymbolPropertiesPanel : public Component
 {
@@ -37,7 +35,7 @@ public:
     void createOSCview ();
     void updateBundle();
 
-    void change_callback(const OSCMessage& msg);
+    void change_callback(const OdotMessage& msg);
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolPropertiesPanel)
 };

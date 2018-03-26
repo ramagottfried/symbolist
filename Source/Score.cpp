@@ -13,10 +13,9 @@ Score::Score() : time_points(this)
 
 Score::Score(Score& src) : time_points(this)
 {
-    
     for( Symbol* s : src.score_symbols )
     {
-        Symbol *new_sym = new Symbol(*s);
+        Symbol *new_sym = new Symbol( s->get_o_ptr() );
         score_symbols.add( new_sym );
         addStaff( new_sym );
     }
@@ -26,13 +25,23 @@ Score::Score(Score& src) : time_points(this)
     cout << "copying score " << this << " " << score_symbols.size() << " n staves " << staves.size() << endl;
 }
 
-Score::Score( int n, odot_bundle **bundle_array ) : time_points(this)
+Score::Score( const OdotBundle_s& s_bundle  ) : time_points(this)
 {
-    importScoreFromOSC( n, bundle_array );
+    importScoreFromOSC( s_bundle );
 }
 
 Score::~Score() {}
 
+
+void Score::print() const
+{
+    int count = 1;
+    for( auto s : score_symbols )
+    {
+        cout << "symbol : " << count << endl;
+        s->print();
+    }
+}
 
 /***********************************
  * Add a new Symbol in the Score
@@ -144,44 +153,28 @@ void Score::updateExistingScoreSymbol( Symbol * dst, Symbol * src )
 /***********************************
  * Create Single Bundle from Score Bundles
  ***********************************/
-odot_bundle *Score::getScoreBundle()
+OdotBundle_s Score::getScoreBundle_s()
 {
-    OSCBundle bndl;
-    int count = 0;
-    // maybe log number of symbols here... but will have to check it when loading
-    String prefix = "/symbol/";
+    // for now merging flat array into bundle and then serializing
+    // probalby in the future we should optimize this, and/or provide mechanisms for outputting the score as a hierarchy
+    
+    OdotBundle bndl;
+    
+    long count = 0;
+    string prefix = "/symbol/";
     for( auto sym : score_symbols )
     {
-        auto s_bndl = *(sym->getOSCBundle());
-        
-        for ( auto osc : s_bndl )
-        {
-            OSCMessage msg = osc.getMessage();
-            String newaddr = prefix + String(count) + msg.getAddressPattern().toString();
-            msg.setAddressPattern(newaddr);
-            bndl.addElement(msg);
-        }
-
+        bndl.addMessage( prefix + to_string(count), *sym );
         count++;
-
     }
     
-    OSCWriter w ;
-    w.writeBundle( bndl );
-    size_t size = w.getDataSize();
-    
-    odot_bundle *bundle = new odot_bundle;
-    bundle->len = static_cast<long>(size);
-    bundle->data = new char[size];
-    
-    std::memcpy(bundle->data, w.getData() ,size );
-    return bundle;
+    return bndl.serialize();
 }
 
 /***********************************
  * Get active symbols at time
  ***********************************/
-odot_bundle *Score::getSymbolsAtTime( float t )
+OdotBundle_s Score::getSymbolsAtTime( float t )
 {
     return time_points.getSymbolsAtTime( t );
 }
@@ -197,26 +190,16 @@ void Score::addSymbolTimePoints( Symbol *s )
 }
 
 
-odot_bundle* Score::getDurationBundle()
+OdotBundle_s Score::getDurationBundle()
 {
     auto last = time_points.getLast();
     if( !last )
         return NULL;
     
-    OSCBundle bndl;
-    bndl.addElement( OSCMessage("/time/duration", (float)last->time ));
+    OdotBundle bndl;
+    bndl.addMessage("/time/duration", last->time );
     
-    OSCWriter w ;
-    w.writeBundle( bndl );
-    size_t size = w.getDataSize();
-    
-    odot_bundle *bundle = new odot_bundle;
-    bundle->len = static_cast<long>(size);
-    bundle->data = new char[size];
-    
-    std::memcpy(bundle->data, w.getData() ,size );
-    return bundle;
-
+    return bndl.serialize();
 }
 
 /***********************************
@@ -244,13 +227,14 @@ int Score::getSymbolPosition(Symbol *s)
     return score_symbols.indexOfSorted(score_sorter, s );
 }
 
-const Array<Symbol*> Score::getSymbolsByValue( const String& address, const String& value )
+const Array<Symbol*> Score::getSymbolsByValue( const string& address, const string& value )
 {
     Array<Symbol*> matched;
     for (auto s : score_symbols )
     {
-        OSCArgument val = s->getOSCMessageValue( address );
-        if( val.isString() && val.getString() == value )
+        OdotMessage val = s->getMessage( address );
+        
+        if( val[0].getType() == OdotAtom::O_ATOM_STRING && val[0].getString() == value )
         {
             matched.add( s );
         }
@@ -259,7 +243,7 @@ const Array<Symbol*> Score::getSymbolsByValue( const String& address, const Stri
 }
 
 
-const Symbol* Score::getStaveByID( const String& id )
+const Symbol* Score::getStaveByID( const string& id )
 {
     return staves.getStaveByID( id );
 }
@@ -268,15 +252,22 @@ const Symbol* Score::getStaveByID( const String& id )
  * OSC encoding/decoding
  ***********************************/
 
-void Score::importScoreFromOSC(int n, odot_bundle **bundle_array)
+void Score::importScoreFromOSC( const OdotBundle_s& s_bundle )
 {
     removeAllSymbols();
-    std::cout << "===IMPORTRING OSC (" << n << " symbols)" << std::endl;
-    for (int i = 0; i < n ; i++) {
-        Symbol *s = new Symbol();
-        s->importFromOSC( bundle_array[i] );
-        addSymbol(s);
+    
+    OdotBundle bundle( s_bundle ); //<< deserializes the bundle
+    
+    std::cout << "===IMPORTRING OSC (" << bundle.size() << " messages)" << std::endl;
+    for( auto msg : bundle.getMessageArray() )
+    {
+        if( msg.getAddress().find("/symbol") == 0 && msg[0].getType() == OdotAtom::O_ATOM_BUNDLE )
+        {
+            Symbol *s = new Symbol( msg.getBundle().get_o_ptr() );
+            addSymbol(s);
+        }
     }
+    
     std::cout << "===IMPORT DONE" << std::endl;
 }
 
@@ -296,8 +287,9 @@ void Score::addStaff( Symbol *s )
 void Score::updateStaves(Symbol *moved_stave)
 {
 
-    int pos = moved_stave->getOSCMessagePos("/type");
-    if( moved_stave->getOSCMessageValue(pos).getString() != "staff" )
+    string type = moved_stave->getMessage("/type").getString();
+    
+    if( type != "staff" )
         return;
     
     // 1. remove time points for moved stave

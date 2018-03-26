@@ -238,7 +238,8 @@ void ScoreComponent::createStaffFromSelected()
         
         Symbol ref_sym = *(staff_ref_comp->getScoreSymbolPointer());
         
-        Symbol* staff_sym = new Symbol("staff", staff_ref_comp->getX(), staff_ref_comp->getY(), staff_ref_comp->getWidth(), staff_ref_comp->getHeight() );
+        Symbol* staff_sym = new Symbol();
+        staff_sym->setTypeXYWH("staff", staff_ref_comp->getX(), staff_ref_comp->getY(), staff_ref_comp->getWidth(), staff_ref_comp->getHeight() );
         
         auto sh = getSymbolistHandler();
         
@@ -261,7 +262,7 @@ void ScoreComponent::createStaffFromSelected()
         
         // once the subcomponent is in place, the attached staff symbol can be updated
         // note: add symbol messages does not attache the symbol, it just adds the messages
-        staff_comp->addSymbolMessages( staff_sym , String("") );
+        staff_comp->addSymbolMessages( staff_sym );
         
         addSubcomponent(staff_comp);
         addToSelection(staff_comp);
@@ -273,6 +274,8 @@ void ScoreComponent::createStaffFromSelected()
 void ScoreComponent::groupSelectedSymbols()
 {
     bool creating_a_top_level_group = ( this == getPageComponent() );
+    
+    cout << "creating_a_top_level_group " << creating_a_top_level_group << " n selected " << selected_components.size() << endl;
     
     if ( selected_components.size() > 1 )
     {
@@ -286,78 +289,39 @@ void ScoreComponent::groupSelectedSymbols()
             maxx =  max( maxx, compBounds.getRight() );
             maxy =  max( maxy, compBounds.getBottom() );
         }
+
+        auto symbolistHandler = getSymbolistHandler();
+
+        Symbol *groupSymbol = new Symbol();
+        groupSymbol->setTypeXYWH( "group", minx, miny, maxx-minx, maxy-miny );
         
-        // create a list from selected items
-        vector< SymbolistComponent *> items;
-        
+        int count = 0;
+
         for( SymbolistComponent *c : selected_components )
         {
-            items.push_back(c);
-        }
-        unselectAllComponents();
-        
-        Symbol* s = new Symbol("group", minx, miny, maxx-minx, maxy-miny);
-        auto sh = getSymbolistHandler();
-        SymbolGroupComponent *group = (SymbolGroupComponent*)sh->makeComponentFromSymbol( s , creating_a_top_level_group );
-                
-        Rectangle<int> groupBounds( minx, miny, maxx-minx, maxy-miny );
-        
-        for ( auto it = items.begin(); it != items.end(); it++ )
-        {
-            SymbolistComponent *c = *it ;
+            auto selectedComponent = dynamic_cast<BaseComponent*>(c);
             
-            // if this component is of type BaseComponent, remove it's time points if they exist
-            try
+	    // Checks downcast result.
+	    if( selectedComponent != NULL )
             {
-                BaseComponent* baseComponent = dynamic_cast<BaseComponent*>(c);
-                
-                // Checks downcast result.
-                if( baseComponent != NULL )
+                auto associatedSymbol = selectedComponent->getScoreSymbolPointer();
+                if( associatedSymbol->size() > 0 )  // this fails within groups because subcomponents do not have score symbols...
                 {
-                    auto sym = baseComponent->getScoreSymbolPointer();
-                    if( sym )  // this fails within groups becuase subcomponents do not have score symbols...
-                    {
-                        sh->removeTimePointsForSymbol( sym );
-                    }
+                    // copies bundles from subcomponent symbols and join into new group symbol
+                    associatedSymbol->addMessage("/x", selectedComponent->getX() - minx);
+                    associatedSymbol->addMessage("/y", selectedComponent->getY() - miny);
                     
+                    groupSymbol->addMessage( "/subsymbol/" + to_string(count++), *associatedSymbol );
                 }
             }
-            catch(errc)
-            {
-                cout << "error: cannot group non-BaseComponent types";
-                return;
-            }
+        }
 
-            // sets the position now relative to the group
-            Rectangle<int> compBounds = c->getBounds();
-            
-            c->setBounds(compBounds.getX() - groupBounds.getX(),
-                         compBounds.getY() - groupBounds.getY(),
-                         compBounds.getWidth(), compBounds.getHeight());
-            
-            // the parent is not necessarily 'this' (selected_items can be indirect children...)
-            ScoreComponent* parentComponent = dynamic_cast<ScoreComponent*>(c->getParentComponent());
-            
-            // Checks downcast result.
-            if (parentComponent != NULL)
-                parentComponent->removeSubcomponent( c );
-            
-            group->addSubcomponent( c );
-        }
-        
-        if ( creating_a_top_level_group )
-        {
-            group->addSymbolMessages( s , String("") );
-        }
-        else
-        {
-            delete s;
-        }
+        SymbolGroupComponent *group = (SymbolGroupComponent*)symbolistHandler->makeComponentFromSymbol( groupSymbol , creating_a_top_level_group );
         addSubcomponent( group );
-        addToSelection( group );
         
-//        cout << "group bundle post: " << endl;
-//        group->getScoreSymbolPointer()->printBundle();
+        getPageComponent()->deleteSelectedComponents();
+        
+        addToSelection( group );
     }
 }
 
@@ -453,10 +417,9 @@ void ScoreComponent::addSelectedSymbolsToPalette( )
         if (c != NULL)
         {
             Symbol* s = new Symbol();
-            c->addSymbolMessages(s, "");
-            getSymbolistHandler()->getSymbolPalette()->addUserItem(s);
-        }
-        
+	    c->addSymbolMessages( s );
+	    getSymbolistHandler()->getSymbolPalette()->addUserItem(s);
+	}
     }
     getMainComponent()->updatePaletteView();
 }
@@ -499,7 +462,8 @@ void ScoreComponent::mouseAddClick ( const MouseEvent& event )
     }
     else
     {
-        Symbol* s = new Symbol("path", event.position.x, event.position.y, 40.0, 40.0) ;
+        Symbol* s = new Symbol();
+        s->setTypeXYWH( "path", event.position.x, event.position.y, 40.0, 40.0 ) ;
         c = sh->makeComponentFromSymbol( s , top_level );
         addSubcomponent( c );
         getPageComponent()->enterEditMode(c);

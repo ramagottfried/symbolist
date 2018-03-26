@@ -13,6 +13,16 @@ typedef std::function<void(const OSCMessage&)> osc_callback_t;
 
 class SymbolPropertiesPanel : public Component
 {
+    BaseComponent*              symbol_component = nullptr;
+    PropertyPanel               symbol_inspector;
+    Array<PropertyComponent*>   properties;
+    
+    osc_callback_t              change_callback_fn;
+    
+    SymbolistHandler*           symbolist_handler;
+    
+    int title_offset = 25;
+    
 public:
     SymbolPropertiesPanel(SymbolistHandler *sh );
     
@@ -28,18 +38,6 @@ public:
     void updateBundle();
 
     void change_callback(const OSCMessage& msg);
-    
-private:
-    BaseComponent*              symbol_component = nullptr;
-    PropertyPanel               symbol_inspector;
-    Array<PropertyComponent*>   properties;
-    
-    osc_callback_t              change_callback_fn;
-    
-    SymbolistHandler*           symbolist_handler;
-    
-    int title_offset = 25;
-
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolPropertiesPanel)
 };

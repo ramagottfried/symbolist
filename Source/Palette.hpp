@@ -9,13 +9,19 @@
 #include "TimePointArray.h"
 #include "SortedStaves.hpp"
 
-/**************************************
- * Non-graphic object : can be handle by the SymbolistMainComponent
- * even if the palette is not displayed in the window
- **************************************/
+/**
+ * Describes the palette of symbols that can be drawn in the score.
+ * Palette instances are model (non-graphic) objects : can be handle by the SymbolistMainComponent
+ * even if the graphic palette is not displayed in the window.
+ */
 class Palette
 {
+
+    OwnedArray<Symbol> default_items;
+    OwnedArray<Symbol> user_items;
     
+    int selected_item = 0;
+
 public:
     
     inline Palette() {};
@@ -30,12 +36,6 @@ public:
     inline int getSelectedItem() { return selected_item ; }
     inline void setSelectedItem(int n) { selected_item = n; }
     
-    private :
-    
-    OwnedArray<Symbol> default_items;
-    OwnedArray<Symbol> user_items;
-    
-    int selected_item = 0;
 };
 
 #endif /* SymbolistPalette_hpp */

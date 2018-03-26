@@ -57,7 +57,6 @@ public:
 private:
     ScopedPointer<MenuBarComponent> menuBar;
     
-    
     //==============================================================================
     class CustomMenuComponent   : public PopupMenu::CustomComponent, private Timer
     {

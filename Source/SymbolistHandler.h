@@ -18,7 +18,9 @@ class SymbolistHandler : public virtual Controller<SymbolistModel, SymbolistMain
     
     ScopedPointer<Score> score;
     
-    // the palette is an array of symbol 'templates'
+    /**
+     * The palette is an array of symbol 'templates'.
+     */
     Palette palette;
     
     OwnedArray<Score> undo_stack;
@@ -107,7 +109,7 @@ public:
     float getCurrentTime() { return current_time; }
     
     /*********************************************
-     * INSPECTOR IO
+     *               INSPECTOR IO                *
      *********************************************/
     
     void addToInspector( BaseComponent *c);
@@ -120,7 +122,7 @@ public:
     StaffComponent* getStaveAtTime( float time );
 
     /*********************************************
-     * PALETTE AND SYMBOL CONSTRUCTOR
+     *       PALETTE AND SYMBOL CONSTRUCTOR      *
      *********************************************/
     
     void setCurrentSymbol(int n);

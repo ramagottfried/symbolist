@@ -25,6 +25,10 @@ struct ScoreSorter
 
 class Score
 {
+    OwnedArray<Symbol> score_symbols;
+    TimePointArray     time_points;
+    SortedStaves       staves;
+    ScoreSorter        score_sorter;
     
 public:
     
@@ -93,15 +97,6 @@ public:
         
         return false;
     }
-    
-private:
-    
-    OwnedArray<Symbol>          score_symbols;
-    
-    TimePointArray              time_points;
-    SortedStaves                staves;
-    
-    ScoreSorter                 score_sorter;
     
     //==============================================================================
     JUCE_LEAK_DETECTOR (Score)

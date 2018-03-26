@@ -44,18 +44,22 @@ struct SymbolTimePoint
         symbols_at_time.emplace_back( s );
     }
     
-    double           time;
+    double          time;
     vector<Symbol*> symbols_at_time;
-    Symbol *        staff_ref; // << add reference to staff for timepoint (a timepoint can only be on one staff)
+    Symbol*         staff_ref; // << add reference to staff for timepoint (a timepoint can only be on one staff)
 
-    
-private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolTimePoint)
     
 };
 
 class TimePointArray : public OwnedArray<SymbolTimePoint>
 {
+    int                                          current_point = 0;
+    float                                        current_time = 0;
+    Score*                                       score_ptr = nullptr;
+    const SymbolTimePoint*                       prev_timepoint = NULL;
+    vector< pair<const Symbol*, const Symbol*>>  voice_staff_vector;
+    
 public:
     TimePointArray(Score *s)
     {
@@ -120,14 +124,33 @@ public:
     Point<float> lookupPathPoint( const Symbol *s, const float t );
     Point<float> lookupPathPoint( const Symbol *s, const int pathIDX, const float t, const float start, const float dur );
     Point<float> lookupPathPoint( const Symbol *s, String& path_base_addr , const float t );
-
+    
+    /**
+     * @param s                main root symbol (not subbundle)
+     *
+     * @param output_prefix    prefix to be added to this level (previous level
+     *                         prefix + group name culled from the calling function)
+     *
+     * @param groupsymbol_addr root name for this level of group (i.e. if a group
+     *                         contains another group: /group/subsymbol/0/ would
+     *                         be the root address for the sub group at subsymbol/0
+     *
+     * @param time ratio       toplevel group time point
+     *
+     * @param bndl             toplevel bundle to write into
+     *
+     * All paths within group are read in terms of the time span of the top level group.
+     * Paths are scaled in terms of their bounding box, *or* if the bounding box of the group containing them
+     * --- in the case of path within a group within a group, the scaling would be in terms of the first containing group.
+     * For example subsymbol_addr could be "/subsymbol/1/subsymbol/2".
+     */
     void groupLookup( const Symbol *s,
-                                     const String& output_prefix,
-                                     const String& groupsymbol_addr,
-                                     double parent_x,
-                                     double parent_y,
-                                     float time_ratio,
-                                     OSCBundle& bndl);
+                      const String& output_prefix,
+                      const String& groupsymbol_addr,
+                      double parent_x,
+                      double parent_y,
+                      float time_ratio,
+                      OSCBundle& bndl);
     
     vector<const Symbol *> getNoteOffs( const SymbolTimePoint *prev_tpoint , const SymbolTimePoint *tpoint   );
     bool isNewSym( const Symbol *s , const SymbolTimePoint *prev_tpoint   );
@@ -143,19 +166,6 @@ public:
         clear();
         prev_timepoint = nullptr;
     }
-
-    
-private:
-    
-    int current_point = 0;
-    float current_time = 0;
-    
-    Score   *score_ptr = nullptr;
-    
-    const SymbolTimePoint*      prev_timepoint = NULL;
-    
-    vector< pair<const Symbol*,const Symbol*>>  voice_staff_vector;
-
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimePointArray)
 };

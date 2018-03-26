@@ -1,7 +1,5 @@
-
 #include "TimePointArray.h"
 #include "Score.h"
-
 
 void TimePointArray::printTimePoints()
 {
@@ -142,7 +140,6 @@ void TimePointArray::resetTimes()
     voice_staff_vector.clear();
     current_point = 0;
 }
-
 
 void TimePointArray::addSymbolTimePoints( Symbol *s )
 {
@@ -380,7 +377,6 @@ vector<const Symbol *> TimePointArray::getNoteOffs( const SymbolTimePoint *prev_
     return off_vec;
 }
 
-
 bool TimePointArray::isNewSym( const Symbol *s , const SymbolTimePoint *prev_tpoint   )
 {
     if( prev_tpoint )
@@ -397,7 +393,6 @@ bool TimePointArray::isNewSym( const Symbol *s , const SymbolTimePoint *prev_tpo
     return true;
 }
 
-
 pair<size_t, int> TimePointArray::setNoteOff( const Symbol *s)
 {
     size_t i = 0;
@@ -413,7 +408,6 @@ pair<size_t, int> TimePointArray::setNoteOff( const Symbol *s)
     return pair<size_t, bool>(-1, -1); // not found (already turned off)
 
 }
-
 
 pair<size_t, int> TimePointArray::getVoiceNumberState( const Symbol *s, const SymbolTimePoint *tpoint )
 {
@@ -496,30 +490,6 @@ void TimePointArray::groupLookup( const Symbol *s,
                                  float time_ratio,
                                  OSCBundle& bndl)
 {
-
-    // s                = main root symbol (not subbundle)
-    
-    // output_prefix    = prefix to be added to this level (previous level prefix + group name culled from the calling function)
-    
-    // groupsymbol_addr = root name for this level of group (i.e. if a group contains another group:  /group/subsymbol/0/ would be the root address for the sub group at /subsymbol/0
-    
-    // time ratio       = toplevel group time point
-    
-    // bndl             = toplevel bundle to write into
-    
-    
-    // all paths within group are read in terms of the time span of the top level group
-    // paths are scaled in terms of their bounding box, *or* if the bounding box of the group containing them
-    // --- in the case of path within a group within a group, the scaling would be in terms of the first containing group
-    
-
-    // for example subsymbol_addr could be "/subsymbol/1/subsymbol/2"
-
-    // cout << "groupPathLookup " << groupsymbol_addr << endl;
-    
-    
-  //  cout << "in output_prefix" << output_prefix << " groupsymbol_addr " << groupsymbol_addr << endl;
-    
     String group_name;
     int groupname_pos = s->getOSCMessagePos( groupsymbol_addr + "/name" );
     if( groupname_pos != -1 )
@@ -700,7 +670,6 @@ void TimePointArray::groupLookup( const Symbol *s,
         }
     }
 }
-
 
 odot_bundle *TimePointArray::timePointStreamToOSC(const SymbolTimePoint *tpoint  )
 {

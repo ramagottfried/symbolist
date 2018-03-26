@@ -45,10 +45,7 @@ public:
     void addSymbol(Symbol *s);
     void removeSymbol(Symbol *s);
     void removeAllSymbols();
-    
-    Symbol * lookupSymbolID( const String & id );
-    void updateExistingScoreSymbol( Symbol * dst, Symbol * src );
-    
+        
     void importScoreFromOSC( const OdotBundle_s& s_bundle );
     
     //    void sortScore();

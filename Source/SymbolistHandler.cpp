@@ -158,69 +158,16 @@ void SymbolistHandler::symbolistAPI_setOneSymbol( const OdotBundle_s& bundle)
     Symbol *s = new Symbol( bundle );
     score->addSymbol(s);
     
-    String type = s->getType();
-    if( type.isEmpty() )
-        return;
-    
-    String id = s->getID();
-
-    Symbol *existing_sym = score->lookupSymbolID( id );
-    if( existing_sym )
+    if ( main_component_ptr != nullptr )
     {
-        score->updateExistingScoreSymbol( existing_sym, s );
-        
-        if ( main_component_ptr != nullptr )
-        {
-            auto pc = main_component_ptr->getPageComponent();
-            
-            BaseComponent *c = nullptr;
-            size_t numsubs = pc->getNumSubcomponents();
-            for( int i = 0; i < numsubs; i++ )
-            {
-                c = dynamic_cast<BaseComponent*>( pc->getSubcomponent(i) );
-
-                if( c && (c->getScoreSymbolPointer()->getID() == id) )
-                {
-                    cout << "found match" << endl;
-                    break;
-                }
-            }
-            
-            if( !c )
-            {
-                cout << "symbol found, but no matching component found " << endl;
-                return;
-            }
-            
-            c->importFromSymbol( *existing_sym ) ;
-            c->addSymbolMessages( existing_sym, "" );
-
-            executeUpdateCallback( score->getSymbolPosition( existing_sym ) );
-            
-            c->repaint();
-        }
-        else
-        {
-            executeUpdateCallback( -1 ); // if the windows is open, this is called from the component creation routine
-            // cout << "main component is NULL" << endl;
-        }
+        BaseComponent* c = makeComponentFromSymbol( s , false);
+        main_component_ptr->getPageComponent()->addSubcomponent(c);
+        c->setScoreSymbolPointer( s );
     }
     else
     {
-        cout << "no matching id found, adding new symbol " << endl;
-        score->addSymbol(s);
-        
-        if ( main_component_ptr != nullptr )
-        {
-            BaseComponent* c = makeComponentFromSymbol( s , false);
-            main_component_ptr->getPageComponent()->addSubcomponent(c);
-            c->setScoreSymbolPointer( s );
-        }
-        else
-        {
-            executeUpdateCallback( -1 ); // if the windows is open, this is called from the component creation routine
-            // cout << "main component is NULL" << endl;
-        }
+        executeUpdateCallback( -1 ); // if the windows is open, this is called from the component creation routine
+        cout << "main component is NULL" << endl;
     }
 }
 
@@ -506,7 +453,7 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* component )
     // log_score_change();
 
     // cout << "removeSymbolFromScore" << endl;
-    s->print();
+    symbol->print();
 
     if( main_component_ptr )
         main_component_ptr->clearInspector();

@@ -6,6 +6,8 @@
 #include "Score.h"
 #include "Palette.hpp"
 
+using namespace std;
+
 /**
  * Represents the business logic of the symbolist application.
  * The SymbolistModel class references a Score object and a Palette
@@ -14,8 +16,8 @@
  */
 class SymbolistModel : public virtual Observable {
     
-    ScopedPointer<Score> score;
-    ScopedPointer<Palette> palette;
+    shared_ptr<Score> score;
+    shared_ptr<Palette> palette;
     
 public:
     
@@ -32,21 +34,24 @@ public:
      * SymbolistModel's constructor taking a Score and a Palette
      * object as arguments.
      */
-    SymbolistModel(Score* score, Palette* palette);
+    inline SymbolistModel(shared_ptr<Score> score, shared_ptr<Palette> palette) {
+        this->score = score;
+        this->palette = palette;
+    }
     
     /**
      * SymbolistModel's default destructor.
      */
-    virtual ~SymbolistModel();
+    virtual ~SymbolistModel() {};
     
     /*******************************************************
      *                 GETTERS AND SETTERS                 *
      *******************************************************/
-    inline ScopedPointer<Score> getScore() { return score; }
-    inline void setScore(ScopedPointer<Score> score) { this->score = score; }
+    inline shared_ptr<Score> getScore() { return score; }
+    inline void setScore(shared_ptr<Score> score) { this->score = score; }
     
-    inline ScopedPointer<Palette> getPalette() { return palette; }
-    inline void setPalette(ScopedPointer<Palette> palette) { this->palette = palette; }
+    inline shared_ptr<Palette> getPalette() { return palette; }
+    inline void setPalette(shared_ptr<Palette> palette) { this->palette = palette; }
     
 };
 

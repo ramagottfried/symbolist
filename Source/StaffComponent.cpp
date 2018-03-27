@@ -19,7 +19,7 @@ void StaffComponent::importFromSymbol( const Symbol &s )
         return;
     }
     
-    BaseComponent* c = getSymbolistHandler()->makeComponentFromSymbol( &subsym , false );
+    BaseComponent* c = getSymbolistHandler()->makeComponentFromSymbol( make_shared<Symbol>(subsym) , false );
     
     if ( c != NULL)
         addSubcomponent( c );
@@ -28,7 +28,7 @@ void StaffComponent::importFromSymbol( const Symbol &s )
         
 }
 
-void StaffComponent::addSymbolMessages( Symbol* s )
+void StaffComponent::addSymbolMessages( shared_ptr<Symbol> s )
 {
     BaseComponent::addSymbolMessages( s );
 
@@ -43,7 +43,7 @@ void StaffComponent::addSymbolMessages( Symbol* s )
             if (castedFirstSubComponent != NULL)
 	    {
                Symbol sub_sym;
-               castedFirstSubComponent->addSymbolMessages( &sub_sym );
+               castedFirstSubComponent->addSymbolMessages( make_shared<Symbol>(sub_sym) );
                s->addMessage( "/subsymbol", sub_sym );
 
 	    }
@@ -63,7 +63,7 @@ void StaffComponent::parentHierarchyChanged()
     PageComponent *pc = getPageComponent();
     if( pc )
     {
-        if( Symbol *s = getScoreSymbolPointer() )
+        if( shared_ptr<Symbol> s = getScoreSymbolPointer() )
         {
             String id = s->getID();
         

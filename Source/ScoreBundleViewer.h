@@ -29,7 +29,7 @@ public:
         
         for( int i = 0; i < num; i++ )
         {
-            Symbol * sym = symbolist_handler->symbolistAPI_getSymbol(i);
+            shared_ptr<Symbol> sym = symbolist_handler->symbolistAPI_getSymbol(i);
 
             
             vector<string> msg_array;

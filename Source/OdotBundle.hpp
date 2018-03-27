@@ -14,6 +14,7 @@ class OdotBundle
 public:
     OdotBundle();
     OdotBundle( const OdotBundle& src );
+    OdotBundle( const OdotBundle* src );
     OdotBundle( const t_osc_bndl_u *src );
     OdotBundle( const OdotBundle_s& src );
     OdotBundle( const t_osc_bndl_s *src );

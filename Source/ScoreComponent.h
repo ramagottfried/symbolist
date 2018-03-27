@@ -65,7 +65,6 @@ public:
     
     virtual void mouseAddClick ( const MouseEvent& event );
     
-    
     Rectangle<int> getSelectionBounds();
 
 protected:

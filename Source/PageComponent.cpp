@@ -90,7 +90,7 @@ void PageComponent::exitStaffSelMode()
 vector<BaseComponent*> PageComponent::getSubcomponentsByStaff( String& staff_name )
 {
     vector<BaseComponent*> objects;
-    Symbol *s = NULL;
+    shared_ptr<Symbol> s = NULL;
     for( int i = 0; i < subcomponents.size(); i++ )
     {
         BaseComponent *c = dynamic_cast<BaseComponent*>(subcomponents[i]);

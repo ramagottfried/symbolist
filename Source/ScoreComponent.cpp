@@ -238,7 +238,7 @@ void ScoreComponent::createStaffFromSelected()
         
         Symbol ref_sym = *(staff_ref_comp->getScoreSymbolPointer());
         
-        Symbol* staff_sym = new Symbol();
+        shared_ptr<Symbol> staff_sym = make_shared<Symbol>();
         staff_sym->setTypeXYWH("staff", staff_ref_comp->getX(), staff_ref_comp->getY(), staff_ref_comp->getWidth(), staff_ref_comp->getHeight() );
         
         auto sh = getSymbolistHandler();
@@ -292,7 +292,7 @@ void ScoreComponent::groupSelectedSymbols()
 
         auto symbolistHandler = getSymbolistHandler();
 
-        Symbol *groupSymbol = new Symbol();
+        shared_ptr<Symbol> groupSymbol = make_shared<Symbol>();
         groupSymbol->setTypeXYWH( "group", minx, miny, maxx-minx, maxy-miny );
         
         int count = 0;
@@ -316,7 +316,8 @@ void ScoreComponent::groupSelectedSymbols()
             }
         }
 
-        SymbolGroupComponent *group = (SymbolGroupComponent*)symbolistHandler->makeComponentFromSymbol( groupSymbol , creating_a_top_level_group );
+        SymbolGroupComponent *group = (SymbolGroupComponent*) symbolistHandler
+                                        ->makeComponentFromSymbol(groupSymbol , creating_a_top_level_group);
         addSubcomponent( group );
         
         getPageComponent()->deleteSelectedComponents();
@@ -416,10 +417,10 @@ void ScoreComponent::addSelectedSymbolsToPalette( )
         // Checks downcast result.
         if (c != NULL)
         {
-            Symbol* s = new Symbol();
-	    c->addSymbolMessages( s );
-	    getSymbolistHandler()->getSymbolPalette()->addUserItem(s);
-	}
+            shared_ptr<Symbol> s = make_shared<Symbol>();
+            c->addSymbolMessages(s);
+            getSymbolistHandler()->getModel()->getPalette()->addUserItem(s);
+        }
     }
     getMainComponent()->updatePaletteView();
 }
@@ -443,28 +444,29 @@ void ScoreComponent::mouseAddClick ( const MouseEvent& event )
     if ( getMainDrawMode() == UI_DrawType::from_template )
     {
 
-        Symbol* symbol_template = getSymbolistHandler()->getCurrentSymbol();
+        shared_ptr<Symbol> symbol_template = getSymbolistHandler()->getCurrentSymbol();
         
         /* creates a new symbol with the same settings as the symbol_template
          * template symbols all have a default type of "path" and bounds of 0,0,30,30
          * the generic symbol has the same OSC data as the BaseComponent
          */
-        Symbol* s = new Symbol( *symbol_template );
+        shared_ptr<Symbol> s = make_shared<Symbol>( *symbol_template );
         
         // sets default position before creating the graphic component
         s->setPosition ( event.position );
         
         // create a new component of the current selected symbol type
-        c = sh->makeComponentFromSymbol( s, top_level );
+        c = sh->makeComponentFromSymbol(s, top_level);
         
         // add component in the view
         addSubcomponent( c );
     }
     else
     {
-        Symbol* s = new Symbol();
+        shared_ptr<Symbol> s = make_shared<Symbol>();
         s->setTypeXYWH( "path", event.position.x, event.position.y, 40.0, 40.0 ) ;
-        c = sh->makeComponentFromSymbol( s , top_level );
+        
+        c = sh->makeComponentFromSymbol(s , top_level);
         addSubcomponent( c );
         getPageComponent()->enterEditMode(c);
         c->mouseAddClick( event.getEventRelativeTo(c) );

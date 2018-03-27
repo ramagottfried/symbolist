@@ -18,7 +18,7 @@ public:
     static void printPath( Path p, const char* name = "path" );
     void cleanupPathArray();
     
-    virtual void addSymbolMessages(Symbol* s ) override;
+    virtual void addSymbolMessages(shared_ptr<Symbol> s) override;
     virtual void importFromSymbol(const Symbol &s) override;
 
     string getSymbolTypeStr() const override { return "path"; }

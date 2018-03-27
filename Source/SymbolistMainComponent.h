@@ -5,7 +5,6 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-#include "SymbolistComponent.h"
 #include "SymbolistHandler.h"
 #include "PageComponent.h"
 #include "PaletteComponent.h"
@@ -17,7 +16,7 @@
 
 #include "SymbolistMenu.hpp"
 #include "SymbolistLookAndFeel.hpp"
-#include "Observer.hpp"
+#include "View.hpp"
 
 /**
  * SymbolistMainComponent is the main graphic component of the application.

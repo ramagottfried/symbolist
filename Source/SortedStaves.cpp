@@ -18,18 +18,18 @@ size_t SortedStaves::size()
     return staves.size();
 }
 
-void SortedStaves::erase( Symbol *s )
+void SortedStaves::erase( shared_ptr<Symbol> s )
 {
     staves.erase( remove( staves.begin(), staves.end(), s ), staves.end() );
 }
 
-void SortedStaves::removeStaff( Symbol *s)
+void SortedStaves::removeStaff( shared_ptr<Symbol> s)
 {
     erase(s);
     resetTimes();
 }
 
-bool SortedStaves::compareStaves ( Symbol* a, Symbol* b )
+bool SortedStaves::compareStaves ( shared_ptr<Symbol> a, shared_ptr<Symbol> b )
 {
     auto a_x = a->getMessage("/x").getFloat() ;
     auto a_y = a->getMessage("/y").getFloat() ;
@@ -38,30 +38,12 @@ bool SortedStaves::compareStaves ( Symbol* a, Symbol* b )
     
     auto b_x = b->getMessage("/x").getFloat() ;
     auto b_y = b->getMessage("/y").getFloat() ;
-    // auto b_x2 = b_x + Symbol::getOSCValueAsFloat( b->getOSCMessageValue("/w") );
-    
-    /*
-    cout << "sorting: " << a << " " << b << endl;
-    cout << "\t a_x " << a_x << " a_y " << a_y << " a_x2 " << a_x2 << endl;;
-    cout << "\t b_x " << b_x << " b_y " << b_y << endl;
-    
-    cout << "test a_y < b_y " << (a_y < b_y) << endl;
-    cout << "test a_x2 < b_x " << (a_x2 < b_x) << endl;
-    */
     
     if( a_y < b_y && b_x < a_x2 )
         return true;
     
     return false;
     
-    /*
-     {
-     if( a_y == b_y && a_x == b_x )
-     return 0;
-     else
-     return 1;
-     }
-     */
 }
 
 void SortedStaves::resetTimes()
@@ -72,7 +54,7 @@ void SortedStaves::resetTimes()
     for( auto it = staves.begin(); it != staves.end(); it++)
     {
         
-        Symbol *sym = *it;
+        shared_ptr<Symbol> sym = *it;
                 
         float w = sym->getMessage("/w").getFloat();
         
@@ -88,11 +70,9 @@ void SortedStaves::resetTimes()
         
     }
     
-    
-    
 }
 
-bool SortedStaves::addStaff( Symbol *s)
+bool SortedStaves::addStaff( shared_ptr<Symbol> s)
 {
     if( s->getMessage("/type").getString() != "staff" )
         return 0;
@@ -117,13 +97,11 @@ bool SortedStaves::addStaff( Symbol *s)
     
 }
 
-Symbol *SortedStaves::getStaveAtTime(float time)
+shared_ptr<Symbol> SortedStaves::getStaveAtTime(float time)
 {
     
     if( staves.size() == 0 || time < 0 || time > staves.back()->getEndTime() )
         return NULL;
-    
-    // cout << "end time " << staves.back()->getEndTime() << endl;
     
     for( auto s : staves )
     {
@@ -134,7 +112,7 @@ Symbol *SortedStaves::getStaveAtTime(float time)
     return NULL;
 }
 
-const Symbol *SortedStaves::getStaveByID( const String& id )
+const shared_ptr<Symbol> SortedStaves::getStaveByID( const String& id )
 {
     if( staves.size() == 0 || id.isEmpty() )
         return NULL;

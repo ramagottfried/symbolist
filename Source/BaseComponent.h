@@ -12,12 +12,49 @@
 
 class BaseComponent : public ScoreComponent
 {
+    
+protected:
+    
+    // score structure
+    shared_ptr<Symbol> score_symbol = NULL;   // pointer to the score symbol (set when this is a topLevel symbol, NULL otherwise)
+    
+    string          name;
+    string          staff_name;
+    string          lambda;
+    
+    // staff attachement
+    BaseComponent   *staff = nullptr; // place holder ...
+    // when loaded, if staff exists attach it
+    // when staff is loaded, scan score and try to find symbols with matching staff names and attach them
+    
+    // parameters
+    float           strokeWeight = 2;
+    
+    // interaction
+    Point<float>    m_down;
+    Colour          current_color = Colours::black;
+    
+    float           relative_x = 0.0, relative_y = 0.0 , relative_w = 1.0 , relative_h = 1.0 ;  // values between 0.0 and 1.0 relative to the size of its container
+    int             resize_mode = 0; // 0 = scale symbol to bounds, 1 = scale spacing (not resizing)
+    float           m_min_size = 5;
+    
+    bool            showBoundingBox = false;
+    float           bb_strokeWeight = 1;
+    Colour          bb_color = Colours::cornflowerblue;
+    Colour          sel_color = Colours::cornflowerblue;
+    
+    bool            in_edit_mode = false;
+    bool            in_staff_selection_mode = false;
+    
+    bool            is_alt_copying = false;
+    Point<float>    m_prev_event;
+    
 public:
     
     BaseComponent() = default;
     ~BaseComponent();
     
-    virtual void addSymbolMessages( Symbol* s );
+    virtual void addSymbolMessages( shared_ptr<Symbol> s );
     virtual void importFromSymbol( const Symbol &s );
     
     Symbol exportSymbol();
@@ -27,9 +64,9 @@ public:
     
     void paint( Graphics& g ) override;
     
-    void setScoreSymbolPointer (Symbol* s) { score_symbol = s; } // it shouldn't be possible to set the symbol without updating the whole component
+    void setScoreSymbolPointer (shared_ptr<Symbol> s) { score_symbol = s; } // it shouldn't be possible to set the symbol without updating the whole component
     
-    Symbol* getScoreSymbolPointer () { return score_symbol; }
+    shared_ptr<Symbol> getScoreSymbolPointer () { return score_symbol; }
     void createAndAttachSymbol();
     
     bool isTopLevelComponent();
@@ -124,8 +161,6 @@ public:
      
 */
     
-
-    
     inline void setStaffSelectionMode( bool state )
     {
         in_staff_selection_mode = state;
@@ -143,46 +178,7 @@ public:
         return staff;
     }
     
-    
     void attachToStaff();
-
-protected:
-    
-    // score structure
-    Symbol*         score_symbol = NULL;   // pointer to the score symbol (set when this is a topLevel symbol, NULL otherwise)
-    
-    string          name;
-    string          staff_name;
-    string          lambda;
-    
-    // staff attachement
-    BaseComponent   *staff = nullptr; // place holder ...
-    // when loaded, if staff exists attach it
-    // when staff is loaded, scan score and try to find symbols with matching staff names and attach them
-    
-    // parameters
-    float           strokeWeight = 2;
-    
-    // interaction
-    Point<float>    m_down;
-    Colour          current_color = Colours::black;
-
-    float           relative_x = 0.0, relative_y = 0.0 , relative_w = 1.0 , relative_h = 1.0 ;  // values between 0.0 and 1.0 relative to the size of its container
-    int             resize_mode = 0; // 0 = scale symbol to bounds, 1 = scale spacing (not resizing)
-    float           m_min_size = 5;
-   
-    bool            showBoundingBox = false;
-    float           bb_strokeWeight = 1;
-    Colour          bb_color = Colours::cornflowerblue;
-    Colour          sel_color = Colours::cornflowerblue;
-    
-    bool            in_edit_mode = false;
-    bool            in_staff_selection_mode = false;
-
-    bool            is_alt_copying = false;
-    Point<float>    m_prev_event;
-
-private:
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BaseComponent)

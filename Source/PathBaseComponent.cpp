@@ -173,10 +173,10 @@ bool PathBaseComponent::intersectRect( Rectangle<int> rect)
  * Can be overriden / completed by class-specific messages
  *****************/
 
-void PathBaseComponent::addSymbolMessages( Symbol* s )
+void PathBaseComponent::addSymbolMessages( shared_ptr<Symbol> s )
 {
 
-    BaseComponent::addSymbolMessages( s );
+    BaseComponent::addSymbolMessages(s);
     
     int n_subpaths = m_path_array.size();
     

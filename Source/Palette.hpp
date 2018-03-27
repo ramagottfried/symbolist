@@ -2,12 +2,13 @@
 #define SymbolistPalette_hpp
 
 #include <stdio.h>
-#include "../JuceLibraryCode/JuceHeader.h"
 #include <vector>
 #include "types.h"
 #include "Symbol.h"
 #include "TimePointArray.h"
 #include "SortedStaves.hpp"
+
+using namespace std;
 
 /**
  * Describes the palette of symbols that can be drawn in the score.
@@ -17,8 +18,8 @@
 class Palette
 {
 
-    OwnedArray<Symbol> default_items;
-    OwnedArray<Symbol> user_items;
+    vector<shared_ptr<Symbol> > default_items;
+    vector<shared_ptr<Symbol> > user_items;
     
     int selected_item = 0;
 
@@ -27,10 +28,10 @@ public:
     inline Palette() {};
     inline ~Palette() {}
     
-    inline void addDefaultItem( Symbol *s ) { default_items.add(s); }
-    inline void addUserItem( Symbol *s ) { user_items.add(s); }
-    inline Symbol* getPaletteDefaultItem( int i ) { return default_items[i] ; }
-    inline Symbol* getPaletteUserItem( int i ) { return user_items[i] ; }
+    inline void addDefaultItem( shared_ptr<Symbol> s ) { default_items.push_back(s); }
+    inline void addUserItem( shared_ptr<Symbol> s ) { user_items.push_back(s); }
+    inline shared_ptr<Symbol> getPaletteDefaultItem( int i ) { return default_items[i] ; }
+    inline shared_ptr<Symbol> getPaletteUserItem( int i ) { return user_items[i] ; }
     inline int getPaletteNumDefaultItems() { return static_cast<int>( default_items.size() ) ; }
     inline int getPaletteNumUserItems() { return static_cast<int>( user_items.size() ) ; }
     inline int getSelectedItem() { return selected_item ; }

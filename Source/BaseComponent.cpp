@@ -76,13 +76,13 @@ void BaseComponent::reportModification()
 
 void BaseComponent::createAndAttachSymbol()
 {
-    Symbol *s = new Symbol();
-    addSymbolMessages( s );
-    setScoreSymbolPointer( s );
+    shared_ptr<Symbol> s = make_shared<Symbol>();
+    addSymbolMessages(s);
+    setScoreSymbolPointer(s);
 }
 
 // addSymbolMessages outputs the component's values into the symbol
-void BaseComponent::addSymbolMessages( Symbol* s )
+void BaseComponent::addSymbolMessages(shared_ptr<Symbol> s)
 {
     s->addMessage("/name", name );
     s->addMessage("/type", getSymbolTypeStr() );
@@ -264,7 +264,7 @@ void BaseComponent::setSymbolID()
     PageComponent *pc = getPageComponent();
     if( pc )
     {
-        Symbol *s = getScoreSymbolPointer();
+        shared_ptr<Symbol> s = getScoreSymbolPointer();
 
         if( s )
         {

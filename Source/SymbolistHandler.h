@@ -16,12 +16,7 @@ class SymbolPropertiesPanel;
 class SymbolistHandler : public virtual Controller<SymbolistModel, SymbolistMainComponent>
 {
     
-    ScopedPointer<Score> score;
-    
-    /**
-     * The palette is an array of symbol 'templates'.
-     */
-    Palette palette;
+    shared_ptr<Score> score;
     
     OwnedArray<Score> undo_stack;
     OwnedArray<Score> redo_stack;
@@ -50,8 +45,26 @@ class SymbolistHandler : public virtual Controller<SymbolistModel, SymbolistMain
     bool in_standalone = false;
     
 public:
-
+    /*********************************************
+     *                CONSTRUCTORS               *
+     *********************************************/
+    
+    /**
+     * SymbolistHandler's default constructor.
+     * Creates a model and a view from call to
+     * model and view's default constructors.
+     */
     SymbolistHandler();
+    
+    /**
+     * SymbolistHandler's constructor with model
+     * and view passed as parameters.
+     */
+    SymbolistHandler(shared_ptr<SymbolistModel> model, shared_ptr<SymbolistMainComponent> view);
+    
+    /**
+     * SymbolistHandler's default destructor.
+     */
     ~SymbolistHandler();
     
     /*********************************************
@@ -73,13 +86,13 @@ public:
     
     int symbolistAPI_getNumSymbols();
     OdotBundle_s symbolistAPI_getSymbolBundle_s(int n);
-    Symbol * symbolistAPI_getSymbol(int n);
+    shared_ptr<Symbol> symbolistAPI_getSymbol(int n);
     
     void symbolistAPI_setOneSymbol( const OdotBundle_s& bundle);
     void symbolistAPI_setSymbols(const OdotBundle_s& bundle_array);
     
     int symbolistAPI_getNumPaletteSymbols();
-    Symbol* symbolistAPI_getPaletteSymbol(int n);
+    shared_ptr<Symbol> symbolistAPI_getPaletteSymbol(int n);
     void symbolistAPI_setOnePaletteSymbol( const OdotBundle_s& bundle);
     void symbolistAPI_setPaletteSymbols(const OdotBundle_s& bundle_array);
     
@@ -127,17 +140,16 @@ public:
     
     void setCurrentSymbol(int n);
     int getCurrentSymbolIndex();
-    Symbol* getCurrentSymbol();
-    Palette* getSymbolPalette() { return &palette; }
+    shared_ptr<Symbol> getCurrentSymbol();
     
-    BaseComponent* makeComponentFromSymbol( Symbol *s, bool attach_the_symbol );
+    BaseComponent* makeComponentFromSymbol( shared_ptr<Symbol> s, bool attach_the_symbol );
     void addComponentsFromScore ();
     
     void inStandalone(){ in_standalone = true; };
     bool isStandalone(){ return in_standalone; };
 
     const TimePointArray* getTimePointArray() const { return score->getTimePointArray(); }
-    void removeTimePointsForSymbol( Symbol *s ){ score->removeSymbolTimePoints( s ); }
+    void removeTimePointsForSymbol(shared_ptr<Symbol> s){ score->removeSymbolTimePoints( s ); }
     
     void copySelectedToClipBoard();
     void newFromClipBoard();

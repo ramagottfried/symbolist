@@ -233,6 +233,16 @@
 		44EE9BBE1EC37D3E0021C5A8 /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00511EC328DE00E4F624 /* Main.cpp */; };
 		52B193FE560B5C8022529FF5 /* include_juce_data_structures.mm in Sources */ = {isa = PBXBuildFile; fileRef = B5F75CE38D2D3A7CD56C4F40 /* include_juce_data_structures.mm */; };
 		6547753639FBD52E4D188A43 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87F9A8E8F628CFBD00805519 /* Carbon.framework */; };
+		751E314B2069378600C3318F /* PaletteController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 751E31492069378600C3318F /* PaletteController.cpp */; };
+		751E314C2069378600C3318F /* PaletteController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 751E31492069378600C3318F /* PaletteController.cpp */; };
+		751E314D2069378600C3318F /* PaletteController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 751E31492069378600C3318F /* PaletteController.cpp */; };
+		751E31532069410400C3318F /* PaletteButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 751E31512069410400C3318F /* PaletteButton.cpp */; };
+		751E31542069410400C3318F /* PaletteButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 751E31512069410400C3318F /* PaletteButton.cpp */; };
+		751E31552069410400C3318F /* PaletteButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 751E31512069410400C3318F /* PaletteButton.cpp */; };
+		751E31562069410400C3318F /* PaletteButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 751E31512069410400C3318F /* PaletteButton.cpp */; };
+		751E31572069410400C3318F /* PaletteButton.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 751E31522069410400C3318F /* PaletteButton.hpp */; };
+		751E31582069410400C3318F /* PaletteButton.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 751E31522069410400C3318F /* PaletteButton.hpp */; };
+		751E315C2069493F00C3318F /* PaletteController.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 751E314A2069378600C3318F /* PaletteController.hpp */; };
 		75774F98206176790069A89D /* Controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F90206176780069A89D /* Controller.cpp */; };
 		75774F99206176790069A89D /* Observable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F91206176780069A89D /* Observable.cpp */; };
 		75774F9A206176790069A89D /* Observer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F93206176780069A89D /* Observer.cpp */; };
@@ -245,6 +255,12 @@
 		75774FA5206296C50069A89D /* Palette.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774FA2206296C50069A89D /* Palette.cpp */; };
 		75774FA6206296C50069A89D /* Palette.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774FA2206296C50069A89D /* Palette.cpp */; };
 		75774FA92062A4D40069A89D /* Palette.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 75774FA82062A4D40069A89D /* Palette.hpp */; };
+		757E1B42206A83B7002E472E /* Observable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F91206176780069A89D /* Observable.cpp */; };
+		757E1B43206A83C5002E472E /* View.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F95206176780069A89D /* View.cpp */; };
+		757E1B44206A83C9002E472E /* Observer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F93206176780069A89D /* Observer.cpp */; };
+		757E1B45206A83CA002E472E /* Observer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F93206176780069A89D /* Observer.cpp */; };
+		757E1B46206A83CD002E472E /* View.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F95206176780069A89D /* View.cpp */; };
+		757E1B47206A83D5002E472E /* Observable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F91206176780069A89D /* Observable.cpp */; };
 		8D57C4E2ADEA2935AAB91AAC /* include_juce_graphics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 853ACA2E570BAA4D86EE11C0 /* include_juce_graphics.mm */; };
 		99140AD09D86B21587B6829C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26C36CB1C5754D666DE2579C /* Cocoa.framework */; };
 		AC7BC43E089630154F7F79D6 /* include_juce_core.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3FAB00DCF22EB4922567B583 /* include_juce_core.mm */; };
@@ -441,6 +457,10 @@
 		4A18855981466E65AB497B9D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		5B4BF2AC43CE9859FE07665E /* RecentFilesMenuTemplate.nib */ = {isa = PBXFileReference; lastKnownFileType = file.nib; path = RecentFilesMenuTemplate.nib; sourceTree = SOURCE_ROOT; };
 		74EEE4D78BE87E05FED2C51C /* juce_gui_extra */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_gui_extra; path = ../../../JUCE/modules/juce_gui_extra; sourceTree = SOURCE_ROOT; };
+		751E31492069378600C3318F /* PaletteController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PaletteController.cpp; path = ../../Source/PaletteController.cpp; sourceTree = "<group>"; };
+		751E314A2069378600C3318F /* PaletteController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = PaletteController.hpp; path = ../../Source/PaletteController.hpp; sourceTree = "<group>"; };
+		751E31512069410400C3318F /* PaletteButton.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PaletteButton.cpp; path = ../../Source/PaletteButton.cpp; sourceTree = "<group>"; };
+		751E31522069410400C3318F /* PaletteButton.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = PaletteButton.hpp; path = ../../Source/PaletteButton.hpp; sourceTree = "<group>"; };
 		75774F90206176780069A89D /* Controller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Controller.cpp; path = ../../Source/Controller.cpp; sourceTree = "<group>"; };
 		75774F91206176780069A89D /* Observable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Observable.cpp; path = ../../Source/Observable.cpp; sourceTree = "<group>"; };
 		75774F92206176780069A89D /* View.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = View.hpp; path = ../../Source/View.hpp; sourceTree = "<group>"; };
@@ -732,6 +752,8 @@
 			children = (
 				118C38EE1EC61404006FF4A1 /* PaletteComponent.h */,
 				118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */,
+				751E31512069410400C3318F /* PaletteButton.cpp */,
+				751E31522069410400C3318F /* PaletteButton.hpp */,
 				111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */,
 				111A261B1F40B0C200D3713C /* MouseModeComponent.hpp */,
 				111A26201F40CBAD00D3713C /* time-components */,
@@ -823,6 +845,8 @@
 		75774F812061737F0069A89D /* controller */ = {
 			isa = PBXGroup;
 			children = (
+				751E31492069378600C3318F /* PaletteController.cpp */,
+				751E314A2069378600C3318F /* PaletteController.hpp */,
 				4425D3031EF858C700B8BF1C /* SymbolistHandler.h */,
 				4425D3041EF8599300B8BF1C /* SymbolistHandler.cpp */,
 			);
@@ -927,7 +951,9 @@
 				114027CD1F4B185E00A9B8C4 /* StaffComponent.hpp in Headers */,
 				116F87771F9D04B90062EE91 /* ScoreBundleViewer.h in Headers */,
 				11A3939F20528799002C8916 /* OdotBundle_s.hpp in Headers */,
+				751E315C2069493F00C3318F /* PaletteController.hpp in Headers */,
 				116A7EF92047E99D004B545D /* OdotMessage.hpp in Headers */,
+				751E31572069410400C3318F /* PaletteButton.hpp in Headers */,
 				113DEE0F1FA1D7C600A45220 /* EditSelectionBox.h in Headers */,
 				75774FA92062A4D40069A89D /* Palette.hpp in Headers */,
 				75774FA12062960C0069A89D /* SymbolistModel.hpp in Headers */,
@@ -959,6 +985,7 @@
 				116A7EE52046CFCD004B545D /* osc_serial.h in Headers */,
 				116A7EE82046CFCD004B545D /* osc_typetag.h in Headers */,
 				116A7EE62046CFCD004B545D /* osc_strfmt.h in Headers */,
+				751E31582069410400C3318F /* PaletteButton.hpp in Headers */,
 				116A7EDB2046CFCD004B545D /* osc_mem.h in Headers */,
 				116A7ED82046CFCD004B545D /* osc_legacy_scanner.h in Headers */,
 				116A7ECD2046CFCD004B545D /* osc_byteorder.h in Headers */,
@@ -1123,7 +1150,10 @@
 				118353481F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp in Sources */,
 				1107B3F31EF7D54800E2DFA9 /* symbolist.cpp in Sources */,
 				1107B3FB1EF7D55D00E2DFA9 /* PathBaseComponent.cpp in Sources */,
+				757E1B46206A83CD002E472E /* View.cpp in Sources */,
+				751E31552069410400C3318F /* PaletteButton.cpp in Sources */,
 				118648701EF7E68B00904672 /* include_juce_gui_basics.mm in Sources */,
+				757E1B47206A83D5002E472E /* Observable.cpp in Sources */,
 				4425D3071EF8599300B8BF1C /* SymbolistHandler.cpp in Sources */,
 				1107B3FD1EF7D55D00E2DFA9 /* SymbolGroupComponent.cpp in Sources */,
 				11D123611F4583B900A5EA5B /* ToolBarComp.cpp in Sources */,
@@ -1137,6 +1167,7 @@
 				1186489E1EFAC44100904672 /* ScoreCursor.cpp in Sources */,
 				1107B4011EF7D55D00E2DFA9 /* SymbolistComponent.cpp in Sources */,
 				111A261E1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */,
+				751E314D2069378600C3318F /* PaletteController.cpp in Sources */,
 				1107B3FA1EF7D55D00E2DFA9 /* PathHandleComponent.cpp in Sources */,
 				1107B3FF1EF7D55D00E2DFA9 /* PageComponent.cpp in Sources */,
 				1107B4021EF7D55D00E2DFA9 /* SymbolistMainComponent.cpp in Sources */,
@@ -1151,6 +1182,7 @@
 				11B71DD91F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
 				116A7EF82047E99D004B545D /* OdotMessage.cpp in Sources */,
 				118648711EF7E68B00904672 /* include_juce_gui_extra.mm in Sources */,
+				757E1B45206A83CA002E472E /* Observer.cpp in Sources */,
 				116A7EF12046DCAE004B545D /* OdotBundle.cpp in Sources */,
 				1107B4031EF7D55D00E2DFA9 /* SymbolistMainWindow.cpp in Sources */,
 				113980B5206449EA002A2408 /* OdotExpr.cpp in Sources */,
@@ -1189,6 +1221,7 @@
 				116A7E842046CFB6004B545D /* osc_expr_parser.c in Sources */,
 				116A7E852046CFB6004B545D /* osc_expr_rec.c in Sources */,
 				116A7E9A2046CFB6004B545D /* osc_util.c in Sources */,
+				751E31562069410400C3318F /* PaletteButton.cpp in Sources */,
 				116A7E862046CFB6004B545D /* osc_expr_scanner.c in Sources */,
 				116A7E8E2046CFB6004B545D /* osc_message_iterator_s.c in Sources */,
 				116A7E892046CFB6004B545D /* osc_legacy_parser.c in Sources */,
@@ -1219,6 +1252,8 @@
 				44B718B21EDD9D010039884E /* Symbol.cpp in Sources */,
 				114027C51F49C21E00A9B8C4 /* SortedStaves.cpp in Sources */,
 				11C442D11F585C1B00F2E9B6 /* TimeDisplay.cpp in Sources */,
+				757E1B42206A83B7002E472E /* Observable.cpp in Sources */,
+				757E1B44206A83C9002E472E /* Observer.cpp in Sources */,
 				4425D3061EF8599300B8BF1C /* SymbolistHandler.cpp in Sources */,
 				75774F9F2062960C0069A89D /* SymbolistModel.cpp in Sources */,
 				444C43A21EE4A2E4000C6F69 /* PageComponent.cpp in Sources */,
@@ -1233,6 +1268,7 @@
 				1186489D1EFAC44100904672 /* ScoreCursor.cpp in Sources */,
 				118C38DF1EC5BC4F006FF4A1 /* Score.cpp in Sources */,
 				116A7EFD2047ECB8004B545D /* OdotAtom.cpp in Sources */,
+				757E1B43206A83C5002E472E /* View.cpp in Sources */,
 				11D1235D1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */,
 				75774FA5206296C50069A89D /* Palette.cpp in Sources */,
 				444CD9041EDDAF1B001AC03A /* SymbolistComponent.cpp in Sources */,
@@ -1243,6 +1279,7 @@
 				116A7EF02046DCAE004B545D /* OdotBundle.cpp in Sources */,
 				116F87751F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */,
 				116F877B1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */,
+				751E314C2069378600C3318F /* PaletteController.cpp in Sources */,
 				118648971EFA811800904672 /* TimePointArray.cpp in Sources */,
 				1107B3DE1EF1751900E2DFA9 /* TextGlyphComponent.cpp in Sources */,
 				1107B3E21EF2D45500E2DFA9 /* PathHandleComponent.cpp in Sources */,
@@ -1254,6 +1291,7 @@
 				44CFE0391EC377EA009135F8 /* SymbolistMainWindow.cpp in Sources */,
 				444C43A61EE4A748000C6F69 /* SymbolGroupComponent.cpp in Sources */,
 				11B71DCE1F09844300CDE209 /* symbolist.cpp in Sources */,
+				751E31542069410400C3318F /* PaletteButton.cpp in Sources */,
 				113980B4206449EA002A2408 /* OdotExpr.cpp in Sources */,
 				118C38F01EC61404006FF4A1 /* PaletteComponent.cpp in Sources */,
 			);
@@ -1268,6 +1306,7 @@
 				AC7BC43E089630154F7F79D6 /* include_juce_core.mm in Sources */,
 				118353461F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp in Sources */,
 				52B193FE560B5C8022529FF5 /* include_juce_data_structures.mm in Sources */,
+				751E314B2069378600C3318F /* PaletteController.cpp in Sources */,
 				11CE00571EC328EC00E4F624 /* SymbolistMainComponent.cpp in Sources */,
 				44B718B11EDD9D010039884E /* Symbol.cpp in Sources */,
 				4425D3051EF8599300B8BF1C /* SymbolistHandler.cpp in Sources */,
@@ -1301,6 +1340,7 @@
 				116A7EF62047E99D004B545D /* OdotMessage.cpp in Sources */,
 				11B71DD71F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
 				116A7EEF2046DCAE004B545D /* OdotBundle.cpp in Sources */,
+				751E31532069410400C3318F /* PaletteButton.cpp in Sources */,
 				1107B3DD1EF1751900E2DFA9 /* TextGlyphComponent.cpp in Sources */,
 				113980B3206449EA002A2408 /* OdotExpr.cpp in Sources */,
 				116F877A1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */,

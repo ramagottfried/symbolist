@@ -1,37 +1,37 @@
-//
-//  Observable.cpp
-//  symbolist
-//
-//  Created by Vincent Iampietro on 20/03/2018.
-//
-
 #include "Observable.hpp"
 
 Observable::Observable()
 {
-    observers = OwnedArray<Observer>();
+    observers = vector<shared_ptr<Observer> >();
 }
 
-void Observable::attach(Observer *observer)
+void Observable::attach(shared_ptr<Observer> observer)
 {
-    if (!observers.contains(observer))
-    {
-        observers.add(observer);
-    }
+    auto iteratorOnObserver = find(observers.begin(), observers.end(), observer);
+    
+    /* find() returns an iterator on the last element
+     * if observer is not in observers.
+     */
+    if (iteratorOnObserver != observers.end())
+        observers.push_back(observer);
+        
 }
 
-void Observable::detach(Observer *observer)
+void Observable::detach(shared_ptr<Observer> observer)
 {
-    if (observers.contains(observer))
-    {
-        observers.removeObject(observer);
-    }
+    auto iteratorOnObserver = find(observers.begin(), observers.end(), observer);
+    
+    /* find() returns an iterator on the last element
+     * if observer is not in observers.
+     */
+    if (iteratorOnObserver != observers.end())
+        observers.erase(iteratorOnObserver);
+
 }
 
 void Observable::notify() {
     
-    for (Observer* observer : observers) {
+    for (shared_ptr<Observer> observer : observers)
         observer->update();
-    }
     
 }

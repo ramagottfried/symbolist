@@ -3,8 +3,9 @@
 
 #include <stdio.h>
 #include "Observable.hpp"
-#include "View.hpp"
 #include "Observer.hpp"
+
+using namespace std;
 
 /**
  * Describes an abstract templated controller class.
@@ -17,8 +18,8 @@
 template <class ObservableClass, class ViewClass>
 class Controller : public virtual Observer {
     
-    ScopedPointer<ObservableClass> model;
-    ScopedPointer<ViewClass> view;
+    shared_ptr<ObservableClass> model;
+    shared_ptr<ViewClass> view;
     
 public:
     /************************************************
@@ -42,11 +43,11 @@ public:
     /*******************************************************
      *                 GETTERS AND SETTERS                 *
      *******************************************************/
-    inline virtual ScopedPointer<ObservableClass> getModel() { return model; }
-    inline virtual void setModel(ScopedPointer<ObservableClass> model) { this->model = model; }
+    inline virtual shared_ptr<ObservableClass> getModel() { return model; }
+    inline virtual void setModel(shared_ptr<ObservableClass> model) { this->model = model; }
     
-    inline virtual ScopedPointer<ViewClass> getView() { return view; }
-    inline virtual void setModel(ScopedPointer<ViewClass> view) { this->view = view; }
+    inline virtual shared_ptr<ViewClass> getView() { return view; }
+    inline virtual void setView(shared_ptr<ViewClass> view) { this->view = view; }
 
     
 };

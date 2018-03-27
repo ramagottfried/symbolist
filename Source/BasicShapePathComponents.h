@@ -49,16 +49,16 @@ public:
     }
 
 
-    void addSymbolMessages( Symbol* s ) override
+    void addSymbolMessages(shared_ptr<Symbol> s) override
     {
         if ( modif_flag )
         {   // becomes a normal path
-            PathBaseComponent::addSymbolMessages( s );
+            PathBaseComponent::addSymbolMessages(s);
         }
         
         else
         {
-            BaseComponent::addSymbolMessages( s ) ;
+            BaseComponent::addSymbolMessages(s) ;
 
             
             s->addMessage ( "/fill" ,               m_fill   );

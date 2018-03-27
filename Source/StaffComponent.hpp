@@ -29,7 +29,7 @@ public:
     virtual string getSymbolTypeStr() const override { return "staff"; }
     
     void importFromSymbol( const Symbol &s ) override;
-    void addSymbolMessages( Symbol* s ) override;
+    void addSymbolMessages(shared_ptr<Symbol> s ) override;
     
     void parentHierarchyChanged() override;
 

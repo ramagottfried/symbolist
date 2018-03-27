@@ -19,6 +19,14 @@ OdotBundle::OdotBundle( const OdotBundle& src )
     ptr = odot::newOdotBundlePtr( b );
 }
 
+OdotBundle::OdotBundle( const OdotBundle* src )
+{
+    //    D_(cout << __func__ << "copy \n";)
+    t_osc_bndl_u *b = osc_bundle_u_alloc();
+    osc_bundle_u_copy( &b, src->ptr.get() );
+    ptr = odot::newOdotBundlePtr( b );
+}
+
 OdotBundle::OdotBundle( const t_osc_bndl_u * src )
 {
 //    D_(cout << __func__  << "copy from odot pointer \n";)
@@ -35,7 +43,8 @@ OdotBundle::OdotBundle( const OdotBundle_s& src )
 
 OdotBundle::OdotBundle( const t_osc_bndl_s * src )
 {
-    ptr = odot::newOdotBundlePtr( osc_bundle_s_deserialize( osc_bundle_s_getLen((t_osc_bndl_s *)src), osc_bundle_s_getPtr((t_osc_bndl_s *)src)) );
+    ptr = odot::newOdotBundlePtr(osc_bundle_s_deserialize(osc_bundle_s_getLen((t_osc_bndl_s *)src),
+                                                           osc_bundle_s_getPtr((t_osc_bndl_s *)src)));
 }
 
 OdotBundle::OdotBundle( const OdotMessage& msg )

@@ -68,7 +68,7 @@ public:
     Rectangle<float> symbol_export_bounds() override;
     
     void importFromSymbol( const Symbol& s ) override;
-    void addSymbolMessages( Symbol* s ) override;
+    void addSymbolMessages(shared_ptr<Symbol> s) override;
 
 //    void resized() override;
     

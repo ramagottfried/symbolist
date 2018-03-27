@@ -1,61 +1,8 @@
-
 #include "PaletteComponent.h"
+#include "PaletteButton.hpp"
 #include "SymbolistMainComponent.h"
 
-
 using namespace std ;
-
-
-/********************
- * ONE BUTTON
- ********************/
-
-PaletteButton::PaletteButton( int i, Symbol *s)
-{
-    button_id = i;
-    graphic_comp = getSymbolistHandler()->makeComponentFromSymbol(s,false);
-    setComponentID("PaletteButton");
-    addAndMakeVisible(graphic_comp);
-}
-
-PaletteButton::~PaletteButton()
-{
-//    cout << "deleting button " << this << endl;
-}
-
-void PaletteButton::setSelected(bool sel)
-{
-    selected = sel;
-}
-
-void PaletteButton::resized()
-{
-    graphic_comp->setBounds( getLocalBounds() );
-    graphic_comp->resizeToFit( 5 , 5 , getWidth() -10, getHeight() -10  );
-}
-
-void PaletteButton::paint (Graphics& g)
-{
-    Colour button_color = selected ? Colours::black : Colour::fromFloatRGBA(0, 0, 0, 0.2);
-    
-    graphic_comp->setSymbolComponentColor( button_color );
-    
-    g.setColour( button_color );
-    g.drawRect( getLocalBounds() );
-
-}
-
-void PaletteButton::mouseDown ( const MouseEvent& event )
-{
-    PaletteComponent* pv = dynamic_cast<PaletteComponent*>(getParentComponent());
-    
-    // Checks the downcast result.
-    if (pv != NULL) {
-        pv->selectPaletteButton(button_id);
-    }
-    
-}
-
 
 /********************
  * PALETTE VIEW
@@ -73,7 +20,7 @@ PaletteComponent::~PaletteComponent()
 }
 
 
-void PaletteComponent::buildFromPalette(Palette* palette)
+void PaletteComponent::buildFromPalette(shared_ptr<Palette> palette)
 {
     palette_pointer = palette;
     
@@ -100,7 +47,8 @@ void PaletteComponent::buildFromPalette(Palette* palette)
         s.addMessage( "/num_sub_paths", 1 );
         s.addMessage( "/path/0/str", "m 4. 4. c 14. 2. 22. 8. 16. 14. c 12. 20. 14. 24. 20. 22." );
         s.print();
-        PaletteButton *pb = new PaletteButton(-1, &s);
+        
+        PaletteButton *pb = new PaletteButton(-1, make_shared<Symbol>(&s));
         pb->setSize(d_bh , d_bw);
         pb->setCentrePosition( b_cX, b_cY);
         addAndMakeVisible(pb);

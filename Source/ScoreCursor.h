@@ -94,7 +94,7 @@ public:
         {
             setVisible(true);
 
-            Symbol* sym = staff->getScoreSymbolPointer();
+            shared_ptr<Symbol> sym = staff->getScoreSymbolPointer();
             
             float play_t = t - sym->getTime();
             auto staff_b = staff->getBoundsInParent();

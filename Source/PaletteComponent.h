@@ -1,59 +1,39 @@
 #pragma once
 
+#ifndef PaletteComponent_hpp
+#define PaletteComponent_hpp
+
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "BaseComponent.h"
-#include "SymbolistComponent.h"
 #include "Score.h"
+#include "PaletteController.hpp"
+#include "View.hpp"
 
-
-/**
- * Describes an element of the palette.
- */
-class PaletteButton : public SymbolistComponent
-{
-
-public:
-    
-    PaletteButton(int i, Symbol *s);
-    ~PaletteButton();
-    
-    void setSelected(bool sel);
-    
-    void resized() override;
-    void paint(Graphics &g) override;
-    void mouseDown ( const MouseEvent& event ) override;
- 
-    int getID() { return button_id; }
-    
-private:
-    
-    ScopedPointer<BaseComponent> graphic_comp;
-    int button_id;
-    bool selected;
-    
-};
-
+class PaletteButton;
+class SymbolistMainComponent;
 
 /**
  * Describes the graphic component representing the palette.
  */
-class PaletteComponent : public SymbolistComponent
+class PaletteComponent : public SymbolistComponent,
+                         public View<SymbolistModel, PaletteController>
 {
-    
-    public:
-    
+    shared_ptr<Palette> palette_pointer;
+
+public:
     PaletteComponent();
     ~PaletteComponent();
     
-    void buildFromPalette(Palette *palette);
+    void buildFromPalette(shared_ptr<Palette> palette);
     void selectPaletteButton(int i);
     
     void paint (Graphics& g) override;
     
-    private:
-    
-    Palette* palette_pointer;
-    
+    /* Overrides the update method inherited from the Observer class. */
+    inline void update() override { repaint(); }
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PaletteComponent)
 
 };
+
+#endif

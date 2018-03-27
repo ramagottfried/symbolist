@@ -85,7 +85,7 @@ void SymbolistMainComponent::resized()
 
 void SymbolistMainComponent::updatePaletteView()
 {
-    paletteView.buildFromPalette(symbolist_handler->getSymbolPalette());
+    paletteView.buildFromPalette(symbolist_handler->getModel()->getPalette());
 }
 
 void SymbolistMainComponent::toggleInspector()

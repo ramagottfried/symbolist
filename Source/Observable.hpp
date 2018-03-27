@@ -5,6 +5,8 @@
 #include "Observer.hpp"
 #include "../JuceLibraryCode/JuceHeader.h"
 
+using namespace std;
+
 /**
  * Describes the Observable class from the observer
  * design pattern.
@@ -14,12 +16,11 @@
  */
 class Observable {
 
-private:
     /**
      * An array of observers which are listening
      * to this Observable object.
      */
-    OwnedArray<Observer> observers;
+    vector<shared_ptr<Observer> > observers;
     
 public:
     
@@ -32,7 +33,7 @@ public:
     /**
      * Observable's destructor method.
      */
-    virtual ~Observable() {};
+    virtual ~Observable() { };
     
     /**
      * Adds a new observer to the list of observers if
@@ -41,7 +42,7 @@ public:
      * @param observer the observer to be added to the
      *                 list of observers.
      */
-    void attach(Observer* observer);
+    void attach(shared_ptr<Observer> observer);
     
     /**
      * Removes the specified observer from the list if
@@ -50,7 +51,7 @@ public:
      * @param observer the observer to be removed from the
      *                 list of observers.
      */
-    void detach(Observer* observer);
+    void detach(shared_ptr<Observer> observer);
     
     /**
      * Notifies all the observers that an event

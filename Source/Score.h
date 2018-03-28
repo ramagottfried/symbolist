@@ -32,6 +32,9 @@ class Score
     
 public:
     
+    /***************************************
+     *             CONSTRUCTORS            *
+     ***************************************/
     Score();
     Score(Score& src);
     
@@ -42,6 +45,16 @@ public:
     Score(Score* src);
     Score(const OdotBundle_s& s_bundle) ;
     ~Score();
+    
+    /**********************************************
+     *             GETTERS AND SETTERS            *
+     **********************************************/
+    inline TimePointArray* getTimePoints() { return &time_points; };
+    const TimePointArray* getTimePointArray() const
+    {
+        return &time_points;
+    }
+    
     
     size_t getSize();
     
@@ -69,11 +82,7 @@ public:
 
     const Array<shared_ptr<Symbol>> getSymbolsByValue(const string& address, const string& value);
 
-    const TimePointArray* getTimePointArray() const {
-        
-        return &time_points;
-        
-    }
+    
     
     const StringArray getStaves();
     void addStaff( shared_ptr<Symbol> s );

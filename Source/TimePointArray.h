@@ -52,19 +52,18 @@ struct SymbolTimePoint
     
 };
 
-class TimePointArray : public vector<shared_ptr<SymbolTimePoint> >
+class TimePointArray : public virtual vector<shared_ptr<SymbolTimePoint> >
 {
     int                                current_point = 0;
     float                              current_time = 0;
-    shared_ptr<Score>                  score_ptr = nullptr;
+    weak_ptr<Score>                    score_ptr;
     shared_ptr<SymbolTimePoint>        prev_timepoint = nullptr;
     vector<pair<shared_ptr<Symbol>,
                 shared_ptr<Symbol>> >  voice_staff_vector;
     
 public:
     inline TimePointArray() {}
-    TimePointArray(Score* s);
-    
+    inline ~TimePointArray() {};
     /*
     TimePointArray(TimePointArray& t)
     {
@@ -89,7 +88,16 @@ public:
         return *this;
     }
     */
-    ~TimePointArray() = default;
+    
+    /**
+     * Sets the score_ptr of this TimePointArray instance.
+     * This method is called by SymbolistModel when
+     * instantiating the score.
+     */
+    inline void setScore(shared_ptr<Score> pointerToScore)
+    {
+        this->score_ptr = pointerToScore;
+    }
     
     void printTimePoints();
     void printBundle(OSCBundle bndl);

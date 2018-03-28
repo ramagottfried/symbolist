@@ -34,10 +34,7 @@ public:
      * SymbolistModel's constructor taking a Score and a Palette
      * object as arguments.
      */
-    inline SymbolistModel(shared_ptr<Score> score, shared_ptr<Palette> palette) {
-        this->score = score;
-        this->palette = palette;
-    }
+    SymbolistModel(shared_ptr<Score> score, shared_ptr<Palette> palette);
     
     /**
      * SymbolistModel's default destructor.

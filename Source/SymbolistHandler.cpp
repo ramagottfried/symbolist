@@ -15,8 +15,6 @@ SymbolistHandler::SymbolistHandler()
     setModel(make_shared<SymbolistModel>());
     // setView(new SymbolistMainComponent(this));
     
-    score = make_shared<Score>();
-    
     // create two default items
     float symbol_size = 30.0;
     float symbol_pos = 0.0;
@@ -173,17 +171,17 @@ void SymbolistHandler::symbolistAPI_registerTransportCallback(symbolistTransport
 
 int SymbolistHandler::symbolistAPI_getNumSymbols()
 {
-    return static_cast<int>( score->getSize() );
+    return static_cast<int>( getModel()->getScore()->getSize() );
 }
 
 shared_ptr<Symbol> SymbolistHandler::symbolistAPI_getSymbol(int n)
 {
-    return score->getSymbol(n);
+    return getModel()->getScore()->getSymbol(n);
 }
 
 OdotBundle_s SymbolistHandler::symbolistAPI_getSymbolBundle_s(int n)
 {
-    return score->getSymbol(n)->serialize();
+    return getModel()->getScore()->getSymbol(n)->serialize();
 }
 
 void SymbolistHandler::symbolistAPI_setOneSymbol( const OdotBundle_s& bundle)
@@ -191,7 +189,7 @@ void SymbolistHandler::symbolistAPI_setOneSymbol( const OdotBundle_s& bundle)
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
     
     shared_ptr<Symbol> s = make_shared<Symbol>( bundle );
-    score->addSymbol(s);
+    getModel()->getScore()->addSymbol(s);
     
     if ( main_component_ptr != nullptr )
     {
@@ -210,7 +208,7 @@ void SymbolistHandler::symbolistAPI_setSymbols( const OdotBundle_s& bundle_array
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
     
-    score->importScoreFromOSC( bundle_array );
+    getModel()->getScore()->importScoreFromOSC( bundle_array );
     
     if ( main_component_ptr != NULL)
     {
@@ -282,7 +280,7 @@ void SymbolistHandler::symbolistAPI_toggleTimeCusor()
 
 StaffComponent* SymbolistHandler::getStaveAtTime( float time )
 {
-    if( shared_ptr<Symbol> stave_sym = score->getStaveAtTime( time ) )
+    if( shared_ptr<Symbol> stave_sym = getModel()->getScore()->getStaveAtTime( time ) )
     {
         Component *c = main_component_ptr->getPageComponent()->findChildWithID( stave_sym->getID().c_str() );
         if( c )
@@ -300,25 +298,25 @@ StaffComponent* SymbolistHandler::getStaveAtTime( float time )
 
 OdotBundle_s SymbolistHandler::symbolistAPI_getSymbolsAtTime( float t )
 {
-    return score->getSymbolsAtTime(t);
+    return getModel()->getScore()->getSymbolsAtTime(t);
 }
 
 
 OdotBundle_s SymbolistHandler::symbolistAPI_getdurationBundle()
 {
-    return score->getDurationBundle();
+    return getModel()->getScore()->getDurationBundle();
 }
 
 
 OdotBundle_s SymbolistHandler::symbolistAPI_getScoreBundle()
 {
-    return score->getScoreBundle_s();
+    return getModel()->getScore()->getScoreBundle_s();
 }
 
 /*
 odot_bundle* SymbolistHandler::symbolistAPI_getTimePointBundle()
 {
-    return score->getScoreBundle();
+    return getModel()->getScore()->getScoreBundle();
 }
 */
 
@@ -330,7 +328,7 @@ void SymbolistHandler::symbolistAPI_clearScore()
     {
         main_component_ptr->getPageComponent()->clearAllSubcomponents();
     }
-    score->removeAllSymbols();
+    getModel()->getScore()->removeAllSymbols();
 }
 
 
@@ -440,7 +438,7 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(shared_ptr<Symbol> s, b
                 */
                 
                 newComponent->setScoreSymbolPointer( s );
-                score->addStaff( s ); // << /type checked internally and added if staff
+                getModel()->getScore()->addStaff( s ); // << /type checked internally and added if staff
 
             }
         }
@@ -476,7 +474,7 @@ void SymbolistHandler::addSymbolToScore ( BaseComponent* component )
     //cout << "ADDING SYMBOL FOR " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
     //log_score_change();
 
-    score->addSymbol( component->getScoreSymbolPointer() );
+    getModel()->getScore()->addSymbol( component->getScoreSymbolPointer() );
     executeUpdateCallback( -1 );
     
 }
@@ -497,8 +495,8 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* component )
     if( main_component_ptr )
         main_component_ptr->clearInspector();
     
-    score->removeSymbolTimePoints( symbol );
-    score->removeSymbol( symbol );
+    getModel()->getScore()->removeSymbolTimePoints( symbol );
+    getModel()->getScore()->removeSymbol( symbol );
     
     component->setScoreSymbolPointer( NULL );
     executeUpdateCallback( -1 );
@@ -523,7 +521,7 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
 
     
     // remove current time point for symbol, or if stave remove all symbol timepoints on stave
-    score->removeSymbolTimePoints( s );
+    getModel()->getScore()->removeSymbolTimePoints( s );
     
     // clear the bundle attached to the component (since the component has been updated)
     // don't have to clear, because the symbol is updated not in add symbol
@@ -537,16 +535,16 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     {
         cout << "type staff " << endl;
         // if the type is "staff" resort the stave order and update time point array
-        score->updateStavesAndTimepoints();
+        getModel()->getScore()->updateStavesAndTimepoints();
     }
     else
     {
         // if the type is not a staff, add the time points for the symbol
-        score->addSymbolTimePoints( s );
+        getModel()->getScore()->addSymbolTimePoints( s );
     }
     
     
-    executeUpdateCallback( score->getSymbolPosition( s ) );
+    executeUpdateCallback( getModel()->getScore()->getSymbolPosition( s ) );
     
     c->repaint();
     
@@ -566,9 +564,9 @@ void SymbolistHandler::log_score_change()
 void SymbolistHandler::push_undo_stack()
 {
     cout << "prev score :"<< endl;
-    score->print();
+    getModel()->getScore()->print();
     
-    undo_stack.add( new Score( *score ) );
+    undo_stack.add( new Score( *getModel()->getScore() ) );
     
     if( undo_stack.size() > 10 )
     {
@@ -581,7 +579,7 @@ void SymbolistHandler::push_undo_stack()
  ***/
 void SymbolistHandler::push_redo_stack()
 {
-    redo_stack.add( new Score( *score ) );
+    redo_stack.add( new Score( *getModel()->getScore() ) );
 }
 
 
@@ -597,8 +595,8 @@ void SymbolistHandler::undo()
 
             main_component_ptr->getPageComponent()->unselectAllComponents();
             main_component_ptr->getPageComponent()->clearAllSubcomponents();
-            score->removeAllSymbols();
-            score = make_shared<Score>(undo_stack.removeAndReturn( undo_stack.size() - 1 ));
+            getModel()->getScore()->removeAllSymbols();
+            getModel()->setScore(make_shared<Score>(undo_stack.removeAndReturn( undo_stack.size() - 1 )));
             
             addComponentsFromScore();
             main_component_ptr->repaint();
@@ -619,8 +617,8 @@ void SymbolistHandler::redo()
             
             main_component_ptr->getPageComponent()->unselectAllComponents();
             main_component_ptr->getPageComponent()->clearAllSubcomponents();
-            score->removeAllSymbols();
-            score = make_shared<Score>(redo_stack.removeAndReturn( redo_stack.size() - 1 ));
+            getModel()->getScore()->removeAllSymbols();
+            getModel()->getScore() = make_shared<Score>(redo_stack.removeAndReturn( redo_stack.size() - 1 ));
             addComponentsFromScore();
             main_component_ptr->repaint();
         }

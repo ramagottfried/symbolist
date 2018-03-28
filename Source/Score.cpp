@@ -4,13 +4,12 @@
 #include <algorithm>
 #include <vector>
 
-
-Score::Score() : time_points(this)
+Score::Score()
 {
     cout << "score " << this << " " << score_symbols.size() << endl;
 }
 
-Score::Score(Score& src) : time_points(this)
+Score::Score(Score& src)
 {
     for( shared_ptr<Symbol> symbol : src.score_symbols )
     {
@@ -24,7 +23,7 @@ Score::Score(Score& src) : time_points(this)
     cout << "copying score " << this << " " << score_symbols.size() << " n staves " << staves.size() << endl;
 }
 
-Score::Score(Score* src) : time_points(this)
+Score::Score(Score* src)
 {
     for( shared_ptr<Symbol> symbol : src->score_symbols )
     {
@@ -38,7 +37,7 @@ Score::Score(Score* src) : time_points(this)
     cout << "copying score " << this << " " << score_symbols.size() << " n staves " << staves.size() << endl;
 }
 
-Score::Score( const OdotBundle_s& s_bundle  ) : time_points(this)
+Score::Score( const OdotBundle_s& s_bundle  )
 {
     importScoreFromOSC( s_bundle );
 }

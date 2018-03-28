@@ -1,12 +1,6 @@
 #include "TimePointArray.h"
 #include "Score.h"
 
-TimePointArray::TimePointArray(Score* s)
-{
-    shared_ptr<Score> sharedPointertoScore(s);
-    score_ptr = sharedPointertoScore;
-}
-
 void TimePointArray::printTimePoints()
 {
     cout << "-------- timepoint list ----------" << endl;
@@ -154,40 +148,45 @@ void TimePointArray::addSymbolTimePoints( shared_ptr<Symbol> s )
 
     if( staff_name.size() == 0 )
         return;
-
-    auto found_staves = score_ptr->getSymbolsByValue("/id", staff_name);
-    if( found_staves.isEmpty() )
-        return;
     
-    shared_ptr<Symbol> staff = make_shared<Symbol>(found_staves.getFirst().get());
-    
-    float staff_x = staff->getMessage("/x").getFloat();
-    
-    float start_x = s->getMessage("/x").getFloat() - staff_x;
-    float dur_x = s->getMessage("/w").getFloat();
-    float end_x = start_x + dur_x;
-
-    float staff_start = staff->getMessage("/time/start").getFloat();
-    
-    float start_t = staff_start + s->pixelsToTime(start_x);
-    float end_t = staff_start + s->pixelsToTime(end_x);
-    
-    s->setTimeAndDuration(start_t, s->pixelsToTime(dur_x) );
-    
-    cout << "adding timepoints on " << staff_name << " " << staff_start << " t start " << start_t << endl;
-    
-    int start_idx = addSymbol_atTime( s, start_t, staff );
-    int end_idx = addSymbol_atTime( s, end_t, staff );
-    
-    for( int i = (start_idx + 1); i < end_idx; i++ )
+    // Expiry check for weak_ptr to score.
+    if (!score_ptr.expired())
     {
-        (*this)[ i ]->addSymbol( s );
+        auto found_staves = score_ptr.lock()->getSymbolsByValue("/id", staff_name);
+        if( found_staves.isEmpty() )
+            return;
+        
+        shared_ptr<Symbol> staff = make_shared<Symbol>(found_staves.getFirst().get());
+        
+        float staff_x = staff->getMessage("/x").getFloat();
+        
+        float start_x = s->getMessage("/x").getFloat() - staff_x;
+        float dur_x = s->getMessage("/w").getFloat();
+        float end_x = start_x + dur_x;
+        
+        float staff_start = staff->getMessage("/time/start").getFloat();
+        
+        float start_t = staff_start + s->pixelsToTime(start_x);
+        float end_t = staff_start + s->pixelsToTime(end_x);
+        
+        s->setTimeAndDuration(start_t, s->pixelsToTime(dur_x) );
+        
+        cout << "adding timepoints on " << staff_name << " " << staff_start << " t start " << start_t << endl;
+        
+        int start_idx = addSymbol_atTime( s, start_t, staff );
+        int end_idx = addSymbol_atTime( s, end_t, staff );
+        
+        for( int i = (start_idx + 1); i < end_idx; i++ )
+        {
+            (*this)[ i ]->addSymbol( s );
+        }
+        
+        // printTimePoints();
+        current_point = 0;
+        voice_staff_vector.clear();
+
     }
     
-    // printTimePoints();
-    current_point = 0;
-    voice_staff_vector.clear();
-
 }
 
 int TimePointArray::addSymbol_atTime( shared_ptr<Symbol> s, float time, shared_ptr<Symbol> staff)

@@ -15,9 +15,6 @@ class SymbolPropertiesPanel;
 
 class SymbolistHandler : public virtual Controller<SymbolistModel, SymbolistMainComponent>
 {
-    
-    shared_ptr<Score> score;
-    
     OwnedArray<Score> undo_stack;
     OwnedArray<Score> redo_stack;
     
@@ -129,7 +126,7 @@ public:
     void clearInspector();
     
     void updateSymbolFromInspector( BaseComponent *c );
-    const StringArray getStaves() { return score->getStaves(); }
+    const StringArray getStaves() { return getModel()->getScore()->getStaves(); }
     
     void convertSelectedToStaff();
     StaffComponent* getStaveAtTime( float time );
@@ -148,8 +145,8 @@ public:
     void inStandalone(){ in_standalone = true; };
     bool isStandalone(){ return in_standalone; };
 
-    const TimePointArray* getTimePointArray() const { return score->getTimePointArray(); }
-    void removeTimePointsForSymbol(shared_ptr<Symbol> s){ score->removeSymbolTimePoints( s ); }
+    const TimePointArray* getTimePointArray() { return getModel()->getScore()->getTimePointArray(); }
+    void removeTimePointsForSymbol(shared_ptr<Symbol> s){ getModel()->getScore()->removeSymbolTimePoints( s ); }
     
     void copySelectedToClipBoard();
     void newFromClipBoard();
@@ -164,12 +161,12 @@ public:
     
     int symbolNameCount( string& name )
     {
-        return score->getNameCount( name );
+        return getModel()->getScore()->getNameCount( name );
     }
     
     bool uniqueIDCheck( string& name )
     {
-        return !score->idExists( name );
+        return !getModel()->getScore()->idExists( name );
     }
     
     inline void update() override {}

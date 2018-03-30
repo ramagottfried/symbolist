@@ -16,8 +16,8 @@ using namespace std;
  */
 class SymbolistModel : public virtual Observable {
     
-    shared_ptr<Score> score;
-    shared_ptr<Palette> palette;
+    Score* score;
+    Palette* palette;
     
 public:
     
@@ -34,21 +34,24 @@ public:
      * SymbolistModel's constructor taking a Score and a Palette
      * object as arguments.
      */
-    SymbolistModel(shared_ptr<Score> score, shared_ptr<Palette> palette);
+    SymbolistModel(Score* score, Palette* palette);
     
     /**
      * SymbolistModel's default destructor.
      */
-    virtual ~SymbolistModel() {};
+    virtual ~SymbolistModel()
+    {
+        delete palette;
+        delete score;
+    };
     
     /*******************************************************
      *                 GETTERS AND SETTERS                 *
      *******************************************************/
-    inline shared_ptr<Score> getScore() { return score; }
-    inline void setScore(shared_ptr<Score> score) { this->score = score; }
-    
-    inline shared_ptr<Palette> getPalette() { return palette; }
-    inline void setPalette(shared_ptr<Palette> palette) { this->palette = palette; }
+    inline Score* getScore() { return score; }
+    inline void setScore(Score* score) { this->score = score; };
+    inline Palette* getPalette() { return palette; }
+    inline void setPalette(Palette* palette) { this->palette = palette; }
     
 };
 

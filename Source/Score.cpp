@@ -11,11 +11,11 @@ Score::Score()
 
 Score::Score(Score& src)
 {
-    for( shared_ptr<Symbol> symbol : src.score_symbols )
+    for( Symbol symbol : src.score_symbols )
     {
-        shared_ptr<Symbol> new_sym = make_shared<Symbol>( symbol->get_o_ptr() );
+        Symbol new_sym = Symbol( symbol.get_o_ptr() );
         score_symbols.push_back( new_sym );
-        addStaff( new_sym );
+        addStaff(&new_sym);
     }
     
     updateStavesAndTimepoints();
@@ -25,11 +25,11 @@ Score::Score(Score& src)
 
 Score::Score(Score* src)
 {
-    for( shared_ptr<Symbol> symbol : src->score_symbols )
+    for( Symbol symbol : src->score_symbols )
     {
-        shared_ptr<Symbol> new_sym = make_shared<Symbol>( symbol->get_o_ptr() );
+        Symbol new_sym = Symbol( symbol.get_o_ptr() );
         score_symbols.push_back( new_sym );
-        addStaff( new_sym );
+        addStaff(&new_sym);
     }
     
     updateStavesAndTimepoints();
@@ -42,7 +42,10 @@ Score::Score( const OdotBundle_s& s_bundle  )
     importScoreFromOSC( s_bundle );
 }
 
-Score::~Score() {}
+Score::~Score()
+{
+
+}
 
 void Score::print() const
 {
@@ -50,7 +53,7 @@ void Score::print() const
     for( auto s : score_symbols )
     {
         cout << "symbol : " << count << endl;
-        s->print();
+        s.print();
     }
 }
 
@@ -60,7 +63,7 @@ void Score::print() const
 void Score::removeAllSymbols()
 {
     score_symbols.clear();
-    time_points.clear();
+    time_points.getSymbolTimePoints()->clear();
     staves.clear();
 }
 
@@ -68,23 +71,23 @@ void Score::removeAllSymbols()
 /***********************************
  * Add a new Symbol in the Score
  ***********************************/
-void Score::addSymbol(shared_ptr<Symbol> symbol)
+void Score::addSymbol(Symbol* symbol)
 {
     // Calls the sort function to properly insert the new symbol
-    score_symbols.push_back(symbol);
+    score_symbols.push_back(*symbol);
     sort(score_symbols.begin(), score_symbols.end(), score_sorter);
     
-    bool newstaff = staves.addStaff( symbol ) ;
-    time_points.addSymbolTimePoints( symbol );
+    bool newstaff = staves.addStaff(symbol);
+    time_points.addSymbolTimePoints(symbol);
 
     if( newstaff )
     {
-        for( auto s : score_symbols )
+        for (auto s : score_symbols)
         {
-            if( s->getSaff() == symbol->getID() ) // this should look up by name not nameID, in the timepoints the staves should be combined,... although then I guess the types of clef could change? leaving as id for now, but this is uninituitive to set from outside the editor
+            if( s.getSaff() == symbol->getID() ) // this should look up by name not nameID, in the timepoints the staves should be combined,... although then I guess the types of clef could change? leaving as id for now, but this is uninituitive to set from outside the editor
             {
                 //time_points.removeSymbolTimePoints(s);
-                time_points.addSymbolTimePoints( s );
+                time_points.addSymbolTimePoints( &s );
             }
         }
     }
@@ -97,21 +100,22 @@ void Score::addSymbol(shared_ptr<Symbol> symbol)
 /***********************************
  * Removes a Symbol from the Score
  ***********************************/
-void Score::removeSymbol(shared_ptr<Symbol> symbol)
+void Score::removeSymbol(Symbol* symbol)
 {
-    assert( score_symbols.empty() == false ); ///< what do you want to remove ?
+    assert(score_symbols.empty() == false); ///< what do you want to remove ?
     
-    for( auto it = score_symbols.begin(); it != score_symbols.end(); it++)
+    for (auto it = score_symbols.begin(); it != score_symbols.end(); it++)
     {
-        if( symbol == (*it) )
+        Symbol* s = &(*it);
+        if (symbol == s)
         {
-            staves.removeStaff( symbol );
+            staves.removeStaff(symbol);
             score_symbols.erase(it);
             return;
         }
     }
     
-    assert( false );    ///< not found
+    assert(false);    ///< not found
 }
 
 /***********************************
@@ -128,7 +132,7 @@ OdotBundle_s Score::getScoreBundle_s()
     string prefix = "/symbol/";
     for( auto sym : score_symbols )
     {
-        bndl.addMessage( prefix + to_string(count), *sym );
+        bndl.addMessage(prefix + to_string(count), sym);
         count++;
     }
     
@@ -143,12 +147,12 @@ OdotBundle_s Score::getSymbolsAtTime( float t )
     return time_points.getSymbolsAtTime( t );
 }
 
-void Score::removeSymbolTimePoints( shared_ptr<Symbol> s )
+void Score::removeSymbolTimePoints( Symbol* s )
 {
     time_points.removeStaffAndSymbolTimePoints( s );
 }
 
-void Score::addSymbolTimePoints( shared_ptr<Symbol> s )
+void Score::addSymbolTimePoints( Symbol* s )
 {
     time_points.addSymbolTimePoints( s );
 }
@@ -156,7 +160,7 @@ void Score::addSymbolTimePoints( shared_ptr<Symbol> s )
 
 OdotBundle_s Score::getDurationBundle()
 {
-    shared_ptr<SymbolTimePoint> lastTimePoint = time_points.back();
+    SymbolTimePoint* lastTimePoint = time_points.getSymbolTimePoints()->back();
     if( !lastTimePoint )
         return NULL;
     
@@ -169,10 +173,10 @@ OdotBundle_s Score::getDurationBundle()
 /***********************************
  * Get the Nth Symbol of the Score
  ***********************************/
-shared_ptr<Symbol> Score::getSymbol(int n)
+Symbol* Score::getSymbol(int n)
 {
-    if (n < score_symbols.size()) { return score_symbols[n]; }
-    else { return NULL; }
+    if (n < score_symbols.size()) return &score_symbols[n];
+    else return NULL;
 }
 
 /***********************************
@@ -186,29 +190,33 @@ size_t Score::getSize()
 /***********************************
  * Returns the position of a Symbol in the Score
  ***********************************/
-int Score::getSymbolPosition(shared_ptr<Symbol> s)
+int Score::getSymbolPosition(Symbol* s)
 {
-    auto iteratorToSymbol = find(score_symbols.begin(), score_symbols.end(), s);
+    auto iteratorToSymbol = find_if(score_symbols.begin(),
+                                    score_symbols.end(),
+                                    [s](Symbol symbolFromScore) {
+                                        return &symbolFromScore == s;
+                                    });
     return static_cast<int>(distance(score_symbols.begin(), iteratorToSymbol));
 }
 
-const Array<shared_ptr<Symbol>> Score::getSymbolsByValue( const string& address, const string& value )
+const Array<Symbol*> Score::getSymbolsByValue( const string& address, const string& value )
 {
-    Array<shared_ptr<Symbol>> matched;
+    Array<Symbol*> matched;
     for (auto s : score_symbols )
     {
-        OdotMessage val = s->getMessage( address );
+        OdotMessage val = s.getMessage( address );
         
         if( val[0].getType() == OdotAtom::O_ATOM_STRING && val[0].getString() == value )
         {
-            matched.add( s );
+            matched.add( &s );
         }
     }
     return matched;
 }
 
 
-const shared_ptr<Symbol> Score::getStaveByID( const string& id )
+const Symbol* Score::getStaveByID( const string& id )
 {
     return staves.getStaveByID( id );
 }
@@ -228,7 +236,7 @@ void Score::importScoreFromOSC( const OdotBundle_s& s_bundle )
     {
         if( msg.getAddress().find("/symbol") == 0 && msg[0].getType() == OdotAtom::O_ATOM_BUNDLE )
         {
-            shared_ptr<Symbol> s = make_shared<Symbol>( msg.getBundle().get_o_ptr() );
+            Symbol* s = new Symbol(msg.getBundle().get_o_ptr());
             addSymbol(s);
         }
     }
@@ -240,7 +248,7 @@ void Score::importScoreFromOSC( const OdotBundle_s& s_bundle )
  * Staff/Stave handling
  ***********************************/
 
-void Score::addStaff( shared_ptr<Symbol> s )
+void Score::addStaff( Symbol* s )
 {
     staves.addStaff( s );
 }
@@ -249,7 +257,7 @@ void Score::addStaff( shared_ptr<Symbol> s )
  * called when staff is moved
  ***********************************/
 
-void Score::updateStaves(shared_ptr<Symbol> moved_stave)
+void Score::updateStaves(Symbol* moved_stave)
 {
 
     string type = moved_stave->getMessage("/type").getString();
@@ -270,11 +278,11 @@ void Score::updateStaves(shared_ptr<Symbol> moved_stave)
     // add the symbols
     
     String staff_id = moved_stave->getID();
-    for( auto s : score_symbols )
+    for(auto s : score_symbols)
     {
-        if( s->getSaff() == staff_id )
+        if (s.getSaff() == staff_id)
         {
-            time_points.addSymbolTimePoints(s);
+            time_points.addSymbolTimePoints(&s);
         }
     }
     
@@ -296,12 +304,12 @@ void Score::updateStavesAndTimepoints()
     
     for( auto s : score_symbols )
     {
-        time_points.addSymbolTimePoints(s);
+        time_points.addSymbolTimePoints(&s);
     }
     
 }
 
-shared_ptr<Symbol> Score::getStaveAtTime( float time )
+Symbol* Score::getStaveAtTime( float time )
 {
     return staves.getStaveAtTime(time);
 }

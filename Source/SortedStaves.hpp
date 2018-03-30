@@ -26,7 +26,7 @@
 
 class SortedStaves
 {
-    vector<shared_ptr<Symbol> > staves;
+    vector<Symbol* > staves;
 
 public:
     
@@ -35,16 +35,16 @@ public:
     
     void clear();
     size_t size();
-    void erase( shared_ptr<Symbol> s );
-    void removeStaff( shared_ptr<Symbol> s);
-    static bool compareStaves (shared_ptr<Symbol> a, shared_ptr<Symbol> b);
+    void erase(Symbol* s);
+    void removeStaff(Symbol* s);
+    static bool compareStaves(Symbol* a, Symbol* b);
     void resetTimes();
-    bool addStaff( shared_ptr<Symbol> s);
+    bool addStaff(Symbol* s);
     
     StringArray getStaveNames();
     
-    shared_ptr<Symbol> getStaveAtTime(float time);
-    const shared_ptr<Symbol> getStaveByID( const String& id );
+    Symbol* getStaveAtTime(float time);
+    const Symbol* getStaveByID( const String& id );
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SortedStaves)
 };

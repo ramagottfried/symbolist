@@ -9,8 +9,8 @@
 template <class ObservableClass, class ControllerClass>
 class View : public virtual Observer {
 
-    ScopedPointer<ObservableClass> model;
-    ScopedPointer<ControllerClass> controller;
+    ObservableClass* model;
+    ControllerClass* controller;
     
 public:
     /************************************************
@@ -29,16 +29,22 @@ public:
     /**
      * View's destructor method.
      */
-    virtual ~View() {};
+    inline virtual ~View() {};
     
     /*******************************************************
      *                 GETTERS AND SETTERS                 *
      *******************************************************/
-    inline virtual ScopedPointer<ObservableClass> getModel() { return model; }
-    inline virtual void setModel(ScopedPointer<ObservableClass> model) { this->model = model; }
+    inline virtual ObservableClass* getModel() { return model; }
+    inline virtual void setModel(ObservableClass* model) { this->model = model; }
     
-    inline virtual ScopedPointer<ControllerClass> getController() { return controller; }
-    inline virtual void setController(ScopedPointer<ControllerClass> controller) { this->controller = controller; }
+    inline virtual ControllerClass* getController()
+    {
+            return controller;
+    }
+    inline virtual void setController(ControllerClass* controller)
+    {
+        this->controller = controller;
+    }
     
 };
 

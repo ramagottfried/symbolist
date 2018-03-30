@@ -30,8 +30,8 @@ public:
     inline PageComponent* getPageComponent() override { return this; };
     
     // redefine from ScoreComponents for special actions (update the score)
-    void addSubcomponent ( SymbolistComponent *c ) override ;
-    void removeSubcomponent( SymbolistComponent *c ) override ;
+    void addSubcomponent(SymbolistComponent *c) override ;
+    void removeSubcomponent(SymbolistComponent *c) override ;
     
     // single_component edit mode
     void enterEditMode( BaseComponent* c );

@@ -1,7 +1,12 @@
 #include "PaletteController.hpp"
 #include "PaletteComponent.h"
 
-PaletteController::PaletteController(shared_ptr<SymbolistModel> model, shared_ptr<PaletteComponent> view)
+PaletteController::PaletteController()
+{
+    
+}
+
+PaletteController::PaletteController(SymbolistModel* model, PaletteComponent* view)
 {
     setModel(model);
     setView(view);

@@ -238,13 +238,13 @@ void ScoreComponent::createStaffFromSelected()
         
         Symbol ref_sym = *(staff_ref_comp->getScoreSymbolPointer());
         
-        shared_ptr<Symbol> staff_sym = make_shared<Symbol>();
+        Symbol* staff_sym = new Symbol();
         staff_sym->setTypeXYWH("staff", staff_ref_comp->getX(), staff_ref_comp->getY(), staff_ref_comp->getWidth(), staff_ref_comp->getHeight() );
         
         auto sh = getSymbolistHandler();
         
         // create the new component and attach the new symbol pointer to it
-        StaffComponent *staff_comp = (StaffComponent *)sh->makeComponentFromSymbol( staff_sym, true );
+        StaffComponent *staff_comp = (StaffComponent *)sh->makeComponentFromSymbol(staff_sym, true);
 
         // remove from parent (which also sets the ref_sym to null)
         // the parent is not necessarily 'this' (selected_items can be indirect children...)
@@ -292,7 +292,7 @@ void ScoreComponent::groupSelectedSymbols()
 
         auto symbolistHandler = getSymbolistHandler();
 
-        shared_ptr<Symbol> groupSymbol = make_shared<Symbol>();
+        Symbol* groupSymbol = new Symbol();
         groupSymbol->setTypeXYWH( "group", minx, miny, maxx-minx, maxy-miny );
         
         int count = 0;
@@ -417,8 +417,8 @@ void ScoreComponent::addSelectedSymbolsToPalette( )
         // Checks downcast result.
         if (c != NULL)
         {
-            shared_ptr<Symbol> s = make_shared<Symbol>();
-            c->addSymbolMessages(s);
+            Symbol s = Symbol();
+            c->addSymbolMessages(&s);
             getSymbolistHandler()->getModel()->getPalette()->addUserItem(s);
         }
     }
@@ -444,13 +444,13 @@ void ScoreComponent::mouseAddClick ( const MouseEvent& event )
     if ( getMainDrawMode() == UI_DrawType::from_template )
     {
 
-        shared_ptr<Symbol> symbol_template = getSymbolistHandler()->getCurrentSymbol();
+        Symbol* symbol_template = getSymbolistHandler()->getCurrentSymbol();
         
         /* creates a new symbol with the same settings as the symbol_template
          * template symbols all have a default type of "path" and bounds of 0,0,30,30
          * the generic symbol has the same OSC data as the BaseComponent
          */
-        shared_ptr<Symbol> s = make_shared<Symbol>( *symbol_template );
+        Symbol* s = new Symbol(*symbol_template);
         
         // sets default position before creating the graphic component
         s->setPosition ( event.position );
@@ -463,7 +463,7 @@ void ScoreComponent::mouseAddClick ( const MouseEvent& event )
     }
     else
     {
-        shared_ptr<Symbol> s = make_shared<Symbol>();
+        Symbol* s = new Symbol();
         s->setTypeXYWH( "path", event.position.x, event.position.y, 40.0, 40.0 ) ;
         
         c = sh->makeComponentFromSymbol(s , top_level);

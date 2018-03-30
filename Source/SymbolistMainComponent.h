@@ -27,7 +27,7 @@ class SymbolistMainComponent : public virtual SymbolistComponent,
                                public virtual View<SymbolistModel, SymbolistHandler>
 {
     
-    SymbolistHandler*    symbolist_handler = nullptr; // (not allocated here)
+    // SymbolistHandler*    symbolist_handler = nullptr; // (not allocated here)
     SymbolistLookAndFeel look_and_feel;
     
     /*******************************************************
@@ -61,10 +61,19 @@ class SymbolistMainComponent : public virtual SymbolistComponent,
     
 public:
     
-    SymbolistMainComponent(SymbolistHandler *sh);
+    /**************************************************
+     *        CONSTRUCTORS AND FACTORY FUNCTIONS      *
+     **************************************************/
+    SymbolistMainComponent();
     ~SymbolistMainComponent();
-    
-    static ScopedPointer<SymbolistMainComponent> createMainComponent(SymbolistHandler *sh);
+
+    /*************************************
+     *        GETTERS AND SETTERS        *
+     *************************************/
+    inline ScopedPointer<PropertyPanelTabs> getInspector()
+    {
+        return inspector;
+    }
     
     /*********************************************
      *        GUI FUNCTIONALITY AND TOOLS        *
@@ -84,8 +93,13 @@ public:
     
     
     // Redefine these from SymbolistComponent
-    inline PageComponent* getPageComponent() override { return dynamic_cast<PageComponent*>( score_viewport.getViewedComponent() ); }
-    inline SymbolistHandler* getSymbolistHandler() override { return symbolist_handler; }
+    inline PageComponent* getPageComponent() override
+    {
+        return dynamic_cast<PageComponent*>( score_viewport.getViewedComponent() );
+    }
+    inline SymbolistHandler* getSymbolistHandler() override {
+        return getController();
+    }
     inline Viewport* getViewer() { return &score_viewport; }
     Rectangle<float> getViewRect();
     Rectangle<float> getZoomedRect();

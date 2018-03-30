@@ -82,8 +82,6 @@ void symbolist_updatecallback( void * sc, int n )
     
 }
 
-
-
 void symbolist_qset_time( t_symbolist *x )
 {
     critical_enter(x->lock);

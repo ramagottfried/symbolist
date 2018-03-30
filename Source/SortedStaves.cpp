@@ -18,18 +18,18 @@ size_t SortedStaves::size()
     return staves.size();
 }
 
-void SortedStaves::erase( shared_ptr<Symbol> s )
+void SortedStaves::erase( Symbol* s )
 {
     staves.erase( remove( staves.begin(), staves.end(), s ), staves.end() );
 }
 
-void SortedStaves::removeStaff( shared_ptr<Symbol> s)
+void SortedStaves::removeStaff( Symbol* s)
 {
     erase(s);
     resetTimes();
 }
 
-bool SortedStaves::compareStaves ( shared_ptr<Symbol> a, shared_ptr<Symbol> b )
+bool SortedStaves::compareStaves ( Symbol* a, Symbol* b )
 {
     auto a_x = a->getMessage("/x").getFloat() ;
     auto a_y = a->getMessage("/y").getFloat() ;
@@ -48,13 +48,12 @@ bool SortedStaves::compareStaves ( shared_ptr<Symbol> a, shared_ptr<Symbol> b )
 
 void SortedStaves::resetTimes()
 {
-    sort( staves.begin(), staves.end(), compareStaves );
+    sort(staves.begin(), staves.end(), compareStaves);
 
     float time = 0.0f;
     for( auto it = staves.begin(); it != staves.end(); it++)
     {
-        
-        shared_ptr<Symbol> sym = *it;
+        Symbol* sym = *it;
                 
         float w = sym->getMessage("/w").getFloat();
         
@@ -72,7 +71,7 @@ void SortedStaves::resetTimes()
     
 }
 
-bool SortedStaves::addStaff( shared_ptr<Symbol> s)
+bool SortedStaves::addStaff( Symbol* s)
 {
     if( s->getMessage("/type").getString() != "staff" )
         return 0;
@@ -97,7 +96,7 @@ bool SortedStaves::addStaff( shared_ptr<Symbol> s)
     
 }
 
-shared_ptr<Symbol> SortedStaves::getStaveAtTime(float time)
+Symbol* SortedStaves::getStaveAtTime(float time)
 {
     
     if( staves.size() == 0 || time < 0 || time > staves.back()->getEndTime() )
@@ -112,7 +111,7 @@ shared_ptr<Symbol> SortedStaves::getStaveAtTime(float time)
     return NULL;
 }
 
-const shared_ptr<Symbol> SortedStaves::getStaveByID( const String& id )
+const Symbol* SortedStaves::getStaveByID( const String& id )
 {
     if( staves.size() == 0 || id.isEmpty() )
         return NULL;

@@ -1,11 +1,10 @@
 #ifndef Observable_hpp
 #define Observable_hpp
 
-#include <stdio.h>
 #include "Observer.hpp"
-#include "../JuceLibraryCode/JuceHeader.h"
-
-using namespace std;
+#include <memory>
+#include <iostream>
+#include <vector>
 
 /**
  * Describes the Observable class from the observer
@@ -20,7 +19,7 @@ class Observable {
      * An array of observers which are listening
      * to this Observable object.
      */
-    vector<shared_ptr<Observer> > observers;
+    std::vector<Observer* > observers;
     
 public:
     
@@ -33,7 +32,11 @@ public:
     /**
      * Observable's destructor method.
      */
-    virtual ~Observable() { };
+    virtual ~Observable()
+    {
+        for (Observer* observer : observers)
+            delete observer;
+    };
     
     /**
      * Adds a new observer to the list of observers if
@@ -42,7 +45,7 @@ public:
      * @param observer the observer to be added to the
      *                 list of observers.
      */
-    void attach(shared_ptr<Observer> observer);
+    void attach(Observer* observer);
     
     /**
      * Removes the specified observer from the list if
@@ -51,7 +54,7 @@ public:
      * @param observer the observer to be removed from the
      *                 list of observers.
      */
-    void detach(shared_ptr<Observer> observer);
+    void detach(Observer* observer);
     
     /**
      * Notifies all the observers that an event

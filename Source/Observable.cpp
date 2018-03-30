@@ -2,12 +2,18 @@
 
 Observable::Observable()
 {
-    observers = vector<shared_ptr<Observer> >();
+    observers = std::vector<Observer* >();
 }
 
-void Observable::attach(shared_ptr<Observer> observer)
+void Observable::attach(Observer* observer)
 {
-    auto iteratorOnObserver = find(observers.begin(), observers.end(), observer);
+    /*
+     * find_if calls a lambda to compare the pointers,
+     * since weak_ptr doesn't implement the == operator.
+     */
+    auto iteratorOnObserver = find(observers.begin(),
+                                   observers.end(),
+                                   observer);
     
     /* find() returns an iterator on the last element
      * if observer is not in observers.
@@ -17,9 +23,15 @@ void Observable::attach(shared_ptr<Observer> observer)
         
 }
 
-void Observable::detach(shared_ptr<Observer> observer)
+void Observable::detach(Observer* observer)
 {
-    auto iteratorOnObserver = find(observers.begin(), observers.end(), observer);
+    /*
+     * find_if calls a lambda to compare the pointers,
+     * since weak_ptr doesn't implement the == operator.
+     */
+    auto iteratorOnObserver = find(observers.begin(),
+                                   observers.end(),
+                                   observer);
     
     /* find() returns an iterator on the last element
      * if observer is not in observers.
@@ -31,7 +43,10 @@ void Observable::detach(shared_ptr<Observer> observer)
 
 void Observable::notify() {
     
-    for (shared_ptr<Observer> observer : observers)
-        observer->update();
+    for (Observer* observer : observers)
+    {
+        if (observer != NULL)
+            observer->update();
+    }
     
 }

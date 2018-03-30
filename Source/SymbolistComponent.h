@@ -25,6 +25,11 @@ void printPoint(Point<T> point, const String &name = "point" )
 
 class SymbolistComponent : public Component
 {
+protected :
+    Array<SymbolistComponent* >  subcomponents;
+    Colour                       sym_color = Colours::black;
+    bool                         is_selected = false;
+
 public:
     
     virtual string getSymbolTypeStr() const { return string(" ??? ") ; } ; // every component defines its type
@@ -63,13 +68,6 @@ public:
     virtual void setScoreComponentSize(int w, int h) {}
     
     virtual inline void setSymbolComponentColor( Colour c ){ sym_color = c; }
-    
-protected :
-    
-    bool                        is_selected = false;
-    Array<SymbolistComponent*>  subcomponents;
-    
-    Colour                      sym_color = Colours::black;
     
 };
 

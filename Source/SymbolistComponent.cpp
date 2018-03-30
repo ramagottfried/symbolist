@@ -10,7 +10,6 @@ PageComponent* SymbolistComponent::getPageComponent()
     return pc;
 }
 
-
 SymbolistHandler* SymbolistComponent::getSymbolistHandler()
 {
     SymbolistMainComponent* mc = findParentComponentOfClass<SymbolistMainComponent>() ;
@@ -25,8 +24,6 @@ SymbolistMainComponent* SymbolistComponent::getMainComponent()
     SymbolistMainComponent* mc = findParentComponentOfClass<SymbolistMainComponent>() ;
     return mc;
 }
-
-
 
 /*****************************
  * Management of sucomponents
@@ -80,9 +77,6 @@ void SymbolistComponent::clearAllSubcomponents()
     }
     subcomponents.clear();
 }
-
-
-
 
 UI_EditType SymbolistComponent::getMainMouseMode()
 {

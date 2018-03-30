@@ -49,7 +49,7 @@ public:
     }
 
 
-    void addSymbolMessages(shared_ptr<Symbol> s) override
+    inline void addSymbolMessages(Symbol* s) override
     {
         if ( modif_flag )
         {   // becomes a normal path

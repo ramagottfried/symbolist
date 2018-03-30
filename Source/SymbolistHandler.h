@@ -4,8 +4,10 @@
 #define SymbolistHandler_h
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "Controller.hpp"
+#include "PaletteController.hpp"
 #include "SymbolistModel.hpp"
+#include <iostream>
+#include <memory>
 
 class SymbolistMainComponent;
 class SymbolistMainWindow;
@@ -15,37 +17,56 @@ class SymbolPropertiesPanel;
 
 class SymbolistHandler : public virtual Controller<SymbolistModel, SymbolistMainComponent>
 {
-    OwnedArray<Score> undo_stack;
-    OwnedArray<Score> redo_stack;
+    /**
+     * The static singleton instance of SymbolistHandler.
+     */
+    static SymbolistHandler* INSTANCE;
     
-    // main window, allocated here in symbolist handler
-    ScopedPointer<SymbolistMainWindow> main_window;
+    PaletteController paletteController;
     
-    // main component, allocated and owned by main window
-    // the main view of the editor (could be embedded in a foreign app independently of the window)
-    SymbolistMainComponent* main_component_ptr = nullptr;
+    /**
+     * The main graphic window of the application.
+     * Normally, SymbolistMainWindow should be defined as
+     * the view of SymbolistHandler class, but since it is
+     * only a wrapper window around the main graphic component
+     * it is only referenced here as an instance variable.
+     */
+    unique_ptr<SymbolistMainWindow> main_window;
     
-    // the main view of the editor (could be embedded in a foreign app independently of the window)
-    SymbolPropertiesPanel* inspector_ptr = nullptr;
-    
-    OwnedArray<Symbol> clipboard;
-    
-    // the current play-time in ms (change for float or long_int?)
+    /**
+     * The current play-time in ms.
+     * (change for float or long_int?)
+     */
     float current_time = 0;
     
-    // callbacks to the host environment
+    /**
+     * On update callback to the host environment.
+     */
     symbolistUpdateCallback myUpdateCallback = NULL;
+    
+    /**
+     * On close callback to the host environment.
+     */
     symbolistCloseCallback myCloseCallback = NULL;
+    
+    /**
+     * On transport callback to the host environment.
+     * This function is called when the user invokes
+     * the time cursor view.
+     */
     symbolistTransportCallback myTransportCallback = NULL;
     
-    
+    OwnedArray<Symbol> clipboard;
+    OwnedArray<Score> undo_stack;
+    OwnedArray<Score> redo_stack;
     bool in_standalone = false;
     
-public:
     /*********************************************
      *                CONSTRUCTORS               *
      *********************************************/
-    
+    /* All constructors are private to implement
+     * the singleton design pattern.
+     */
     /**
      * SymbolistHandler's default constructor.
      * Creates a model and a view from call to
@@ -57,12 +78,25 @@ public:
      * SymbolistHandler's constructor with model
      * and view passed as parameters.
      */
-    SymbolistHandler(shared_ptr<SymbolistModel> model, shared_ptr<SymbolistMainComponent> view);
+    SymbolistHandler(SymbolistModel* model, SymbolistMainComponent* view);
+    
+    /**
+     * SymbolistHandler's copy constructor.
+     * A void pointer is passed as argument,
+     * which is casted in SymbolistHandler pointer
+     * before being copied.
+     */
+    SymbolistHandler(SymbolistHandler* symbolistHandler);
+    
+public:
+    
     
     /**
      * SymbolistHandler's default destructor.
      */
-    ~SymbolistHandler();
+    virtual ~SymbolistHandler() override;
+    
+    static SymbolistHandler* getInstance();
     
     /*********************************************
      * CONTROLLER METHODS CALLED FROM THE API
@@ -83,13 +117,13 @@ public:
     
     int symbolistAPI_getNumSymbols();
     OdotBundle_s symbolistAPI_getSymbolBundle_s(int n);
-    shared_ptr<Symbol> symbolistAPI_getSymbol(int n);
+    Symbol* symbolistAPI_getSymbol(int n);
     
     void symbolistAPI_setOneSymbol( const OdotBundle_s& bundle);
     void symbolistAPI_setSymbols(const OdotBundle_s& bundle_array);
     
     int symbolistAPI_getNumPaletteSymbols();
-    shared_ptr<Symbol> symbolistAPI_getPaletteSymbol(int n);
+    Symbol* symbolistAPI_getPaletteSymbol(int n);
     void symbolistAPI_setOnePaletteSymbol( const OdotBundle_s& bundle);
     void symbolistAPI_setPaletteSymbols(const OdotBundle_s& bundle_array);
     
@@ -137,16 +171,16 @@ public:
     
     void setCurrentSymbol(int n);
     int getCurrentSymbolIndex();
-    shared_ptr<Symbol> getCurrentSymbol();
+    Symbol* getCurrentSymbol();
     
-    BaseComponent* makeComponentFromSymbol( shared_ptr<Symbol> s, bool attach_the_symbol );
-    void addComponentsFromScore ();
+    BaseComponent* makeComponentFromSymbol(Symbol* s, bool attach_the_symbol);
+    void addComponentsFromScore();
     
     void inStandalone(){ in_standalone = true; };
     bool isStandalone(){ return in_standalone; };
 
     const TimePointArray* getTimePointArray() { return getModel()->getScore()->getTimePointArray(); }
-    void removeTimePointsForSymbol(shared_ptr<Symbol> s){ getModel()->getScore()->removeSymbolTimePoints( s ); }
+    void removeTimePointsForSymbol(Symbol* s){ getModel()->getScore()->removeSymbolTimePoints( s ); }
     
     void copySelectedToClipBoard();
     void newFromClipBoard();

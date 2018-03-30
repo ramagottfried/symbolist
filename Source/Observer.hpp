@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 
+
 /**
  * Describes the observer class of the observer design pattern.
  * Observer is an abstract class.

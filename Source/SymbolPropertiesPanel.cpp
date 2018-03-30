@@ -19,7 +19,7 @@ SymbolPropertiesPanel::SymbolPropertiesPanel(SymbolistHandler *sh )
 
 void SymbolPropertiesPanel::change_callback( const OdotMessage& msg)
 {
-    shared_ptr<Symbol> s = symbol_component->getScoreSymbolPointer();
+    Symbol* s = symbol_component->getScoreSymbolPointer();
     
     s->addMessage( msg ); // this overwrites any duplicate messages
     
@@ -42,7 +42,7 @@ void SymbolPropertiesPanel::createOSCview ()
 
     if( symbol_component )
     {
-        shared_ptr<Symbol> s = symbol_component->getScoreSymbolPointer();
+        Symbol* s = symbol_component->getScoreSymbolPointer();
         if( !s )
             return;
         

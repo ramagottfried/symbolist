@@ -10,9 +10,13 @@ class PaletteComponent;
 class PaletteController : public virtual Controller<SymbolistModel, PaletteComponent> {
     
 public:
-    PaletteController(shared_ptr<SymbolistModel> model, shared_ptr<PaletteComponent> view);
+    PaletteController();
+    PaletteController(SymbolistModel* model, PaletteComponent* view);
     
-    virtual inline ~PaletteController() {};
+    virtual inline ~PaletteController() override
+    {
+        Controller::~Controller();
+    };
     
     /* Overrides the update method inherited from the Observer class. */
     virtual inline void update() override {}

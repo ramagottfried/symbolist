@@ -11,7 +11,6 @@ template <typename T> void printPoint(Point<T> point, String name = "point" )
     std::cout << name << " " << point.getX() << " " << point.getY() << "\n";
 }
 
-
 BaseComponent::~BaseComponent()
 {
     if( staff )
@@ -19,7 +18,6 @@ BaseComponent::~BaseComponent()
         ((StaffComponent*)staff)->removeStaffOjbect(this);
     }
 }
-
 
 bool BaseComponent::isTopLevelComponent()
 {
@@ -41,7 +39,6 @@ bool BaseComponent::isTopLevelComponent()
     }
     
 }
-
 
 // This is the function to call when we want to update the score after a modification
 void BaseComponent::reportModification()
@@ -68,7 +65,6 @@ void BaseComponent::reportModification()
     */
 }
 
-
 /******************
  * Creates OSC Messages in the Symbol
  * Can be overriden / completed by class-specific messages
@@ -76,13 +72,13 @@ void BaseComponent::reportModification()
 
 void BaseComponent::createAndAttachSymbol()
 {
-    shared_ptr<Symbol> s = make_shared<Symbol>();
+    Symbol* s = new Symbol();
     addSymbolMessages(s);
     setScoreSymbolPointer(s);
 }
 
 // addSymbolMessages outputs the component's values into the symbol
-void BaseComponent::addSymbolMessages(shared_ptr<Symbol> s)
+void BaseComponent::addSymbolMessages(Symbol* s)
 {
     s->addMessage("/name", name );
     s->addMessage("/type", getSymbolTypeStr() );
@@ -183,12 +179,11 @@ Symbol BaseComponent::exportSymbol()
  * Imports components' data from the symbol's OSC bundle (can be overriden by sub-class)
  *****************/
 
-void BaseComponent::importFromSymbol( const Symbol &s )
+void BaseComponent::importFromSymbol(const Symbol &s)
 {
-    
     string typeOfSymbol = s.getMessage( "/type" ).getString();
-    if ( typeOfSymbol.size() == 0 ) {
-        
+    if (typeOfSymbol.size() == 0)
+    {
         cout << "BaseComponent import: Could not find '/type' message in OSC Bundle.. (size=" << "insert bundle size here" << ")" << endl;
         return;
     }
@@ -197,43 +192,41 @@ void BaseComponent::importFromSymbol( const Symbol &s )
     float y = s.getMessage("/y").getFloat();
     float w = s.getMessage("/w").getFloat();
     float h = s.getMessage("/h").getFloat();
-    setBoundsFromSymbol( x , y , w , h);
+    setBoundsFromSymbol(x, y, w, h);
     
-    if( w == 0 || h == 0 )
+    if (w == 0 || h == 0)
     {
         // Allow for the case where the score is specified in terms of time and staff type name...
         cout << "***** couldn't find x y w or h values " << endl;
     }
     
     auto color_atoms = s.getMessage("/color").getAtoms();
-    if( color_atoms.size() )
+    if (color_atoms.size())
     {
-        if( color_atoms[0].getType() == OdotAtom::OdotAtomType::O_ATOM_STRING )
+        if (color_atoms[0].getType() == OdotAtom::OdotAtomType::O_ATOM_STRING)
         {
-            sym_color = Colour::fromString( color_atoms[0].getString().c_str() );
+            sym_color = Colour::fromString(color_atoms[0].getString().c_str());
         }
-        else if( color_atoms.size() == 4 )
+        else if (color_atoms.size() == 4)
         {
-            float r = color_atoms[0].getFloat() ;
-            float g = color_atoms[1].getFloat() ;
-            float b = color_atoms[2].getFloat() ;
-            float a = color_atoms[3].getFloat() ;
-            sym_color = Colour::fromFloatRGBA( r, g, b, a );
+            float r = color_atoms[0].getFloat();
+            float g = color_atoms[1].getFloat();
+            float b = color_atoms[2].getFloat();
+            float a = color_atoms[3].getFloat();
+            sym_color = Colour::fromFloatRGBA(r, g, b, a);
         }
-        else if( color_atoms.size() == 3 )
+        else if (color_atoms.size() == 3)
         {
-            float r = color_atoms[0].getFloat() ;
-            float g = color_atoms[1].getFloat() ;
-            float b = color_atoms[2].getFloat() ;
-            sym_color = Colour::fromFloatRGBA( r, g, b, 1.0 );
+            float r = color_atoms[0].getFloat();
+            float g = color_atoms[1].getFloat();
+            float b = color_atoms[2].getFloat();
+            sym_color = Colour::fromFloatRGBA(r, g, b, 1.0);
         }
     }
     
     name = s.getMessage("/name").getString();
-    if( name.size() == 0 )
-    {
+    if (name.size() == 0)
         name = typeOfSymbol;
-    }
         
     // set /id via component ID
     if( isVisible() )
@@ -241,38 +234,39 @@ void BaseComponent::importFromSymbol( const Symbol &s )
     else
         setComponentID( name + "/palette");
     
-    
     staff_name = s.getMessage("/staff").getString();
-    if( staff_name == "<none>" )
+    if(staff_name == "<none>")
         staff_name = "";
         
     attachToStaff();
     
-        /* // not sure how to best do this yet
-        int lambda_pos = s.getOSCMessagePos("/lambda");
-        if( lambda_pos != -1 )
-        {
-            lambda = s.getOSCMessageValue(lambda_pos).getString();
-        }
-        */
+    /* // not sure how to best do this yet
+    int lambda_pos = s.getOSCMessagePos("/lambda");
+    if( lambda_pos != -1 )
+    {
+        lambda = s.getOSCMessageValue(lambda_pos).getString();
+    }
+    */
 }
 
 void BaseComponent::setSymbolID()
 {
-    cout << __func__ << endl;
-    
     PageComponent *pc = getPageComponent();
-    if( pc )
+    if (pc)
     {
-        shared_ptr<Symbol> s = getScoreSymbolPointer();
+        Symbol* s = getScoreSymbolPointer();
 
-        if( s )
+        if (s)
         {
             string typeOfSymbol = s->getType();
             string id = s->getMessage("/id").getString();
             
             // this was updated in the master branch
-            if( id.size() == 0 || getComponentID() != id || id == (typeOfSymbol + "/palette")  || id == (name + "/palette") || id.rfind( name ) == string::npos )
+            if (id.size() == 0
+                || getComponentID() != id
+                || id == (typeOfSymbol + "/palette")
+                || id == (name + "/palette")
+                || id.rfind(name) == string::npos)
             {
                 // if there is a name use this for the id
                 // for the id, check to see if there are others with this name and then increment 1
@@ -282,13 +276,9 @@ void BaseComponent::setSymbolID()
                 
                 id = name + "/" + to_string(count);
                 
-                while( !sh->uniqueIDCheck( id ) )
-                {
+                while(!sh->uniqueIDCheck(id))
                     id = name + "/" + to_string(count++);
-                }
                 
-		// cout << "id check " << id << endl;
-
             }
             
             setComponentID( id );
@@ -300,17 +290,17 @@ void BaseComponent::setSymbolID()
 void BaseComponent::attachToStaff()
 {
     PageComponent *pc = getPageComponent();
-    if( pc )
+    if (pc)
     {
-        if( staff_name.size() != 0 )
+        if (staff_name.size() != 0)
         {
-            auto c = pc->getSubcomponentByID( staff_name );
+            auto c = pc->getSubcomponentByID(staff_name);
             StaffComponent* staff_component = dynamic_cast<StaffComponent*>(c);
             
             // Checks the downcast result.
-            if( staff_component != NULL )
+            if (staff_component != NULL)
             {
-                staff_component->addOjbectToStave( this );
+                staff_component->addOjbectToStave(this);
                 staff = staff_component;
             }
         }
@@ -329,7 +319,7 @@ void BaseComponent::parentHierarchyChanged()
 
 void BaseComponent::setBoundsFromSymbol( float x, float y , float w , float h)
 {
-    setBounds( x , y , w , h);
+    setBounds(x, y, w, h);
 }
 
 

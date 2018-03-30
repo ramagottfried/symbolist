@@ -1,12 +1,28 @@
 #include "TimePointArray.h"
 #include "Score.h"
 
+TimePointArray::TimePointArray()
+{
+    symbolTimePoints = vector<SymbolTimePoint* >();
+    voice_staff_vector = vector<pair<const Symbol*, const Symbol*> >();
+}
+
+TimePointArray::~TimePointArray()
+{
+    if (prev_timepoint != NULL) delete prev_timepoint;
+    for (pair<const Symbol*, const Symbol* > symbolStaffPair : voice_staff_vector)
+    {
+        delete symbolStaffPair.first;
+        delete symbolStaffPair.second;
+    }
+}
+
 void TimePointArray::printTimePoints()
 {
     cout << "-------- timepoint list ----------" << endl;
-    for(int i = 0; i < size(); i++ )
+    for(int i = 0; i < symbolTimePoints.size(); i++ )
     {
-        auto t = (*this)[i];
+        auto t = symbolTimePoints[i];
         cout << "timepoint " << i << " " << t->time << " nsyms " << t->symbols_at_time.size() << endl;
         
         int symcount = 0;
@@ -17,15 +33,15 @@ void TimePointArray::printTimePoints()
     }
 }
 
-void TimePointArray::removeStaffAndSymbolTimePoints( shared_ptr<Symbol> symbol )
+void TimePointArray::removeStaffAndSymbolTimePoints( Symbol* symbol )
 {
     if( symbol->getType() == "staff" )
     {
-        for(auto it = begin(); it != end(); it++)
+        for(auto it = symbolTimePoints.begin(); it != symbolTimePoints.end(); it++)
         {
             if( (*it)->staff_ref == symbol )
             {
-                erase(it);
+                symbolTimePoints.erase(it);
             }
         }
     }
@@ -33,7 +49,7 @@ void TimePointArray::removeStaffAndSymbolTimePoints( shared_ptr<Symbol> symbol )
         removeSymbolTimePoints(symbol);
 }
 
-void TimePointArray::removeSymbolTimePoints(shared_ptr<Symbol> symbol)
+void TimePointArray::removeSymbolTimePoints(Symbol* symbol)
 {
 
     float start_t = symbol->getTime();
@@ -56,21 +72,21 @@ void TimePointArray::removeSymbolTimePoints(shared_ptr<Symbol> symbol)
     float t = start_t;
     float end_t = symbol->getEndTime();
     
-    vector<shared_ptr<SymbolTimePoint> > points_to_remove;
+    vector<SymbolTimePoint* > points_to_remove;
     
-    while (insertIndex < size())
+    while (insertIndex < symbolTimePoints.size())
     {
-        t = (*this)[insertIndex]->time;
+        t = symbolTimePoints[insertIndex]->time;
         
         if( t > end_t && !f_almost_equal( t, end_t ) )
         {
             break;
         }
         
-        vector<shared_ptr<Symbol> > *vec = &((*this)[insertIndex]->symbols_at_time);
+        vector<Symbol* > *vec = &(symbolTimePoints[insertIndex]->symbols_at_time);
 
         // remove this symbol
-        vec->erase( std::remove( vec->begin(), vec->end(), symbol), vec->end());
+        vec->erase(std::remove(vec->begin(), vec->end(), symbol), vec->end());
 
         // if no other symbol at this time point start or end here, we should fully delete it
         int other_start_or_end = 0;
@@ -82,34 +98,35 @@ void TimePointArray::removeSymbolTimePoints(shared_ptr<Symbol> symbol)
                     other_start_or_end = 1;
             }
             if (!other_start_or_end)
-                points_to_remove.emplace_back( (*this)[insertIndex] );
+                points_to_remove.emplace_back(symbolTimePoints[insertIndex]);
 
         }
         
         if( vec->size() == 0 )
-            points_to_remove.emplace_back( (*this)[insertIndex] );
+            points_to_remove.emplace_back(symbolTimePoints[insertIndex]);
         
         insertIndex++;
     }
     
-    
-    for (auto rm = points_to_remove.begin(); rm != points_to_remove.end(); ++rm)
+    for (SymbolTimePoint* pointToRemove : points_to_remove)
     {
-        erase(rm);
+        auto iteratorOnTargetTimePoint = find(symbolTimePoints.begin(),
+                                              symbolTimePoints.end(),
+                                              pointToRemove);
+        symbolTimePoints.erase(iteratorOnTargetTimePoint);
     }
     
-  // printTimePoints();
 }
 
 // this is only reseting the /time/start for the symbols, not the timepoints, the timepoints should probably be deleted and then recreated, since we reset the symbol when it is modified in the score...
 void TimePointArray::resetTimes()
 {
 
-    for( int i = 0; i < size(); i++ )
+    for( int i = 0; i < symbolTimePoints.size(); i++ )
     {
-        auto t = (*this)[i];
+        auto t = symbolTimePoints[i];
         
-        shared_ptr<Symbol> staff = t->staff_ref;
+        Symbol* staff = t->staff_ref;
         
         float staff_x = staff->getMessage("/x").getFloat();
         float staff_start_t = staff->getMessage("/time/start").getFloat();
@@ -119,7 +136,7 @@ void TimePointArray::resetTimes()
         float sym_start_t = 0;
         for( auto it = vec.begin(); it != vec.end(); it++ )
         {
-            shared_ptr<Symbol> s = *it;
+            Symbol* s = *it;
             float start_x = s->getMessage("/x").getFloat() - staff_x;
             float dur_x = s->getMessage("/w").getFloat();
             
@@ -134,7 +151,7 @@ void TimePointArray::resetTimes()
     current_point = 0;
 }
 
-void TimePointArray::addSymbolTimePoints( shared_ptr<Symbol> s )
+void TimePointArray::addSymbolTimePoints( Symbol* s )
 {
     // 0) check if the symbol has a staff reference, if not ignore it
     // 1) if attached to a staff, calculate start & end times based on staff ( for now: start = x, end = x+w )
@@ -149,47 +166,42 @@ void TimePointArray::addSymbolTimePoints( shared_ptr<Symbol> s )
     if( staff_name.size() == 0 )
         return;
     
-    // Expiry check for weak_ptr to score.
-    if (!score_ptr.expired())
+    auto found_staves = score_ptr->getSymbolsByValue("/id", staff_name);
+    if( found_staves.isEmpty() )
+        return;
+    
+    Symbol* staff = new Symbol(found_staves.getFirst());
+    
+    float staff_x = staff->getMessage("/x").getFloat();
+    
+    float start_x = s->getMessage("/x").getFloat() - staff_x;
+    float dur_x = s->getMessage("/w").getFloat();
+    float end_x = start_x + dur_x;
+    
+    float staff_start = staff->getMessage("/time/start").getFloat();
+    
+    float start_t = staff_start + s->pixelsToTime(start_x);
+    float end_t = staff_start + s->pixelsToTime(end_x);
+    
+    s->setTimeAndDuration(start_t, s->pixelsToTime(dur_x) );
+    
+    cout << "adding timepoints on " << staff_name << " " << staff_start << " t start " << start_t << endl;
+    
+    int start_idx = addSymbol_atTime( s, start_t, staff );
+    int end_idx = addSymbol_atTime( s, end_t, staff );
+    
+    for( int i = (start_idx + 1); i < end_idx; i++ )
     {
-        auto found_staves = score_ptr.lock()->getSymbolsByValue("/id", staff_name);
-        if( found_staves.isEmpty() )
-            return;
-        
-        shared_ptr<Symbol> staff = make_shared<Symbol>(found_staves.getFirst().get());
-        
-        float staff_x = staff->getMessage("/x").getFloat();
-        
-        float start_x = s->getMessage("/x").getFloat() - staff_x;
-        float dur_x = s->getMessage("/w").getFloat();
-        float end_x = start_x + dur_x;
-        
-        float staff_start = staff->getMessage("/time/start").getFloat();
-        
-        float start_t = staff_start + s->pixelsToTime(start_x);
-        float end_t = staff_start + s->pixelsToTime(end_x);
-        
-        s->setTimeAndDuration(start_t, s->pixelsToTime(dur_x) );
-        
-        cout << "adding timepoints on " << staff_name << " " << staff_start << " t start " << start_t << endl;
-        
-        int start_idx = addSymbol_atTime( s, start_t, staff );
-        int end_idx = addSymbol_atTime( s, end_t, staff );
-        
-        for( int i = (start_idx + 1); i < end_idx; i++ )
-        {
-            (*this)[ i ]->addSymbol( s );
-        }
-        
-        // printTimePoints();
-        current_point = 0;
-        voice_staff_vector.clear();
-
+        symbolTimePoints[i]->addSymbol(s);
     }
+    
+    // printTimePoints();
+    current_point = 0;
+    voice_staff_vector.clear();
     
 }
 
-int TimePointArray::addSymbol_atTime( shared_ptr<Symbol> s, float time, shared_ptr<Symbol> staff)
+int TimePointArray::addSymbol_atTime(Symbol* s, float time, Symbol* staff)
 {
     
     bool match;
@@ -197,26 +209,26 @@ int TimePointArray::addSymbol_atTime( shared_ptr<Symbol> s, float time, shared_p
     if( match )
     {
         // if it's an exact match we don't need to check the previous point
-        (*this)[idx]->addSymbol( s );
+        symbolTimePoints[idx]->addSymbol( s );
     }
     else
     {
         // otherwise, create new point and check previous for continuing points
-        auto newTimePoint = *insert(begin() + idx, make_shared<SymbolTimePoint>( s, time, staff ));
+        auto newTimePoint = *(symbolTimePoints.insert(symbolTimePoints.begin() + idx, new SymbolTimePoint(s, time, staff)));
 
         if( idx - 1 >= 0 )
         {
-            auto prevTimePoint = (*this)[idx-1];
+            auto prevTimePoint = symbolTimePoints[idx-1];
 
             auto vec = prevTimePoint->symbols_at_time;
             
-            for( auto prev_s = vec.begin(); prev_s != vec.end(); prev_s++ )
+            for (auto prev_s = vec.begin(); prev_s != vec.end(); prev_s++)
             {
-                if( s == *prev_s ) continue;
+                if (s == *prev_s) continue;
                 
-                if( (*prev_s)->hitTestTime( time ) )
+                if ((*prev_s)->hitTestTime( time ))
                 {
-                    newTimePoint->addSymbol( *prev_s );
+                    newTimePoint->addSymbol(*prev_s);
                 }
             }
     
@@ -253,7 +265,7 @@ void TimePointArray::printBundle(OSCBundle bndl)
 }
 
 
-Point<float> TimePointArray::lookupPathPoint( const shared_ptr<Symbol> s, const float t )
+Point<float> TimePointArray::lookupPathPoint( const Symbol* s, const float t )
 {
     string path_str = s->getMessage( "/path" ).getString();
     if( path_str.size() == 0 )
@@ -269,7 +281,7 @@ Point<float> TimePointArray::lookupPathPoint( const shared_ptr<Symbol> s, const 
     return p.getPointAlongPath( t * length );
 }
 /*
-Point<float> TimePointArray::lookupPathPoint( const shared_ptr<Symbol> s, const int pathIDX, const float t, const float start, const float dur )
+Point<float> TimePointArray::lookupPathPoint( const Symbol* s, const int pathIDX, const float t, const float start, const float dur )
 {
     OSCBundle b = *(s->getOSCBundle());
     
@@ -294,7 +306,7 @@ Point<float> TimePointArray::lookupPathPoint( const shared_ptr<Symbol> s, const 
 }
 */
 
-Point<float> TimePointArray::lookupPathPoint( const shared_ptr<Symbol> s, string& path_base_addr , const float t )
+Point<float> TimePointArray::lookupPathPoint( const Symbol* s, string& path_base_addr , const float t )
 {
     string path_str = s->getMessage( path_base_addr + "/str" ).getString();
     if( path_str.size() == 0 )
@@ -310,40 +322,32 @@ Point<float> TimePointArray::lookupPathPoint( const shared_ptr<Symbol> s, string
     return p.getPointAlongPath( t * length );
 }
 
-vector<const shared_ptr<Symbol> > TimePointArray::getNoteOffs( const shared_ptr<SymbolTimePoint> prev_tpoint , const shared_ptr<SymbolTimePoint> tpoint   )
+vector<const Symbol* > TimePointArray::getNoteOffs( const SymbolTimePoint* prev_tpoint , const SymbolTimePoint* tpoint   )
 {
-    
-    vector<const shared_ptr<Symbol> > off_vec;
+    vector<const Symbol* > off_vec;
     if( prev_tpoint != nullptr )
     {
         for (auto prv : prev_tpoint->symbols_at_time )
         {
             bool found = false;
             
-            if( tpoint )
-            {
-                for( auto s : tpoint->symbols_at_time )
-                {
-                    
-                    if( prv == s)
+            if (tpoint)
+                for (auto s : tpoint->symbols_at_time)
+                    if (prv == s)
                     {
                         found = true;
                         break;
                     }
-                }
-            }
             
             if( !found )
-            {
                 off_vec.emplace_back( prv );
-            }
         }
     }
     
     return off_vec;
 }
 
-bool TimePointArray::isNewSym( const shared_ptr<Symbol> s , const shared_ptr<SymbolTimePoint> prev_tpoint   )
+bool TimePointArray::isNewSym( const Symbol* s , const SymbolTimePoint* prev_tpoint   )
 {
     if( prev_tpoint )
     {
@@ -359,7 +363,7 @@ bool TimePointArray::isNewSym( const shared_ptr<Symbol> s , const shared_ptr<Sym
     return true;
 }
 
-pair<size_t, int> TimePointArray::setNoteOff(const shared_ptr<Symbol> s)
+pair<size_t, int> TimePointArray::setNoteOff(const Symbol* s)
 {
     
     for(size_t i = 0; i < voice_staff_vector.size(); i++ )
@@ -375,7 +379,7 @@ pair<size_t, int> TimePointArray::setNoteOff(const shared_ptr<Symbol> s)
 
 }
 
-pair<size_t, int> TimePointArray::getVoiceNumberState( const shared_ptr<Symbol> s, const shared_ptr<SymbolTimePoint> tpoint )
+pair<size_t, int> TimePointArray::getVoiceNumberState(const Symbol* s, const SymbolTimePoint* tpoint)
 {
     size_t i = 0;
     for( ; i < voice_staff_vector.size(); i++ )
@@ -401,18 +405,18 @@ pair<size_t, int> TimePointArray::getVoiceNumberState( const shared_ptr<Symbol> 
     }
     
     // no open voices, make a new one (i was incremented already by the loop)
-    voice_staff_vector.emplace_back( pair<const shared_ptr<Symbol>, const shared_ptr<Symbol>>( s, tpoint->staff_ref ) );
+    voice_staff_vector.emplace_back( pair<const Symbol*, const Symbol*>( s, tpoint->staff_ref ) );
     return pair<size_t, bool>(i, 1); // new voice
 }
 
 vector<tuple<size_t,
-       const shared_ptr<Symbol>,
-       const shared_ptr<Symbol>> >
-TimePointArray::getNoteOffs(const shared_ptr<SymbolTimePoint> p)
+       const Symbol*,
+       const Symbol*> >
+TimePointArray::getNoteOffs(const SymbolTimePoint* p)
 {
     vector<tuple<size_t,
-                 const shared_ptr<Symbol>,
-                 const shared_ptr<Symbol>> > offs;
+                 const Symbol*,
+                 const Symbol*> > offs;
     
     if(p)
     {
@@ -435,8 +439,8 @@ TimePointArray::getNoteOffs(const shared_ptr<SymbolTimePoint> p)
             if(!found)
             {
                 offs.emplace_back(tuple<size_t,
-                                        const shared_ptr<Symbol>,
-                                        const shared_ptr<Symbol> >(i, voice_staff_vector[i].first, voice_staff_vector[i].second));
+                                        const Symbol*,
+                                        const Symbol* >(i, voice_staff_vector[i].first, voice_staff_vector[i].second));
                 voice_staff_vector[i].first = NULL;
             }
         }
@@ -449,15 +453,15 @@ TimePointArray::getNoteOffs(const shared_ptr<SymbolTimePoint> p)
                 continue;
             
             offs.emplace_back(tuple<size_t,
-                                    const shared_ptr<Symbol>,
-                                    const shared_ptr<Symbol>>(i, voice_staff_vector[i].first, voice_staff_vector[i].second));
+                                    const Symbol*,
+                                    const Symbol*>(i, voice_staff_vector[i].first, voice_staff_vector[i].second));
             voice_staff_vector[i].first = NULL;
         }
     }
     return offs;
 }
 
-void TimePointArray::groupLookup(const shared_ptr<Symbol> s,
+void TimePointArray::groupLookup(const Symbol* s,
                                  const string& output_prefix,  // parent prefix to prepend
                                  double parent_x,
                                  double parent_y,
@@ -547,23 +551,23 @@ void TimePointArray::groupLookup(const shared_ptr<Symbol> s,
     
 }
 
-OdotBundle_s TimePointArray::timePointStreamToOSC(const shared_ptr<SymbolTimePoint> tpoint  )
+OdotBundle_s TimePointArray::timePointStreamToOSC(const SymbolTimePoint* tpoint  )
 {
     OdotBundle bndl;
     bndl.addMessage("/time/lookup", current_time ) ;
-    bndl.addMessage("/time/end", back()->time ) ;
+    bndl.addMessage("/time/end", symbolTimePoints.back()->time ) ;
     
     string prefix = "/symbolsAtTime/";
 
     if( tpoint != nullptr )
     {
-        const vector<shared_ptr<Symbol>> vec = tpoint->symbols_at_time;
+        const vector<Symbol*> vec = tpoint->symbols_at_time;
         
         int count = 0;
         for (auto s : vec )
         {
 
-            const shared_ptr<Symbol> staff = tpoint->staff_ref;
+            const Symbol* staff = tpoint->staff_ref;
             string staff_name = staff->getName();
 
             string toplevel_name = s->getMessage( "/name" ).getString();
@@ -649,7 +653,7 @@ OdotBundle_s TimePointArray::timePointStreamToOSC(const shared_ptr<SymbolTimePoi
         }
     }
     
-    vector<tuple<size_t, const shared_ptr<Symbol>, const shared_ptr<Symbol>> > offs = getNoteOffs(tpoint);
+    vector<tuple<size_t, const Symbol*, const Symbol*> > offs = getNoteOffs(tpoint);
     for( int i = 0; i < offs.size(); i++ )
     {
         string s_prefix = "/staff/" + get<2>(offs[i])->getName() + "/voice/" + to_string(get<0>(offs[i])) +"/"+ get<1>(offs[i])->getName();
@@ -670,9 +674,9 @@ int TimePointArray::lookupTimePoint( float t )
     {
         // maybe check one step before doing the loop?
         
-        for ( ; idx < size(); idx++ ) // step forward
+        for ( ; idx < symbolTimePoints.size(); idx++ ) // step forward
         {
-            p_time = (*this)[ idx ]->time;
+            p_time = symbolTimePoints[idx]->time;
             
             if (p_time > t) // if point time is >, we want the previous one
             {
@@ -682,8 +686,8 @@ int TimePointArray::lookupTimePoint( float t )
             }
         }
         
-        if( idx >= size() )
-            current_point = static_cast<int>(size() - 1);
+        if( idx >= symbolTimePoints.size() )
+            current_point = static_cast<int>(symbolTimePoints.size() - 1);
         else
             cout << "shouldn't happen " << current_point <<  endl;
         
@@ -695,7 +699,7 @@ int TimePointArray::lookupTimePoint( float t )
     {
         for ( ; idx >= 0; idx-- ) // step backward
         {
-            p_time = (*this)[ idx ]->time;
+            p_time = symbolTimePoints[idx]->time;
             
             if (p_time < t) // if point time is <, we want this one
             {
@@ -719,7 +723,7 @@ int TimePointArray::lookupTimePoint( float t )
 
 OdotBundle_s TimePointArray::getSymbolsAtTime( float t )
 {
-    if (size() == 0 )
+    if (symbolTimePoints.size() == 0 )
         return nullptr;
     
     int idx = lookupTimePoint( t ); //<< also sets current time
@@ -727,7 +731,7 @@ OdotBundle_s TimePointArray::getSymbolsAtTime( float t )
     
     if( idx >= 0 )
     {
-        shared_ptr<SymbolTimePoint> tpoint = (*this)[idx];
+        SymbolTimePoint* tpoint = symbolTimePoints[idx];
         
         return timePointStreamToOSC( tpoint );
     }
@@ -739,10 +743,10 @@ int TimePointArray::getTimePointInsertIndex( float t, bool& match )
 {
     match = false;
     
-    int firstElement = 0, lastElement = static_cast<int>(size());
+    int firstElement = 0, lastElement = static_cast<int>(symbolTimePoints.size());
     while (firstElement < lastElement)
     {
-        if (compareTimes ( (*this)[firstElement]->time, t ) == 0)
+        if (compareTimes(symbolTimePoints[firstElement]->time, t) == 0)
         {
             match = true;
             break;
@@ -753,13 +757,13 @@ int TimePointArray::getTimePointInsertIndex( float t, bool& match )
             
             if (halfway == firstElement)
             {
-                if (compareTimes ((*this)[halfway]->time, t ) >= 0)
+                if (compareTimes(symbolTimePoints[halfway]->time, t) >= 0)
                 {
                     ++firstElement;
                 }
                 break;
             }
-            else if (compareTimes ((*this)[halfway]->time, t ) >= 0)
+            else if (compareTimes(symbolTimePoints[halfway]->time, t) >= 0)
             {
                 firstElement = halfway;
             }

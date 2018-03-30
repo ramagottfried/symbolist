@@ -15,13 +15,16 @@ class Score;
 
 struct SymbolTimePoint
 {
-    double                      time;
-    vector<shared_ptr<Symbol> > symbols_at_time;
-    shared_ptr<Symbol>          staff_ref; // << add reference to staff for timepoint (a timepoint can only be on one staff)
     
-    SymbolTimePoint(shared_ptr<Symbol> s, double t, shared_ptr<Symbol> staff)
+public:
+    double           time;
+    vector<Symbol* > symbols_at_time;
+    Symbol*          staff_ref; // << add reference to staff for timepoint (a timepoint can only be on one staff)
+
+    inline SymbolTimePoint() {}
+    SymbolTimePoint(Symbol* s, double t, Symbol* staff)
     {
-        addSymbol( s );
+        addSymbol(s);
         time = t;
         staff_ref = staff;
     }
@@ -33,9 +36,15 @@ struct SymbolTimePoint
         symbols_at_time = src.symbols_at_time;
     }
     */
-    ~SymbolTimePoint(){ cout << "deleting timepoint " << time << endl; }
+    ~SymbolTimePoint()
+    {
+        cout << "TimePoint's destructor. " << time << endl;
+        delete staff_ref;
+        for (Symbol* symbol : symbols_at_time)
+            delete symbol;
+    }
     
-    void removeSymbol(shared_ptr<Symbol> s)
+    void removeSymbol(Symbol* s)
     {
         symbols_at_time.erase( remove(symbols_at_time.begin(), symbols_at_time.end(), s ), symbols_at_time.end() );
         
@@ -43,7 +52,7 @@ struct SymbolTimePoint
             delete this;
     }
     
-    void addSymbol(shared_ptr<Symbol> s)
+    void addSymbol(Symbol* s)
     {
         symbols_at_time.emplace_back(s);
     }
@@ -52,18 +61,20 @@ struct SymbolTimePoint
     
 };
 
-class TimePointArray : public virtual vector<shared_ptr<SymbolTimePoint> >
+class TimePointArray
 {
-    int                                current_point = 0;
-    float                              current_time = 0;
-    weak_ptr<Score>                    score_ptr;
-    shared_ptr<SymbolTimePoint>        prev_timepoint = nullptr;
-    vector<pair<shared_ptr<Symbol>,
-                shared_ptr<Symbol>> >  voice_staff_vector;
+    vector<SymbolTimePoint* >      symbolTimePoints;
+    Score*                       score_ptr = NULL;
+    const SymbolTimePoint*       prev_timepoint = NULL;
+    vector<pair<const Symbol*,
+                const Symbol*> > voice_staff_vector;
+    int                          current_point = 0;
+    float                        current_time = 0;
     
 public:
-    inline TimePointArray() {}
-    inline ~TimePointArray() {};
+    TimePointArray();
+    ~TimePointArray();
+    
     /*
     TimePointArray(TimePointArray& t)
     {
@@ -94,9 +105,18 @@ public:
      * This method is called by SymbolistModel when
      * instantiating the score.
      */
-    inline void setScore(shared_ptr<Score> pointerToScore)
+    inline void setScore(Score* pointerToScore)
     {
         this->score_ptr = pointerToScore;
+    }
+    
+    inline const vector<SymbolTimePoint* >* getConstSymbolTimePoints() const
+    {
+        return &symbolTimePoints;
+    }
+    inline vector<SymbolTimePoint* >* getSymbolTimePoints()
+    {
+        return &symbolTimePoints;
     }
     
     void printTimePoints();
@@ -104,11 +124,11 @@ public:
     
     int getTimePointInsertIndex(float t, bool& match);
     
-    void addSymbolTimePoints(shared_ptr<Symbol> s);
-    void removeSymbolTimePoints(shared_ptr<Symbol> s);
-    void removeStaffAndSymbolTimePoints( shared_ptr<Symbol> s);
+    void addSymbolTimePoints(Symbol* s);
+    void removeSymbolTimePoints(Symbol* s);
+    void removeStaffAndSymbolTimePoints( Symbol* s);
 
-    int addSymbol_atTime(shared_ptr<Symbol> s, float t, shared_ptr<Symbol> staff);
+    int addSymbol_atTime(Symbol* s, float t, Symbol* staff);
     
     inline bool f_almost_equal(float x, float y, int ulp = 2)
     {
@@ -125,12 +145,12 @@ public:
     }
 
     OdotBundle_s getSymbolsAtTime(float t);
-    OdotBundle_s timePointStreamToOSC(const shared_ptr<SymbolTimePoint> tpoint);
+    OdotBundle_s timePointStreamToOSC(const SymbolTimePoint* tpoint);
     
     int lookupTimePoint(float t);
-    Point<float> lookupPathPoint(const shared_ptr<Symbol> s, const float t);
-    Point<float> lookupPathPoint(const shared_ptr<Symbol> s, const int pathIDX, const float t, const float start, const float dur);
-    Point<float> lookupPathPoint(const shared_ptr<Symbol> s, string& path_base_addr , const float t);
+    Point<float> lookupPathPoint(const Symbol* s, const float t);
+    Point<float> lookupPathPoint(const Symbol* s, const int pathIDX, const float t, const float start, const float dur);
+    Point<float> lookupPathPoint(const Symbol* s, string& path_base_addr , const float t);
     
     /**
      * @param s                main root symbol (not subbundle)
@@ -147,25 +167,25 @@ public:
      * --- in the case of path within a group within a group, the scaling would be in terms of the first containing group.
      * For example subsymbol_addr could be "/subsymbol/1/subsymbol/2".
      */
-    void groupLookup(const shared_ptr<Symbol> s,
+    void groupLookup(const Symbol* s,
                      const string& output_prefix,
                      double parent_x,
                      double parent_y,
                      float time_ratio,
                      OdotBundle& bndl);
     
-    vector<const shared_ptr<Symbol> > getNoteOffs(const shared_ptr<SymbolTimePoint> prev_tpoint , const shared_ptr<SymbolTimePoint> tpoint);
-    bool isNewSym(const shared_ptr<Symbol> s , const shared_ptr<SymbolTimePoint> prev_tpoint);
+    vector<const Symbol* > getNoteOffs(const SymbolTimePoint* prev_tpoint , const SymbolTimePoint* tpoint);
+    bool isNewSym(const Symbol* s , const SymbolTimePoint* prev_tpoint);
     
-    pair<size_t, int> getVoiceNumberState(const shared_ptr<Symbol> s, const shared_ptr<SymbolTimePoint> tpoint);
-    pair<size_t, int> setNoteOff(const shared_ptr<Symbol> s);
-    vector<tuple<size_t, const shared_ptr<Symbol>, const shared_ptr<Symbol>> > getNoteOffs(const shared_ptr<SymbolTimePoint> p);
+    pair<size_t, int> getVoiceNumberState(const Symbol* s, const SymbolTimePoint* tpoint);
+    pair<size_t, int> setNoteOff(const Symbol* s);
+    vector<tuple<size_t, const Symbol*, const Symbol*> > getNoteOffs(const SymbolTimePoint* p);
 
     void resetTimes();
 
     inline void reset()
     {
-        clear();
+        symbolTimePoints.clear();
         prev_timepoint = nullptr;
     }
 

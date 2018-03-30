@@ -1,11 +1,7 @@
 #ifndef Controller_hpp
 #define Controller_hpp
 
-#include <stdio.h>
 #include "Observable.hpp"
-#include "Observer.hpp"
-
-using namespace std;
 
 /**
  * Describes an abstract templated controller class.
@@ -18,8 +14,8 @@ using namespace std;
 template <class ObservableClass, class ViewClass>
 class Controller : public virtual Observer {
     
-    shared_ptr<ObservableClass> model;
-    shared_ptr<ViewClass> view;
+    ObservableClass* model;
+    ViewClass* view;
     
 public:
     /************************************************
@@ -29,7 +25,8 @@ public:
     /**
      * Controller's empty constructor.
      */
-    inline Controller() {
+    inline Controller()
+    {
         // Asserting that model and view parameters derive from the appropriated types
         static_assert(std::is_base_of<Observable, ObservableClass>::value, "type parameter of this class must derive from Observable");
         static_assert(std::is_base_of<Observer, ViewClass>::value, "type parameter of this class must derive from Observer");
@@ -38,17 +35,16 @@ public:
     /**
      * Controller's destructor.
      */
-    virtual ~Controller() {};
+    inline virtual ~Controller() {};
     
     /*******************************************************
      *                 GETTERS AND SETTERS                 *
      *******************************************************/
-    inline virtual shared_ptr<ObservableClass> getModel() { return model; }
-    inline virtual void setModel(shared_ptr<ObservableClass> model) { this->model = model; }
+    inline virtual ObservableClass* getModel() { return model; }
+    inline virtual void setModel(ObservableClass* model) { this->model = model; }
     
-    inline virtual shared_ptr<ViewClass> getView() { return view; }
-    inline virtual void setView(shared_ptr<ViewClass> view) { this->view = view; }
-
+    inline virtual ViewClass* getView() { return view; }
+    inline virtual void setView(ViewClass* view) { this->view = view; }
     
 };
 

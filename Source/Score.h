@@ -15,20 +15,20 @@ using namespace std;
 
 struct ScoreSorter
 {
-    bool operator() (const shared_ptr<Symbol> a, const shared_ptr<Symbol> b)
+    bool operator() (const Symbol a, const Symbol b)
     {
-        auto a_t = a->getTime();
-        auto b_t = b->getTime();
+        auto a_t = a.getTime();
+        auto b_t = b.getTime();
         return (a_t < b_t);
     }
 };
 
 class Score
 {
-    vector<shared_ptr<Symbol> > score_symbols;
-    TimePointArray              time_points;
-    SortedStaves                staves;
-    ScoreSorter                 score_sorter;
+    vector<Symbol > score_symbols;
+    TimePointArray  time_points;
+    SortedStaves    staves;
+    ScoreSorter     score_sorter;
     
 public:
     
@@ -58,11 +58,11 @@ public:
     
     size_t getSize();
     
-    shared_ptr<Symbol> getSymbol(int n);
-    int getSymbolPosition(shared_ptr<Symbol> s);
+    Symbol* getSymbol(int n);
+    int getSymbolPosition(Symbol* s);
     
-    void addSymbol(shared_ptr<Symbol> s);
-    void removeSymbol(shared_ptr<Symbol> s);
+    void addSymbol(Symbol* s);
+    void removeSymbol(Symbol* s);
     void removeAllSymbols();
         
     void importScoreFromOSC( const OdotBundle_s& s_bundle );
@@ -71,8 +71,8 @@ public:
     
     void print() const;
     
-    void addSymbolTimePoints( shared_ptr<Symbol> s );
-    void removeSymbolTimePoints( shared_ptr<Symbol> s );
+    void addSymbolTimePoints( Symbol* s );
+    void removeSymbolTimePoints( Symbol* s );
     
     OdotBundle_s getSymbolsAtTime( float t );
 
@@ -80,17 +80,15 @@ public:
     
     OdotBundle_s getScoreBundle_s();
 
-    const Array<shared_ptr<Symbol>> getSymbolsByValue(const string& address, const string& value);
-
-    
+    const Array<Symbol*> getSymbolsByValue(const string& address, const string& value);
     
     const StringArray getStaves();
-    void addStaff( shared_ptr<Symbol> s );
+    void addStaff( Symbol* s );
     
-    void updateStaves(shared_ptr<Symbol> moved_stave);
+    void updateStaves(Symbol* moved_stave);
     void updateStavesAndTimepoints();
-    shared_ptr<Symbol> getStaveAtTime( float time );
-    const shared_ptr<Symbol> getStaveByID( const string& id );
+    Symbol* getStaveAtTime( float time );
+    const Symbol* getStaveByID( const string& id );
 
     OdotBundle_s getDurationBundle();
 
@@ -98,10 +96,10 @@ public:
     int getNameCount( string& name )
     {
         int count = 0;
-        for( shared_ptr<Symbol> s : score_symbols )
+        for( Symbol s : score_symbols )
         {
-            s->print();
-            if( s != NULL && s->getName() == name )
+            s.print();
+            if( s.getName() == name )
                 count++;
         }
     
@@ -110,9 +108,9 @@ public:
     
     bool idExists( string& idStr )
     {
-        for( shared_ptr<Symbol> s : score_symbols )
+        for( Symbol s : score_symbols )
         {
-            if( s->getID() == idStr )
+            if( s.getID() == idStr )
                 return true;
         }
         

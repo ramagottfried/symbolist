@@ -259,10 +259,10 @@ void EditSelectionBox::mouseDown (const MouseEvent& e)
         }
         else if( !in_edit_mode )
         {
-            shared_ptr<Symbol> s = make_shared<Symbol>();
+            Symbol* s = new Symbol();
             
             b->addSymbolMessages(s);
-            original_symbols.set(i, s.get());
+            original_symbols.set(i, s);
             
             BaseComponent *newB = sh->makeComponentFromSymbol(s, false);
             newB->setTopLeftPosition( b->getPosition() - getPosition() );
@@ -273,10 +273,10 @@ void EditSelectionBox::mouseDown (const MouseEvent& e)
             addAndMakeVisible( newB );
         }
         
-        shared_ptr<Symbol> s = make_shared<Symbol>();
+        Symbol* s = new Symbol();
         //*b->getScoreSymbolPointer()
-        b->addSymbolMessages( s );
-        original_symbols.set(i, s.get());
+        b->addSymbolMessages(s);
+        original_symbols.set(i, s);
         
         BaseComponent *newB = sh->makeComponentFromSymbol(s, false);
         newB->setTopLeftPosition( b->getPosition() - getPosition() );

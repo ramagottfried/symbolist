@@ -18,13 +18,13 @@ class SymbolistMainComponent;
 class PaletteComponent : public SymbolistComponent,
                          public View<SymbolistModel, PaletteController>
 {
-    shared_ptr<Palette> palette_pointer;
+    Palette* palette_pointer;
 
 public:
     PaletteComponent();
     ~PaletteComponent();
     
-    void buildFromPalette(shared_ptr<Palette> palette);
+    void buildFromPalette(Palette* palette);
     void selectPaletteButton(int i);
     
     void paint (Graphics& g) override;

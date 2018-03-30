@@ -7,9 +7,15 @@
 
 class PropertyPanelTabs   : public TabbedComponent
 {
+    
+    SymbolistHandler*                       symbolist_handler;
+    ScopedPointer<SymbolPropertiesPanel>    symbol_panel_tab;
 
 public:
-    PropertyPanelTabs( SymbolistHandler *sh ) : TabbedComponent(TabbedButtonBar::Orientation::TabsAtTop)
+    /**************************************************
+     *                CONSTRUCTORS                    *
+     **************************************************/
+    inline PropertyPanelTabs( SymbolistHandler *sh ) : TabbedComponent(TabbedButtonBar::Orientation::TabsAtTop)
     {
         symbolist_handler = sh;
         symbol_panel_tab = new SymbolPropertiesPanel(sh);
@@ -21,17 +27,19 @@ public:
 
     }
     
-    SymbolistHandler* getSymbolistHandler(){ return symbolist_handler; }
-
-    void setInspectorObject( BaseComponent *c ){ symbol_panel_tab->setInspectorObject(c); }
-    void createOSCview (){ symbol_panel_tab->createOSCview(); }
-    void updateBundle(){ symbol_panel_tab->updateBundle(); }
-    void clearInspector(){ symbol_panel_tab->clearInspector(); }
+    /**************************************************
+     *                GETTERS AND SETTERS             *
+     **************************************************/
+    inline SymbolistHandler* getSymbolistHandler(){ return symbolist_handler; }
+    inline ScopedPointer<SymbolPropertiesPanel> getSymbolPanelTab()
+    {
+        return symbol_panel_tab;
+    }
     
-private:
-    
-    SymbolistHandler*                       symbolist_handler;
-    ScopedPointer<SymbolPropertiesPanel>    symbol_panel_tab;
+    inline void setInspectorObject( BaseComponent *c ){ symbol_panel_tab->setInspectorObject(c); }
+    inline void createOSCview (){ symbol_panel_tab->createOSCview(); }
+    inline void updateBundle(){ symbol_panel_tab->updateBundle(); }
+    inline void clearInspector(){ symbol_panel_tab->clearInspector(); }
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PropertyPanelTabs)
 

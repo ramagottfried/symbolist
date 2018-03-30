@@ -11,7 +11,7 @@ public:
     ~SymbolGroupComponent() = default;
     
     virtual string getSymbolTypeStr() const override { return string("group"); }
-    void addSymbolMessages(shared_ptr<Symbol> s ) override ;
+    void addSymbolMessages(Symbol* s ) override ;
     void importFromSymbol( const Symbol &s ) override;
 
     void selectComponent() override;

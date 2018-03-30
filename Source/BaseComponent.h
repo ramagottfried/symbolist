@@ -15,15 +15,22 @@ class BaseComponent : public ScoreComponent
     
 protected:
     
-    // score structure
-    shared_ptr<Symbol> score_symbol = NULL;   // pointer to the score symbol (set when this is a topLevel symbol, NULL otherwise)
+    /**
+     * Pointer to the score symbol.
+     * (set when this is a topLevel symbol, NULL otherwise)
+     */
+    Symbol* score_symbol = NULL;
     
     string          name;
     string          staff_name;
     string          lambda;
     
-    // staff attachement
+    /**
+     * Pointer to the graphic component which acts as a staff
+     * for this BaseComponent.
+     */
     BaseComponent   *staff = nullptr; // place holder ...
+    
     // when loaded, if staff exists attach it
     // when staff is loaded, scan score and try to find symbols with matching staff names and attach them
     
@@ -54,7 +61,7 @@ public:
     BaseComponent() = default;
     ~BaseComponent();
     
-    virtual void addSymbolMessages( shared_ptr<Symbol> s );
+    virtual void addSymbolMessages( Symbol* s );
     virtual void importFromSymbol( const Symbol &s );
     
     Symbol exportSymbol();
@@ -64,9 +71,9 @@ public:
     
     void paint( Graphics& g ) override;
     
-    void setScoreSymbolPointer (shared_ptr<Symbol> s) { score_symbol = s; } // it shouldn't be possible to set the symbol without updating the whole component
+    void setScoreSymbolPointer (Symbol* s) { score_symbol = s; } // it shouldn't be possible to set the symbol without updating the whole component
     
-    shared_ptr<Symbol> getScoreSymbolPointer () { return score_symbol; }
+    Symbol* getScoreSymbolPointer () { return score_symbol; }
     void createAndAttachSymbol();
     
     bool isTopLevelComponent();

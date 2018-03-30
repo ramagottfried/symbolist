@@ -1,21 +1,15 @@
-/*
-  ==============================================================================
-
-    This file was auto-generated!
-
-    It contains the basic startup code for a Juce application.
-
-  ==============================================================================
-*/
-
 #include "../JuceLibraryCode/JuceHeader.h"
-//#include "SymbolistHandler.h"
+#include "SymbolistModel.hpp"
+#include "SymbolistHandler.h"
 #include "symbolist.hpp"
 
 
 //==============================================================================
 class SymbolistApplication  : public JUCEApplication
 {
+ 
+    SymbolistHandler* symbolist_handler_ptr;
+
 public:
     //==============================================================================
     SymbolistApplication() {}
@@ -27,15 +21,41 @@ public:
     //==============================================================================
     void initialise (const String& commandLine) override
     {
+        // Instantiates the model.
+        SymbolistModel* model = new SymbolistModel();
         
-        /*
-        symbolist_handler = SymbolistHandler::symbolistAPI_newSymbolist();
-        symbolist_handler->inStandalone();
-        symbolist_handler->symbolistAPI_openWindow();
+        // Adds four default items to the model.
+        float symbol_size = 30.0;
+        float symbol_pos = 0.0;
+        
+        Palette* palette = model->getPalette();
+        
+        Symbol s1 = Symbol();
+        s1.setTypeXYWH("text", symbol_pos, symbol_pos, 20 , 20);
+        palette->addDefaultItem(s1);
+        
+        Symbol s2 = Symbol();
+        s2.setTypeXYWH("circle", symbol_pos, symbol_pos, symbol_size, symbol_size);
+        palette->addDefaultItem(s2);
+        
+        Symbol s3 = Symbol();
+        s3.setTypeXYWH("rectangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
+        palette->addDefaultItem(s3);
+        
+        Symbol s4 = Symbol();
+        s4.setTypeXYWH("triangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
+        palette->addDefaultItem(s4);
+        
+        /* Casts the void pointer returned by the symbolistNew.
+         * symbolistNew() returns a void pointer for cross system
+         * compatibility.
          */
+        symbolist_handler_ptr = static_cast<SymbolistHandler*>(symbolistNew());
+        symbolist_handler_ptr->setModel(model);
         
-        // making the app use the void pointer system for cross checking
-        symbolist_handler_ptr = symbolistNew();
+        // Adds the symbolist_handler_ptr as an observer of the model.
+        model->attach(symbolist_handler_ptr);
+        
         symbolistOpenWindow(symbolist_handler_ptr);
     }
 
@@ -43,9 +63,9 @@ public:
     {
         // mainWindow = nullptr; // (deletes our window)
         // Add your application's shutdown code here..
-//        symbolist_handler->symbolistAPI_closeWindow();
+        // symbolist_handler->symbolistAPI_closeWindow();
   
-        symbolistFree( symbolist_handler_ptr );
+        symbolistFree(symbolist_handler_ptr);
     }
 
     //==============================================================================
@@ -63,12 +83,6 @@ public:
         // the other instance's command-line arguments were.
     }
 
-
-private:
-    
-    //ScopedPointer<AppMainWindow> mainWindow;
-//    ScopedPointer<SymbolistHandler> symbolist_handler;
-    void* symbolist_handler_ptr;
 };
 
 //==============================================================================

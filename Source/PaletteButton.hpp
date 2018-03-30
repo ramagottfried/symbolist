@@ -19,7 +19,7 @@ class PaletteButton : public SymbolistComponent
     
 public:
     
-    PaletteButton(int i, shared_ptr<Symbol> s);
+    PaletteButton(int i, Symbol* s);
     ~PaletteButton();
     
     void setSelected(bool sel);

@@ -3,19 +3,20 @@
 #include "SymbolistMainWindow.h"
 
 
-SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
+SymbolistMainComponent::SymbolistMainComponent()
 {
     // score = std::unique_ptr<Score>(new Score());
-    std::cout << "MainComponent " << this << std::endl;
+    std::cout << "SymbolistMainComponent's constructor " << this << std::endl;
     setComponentID("MainComponent");
     
-    symbolist_handler = sh;
+    setController(SymbolistHandler::getInstance());
+    setModel(getController()->getModel());
     
-    setLookAndFeel( &look_and_feel );
+    setLookAndFeel(&look_and_feel);
 
     updatePaletteView();
     
-    score_viewport.setViewedComponent( &scoreView, false );
+    score_viewport.setViewedComponent(&scoreView, false);
     score_viewport.setFocusContainer (true);
     score_viewport.setScrollBarsShown(true, true);
     
@@ -30,29 +31,15 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler *sh)
     addAndMakeVisible(menu);
     menu_h = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
     
-    inspector = new PropertyPanelTabs(sh);
-
+    inspector = new PropertyPanelTabs(SymbolistHandler::getInstance());
     
-    /*
-    addAndMakeVisible(score_cursor);
-    addAndMakeVisible(time_pointGUI);
-    */
-    
-    
-    // the main component will receive key events from the subviews
-    //paletteView.addKeyListener(this);
-    //scoreView.addKeyListener(this);
-    
-    //setWantsKeyboardFocus(true);
-    
-    //addKeyListener(this);
-    
-    setSize (600, 400);
+    setSize(600, 400);
 }
 
 
 SymbolistMainComponent::~SymbolistMainComponent()
 {
+    assert(getController() != NULL);
     setLookAndFeel(nullptr);
     
     paletteView.deleteAllChildren();
@@ -85,7 +72,7 @@ void SymbolistMainComponent::resized()
 
 void SymbolistMainComponent::updatePaletteView()
 {
-    paletteView.buildFromPalette(symbolist_handler->getModel()->getPalette());
+    paletteView.buildFromPalette(getModel()->getPalette());
 }
 
 void SymbolistMainComponent::toggleInspector()

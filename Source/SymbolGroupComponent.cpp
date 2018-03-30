@@ -184,12 +184,12 @@ void SymbolGroupComponent::scaleScoreComponent(float scale_w, float scale_h)
  * SYMBOL MANAGEMENT
  *============================*/
 
-void SymbolGroupComponent::addSymbolMessages( shared_ptr<Symbol> s )
+void SymbolGroupComponent::addSymbolMessages(Symbol* s )
 {
     
 //    cout << "SymbolGroupComponent::addSymbolMessages " << s << " " << base_address << " " << getNumSubcomponents() << endl;
     
-    BaseComponent::addSymbolMessages( s );
+    BaseComponent::addSymbolMessages(s);
     
     s->addMessage( "/numsymbols", (int)getNumSubcomponents() );
 
@@ -207,15 +207,15 @@ void SymbolGroupComponent::addSymbolMessages( shared_ptr<Symbol> s )
     */
    
     BaseComponent* subComponent; 
-    shared_ptr<Symbol> subSymbol = make_shared<Symbol>();
+    Symbol* subSymbol = new Symbol();
     
     for (int i = 0; i < getNumSubcomponents(); i++)
     {
         subComponent = dynamic_cast<BaseComponent*>(getSubcomponent(i));
         if (subComponent != NULL)
 	{
-	   subComponent->addSymbolMessages( subSymbol );
-	   s->addMessage( "/subsymbol/" + to_string(i), *(subSymbol.get()) );
+	   subComponent->addSymbolMessages(subSymbol);
+	   s->addMessage( "/subsymbol/" + to_string(i), *subSymbol);
 	}	
     }
     
@@ -235,9 +235,9 @@ void SymbolGroupComponent::importFromSymbol( const Symbol &s )
         if( sub[0].isBundle() )
         {
             cout << "IMPORT FROM: " << sub.getAddress() << endl;
-            shared_ptr<Symbol> sub_s = make_shared<Symbol>( sub.getBundle().get_o_ptr() );
+            Symbol* sub_s = new Symbol(sub.getBundle().get_o_ptr());
             
-            BaseComponent* c = getSymbolistHandler()->makeComponentFromSymbol( sub_s , false );
+            BaseComponent* c = getSymbolistHandler()->makeComponentFromSymbol(sub_s, false);
             
             if ( c != NULL)
             {

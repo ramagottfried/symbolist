@@ -8,75 +8,45 @@
 #include "PathBaseComponent.h"
 #include "TextGlyphComponent.h"
 
-using namespace std;
+SymbolistHandler* SymbolistHandler::INSTANCE = NULL;
 
 SymbolistHandler::SymbolistHandler()
 {
-    setModel(make_shared<SymbolistModel>());
-    // setView(new SymbolistMainComponent(this));
-    
-    // create two default items
-    float symbol_size = 30.0;
-    float symbol_pos = 0.0;
-    
-    shared_ptr<Palette> palette = getModel()->getPalette();
-    
-    shared_ptr<Symbol> s1 = make_shared<Symbol>();
-    s1->setTypeXYWH("text", symbol_pos, symbol_pos, 20 , 20);
-    palette->addDefaultItem(s1);
-    
-    shared_ptr<Symbol> s2 = make_shared<Symbol>();
-    s2->setTypeXYWH("circle", symbol_pos, symbol_pos, symbol_size, symbol_size);
-    palette->addDefaultItem(s2);
-    
-    shared_ptr<Symbol> s3 = make_shared<Symbol>();
-    s3->setTypeXYWH("rectangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
-    palette->addDefaultItem(s3);
-    
-    shared_ptr<Symbol> s4 = make_shared<Symbol>();
-    s4->setTypeXYWH("triangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
-    palette->addDefaultItem(s4);
-    
-    cout << "symbolist handler " << this << endl;
+    cout << "SymbolistHandler's default constructor " << this << endl;
 }
 
-SymbolistHandler::SymbolistHandler(shared_ptr<SymbolistModel> model, shared_ptr<SymbolistMainComponent> view)
+SymbolistHandler::SymbolistHandler(SymbolistModel* model, SymbolistMainComponent* view)
 {
     setModel(model);
     setView(view);
-    
-    // create two default items
-    float symbol_size = 30.0;
-    float symbol_pos = 0.0;
-    
-    shared_ptr<Palette> palette = getModel()->getPalette();
-    
-    shared_ptr<Symbol> s1 = make_shared<Symbol>();
-    s1->setTypeXYWH("text", symbol_pos, symbol_pos, 20 , 20);
-    palette->addDefaultItem(s1);
-    
-    shared_ptr<Symbol> s2 = make_shared<Symbol>();
-    s2->setTypeXYWH("circle", symbol_pos, symbol_pos, symbol_size, symbol_size);
-    palette->addDefaultItem(s2);
-    
-    shared_ptr<Symbol> s3 = make_shared<Symbol>();
-    s3->setTypeXYWH("rectangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
-    palette->addDefaultItem(s3);
-    
-    shared_ptr<Symbol> s4 = make_shared<Symbol>();
-    s4->setTypeXYWH("triangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
-    palette->addDefaultItem(s4);
-    
-    
 }
 
+SymbolistHandler::SymbolistHandler(SymbolistHandler* symbolistHandler)
+{
+    cout << "SymbolistHandler's copy constructor " << this << endl;
+}
 
 SymbolistHandler::~SymbolistHandler()
 {
-    cout << "deleting symbolist handler, main comp pointer:" << main_component_ptr <<  " window " << main_window << endl;
-    if ( getView() != NULL )
+    Controller::~Controller();
+    cout << "Deleting symbolist handler, main component pointer: "
+         << getView() <<  " window " << main_window.get() << endl;
+    
+    if (getView() != NULL)
         symbolistAPI_closeWindow();
     
+    if (getModel() != NULL)
+        delete getModel();
+}
+
+SymbolistHandler* SymbolistHandler::getInstance()
+{
+    if (INSTANCE == NULL)
+    {
+        INSTANCE = new SymbolistHandler();
+    }
+    
+    return INSTANCE;
 }
 
 /*********************************************
@@ -87,9 +57,10 @@ SymbolistHandler::~SymbolistHandler()
 // return the new SymbolistHandler
 SymbolistHandler* SymbolistHandler::symbolistAPI_newSymbolist()
 {
-    cout << "this message manager instance  " << MessageManager::getInstance() << endl;
+    cout << "symbolistAPI_newSymbolist" << endl;
+    cout << "This message manager instance  " << MessageManager::getInstance() << endl;
 
-    return new SymbolistHandler ();
+    return SymbolistHandler::getInstance();
 }
 
 void SymbolistHandler::symbolistAPI_freeSymbolist()
@@ -97,23 +68,21 @@ void SymbolistHandler::symbolistAPI_freeSymbolist()
     delete this;
 }
 
-
 void SymbolistHandler::symbolistAPI_openWindow()
 {
-    
-    cout << "this thread " << Thread::getCurrentThread() << endl;
-    cout << "this message manager instance  " << MessageManager::getInstance() << endl;
+    cout << "symbolistAPI_openWindow" << endl;
+    cout << "This thread " << Thread::getCurrentThread() << endl;
+    cout << "This message manager instance " << MessageManager::getInstance() << endl;
     
     const MessageManagerLock mml;
-
-    main_window = new SymbolistMainWindow (this);
-    main_component_ptr = main_window->getMainComponent();
+    
+    main_window = unique_ptr<SymbolistMainWindow>(new SymbolistMainWindow());
+    setView(main_window->getMainComponent());
 
     addComponentsFromScore();
-    main_component_ptr->grabKeyboardFocus();
+    getView()->grabKeyboardFocus();
 
 }
-
 
 void SymbolistHandler::symbolistAPI_closeWindow()
 {
@@ -122,34 +91,36 @@ void SymbolistHandler::symbolistAPI_closeWindow()
   
     if( main_window )
     {
-//        cout << "nulling main window " << main_window << endl;
-        main_component_ptr = nullptr;
+        // cout << "nulling main window " << main_window << endl;
         main_window = nullptr;
     }
 }
-
 
 void SymbolistHandler::symbolistAPI_windowToFront()
 {
     const MessageManagerLock mml;
 
-    if ( main_component_ptr != NULL)
+    if ( getView() != NULL)
     {
-        main_component_ptr->getTopLevelComponent()->toFront(true);
+        getView()->getTopLevelComponent()->toFront(true);
     }
 
-    if ( inspector_ptr != NULL)
+    if ( getView()->getInspector()->getSymbolPanelTab() != NULL)
     {
-        inspector_ptr->getTopLevelComponent()->toFront(true);
+        getView()
+                ->getInspector()
+                ->getSymbolPanelTab()
+                ->getTopLevelComponent()
+                ->toFront(true);
     }
 }
 
 void SymbolistHandler::symbolistAPI_windowSetName(String name)
 {
-    if ( main_component_ptr != NULL)
+    if ( getView() != NULL)
     {
         const MessageManagerLock mml;
-        main_component_ptr->getTopLevelComponent()->setName(name);
+        getView()->getTopLevelComponent()->setName(name);
     }
 }
 
@@ -174,7 +145,7 @@ int SymbolistHandler::symbolistAPI_getNumSymbols()
     return static_cast<int>( getModel()->getScore()->getSize() );
 }
 
-shared_ptr<Symbol> SymbolistHandler::symbolistAPI_getSymbol(int n)
+Symbol* SymbolistHandler::symbolistAPI_getSymbol(int n)
 {
     return getModel()->getScore()->getSymbol(n);
 }
@@ -188,14 +159,14 @@ void SymbolistHandler::symbolistAPI_setOneSymbol( const OdotBundle_s& bundle)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
     
-    shared_ptr<Symbol> s = make_shared<Symbol>( bundle );
-    getModel()->getScore()->addSymbol(s);
+    Symbol s = Symbol(bundle);
+    getModel()->getScore()->addSymbol(&s);
     
-    if ( main_component_ptr != nullptr )
+    if (getView() != nullptr)
     {
-        BaseComponent* c = makeComponentFromSymbol( s , false);
-        main_component_ptr->getPageComponent()->addSubcomponent(c);
-        c->setScoreSymbolPointer( s );
+        BaseComponent* c = makeComponentFromSymbol(&s, false);
+        getView()->getPageComponent()->addSubcomponent(c);
+        c->setScoreSymbolPointer(&s);
     }
     else
     {
@@ -210,9 +181,9 @@ void SymbolistHandler::symbolistAPI_setSymbols( const OdotBundle_s& bundle_array
     
     getModel()->getScore()->importScoreFromOSC( bundle_array );
     
-    if ( main_component_ptr != NULL)
+    if ( getView() != NULL)
     {
-        main_component_ptr->getPageComponent()->clearAllSubcomponents();
+        getView()->getPageComponent()->clearAllSubcomponents();
         addComponentsFromScore();
     }
 }
@@ -223,7 +194,7 @@ int SymbolistHandler::symbolistAPI_getNumPaletteSymbols()
     return static_cast<int>( getModel()->getPalette()->getPaletteNumUserItems() );
 }
 
-shared_ptr<Symbol> SymbolistHandler::symbolistAPI_getPaletteSymbol(int n)
+Symbol* SymbolistHandler::symbolistAPI_getPaletteSymbol(int n)
 {
     return getModel()->getPalette()->getPaletteUserItem(n);
 }
@@ -231,10 +202,7 @@ shared_ptr<Symbol> SymbolistHandler::symbolistAPI_getPaletteSymbol(int n)
 void SymbolistHandler::symbolistAPI_setOnePaletteSymbol( const OdotBundle_s& bundle)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
-    
-    shared_ptr<Symbol> s = make_shared<Symbol>( bundle );
-    
-    getModel()->getPalette()->addUserItem(s);
+    getModel()->getPalette()->addUserItem(Symbol(bundle));
     
 }
 
@@ -248,13 +216,13 @@ void SymbolistHandler::symbolistAPI_setPaletteSymbols(const OdotBundle_s& bundle
     {
         if( msg[0].getType() == OdotAtom::O_ATOM_BUNDLE && msg.getAddress().find("/symbol") == 0 )
         {
-            shared_ptr<Symbol> s = make_shared<Symbol>( msg.getBundle().get_o_ptr() );
+            Symbol s = Symbol(msg.getBundle().get_o_ptr());
             getModel()->getPalette()->addUserItem(s);
         }
     }
-    if ( main_component_ptr != NULL )
+    if ( getView() != NULL )
     {
-        main_component_ptr->updatePaletteView();
+        getView()->updatePaletteView();
     }
 }
 
@@ -264,25 +232,25 @@ void SymbolistHandler::symbolistAPI_setTime(float time_ms)
     const MessageManagerLock mmLock;
     current_time = time_ms;
     
-    if ( main_component_ptr != NULL)
+    if ( getView() != NULL)
     {
-        main_component_ptr->setTimePoint( time_ms );
+        getView()->setTimePoint( time_ms );
     }
 }
 
 void SymbolistHandler::symbolistAPI_toggleTimeCusor()
 {
-    if ( main_component_ptr != NULL)
+    if ( getView() != NULL)
     {
-        main_component_ptr->toggleTimeAndCursorDisplay();
+        getView()->toggleTimeAndCursorDisplay();
     }
 }
 
 StaffComponent* SymbolistHandler::getStaveAtTime( float time )
 {
-    if( shared_ptr<Symbol> stave_sym = getModel()->getScore()->getStaveAtTime( time ) )
+    if( Symbol* stave_sym = getModel()->getScore()->getStaveAtTime( time ) )
     {
-        Component *c = main_component_ptr->getPageComponent()->findChildWithID( stave_sym->getID().c_str() );
+        Component *c = getView()->getPageComponent()->findChildWithID( stave_sym->getID().c_str() );
         if( c )
         {
             StaffComponent *staff = dynamic_cast<StaffComponent*>(c);
@@ -324,9 +292,9 @@ void SymbolistHandler::symbolistAPI_clearScore()
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
 
-    if ( main_component_ptr != NULL )
+    if ( getView() != NULL )
     {
-        main_component_ptr->getPageComponent()->clearAllSubcomponents();
+        getView()->getPageComponent()->clearAllSubcomponents();
     }
     getModel()->getScore()->removeAllSymbols();
 }
@@ -366,9 +334,9 @@ int SymbolistHandler::getCurrentSymbolIndex()
     return getModel()->getPalette()->getSelectedItem();
 }
 
-shared_ptr<Symbol> SymbolistHandler::getCurrentSymbol()
+Symbol* SymbolistHandler::getCurrentSymbol()
 {
-    shared_ptr<Palette> palette = getModel()->getPalette();
+    Palette* palette = getModel()->getPalette();
     int num_def_symbols = palette->getPaletteNumDefaultItems();
     int sel = palette->getSelectedItem();
     
@@ -383,10 +351,9 @@ shared_ptr<Symbol> SymbolistHandler::getCurrentSymbol()
 //=================================
 
 // Component factory
-BaseComponent* SymbolistHandler::makeComponentFromSymbol(shared_ptr<Symbol> s, bool attach_the_symbol)
+BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_the_symbol)
 {
     cout << "Creating component from Symbol: " ;
-    s->print();
     
     string typeofSymbol = s->getMessage("/type").getString();
     if ( typeofSymbol.size() == 0 )
@@ -422,17 +389,17 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(shared_ptr<Symbol> s, b
         if (newComponent != NULL)
         {
             // reads base component symbol values, and sets component bounds for display
-            newComponent->importFromSymbol( *s ) ;
+            newComponent->importFromSymbol(*s) ;
             
             // initializes object specific messages if not present
-            newComponent->addSymbolMessages( s );
+            newComponent->addSymbolMessages(s);
             
             if ( attach_the_symbol )
             {
                 /*
-                if( main_component_ptr != NULL )
+                if( getView() != NULL )
                 {
-                    newComponent->setComponentID( newComponent->getSymbolTypeStr() + "_" + (String)main_component_ptr->getPageComponent()->getNumSubcomponents() );
+                    newComponent->setComponentID( newComponent->getSymbolTypeStr() + "_" + (String)getView()->getPageComponent()->getNumSubcomponents() );
                     s->setID( newComponent->getComponentID() );
                 }
                 */
@@ -450,15 +417,15 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(shared_ptr<Symbol> s, b
 void SymbolistHandler::addComponentsFromScore ( )
 {
     // recreate and add components from score symbols
-    shared_ptr<Score> score = getModel()->getScore();
+    Score* score = getModel()->getScore();
     cout << "ADDING " << score->getSize() << " SYMBOLS" << endl;
     
     for (int i = 0; i < score->getSize(); i++)
     {
-        shared_ptr<Symbol> s = score->getSymbol(i);
+        Symbol* s = score->getSymbol(i);
         BaseComponent* c = makeComponentFromSymbol(s, false);
         
-        main_component_ptr->getPageComponent()->addSubcomponent(c);
+        getView()->getPageComponent()->addSubcomponent(c);
         c->setScoreSymbolPointer(s);
     }
 }
@@ -484,7 +451,7 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* component )
     assert ( component->getScoreSymbolPointer() != NULL ) ;
     //cout << "REMOVING SYMBOL OF " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
     
-    shared_ptr<Symbol> symbol = component->getScoreSymbolPointer();
+    Symbol* symbol = component->getScoreSymbolPointer();
     assert ( symbol != NULL ) ; // that's not normal
     
     // log_score_change();
@@ -492,8 +459,8 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* component )
     // cout << "removeSymbolFromScore" << endl;
     symbol->print();
 
-    if( main_component_ptr )
-        main_component_ptr->clearInspector();
+    if( getView() )
+        getView()->clearInspector();
     
     getModel()->getScore()->removeSymbolTimePoints( symbol );
     getModel()->getScore()->removeSymbol( symbol );
@@ -502,7 +469,6 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* component )
     executeUpdateCallback( -1 );
     
 }
-
 
 /*
  *  the component has changed, and so we need to update it's symbol bundle
@@ -513,7 +479,7 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     //log_score_change();
     
     // get pointer to symbol attached to component
-    shared_ptr<Symbol> s = c->getScoreSymbolPointer();
+    Symbol* s = c->getScoreSymbolPointer();
     assert ( s != NULL ) ;
     
     // cout << c << " ---> modifySymbolInScore " << s->getID() << endl;
@@ -589,17 +555,17 @@ void SymbolistHandler::undo()
     {
         const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
         
-        if ( main_component_ptr != NULL )
+        if ( getView() != NULL )
         {
             push_redo_stack();
 
-            main_component_ptr->getPageComponent()->unselectAllComponents();
-            main_component_ptr->getPageComponent()->clearAllSubcomponents();
+            getView()->getPageComponent()->unselectAllComponents();
+            getView()->getPageComponent()->clearAllSubcomponents();
             getModel()->getScore()->removeAllSymbols();
-            getModel()->setScore(make_shared<Score>(undo_stack.removeAndReturn( undo_stack.size() - 1 )));
+            getModel()->setScore(undo_stack.removeAndReturn( undo_stack.size() - 1 ));
             
             addComponentsFromScore();
-            main_component_ptr->repaint();
+            getView()->repaint();
         }
         
     }
@@ -611,16 +577,17 @@ void SymbolistHandler::redo()
     {
         const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
         
-        if ( main_component_ptr != NULL )
+        if ( getView() != NULL )
         {
             push_undo_stack();
             
-            main_component_ptr->getPageComponent()->unselectAllComponents();
-            main_component_ptr->getPageComponent()->clearAllSubcomponents();
+            getView()->getPageComponent()->unselectAllComponents();
+            getView()->getPageComponent()->clearAllSubcomponents();
             getModel()->getScore()->removeAllSymbols();
-            getModel()->getScore() = make_shared<Score>(redo_stack.removeAndReturn( redo_stack.size() - 1 ));
+            getModel()->setScore(redo_stack.removeAndReturn( redo_stack.size() - 1 ));
+            
             addComponentsFromScore();
-            main_component_ptr->repaint();
+            getView()->repaint();
         }
         
     }
@@ -629,12 +596,12 @@ void SymbolistHandler::redo()
 void SymbolistHandler::addToInspector( BaseComponent *c )
 {
     // only selected and called if the main component is there...
-    main_component_ptr->setInspectorObject(c);
+    getView()->setInspectorObject(c);
 }
 
 void SymbolistHandler::clearInspector()
 {
-    main_component_ptr->clearInspector();
+    getView()->clearInspector();
 }
 
 void SymbolistHandler::updateSymbolFromInspector( BaseComponent *c)
@@ -646,7 +613,7 @@ void SymbolistHandler::updateSymbolFromInspector( BaseComponent *c)
 
 void SymbolistHandler::convertSelectedToStaff()
 {
-    main_component_ptr->getPageComponent()->createStaffFromSelected();
+    getView()->getPageComponent()->createStaffFromSelected();
 }
 
 
@@ -655,7 +622,7 @@ void SymbolistHandler::copySelectedToClipBoard()
 {
     clipboard.clear();
     
-    for( auto c : main_component_ptr->getPageComponent()->getSelectedItems() )
+    for( auto c : getView()->getPageComponent()->getSelectedItems() )
     {
         clipboard.add(new Symbol( *(dynamic_cast<BaseComponent*>(c))->getScoreSymbolPointer()) );
     }
@@ -663,14 +630,14 @@ void SymbolistHandler::copySelectedToClipBoard()
 
 void SymbolistHandler::newFromClipBoard()
 {
-    auto pc = main_component_ptr->getPageComponent();
+    auto pc = getView()->getPageComponent();
     
     for( auto s : clipboard )
     {
         // cout << " SymbolistHandler::newFromClipBoard " << endl;
         // cout << s->getID() << endl;
-        shared_ptr<Symbol> new_sym = make_shared<Symbol>(*s);
-        BaseComponent *c = makeComponentFromSymbol( new_sym, true );
+        Symbol* new_sym = new Symbol(*s);
+        BaseComponent *c = makeComponentFromSymbol(new_sym, true);
         
         if ( c != NULL)
         {

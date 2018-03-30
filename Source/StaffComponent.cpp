@@ -11,31 +11,31 @@ void StaffComponent::importFromSymbol( const Symbol &s )
     
     BaseComponent::importFromSymbol(s);
     
-    auto subsym = Symbol( s.getMessage( "/subsymbol" ).getBundle().get_o_ptr() ); // there can be only one staff subsymbol, must be grouped if multiple
+    auto subsym = new Symbol(s.getMessage( "/subsymbol" ).getBundle().get_o_ptr()); // there can be only one staff subsymbol, must be grouped if multiple
     
-    if( subsym.size() == 0 )
+    if (subsym->size() == 0)
     {
         cout << "no staff subsymbol found" << endl;
         return;
     }
     
-    BaseComponent* c = getSymbolistHandler()->makeComponentFromSymbol( make_shared<Symbol>(subsym) , false );
+    BaseComponent* c = getSymbolistHandler()->makeComponentFromSymbol(subsym, false );
     
-    if ( c != NULL)
-        addSubcomponent( c );
+    if (c != NULL)
+        addSubcomponent(c);
     else
         cout << "Error importing staffSymbol " << endl;
         
 }
 
-void StaffComponent::addSymbolMessages( shared_ptr<Symbol> s )
+void StaffComponent::addSymbolMessages(Symbol* s)
 {
-    BaseComponent::addSymbolMessages( s );
+    BaseComponent::addSymbolMessages(s);
 
-    if( getNumSubcomponents() )
+    if ( getNumSubcomponents() )
     {
         auto firstSubComponent = getSubcomponent(0);
-        if( firstSubComponent )
+        if ( firstSubComponent )
         {
             BaseComponent* castedFirstSubComponent = dynamic_cast<BaseComponent*>(firstSubComponent);
             
@@ -43,8 +43,8 @@ void StaffComponent::addSymbolMessages( shared_ptr<Symbol> s )
             if (castedFirstSubComponent != NULL)
 	    {
                Symbol sub_sym;
-               castedFirstSubComponent->addSymbolMessages( make_shared<Symbol>(sub_sym) );
-               s->addMessage( "/subsymbol", sub_sym );
+               castedFirstSubComponent->addSymbolMessages(&sub_sym);
+               s->addMessage("/subsymbol", sub_sym);
 
 	    }
         }
@@ -61,9 +61,10 @@ void StaffComponent::parentHierarchyChanged()
     BaseComponent::parentHierarchyChanged();
     
     PageComponent *pc = getPageComponent();
-    if( pc )
+    if (pc)
     {
-        if( shared_ptr<Symbol> s = getScoreSymbolPointer() )
+        Symbol* s = getScoreSymbolPointer();
+        if (s != NULL)
         {
             String id = s->getID();
         
@@ -159,19 +160,20 @@ void StaffComponent::mouseDrag( const MouseEvent& event )
 
 
 
-void StaffComponent::paint ( Graphics& g )
+void StaffComponent::paint(Graphics& g)
 {
     BaseComponent::paint( g );
  
     if( draw_timepoints )
     {
-        auto timepoints = getSymbolistHandler()->getTimePointArray();
+        auto timePointArray = getSymbolistHandler()->getTimePointArray();
         
         float start_t = getScoreSymbolPointer()->getTime();
         float end_t = start_t + getScoreSymbolPointer()->getDuration();
         
-        for( auto t : (*timepoints) )
+        for (int i = 0; i < timePointArray->getConstSymbolTimePoints()->size(); i++)
         {
+            auto t = (*timePointArray->getConstSymbolTimePoints())[i];
             if( t->time >= start_t && t->time <= end_t )
                 g.fillEllipse( (t->time - start_t) * 100.0f, getHeight() / 2, 2, 2);
         }

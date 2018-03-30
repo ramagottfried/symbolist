@@ -141,7 +141,7 @@ void TextGlphComponent::importFromSymbol( const Symbol& s )
 
 }
 
-void TextGlphComponent::addSymbolMessages( shared_ptr<Symbol> s )
+void TextGlphComponent::addSymbolMessages(Symbol* s)
 {
     BaseComponent::addSymbolMessages( s );
     

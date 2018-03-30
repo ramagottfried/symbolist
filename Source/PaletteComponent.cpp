@@ -20,7 +20,7 @@ PaletteComponent::~PaletteComponent()
 }
 
 
-void PaletteComponent::buildFromPalette(shared_ptr<Palette> palette)
+void PaletteComponent::buildFromPalette(Palette* palette)
 {
     palette_pointer = palette;
     
@@ -46,9 +46,8 @@ void PaletteComponent::buildFromPalette(shared_ptr<Palette> palette)
         s.setTypeXYWH("path", 0, 0, d_bh, d_bw);
         s.addMessage( "/num_sub_paths", 1 );
         s.addMessage( "/path/0/str", "m 4. 4. c 14. 2. 22. 8. 16. 14. c 12. 20. 14. 24. 20. 22." );
-        s.print();
         
-        PaletteButton *pb = new PaletteButton(-1, make_shared<Symbol>(&s));
+        PaletteButton *pb = new PaletteButton(-1, &s);
         pb->setSize(d_bh , d_bw);
         pb->setCentrePosition( b_cX, b_cY);
         addAndMakeVisible(pb);
@@ -58,7 +57,7 @@ void PaletteComponent::buildFromPalette(shared_ptr<Palette> palette)
     // separator
     b_cY += y_separator;
     
-    for ( int i = 0; i < palette->getPaletteNumDefaultItems(); i++ )
+    for (int i = 0; i < palette->getPaletteNumDefaultItems(); i++)
     {
         PaletteButton *pb = new PaletteButton(i, palette->getPaletteDefaultItem(i));
 
@@ -69,9 +68,9 @@ void PaletteComponent::buildFromPalette(shared_ptr<Palette> palette)
 
     }
     
-    for ( int i = 0 ; i < palette->getPaletteNumUserItems() ; i++ )
+    for (int i = 0; i < palette->getPaletteNumUserItems(); i++)
     {
-        PaletteButton *pb = new PaletteButton( i + palette->getPaletteNumDefaultItems(), palette->getPaletteUserItem(i));
+        PaletteButton *pb = new PaletteButton(i + palette->getPaletteNumDefaultItems(), palette->getPaletteUserItem(i));
         pb->setSize(bw , bh);
         pb->setCentrePosition( b_cX, b_cY);
         addAndMakeVisible(pb);

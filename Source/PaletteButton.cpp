@@ -7,7 +7,7 @@ using namespace std ;
  * ONE BUTTON
  ********************/
 
-PaletteButton::PaletteButton(int i, shared_ptr<Symbol> s)
+PaletteButton::PaletteButton(int i, Symbol* s)
 {
     button_id = i;
     graphic_comp = getSymbolistHandler()->makeComponentFromSymbol(s, false);

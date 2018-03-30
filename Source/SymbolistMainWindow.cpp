@@ -3,18 +3,22 @@
 
 static ScopedPointer<ApplicationCommandManager> applicationCommandManager;
 
-SymbolistMainWindow::SymbolistMainWindow (SymbolistHandler *sh) :
-    DocumentWindow ( "symbolist", Colours::white, DocumentWindow::allButtons)
+SymbolistMainWindow::SymbolistMainWindow () :
+    DocumentWindow ("symbolist", Colours::white, DocumentWindow::allButtons)
 {
+    cout << "SymbolistMainWindow's default constructor." << endl;
+    
     // default stuff copied from Juce
     setUsingNativeTitleBar (true);
-    main_component = new SymbolistMainComponent(sh);
-    setContentOwned (main_component , true);
-    centreWithSize (getWidth(), getHeight());
+    main_component = new SymbolistMainComponent();
+    
+    setContentOwned(main_component, true);
+    
+    centreWithSize(getWidth(), getHeight());
     setVisible (true);
     setResizable(true, true);
     
-    addKeyListener( getApplicationCommandManager().getKeyMappings() );
+    addKeyListener(getApplicationCommandManager().getKeyMappings());
     
     triggerAsyncUpdate();
 
@@ -22,10 +26,13 @@ SymbolistMainWindow::SymbolistMainWindow (SymbolistHandler *sh) :
 
 SymbolistMainWindow::~SymbolistMainWindow ()
 {
+    cout << "SymbolistMainWindow's destructor." << endl;
+    
     main_component = nullptr;
     applicationCommandManager = nullptr;
 
-    cout << "freeing main window " << this << " allocated main_component is now " << main_component << endl;
+    cout << "Freeing main window " << this << " allocated main_component is now " << main_component << endl;
+    
 }
 
 ApplicationCommandManager& SymbolistMainWindow::getApplicationCommandManager()
@@ -33,10 +40,6 @@ ApplicationCommandManager& SymbolistMainWindow::getApplicationCommandManager()
     if (applicationCommandManager == nullptr)
         applicationCommandManager = new ApplicationCommandManager();
     
-    {
-//        applicationCommandManager->getKeyMappings()->resetToDefaultMappings();
-
-    }
     return *applicationCommandManager;
 }
 
@@ -48,8 +51,8 @@ void SymbolistMainWindow::handleAsyncUpdate()
     // been created so we can find the number of rendering engines available
     auto& commandManager = SymbolistMainWindow::getApplicationCommandManager();
     
-    commandManager.registerAllCommandsForTarget (main_component);
-    commandManager.registerAllCommandsForTarget (JUCEApplication::getInstance());
+    commandManager.registerAllCommandsForTarget(main_component);
+    commandManager.registerAllCommandsForTarget(JUCEApplication::getInstance());
     
 }
 
@@ -57,7 +60,6 @@ SymbolistMainComponent* SymbolistMainWindow::getMainComponent()
 {
     return main_component;
 }
-
 
 void SymbolistMainWindow::closeButtonPressed()
 {

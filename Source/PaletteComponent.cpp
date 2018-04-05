@@ -19,7 +19,6 @@ PaletteComponent::~PaletteComponent()
     deleteAllChildren();
 }
 
-
 void PaletteComponent::buildFromPalette(Palette* palette)
 {
     palette_pointer = palette;
@@ -44,12 +43,13 @@ void PaletteComponent::buildFromPalette(Palette* palette)
     {
         Symbol s;
         s.setTypeXYWH("path", 0, 0, d_bh, d_bw);
-        s.addMessage( "/num_sub_paths", 1 );
-        s.addMessage( "/path/0/str", "m 4. 4. c 14. 2. 22. 8. 16. 14. c 12. 20. 14. 24. 20. 22." );
+        s.addMessage("/num_sub_paths", 1 );
+        s.addMessage("/path/0/str", "m 4. 4. c 14. 2. 22. 8. 16. 14. c 12. 20. 14. 24. 20. 22.");
         
         PaletteButton *pb = new PaletteButton(-1, &s);
         pb->setSize(d_bh , d_bw);
-        pb->setCentrePosition( b_cX, b_cY);
+        pb->setCentrePosition(b_cX, b_cY);
+        
         addAndMakeVisible(pb);
         b_cY += d_y_spacing;
     }
@@ -62,7 +62,7 @@ void PaletteComponent::buildFromPalette(Palette* palette)
         PaletteButton *pb = new PaletteButton(i, palette->getPaletteDefaultItem(i));
 
         pb->setSize(bw , bh);
-        pb->setCentrePosition( b_cX, b_cY);
+        pb->setCentrePosition(b_cX, b_cY);
         addAndMakeVisible(pb);
         b_cY += b_y_spacing;
 
@@ -81,31 +81,31 @@ void PaletteComponent::buildFromPalette(Palette* palette)
 
 void PaletteComponent::selectPaletteButton(int i)
 {
-    for (int b = 0; b < getNumChildComponents(); b ++)
+    for (int j = 0; j < getNumChildComponents(); j++)
     {
-        PaletteButton *button = dynamic_cast<PaletteButton*>(getChildComponent(b));
+        PaletteButton *button = dynamic_cast<PaletteButton*>(getChildComponent(j));
         
         // Checks the downcast result.
         if (button != NULL) {
-            if ( button->getID() == i ) button->setSelected(true);
+            if (button->getID() == i)
+                button->setSelected(true);
             else button->setSelected(false);
         }
         
     }
+    
     if ( i >= 0) palette_pointer->setSelectedItem(i);
     
     SymbolistMainComponent* smc = dynamic_cast<SymbolistMainComponent*>(getParentComponent());
     
     // Checks the downcast result.
-    if ( smc != NULL )
+    if (smc != NULL)
     {
-        if ( i >= 0) {
-            smc->setDrawMode(UI_DrawType::from_template);
-        }
+        if (i >= 0)
+            smc->setDrawMode(UI_DrawType::FROM_TEMPLATE);
+        // specialModes
         else
-        { // specialModes
-            smc->setDrawMode(UI_DrawType::free_draw);
-        }
+            smc->setDrawMode(UI_DrawType::FREE_DRAW);
     }
     repaint();
 }
@@ -115,7 +115,7 @@ void PaletteComponent::paint (Graphics& g)
 {
     g.fillAll( Colours::white );
     g.setColour(Colours::lightgrey);
-    g.drawLine(getWidth(),0,getWidth(),getHeight());
+    g.drawLine(getWidth(), 0, getWidth(), getHeight());
 }
 
 

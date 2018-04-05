@@ -66,12 +66,8 @@ bool Symbol::symbol_parse_error( int p, const string& address ) const
 
 void Symbol::setPosition( const Point<float> pos )
 {
-    cout << this << " set x position " << pos.getX() << endl;
-    
     addMessage("/x", pos.getX() );
     addMessage("/y", pos.getY() );
-
-    //printBundle();
 }
 
 void Symbol::setTimeAndDurationFromRelPix( const float start_x, const float dur_x )

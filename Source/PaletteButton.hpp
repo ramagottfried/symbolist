@@ -26,7 +26,7 @@ public:
     
     void resized() override;
     void paint(Graphics &g) override;
-    void mouseDown ( const MouseEvent& event ) override;
+    void mouseDown(const MouseEvent& event) override;
     
     int getID() { return button_id; }
         

@@ -16,14 +16,10 @@ PageComponent::~PageComponent() {}
 /* will update the data (score) and notify to host environment */
 /***************************************************/
 
-void PageComponent::addSubcomponent( SymbolistComponent *c )
+void PageComponent::addSubcomponent(SymbolistComponent *c)
 {
-    ScoreComponent::addSubcomponent( c );
-    
-    if ( dynamic_cast<BaseComponent*>(c)->getScoreSymbolPointer() != NULL )
-    {
-        getSymbolistHandler()->addSymbolToScore( dynamic_cast<BaseComponent*>(c) );
-    }
+    ScoreComponent::addSubcomponent(c);
+    getSymbolistHandler()->executeUpdateCallback(-1);
 }
 
 void PageComponent::removeSubcomponent( SymbolistComponent *c )
@@ -144,10 +140,9 @@ ScoreComponent* PageComponent::getEditedComponent()
         return edited_component;
 }
 
-
-void PageComponent::resized ()
+void PageComponent::resized()
 {
-    if ( edited_component != NULL)
+    if (edited_component != NULL)
     {
         edited_component->recursiveMaximizeBounds();
     }

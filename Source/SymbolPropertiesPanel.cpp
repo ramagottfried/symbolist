@@ -43,6 +43,9 @@ void SymbolPropertiesPanel::createOSCview ()
     if( symbol_component )
     {
         Symbol* s = symbol_component->getScoreSymbolPointer();
+        std::cout << __func__ << " Retrieving pointer from component" << std::endl;
+        s->print();
+        
         if( !s )
             return;
         

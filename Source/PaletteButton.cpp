@@ -42,7 +42,7 @@ void PaletteButton::paint (Graphics& g)
     
 }
 
-void PaletteButton::mouseDown ( const MouseEvent& event )
+void PaletteButton::mouseDown(const MouseEvent& event)
 {
     PaletteComponent* pv = dynamic_cast<PaletteComponent*>(getParentComponent());
     

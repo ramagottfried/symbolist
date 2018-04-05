@@ -14,15 +14,14 @@ public:
     
     StringArray getMenuBarNames() override;
     
-    PopupMenu getMenuForIndex (int menuIndex, const String& /*menuName*/) override;
+    PopupMenu getMenuForIndex(int menuIndex, const String& /*menuName*/) override;
     
-    void menuItemSelected (int menuItemID, int /*topLevelMenuIndex*/) override;
+    void menuItemSelected(int menuItemID, int /*topLevelMenuIndex*/) override;
     
     ApplicationCommandTarget* getNextCommandTarget();
     void getAllCommands (Array<CommandID>& commands);
     void getCommandInfo (CommandID commandID, ApplicationCommandInfo& result);
     bool perform (const juce::ApplicationCommandTarget::InvocationInfo& info);
-    
     
     enum CommandIDs
     {
@@ -50,15 +49,13 @@ public:
         cmd_nudgeDown               = 0x2019,
         cmd_undo                    = 0x2020,
         cmd_redo                    = 0x2021
-
-
     };
     
 private:
     ScopedPointer<MenuBarComponent> menuBar;
     
     //==============================================================================
-    class CustomMenuComponent   : public PopupMenu::CustomComponent, private Timer
+    class CustomMenuComponent : public PopupMenu::CustomComponent, private Timer
     {
     public:
         CustomMenuComponent()

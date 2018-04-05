@@ -124,8 +124,6 @@ void PathBaseComponent::resizeToFit(int x, int y, int w, int h)
 // Juce callback
 void PathBaseComponent::resized()
 {
-    cout << "PathBaseComponent::resized() " << this << endl;
-
     BaseComponent::resized();
    
     /*
@@ -762,7 +760,7 @@ void PathBaseComponent::mouseAddClick ( const MouseEvent& event )
         updatePathBounds();
         repaint();
     }
-    else if( getMainMouseMode() == UI_EditType::draw )
+    else if( getMainMouseMode() == UI_EditType::DRAW )
     {
         // pass event to page/score if there should be a new path added
         getPageComponent()->mouseAddClick( event );
@@ -1048,7 +1046,6 @@ void PathBaseComponent::paint ( Graphics& g )
 {
     
     BaseComponent::paint(g);
-    
     
     /*
     int cur_t,local_t = 0;

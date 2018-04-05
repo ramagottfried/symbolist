@@ -89,13 +89,10 @@ class SymbolistHandler : public virtual Controller<SymbolistModel, SymbolistMain
     SymbolistHandler(SymbolistHandler* symbolistHandler);
     
 public:
-    
-    
     /**
      * SymbolistHandler's default destructor.
      */
     virtual ~SymbolistHandler() override;
-    
     static SymbolistHandler* getInstance();
     
     /*********************************************
@@ -119,7 +116,7 @@ public:
     OdotBundle_s symbolistAPI_getSymbolBundle_s(int n);
     Symbol* symbolistAPI_getSymbol(int n);
     
-    void symbolistAPI_setOneSymbol( const OdotBundle_s& bundle);
+    void symbolistAPI_setOneSymbol(const OdotBundle_s& bundle);
     void symbolistAPI_setSymbols(const OdotBundle_s& bundle_array);
     
     int symbolistAPI_getNumPaletteSymbols();
@@ -146,9 +143,9 @@ public:
     void executeTransportCallback(int arg);
     
     // functions modifying the parent Windows's score
-    void addSymbolToScore ( BaseComponent* c ) ;
-    void removeSymbolFromScore ( BaseComponent* c ) ;
-    void modifySymbolInScore ( BaseComponent* c ) ;
+    void addSymbolToScore(BaseComponent* c);
+    void removeSymbolFromScore(BaseComponent* c);
+    void modifySymbolInScore(BaseComponent* c);
     
     float getCurrentTime() { return current_time; }
     
@@ -168,6 +165,14 @@ public:
     /*********************************************
      *       PALETTE AND SYMBOL CONSTRUCTOR      *
      *********************************************/
+    
+    /**
+     * Creates a new symbol in the score according to
+     * the selected template in the palette.
+     *
+     * @return a reference to the newly created symbol.
+     */
+    Symbol* createSymbolFromTemplate();
     
     void setCurrentSymbol(int n);
     int getCurrentSymbolIndex();
@@ -192,7 +197,6 @@ public:
     void undo();
     void redo();
 
-    
     int symbolNameCount( string& name )
     {
         return getModel()->getScore()->getNameCount( name );
@@ -203,6 +207,7 @@ public:
         return !getModel()->getScore()->idExists( name );
     }
     
+    /* Overrides the update method inherited from the Observer class. */
     inline void update() override {}
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistHandler)

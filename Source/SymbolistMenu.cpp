@@ -5,8 +5,8 @@
 
 SymbolistMenu::SymbolistMenu()
 {
-    addAndMakeVisible (menuBar = new MenuBarComponent (this));
-    setApplicationCommandManagerToWatch (&SymbolistMainWindow::getApplicationCommandManager());
+    addAndMakeVisible(menuBar = new MenuBarComponent(this));
+    setApplicationCommandManagerToWatch(&SymbolistMainWindow::getApplicationCommandManager());
 }
 
 SymbolistMenu::~SymbolistMenu()
@@ -50,10 +50,10 @@ void SymbolistMenu::getAllCommands (Array<CommandID>& commands)
         cmd_redo
     };
     
-    commands.addArray (ids, numElementsInArray (ids));
+    commands.addArray(ids, numElementsInArray(ids));
 }
 
-void SymbolistMenu::getCommandInfo (CommandID commandID, ApplicationCommandInfo& result)
+void SymbolistMenu::getCommandInfo(CommandID commandID, ApplicationCommandInfo& result)
 {
     switch (commandID)
     {
@@ -198,11 +198,11 @@ void SymbolistMenu::getCommandInfo (CommandID commandID, ApplicationCommandInfo&
      */
 }
 
-bool SymbolistMenu::perform (const juce::ApplicationCommandTarget::InvocationInfo& info)
+bool SymbolistMenu::perform(const juce::ApplicationCommandTarget::InvocationInfo& info)
 {
     SymbolistMainComponent* main = dynamic_cast<SymbolistMainComponent*>(getParentComponent());
     
-    if ( main != NULL )
+    if (main != NULL)
     {
         PageComponent *score = main->getPageComponent();
 
@@ -404,7 +404,7 @@ PopupMenu SymbolistMenu::getMenuForIndex (int menuIndex, const String& /*menuNam
     return menu;
 }
 
-void SymbolistMenu::menuItemSelected (int menuItemID, int /*topLevelMenuIndex*/)
+void SymbolistMenu::menuItemSelected(int menuItemID, int /*topLevelMenuIndex*/)
 {
     cout << "SymbolistMenu::menuItemSelected " << menuItemID << endl;
     

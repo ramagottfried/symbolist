@@ -24,8 +24,8 @@ typedef void (*symbolistCloseCallback)( void * win);
 typedef void (*symbolistUpdateCallback)( void * win, int n );
 typedef void (*symbolistTransportCallback)( void * win, int command );
 
-enum UI_EditType { selection, draw };
-enum UI_DrawType { from_template, free_draw };
+enum UI_EditType { SELECTION, DRAW };
+enum UI_DrawType { FROM_TEMPLATE, FREE_DRAW };
 
 #endif
 

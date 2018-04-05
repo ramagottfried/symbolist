@@ -76,7 +76,7 @@ public:
     DisplayMode getDisplayMode(){ return display_mode; }
     
 private:
-    DisplayMode         display_mode = MAIN;
+    DisplayMode display_mode = MAIN;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PageComponent)

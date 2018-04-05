@@ -71,7 +71,7 @@ void SortedStaves::resetTimes()
     
 }
 
-bool SortedStaves::addStaff( Symbol* s)
+bool SortedStaves::addStaff(Symbol* s)
 {
     if( s->getMessage("/type").getString() != "staff" )
         return 0;

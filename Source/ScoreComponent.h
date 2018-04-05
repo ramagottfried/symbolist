@@ -10,7 +10,7 @@ class SymbolistLasso : public Component
     
 public:
     
-    void paint ( Graphics &g) override;
+    void paint(Graphics &g) override;
     void begin(int x, int y);
     void update(int x, int y);
     void end();
@@ -26,6 +26,17 @@ private:
  *********************/
 class ScoreComponent : public SymbolistComponent
 {
+protected:
+    
+    Array<SymbolistComponent*> selected_components;
+    SymbolistLasso s_lasso;
+    
+    void beginLassoSelection(Point<int> position);
+    void dragLassoSelection(Point<int> position);
+    void endLassoSelection();
+    
+    ScopedPointer<EditSelectionBox> sel_resize_box;
+    
 public:
     
     ScoreComponent();
@@ -67,18 +78,6 @@ public:
     
     Rectangle<int> getSelectionBounds();
 
-protected:
-
-    Array<SymbolistComponent*>     selected_components;
-    SymbolistLasso s_lasso;
-    
-    void beginLassoSelection(Point<int> position);
-    void dragLassoSelection(Point<int> position);
-    void endLassoSelection();
-
-    ScopedPointer<EditSelectionBox> sel_resize_box;
-
-    
 };
 
 

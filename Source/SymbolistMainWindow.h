@@ -20,7 +20,8 @@ protected:
     SymbolistMainComponent* main_component;
     
 public:
-
+    static ScopedPointer<ApplicationCommandManager> applicationCommandManager;
+    
     SymbolistMainWindow() ;
     ~SymbolistMainWindow();
     
@@ -28,7 +29,6 @@ public:
     static ApplicationCommandManager& getApplicationCommandManager();
 
     void handleAsyncUpdate() override;
-
     void closeButtonPressed() override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainWindow)

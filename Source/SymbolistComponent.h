@@ -31,8 +31,7 @@ protected :
     bool                         is_selected = false;
 
 public:
-    
-    virtual string getSymbolTypeStr() const { return string(" ??? ") ; } ; // every component defines its type
+    virtual string getSymbolTypeStr() const { return string(" ??? "); } ; // every component defines its type
 
     virtual PageComponent* getPageComponent();
     virtual SymbolistHandler* getSymbolistHandler();
@@ -44,16 +43,16 @@ public:
     virtual void deselectComponent();
     bool componentSelected();
     
-    const size_t    getNumSubcomponents( );
-    SymbolistComponent* getSubcomponent( int i );
-    SymbolistComponent* getSubcomponentByID( const string& id );
+    const size_t    getNumSubcomponents();
+    SymbolistComponent* getSubcomponent(int i);
+    SymbolistComponent* getSubcomponentByID(const string& id);
 
     virtual void    addSubcomponent( SymbolistComponent *c );
     virtual void    removeSubcomponent( SymbolistComponent *c );
     virtual void    clearAllSubcomponents();
     
     Point<int> positionRelativeTo(SymbolistComponent* to);
-    void mouseDownSelection( const MouseEvent& event );
+    void mouseDownSelection(const MouseEvent& event);
     virtual bool intersectRect( Rectangle<int> rect);
 
     virtual void setEditMode(bool val) {}
@@ -67,7 +66,7 @@ public:
     virtual void v_flip(float ax, float ay) {}
     virtual void setScoreComponentSize(int w, int h) {}
     
-    virtual inline void setSymbolComponentColor( Colour c ){ sym_color = c; }
+    virtual inline void setSymbolComponentColor(Colour c) { sym_color = c; }
     
 };
 

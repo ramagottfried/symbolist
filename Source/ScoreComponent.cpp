@@ -17,7 +17,6 @@ ScoreComponent::~ScoreComponent()
     clearAllSubcomponents();
 }
 
-
 /**************/
 /* Selection  */
 /**************/
@@ -51,13 +50,12 @@ void ScoreComponent::unselectAllComponents()
     for (int i = 0 ; i < getNumSubcomponents(); i++ )
     {
         SymbolistComponent *c = getSubcomponent(i);
+        
         c->deselectComponent();
         selected_components.removeAllInstancesOf(c);
     }
     sel_resize_box->updateEditSelBox();
-
 }
-
 
 // redefinitions from SymbolComponents
 void ScoreComponent::removeSubcomponent( SymbolistComponent *c )
@@ -71,8 +69,6 @@ void ScoreComponent::clearAllSubcomponents()
     SymbolistComponent::clearAllSubcomponents();
     selected_components.clear();
 }
-
-
 
 void ScoreComponent::reportModificationForSelectedSymbols()
 {
@@ -118,7 +114,7 @@ void ScoreComponent::beginLassoSelection(Point<int> position)
 
 void ScoreComponent::dragLassoSelection(Point<int> position)
 {
-    s_lasso.update( position.getX(), position.getY() );
+    s_lasso.update(position.getX(), position.getY());
 
     // this slows things down noticably where there are a lot of objects selected
     unselectAllComponents();
@@ -126,11 +122,9 @@ void ScoreComponent::dragLassoSelection(Point<int> position)
     for (int i = 0; i < getNumSubcomponents(); ++i)
     {
         SymbolistComponent* cc = getSubcomponent(i);
-    
-        if (!cc->componentSelected() && cc->intersectRect( s_lasso.getBounds() ))
-        {
-            addToSelection( cc );
-        }
+        
+        if (!cc->componentSelected() && cc->intersectRect(s_lasso.getBounds()))
+            addToSelection(cc);
     }
 }
 
@@ -430,73 +424,68 @@ void ScoreComponent::addSelectedSymbolsToPalette( )
 /* UI callbacks from Juce  */
 /***************************/
 
-void ScoreComponent::mouseAddClick ( const MouseEvent& event )
+void ScoreComponent::mouseAddClick(const MouseEvent& event)
 {
-
     unselectAllComponents();
 
     BaseComponent *c;
     
-    bool top_level = ( this == getPageComponent() );
-    
+    bool top_level = (this == getPageComponent());
     auto sh = getSymbolistHandler();
 
-    if ( getMainDrawMode() == UI_DrawType::from_template )
+    if (getMainDrawMode() == UI_DrawType::FROM_TEMPLATE)
     {
-
-        Symbol* symbol_template = getSymbolistHandler()->getCurrentSymbol();
-        
-        /* creates a new symbol with the same settings as the symbol_template
-         * template symbols all have a default type of "path" and bounds of 0,0,30,30
-         * the generic symbol has the same OSC data as the BaseComponent
+        /* Creates a new symbol with the same settings as the selected
+         * symbol template in the palette.
+         * Template symbols all have a default type of "path" and bounds of 0,0,30,30
+         * the generic symbol has the same OSC data as the BaseComponent.
          */
-        Symbol* s = new Symbol(*symbol_template);
+        Symbol* s = sh->createSymbolFromTemplate();
         
         // sets default position before creating the graphic component
-        s->setPosition ( event.position );
+        s->setPosition(event.position);
         
         // create a new component of the current selected symbol type
         c = sh->makeComponentFromSymbol(s, top_level);
         
         // add component in the view
-        addSubcomponent( c );
+        addSubcomponent(c);
     }
     else
     {
-        Symbol* s = new Symbol();
-        s->setTypeXYWH( "path", event.position.x, event.position.y, 40.0, 40.0 ) ;
+        Symbol* s = sh->createSymbolFromTemplate();
+        s->setTypeXYWH("path", event.position.x, event.position.y, 40.0, 40.0) ;
         
-        c = sh->makeComponentFromSymbol(s , top_level);
-        addSubcomponent( c );
+        c = sh->makeComponentFromSymbol(s, top_level);
+        addSubcomponent(c);
+        
         getPageComponent()->enterEditMode(c);
-        c->mouseAddClick( event.getEventRelativeTo(c) );
+        c->mouseAddClick(event.getEventRelativeTo(c));
     }
 
-    if ( ! top_level )
+    if (!top_level)
         c->reportModification();
     
     // deselect other items and select this one
     //addToSelection( c );
 }
 
-
-
 void ScoreComponent::mouseDown ( const MouseEvent& event )
 {
     UI_EditType ed = getMainMouseMode();
-    if( ed == selection )
+    if( ed == SELECTION )
     {
         beginLassoSelection( event.getPosition() );
     }
-    else if( ed == draw )
+    else if( ed == DRAW )
     {
-        mouseAddClick( event.getEventRelativeTo(getPageComponent()) );
+        mouseAddClick(event.getEventRelativeTo(getPageComponent()));
     }
 }
 
-void ScoreComponent::mouseDrag ( const MouseEvent& event )
+void ScoreComponent::mouseDrag(const MouseEvent& event)
 {
-    if( getMainMouseMode() == selection )
+    if (getMainMouseMode() == SELECTION)
     {
         dragLassoSelection(event.getPosition());
     }
@@ -506,16 +495,16 @@ void ScoreComponent::mouseUp ( const MouseEvent& event )
 {
     UI_EditType ed = getMainMouseMode();
     
-    if( ed == selection )
+    if( ed == SELECTION )
     {
         endLassoSelection();
     }
-    else if( ed == draw )
+    else if( ed == DRAW )
     {
         // when the mousedown on this triggered an entry to edit mode, we might want to pass the mouse up there, too
         ScoreComponent* sc = getPageComponent()->getEditedComponent();
-        if ( sc != this )
-            sc->mouseUp(event.getEventRelativeTo( sc ));
+        if (sc != this)
+            sc->mouseUp(event.getEventRelativeTo(sc));
     }
 }
 

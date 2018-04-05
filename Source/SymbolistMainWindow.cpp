@@ -1,7 +1,8 @@
 #include "types.h"
 #include "SymbolistMainWindow.h"
 
-static ScopedPointer<ApplicationCommandManager> applicationCommandManager;
+ScopedPointer<ApplicationCommandManager>
+SymbolistMainWindow::applicationCommandManager = nullptr;
 
 SymbolistMainWindow::SymbolistMainWindow () :
     DocumentWindow ("symbolist", Colours::white, DocumentWindow::allButtons)

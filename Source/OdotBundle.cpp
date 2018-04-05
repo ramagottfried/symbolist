@@ -318,7 +318,7 @@ vector<OdotMessage> OdotBundle::matchAddress( const char * address, int fullmatc
 
 vector<OdotMessage> OdotBundle::getMessageArray() const
 {
-    vector<OdotMessage> ar;
+    vector<OdotMessage > ar;
     ar.reserve( size() );
     
     t_osc_bndl_it_u *it = osc_bndl_it_u_get( ptr.get() );

@@ -15,17 +15,17 @@ using namespace std;
 
 struct ScoreSorter
 {
-    bool operator() (const Symbol a, const Symbol b)
+    bool operator() (const std::unique_ptr<Symbol>& a, const std::unique_ptr<Symbol>& b)
     {
-        auto a_t = a.getTime();
-        auto b_t = b.getTime();
+        auto a_t = a->getTime();
+        auto b_t = b->getTime();
         return (a_t < b_t);
     }
 };
 
 class Score
 {
-    vector<Symbol > score_symbols;
+    vector<unique_ptr<Symbol> > score_symbols;
     TimePointArray  time_points;
     SortedStaves    staves;
     ScoreSorter     score_sorter;
@@ -96,23 +96,18 @@ public:
     int getNameCount( string& name )
     {
         int count = 0;
-        for( Symbol s : score_symbols )
-        {
-            s.print();
-            if( s.getName() == name )
+        for(auto iteratorToSymbol = score_symbols.begin(); iteratorToSymbol != score_symbols.end(); iteratorToSymbol++)
+            if( (*iteratorToSymbol)->getName() == name )
                 count++;
-        }
     
         return count;
     }
     
     bool idExists( string& idStr )
     {
-        for( Symbol s : score_symbols )
-        {
-            if( s.getID() == idStr )
+        for(auto iteratorToSymbol = score_symbols.begin(); iteratorToSymbol != score_symbols.end(); iteratorToSymbol++)
+            if( (*iteratorToSymbol)->getID() == idStr )
                 return true;
-        }
         
         return false;
     }

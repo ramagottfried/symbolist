@@ -37,7 +37,6 @@ const size_t SymbolistComponent::getNumSubcomponents()
 
 SymbolistComponent* SymbolistComponent::getSubcomponentByID( const string& id )
 {
-    
     for( int i = 0; i < subcomponents.size(); i++ )
     {
         if( subcomponents[i]->getComponentID() == id )
@@ -54,8 +53,8 @@ SymbolistComponent* SymbolistComponent::getSubcomponent( int i )
 
 void SymbolistComponent::addSubcomponent( SymbolistComponent *c )
 {
-    subcomponents.add( c );
-    addAndMakeVisible( c );
+    subcomponents.add(c);
+    addAndMakeVisible(c);
 }
 
 void SymbolistComponent::removeSubcomponent( SymbolistComponent *c )
@@ -80,14 +79,14 @@ void SymbolistComponent::clearAllSubcomponents()
 
 UI_EditType SymbolistComponent::getMainMouseMode()
 {
-    if ( getMainComponent() != NULL)
+    if (getMainComponent() != NULL)
     {
         return getMainComponent()->getMouseMode() ;
     }
     else
     {
         std::cout << "Warning: trying to get the Main Edit Mode => MainComponent not found.." << std::endl;
-        return UI_EditType::selection;
+        return UI_EditType::SELECTION;
     }
 }
 
@@ -100,7 +99,7 @@ UI_DrawType SymbolistComponent::getMainDrawMode()
     else
     {
         std::cout << "Warning: trying to get the Main Draw Mode => MainComponent not found.." << std::endl;
-        return UI_DrawType::free_draw ;
+        return UI_DrawType::FREE_DRAW ;
     }
 }
 
@@ -140,16 +139,16 @@ bool SymbolistComponent::intersectRect( Rectangle<int> rect)
 }
 
 // basic selection mechanism
-void SymbolistComponent::mouseDownSelection( const MouseEvent& event )
+void SymbolistComponent::mouseDownSelection(const MouseEvent& event)
 {
     ScoreComponent* parent = dynamic_cast<ScoreComponent*>(getParentComponent());
     
     // Checks downcast exception.
     if (parent != NULL)
     {
-        if ( event.mods.isShiftDown() )
+        if (event.mods.isShiftDown())
         {
-            if ( componentSelected() )
+            if (componentSelected())
                 parent->removeFromSelection(this);
             else
                 parent->addToSelection(this);
@@ -157,7 +156,7 @@ void SymbolistComponent::mouseDownSelection( const MouseEvent& event )
         }
         else
         {
-            if ( ! componentSelected() )
+            if (!componentSelected())
             {
                 parent->unselectAllComponents();
                 parent->addToSelection(this);

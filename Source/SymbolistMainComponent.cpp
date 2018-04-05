@@ -125,10 +125,10 @@ void SymbolistMainComponent::setMouseMode( UI_EditType m )
 
 UI_EditType SymbolistMainComponent::getMouseMode()
 {
-    return mouse_mode ;
+    return mouse_mode;
 }
 
-void SymbolistMainComponent::setDrawMode( UI_DrawType m )
+void SymbolistMainComponent::setDrawMode(UI_DrawType m)
 {
     draw_mode = m;
     mouseModeView.setDrawMode(m);
@@ -141,35 +141,33 @@ UI_DrawType SymbolistMainComponent::getDrawMode()
 
 void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
 {
-    if ( modifiers.isCommandDown() )
+    if (modifiers.isCommandDown())
     {
-        setMouseMode( UI_EditType::draw );
+        setMouseMode(UI_EditType::DRAW);
     }
     else
     {
-        setMouseMode( UI_EditType::selection );
+        setMouseMode(UI_EditType::SELECTION);
     }
     
     current_mods = modifiers;
 }
 
 
-/***************************
- * key actions (now handled by ApplicationCommand Target to synchronize with menu)
- ***************************/
-
-
+/***********************************************************************************
+ * key actions (now handled by ApplicationCommand Target to synchronize with menu) *
+ ***********************************************************************************/
 ApplicationCommandTarget* SymbolistMainComponent::getNextCommandTarget()
 {
     return findFirstTargetParentComponent();
 }
 
-void SymbolistMainComponent::getAllCommands (Array<CommandID>& commands)
+void SymbolistMainComponent::getAllCommands(Array<CommandID>& commands)
 {
     menu.getAllCommands(commands);
 }
 
-void SymbolistMainComponent::getCommandInfo (CommandID commandID, ApplicationCommandInfo& result)
+void SymbolistMainComponent::getCommandInfo(CommandID commandID, ApplicationCommandInfo& result)
 {
     menu.getCommandInfo(commandID, result);
 }

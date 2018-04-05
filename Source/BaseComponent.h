@@ -71,7 +71,8 @@ public:
     
     void paint( Graphics& g ) override;
     
-    void setScoreSymbolPointer (Symbol* s) { score_symbol = s; } // it shouldn't be possible to set the symbol without updating the whole component
+    // it shouldn't be possible to set the symbol without updating the whole component
+    void setScoreSymbolPointer(Symbol* s) { score_symbol = s; }
     
     Symbol* getScoreSymbolPointer () { return score_symbol; }
     void createAndAttachSymbol();

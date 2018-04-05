@@ -14,11 +14,11 @@ void MouseModeComponent::paint( Graphics &g )
 
 void MouseModeComponent::drawString()
 {
-    if ( m_editType == UI_EditType::selection )
+    if ( m_editType == UI_EditType::SELECTION )
     {
         m_str = " select " ;
     }
-    else if ( m_drawType == UI_DrawType::from_template )
+    else if ( m_drawType == UI_DrawType::FROM_TEMPLATE )
     {
         m_str = " draw " ;
         m_str += getSymbolistHandler()->getCurrentSymbol()->getType();

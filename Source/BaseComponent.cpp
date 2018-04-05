@@ -43,11 +43,11 @@ bool BaseComponent::isTopLevelComponent()
 // This is the function to call when we want to update the score after a modification
 void BaseComponent::reportModification()
 {
-    if ( getParentComponent() != NULL ) // we're in the score..
+    if (getParentComponent() != NULL) // we're in the score..
     {
-        if ( isTopLevelComponent() )
+        if (isTopLevelComponent())
         {
-            getSymbolistHandler()->modifySymbolInScore( this );
+            getSymbolistHandler()->modifySymbolInScore(this);
             // updateRelativeAttributes();
         }
         else
@@ -80,20 +80,19 @@ void BaseComponent::createAndAttachSymbol()
 // addSymbolMessages outputs the component's values into the symbol
 void BaseComponent::addSymbolMessages(Symbol* s)
 {
-    s->addMessage("/name", name );
-    s->addMessage("/type", getSymbolTypeStr() );
-    s->addMessage("/id", getComponentID().getCharPointer() );
-    s->addMessage("/staff", staff_name );
+    s->addMessage("/name", name);
+    s->addMessage("/type", getSymbolTypeStr());
+    s->addMessage("/id", getComponentID().getCharPointer());
+    s->addMessage("/staff", staff_name);
    
     auto b = symbol_export_bounds();
     
-    s->addMessage("/x", b.getX() );
-    s->addMessage("/y", b.getY() );
-    s->addMessage("/w", b.getWidth() );
-    s->addMessage("/h", b.getHeight() );
-    s->addMessage("/color", sym_color.getFloatRed(), sym_color.getFloatGreen(), sym_color.getFloatBlue(), sym_color.getFloatAlpha() );
+    s->addMessage("/x", b.getX());
+    s->addMessage("/y", b.getY());
+    s->addMessage("/w", b.getWidth());
+    s->addMessage("/h", b.getHeight());
+    s->addMessage("/color", sym_color.getFloatRed(), sym_color.getFloatGreen(), sym_color.getFloatBlue(), sym_color.getFloatAlpha());
 
-   
     /*
     addr = "/time/start";
     if( s->getOSCMessagePos(addr) == -1 )
@@ -229,10 +228,10 @@ void BaseComponent::importFromSymbol(const Symbol &s)
         name = typeOfSymbol;
         
     // set /id via component ID
-    if( isVisible() )
+    if(isVisible())
         setSymbolID();
     else
-        setComponentID( name + "/palette");
+        setComponentID(name + "/palette");
     
     staff_name = s.getMessage("/staff").getString();
     if(staff_name == "<none>")
@@ -429,9 +428,7 @@ void BaseComponent::recursiveShrinkBounds()
 
 
 void BaseComponent::resizeToFit(int x, int y, int w, int h)
-{
-    
-    cout << "resizeToFit " <<  getSymbolTypeStr() << " w " << w << " h " << h << endl;
+{    
     float scale_w = (float)w / (float)getWidth();
     float scale_h = (float)h / (float)getHeight();
     
@@ -480,8 +477,6 @@ void BaseComponent::setScoreComponentSize(int w, int h)
 
 void BaseComponent::resized ()
 {
-    cout << __func__ << " " << getComponentID() << endl;
-    printRect( getBounds(), getComponentID()  );
     if( is_selected )
     {
         ((ScoreComponent*) getParentComponent())->reportModificationForSelectedSymbols();
@@ -514,13 +509,12 @@ void BaseComponent::mouseDown( const MouseEvent& event )
 {
     m_down = event.position;
 
-    if ( in_edit_mode || ( isTopLevelComponent() && getMainMouseMode() == UI_EditType::draw) )
+    if ( in_edit_mode || ( isTopLevelComponent() && getMainMouseMode() == UI_EditType::DRAW) )
     {
         ScoreComponent::mouseDown( event );
     }
     else
     {
-        
         ScoreComponent* parent = (ScoreComponent*) getParentComponent();
         
         if ( respondsToMouseEvents() )
@@ -561,7 +555,7 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
         
         if ( respondsToMouseEvents() )
         {
-            if( is_selected && (getMainMouseMode() == selection ) )
+            if( is_selected && (getMainMouseMode() == SELECTION ) )
             {
                 
                 if( event.mods.isAltDown() && !is_alt_copying)
@@ -594,14 +588,14 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
 void BaseComponent::mouseUp( const MouseEvent& event )
 {
     
-    if ( in_edit_mode || ( isTopLevelComponent() && getMainMouseMode() == UI_EditType::draw ) )
+    if ( in_edit_mode || ( isTopLevelComponent() && getMainMouseMode() == UI_EditType::DRAW ) )
         ScoreComponent::mouseUp(event);
     else
     {
         
         if ( respondsToMouseEvents() )
         {
-            if( is_selected && getMainMouseMode() == selection )
+            if( is_selected && getMainMouseMode() == SELECTION )
             {
                 repaint();
             }
@@ -624,7 +618,6 @@ void BaseComponent::mouseUp( const MouseEvent& event )
     
 }
 
-
 void BaseComponent::mouseDoubleClick(const MouseEvent& event)
 {
     if ( (!in_edit_mode) && respondsToMouseEvents() )
@@ -638,22 +631,16 @@ void BaseComponent::mouseDoubleClick(const MouseEvent& event)
     }
 }
 
-
 /************************
  * DRAW
  ************************/
 
-
-
 void BaseComponent::paint ( Graphics& g )
 {
-
     if( in_edit_mode )
     {
-        g.setColour( Colour::fromFloatRGBA(1.0f,1.0f,1.0f,0.9f)  );
+        g.setColour( Colour::fromFloatRGBA(1.0f, 1.0f, 1.0f, 0.9f)  );
         g.fillRect( getLocalBounds() );
     }
-    
-    //g.drawRect( getLocalBounds() );
 }
 

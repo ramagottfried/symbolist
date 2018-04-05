@@ -11,11 +11,10 @@ Score::Score()
 
 Score::Score(Score& src)
 {
-    for( Symbol symbol : src.score_symbols )
+    for(auto it = src.score_symbols.begin(); it != src.score_symbols.end(); it++)
     {
-        Symbol new_sym = Symbol( symbol.get_o_ptr() );
-        score_symbols.push_back( new_sym );
-        addStaff(&new_sym);
+        score_symbols.push_back(std::unique_ptr<Symbol>(new Symbol((*it)->get_o_ptr())));
+        addStaff(score_symbols.back().get());
     }
     
     updateStavesAndTimepoints();
@@ -25,11 +24,10 @@ Score::Score(Score& src)
 
 Score::Score(Score* src)
 {
-    for( Symbol symbol : src->score_symbols )
+    for(auto it = src->score_symbols.begin(); it != src->score_symbols.end(); it++)
     {
-        Symbol new_sym = Symbol( symbol.get_o_ptr() );
-        score_symbols.push_back( new_sym );
-        addStaff(&new_sym);
+        score_symbols.push_back(unique_ptr<Symbol>(new Symbol((*it)->get_o_ptr())));
+        addStaff(score_symbols.back().get());
     }
     
     updateStavesAndTimepoints();
@@ -50,10 +48,11 @@ Score::~Score()
 void Score::print() const
 {
     int count = 1;
-    for( auto s : score_symbols )
+    for (auto it = score_symbols.begin(); it != score_symbols.end(); it++)
     {
         cout << "symbol : " << count << endl;
-        s.print();
+        (*it)->print();
+        count++;
     }
 }
 
@@ -74,7 +73,7 @@ void Score::removeAllSymbols()
 void Score::addSymbol(Symbol* symbol)
 {
     // Calls the sort function to properly insert the new symbol
-    score_symbols.push_back(*symbol);
+    score_symbols.push_back(unique_ptr<Symbol>(new Symbol(symbol->get_o_ptr())));
     sort(score_symbols.begin(), score_symbols.end(), score_sorter);
     
     bool newstaff = staves.addStaff(symbol);
@@ -82,12 +81,12 @@ void Score::addSymbol(Symbol* symbol)
 
     if( newstaff )
     {
-        for (auto s : score_symbols)
+        for (auto it = score_symbols.begin(); it != score_symbols.end(); it++)
         {
-            if( s.getSaff() == symbol->getID() ) // this should look up by name not nameID, in the timepoints the staves should be combined,... although then I guess the types of clef could change? leaving as id for now, but this is uninituitive to set from outside the editor
+            if( (*it)->getSaff() == symbol->getID() ) // this should look up by name not nameID, in the timepoints the staves should be combined,... although then I guess the types of clef could change? leaving as id for now, but this is uninituitive to set from outside the editor
             {
                 //time_points.removeSymbolTimePoints(s);
-                time_points.addSymbolTimePoints( &s );
+                time_points.addSymbolTimePoints( (*it).get() );
             }
         }
     }
@@ -106,7 +105,7 @@ void Score::removeSymbol(Symbol* symbol)
     
     for (auto it = score_symbols.begin(); it != score_symbols.end(); it++)
     {
-        Symbol* s = &(*it);
+        Symbol* s = (*it).get();
         if (symbol == s)
         {
             staves.removeStaff(symbol);
@@ -130,9 +129,9 @@ OdotBundle_s Score::getScoreBundle_s()
     
     long count = 0;
     string prefix = "/symbol/";
-    for( auto sym : score_symbols )
+    for (auto it = score_symbols.begin(); it != score_symbols.end(); it++)
     {
-        bndl.addMessage(prefix + to_string(count), sym);
+        bndl.addMessage(prefix + to_string(count), *((*it).get()));
         count++;
     }
     
@@ -175,7 +174,7 @@ OdotBundle_s Score::getDurationBundle()
  ***********************************/
 Symbol* Score::getSymbol(int n)
 {
-    if (n < score_symbols.size()) return &score_symbols[n];
+    if (n < score_symbols.size()) return score_symbols[n].get();
     else return NULL;
 }
 
@@ -194,22 +193,22 @@ int Score::getSymbolPosition(Symbol* s)
 {
     auto iteratorToSymbol = find_if(score_symbols.begin(),
                                     score_symbols.end(),
-                                    [s](Symbol symbolFromScore) {
-                                        return &symbolFromScore == s;
+                                    [s](unique_ptr<Symbol>& symbolFromScore) {
+                                        return symbolFromScore.get() == s;
                                     });
     return static_cast<int>(distance(score_symbols.begin(), iteratorToSymbol));
 }
 
-const Array<Symbol*> Score::getSymbolsByValue( const string& address, const string& value )
+const Array<Symbol*> Score::getSymbolsByValue(const string& address, const string& value)
 {
     Array<Symbol*> matched;
-    for (auto s : score_symbols )
+    for (auto it = score_symbols.begin(); it != score_symbols.end(); it++)
     {
-        OdotMessage val = s.getMessage( address );
+        OdotMessage val = (*it)->getMessage( address );
         
         if( val[0].getType() == OdotAtom::O_ATOM_STRING && val[0].getString() == value )
         {
-            matched.add( &s );
+            matched.add((*it).get());
         }
     }
     return matched;
@@ -248,9 +247,9 @@ void Score::importScoreFromOSC( const OdotBundle_s& s_bundle )
  * Staff/Stave handling
  ***********************************/
 
-void Score::addStaff( Symbol* s )
+void Score::addStaff(Symbol* s)
 {
-    staves.addStaff( s );
+    staves.addStaff(s);
 }
 
 /***********************************
@@ -278,11 +277,11 @@ void Score::updateStaves(Symbol* moved_stave)
     // add the symbols
     
     String staff_id = moved_stave->getID();
-    for(auto s : score_symbols)
+    for(auto it = score_symbols.begin(); it != score_symbols.end(); it++)
     {
-        if (s.getSaff() == staff_id)
+        if ((*it)->getSaff() == staff_id)
         {
-            time_points.addSymbolTimePoints(&s);
+            time_points.addSymbolTimePoints((*it).get());
         }
     }
     
@@ -302,10 +301,8 @@ void Score::updateStavesAndTimepoints()
     
     // add the symbols
     
-    for( auto s : score_symbols )
-    {
-        time_points.addSymbolTimePoints(&s);
-    }
+    for( auto it = score_symbols.begin(); it != score_symbols.end(); it++)
+        time_points.addSymbolTimePoints((*it).get());
     
 }
 

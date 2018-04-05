@@ -44,6 +44,10 @@ class SymbolistMainComponent : public virtual SymbolistComponent,
      * A graphic component representing the main page of the score.
      */
     PageComponent                    scoreView;
+    
+    /**
+     * A graphic component representing the palette.
+     */
     PaletteComponent                 paletteView;
     SymbolistMenu                    menu; //<<  application commands are set here
     ScopedPointer<PropertyPanelTabs> inspector;
@@ -56,8 +60,8 @@ class SymbolistMainComponent : public virtual SymbolistComponent,
     float            m_zoom = 1.0f;
     ModifierKeys     current_mods;
     
-    UI_EditType      mouse_mode = selection;
-    UI_DrawType      draw_mode = free_draw;
+    UI_EditType      mouse_mode = SELECTION;
+    UI_DrawType      draw_mode = FREE_DRAW;
     
 public:
     
@@ -86,16 +90,16 @@ public:
     
     void modifierKeysChanged (const ModifierKeys& modifiers) override;
 
-    void setMouseMode( UI_EditType m );
+    void setMouseMode(UI_EditType m);
     UI_EditType getMouseMode();
-    void setDrawMode( UI_DrawType m );
+    void setDrawMode(UI_DrawType m);
     UI_DrawType getDrawMode();
     
     
     // Redefine these from SymbolistComponent
     inline PageComponent* getPageComponent() override
     {
-        return dynamic_cast<PageComponent*>( score_viewport.getViewedComponent() );
+        return dynamic_cast<PageComponent*>(score_viewport.getViewedComponent());
     }
     inline SymbolistHandler* getSymbolistHandler() override {
         return getController();
@@ -130,9 +134,9 @@ public:
      * APPLICATION KEYBOARD COMMAND WRAPPER (ACTUAL COMMANDS ARE SET IN SymbolistMenu) *
      ***********************************************************************************/
     ApplicationCommandTarget* getNextCommandTarget() override;
-    void getAllCommands (Array<CommandID>& commands) override;
-    void getCommandInfo (CommandID commandID, ApplicationCommandInfo& result) override;
-    bool perform (const InvocationInfo& info) override;
+    void getAllCommands(Array<CommandID>& commands) override;
+    void getCommandInfo(CommandID commandID, ApplicationCommandInfo& result) override;
+    bool perform(const InvocationInfo& info) override;
     
     /* Overrides the update method inherited from the Observer class. */
     inline void update() override { repaint(); }

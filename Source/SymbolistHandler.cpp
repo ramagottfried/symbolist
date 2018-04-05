@@ -319,6 +319,19 @@ void SymbolistHandler::executeTransportCallback(int arg)
     if (myTransportCallback) { myTransportCallback( this, arg ); }
 }
 
+//=================================
+// SCORE
+//=================================
+Symbol* SymbolistHandler::createSymbolFromTemplate()
+{
+    Score* score =  getModel()->getScore();
+    Symbol* selectedSymbolInPalette = getCurrentSymbol();
+    
+    score->addSymbol(selectedSymbolInPalette);
+    
+    return score->getSymbol(score->getSize() - 1);
+}
+
 
 //=================================
 // PALETTE
@@ -340,7 +353,7 @@ Symbol* SymbolistHandler::getCurrentSymbol()
     int num_def_symbols = palette->getPaletteNumDefaultItems();
     int sel = palette->getSelectedItem();
     
-    if ( sel < num_def_symbols )
+    if (sel < num_def_symbols)
         return palette->getPaletteDefaultItem(sel);
     else
         return palette->getPaletteUserItem(sel - num_def_symbols);
@@ -353,17 +366,17 @@ Symbol* SymbolistHandler::getCurrentSymbol()
 // Component factory
 BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_the_symbol)
 {
-    cout << "Creating component from Symbol: " ;
+    cout << "SymbolistHandler::makeComponentFromSymbol : Creating component from Symbol: ";
     
     string typeofSymbol = s->getMessage("/type").getString();
-    if ( typeofSymbol.size() == 0 )
+    if (typeofSymbol.size() == 0)
     {
         cout << "Could not find '/type' message in OSC Bundle.. " << endl;
         return NULL;
         
     } else {
         
-        cout << typeofSymbol << std::endl;
+        std::cout << typeofSymbol << std::endl;
         BaseComponent *newComponent;
         
         // allocates component based on type, all are derived from the BaseComponent
@@ -389,24 +402,15 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
         if (newComponent != NULL)
         {
             // reads base component symbol values, and sets component bounds for display
-            newComponent->importFromSymbol(*s) ;
+            newComponent->importFromSymbol(s) ;
             
             // initializes object specific messages if not present
             newComponent->addSymbolMessages(s);
             
-            if ( attach_the_symbol )
+            if (attach_the_symbol)
             {
-                /*
-                if( getView() != NULL )
-                {
-                    newComponent->setComponentID( newComponent->getSymbolTypeStr() + "_" + (String)getView()->getPageComponent()->getNumSubcomponents() );
-                    s->setID( newComponent->getComponentID() );
-                }
-                */
-                
-                newComponent->setScoreSymbolPointer( s );
-                getModel()->getScore()->addStaff( s ); // << /type checked internally and added if staff
-
+                newComponent->setScoreSymbolPointer(s);
+                getModel()->getScore()->addStaff(s); // << /type checked internally and added if staff
             }
         }
         
@@ -435,15 +439,14 @@ void SymbolistHandler::addComponentsFromScore ( )
  * (CALLBACKS FROM USER ACTIONS)
  ********************************/
 
-void SymbolistHandler::addSymbolToScore ( BaseComponent* component )
+void SymbolistHandler::addSymbolToScore(BaseComponent* component)
 {
-    assert ( component->getScoreSymbolPointer() != NULL ) ;
-    //cout << "ADDING SYMBOL FOR " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
+    assert (component->getScoreSymbolPointer() != NULL) ;
+    cout << "ADDING SYMBOL FOR " << component << " " << component->getSymbolTypeStr() << " [ " << component->getScoreSymbolPointer() << " ]" << std::endl;
     //log_score_change();
 
-    getModel()->getScore()->addSymbol( component->getScoreSymbolPointer() );
-    executeUpdateCallback( -1 );
-    
+    // getModel()->getScore()->addSymbol(component->getScoreSymbolPointer());
+
 }
 
 void SymbolistHandler::removeSymbolFromScore ( BaseComponent* component )
@@ -480,14 +483,14 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
     
     // get pointer to symbol attached to component
     Symbol* s = c->getScoreSymbolPointer();
-    assert ( s != NULL ) ;
+    assert (s != NULL) ;
     
     // cout << c << " ---> modifySymbolInScore " << s->getID() << endl;
     // printRect(c->getBounds(), "component");
 
     
     // remove current time point for symbol, or if stave remove all symbol timepoints on stave
-    getModel()->getScore()->removeSymbolTimePoints( s );
+    getModel()->getScore()->removeSymbolTimePoints(s);
     
     // clear the bundle attached to the component (since the component has been updated)
     // don't have to clear, because the symbol is updated not in add symbol
@@ -508,7 +511,6 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
         // if the type is not a staff, add the time points for the symbol
         getModel()->getScore()->addSymbolTimePoints( s );
     }
-    
     
     executeUpdateCallback( getModel()->getScore()->getSymbolPosition( s ) );
     

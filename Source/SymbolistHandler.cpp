@@ -57,9 +57,38 @@ SymbolistHandler* SymbolistHandler::getInstance()
 // return the new SymbolistHandler
 SymbolistHandler* SymbolistHandler::symbolistAPI_newSymbolist()
 {
-    cout << "symbolistAPI_newSymbolist" << endl;
-    cout << "This message manager instance  " << MessageManager::getInstance() << endl;
-
+    cout << __func__ << endl;
+    
+    // Instantiates the model.
+    SymbolistModel* model = new SymbolistModel();
+    
+    // Adds four default items to the model.
+    float symbol_size = 30.0;
+    float symbol_pos = 0.0;
+    
+    Palette* palette = model->getPalette();
+    
+    Symbol s1 = Symbol();
+    s1.setTypeXYWH("text", symbol_pos, symbol_pos, 20 , 20);
+    palette->addDefaultItem(s1);
+    
+    Symbol s2 = Symbol();
+    s2.setTypeXYWH("circle", symbol_pos, symbol_pos, symbol_size, symbol_size);
+    palette->addDefaultItem(s2);
+    
+    Symbol s3 = Symbol();
+    s3.setTypeXYWH("rectangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
+    palette->addDefaultItem(s3);
+    
+    Symbol s4 = Symbol();
+    s4.setTypeXYWH("triangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
+    palette->addDefaultItem(s4);
+    
+    SymbolistHandler::getInstance()->setModel(model);
+    
+    // Adds the SymbolistHandler instance as an observer of the model.
+    SymbolistHandler::getInstance()->getModel()->attach(SymbolistHandler::getInstance());
+    
     return SymbolistHandler::getInstance();
 }
 

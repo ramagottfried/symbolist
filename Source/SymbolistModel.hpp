@@ -16,8 +16,8 @@ using namespace std;
  */
 class SymbolistModel : public virtual Observable {
     
-    Score* score;
-    Palette* palette;
+    unique_ptr<Score>   score;
+    unique_ptr<Palette> palette;
     
 public:
     
@@ -31,28 +31,20 @@ public:
     SymbolistModel();
     
     /**
-     * SymbolistModel's constructor taking a Score and a Palette
-     * object as arguments.
-     */
-    SymbolistModel(Score* score, Palette* palette);
-    
-    /**
      * SymbolistModel's default destructor.
      */
-    virtual ~SymbolistModel()
-    {
-        delete palette;
-        delete score;
-    };
+    inline virtual ~SymbolistModel() {}
     
     /*******************************************************
      *                 GETTERS AND SETTERS                 *
      *******************************************************/
-    inline Score* getScore() { return score; }
-    inline void setScore(Score* score) { this->score = score; };
-    inline Palette* getPalette() { return palette; }
-    inline void setPalette(Palette* palette) { this->palette = palette; }
+    inline Score* getScore() { return score.get(); }
+    inline void setScore(Score* score) { this->score = unique_ptr<Score>(score); }
+    inline Palette* getPalette() { return palette.get(); }
+    inline void setPalette(Palette* palette) { this->palette = unique_ptr<Palette>(palette); }
     
+    //==============================================================================
+    JUCE_LEAK_DETECTOR (SymbolistModel)
 };
 
 

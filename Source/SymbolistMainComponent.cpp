@@ -1,21 +1,36 @@
-
 #include "SymbolistMainComponent.h"
 #include "SymbolistMainWindow.h"
 
-
 SymbolistMainComponent::SymbolistMainComponent()
 {
-    // score = std::unique_ptr<Score>(new Score());
     std::cout << "SymbolistMainComponent's constructor " << this << std::endl;
     setComponentID("MainComponent");
-    
-    setController(SymbolistHandler::getInstance());
-    setModel(getController()->getModel());
-    
-    setLookAndFeel(&look_and_feel);
 
+    /* Sets the controller for this
+     * SymbolistMainComponent instance
+     * and all its child component.
+     */
+    setController(SymbolistHandler::getInstance());
+    getPaletteView()->setController(getController()->getPaletteController());
+    
+    /*
+     * Sets model for this SymbolistMainComponent instance
+     * and all its child components.
+     */
+    setModel(getController()->getModel());
+    getPaletteView()->setModel(getModel());
+    
+    /* Adds this SymbolistMainComponent instance and
+     * its child components as observers of the model.
+     */
+    getModel()->attach(this);
+    getModel()->attach(&paletteView);
+    
+    /* Sets UI look and creates the palette buttons */
+    setLookAndFeel(&look_and_feel);
     updatePaletteView();
     
+    /* Sets scoreView properties and makes it visible */
     score_viewport.setViewedComponent(&scoreView, false);
     score_viewport.setFocusContainer (true);
     score_viewport.setScrollBarsShown(true, true);
@@ -23,11 +38,15 @@ SymbolistMainComponent::SymbolistMainComponent()
     scoreView.setSize(6000, 2000);
     addAndMakeVisible(score_viewport);
     
+    /* Highlights the default selected
+     * button on the palette.
+     */
     paletteView.selectPaletteButton(-1);
+    
+    /* Makes all the other views visible. */
     addAndMakeVisible(paletteView);
     addAndMakeVisible(mouseModeView);
     addChildComponent(timeDisplayView);
-    
     addAndMakeVisible(menu);
     menu_h = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
     
@@ -36,7 +55,6 @@ SymbolistMainComponent::SymbolistMainComponent()
     setSize(600, 400);
 }
 
-
 SymbolistMainComponent::~SymbolistMainComponent()
 {
     assert(getController() != NULL);
@@ -44,8 +62,14 @@ SymbolistMainComponent::~SymbolistMainComponent()
     
     paletteView.deleteAllChildren();
     inspector->removeAllChildren();
+    
+    /* Removes SymbolistMainComponent and its child components
+     * from the SymbolistModel's observers list.
+     */
+    getModel()->detach(this);
+    getModel()->detach(&paletteView);
+    
 }
-
 
 void SymbolistMainComponent::resized()
 {
@@ -72,7 +96,7 @@ void SymbolistMainComponent::resized()
 
 void SymbolistMainComponent::updatePaletteView()
 {
-    paletteView.buildFromPalette(getModel()->getPalette());
+    paletteView.buildFromPalette();
 }
 
 void SymbolistMainComponent::toggleInspector()
@@ -111,7 +135,6 @@ Rectangle<float> SymbolistMainComponent::getViewRect()
 {
     return score_viewport.getViewArea().toFloat();
 }
-
 
 /***************************
  * edit/drax modes
@@ -152,7 +175,6 @@ void SymbolistMainComponent::modifierKeysChanged (const ModifierKeys& modifiers)
     
     current_mods = modifiers;
 }
-
 
 /***********************************************************************************
  * key actions (now handled by ApplicationCommand Target to synchronize with menu) *

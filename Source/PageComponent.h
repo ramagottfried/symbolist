@@ -1,10 +1,9 @@
 #pragma once
 
-#include "ScoreComponent.h"
 #include "BaseComponent.h"
 #include "StaffComponent.hpp"
-
 #include "ScoreCursor.h"
+#include "View.hpp"
 
 /**
  * Represents the page where all the graphic symbols

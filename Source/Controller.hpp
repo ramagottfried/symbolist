@@ -2,6 +2,7 @@
 #define Controller_hpp
 
 #include "Observable.hpp"
+#include "JuceHeader.h"
 
 /**
  * Describes an abstract templated controller class.
@@ -16,6 +17,8 @@ class Controller : public virtual Observer {
     
     ObservableClass* model;
     ViewClass* view;
+    
+    Controller* parentController;
     
 public:
     /************************************************
@@ -46,6 +49,14 @@ public:
     inline virtual ViewClass* getView() { return view; }
     inline virtual void setView(ViewClass* view) { this->view = view; }
     
+    inline virtual Controller* getParentController() { return parentController; }
+    inline virtual void setParentController(Controller* parentController)
+    {
+        this->parentController = parentController;
+    }
+    
+    //==============================================================================
+    JUCE_LEAK_DETECTOR (Controller)
 };
 
 #endif /* Controller_hpp */

@@ -5,6 +5,7 @@
 #include "Observer.hpp"
 #include "Observable.hpp"
 #include "Controller.hpp"
+#include "JuceHeader.h"
 
 template <class ObservableClass, class ControllerClass>
 class View : public virtual Observer {
@@ -46,6 +47,8 @@ public:
         this->controller = controller;
     }
     
+    //==============================================================================
+    JUCE_LEAK_DETECTOR (View)
 };
 
 #endif /* View_hpp */

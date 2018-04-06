@@ -22,7 +22,10 @@ class SymbolistHandler : public virtual Controller<SymbolistModel, SymbolistMain
      */
     static SymbolistHandler* INSTANCE;
     
-    PaletteController paletteController;
+    /**
+     * A Controller to handle palette-connected actions.
+     */
+    std::unique_ptr<PaletteController> paletteController;
     
     /**
      * The main graphic window of the application.
@@ -31,7 +34,7 @@ class SymbolistHandler : public virtual Controller<SymbolistModel, SymbolistMain
      * only a wrapper window around the main graphic component
      * it is only referenced here as an instance variable.
      */
-    unique_ptr<SymbolistMainWindow> main_window;
+    std::unique_ptr<SymbolistMainWindow> main_window;
     
     /**
      * The current play-time in ms.
@@ -79,29 +82,53 @@ class SymbolistHandler : public virtual Controller<SymbolistModel, SymbolistMain
      * and view passed as parameters.
      */
     SymbolistHandler(SymbolistModel* model, SymbolistMainComponent* view);
-    
-    /**
-     * SymbolistHandler's copy constructor.
-     * A void pointer is passed as argument,
-     * which is casted in SymbolistHandler pointer
-     * before being copied.
-     */
-    SymbolistHandler(SymbolistHandler* symbolistHandler);
-    
+        
 public:
     /**
      * SymbolistHandler's default destructor.
      */
     virtual ~SymbolistHandler() override;
+    
+    /**
+     * @return The singleton instance of SymbolistHandler.
+     */
     static SymbolistHandler* getInstance();
     
     /*********************************************
-     * CONTROLLER METHODS CALLED FROM THE API
+     *             GETTERS & SETTERS             *
      *********************************************/
-    // main entry point / symbolist factory
+    
+    /**
+     * @return The PaletteController instance owned by the SymbolistHandler.
+     */
+    inline PaletteController* getPaletteController() { return paletteController.get(); };
+    inline float getCurrentTime() { return current_time; }
+    
+    /********************************************************
+     *       FACTORY METHODS FOR CONTROLLERS' CREATION      *
+     ********************************************************/
+    void createPaletteController();
+    
+    /********************************************************
+     ********************************************************
+     *             METHODS CALLED FROM THE API              *
+     ********************************************************
+     ********************************************************/
+    
+    /**
+     * Returns the SymbolistHandler singleton instance
+     * with setted model and child controllers.
+     *
+     * Normally, this is the first method called when launching
+     * the application or creating the Max or OpenMusic
+     * object.
+     *
+     * @return a pointer to the singleton instance of
+     *         SymbolistHandler.
+     */
     static SymbolistHandler* symbolistAPI_newSymbolist();
- 
-    // apply on an existing symbolist instance
+    
+    /* Symbolist application lifecycle's methods. */
     void symbolistAPI_freeSymbolist();
     void symbolistAPI_openWindow();
     void symbolistAPI_closeWindow();
@@ -112,17 +139,18 @@ public:
     void symbolistAPI_registerCloseCallback(symbolistCloseCallback c);
     void symbolistAPI_registerTransportCallback(symbolistTransportCallback c);
     
-    int symbolistAPI_getNumSymbols();
+    /* Score controller's methods. */
+    int          symbolistAPI_getNumSymbols();
     OdotBundle_s symbolistAPI_getSymbolBundle_s(int n);
-    Symbol* symbolistAPI_getSymbol(int n);
+    Symbol*      symbolistAPI_getSymbol(int n);
+    void         symbolistAPI_setOneSymbol(const OdotBundle_s& bundle);
+    void         symbolistAPI_setSymbols(const OdotBundle_s& bundle_array);
     
-    void symbolistAPI_setOneSymbol(const OdotBundle_s& bundle);
-    void symbolistAPI_setSymbols(const OdotBundle_s& bundle_array);
-    
-    int symbolistAPI_getNumPaletteSymbols();
+    /* Palette controller's methods. */
+    int     symbolistAPI_getNumPaletteSymbols();
     Symbol* symbolistAPI_getPaletteSymbol(int n);
-    void symbolistAPI_setOnePaletteSymbol( const OdotBundle_s& bundle);
-    void symbolistAPI_setPaletteSymbols(const OdotBundle_s& bundle_array);
+    void    symbolistAPI_setOnePaletteSymbol(const OdotBundle_s& bundle);
+    void    symbolistAPI_setPaletteSymbols(const OdotBundle_s& bundle_array);
     
     void symbolistAPI_setTime(float time_ms);
     void symbolistAPI_toggleTimeCusor();
@@ -135,24 +163,19 @@ public:
     void symbolistAPI_clearScore();
     
     /*********************************************
-     * CONTROLLER METHODS CALLED FROM THE GUI
+     *   CONTROLLER METHODS CALLED FROM THE GUI  *
      *********************************************/
-    
     void executeUpdateCallback(int arg);
     void executeCloseCallback();
     void executeTransportCallback(int arg);
     
     // functions modifying the parent Windows's score
-    void addSymbolToScore(BaseComponent* c);
     void removeSymbolFromScore(BaseComponent* c);
     void modifySymbolInScore(BaseComponent* c);
-    
-    float getCurrentTime() { return current_time; }
     
     /*********************************************
      *               INSPECTOR IO                *
      *********************************************/
-    
     void addToInspector( BaseComponent *c);
     void clearInspector();
     
@@ -174,9 +197,7 @@ public:
      */
     Symbol* createSymbolFromTemplate();
     
-    void setCurrentSymbol(int n);
-    int getCurrentSymbolIndex();
-    Symbol* getCurrentSymbol();
+    Symbol* getSelectedSymbolInPalette();
     
     BaseComponent* makeComponentFromSymbol(Symbol* s, bool attach_the_symbol);
     void addComponentsFromScore();

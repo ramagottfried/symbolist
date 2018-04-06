@@ -5,6 +5,7 @@
 #include <memory>
 #include <iostream>
 #include <vector>
+#include "JuceHeader.h"
 
 /**
  * Describes the Observable class from the observer
@@ -63,6 +64,8 @@ public:
      */
     void notify();
     
+    //==============================================================================
+    JUCE_LEAK_DETECTOR (Observable)
 };
 
 #endif /* Observable_hpp */

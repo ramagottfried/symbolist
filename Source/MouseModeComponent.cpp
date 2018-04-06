@@ -21,7 +21,7 @@ void MouseModeComponent::drawString()
     else if ( m_drawType == UI_DrawType::FROM_TEMPLATE )
     {
         m_str = " draw " ;
-        m_str += getSymbolistHandler()->getCurrentSymbol()->getType();
+        m_str += getSymbolistHandler()->getSelectedSymbolInPalette()->getType();
     }
     else
     {

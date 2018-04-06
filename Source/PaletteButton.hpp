@@ -20,7 +20,7 @@ class PaletteButton : public SymbolistComponent
 public:
     
     PaletteButton(int i, Symbol* s);
-    ~PaletteButton();
+    inline ~PaletteButton() {};
     
     void setSelected(bool sel);
     

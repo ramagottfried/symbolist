@@ -41,7 +41,7 @@ class SymbolistMainComponent : public virtual SymbolistComponent,
     Viewport                         score_viewport;
     
     /**
-     * A graphic component representing the main page of the score.
+     * A graphic component representing the score.
      */
     PageComponent                    scoreView;
     
@@ -49,7 +49,13 @@ class SymbolistMainComponent : public virtual SymbolistComponent,
      * A graphic component representing the palette.
      */
     PaletteComponent                 paletteView;
-    SymbolistMenu                    menu; //<<  application commands are set here
+    
+    /**
+     * A graphic component for the application's menu.
+     * All commands to interact with the symbolist application
+     * are referenced here.
+     */
+    SymbolistMenu                    menu;
     ScopedPointer<PropertyPanelTabs> inspector;
     MouseModeComponent               mouseModeView;
     TimeDisplayComponent             timeDisplayView;
@@ -78,6 +84,7 @@ public:
     {
         return inspector;
     }
+    inline PaletteComponent* getPaletteView() { return &paletteView; }
     
     /*********************************************
      *        GUI FUNCTIONALITY AND TOOLS        *

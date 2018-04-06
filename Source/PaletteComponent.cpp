@@ -19,10 +19,8 @@ PaletteComponent::~PaletteComponent()
     deleteAllChildren();
 }
 
-void PaletteComponent::buildFromPalette(Palette* palette)
+void PaletteComponent::buildFromPalette()
 {
-    palette_pointer = palette;
-    
     deleteAllChildren();
     
     // start center points
@@ -57,9 +55,9 @@ void PaletteComponent::buildFromPalette(Palette* palette)
     // separator
     b_cY += y_separator;
     
-    for (int i = 0; i < palette->getPaletteNumDefaultItems(); i++)
+    for (int i = 0; i < getModel()->getPalette()->getPaletteNumDefaultItems(); i++)
     {
-        PaletteButton *pb = new PaletteButton(i, palette->getPaletteDefaultItem(i));
+        PaletteButton *pb = new PaletteButton(i, getModel()->getPalette()->getPaletteDefaultItem(i));
 
         pb->setSize(bw , bh);
         pb->setCentrePosition(b_cX, b_cY);
@@ -68,40 +66,44 @@ void PaletteComponent::buildFromPalette(Palette* palette)
 
     }
     
-    for (int i = 0; i < palette->getPaletteNumUserItems(); i++)
+    for (int i = 0; i < getModel()->getPalette()->getPaletteNumUserItems(); i++)
     {
-        PaletteButton *pb = new PaletteButton(i + palette->getPaletteNumDefaultItems(), palette->getPaletteUserItem(i));
+        PaletteButton *pb = new PaletteButton(i + getModel()->getPalette()->getPaletteNumDefaultItems(),
+                                              getModel()->getPalette()->getPaletteUserItem(i));
         pb->setSize(bw , bh);
         pb->setCentrePosition( b_cX, b_cY);
         addAndMakeVisible(pb);
         b_cY += b_y_spacing;
     }
+    
 }
 
-
-void PaletteComponent::selectPaletteButton(int i)
+void PaletteComponent::selectPaletteButton(int indexOfSelectedButton)
 {
     for (int j = 0; j < getNumChildComponents(); j++)
     {
         PaletteButton *button = dynamic_cast<PaletteButton*>(getChildComponent(j));
         
         // Checks the downcast result.
-        if (button != NULL) {
-            if (button->getID() == i)
+        if (button != NULL)
+        {
+            if (button->getID() == indexOfSelectedButton)
                 button->setSelected(true);
             else button->setSelected(false);
         }
         
     }
     
-    if ( i >= 0) palette_pointer->setSelectedItem(i);
+    PaletteController *extractedExpr = getController();
+    if (indexOfSelectedButton >= 0)
+        extractedExpr->setSelectedItem(indexOfSelectedButton);
     
     SymbolistMainComponent* smc = dynamic_cast<SymbolistMainComponent*>(getParentComponent());
     
     // Checks the downcast result.
     if (smc != NULL)
     {
-        if (i >= 0)
+        if (indexOfSelectedButton >= 0)
             smc->setDrawMode(UI_DrawType::FROM_TEMPLATE);
         // specialModes
         else

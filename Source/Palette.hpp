@@ -37,6 +37,8 @@ public:
     inline int getSelectedItem() { return selected_item; }
     inline void setSelectedItem(int n) { selected_item = n; }
     
+    //==============================================================================
+    JUCE_LEAK_DETECTOR (Palette)
 };
 
 #endif /* SymbolistPalette_hpp */

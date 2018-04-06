@@ -2,7 +2,7 @@
 #define Observer_hpp
 
 #include <stdio.h>
-
+#include "JuceHeader.h"
 
 /**
  * Describes the observer class of the observer design pattern.
@@ -21,6 +21,9 @@ public:
      * @see Observable::notify
      */
     virtual void update() = 0;
+    
+    //==============================================================================
+    JUCE_LEAK_DETECTOR (Observer)
     
 };
 

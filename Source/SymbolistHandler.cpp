@@ -21,14 +21,8 @@ SymbolistHandler::SymbolistHandler(SymbolistModel* model, SymbolistMainComponent
     setView(view);
 }
 
-SymbolistHandler::SymbolistHandler(SymbolistHandler* symbolistHandler)
-{
-    cout << "SymbolistHandler's copy constructor " << this << endl;
-}
-
 SymbolistHandler::~SymbolistHandler()
 {
-    Controller::~Controller();
     cout << "Deleting symbolist handler, main component pointer: "
          << getView() <<  " window " << main_window.get() << endl;
     
@@ -49,12 +43,17 @@ SymbolistHandler* SymbolistHandler::getInstance()
     return INSTANCE;
 }
 
+void SymbolistHandler::createPaletteController()
+{
+    this->paletteController = unique_ptr<PaletteController>(new PaletteController());
+    this->paletteController->setModel(getModel());
+}
+
 /*********************************************
  * CONTROLLER METHODS CALLED FROM THE LIB API
  *********************************************/
 
-// This is a static method called to create a window
-// return the new SymbolistHandler
+// This is a static method that returns the new SymbolistHandler
 SymbolistHandler* SymbolistHandler::symbolistAPI_newSymbolist()
 {
     cout << __func__ << endl;
@@ -86,8 +85,15 @@ SymbolistHandler* SymbolistHandler::symbolistAPI_newSymbolist()
     
     SymbolistHandler::getInstance()->setModel(model);
     
-    // Adds the SymbolistHandler instance as an observer of the model.
+    // Creates the paletteController.
+    SymbolistHandler::getInstance()->createPaletteController();
+    
+    /* Adds the SymbolistHandler instance and
+     * all its child controllers as observers of the model.
+     */
     SymbolistHandler::getInstance()->getModel()->attach(SymbolistHandler::getInstance());
+    SymbolistHandler::getInstance()->getModel()->attach(SymbolistHandler::getInstance()
+                                                                ->getPaletteController());
     
     return SymbolistHandler::getInstance();
 }
@@ -99,15 +105,23 @@ void SymbolistHandler::symbolistAPI_freeSymbolist()
 
 void SymbolistHandler::symbolistAPI_openWindow()
 {
-    cout << "symbolistAPI_openWindow" << endl;
+    cout << __func__ << endl;
     cout << "This thread " << Thread::getCurrentThread() << endl;
     cout << "This message manager instance " << MessageManager::getInstance() << endl;
     
     const MessageManagerLock mml;
     
+    /* Creates the SymbolistMainWindow instance which in its turn
+     * creates the SymbolistMainComponent instance.
+     */
     main_window = unique_ptr<SymbolistMainWindow>(new SymbolistMainWindow());
+    
+    /* Sets the view for SymbolistHandler's instance
+     * and all its child controllers.
+     */
     setView(main_window->getMainComponent());
-
+    getPaletteController()->setView(getView()->getPaletteView());
+    
     addComponentsFromScore();
     getView()->grabKeyboardFocus();
 
@@ -115,14 +129,11 @@ void SymbolistHandler::symbolistAPI_openWindow()
 
 void SymbolistHandler::symbolistAPI_closeWindow()
 {
-    cout << "symbolistAPI_closeWindow" << endl;
+    cout << __func__ << endl;
     MessageManagerLock mml;
   
-    if( main_window )
-    {
-        // cout << "nulling main window " << main_window << endl;
+    if (main_window)
         main_window = nullptr;
-    }
 }
 
 void SymbolistHandler::symbolistAPI_windowToFront()
@@ -217,62 +228,41 @@ void SymbolistHandler::symbolistAPI_setSymbols( const OdotBundle_s& bundle_array
     }
 }
 
-
 int SymbolistHandler::symbolistAPI_getNumPaletteSymbols()
 {
-    return static_cast<int>( getModel()->getPalette()->getPaletteNumUserItems() );
+    return paletteController->getNumPaletteSymbols();
 }
 
 Symbol* SymbolistHandler::symbolistAPI_getPaletteSymbol(int n)
 {
-    return getModel()->getPalette()->getPaletteUserItem(n);
+    return paletteController->getPaletteSymbol(n);
 }
 
-void SymbolistHandler::symbolistAPI_setOnePaletteSymbol( const OdotBundle_s& bundle)
+void SymbolistHandler::symbolistAPI_setOnePaletteSymbol(const OdotBundle_s& bundle)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
-    getModel()->getPalette()->addUserItem(Symbol(bundle));
-    
+    paletteController->setOnePaletteSymbol(bundle);
 }
 
 void SymbolistHandler::symbolistAPI_setPaletteSymbols(const OdotBundle_s& bundle_array)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
-    
-    const OdotBundle bndl( bundle_array );
-    
-    for (auto msg : bndl.getMessageArray() )
-    {
-        if( msg[0].getType() == OdotAtom::O_ATOM_BUNDLE && msg.getAddress().find("/symbol") == 0 )
-        {
-            Symbol s = Symbol(msg.getBundle().get_o_ptr());
-            getModel()->getPalette()->addUserItem(s);
-        }
-    }
-    if ( getView() != NULL )
-    {
-        getView()->updatePaletteView();
-    }
+    paletteController->setPaletteSymbols(bundle_array);
 }
-
 
 void SymbolistHandler::symbolistAPI_setTime(float time_ms)
 {
     const MessageManagerLock mmLock;
     current_time = time_ms;
     
-    if ( getView() != NULL)
-    {
+    if (getView() != NULL)
         getView()->setTimePoint( time_ms );
-    }
 }
 
 void SymbolistHandler::symbolistAPI_toggleTimeCusor()
 {
-    if ( getView() != NULL)
-    {
+    if (getView() != NULL)
         getView()->toggleTimeAndCursorDisplay();
-    }
 }
 
 StaffComponent* SymbolistHandler::getStaveAtTime( float time )
@@ -298,24 +288,15 @@ OdotBundle_s SymbolistHandler::symbolistAPI_getSymbolsAtTime( float t )
     return getModel()->getScore()->getSymbolsAtTime(t);
 }
 
-
 OdotBundle_s SymbolistHandler::symbolistAPI_getdurationBundle()
 {
     return getModel()->getScore()->getDurationBundle();
 }
 
-
 OdotBundle_s SymbolistHandler::symbolistAPI_getScoreBundle()
 {
     return getModel()->getScore()->getScoreBundle_s();
 }
-
-/*
-odot_bundle* SymbolistHandler::symbolistAPI_getTimePointBundle()
-{
-    return getModel()->getScore()->getScoreBundle();
-}
-*/
 
 void SymbolistHandler::symbolistAPI_clearScore()
 {
@@ -353,39 +334,21 @@ void SymbolistHandler::executeTransportCallback(int arg)
 //=================================
 Symbol* SymbolistHandler::createSymbolFromTemplate()
 {
-    Score* score =  getModel()->getScore();
-    Symbol* selectedSymbolInPalette = getCurrentSymbol();
+    Score* score = getModel()->getScore();
+    Symbol* selectedSymbolInPalette = getSelectedSymbolInPalette();
     
     score->addSymbol(selectedSymbolInPalette);
     
     return score->getSymbol(score->getSize() - 1);
 }
 
-
 //=================================
 // PALETTE
 //=================================
 
-void SymbolistHandler::setCurrentSymbol(int n)
+Symbol* SymbolistHandler::getSelectedSymbolInPalette()
 {
-    getModel()->getPalette()->setSelectedItem(n);
-}
-
-int SymbolistHandler::getCurrentSymbolIndex()
-{
-    return getModel()->getPalette()->getSelectedItem();
-}
-
-Symbol* SymbolistHandler::getCurrentSymbol()
-{
-    Palette* palette = getModel()->getPalette();
-    int num_def_symbols = palette->getPaletteNumDefaultItems();
-    int sel = palette->getSelectedItem();
-    
-    if (sel < num_def_symbols)
-        return palette->getPaletteDefaultItem(sel);
-    else
-        return palette->getPaletteUserItem(sel - num_def_symbols);
+    return paletteController->getSelectedSymbolInPalette();
 }
 
 //=================================
@@ -467,38 +430,23 @@ void SymbolistHandler::addComponentsFromScore ( )
  * MODIFY DATA FROM VIEW
  * (CALLBACKS FROM USER ACTIONS)
  ********************************/
-
-void SymbolistHandler::addSymbolToScore(BaseComponent* component)
+void SymbolistHandler::removeSymbolFromScore(BaseComponent* component)
 {
-    assert (component->getScoreSymbolPointer() != NULL) ;
-    cout << "ADDING SYMBOL FOR " << component << " " << component->getSymbolTypeStr() << " [ " << component->getScoreSymbolPointer() << " ]" << std::endl;
-    //log_score_change();
-
-    // getModel()->getScore()->addSymbol(component->getScoreSymbolPointer());
-
-}
-
-void SymbolistHandler::removeSymbolFromScore ( BaseComponent* component )
-{
-    assert ( component->getScoreSymbolPointer() != NULL ) ;
-    //cout << "REMOVING SYMBOL OF " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
+    assert (component->getScoreSymbolPointer() != NULL);
     
     Symbol* symbol = component->getScoreSymbolPointer();
-    assert ( symbol != NULL ) ; // that's not normal
+    assert (symbol != NULL ); // that's not normal
     
-    // log_score_change();
-
-    // cout << "removeSymbolFromScore" << endl;
     symbol->print();
 
-    if( getView() )
+    if (getView())
         getView()->clearInspector();
     
-    getModel()->getScore()->removeSymbolTimePoints( symbol );
-    getModel()->getScore()->removeSymbol( symbol );
+    getModel()->getScore()->removeSymbolTimePoints(symbol);
+    getModel()->getScore()->removeSymbol(symbol);
     
-    component->setScoreSymbolPointer( NULL );
-    executeUpdateCallback( -1 );
+    component->setScoreSymbolPointer(NULL);
+    executeUpdateCallback(-1);
     
 }
 

@@ -18,16 +18,15 @@ class SymbolistMainComponent;
 class PaletteComponent : public SymbolistComponent,
                          public View<SymbolistModel, PaletteController>
 {
-    Palette* palette_pointer;
 
 public:
     PaletteComponent();
     ~PaletteComponent();
     
-    void buildFromPalette(Palette* palette);
+    void buildFromPalette();
     void selectPaletteButton(int i);
     
-    void paint (Graphics& g) override;
+    void paint(Graphics& g) override;
     
     /* Overrides the update method inherited from the Observer class. */
     inline void update() override { repaint(); }

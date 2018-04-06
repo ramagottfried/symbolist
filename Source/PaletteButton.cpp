@@ -10,14 +10,19 @@ using namespace std ;
 PaletteButton::PaletteButton(int i, Symbol* s)
 {
     button_id = i;
-    graphic_comp = getSymbolistHandler()->makeComponentFromSymbol(s, false);
+    
+    /* Normally the PaletteButton being created is not
+     * associated with a parent component yet.
+     */
+    PaletteComponent* paletteComponent = dynamic_cast<PaletteComponent*>(getParentComponent());
+    if (paletteComponent != NULL)
+        graphic_comp = paletteComponent->getController()->makeComponentFromSymbol(s, false);
+    
+    /* If no parent component then gets the SymbolistHandler instance directly. */
+    else graphic_comp = getSymbolistHandler()->makeComponentFromSymbol(s, false);
+    
     setComponentID("PaletteButton");
     addAndMakeVisible(graphic_comp);
-}
-
-PaletteButton::~PaletteButton()
-{
-    //    cout << "deleting button " << this << endl;
 }
 
 void PaletteButton::setSelected(bool sel)
@@ -44,11 +49,11 @@ void PaletteButton::paint (Graphics& g)
 
 void PaletteButton::mouseDown(const MouseEvent& event)
 {
-    PaletteComponent* pv = dynamic_cast<PaletteComponent*>(getParentComponent());
+    PaletteComponent* parentComponent = dynamic_cast<PaletteComponent*>(getParentComponent());
     
     // Checks the downcast result.
-    if (pv != NULL) {
-        pv->selectPaletteButton(button_id);
+    if (parentComponent != NULL) {
+        parentComponent->selectPaletteButton(button_id);
     }
     
 }

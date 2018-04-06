@@ -154,8 +154,6 @@ public:
         g.setGradientFill (ColourGradient ( Colours::white, 0, 0, (Colours::white).darker (0.01f), 0, (float)height, false));
         g.fillRect (r);
     }
-    
-private:
-    
+
     
 };

@@ -1,5 +1,4 @@
-#ifndef PaletteController_hpp
-#define PaletteController_hpp
+#pragma once
 
 #include <stdio.h>
 #include "Controller.hpp"
@@ -103,4 +102,4 @@ public:
     JUCE_LEAK_DETECTOR (PaletteController)
     
 };
-#endif /* PaletteController_hpp */
+

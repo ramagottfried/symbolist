@@ -1,5 +1,4 @@
-#ifndef SymbolistPalette_hpp
-#define SymbolistPalette_hpp
+#pragma once
 
 #include <stdio.h>
 #include <vector>
@@ -41,4 +40,3 @@ public:
     JUCE_LEAK_DETECTOR (Palette)
 };
 
-#endif /* SymbolistPalette_hpp */

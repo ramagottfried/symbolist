@@ -99,6 +99,12 @@ void SymbolistMainComponent::updatePaletteView()
     paletteView.buildFromPalette();
 }
 
+void SymbolistMainComponent::addSelectedSymbolsToPalette()
+{
+    paletteView.addSymbolsToPalette(scoreView.getSelectedItems());
+    updatePaletteView();
+}
+
 void SymbolistMainComponent::toggleInspector()
 {
     if( !inspector->isVisible() )

@@ -66,24 +66,39 @@ void Score::removeAllSymbols()
     staves.clear();
 }
 
+/******************************************
+ * Creates a new empty symbol in the score
+ ******************************************/
+Symbol* Score::createSymbol()
+{
+    return addSymbol(new Symbol());
+}
 
 /***********************************
  * Add a new Symbol in the Score
  ***********************************/
-void Score::addSymbol(Symbol* symbol)
+Symbol* Score::addSymbol(Symbol* symbol)
 {
+    Symbol* lastInsertedSymbol;
+    
     // Calls the sort function to properly insert the new symbol
     score_symbols.push_back(unique_ptr<Symbol>(new Symbol( *symbol ) ) );
+    
+    /* Retrieves the last inserted symbol's reference
+     * before sorting the score
+     */
+    lastInsertedSymbol = score_symbols.back().get();
+    
     sort(score_symbols.begin(), score_symbols.end(), score_sorter);
     
     bool newstaff = staves.addStaff(symbol);
     time_points.addSymbolTimePoints(symbol);
 
-    if( newstaff )
+    if (newstaff)
     {
         for (auto it = score_symbols.begin(); it != score_symbols.end(); it++)
         {
-            if( (*it)->getSaff() == symbol->getID() ) // this should look up by name not nameID, in the timepoints the staves should be combined,... although then I guess the types of clef could change? leaving as id for now, but this is uninituitive to set from outside the editor
+            if ((*it)->getSaff() == symbol->getID()) // this should look up by name not nameID, in the timepoints the staves should be combined,... although then I guess the types of clef could change? leaving as id for now, but this is uninituitive to set from outside the editor
             {
                 //time_points.removeSymbolTimePoints(s);
                 time_points.addSymbolTimePoints( (*it).get() );
@@ -91,7 +106,7 @@ void Score::addSymbol(Symbol* symbol)
         }
     }
     
-  //  symbol->setID( symbol->getType() + "_" + (String)getSize() );
+    return lastInsertedSymbol;
 }
 
 

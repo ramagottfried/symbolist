@@ -78,6 +78,20 @@ void PaletteComponent::buildFromPalette()
     
 }
 
+void PaletteComponent::addSymbolsToPalette(Array<SymbolistComponent* > components)
+{
+    for (int i = 0; i < components.size(); i++)
+    {
+        BaseComponent* c = dynamic_cast<BaseComponent*>(components[i]);
+        
+        // Checks downcast result.
+        if (c != NULL)
+            getController()->addSymbolFromComponent(c);
+        
+    }
+    
+}
+
 void PaletteComponent::selectPaletteButton(int indexOfSelectedButton)
 {
     for (int j = 0; j < getNumChildComponents(); j++)

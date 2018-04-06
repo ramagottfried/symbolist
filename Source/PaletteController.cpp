@@ -58,7 +58,7 @@ void PaletteController::setPaletteSymbols(const OdotBundle_s& bundle_array)
     
 }
 
-Symbol *PaletteController::getSelectedSymbolInPalette()
+Symbol* PaletteController::getSelectedSymbolInPalette()
 {
     Palette* palette = getModel()->getPalette();
     int num_def_symbols = palette->getPaletteNumDefaultItems();
@@ -71,4 +71,9 @@ Symbol *PaletteController::getSelectedSymbolInPalette()
 
 }
 
-
+void PaletteController::addSymbolFromComponent(BaseComponent* component)
+{
+    Symbol newPaletteSymbol = Symbol();
+    component->addSymbolMessages(&newPaletteSymbol);
+    getModel()->getPalette()->addUserItem(newPaletteSymbol);
+}

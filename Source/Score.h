@@ -26,9 +26,9 @@ struct ScoreSorter
 class Score
 {
     vector<unique_ptr<Symbol> > score_symbols;
-    TimePointArray  time_points;
-    SortedStaves    staves;
-    ScoreSorter     score_sorter;
+    TimePointArray              time_points;
+    SortedStaves                staves;
+    ScoreSorter                 score_sorter;
     
 public:
     
@@ -61,7 +61,13 @@ public:
     Symbol* getSymbol(int n);
     int getSymbolPosition(Symbol* s);
     
-    void addSymbol(Symbol* s);
+    /**
+     * Creates a new empty symbol in the score.
+     *
+     * @return a pointer to the newly create symbol.
+     */
+    Symbol* createSymbol();
+    Symbol* addSymbol(Symbol* s);
     void removeSymbol(Symbol* s);
     void removeAllSymbols();
         
@@ -91,7 +97,6 @@ public:
     const Symbol* getStaveByID( const string& id );
 
     OdotBundle_s getDurationBundle();
-
     
     int getNameCount( string& name )
     {

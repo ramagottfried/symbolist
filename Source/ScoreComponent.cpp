@@ -286,20 +286,20 @@ void ScoreComponent::groupSelectedSymbols()
 
         auto symbolistHandler = getSymbolistHandler();
 
-        Symbol* groupSymbol = new Symbol();
-        groupSymbol->setTypeXYWH( "group", minx, miny, maxx-minx, maxy-miny );
+        Symbol* groupSymbol = symbolistHandler->createSymbol();
+        groupSymbol->setTypeXYWH("group", minx, miny, maxx-minx, maxy-miny);
         
         int count = 0;
 
-        for( SymbolistComponent *c : selected_components )
+        for (SymbolistComponent *c : selected_components)
         {
             auto selectedComponent = dynamic_cast<BaseComponent*>(c);
             
-	    // Checks downcast result.
-	    if( selectedComponent != NULL )
+            // Checks downcast result.
+            if (selectedComponent != NULL)
             {
                 auto associatedSymbol = selectedComponent->getScoreSymbolPointer();
-                if( associatedSymbol->size() > 0 )  // this fails within groups because subcomponents do not have score symbols...
+                if (associatedSymbol->size() > 0)  // this fails within groups because subcomponents do not have score symbols...
                 {
                     // copies bundles from subcomponent symbols and join into new group symbol
                     associatedSymbol->addMessage("/x", selectedComponent->getX() - minx);
@@ -311,12 +311,12 @@ void ScoreComponent::groupSelectedSymbols()
         }
 
         SymbolGroupComponent *group = (SymbolGroupComponent*) symbolistHandler
-                                        ->makeComponentFromSymbol(groupSymbol , creating_a_top_level_group);
-        addSubcomponent( group );
+                                        ->makeComponentFromSymbol(groupSymbol, creating_a_top_level_group);
+        addSubcomponent(group);
         
         getPageComponent()->deleteSelectedComponents();
         
-        addToSelection( group );
+        addToSelection(group);
     }
 }
 
@@ -404,7 +404,7 @@ void ScoreComponent::nudgeSelected(int direction)
 
 void ScoreComponent::addSelectedSymbolsToPalette( )
 {
-    for ( int i = 0; i < selected_components.size(); i++ )
+    for (int i = 0; i < selected_components.size(); i++)
     {
         BaseComponent* c = dynamic_cast<BaseComponent*>(selected_components[i]);
         
@@ -442,13 +442,13 @@ void ScoreComponent::mouseAddClick(const MouseEvent& event)
          */
         Symbol* s = sh->createSymbolFromTemplate();
         
-        // sets default position before creating the graphic component
+        // Sets default position before creating the graphic component.
         s->setPosition(event.position);
         
-        // create a new component of the current selected symbol type
+        // Creates a new component of the current selected symbol type.
         c = sh->makeComponentFromSymbol(s, top_level);
         
-        // add component in the view
+        // Adds component in the view.
         addSubcomponent(c);
     }
     else

@@ -26,6 +26,15 @@ public:
     void buildFromPalette();
     void selectPaletteButton(int i);
     
+    /**
+     * Adds all component-linked symbols extracted from the components
+     * array to the palettes's user items.
+     *
+     * @param components the array of components from which
+     *                   the symbols will be extracted.
+     */
+    void addSymbolsToPalette(Array<SymbolistComponent* > components);
+    
     void paint(Graphics& g) override;
     
     /* Overrides the update method inherited from the Observer class. */

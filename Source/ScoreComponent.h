@@ -28,7 +28,7 @@ class ScoreComponent : public SymbolistComponent
 {
 protected:
     
-    Array<SymbolistComponent*> selected_components;
+    Array<SymbolistComponent* > selected_components;
     SymbolistLasso s_lasso;
     
     void beginLassoSelection(Point<int> position);
@@ -46,7 +46,7 @@ public:
     void removeFromSelection(SymbolistComponent* c);
     void selectAllComponents();
     virtual void unselectAllComponents();
-    Array<SymbolistComponent*>& getSelectedItems(){ return selected_components; }
+    Array<SymbolistComponent* >& getSelectedItems(){ return selected_components; }
     void selectedToFront();
     void selectedToBack();
     

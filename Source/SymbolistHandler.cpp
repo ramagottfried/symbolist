@@ -179,7 +179,6 @@ void SymbolistHandler::symbolistAPI_registerTransportCallback(symbolistTransport
     myTransportCallback = c;
 }
 
-
 int SymbolistHandler::symbolistAPI_getNumSymbols()
 {
     return static_cast<int>( getModel()->getScore()->getSize() );
@@ -337,9 +336,12 @@ Symbol* SymbolistHandler::createSymbolFromTemplate()
     Score* score = getModel()->getScore();
     Symbol* selectedSymbolInPalette = getSelectedSymbolInPalette();
     
-    score->addSymbol(selectedSymbolInPalette);
-    
-    return score->getSymbol(score->getSize() - 1);
+    return score->addSymbol(selectedSymbolInPalette);
+}
+
+Symbol* SymbolistHandler::createSymbol()
+{
+    return getModel()->getScore()->createSymbol();
 }
 
 //=================================

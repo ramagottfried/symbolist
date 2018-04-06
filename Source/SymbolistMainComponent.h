@@ -90,6 +90,7 @@ public:
      *        GUI FUNCTIONALITY AND TOOLS        *
      *********************************************/
     void updatePaletteView();
+    void addSelectedSymbolsToPalette();
     
     // Redefinition of methods from Juce::Component
     void resized() override;

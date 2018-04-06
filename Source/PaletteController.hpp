@@ -95,6 +95,16 @@ public:
      */
     Symbol* getSelectedSymbolInPalette();
     
+    /**
+     * Adds the symbol associated with the component in parameter
+     * as a user-defined palette item.
+     *
+     * @param component the component owning the symbol
+     *                  that will be added to user-defined
+     *                  palette's items.
+     */
+    void addSymbolFromComponent(BaseComponent* component);
+    
     /* Overrides the update method inherited from the Observer class. */
     virtual inline void update() override {}
     

@@ -228,7 +228,7 @@ bool SymbolistMenu::perform(const juce::ApplicationCommandTarget::InvocationInfo
                 break;
                 
             case cmd_addToPalette:
-                score->getEditedComponent()->addSelectedSymbolsToPalette();
+                score->addSelectedSymbolsToPalette();
                 break;
                 
             case cmd_copy:

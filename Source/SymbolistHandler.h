@@ -101,9 +101,9 @@ public:
     inline PaletteController* getPaletteController() { return paletteController.get(); };
     inline float getCurrentTime() { return current_time; }
     
-    /********************************************************
-     *       FACTORY METHODS FOR CONTROLLERS' CREATION      *
-     ********************************************************/
+    /**************************************************************
+     *       FACTORY METHODS FOR CHILD CONTROLLERS' CREATION      *
+     **************************************************************/
     void createPaletteController();
     
     /********************************************************
@@ -187,12 +187,20 @@ public:
      *********************************************/
     
     /**
-     * Creates a new symbol in the score according to
+     * Creates a new symbol in the score copied from
      * the selected template in the palette.
      *
      * @return a reference to the newly created symbol.
      */
     Symbol* createSymbolFromTemplate();
+    
+    /**
+     * Creates a new symbol in the score.
+     *
+     * @return a pointer to the newly created symbol
+     *         in the score.
+     */
+    Symbol* createSymbol();
     
     Symbol* getSelectedSymbolInPalette();
     

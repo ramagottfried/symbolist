@@ -1,5 +1,4 @@
-#ifndef PaletteController_hpp
-#define PaletteController_hpp
+#pragma once
 
 #include <stdio.h>
 #include "Controller.hpp"
@@ -22,4 +21,4 @@ public:
     virtual inline void update() override {}
     
 };
-#endif /* PaletteController_hpp */
+

@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../Source/SymbolistHandler.cpp"
-            timestampString = "543580102.139686"
+            timestampString = "544689247.0308681"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "457"
             endingLineNumber = "457"
-            landmarkName = "SymbolistHandler::removeSymbolFromScore ( BaseComponent* c )"
+            landmarkName = "SymbolistHandler::addComponentsFromScore ( )"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -13,7 +13,7 @@ Score::Score(Score& src)
 {
     for(auto it = src.score_symbols.begin(); it != src.score_symbols.end(); it++)
     {
-        score_symbols.push_back(std::unique_ptr<Symbol>(new Symbol((*it)->get_o_ptr())));
+        score_symbols.push_back(std::unique_ptr<Symbol>(new Symbol( it->get() ) ) );
         addStaff(score_symbols.back().get());
     }
     
@@ -26,7 +26,7 @@ Score::Score(Score* src)
 {
     for(auto it = src->score_symbols.begin(); it != src->score_symbols.end(); it++)
     {
-        score_symbols.push_back(unique_ptr<Symbol>(new Symbol((*it)->get_o_ptr())));
+        score_symbols.push_back( unique_ptr<Symbol>( new Symbol( it->get() ) ) );
         addStaff(score_symbols.back().get());
     }
     
@@ -73,7 +73,7 @@ void Score::removeAllSymbols()
 void Score::addSymbol(Symbol* symbol)
 {
     // Calls the sort function to properly insert the new symbol
-    score_symbols.push_back(unique_ptr<Symbol>(new Symbol(symbol->get_o_ptr())));
+    score_symbols.push_back(unique_ptr<Symbol>(new Symbol( *symbol ) ) );
     sort(score_symbols.begin(), score_symbols.end(), score_sorter);
     
     bool newstaff = staves.addStaff(symbol);

@@ -1,5 +1,4 @@
-#ifndef SymbolistPalette_hpp
-#define SymbolistPalette_hpp
+#pragma once
 
 #include <stdio.h>
 #include <vector>
@@ -39,4 +38,3 @@ public:
     
 };
 
-#endif /* SymbolistPalette_hpp */

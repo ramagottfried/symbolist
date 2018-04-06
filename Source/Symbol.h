@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef Symbol_h
-#define Symbol_h
-
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "types.h"
 #include "OdotBundle.hpp"
@@ -68,4 +65,3 @@ private:
 
 };
 
-#endif

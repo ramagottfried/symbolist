@@ -472,7 +472,7 @@ void SymbolistHandler::addSymbolToScore(BaseComponent* component)
 {
     assert (component->getScoreSymbolPointer() != NULL) ;
     cout << "ADDING SYMBOL FOR " << component << " " << component->getSymbolTypeStr() << " [ " << component->getScoreSymbolPointer() << " ]" << std::endl;
-    //log_score_change();
+    log_score_change();
 
     // getModel()->getScore()->addSymbol(component->getScoreSymbolPointer());
 
@@ -486,7 +486,7 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* component )
     Symbol* symbol = component->getScoreSymbolPointer();
     assert ( symbol != NULL ) ; // that's not normal
     
-    // log_score_change();
+    log_score_change();
 
     // cout << "removeSymbolFromScore" << endl;
     symbol->print();
@@ -508,7 +508,7 @@ void SymbolistHandler::removeSymbolFromScore ( BaseComponent* component )
 void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
 {
     
-    //log_score_change();
+    log_score_change();
     
     // get pointer to symbol attached to component
     Symbol* s = c->getScoreSymbolPointer();

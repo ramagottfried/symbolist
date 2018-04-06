@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef SymbolistHandler_h
-#define SymbolistHandler_h
-
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PaletteController.hpp"
 #include "SymbolistModel.hpp"
@@ -212,6 +209,3 @@ public:
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistHandler)
 };
-
-#endif
-

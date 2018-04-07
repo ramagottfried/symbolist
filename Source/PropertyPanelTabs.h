@@ -10,6 +10,7 @@ class PropertyPanelTabs   : public TabbedComponent
     
     SymbolistHandler*                       symbolist_handler;
     ScopedPointer<SymbolPropertiesPanel>    symbol_panel_tab;
+    ScopedPointer<ScoreBundleViewer>        symbol_panel_bundleviewer;
 
 public:
     /**************************************************
@@ -21,10 +22,18 @@ public:
         symbol_panel_tab = new SymbolPropertiesPanel(sh);
         const Colour c = Colours::lightgrey;
         addTab ("inspector",  c, symbol_panel_tab, false);
-        addTab ("score bundle",  c, new ScoreBundleViewPort(sh), true);
+        symbol_panel_bundleviewer = new ScoreBundleViewer(sh);
+        addTab ("score bundle",  c, symbol_panel_bundleviewer, false);
         
         setSize (400, 600);
 
+    }
+    
+    void resized() override
+    {
+        TabbedComponent::resized();
+        if( symbol_panel_bundleviewer )
+            symbol_panel_bundleviewer->resized();
     }
     
     /**************************************************

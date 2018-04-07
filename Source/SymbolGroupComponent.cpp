@@ -213,10 +213,10 @@ void SymbolGroupComponent::addSymbolMessages(Symbol* s )
     {
         subComponent = dynamic_cast<BaseComponent*>(getSubcomponent(i));
         if (subComponent != NULL)
-	{
-	   subComponent->addSymbolMessages(subSymbol);
-	   s->addMessage( "/subsymbol/" + to_string(i), *subSymbol);
-	}	
+        {
+           subComponent->addSymbolMessages(subSymbol);
+           s->addMessage( "/subsymbol/" + to_string(i), *subSymbol);
+        }
     }
     
 }

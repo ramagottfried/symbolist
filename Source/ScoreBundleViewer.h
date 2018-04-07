@@ -8,79 +8,55 @@
 class ScoreBundleViewer : public Component
 {
 public:
-    ScoreBundleViewer(SymbolistHandler *sh)
+    ScoreBundleViewer(SymbolistHandler *sh) : symbolist_handler(sh) //bundle_comp(sh)
     {
-        symbolist_handler = sh;
+        addAndMakeVisible( bundle_editor = new CodeEditorComponent (bundle_doc, nullptr) );
+        setSize (400, 600);
+        loadBundle();
     }
     
-    ~ScoreBundleViewer(){}
-    
-    void paint (Graphics& g) override
+    void loadBundle()
     {
-        g.setColour(Colours::black);
-        
         int num = symbolist_handler->symbolistAPI_getNumSymbols();
+        //string prefix = "/symbol/";
+        //cout << "getting n " << num << endl;
         
-        int x = 20;
-        int y = 20;
-        int y_inr = 15;
-        
-        string prefix = "/symbol/";
+        String content;
         
         for( int i = 0; i < num; i++ )
         {
             Symbol* sym = symbolist_handler->symbolistAPI_getSymbol(i);
-
-            
             vector<string> msg_array;
             sym->getPrintStringArray( msg_array );
             
             for( int j = 0; j < msg_array.size(); j++ )
             {
-                g.drawText( msg_array[j], x, y, 400, 20, Justification::topLeft );
-                y += y_inr;
+                //cout << msg_array[j] << endl;
+                content += msg_array[j] + "\n";
             }
         }
         
-        setSize(400, y+40);
+        bundle_editor->loadContent( content );
     }
-
-private:
-    SymbolistHandler*   symbolist_handler;
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScoreBundleViewer)
-};
-
-
-
-class ScoreBundleViewPort : public Component
-{
-public:
-    ScoreBundleViewPort(SymbolistHandler *sh) : bundle_comp(sh)
-    {
-        bundle_viewport.setViewedComponent( &bundle_comp, false );
-        bundle_viewport.setFocusContainer ( true );
-        bundle_viewport.setScrollBarsShown(true, true);
-     
-        bundle_comp.setSize(400, 5000);
-        addAndMakeVisible(bundle_viewport);
-     //   addAndMakeVisible(bundle_comp);
-
-        setSize (400, 600);
-    }
+    
+    ~ScoreBundleViewer() {}
 
     void resized() override
     {
-        
-        bundle_viewport.setBounds( 0, 0, getParentWidth(), getParentHeight() );
+        // cout << "osc viewport " << endl;
+        loadBundle();
+        Rectangle<int> r (getLocalBounds().reduced (8));
+        bundle_editor->setBounds (r.withTrimmedTop (8));
+
     }
     
 private:
-    SymbolistHandler*                   symbolist_handler;
-    ScoreBundleViewer                   bundle_comp;
-    Viewport                            bundle_viewport;
+    SymbolistHandler*                 symbolist_handler;
+
+    CodeDocument                        bundle_doc;
+    ScopedPointer<CodeEditorComponent>  bundle_editor;
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScoreBundleViewPort)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScoreBundleViewer)
 };
 
 

@@ -82,7 +82,7 @@ Symbol* Score::addSymbol(Symbol* symbol)
     Symbol* lastInsertedSymbol;
     
     // Calls the sort function to properly insert the new symbol
-    score_symbols.push_back(unique_ptr<Symbol>(new Symbol( *symbol ) ) );
+    score_symbols.push_back( unique_ptr<Symbol>(new Symbol( *symbol ) ) );
     
     /* Retrieves the last inserted symbol's reference
      * before sorting the score

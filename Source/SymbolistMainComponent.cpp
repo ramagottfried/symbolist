@@ -112,11 +112,12 @@ void SymbolistMainComponent::toggleInspector()
         auto selectedItems = getPageComponent()->getSelectedItems();
         inspector->setInspectorObject( dynamic_cast<BaseComponent*>(selectedItems.getLast()) );
         
-        addAndMakeVisible(inspector);
+        addAndMakeVisible( inspector );
         
         auto menuH = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
         inspector->setSize(400, getHeight() - score_viewport.getScrollBarThickness() - menuH);
         inspector->setTopRightPosition( getWidth() - score_viewport.getScrollBarThickness(), menuH );
+        inspector->resized();
     }
     else
     {

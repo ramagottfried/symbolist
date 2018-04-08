@@ -154,6 +154,30 @@ OdotBundle_s Score::getScoreBundle_s()
 }
 
 /***********************************
+ * Create Single JSON object sting from Score Bundles
+ ***********************************/
+string Score::getJSON()
+{
+    string JSON = "{";
+    bool addcomma = false;
+    long count = 0;
+    string addr = "\"/symbol/";
+    for (auto it = score_symbols.begin(); it != score_symbols.end(); it++)
+    {
+        if( addcomma )
+            JSON += ",";
+        
+        JSON += addr + to_string(count) + "\" : " + (*it)->getJSON();
+        addcomma = true;
+        
+        count++;
+    }
+    JSON += "}";
+    
+    return JSON;
+}
+
+/***********************************
  * Get active symbols at time
  ***********************************/
 OdotBundle_s Score::getSymbolsAtTime( float t )

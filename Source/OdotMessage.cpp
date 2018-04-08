@@ -87,6 +87,54 @@ void OdotMessage::print()
     cout << "====-===-======-====" << endl;
 }
 
+string OdotMessage::getJSON()
+{
+    char buf[256];
+    char *buf_ptr = buf;
+
+    string JSON = "\"";
+    JSON += osc_message_u_getAddress( ptr.get() );
+    JSON += "\" : ";
+    
+    int argcount = osc_message_u_getArgCount( ptr.get() );
+
+    if( argcount > 1 )
+        JSON += " [ ";
+    
+    bool addcomma = false;
+    for( int i = 0; i < argcount; i++ )
+    {
+        if( addcomma )
+            JSON += ",";
+        
+        t_osc_atom_u *o_atom = osc_message_u_getArg( ptr.get() , i);
+        char type = osc_atom_u_getTypetag(o_atom);
+        switch (type) {
+            case 's':
+                osc_atom_u_getString( o_atom, 256, &buf_ptr );
+                JSON += "\"";
+                JSON += buf;
+                JSON += "\"";
+                break;
+            case OSC_BUNDLE_TYPETAG:
+                JSON += OdotBundle(osc_atom_u_getBndl( o_atom )).getJSON();
+                break;
+            default:
+                osc_atom_u_getString( o_atom, 256, &buf_ptr );
+                JSON += buf;
+                break;
+        }
+        
+        addcomma = true;
+        
+    }
+    
+    if( argcount > 1 )
+        JSON += " ] ";
+    
+    return JSON;
+}
+
 void OdotMessage::appendValue( const t_osc_atom_u *atom )
 {
     // note osc_message_u_append functions allocate a new atom internally

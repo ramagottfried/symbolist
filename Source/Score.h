@@ -85,6 +85,9 @@ public:
     //odot_bundle *getScoreBundle();
     
     OdotBundle_s getScoreBundle_s();
+    
+    string getJSON();
+
 
     const Array<Symbol*> getSymbolsByValue(const string& address, const string& value);
     
@@ -97,6 +100,7 @@ public:
     const Symbol* getStaveByID( const string& id );
 
     OdotBundle_s getDurationBundle();
+    
     
     int getNameCount( string& name )
     {

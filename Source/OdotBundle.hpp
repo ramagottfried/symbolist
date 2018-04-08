@@ -81,6 +81,7 @@ public:
     inline void applyExpr( const string& expr ) { applyExpr( OdotExpr(expr) ); }
     inline void applyExpr( const char * expr ) { applyExpr( OdotExpr(expr) ); }
 
+    string getJSON();
 
 private:
     

@@ -173,6 +173,18 @@
 		11A3939D20528799002C8916 /* OdotBundle_s.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A3939A20528799002C8916 /* OdotBundle_s.cpp */; };
 		11A3939E20528799002C8916 /* OdotBundle_s.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A3939A20528799002C8916 /* OdotBundle_s.cpp */; };
 		11A3939F20528799002C8916 /* OdotBundle_s.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11A3939B20528799002C8916 /* OdotBundle_s.hpp */; };
+		11AEF239207A943800B1398D /* JsonTreeHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF237207A943800B1398D /* JsonTreeHandler.cpp */; };
+		11AEF23A207A943800B1398D /* JsonTreeHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF237207A943800B1398D /* JsonTreeHandler.cpp */; };
+		11AEF23B207A943800B1398D /* JsonTreeHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF237207A943800B1398D /* JsonTreeHandler.cpp */; };
+		11AEF23C207A943800B1398D /* JsonTreeHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF237207A943800B1398D /* JsonTreeHandler.cpp */; };
+		11AEF23D207A943800B1398D /* JsonTreeHandler.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11AEF238207A943800B1398D /* JsonTreeHandler.hpp */; };
+		11AEF23E207A943800B1398D /* JsonTreeHandler.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11AEF238207A943800B1398D /* JsonTreeHandler.hpp */; };
+		11AEF241207A94D000B1398D /* CodeboxComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF23F207A94D000B1398D /* CodeboxComponent.cpp */; };
+		11AEF242207A94D000B1398D /* CodeboxComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF23F207A94D000B1398D /* CodeboxComponent.cpp */; };
+		11AEF243207A94D000B1398D /* CodeboxComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF23F207A94D000B1398D /* CodeboxComponent.cpp */; };
+		11AEF244207A94D000B1398D /* CodeboxComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF23F207A94D000B1398D /* CodeboxComponent.cpp */; };
+		11AEF245207A94D000B1398D /* CodeboxComponent.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11AEF240207A94D000B1398D /* CodeboxComponent.hpp */; };
+		11AEF246207A94D000B1398D /* CodeboxComponent.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11AEF240207A94D000B1398D /* CodeboxComponent.hpp */; };
 		11B71DCE1F09844300CDE209 /* symbolist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */; };
 		11B71DD11F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DCF1F098F1400CDE209 /* SymbolPropertiesPanel.cpp */; };
 		11B71DD21F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DCF1F098F1400CDE209 /* SymbolPropertiesPanel.cpp */; };
@@ -405,6 +417,10 @@
 		118C38EE1EC61404006FF4A1 /* PaletteComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PaletteComponent.h; path = ../../Source/PaletteComponent.h; sourceTree = "<group>"; };
 		11A3939A20528799002C8916 /* OdotBundle_s.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OdotBundle_s.cpp; path = ../../Source/OdotBundle_s.cpp; sourceTree = "<group>"; };
 		11A3939B20528799002C8916 /* OdotBundle_s.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = OdotBundle_s.hpp; path = ../../Source/OdotBundle_s.hpp; sourceTree = "<group>"; };
+		11AEF237207A943800B1398D /* JsonTreeHandler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = JsonTreeHandler.cpp; path = ../../Source/JsonTreeHandler.cpp; sourceTree = "<group>"; };
+		11AEF238207A943800B1398D /* JsonTreeHandler.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = JsonTreeHandler.hpp; path = ../../Source/JsonTreeHandler.hpp; sourceTree = "<group>"; };
+		11AEF23F207A94D000B1398D /* CodeboxComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CodeboxComponent.cpp; path = ../../Source/CodeboxComponent.cpp; sourceTree = "<group>"; };
+		11AEF240207A94D000B1398D /* CodeboxComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = CodeboxComponent.hpp; path = ../../Source/CodeboxComponent.hpp; sourceTree = "<group>"; };
 		11B71DCF1F098F1400CDE209 /* SymbolPropertiesPanel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolPropertiesPanel.cpp; path = ../../Source/SymbolPropertiesPanel.cpp; sourceTree = "<group>"; };
 		11B71DD01F098F1400CDE209 /* SymbolPropertiesPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SymbolPropertiesPanel.h; path = ../../Source/SymbolPropertiesPanel.h; sourceTree = "<group>"; };
 		11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OSCPropertyComponents.cpp; path = ../../Source/OSCPropertyComponents.cpp; sourceTree = "<group>"; };
@@ -717,6 +733,8 @@
 				116F87731F9D04B90062EE91 /* ScoreBundleViewer.h */,
 				116F87781F9D04FC0062EE91 /* PropertyPanelTabs.cpp */,
 				116F87791F9D04FC0062EE91 /* PropertyPanelTabs.h */,
+				11AEF237207A943800B1398D /* JsonTreeHandler.cpp */,
+				11AEF238207A943800B1398D /* JsonTreeHandler.hpp */,
 			);
 			name = "property-panel";
 			sourceTree = "<group>";
@@ -762,6 +780,8 @@
 				11D1235A1F44796800A5EA5B /* SymbolistMenu.cpp */,
 				11D1235B1F44796800A5EA5B /* SymbolistMenu.hpp */,
 				11B71DE11F0AD8EA00CDE209 /* property-panel */,
+				11AEF23F207A94D000B1398D /* CodeboxComponent.cpp */,
+				11AEF240207A94D000B1398D /* CodeboxComponent.hpp */,
 			);
 			name = "tool-ui-components";
 			sourceTree = "<group>";
@@ -944,6 +964,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				116A7EF22046DCAE004B545D /* OdotBundle.hpp in Headers */,
+				11AEF245207A94D000B1398D /* CodeboxComponent.hpp in Headers */,
 				113980B6206449EA002A2408 /* OdotExpr.hpp in Headers */,
 				116A7EFF2047ECB8004B545D /* OdotAtom.hpp in Headers */,
 				11C442D31F585C1B00F2E9B6 /* TimeDisplay.hpp in Headers */,
@@ -955,6 +976,7 @@
 				116A7EF92047E99D004B545D /* OdotMessage.hpp in Headers */,
 				751E31572069410400C3318F /* PaletteButton.hpp in Headers */,
 				113DEE0F1FA1D7C600A45220 /* EditSelectionBox.h in Headers */,
+				11AEF23D207A943800B1398D /* JsonTreeHandler.hpp in Headers */,
 				75774FA92062A4D40069A89D /* Palette.hpp in Headers */,
 				75774FA12062960C0069A89D /* SymbolistModel.hpp in Headers */,
 			);
@@ -979,6 +1001,7 @@
 				116A7ED62046CFCD004B545D /* osc_hashtab.h in Headers */,
 				116A7EE42046CFCD004B545D /* osc_scanner.h in Headers */,
 				116A7EDF2046CFCD004B545D /* osc_message_u.h in Headers */,
+				11AEF23E207A943800B1398D /* JsonTreeHandler.hpp in Headers */,
 				116A7EE92046CFCD004B545D /* osc_util.h in Headers */,
 				116A7EE02046CFCD004B545D /* osc_parser.h in Headers */,
 				116A7ED92046CFCD004B545D /* osc_linkedlist.h in Headers */,
@@ -994,6 +1017,7 @@
 				116A7EDC2046CFCD004B545D /* osc_message_iterator_s.h in Headers */,
 				116A7ED02046CFCD004B545D /* osc_expr_func.h in Headers */,
 				116A7EC62046CFCD004B545D /* osc_atom_array_u.h in Headers */,
+				11AEF246207A94D000B1398D /* CodeboxComponent.hpp in Headers */,
 				116A7ED42046CFCD004B545D /* osc_expr_scanner.h in Headers */,
 				116A7EDA2046CFCD004B545D /* osc_match.h in Headers */,
 				116A7ECF2046CFCD004B545D /* osc_error.h in Headers */,
@@ -1167,6 +1191,7 @@
 				1186489E1EFAC44100904672 /* ScoreCursor.cpp in Sources */,
 				1107B4011EF7D55D00E2DFA9 /* SymbolistComponent.cpp in Sources */,
 				111A261E1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */,
+				11AEF243207A94D000B1398D /* CodeboxComponent.cpp in Sources */,
 				751E314D2069378600C3318F /* PaletteController.cpp in Sources */,
 				1107B3FA1EF7D55D00E2DFA9 /* PathHandleComponent.cpp in Sources */,
 				1107B3FF1EF7D55D00E2DFA9 /* PageComponent.cpp in Sources */,
@@ -1188,6 +1213,7 @@
 				113980B5206449EA002A2408 /* OdotExpr.cpp in Sources */,
 				116F877C1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */,
 				11D123681F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */,
+				11AEF23B207A943800B1398D /* JsonTreeHandler.cpp in Sources */,
 				1107B3F91EF7D55D00E2DFA9 /* PathInfo.cpp in Sources */,
 				1107B3FE1EF7D55D00E2DFA9 /* PaletteComponent.cpp in Sources */,
 				11D1235E1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */,
@@ -1218,6 +1244,7 @@
 				116A7E8C2046CFB6004B545D /* osc_match.c in Sources */,
 				116A7E832046CFB6004B545D /* osc_error.c in Sources */,
 				116A7E7F2046CFB6004B545D /* osc_bundle_iterator_u.c in Sources */,
+				11AEF244207A94D000B1398D /* CodeboxComponent.cpp in Sources */,
 				116A7E842046CFB6004B545D /* osc_expr_parser.c in Sources */,
 				116A7E852046CFB6004B545D /* osc_expr_rec.c in Sources */,
 				116A7E9A2046CFB6004B545D /* osc_util.c in Sources */,
@@ -1229,6 +1256,7 @@
 				116A7E882046CFB6004B545D /* osc_hashtab.c in Sources */,
 				116A7E942046CFB6004B545D /* osc_rset.c in Sources */,
 				116A7E902046CFB6004B545D /* osc_message_s.c in Sources */,
+				11AEF23C207A943800B1398D /* JsonTreeHandler.cpp in Sources */,
 				116A7E992046CFB6004B545D /* osc_typetag.c in Sources */,
 				116A7E8B2046CFB6004B545D /* osc_linkedlist.c in Sources */,
 				116A7E802046CFB6004B545D /* osc_bundle_s.c in Sources */,
@@ -1263,12 +1291,14 @@
 				118C38E41EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */,
 				118353471F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp in Sources */,
 				114027CB1F4B185E00A9B8C4 /* StaffComponent.cpp in Sources */,
+				11AEF23A207A943800B1398D /* JsonTreeHandler.cpp in Sources */,
 				44CFE03C1EC3789C009135F8 /* include_juce_events.mm in Sources */,
 				11B71DD21F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */,
 				1186489D1EFAC44100904672 /* ScoreCursor.cpp in Sources */,
 				118C38DF1EC5BC4F006FF4A1 /* Score.cpp in Sources */,
 				116A7EFD2047ECB8004B545D /* OdotAtom.cpp in Sources */,
 				757E1B43206A83C5002E472E /* View.cpp in Sources */,
+				11AEF242207A94D000B1398D /* CodeboxComponent.cpp in Sources */,
 				11D1235D1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */,
 				75774FA5206296C50069A89D /* Palette.cpp in Sources */,
 				444CD9041EDDAF1B001AC03A /* SymbolistComponent.cpp in Sources */,
@@ -1321,12 +1351,14 @@
 				8D57C4E2ADEA2935AAB91AAC /* include_juce_graphics.mm in Sources */,
 				1186489C1EFAC44100904672 /* ScoreCursor.cpp in Sources */,
 				111A261C1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */,
+				11AEF239207A943800B1398D /* JsonTreeHandler.cpp in Sources */,
 				11D1235C1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */,
 				75774F9A206176790069A89D /* Observer.cpp in Sources */,
 				118C38DE1EC5BC4F006FF4A1 /* Score.cpp in Sources */,
 				444CD9031EDDAF1B001AC03A /* SymbolistComponent.cpp in Sources */,
 				116F87741F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */,
 				11C442D01F585C1B00F2E9B6 /* TimeDisplay.cpp in Sources */,
+				11AEF241207A94D000B1398D /* CodeboxComponent.cpp in Sources */,
 				41C3942D9A94933B560F98F2 /* include_juce_gui_basics.mm in Sources */,
 				1107B3E91EF5388500E2DFA9 /* PathInfo.cpp in Sources */,
 				11D86B8B1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */,

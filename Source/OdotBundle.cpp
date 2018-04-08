@@ -252,6 +252,28 @@ void OdotBundle::getPrintStringArray( vector<string> &str, int level )
     osc_bndl_it_u_destroy(it);
 }
 
+
+
+string OdotBundle::getJSON()
+{
+    string JSON = "{";
+    bool add_comma = false;
+    t_osc_bndl_it_u *it = osc_bndl_it_u_get( ptr.get() );
+    while( osc_bndl_it_u_hasNext(it) )
+    {
+        if( add_comma )
+            JSON += ",";
+        
+        JSON += OdotMessage( osc_bndl_it_u_next(it) ).getJSON();
+        
+        add_comma = true;
+    }
+    osc_bndl_it_u_destroy(it);
+    
+    JSON += "}";
+    return JSON;
+}
+
 bool OdotBundle::addressExists( const string& address ) const
 {
     return addressExists(address.c_str());

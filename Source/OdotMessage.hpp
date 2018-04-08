@@ -98,6 +98,9 @@ public:
     inline bool isEmpty(){ return ( osc_message_u_getArgCount( ptr.get() ) == 0); }
     void print();
     
+    string getJSON();
+    
+    
     /* ======= pointers ======= */
     
     t_osc_msg_u * release(){ return ptr.release(); }

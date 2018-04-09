@@ -9,9 +9,21 @@
 class JsonTreeItem  : public TreeViewItem
 {
 public:
-    JsonTreeItem (Identifier i, var value)   : identifier (i), json (value)
+    JsonTreeItem (Identifier i, var value) : identifier (i), json (value)
     {
     }
+    
+    
+    Component* createItemComponent() override
+    {
+        return nullptr;
+        /*
+        Label *editableField = new Label( identifier.toString(), json.toString() );
+        editableField->setEditable(true);
+        return editableField;
+         */
+    }
+    
     
     String getUniqueName() const override
     {

@@ -73,7 +73,12 @@ public:
     vector<BaseComponent*> getSubcomponentsByStaff( String& staff_name );
 
     DisplayMode getDisplayMode(){ return display_mode; }
-    
+/*
+    Component * queryPoint( float x, float y )
+    {
+        return getComponentAt(x, y);
+    }
+  */
 private:
     DisplayMode display_mode = MAIN;
 

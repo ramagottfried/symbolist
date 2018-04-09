@@ -81,7 +81,6 @@ Symbol* Score::addSymbol(Symbol* symbol)
 {
     Symbol* lastInsertedSymbol;
     
-    // Calls the sort function to properly insert the new symbol
     score_symbols.push_back( unique_ptr<Symbol>(new Symbol( *symbol ) ) );
     
     /* Retrieves the last inserted symbol's reference
@@ -89,6 +88,7 @@ Symbol* Score::addSymbol(Symbol* symbol)
      */
     lastInsertedSymbol = score_symbols.back().get();
     
+    // Calls the sort function to properly insert the new symbol
     sort(score_symbols.begin(), score_symbols.end(), score_sorter);
     
     bool newstaff = staves.addStaff(symbol);

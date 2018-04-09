@@ -4,6 +4,14 @@
 #include "SymbolistHandler.h"
 #include "JsonTreeItem.hpp"
 
+
+/* note:
+ Juce has an example of how to create a treeview display for JSON
+ and so I made a JSON export and now have the JSON viewer working, but I think we might be able to convert it to use OSC as well
+ 
+ we could subclass the TreeViewItem class, like the OSCProperty classes and then have a tree view of editable properties.
+ 
+ */
 class ScoreBundleViewer : public Component
 {
 public:
@@ -47,6 +55,7 @@ public:
     }
     
     /** Parses the editors contects as JSON. */
+    
     TreeViewItem* rebuildJson()
     {
         var parsedJson;
@@ -74,7 +83,7 @@ private:
     SymbolistHandler*                   symbolist_handler;
 
     ScopedPointer<TreeViewItem>         rootItem;
-    TreeView resultsTree;
+    TreeView                            resultsTree;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScoreBundleViewer)
 };

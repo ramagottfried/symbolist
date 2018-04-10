@@ -6,27 +6,20 @@
 
 Score::Score()
 {
-    cout << "score " << this << " " << score_symbols.size() << endl;
+    cout << __func__ << " " << this << " " << score_symbols.size() << endl;
+    
+    // Sets the score_ptr reference for time_points instance variable.
+    time_points.setScore(this);
 }
 
 Score::Score(Score& src)
 {
+    // Sets the score_ptr reference for time_points instance variable.
+    time_points.setScore(this);
+    
     for(auto it = src.score_symbols.begin(); it != src.score_symbols.end(); it++)
     {
         score_symbols.push_back(std::unique_ptr<Symbol>(new Symbol( it->get() ) ) );
-        addStaff(score_symbols.back().get());
-    }
-    
-    updateStavesAndTimepoints();
-    
-    cout << "copying score " << this << " " << score_symbols.size() << " n staves " << staves.size() << endl;
-}
-
-Score::Score(Score* src)
-{
-    for(auto it = src->score_symbols.begin(); it != src->score_symbols.end(); it++)
-    {
-        score_symbols.push_back( unique_ptr<Symbol>( new Symbol( it->get() ) ) );
         addStaff(score_symbols.back().get());
     }
     
@@ -71,7 +64,7 @@ void Score::removeAllSymbols()
  ******************************************/
 Symbol* Score::createSymbol()
 {
-    return addSymbol(new Symbol());
+    return addSymbol(NULL);
 }
 
 /***********************************
@@ -81,7 +74,11 @@ Symbol* Score::addSymbol(Symbol* symbol)
 {
     Symbol* lastInsertedSymbol;
     
-    score_symbols.push_back( unique_ptr<Symbol>(new Symbol( *symbol ) ) );
+    // Calls symbol's empty constructor if reference is NULL.
+    if (symbol == NULL)
+        score_symbols.push_back(unique_ptr<Symbol>(new Symbol()));
+    else
+        score_symbols.push_back(unique_ptr<Symbol>(new Symbol(*symbol)));
     
     /* Retrieves the last inserted symbol's reference
      * before sorting the score
@@ -91,45 +88,61 @@ Symbol* Score::addSymbol(Symbol* symbol)
     // Calls the sort function to properly insert the new symbol
     sort(score_symbols.begin(), score_symbols.end(), score_sorter);
     
-    bool newstaff = staves.addStaff(symbol);
-    time_points.addSymbolTimePoints(symbol);
+    /* lastInsertedSymbol is added to staves
+     * only if it is of type staff.
+     */
+    bool newstaff = staves.addStaff(lastInsertedSymbol);
+    
+    /* if lastInsertedSymbol is linked to a staff
+       then time points are added to array.
+     */
+    time_points.addSymbolTimePoints(lastInsertedSymbol);
 
     if (newstaff)
-    {
         for (auto it = score_symbols.begin(); it != score_symbols.end(); it++)
-        {
-            if ((*it)->getSaff() == symbol->getID()) // this should look up by name not nameID, in the timepoints the staves should be combined,... although then I guess the types of clef could change? leaving as id for now, but this is uninituitive to set from outside the editor
-            {
-                //time_points.removeSymbolTimePoints(s);
-                time_points.addSymbolTimePoints( (*it).get() );
-            }
-        }
-    }
+            /* This should look up by name not nameID, in the
+             * timepoints the staves should be combined...
+             * Although then I guess the types of clef could change?
+             * Leaving as id for now, but this is unintuitive to set from outside the editor.
+             */
+            if ((*it)->getSaff() == lastInsertedSymbol->getID())
+                time_points.addSymbolTimePoints((*it).get());
     
     return lastInsertedSymbol;
 }
-
-
 
 /***********************************
  * Removes a Symbol from the Score
  ***********************************/
 void Score::removeSymbol(Symbol* symbol)
 {
-    assert(score_symbols.empty() == false); ///< what do you want to remove ?
+    /* For now, prints a message.
+     * Could be better to throw an exception.
+     */
+    if (symbol == NULL)
+        throw invalid_argument("Symbol pointer argument is NULL.");
     
-    for (auto it = score_symbols.begin(); it != score_symbols.end(); it++)
+    // If score is not empty.
+    if (!score_symbols.empty())
     {
-        Symbol* s = (*it).get();
-        if (symbol == s)
+        // Then looks for symbol in score_symbols.
+        auto iteratorToSymbol = find_if(score_symbols.begin(),
+                                        score_symbols.end(),
+                                        [symbol](unique_ptr<Symbol>& ptrToSymbol) {
+                                            return ptrToSymbol.get() == symbol;
+                                        });
+        /* If returned iterator is different from end()
+         * then symbol is in score_symbols.
+         */
+        if (iteratorToSymbol != score_symbols.end())
         {
             staves.removeStaff(symbol);
-            score_symbols.erase(it);
-            return;
+            score_symbols.erase(iteratorToSymbol);
         }
+        throw invalid_argument("Symbol pointer is not among score's symbols.");
     }
+    else throw logic_error("Attempting to remove a symbol while score is empty.");
     
-    assert(false);    ///< not found
 }
 
 /***********************************
@@ -203,7 +216,7 @@ OdotBundle_s Score::getDurationBundle()
         return NULL;
     
     OdotBundle bndl;
-    bndl.addMessage("/time/duration", lastTimePoint->time );
+    bndl.addMessage("/time/duration", lastTimePoint->time);
     
     return bndl.serialize();
 }
@@ -238,9 +251,9 @@ int Score::getSymbolPosition(Symbol* s)
     return static_cast<int>(distance(score_symbols.begin(), iteratorToSymbol));
 }
 
-const Array<Symbol*> Score::getSymbolsByValue(const string& address, const string& value)
+const Array<Symbol* > Score::getSymbolsByValue(const string& address, const string& value)
 {
-    Array<Symbol*> matched;
+    Array<Symbol* > matched;
     for (auto it = score_symbols.begin(); it != score_symbols.end(); it++)
     {
         OdotMessage val = (*it)->getMessage( address );

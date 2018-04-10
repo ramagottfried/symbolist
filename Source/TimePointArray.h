@@ -39,9 +39,9 @@ public:
     ~SymbolTimePoint()
     {
         cout << "TimePoint's destructor. " << time << endl;
-        delete staff_ref;
+        staff_ref = NULL;
         for (Symbol* symbol : symbols_at_time)
-            delete symbol;
+            symbol = NULL;
     }
     
     void removeSymbol(Symbol* s)
@@ -63,7 +63,7 @@ public:
 
 class TimePointArray
 {
-    vector<SymbolTimePoint* >      symbolTimePoints;
+    vector<SymbolTimePoint* >    symbolTimePoints;
     Score*                       score_ptr = NULL;
     const SymbolTimePoint*       prev_timepoint = NULL;
     vector<pair<const Symbol*,
@@ -102,8 +102,6 @@ public:
     
     /**
      * Sets the score_ptr of this TimePointArray instance.
-     * This method is called by SymbolistModel when
-     * instantiating the score.
      */
     inline void setScore(Score* pointerToScore)
     {

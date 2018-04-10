@@ -2,14 +2,11 @@
 
 void Symbol::setTypeXYWH(const string & type, float x, float y, float w, float h)
 {
-    
     addMessage( "/type", type );
     addMessage( "/x", x );
     addMessage( "/y", y );
     addMessage( "/w", w );
     addMessage( "/h", h );
-    
-//    print();
     
     // add name?
 }

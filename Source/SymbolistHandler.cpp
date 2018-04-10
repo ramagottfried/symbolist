@@ -435,22 +435,27 @@ void SymbolistHandler::addComponentsFromScore ( )
 void SymbolistHandler::removeSymbolFromScore(BaseComponent* component)
 {
     assert ( component->getScoreSymbolPointer() != NULL ) ;
-    //cout << "REMOVING SYMBOL OF " << c << " " << c->getSymbolTypeStr() << " [ " << c->getScoreSymbolPointer() << " ]" << std::endl;
     
     Symbol* symbol = component->getScoreSymbolPointer();
     assert (symbol != NULL ); // that's not normal
     
     log_score_change();
 
-    // cout << "removeSymbolFromScore" << endl;
-
     symbol->print();
 
     if (getView())
         getView()->clearInspector();
     
-    getModel()->getScore()->removeSymbolTimePoints(symbol);
-    getModel()->getScore()->removeSymbol(symbol);
+    // Throws exceptions if symbol is NULL or score is empty
+    try
+    {
+        getModel()->getScore()->removeSymbolTimePoints(symbol);
+        getModel()->getScore()->removeSymbol(symbol);
+    }
+    catch(exception& e)
+    {
+        cout << e.what() << endl;
+    }
     
     component->setScoreSymbolPointer(NULL);
     executeUpdateCallback(-1);

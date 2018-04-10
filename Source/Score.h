@@ -37,12 +37,6 @@ public:
      ***************************************/
     Score();
     Score(Score& src);
-    
-    /**
-     * Copy constructor with raw pointer passed as argument.
-     * This constructor is only called by the make_shared function.
-     */
-    Score(Score* src);
     Score(const OdotBundle_s& s_bundle) ;
     ~Score();
     
@@ -54,7 +48,6 @@ public:
     {
         return &time_points;
     }
-    
     
     size_t getSize();
     
@@ -73,21 +66,16 @@ public:
         
     void importScoreFromOSC( const OdotBundle_s& s_bundle );
     
-    //    void sortScore();
-    
     void print() const;
     
     void addSymbolTimePoints( Symbol* s );
     void removeSymbolTimePoints( Symbol* s );
     
     OdotBundle_s getSymbolsAtTime( float t );
-
-    //odot_bundle *getScoreBundle();
     
     OdotBundle_s getScoreBundle_s();
     
     string getJSON();
-
 
     const Array<Symbol*> getSymbolsByValue(const string& address, const string& value);
     
@@ -100,7 +88,6 @@ public:
     const Symbol* getStaveByID( const string& id );
 
     OdotBundle_s getDurationBundle();
-    
     
     int getNameCount( string& name )
     {

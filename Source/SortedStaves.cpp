@@ -88,9 +88,7 @@ bool SortedStaves::addStaff(Symbol* s)
     cout << "setting staff name -- size: " << staves.size() << endl;
     string name = s->getMessage("/name").getString();
     if( name.empty() ) // for now allow  name == s->getID()
-    {
         s->addMessage( "/name", "staff_" + to_string(staves.size() ) );
-    }
     
     return 1;
     

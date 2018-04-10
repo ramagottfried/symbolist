@@ -9,18 +9,22 @@ TimePointArray::TimePointArray()
 
 TimePointArray::~TimePointArray()
 {
+    if (score_ptr != NULL) score_ptr = NULL;
     if (prev_timepoint != NULL) delete prev_timepoint;
     for (pair<const Symbol*, const Symbol* > symbolStaffPair : voice_staff_vector)
     {
         delete symbolStaffPair.first;
         delete symbolStaffPair.second;
     }
+    
+    for (SymbolTimePoint* symbolTimePoint : symbolTimePoints)
+        delete symbolTimePoint;
 }
 
 void TimePointArray::printTimePoints()
 {
     cout << "-------- timepoint list ----------" << endl;
-    for(int i = 0; i < symbolTimePoints.size(); i++ )
+    for (int i = 0; i < symbolTimePoints.size(); i++)
     {
         auto t = symbolTimePoints[i];
         cout << "timepoint " << i << " " << t->time << " nsyms " << t->symbols_at_time.size() << endl;
@@ -154,13 +158,6 @@ void TimePointArray::resetTimes()
 void TimePointArray::addSymbolTimePoints( Symbol* s )
 {
     // 0) check if the symbol has a staff reference, if not ignore it
-    // 1) if attached to a staff, calculate start & end times based on staff ( for now: start = x, end = x+w )
-    // 2) add start and end points to array
-    // 3) check previous start-1 and end-1 points for continuing symbols to add to new start/end points
-    // 4) iterate forward from start to end point and add this symbol to all preexisting time points
-    
-    //cout << "TimePointArray::addSymbolTimePoints " << s << endl;
-    
     string staff_name = s->getMessage( "/staff" ).getString();
 
     if( staff_name.size() == 0 )
@@ -170,6 +167,7 @@ void TimePointArray::addSymbolTimePoints( Symbol* s )
     if( found_staves.isEmpty() )
         return;
     
+    // 1) if attached to a staff, calculate start & end times based on staff ( for now: start = x, end = x+w )
     Symbol* staff = new Symbol(found_staves.getFirst());
     
     float staff_x = staff->getMessage("/x").getFloat();
@@ -187,15 +185,17 @@ void TimePointArray::addSymbolTimePoints( Symbol* s )
     
     cout << "adding timepoints on " << staff_name << " " << staff_start << " t start " << start_t << endl;
     
+    // 2) add start and end points to array
+    // 3) check previous start-1 and end-1 points for continuing symbols to add to new start/end points
     int start_idx = addSymbol_atTime( s, start_t, staff );
     int end_idx = addSymbol_atTime( s, end_t, staff );
     
+    // 4) iterate forward from start to end point and add this symbol to all preexisting time points
     for( int i = (start_idx + 1); i < end_idx; i++ )
     {
         symbolTimePoints[i]->addSymbol(s);
     }
     
-    // printTimePoints();
     current_point = 0;
     voice_staff_vector.clear();
     
@@ -206,11 +206,10 @@ int TimePointArray::addSymbol_atTime(Symbol* s, float time, Symbol* staff)
     
     bool match;
     int idx = getTimePointInsertIndex(time, match);
-    if( match )
-    {
+    
+    if (match)
         // if it's an exact match we don't need to check the previous point
-        symbolTimePoints[idx]->addSymbol( s );
-    }
+        symbolTimePoints[idx]->addSymbol(s);
     else
     {
         // otherwise, create new point and check previous for continuing points

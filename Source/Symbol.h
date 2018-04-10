@@ -19,10 +19,9 @@ public:
     void setTypeXYWH(const string & type, float x, float y, float w, float h);
 
     bool symbol_parse_error( int p, const string& address ) const;
-    
 
-    OdotBundle_s    exportToOSC();
-    void            importFromOSC( OdotBundle_s& s_bundle );
+    OdotBundle_s exportToOSC();
+    void         importFromOSC( OdotBundle_s& s_bundle );
     
     float getTime() const;
     float getDuration() const;
@@ -47,12 +46,12 @@ public:
         return t * m_time_to_pixels;
     }
     
-    float calcTime() // << this should be dynamically settable somehow
+    inline float calcTime() // << this should be dynamically settable somehow
     {
         return pixelsToTime( getMessage("/x").getFloat() );
     }
     
-    bool hitTestTime( float t )
+    inline bool hitTestTime( float t )
     {
         float start = getTime();
         return t >= start && t <= ( start + getDuration() );

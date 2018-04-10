@@ -182,18 +182,17 @@ void SymbolistLasso::paint ( Graphics &g)
 
 void ScoreComponent::deleteSelectedComponents()
 {
-    vector< SymbolistComponent *> items;
+    vector<SymbolistComponent *> items;
     
-    for( SymbolistComponent *c : selected_components ) // there's probably a better way to copy a vector's contents :)
+    for ( SymbolistComponent *c : selected_components ) // there's probably a better way to copy a vector's contents :)
     {
         std::cout << c << std::endl;
         items.push_back(c);
     }
     
-    //selected_items.deselectAll();
     unselectAllComponents();
     
-    for( SymbolistComponent *c : items )
+    for ( SymbolistComponent *c : items )
     {
         //ScoreComponent* parent = (ScoreComponent*) c->getParentComponent() ; // the selected_items are not necesarily direct children
         //parent->
@@ -204,9 +203,9 @@ void ScoreComponent::deleteSelectedComponents()
 
 void ScoreComponent::createStaffFromSelected()
 {
-    auto page_comp = getPageComponent();
+    auto scoreView = getPageComponent();
 
-    bool creating_a_top_level_group = ( this == page_comp );
+    bool creating_a_top_level_group = ( this == scoreView );
     
     if( !creating_a_top_level_group )
     {
@@ -215,14 +214,13 @@ void ScoreComponent::createStaffFromSelected()
     }
     
     
-    auto sel = page_comp->getSelectedItems();
-    if( sel.size() > 1 )
+    auto selectedItems = scoreView->getSelectedItems();
+    if( selectedItems.size() > 1 )
     {
-        page_comp->groupSelectedSymbols();
+        scoreView->groupSelectedSymbols();
     }
     
-    
-    auto staff_ref_comp = dynamic_cast<BaseComponent*>(page_comp->getSelectedItems().getFirst());
+    auto staff_ref_comp = dynamic_cast<BaseComponent*>(scoreView->getSelectedItems().getFirst());
     
     // Checks downcast result.
     if( staff_ref_comp != NULL )
@@ -232,10 +230,11 @@ void ScoreComponent::createStaffFromSelected()
         
         Symbol ref_sym = *(staff_ref_comp->getScoreSymbolPointer());
         
-        Symbol* staff_sym = new Symbol();
-        staff_sym->setTypeXYWH("staff", staff_ref_comp->getX(), staff_ref_comp->getY(), staff_ref_comp->getWidth(), staff_ref_comp->getHeight() );
-        
         auto sh = getSymbolistHandler();
+        
+        // Calls controller to create new symbol in score.
+        Symbol* staff_sym = sh->createSymbol();
+        staff_sym->setTypeXYWH("staff", staff_ref_comp->getX(), staff_ref_comp->getY(), staff_ref_comp->getWidth(), staff_ref_comp->getHeight() );
         
         // create the new component and attach the new symbol pointer to it
         StaffComponent *staff_comp = (StaffComponent *)sh->makeComponentFromSymbol(staff_sym, true);

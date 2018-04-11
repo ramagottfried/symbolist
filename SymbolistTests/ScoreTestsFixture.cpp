@@ -39,6 +39,8 @@ TEST_CASE_METHOD(ScoreTestsFixture, "Symbols are well sorted in the score.", "[m
     {
         // Creates symbol and sets its time start value.
         Symbol* symbol = new Symbol();
+        
+        // Same start time and duration as secondSymbol.
         symbol->setTimeAndDuration(12.0, 1.0);
         
         Symbol* fourthSymbol = score->addSymbol(symbol);
@@ -49,11 +51,17 @@ TEST_CASE_METHOD(ScoreTestsFixture, "Symbols are well sorted in the score.", "[m
 
 TEST_CASE_METHOD(ScoreTestsFixture, "Symbols are well copied to the score.", "[model][score]")
 {
+    // Creates a new symbol and adds messages to it.
     Symbol* symbol = new Symbol();
     symbol->setTypeXYWH("circle", 30.0, 30.0, 200, 200);
     symbol->setTimeAndDuration(15.0, 15.0);
     
+    /* Inserts a new symbol in the score by copying
+     * the one passed in argument.
+     */
     Symbol* insertedSymbol = score->addSymbol(symbol);
+    
+    // Statements to make sure the symbol is well copied.
     REQUIRE(symbol->getType() == insertedSymbol->getType());
     REQUIRE(symbol->getMessage("/x").getFloat() == insertedSymbol->getMessage("/x").getFloat());
     REQUIRE(symbol->getMessage("/y").getFloat() == insertedSymbol->getMessage("/y").getFloat());
@@ -100,9 +108,32 @@ TEST_CASE_METHOD(ScoreTestsFixture, "Timepoints are well created when staff-link
 
 TEST_CASE_METHOD(ScoreTestsFixture, "Symbols are well removed from the score.", "[model][score]")
 {
-    SECTION("Attempting to remove symbol from empty score throws an exception")
+    SECTION("Score size decreases after symbol removal.")
     {
-        REQUIRE_THROWS(score->removeSymbol(new Symbol()));
+        Symbol* symbolToRemove = score->createSymbol();
+        REQUIRE(score->getSize() == 1); // Ensures that the symbol is created.
+        
+        score->removeSymbol(symbolToRemove);
+        REQUIRE(score->getSize() == 0);
+    }
+    
+    SECTION("Attempting to remove symbol from empty score throws an exception.")
+    {
+        REQUIRE(score->getSize() == 0); // Ensures that score is empty.
+        REQUIRE_THROWS_AS(score->removeSymbol(new Symbol()), logic_error);
+    }
+    
+    SECTION("Attempting to remove a symbol which is not among the score throws an exception.")
+    {
+        score->createSymbol(); // Symbol creation.
+        REQUIRE(score->getSize() == 1); // Ensures that score is not empty.
+        
+        REQUIRE_THROWS_AS(score->removeSymbol(new Symbol()), invalid_argument);
+    }
+    
+    SECTION("Passing NULL pointer as argument throws a exception.")
+    {
+        REQUIRE_THROWS_AS(score->removeSymbol(NULL), invalid_argument);
     }
     
 }

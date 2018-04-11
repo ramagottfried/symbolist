@@ -72,7 +72,15 @@ Symbol* Score::createSymbol()
  ***********************************/
 Symbol* Score::addSymbol(Symbol* symbol)
 {
-    Symbol* lastInsertedSymbol;
+    auto iteratorToSymbol = find_if(score_symbols.begin(),
+                                    score_symbols.end(),
+                                    [symbol](unique_ptr<Symbol>& ptrToSymbol) {
+                                        return ptrToSymbol.get() == symbol;
+                                    });
+    
+    // If symbol exists in score, then return its reference.
+    if (iteratorToSymbol != score_symbols.end())
+        return (*iteratorToSymbol).get();
     
     // Calls symbol's empty constructor if reference is NULL.
     if (symbol == NULL)
@@ -83,9 +91,9 @@ Symbol* Score::addSymbol(Symbol* symbol)
     /* Retrieves the last inserted symbol's reference
      * before sorting the score
      */
-    lastInsertedSymbol = score_symbols.back().get();
+    Symbol* lastInsertedSymbol = score_symbols.back().get();
     
-    // Calls the sort function to properly insert the new symbol
+    // Calls the sort function to properly insert the new symbol.
     sort(score_symbols.begin(), score_symbols.end(), score_sorter);
     
     /* lastInsertedSymbol is added to staves
@@ -139,7 +147,7 @@ void Score::removeSymbol(Symbol* symbol)
             staves.removeStaff(symbol);
             score_symbols.erase(iteratorToSymbol);
         }
-        throw invalid_argument("Symbol pointer is not among score's symbols.");
+        else throw invalid_argument("Symbol pointer is not among score's symbols.");
     }
     else throw logic_error("Attempting to remove a symbol while score is empty.");
     
@@ -226,8 +234,11 @@ OdotBundle_s Score::getDurationBundle()
  ***********************************/
 Symbol* Score::getSymbol(int n)
 {
-    if (n < score_symbols.size()) return score_symbols[n].get();
-    else return NULL;
+    if (n < score_symbols.size())
+        return score_symbols[n].get();
+    else
+        throw length_error("Index " + to_string(n) + " is out of bound (score size is " + to_string(getSize()) + ").");
+    
 }
 
 /***********************************

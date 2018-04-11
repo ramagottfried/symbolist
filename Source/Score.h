@@ -44,24 +44,74 @@ public:
      *             GETTERS AND SETTERS            *
      **********************************************/
     inline TimePointArray* getTimePoints() { return &time_points; };
-    const TimePointArray* getTimePointArray() const
+    inline const TimePointArray* getTimePointArray() const
     {
         return &time_points;
     }
     
+    /**
+     * Gets the count of symbols contained in the score.
+     *
+     * @return the size of the score_symbols vector.
+     */
     size_t getSize();
     
+    /**
+     * Gets the symbol at index n in the score.
+     *
+     * @param n             the index of the symbol to retrieve
+     *                      in the score.
+     *
+     * @throws length_error If n is bigger than the score size.
+     *
+     * @return              a pointer to the symbol at
+     *                      index n in the score.
+     */
     Symbol* getSymbol(int n);
+    
     int getSymbolPosition(Symbol* s);
     
     /**
      * Creates a new empty symbol in the score.
      *
-     * @return a pointer to the newly create symbol.
+     * @return a pointer to the newly created symbol.
      */
     Symbol* createSymbol();
-    Symbol* addSymbol(Symbol* s);
-    void removeSymbol(Symbol* s);
+    
+    /**
+     * Adds a new symbol to the score.
+     *
+     * Actually, a new symbol is created by copying
+     * the one passed as argument, then it is added
+     * to the score.
+     * If the symbol in parameter already exists in the score
+     * then no symbol is added, and a pointer to the currently
+     * existing symbol in the score is returned.
+     *
+     * @param symbol a pointer to the symbol which will be copied
+     *               to create a new symbol in the score.
+     *
+     * @return       a pointer to the newly created symbol.
+     */
+    Symbol* addSymbol(Symbol* symbol);
+    
+    /**
+     * Removes a symbol from the score.
+     *
+     * Looks for the symbol passed as an argument in the score,
+     * and removes it if it exists.
+     *
+     * @param symbol            a pointer to the symbol to be removed
+     *                          from the score.
+     *
+     * @throws invalid_argument If the pointer passed as an argument is
+     *                          <code>NULL</code> or if the referenced
+     *                          symbol is not in the score.
+     *
+     * @throws logic_error      If the method is called while the score
+     *                          is empty (there are no symbols to remove).
+     */
+    void removeSymbol(Symbol* symbol);
     void removeAllSymbols();
         
     void importScoreFromOSC( const OdotBundle_s& s_bundle );

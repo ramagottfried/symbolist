@@ -85,6 +85,7 @@ public:
         return inspector;
     }
     inline PaletteComponent* getPaletteView() { return &paletteView; }
+    inline PageComponent*    getScoreView() { return &scoreView; }
     
     /*********************************************
      *        GUI FUNCTIONALITY AND TOOLS        *

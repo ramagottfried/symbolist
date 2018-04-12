@@ -16,7 +16,18 @@ PaletteButton::PaletteButton(int i, Symbol* s)
      */
     PaletteComponent* paletteComponent = dynamic_cast<PaletteComponent*>(getParentComponent());
     if (paletteComponent != NULL)
-        graphic_comp = paletteComponent->getController()->makeComponentFromSymbol(s, false);
+        try
+        {
+            // May throw logic_error if PaletteController has no parent controller.
+            graphic_comp = paletteComponent->getController()->makeComponentFromSymbol(s, false);
+        }
+        catch(logic_error& error)
+        {
+            cout << error.what() << endl;
+            
+            // Retrieves the SymbolistHandler instance to create component.
+            graphic_comp = getSymbolistHandler()->makeComponentFromSymbol(s, false);
+        }
     
     /* If no parent component then gets the SymbolistHandler instance directly. */
     else graphic_comp = getSymbolistHandler()->makeComponentFromSymbol(s, false);

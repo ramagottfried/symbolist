@@ -74,7 +74,7 @@ public:
     int getSymbolPosition(Symbol* s);
     
     /**
-     * Creates a new empty symbol in the score.
+     * Creates a new symbol in the score.
      *
      * @return a pointer to the newly created symbol.
      */
@@ -84,8 +84,7 @@ public:
      * Adds a new symbol to the score.
      *
      * Actually, a new symbol is created by copying
-     * the one passed as argument, then it is added
-     * to the score.
+     * the one in parameter, then it is added to the score.
      * If the symbol in parameter already exists in the score
      * then no symbol is added, and a pointer to the currently
      * existing symbol in the score is returned.

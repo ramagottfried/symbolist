@@ -1,7 +1,7 @@
 /************************************************************************************/
 /*!
  *  @file       symbolist.hpp
- *  @brief      Laibrary for symbolic score display and editing
+ *  @brief      Library for symbolic score display and editing
  *  @author     Jean Bresson & Rama Gottfried
  *  @date       10/05/2017
  *

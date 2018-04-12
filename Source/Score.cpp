@@ -295,7 +295,7 @@ void Score::importScoreFromOSC( const OdotBundle_s& s_bundle )
     OdotBundle bundle( s_bundle ); //<< deserializes the bundle
     
     std::cout << "===IMPORTRING OSC (" << bundle.size() << " messages)" << std::endl;
-    for( auto msg : bundle.getMessageArray() )
+    for ( auto msg : bundle.getMessageArray() )
     {
         if( msg.getAddress().find("/symbol") == 0 && msg[0].getType() == OdotAtom::O_ATOM_BUNDLE )
         {

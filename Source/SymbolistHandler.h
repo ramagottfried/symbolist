@@ -2,6 +2,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PaletteController.hpp"
+#include "PageController.hpp"
 #include "SymbolistModel.hpp"
 #include <iostream>
 #include <memory>
@@ -23,6 +24,11 @@ class SymbolistHandler : public virtual Controller<SymbolistModel, SymbolistMain
      * A Controller to handle palette-connected actions.
      */
     std::unique_ptr<PaletteController> paletteController;
+    
+    /**
+     * A Controller to handle score-connected actions.
+     */
+    std::unique_ptr<PageController> pageController;
     
     /**
      * The main graphic window of the application.
@@ -99,12 +105,24 @@ public:
      * @return The PaletteController instance owned by the SymbolistHandler.
      */
     inline PaletteController* getPaletteController() { return paletteController.get(); };
+    inline PageController*    getPageController() { return pageController.get(); }
     inline float getCurrentTime() { return current_time; }
     
     /**************************************************************
      *       FACTORY METHODS FOR CHILD CONTROLLERS' CREATION      *
      **************************************************************/
+    
+    /**
+     * Creates and sets up the PaletteController
+     * for the singleton instance of SymbolistHandler.
+     */
     void createPaletteController();
+    
+    /**
+     * Creates and sets up the PageController
+     * for the singleton instance of SymbolistHandler.
+     */
+    void createPageController();
     
     /********************************************************
      ********************************************************
@@ -150,7 +168,7 @@ public:
     int     symbolistAPI_getNumPaletteSymbols();
     Symbol* symbolistAPI_getPaletteSymbol(int n);
     void    symbolistAPI_setOnePaletteSymbol(const OdotBundle_s& bundle);
-    void    symbolistAPI_setPaletteSymbols(const OdotBundle_s& bundle_array);
+    void    symbolistAPI_setPaletteSymbols(const OdotBundle_s& bundleArray);
     
     void symbolistAPI_setTime(float time_ms);
     void symbolistAPI_toggleTimeCusor();
@@ -208,7 +226,6 @@ public:
     Symbol* getSelectedSymbolInPalette();
     
     BaseComponent* makeComponentFromSymbol(Symbol* s, bool attach_the_symbol);
-    void addComponentsFromScore();
     
     void inStandalone(){ in_standalone = true; };
     bool isStandalone(){ return in_standalone; };

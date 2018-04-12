@@ -348,6 +348,24 @@
 		758F6F79207BCB00006EDD53 /* SymbolistModelTestsFixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 758F6EF7207BC2C1006EDD53 /* SymbolistModelTestsFixture.cpp */; };
 		758F6F7A207BCB19006EDD53 /* libsymbolist-libo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 116A7E412046CF62004B545D /* libsymbolist-libo.a */; };
 		75FB5EF3207CAD7E0083A1C0 /* ScoreTestsFixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75FB5EF1207CAD7E0083A1C0 /* ScoreTestsFixture.cpp */; };
+		75FB5EFE207F51490083A1C0 /* SymbolistHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 4425D3031EF858C700B8BF1C /* SymbolistHandler.h */; };
+		75FB5EFF207F51760083A1C0 /* OdotPointers.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7F35204C4F20004B545D /* OdotPointers.h */; };
+		75FB5F00207F51940083A1C0 /* Symbol.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B718B01EDD9D010039884E /* Symbol.h */; };
+		75FB5F01207F519A0083A1C0 /* Score.h in Headers */ = {isa = PBXBuildFile; fileRef = 118C38DD1EC5BC4F006FF4A1 /* Score.h */; };
+		75FB5F02207F51AA0083A1C0 /* TimePointArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 118648951EFA811800904672 /* TimePointArray.h */; };
+		75FB5F05207F54C80083A1C0 /* PageController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75FB5F03207F54C80083A1C0 /* PageController.cpp */; };
+		75FB5F06207F54C80083A1C0 /* PageController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75FB5F03207F54C80083A1C0 /* PageController.cpp */; };
+		75FB5F07207F54C80083A1C0 /* PageController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75FB5F03207F54C80083A1C0 /* PageController.cpp */; };
+		75FB5F08207F54C80083A1C0 /* PageController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75FB5F03207F54C80083A1C0 /* PageController.cpp */; };
+		75FB5F09207F54C80083A1C0 /* PageController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75FB5F03207F54C80083A1C0 /* PageController.cpp */; };
+		75FB5F0A207F54C80083A1C0 /* PageController.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 75FB5F04207F54C80083A1C0 /* PageController.hpp */; };
+		75FB5F0B207F54C80083A1C0 /* PageController.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 75FB5F04207F54C80083A1C0 /* PageController.hpp */; };
+		75FB5F0C207F8C360083A1C0 /* Controller.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 75774F97206176790069A89D /* Controller.hpp */; };
+		75FB5F0D207F8C3A0083A1C0 /* Controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F90206176780069A89D /* Controller.cpp */; };
+		75FB5F0E207F8C3B0083A1C0 /* Controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F90206176780069A89D /* Controller.cpp */; };
+		75FB5F0F207F8C460083A1C0 /* Observable.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 75774F96206176790069A89D /* Observable.hpp */; };
+		75FB5F10207F8C4C0083A1C0 /* Observer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 75774F94206176780069A89D /* Observer.hpp */; };
+		75FB5F11207F8C500083A1C0 /* View.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 75774F92206176780069A89D /* View.hpp */; };
 		8D57C4E2ADEA2935AAB91AAC /* include_juce_graphics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 853ACA2E570BAA4D86EE11C0 /* include_juce_graphics.mm */; };
 		99140AD09D86B21587B6829C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26C36CB1C5754D666DE2579C /* Cocoa.framework */; };
 		AC7BC43E089630154F7F79D6 /* include_juce_core.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3FAB00DCF22EB4922567B583 /* include_juce_core.mm */; };
@@ -376,7 +394,7 @@
 		1107B3E01EF2D2BA00E2DFA9 /* PathHandleComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PathHandleComponent.h; path = ../../Source/PathHandleComponent.h; sourceTree = "<group>"; };
 		1107B3E71EF5388500E2DFA9 /* PathInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PathInfo.cpp; path = ../../Source/PathInfo.cpp; sourceTree = "<group>"; };
 		1107B3E81EF5388500E2DFA9 /* PathInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PathInfo.h; path = ../../Source/PathInfo.h; sourceTree = "<group>"; };
-		1107B3EF1EF7D53100E2DFA9 /* libsymbolist.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsymbolist.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		1107B3EF1EF7D53100E2DFA9 /* libsymbolist.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libsymbolist.a; path = ../../../../../../../../Documents/symbolist/Builds/MacOSX/build/Release/libsymbolist.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MouseModeComponent.cpp; path = ../../Source/MouseModeComponent.cpp; sourceTree = "<group>"; };
 		111A261B1F40B0C200D3713C /* MouseModeComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = MouseModeComponent.hpp; path = ../../Source/MouseModeComponent.hpp; sourceTree = "<group>"; };
 		11263093207F3D520086653D /* SVGFileIO.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SVGFileIO.cpp; path = ../../Source/SVGFileIO.cpp; sourceTree = "<group>"; };
@@ -590,6 +608,8 @@
 		75FB5EED207CA5850083A1C0 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		75FB5EF1207CAD7E0083A1C0 /* ScoreTestsFixture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ScoreTestsFixture.cpp; sourceTree = "<group>"; };
 		75FB5EF2207CAD7E0083A1C0 /* ScoreTestsFixture.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ScoreTestsFixture.hpp; sourceTree = "<group>"; };
+		75FB5F03207F54C80083A1C0 /* PageController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PageController.cpp; path = ../../Source/PageController.cpp; sourceTree = "<group>"; };
+		75FB5F04207F54C80083A1C0 /* PageController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = PageController.hpp; path = ../../Source/PageController.hpp; sourceTree = "<group>"; };
 		7C0662791C58643C02BEA4BC /* AppConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppConfig.h; path = ../../JuceLibraryCode/AppConfig.h; sourceTree = SOURCE_ROOT; };
 		853ACA2E570BAA4D86EE11C0 /* include_juce_graphics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_graphics.mm; path = ../../JuceLibraryCode/include_juce_graphics.mm; sourceTree = SOURCE_ROOT; };
 		87C0FE35ECEEB2961B46F3F9 /* juce_graphics */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_graphics; path = ../../../JUCE/modules/juce_graphics; sourceTree = SOURCE_ROOT; };
@@ -1006,6 +1026,8 @@
 				751E314A2069378600C3318F /* PaletteController.hpp */,
 				4425D3031EF858C700B8BF1C /* SymbolistHandler.h */,
 				4425D3041EF8599300B8BF1C /* SymbolistHandler.cpp */,
+				75FB5F03207F54C80083A1C0 /* PageController.cpp */,
+				75FB5F04207F54C80083A1C0 /* PageController.hpp */,
 			);
 			name = controller;
 			sourceTree = "<group>";
@@ -1118,24 +1140,34 @@
 			files = (
 				116A7EF22046DCAE004B545D /* OdotBundle.hpp in Headers */,
 				11AEF245207A94D000B1398D /* CodeboxComponent.hpp in Headers */,
+				75FB5F10207F8C4C0083A1C0 /* Observer.hpp in Headers */,
+				75FB5F11207F8C500083A1C0 /* View.hpp in Headers */,
 				113980B6206449EA002A2408 /* OdotExpr.hpp in Headers */,
 				116A7EFF2047ECB8004B545D /* OdotAtom.hpp in Headers */,
+				75FB5F00207F51940083A1C0 /* Symbol.h in Headers */,
 				11C442D31F585C1B00F2E9B6 /* TimeDisplay.hpp in Headers */,
 				11E80831207FCAC000E0342F /* SVGParser.hpp in Headers */,
 				114027C71F49C21E00A9B8C4 /* SortedStaves.hpp in Headers */,
 				112630B3207F4AC20086653D /* pugixml.hpp in Headers */,
 				114027CD1F4B185E00A9B8C4 /* StaffComponent.hpp in Headers */,
+				75FB5F0C207F8C360083A1C0 /* Controller.hpp in Headers */,
 				112630AF207F4AC20086653D /* pugiconfig.hpp in Headers */,
 				116F87771F9D04B90062EE91 /* ScoreBundleViewer.h in Headers */,
+				75FB5EFE207F51490083A1C0 /* SymbolistHandler.h in Headers */,
 				11A3939F20528799002C8916 /* OdotBundle_s.hpp in Headers */,
 				751E315C2069493F00C3318F /* PaletteController.hpp in Headers */,
 				116A7EF92047E99D004B545D /* OdotMessage.hpp in Headers */,
+				75FB5EFF207F51760083A1C0 /* OdotPointers.h in Headers */,
 				751E31572069410400C3318F /* PaletteButton.hpp in Headers */,
+				75FB5F02207F51AA0083A1C0 /* TimePointArray.h in Headers */,
+				75FB5F0F207F8C460083A1C0 /* Observable.hpp in Headers */,
 				113DEE0F1FA1D7C600A45220 /* EditSelectionBox.h in Headers */,
 				11AEF23D207A943800B1398D /* JsonTreeItem.hpp in Headers */,
+				75FB5F01207F519A0083A1C0 /* Score.h in Headers */,
 				75774FA92062A4D40069A89D /* Palette.hpp in Headers */,
 				11263098207F3D520086653D /* SVGFileIO.hpp in Headers */,
 				75774FA12062960C0069A89D /* SymbolistModel.hpp in Headers */,
+				75FB5F0A207F54C80083A1C0 /* PageController.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1164,6 +1196,7 @@
 				116A7ED92046CFCD004B545D /* osc_linkedlist.h in Headers */,
 				116A7EE52046CFCD004B545D /* osc_serial.h in Headers */,
 				116A7EE82046CFCD004B545D /* osc_typetag.h in Headers */,
+				75FB5F0B207F54C80083A1C0 /* PageController.hpp in Headers */,
 				116A7EE62046CFCD004B545D /* osc_strfmt.h in Headers */,
 				751E31582069410400C3318F /* PaletteButton.hpp in Headers */,
 				116A7EDB2046CFCD004B545D /* osc_mem.h in Headers */,
@@ -1347,6 +1380,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1186486F1EF7E68B00904672 /* include_juce_graphics.mm in Sources */,
+				75FB5F07207F54C80083A1C0 /* PageController.cpp in Sources */,
 				1107B3FC1EF7D55D00E2DFA9 /* BaseComponent.cpp in Sources */,
 				75774FA02062960C0069A89D /* SymbolistModel.cpp in Sources */,
 				1186486C1EF7E68B00904672 /* include_juce_core.mm in Sources */,
@@ -1385,6 +1419,7 @@
 				114027C61F49C21E00A9B8C4 /* SortedStaves.cpp in Sources */,
 				113DEE0E1FA1D7C600A45220 /* EditSelectionBox.cpp in Sources */,
 				1107B3F71EF7D55D00E2DFA9 /* TextGlyphComponent.cpp in Sources */,
+				75FB5F0E207F8C3B0083A1C0 /* Controller.cpp in Sources */,
 				118648981EFA811800904672 /* TimePointArray.cpp in Sources */,
 				11B71DD91F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
 				116A7EF82047E99D004B545D /* OdotMessage.cpp in Sources */,
@@ -1422,6 +1457,7 @@
 				116A7E7B2046CFB6004B545D /* osc_atom_array_u.c in Sources */,
 				116A7E7A2046CFB6004B545D /* osc_atom_array_s.c in Sources */,
 				116A7E792046CFB6004B545D /* osc_array.c in Sources */,
+				75FB5F08207F54C80083A1C0 /* PageController.cpp in Sources */,
 				116A7E982046CFB6004B545D /* osc_timetag.c in Sources */,
 				116A7E8C2046CFB6004B545D /* osc_match.c in Sources */,
 				116A7E832046CFB6004B545D /* osc_error.c in Sources */,
@@ -1481,11 +1517,13 @@
 				1186489D1EFAC44100904672 /* ScoreCursor.cpp in Sources */,
 				118C38DF1EC5BC4F006FF4A1 /* Score.cpp in Sources */,
 				116A7EFD2047ECB8004B545D /* OdotAtom.cpp in Sources */,
+				75FB5F06207F54C80083A1C0 /* PageController.cpp in Sources */,
 				757E1B43206A83C5002E472E /* View.cpp in Sources */,
 				11AEF242207A94D000B1398D /* CodeboxComponent.cpp in Sources */,
 				11D1235D1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */,
 				75774FA5206296C50069A89D /* Palette.cpp in Sources */,
 				444CD9041EDDAF1B001AC03A /* SymbolistComponent.cpp in Sources */,
+				75FB5F0D207F8C3A0083A1C0 /* Controller.cpp in Sources */,
 				44CFE03E1EC3789C009135F8 /* include_juce_gui_basics.mm in Sources */,
 				1107B3EA1EF5388500E2DFA9 /* PathInfo.cpp in Sources */,
 				11D86B8C1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */,
@@ -1544,6 +1582,7 @@
 				118C38DE1EC5BC4F006FF4A1 /* Score.cpp in Sources */,
 				444CD9031EDDAF1B001AC03A /* SymbolistComponent.cpp in Sources */,
 				116F87741F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */,
+				75FB5F05207F54C80083A1C0 /* PageController.cpp in Sources */,
 				11C442D01F585C1B00F2E9B6 /* TimeDisplay.cpp in Sources */,
 				11AEF241207A94D000B1398D /* CodeboxComponent.cpp in Sources */,
 				41C3942D9A94933B560F98F2 /* include_juce_gui_basics.mm in Sources */,
@@ -1608,6 +1647,7 @@
 				758F6F5C207BCB00006EDD53 /* ScoreComponent.cpp in Sources */,
 				758F6F5D207BCB00006EDD53 /* PageComponent.cpp in Sources */,
 				758F6F5E207BCB00006EDD53 /* PaletteComponent.cpp in Sources */,
+				75FB5F09207F54C80083A1C0 /* PageController.cpp in Sources */,
 				758F6F5F207BCB00006EDD53 /* PaletteButton.cpp in Sources */,
 				758F6F60207BCB00006EDD53 /* MouseModeComponent.cpp in Sources */,
 				758F6F61207BCB00006EDD53 /* TimeDisplay.cpp in Sources */,

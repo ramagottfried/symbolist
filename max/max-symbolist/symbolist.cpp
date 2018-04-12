@@ -1,5 +1,3 @@
-
-
 #include "ext.h"
 #include "ext_critical.h"
 
@@ -230,7 +228,6 @@ void symbolist_setSymbol( t_symbolist *x, t_symbol *msg, int argc, t_atom *argv 
     if( s_bndl )
     {
         symbolistSetOneSymbol( x->symbolist_handler, s_bndl );
-        
         osc_bundle_s_deepFree(s_bndl);
     }
     

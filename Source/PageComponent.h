@@ -4,13 +4,16 @@
 #include "StaffComponent.hpp"
 #include "ScoreCursor.h"
 #include "View.hpp"
+#include "SymbolistModel.hpp"
+#include "PageController.hpp"
 
 /**
  * Represents the page where all the graphic symbols
  * of the score are drawn.
  * PageComponent is a graphic component.
  */
-class PageComponent : public virtual ScoreComponent
+class PageComponent : public virtual ScoreComponent,
+                      public virtual View<SymbolistModel, PageController>
 {
 
     BaseComponent* edited_component;
@@ -25,10 +28,10 @@ public:
      */
     enum DisplayMode { MAIN, EDIT, STAFF };
     
-    // Redefine this from SymbolistComponent
+    // Inherited from SymbolistComponent.
     inline PageComponent* getPageComponent() override { return this; };
     
-    // redefine from ScoreComponents for special actions (update the score)
+    // Redefine from ScoreComponents for special actions (update the score)
     void addSubcomponent(SymbolistComponent *c) override ;
     void removeSubcomponent(SymbolistComponent *c) override ;
     
@@ -79,6 +82,10 @@ public:
         return getComponentAt(x, y);
     }
   */
+    
+    /* Overrides the update method inherited from the Observer class. */
+    virtual inline void update() override {}
+    
 private:
     DisplayMode display_mode = MAIN;
 

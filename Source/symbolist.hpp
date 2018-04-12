@@ -59,4 +59,8 @@ SYMBOLIST_API t_osc_bndl_s* symbolistGetDurationBundle(void* symbolist_handler);
 SYMBOLIST_API t_osc_bndl_s* symbolistGetSymbolsAtTime(void* symbolist_handler, float t);
 SYMBOLIST_API t_osc_bndl_s* symbolistGetScoreBundle(void* symbolist_handler );
 
+
+SYMBOLIST_API int symbolistImportSVG( void* symbolist_handler, const char * filename );
+
+
 #endif /* symbolist_hpp */

@@ -26,8 +26,10 @@ public:
          * symbolistNew() returns a void pointer for cross system
          * compatibility.
          */
-        symbolist_handler_ptr = static_cast<SymbolistHandler*>(symbolistNew());
-        symbolistOpenWindow(symbolist_handler_ptr);
+        symbolist_handler_ptr = static_cast<SymbolistHandler*>( symbolistNew() );
+        symbolistOpenWindow( symbolist_handler_ptr );
+        
+        symbolistImportSVG( symbolist_handler_ptr, "/Users/r/Documents/dev-lib/symbolist/SymbolistTests/svg-test.svg" );
     }
 
     void shutdown() override

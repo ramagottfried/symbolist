@@ -5,14 +5,11 @@
 
 class SVGFileIO
 {
-    vector< unique_ptr<Symbol> > m_score;
     pugi::xml_document m_doc;
-
-    struct m_simple_walker;
     
 public:
     
     void read( const char * filename );
-    
+    inline pugi::xml_document& getDoc(){ return m_doc; }
     
 };

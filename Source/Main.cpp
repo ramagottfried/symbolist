@@ -29,7 +29,7 @@ public:
         symbolist_handler_ptr = static_cast<SymbolistHandler*>( symbolistNew() );
         symbolistOpenWindow( symbolist_handler_ptr );
         
-        symbolistImportSVG( symbolist_handler_ptr, "/Users/r/Documents/dev-lib/symbolist/SymbolistTests/svg-test.svg" );
+        symbolistImportSVG( symbolist_handler_ptr, "/Users/r/Documents/dev-lib/symbolist/SymbolistTests/basic_shapes.svg" );
     }
 
     void shutdown() override

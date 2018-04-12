@@ -1,25 +1,6 @@
 
 #include "SVGFileIO.hpp"
-
-struct SVGFileIO::m_simple_walker : pugi::xml_tree_walker
-{
-    virtual bool for_each( pugi::xml_node& node )
-    {
-        for (int i = 0; i < depth(); ++i) std::cout << "  "; // indentation
-        
-        std::cout << node.type() << ": name='" << node.name() << "', value='" << node.value() <<"'";
-        
-        std::cout << " Attrs: ";
-        for (pugi::xml_attribute attr : node.attributes())
-        {
-            std::cout << " " << attr.name() << "=" << attr.value();
-        }
-        std::cout << std::endl;
-        
-        return true; // continue traversal
-    }
-};
-
+#include "SVGParser.hpp"
 
 void SVGFileIO::read( const char * filename )
 {
@@ -27,8 +8,15 @@ void SVGFileIO::read( const char * filename )
     
     if( result )
     {
-        m_simple_walker walker;
-        m_doc.traverse( walker );
+        SVGParser parser;
+        auto importedscore = parser.parse( m_doc );
+        
+        cout << "new score has " << importedscore.size() << endl;
+        for( int i = 0; i < importedscore.size(); i++ )
+        {
+            importedscore[i]->print();
+        }
+        
     }
     else
     {

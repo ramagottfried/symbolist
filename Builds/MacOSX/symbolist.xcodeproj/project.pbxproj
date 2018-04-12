@@ -220,6 +220,10 @@
 		11D123681F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D123641F46E4BA00A5EA5B /* OutputViewer.cpp */; };
 		11D86B8B1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */; };
 		11D86B8C1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */; };
+		11E8082E207FCAC000E0342F /* SVGParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11E8082C207FCAC000E0342F /* SVGParser.cpp */; };
+		11E8082F207FCAC000E0342F /* SVGParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11E8082C207FCAC000E0342F /* SVGParser.cpp */; };
+		11E80830207FCAC000E0342F /* SVGParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11E8082C207FCAC000E0342F /* SVGParser.cpp */; };
+		11E80831207FCAC000E0342F /* SVGParser.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11E8082D207FCAC000E0342F /* SVGParser.hpp */; };
 		27D1022754DD8B9BF3100BB7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A18855981466E65AB497B9D /* QuartzCore.framework */; };
 		41C3942D9A94933B560F98F2 /* include_juce_gui_basics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFC6EDE4A457A367163EEE /* include_juce_gui_basics.mm */; };
 		43C388A942D2F5ACD2A53FB6 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 981D2B1E1F9131A715FECA14 /* WebKit.framework */; };
@@ -530,6 +534,9 @@
 		11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PathBaseComponent.cpp; path = ../../Source/PathBaseComponent.cpp; sourceTree = "<group>"; };
 		11D86B8A1EEAEF7900681F6D /* PathBaseComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PathBaseComponent.h; path = ../../Source/PathBaseComponent.h; sourceTree = "<group>"; };
 		11D86B8F1EEAF9FD00681F6D /* BasicShapePathComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicShapePathComponents.h; path = ../../Source/BasicShapePathComponents.h; sourceTree = "<group>"; };
+		11E8082C207FCAC000E0342F /* SVGParser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SVGParser.cpp; path = ../../Source/SVGParser.cpp; sourceTree = "<group>"; };
+		11E8082D207FCAC000E0342F /* SVGParser.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = SVGParser.hpp; path = ../../Source/SVGParser.hpp; sourceTree = "<group>"; };
+		11E80832207FF0EC00E0342F /* StringTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = StringTools.h; path = ../../Source/StringTools.h; sourceTree = "<group>"; };
 		1345DFF5C1163A6CDA99FFDC /* JuceHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JuceHeader.h; path = ../../JuceLibraryCode/JuceHeader.h; sourceTree = SOURCE_ROOT; };
 		1FFFC6EDE4A457A367163EEE /* include_juce_gui_basics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_gui_basics.mm; path = ../../JuceLibraryCode/include_juce_gui_basics.mm; sourceTree = SOURCE_ROOT; };
 		26C36CB1C5754D666DE2579C /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -827,8 +834,7 @@
 			isa = PBXGroup;
 			children = (
 				116A7EF32047E873004B545D /* odot-wrapper */,
-				11263093207F3D520086653D /* SVGFileIO.cpp */,
-				11263094207F3D520086653D /* SVGFileIO.hpp */,
+				11E8082B207FCA8C00E0342F /* svg-io */,
 				44B718B01EDD9D010039884E /* Symbol.h */,
 				44B718AF1EDD9D010039884E /* Symbol.cpp */,
 				118C38DD1EC5BC4F006FF4A1 /* Score.h */,
@@ -901,6 +907,18 @@
 				11AEF240207A94D000B1398D /* CodeboxComponent.hpp */,
 			);
 			name = "tool-ui-components";
+			sourceTree = "<group>";
+		};
+		11E8082B207FCA8C00E0342F /* svg-io */ = {
+			isa = PBXGroup;
+			children = (
+				11263093207F3D520086653D /* SVGFileIO.cpp */,
+				11263094207F3D520086653D /* SVGFileIO.hpp */,
+				11E8082C207FCAC000E0342F /* SVGParser.cpp */,
+				11E8082D207FCAC000E0342F /* SVGParser.hpp */,
+				11E80832207FF0EC00E0342F /* StringTools.h */,
+			);
+			name = "svg-io";
 			sourceTree = "<group>";
 		};
 		444572681EFA67BE00A7DECD /* path-tools */ = {
@@ -1103,6 +1121,7 @@
 				113980B6206449EA002A2408 /* OdotExpr.hpp in Headers */,
 				116A7EFF2047ECB8004B545D /* OdotAtom.hpp in Headers */,
 				11C442D31F585C1B00F2E9B6 /* TimeDisplay.hpp in Headers */,
+				11E80831207FCAC000E0342F /* SVGParser.hpp in Headers */,
 				114027C71F49C21E00A9B8C4 /* SortedStaves.hpp in Headers */,
 				112630B3207F4AC20086653D /* pugixml.hpp in Headers */,
 				114027CD1F4B185E00A9B8C4 /* StaffComponent.hpp in Headers */,
@@ -1332,6 +1351,7 @@
 				75774FA02062960C0069A89D /* SymbolistModel.cpp in Sources */,
 				1186486C1EF7E68B00904672 /* include_juce_core.mm in Sources */,
 				118353481F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp in Sources */,
+				11E80830207FCAC000E0342F /* SVGParser.cpp in Sources */,
 				1107B3F31EF7D54800E2DFA9 /* symbolist.cpp in Sources */,
 				11263097207F3D520086653D /* SVGFileIO.cpp in Sources */,
 				1107B3FB1EF7D55D00E2DFA9 /* PathBaseComponent.cpp in Sources */,
@@ -1477,6 +1497,7 @@
 				118648971EFA811800904672 /* TimePointArray.cpp in Sources */,
 				1107B3DE1EF1751900E2DFA9 /* TextGlyphComponent.cpp in Sources */,
 				1107B3E21EF2D45500E2DFA9 /* PathHandleComponent.cpp in Sources */,
+				11E8082F207FCAC000E0342F /* SVGParser.cpp in Sources */,
 				11B71DD81F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
 				116A7EF72047E99D004B545D /* OdotMessage.cpp in Sources */,
 				113DEE0D1FA1D7C600A45220 /* EditSelectionBox.cpp in Sources */,
@@ -1539,6 +1560,7 @@
 				11B71DD71F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
 				116A7EEF2046DCAE004B545D /* OdotBundle.cpp in Sources */,
 				751E31532069410400C3318F /* PaletteButton.cpp in Sources */,
+				11E8082E207FCAC000E0342F /* SVGParser.cpp in Sources */,
 				1107B3DD1EF1751900E2DFA9 /* TextGlyphComponent.cpp in Sources */,
 				113980B3206449EA002A2408 /* OdotExpr.cpp in Sources */,
 				116F877A1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */,

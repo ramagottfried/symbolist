@@ -31,6 +31,15 @@
 		111A261C1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */; };
 		111A261D1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */; };
 		111A261E1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */; };
+		11263095207F3D520086653D /* SVGFileIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11263093207F3D520086653D /* SVGFileIO.cpp */; };
+		11263096207F3D520086653D /* SVGFileIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11263093207F3D520086653D /* SVGFileIO.cpp */; };
+		11263097207F3D520086653D /* SVGFileIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11263093207F3D520086653D /* SVGFileIO.cpp */; };
+		11263098207F3D520086653D /* SVGFileIO.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11263094207F3D520086653D /* SVGFileIO.hpp */; };
+		112630AF207F4AC20086653D /* pugiconfig.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 112630AC207F4AC20086653D /* pugiconfig.hpp */; };
+		112630B0207F4AC20086653D /* pugixml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 112630AD207F4AC20086653D /* pugixml.cpp */; };
+		112630B1207F4AC20086653D /* pugixml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 112630AD207F4AC20086653D /* pugixml.cpp */; };
+		112630B2207F4AC20086653D /* pugixml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 112630AD207F4AC20086653D /* pugixml.cpp */; };
+		112630B3207F4AC20086653D /* pugixml.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 112630AE207F4AC20086653D /* pugixml.hpp */; };
 		113980B3206449EA002A2408 /* OdotExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 113980B1206449EA002A2408 /* OdotExpr.cpp */; };
 		113980B4206449EA002A2408 /* OdotExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 113980B1206449EA002A2408 /* OdotExpr.cpp */; };
 		113980B5206449EA002A2408 /* OdotExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 113980B1206449EA002A2408 /* OdotExpr.cpp */; };
@@ -384,6 +393,11 @@
 		1107B3EF1EF7D53100E2DFA9 /* libsymbolist.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libsymbolist.a; path = ../../../../../../../../Documents/symbolist/Builds/MacOSX/build/Release/libsymbolist.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MouseModeComponent.cpp; path = ../../Source/MouseModeComponent.cpp; sourceTree = "<group>"; };
 		111A261B1F40B0C200D3713C /* MouseModeComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = MouseModeComponent.hpp; path = ../../Source/MouseModeComponent.hpp; sourceTree = "<group>"; };
+		11263093207F3D520086653D /* SVGFileIO.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SVGFileIO.cpp; path = ../../Source/SVGFileIO.cpp; sourceTree = "<group>"; };
+		11263094207F3D520086653D /* SVGFileIO.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = SVGFileIO.hpp; path = ../../Source/SVGFileIO.hpp; sourceTree = "<group>"; };
+		112630AC207F4AC20086653D /* pugiconfig.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = pugiconfig.hpp; path = ../../../Source/plugixml/pugiconfig.hpp; sourceTree = "<group>"; };
+		112630AD207F4AC20086653D /* pugixml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pugixml.cpp; path = ../../../Source/plugixml/pugixml.cpp; sourceTree = "<group>"; };
+		112630AE207F4AC20086653D /* pugixml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = pugixml.hpp; path = ../../../Source/plugixml/pugixml.hpp; sourceTree = "<group>"; };
 		113980B1206449EA002A2408 /* OdotExpr.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = OdotExpr.cpp; path = ../../Source/OdotExpr.cpp; sourceTree = "<group>"; };
 		113980B2206449EA002A2408 /* OdotExpr.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = OdotExpr.hpp; path = ../../Source/OdotExpr.hpp; sourceTree = "<group>"; };
 		113DEE0A1FA1D7C600A45220 /* EditSelectionBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EditSelectionBox.cpp; path = ../../Source/EditSelectionBox.cpp; sourceTree = "<group>"; };
@@ -549,10 +563,8 @@
 		444C43A41EE4A748000C6F69 /* SymbolGroupComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SymbolGroupComponent.h; path = ../../Source/SymbolGroupComponent.h; sourceTree = "<group>"; };
 		444CD9021EDDAF1B001AC03A /* SymbolistComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolistComponent.cpp; path = ../../Source/SymbolistComponent.cpp; sourceTree = "<group>"; };
 		445A661F1EDABDED00E2ADA2 /* SymbolistComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SymbolistComponent.h; path = ../../Source/SymbolistComponent.h; sourceTree = "<group>"; };
-		446363931EC6F4960054CB6D /* OSCIO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OSCIO.cpp; path = ../../Source/OSCIO.cpp; sourceTree = "<group>"; };
 		446363961EC8EF9C0054CB6D /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = types.h; path = ../../Source/types.h; sourceTree = "<group>"; };
 		446388D41EC34DC90038CFCB /* SymbolistMainWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolistMainWindow.cpp; path = ../../Source/SymbolistMainWindow.cpp; sourceTree = "<group>"; };
-		447FFBF31EC60CB60001000D /* OSCIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OSCIO.h; path = ../../Source/OSCIO.h; sourceTree = "<group>"; };
 		44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = symbolist.cpp; path = ../../Source/symbolist.cpp; sourceTree = "<group>"; };
 		44A3C1ED1EC317BE00C4AD14 /* symbolist.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = symbolist.hpp; path = ../../Source/symbolist.hpp; sourceTree = "<group>"; };
 		44B718AF1EDD9D010039884E /* Symbol.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Symbol.cpp; path = ../../Source/Symbol.cpp; sourceTree = "<group>"; };
@@ -704,6 +716,16 @@
 			name = "time-components";
 			sourceTree = "<group>";
 		};
+		1126308A207F3B6A0086653D /* pugixml */ = {
+			isa = PBXGroup;
+			children = (
+				112630AC207F4AC20086653D /* pugiconfig.hpp */,
+				112630AD207F4AC20086653D /* pugixml.cpp */,
+				112630AE207F4AC20086653D /* pugixml.hpp */,
+			);
+			path = pugixml;
+			sourceTree = "<group>";
+		};
 		116A7E3C2046CF3F004B545D /* libo */ = {
 			isa = PBXGroup;
 			children = (
@@ -825,8 +847,8 @@
 			isa = PBXGroup;
 			children = (
 				116A7EF32047E873004B545D /* odot-wrapper */,
-				447FFBF31EC60CB60001000D /* OSCIO.h */,
-				446363931EC6F4960054CB6D /* OSCIO.cpp */,
+				11263093207F3D520086653D /* SVGFileIO.cpp */,
+				11263094207F3D520086653D /* SVGFileIO.hpp */,
 				44B718B01EDD9D010039884E /* Symbol.h */,
 				44B718AF1EDD9D010039884E /* Symbol.cpp */,
 				118C38DD1EC5BC4F006FF4A1 /* Score.h */,
@@ -941,6 +963,7 @@
 				5BA2DB05C7718E6A683CC674 /* symbolist */,
 				758F6EF0207BBFC7006EDD53 /* SymbolistTests */,
 				116A7E3C2046CF3F004B545D /* libo */,
+				1126308A207F3B6A0086653D /* pugixml */,
 				94B8138ECA97E6DE808F6129 /* Juce Modules */,
 				0B36EDC8D7DFF8BAF3E150D2 /* Juce Library Code */,
 				7D07A1619BB37DE0267F74A0 /* Resources */,
@@ -1106,8 +1129,10 @@
 				75FB5F00207F51940083A1C0 /* Symbol.h in Headers */,
 				11C442D31F585C1B00F2E9B6 /* TimeDisplay.hpp in Headers */,
 				114027C71F49C21E00A9B8C4 /* SortedStaves.hpp in Headers */,
+				112630B3207F4AC20086653D /* pugixml.hpp in Headers */,
 				114027CD1F4B185E00A9B8C4 /* StaffComponent.hpp in Headers */,
 				75FB5F0C207F8C360083A1C0 /* Controller.hpp in Headers */,
+				112630AF207F4AC20086653D /* pugiconfig.hpp in Headers */,
 				116F87771F9D04B90062EE91 /* ScoreBundleViewer.h in Headers */,
 				75FB5EFE207F51490083A1C0 /* SymbolistHandler.h in Headers */,
 				11A3939F20528799002C8916 /* OdotBundle_s.hpp in Headers */,
@@ -1121,6 +1146,7 @@
 				11AEF23D207A943800B1398D /* JsonTreeItem.hpp in Headers */,
 				75FB5F01207F519A0083A1C0 /* Score.h in Headers */,
 				75774FA92062A4D40069A89D /* Palette.hpp in Headers */,
+				11263098207F3D520086653D /* SVGFileIO.hpp in Headers */,
 				75774FA12062960C0069A89D /* SymbolistModel.hpp in Headers */,
 				75FB5F0A207F54C80083A1C0 /* PageController.hpp in Headers */,
 			);
@@ -1341,6 +1367,7 @@
 				1186486C1EF7E68B00904672 /* include_juce_core.mm in Sources */,
 				118353481F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp in Sources */,
 				1107B3F31EF7D54800E2DFA9 /* symbolist.cpp in Sources */,
+				11263097207F3D520086653D /* SVGFileIO.cpp in Sources */,
 				1107B3FB1EF7D55D00E2DFA9 /* PathBaseComponent.cpp in Sources */,
 				757E1B46206A83CD002E472E /* View.cpp in Sources */,
 				751E31552069410400C3318F /* PaletteButton.cpp in Sources */,
@@ -1358,6 +1385,7 @@
 				114027CC1F4B185E00A9B8C4 /* StaffComponent.cpp in Sources */,
 				1186489E1EFAC44100904672 /* ScoreCursor.cpp in Sources */,
 				1107B4011EF7D55D00E2DFA9 /* SymbolistComponent.cpp in Sources */,
+				112630B2207F4AC20086653D /* pugixml.cpp in Sources */,
 				111A261E1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */,
 				11AEF243207A94D000B1398D /* CodeboxComponent.cpp in Sources */,
 				751E314D2069378600C3318F /* PaletteController.cpp in Sources */,
@@ -1442,6 +1470,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				11D123671F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */,
+				11263096207F3D520086653D /* SVGFileIO.cpp in Sources */,
 				11CE005F1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */,
 				44EE9BBE1EC37D3E0021C5A8 /* Main.cpp in Sources */,
 				44CFE03D1EC3789C009135F8 /* include_juce_graphics.mm in Sources */,
@@ -1460,6 +1489,7 @@
 				44CFE03F1EC3789C009135F8 /* include_juce_gui_extra.mm in Sources */,
 				118C38E41EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */,
 				118353471F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp in Sources */,
+				112630B1207F4AC20086653D /* pugixml.cpp in Sources */,
 				114027CB1F4B185E00A9B8C4 /* StaffComponent.cpp in Sources */,
 				11AEF23A207A943800B1398D /* JsonTreeItem.cpp in Sources */,
 				44CFE03C1EC3789C009135F8 /* include_juce_events.mm in Sources */,
@@ -1504,6 +1534,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				11CE005E1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */,
+				11263095207F3D520086653D /* SVGFileIO.cpp in Sources */,
 				11D123591F4471EA00A5EA5B /* ToolBarComp.cpp in Sources */,
 				AC7BC43E089630154F7F79D6 /* include_juce_core.mm in Sources */,
 				118353461F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp in Sources */,
@@ -1522,6 +1553,7 @@
 				114027CA1F4B185E00A9B8C4 /* StaffComponent.cpp in Sources */,
 				8D57C4E2ADEA2935AAB91AAC /* include_juce_graphics.mm in Sources */,
 				1186489C1EFAC44100904672 /* ScoreCursor.cpp in Sources */,
+				112630B0207F4AC20086653D /* pugixml.cpp in Sources */,
 				111A261C1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */,
 				11AEF239207A943800B1398D /* JsonTreeItem.cpp in Sources */,
 				11D1235C1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */,

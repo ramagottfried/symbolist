@@ -175,7 +175,7 @@ OdotBundle_s Score::getScoreBundle_s()
 }
 
 /***********************************
- * Create Single JSON object sting from Score Bundles
+ * Create Single JSON object string from Score Bundles
  ***********************************/
 string Score::getJSON()
 {
@@ -197,6 +197,7 @@ string Score::getJSON()
     
     return JSON;
 }
+
 
 /***********************************
  * Get active symbols at time

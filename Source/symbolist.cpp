@@ -129,3 +129,9 @@ t_osc_bndl_s* symbolistGetScoreBundle(void* symbolist_handler )
 }
 
 
+int symbolistImportSVG( void* symbolist_handler, const char * filename )
+{
+    return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_importSVG( filename );
+}
+
+

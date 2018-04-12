@@ -161,6 +161,9 @@ public:
     void         symbolistAPI_setOneSymbol(const OdotBundle_s& bundle);
     void         symbolistAPI_setSymbols(const OdotBundle_s& bundle_array);
     
+    /* File IO controller's methods. */
+    int         symbolistAPI_importSVG( const char * filename );
+    
     /* Palette controller's methods. */
     int     symbolistAPI_getNumPaletteSymbols();
     Symbol* symbolistAPI_getPaletteSymbol(int n);

@@ -260,6 +260,12 @@ void SymbolistHandler::symbolistAPI_setSymbols(const OdotBundle_s& bundleArray)
     }
 }
 
+int SymbolistHandler::symbolistAPI_importSVG( const char * filename )
+{
+    return getModel()->getScore()->importSVG( filename );
+
+}
+
 int SymbolistHandler::symbolistAPI_getNumPaletteSymbols()
 {
     return paletteController->getNumPaletteSymbols();

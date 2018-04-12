@@ -99,17 +99,17 @@ void symbolist_getSymbols_at_time( t_symbolist *x, double time )
     
     qelem_set( x->m_qelem_setTime );
 
-    odot_bundle* bndl = symbolistGetSymbolsAtTime( x->symbolist_handler, time);
+    t_osc_bndl_s* bndl = symbolistGetSymbolsAtTime( x->symbolist_handler, time);
     if( bndl )
-        symbolist_outletOSC( x->player_outlet, bndl->len, bndl->data );
+        symbolist_outletOSC( x->player_outlet, osc_bundle_s_getLen(bndl), osc_bundle_s_getPtr(bndl) );
 
 }
 
 void symbolist_getDuration( t_symbolist *x )
 {
-    odot_bundle *bndl = symbolistGetDurationBundle( x->symbolist_handler);
+    t_osc_bndl_s *bndl = symbolistGetDurationBundle( x->symbolist_handler);
     if( bndl )
-        symbolist_outletOSC( x->player_outlet, bndl->len, bndl->data );
+        symbolist_outletOSC( x->player_outlet, osc_bundle_s_getLen(bndl), osc_bundle_s_getPtr(bndl)  );
     
 }
 
@@ -229,7 +229,7 @@ void symbolist_setSymbol( t_symbolist *x, t_symbol *msg, int argc, t_atom *argv 
 
     if( s_bndl )
     {
-        symbolistSetOneSymbol( x->symbolist_handler, (odot_bundle *)s_bndl );
+        symbolistSetOneSymbol( x->symbolist_handler, s_bndl );
         
         osc_bundle_s_deepFree(s_bndl);
     }
@@ -245,9 +245,9 @@ void symbolist_clearScore( t_symbolist *x )
 void symbolist_getScoreBundle( t_symbolist *x )
 {
     
-    odot_bundle* bndl = symbolistGetScoreBundle( x->symbolist_handler );
+    t_osc_bndl_s* bndl = symbolistGetScoreBundle( x->symbolist_handler );
     if( bndl )
-        symbolist_outletOSC( x->dump_outlet, bndl->len, bndl->data );
+        symbolist_outletOSC( x->dump_outlet, osc_bundle_s_getLen(bndl), osc_bundle_s_getPtr(bndl) );
     
 }
 
@@ -255,8 +255,8 @@ void symbolist_get_symbol( t_symbolist *x, int num)
 {
     if( num >= 0 && num < symbolistGetNumSymbols( x->symbolist_handler ) )
     {
-        odot_bundle* bndl = symbolistGetSymbol( x->symbolist_handler, num );
-        symbolist_outletOSC( x->player_outlet, bndl->len, bndl->data );
+        t_osc_bndl_s* bndl = symbolistGetSymbol( x->symbolist_handler, num );
+        symbolist_outletOSC( x->player_outlet, osc_bundle_s_getLen(bndl), osc_bundle_s_getPtr(bndl) );
     }
     else
         object_error((t_object *)x, "lookup not in range!");

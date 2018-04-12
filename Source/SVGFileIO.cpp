@@ -1,22 +1,7 @@
 
 #include "SVGFileIO.hpp"
 
-void SVGFileIO::read( const char * filename )
-{
-    pugi::xml_parse_result result = m_doc.load_file( filename );
-    
-    if( result )
-        doParse( result );
-    else
-    {
-        std::cout << "XML [" << filename << "] parsed with errors, attr value: [" << m_doc.child("node").attribute("attr").value() << "]\n";
-        std::cout << "Error description: " << result.description() << "\n";
-        std::cout << "Error offset: " << result.offset << " (error at [..." << (filename + result.offset) << "]\n\n";
-    }
-}
-
-
-struct SVGFileIO::simple_walker : pugi::xml_tree_walker
+struct SVGFileIO::m_simple_walker : pugi::xml_tree_walker
 {
     virtual bool for_each( pugi::xml_node& node )
     {
@@ -35,10 +20,20 @@ struct SVGFileIO::simple_walker : pugi::xml_tree_walker
     }
 };
 
-void SVGFileIO::doParse( pugi::xml_parse_result result )
+
+void SVGFileIO::read( const char * filename )
 {
-    simple_walker walker;
-    m_doc.traverse( walker );
+    pugi::xml_parse_result result = m_doc.load_file( filename );
+    
+    if( result )
+    {
+        m_simple_walker walker;
+        m_doc.traverse( walker );
+    }
+    else
+    {
+        std::cout << "XML [" << filename << "] parsed with errors, attr value: [" << m_doc.child("node").attribute("attr").value() << "]\n";
+        std::cout << "Error description: " << result.description() << "\n";
+        std::cout << "Error offset: " << result.offset << " (error at [..." << (filename + result.offset) << "]\n\n";
+    }
 }
-
-

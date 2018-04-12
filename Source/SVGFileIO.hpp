@@ -8,8 +8,7 @@ class SVGFileIO
     vector< unique_ptr<Symbol> > m_score;
     pugi::xml_document m_doc;
 
-    struct simple_walker;
-    void doParse( pugi::xml_parse_result result );
+    struct m_simple_walker;
     
 public:
     

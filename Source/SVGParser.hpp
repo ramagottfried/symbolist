@@ -1,6 +1,5 @@
 #pragma once
 
-#include <sstream>
 #include "SVGFileIO.hpp"
 
 class SVGParser

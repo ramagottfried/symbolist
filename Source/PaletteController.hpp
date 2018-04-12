@@ -39,6 +39,8 @@ public:
      * @return A pointer to the newly created BaseComponent or <code>NULL</code>
      *         if the parent controller of this PaletteController instance is
      *         not of type SymbolistHandler.
+     *
+     * @see    SymbolistHandler#makeComponentFromSymbol(Symbol*, bool)
      */
     BaseComponent* makeComponentFromSymbol(Symbol* s, bool attach_the_symbol);
     
@@ -104,6 +106,11 @@ public:
      *                  palette's items.
      */
     void addSymbolFromComponent(BaseComponent* component);
+    
+    /**
+     *
+     */
+    
     
     /* Overrides the update method inherited from the Observer class. */
     virtual inline void update() override {}

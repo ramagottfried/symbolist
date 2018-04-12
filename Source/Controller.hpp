@@ -18,7 +18,7 @@ class Controller : public virtual Observer {
     ObservableClass* model;
     ViewClass* view;
     
-    Controller* parentController;
+    Observer* parentController;
     
 public:
     /************************************************
@@ -49,8 +49,8 @@ public:
     inline virtual ViewClass* getView() { return view; }
     inline virtual void setView(ViewClass* view) { this->view = view; }
     
-    inline virtual Controller* getParentController() { return parentController; }
-    inline virtual void setParentController(Controller* parentController)
+    inline virtual Observer* getParentController() { return parentController; }
+    inline virtual void setParentController(Observer* parentController)
     {
         this->parentController = parentController;
     }

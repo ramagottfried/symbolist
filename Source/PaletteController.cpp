@@ -18,7 +18,7 @@ BaseComponent* PaletteController::makeComponentFromSymbol(Symbol* s, bool attach
     SymbolistHandler* parentController = dynamic_cast<SymbolistHandler*>(getParentController());
     if (parentController != NULL)
         return parentController->makeComponentFromSymbol(s, attach_the_symbol);
-    else return NULL;
+    else throw logic_error("PaletteController has no parent controller.");
 }
 
 void PaletteController::setSelectedItem(int indexOfSelectedItem)
@@ -38,7 +38,7 @@ Symbol* PaletteController::getPaletteSymbol(int n)
 
 void PaletteController::setOnePaletteSymbol(const OdotBundle_s& bundle)
 {
-    getModel()->getPalette()->addUserItem(Symbol(bundle));
+    getModel()->addSymbolToPalette(Symbol(bundle));
 }
 
 void PaletteController::setPaletteSymbols(const OdotBundle_s& bundle_array)
@@ -49,7 +49,7 @@ void PaletteController::setPaletteSymbols(const OdotBundle_s& bundle_array)
         if( msg[0].getType() == OdotAtom::O_ATOM_BUNDLE && msg.getAddress().find("/symbol") == 0 )
         {
             Symbol s = Symbol(msg.getBundle().get_o_ptr());
-            getModel()->getPalette()->addUserItem(s);
+            getModel()->addSymbolToPalette(s);
         }
     
     // If view is set (means the main window is visible).
@@ -75,5 +75,5 @@ void PaletteController::addSymbolFromComponent(BaseComponent* component)
 {
     Symbol newPaletteSymbol = Symbol();
     component->addSymbolMessages(&newPaletteSymbol);
-    getModel()->getPalette()->addUserItem(newPaletteSymbol);
+    getModel()->addSymbolToPalette(newPaletteSymbol);
 }

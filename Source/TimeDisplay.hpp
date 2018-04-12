@@ -4,6 +4,10 @@
 
 class TimeDisplayComponent : public TextGlphComponent
 {
+    String m_time_str = "t = 0";
+    float m_time = 0;
+    bool display = false;
+    
 public:
     TimeDisplayComponent()
     {
@@ -12,7 +16,6 @@ public:
     
     ~TimeDisplayComponent(){}
     
-
     void setTime( float t )
     {
         m_time = t;
@@ -29,13 +32,7 @@ public:
     }
     
     bool hitTest (int x, int y) override { return false; }
-    
-private:
 
-    String m_time_str = "t = 0";
-    float m_time = 0;
-    bool display = false;
-    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimeDisplayComponent)
     
 };

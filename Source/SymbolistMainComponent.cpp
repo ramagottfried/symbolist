@@ -6,31 +6,34 @@ SymbolistMainComponent::SymbolistMainComponent()
     std::cout << "SymbolistMainComponent's constructor " << this << std::endl;
     setComponentID("MainComponent");
 
-    /* Sets the controller for this
-     * SymbolistMainComponent instance
-     * and all its child component.
+    /* Sets the corresponding controllers for this
+     * instance of SymbolistMainComponent and all
+     * its child component.
      */
     setController(SymbolistHandler::getInstance());
     getPaletteView()->setController(getController()->getPaletteController());
+    getScoreView()->setController(getController()->getPageController());
     
     /*
      * Sets model for this SymbolistMainComponent instance
      * and all its child components.
      */
     setModel(getController()->getModel());
-    getPaletteView()->setModel(getModel());
+    paletteView.setModel(getModel());
+    scoreView.setModel(getModel());
     
     /* Adds this SymbolistMainComponent instance and
      * its child components as observers of the model.
      */
     getModel()->attach(this);
     getModel()->attach(&paletteView);
+    getModel()->attach(&scoreView);
     
-    /* Sets UI look and creates the palette buttons */
+    // Sets UI look and creates the palette buttons.
     setLookAndFeel(&look_and_feel);
     updatePaletteView();
     
-    /* Sets scoreView properties and makes it visible */
+    // Sets scoreView properties and makes it visible.
     score_viewport.setViewedComponent(&scoreView, false);
     score_viewport.setFocusContainer (true);
     score_viewport.setScrollBarsShown(true, true);
@@ -43,7 +46,7 @@ SymbolistMainComponent::SymbolistMainComponent()
      */
     paletteView.selectPaletteButton(-1);
     
-    /* Makes all the other views visible. */
+    // Makes all the other views visible.
     addAndMakeVisible(paletteView);
     addAndMakeVisible(mouseModeView);
     addChildComponent(timeDisplayView);

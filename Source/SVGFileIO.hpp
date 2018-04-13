@@ -5,11 +5,12 @@
 
 class SVGFileIO
 {
-    pugi::xml_document m_doc;
-    
 public:
-    
     void read( const char * filename );
-    inline pugi::xml_document& getDoc(){ return m_doc; }
+
     
+    
+private:
+    pugi::xml_document m_doc;
+
 };

@@ -1,5 +1,5 @@
 #include "SVGParser.hpp"
-#include "StringTools.h"
+#include "StringTools.hpp"
 
 Symbol SVGParser::parseStyle( pugi::xml_attribute& style )
 {
@@ -35,7 +35,6 @@ Symbol SVGParser::nodeToSymbol( pugi::xml_node& node )
     Symbol sym;
     
     sym.addMessage( "/type", node.name() );
-    
     
     for (pugi::xml_attribute attr : node.attributes())
     {

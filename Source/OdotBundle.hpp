@@ -75,7 +75,12 @@ public:
     // n.b. caller must free this pointer!
     inline t_osc_bndl_s * get_t_osc_bndl_s(){ return osc_bundle_u_serialize( ptr.get() ); }
 
-    void unionWith( const OdotBundle& other );
+    /**
+     * Union values with another bundle
+     *
+     * @param passive   if set to true, union will give precedence to the other bundle
+     */
+    void unionWith( const OdotBundle& other, bool passive = false );
     
     void applyExpr( const OdotExpr& expr );
     inline void applyExpr( const string& expr ) { applyExpr( OdotExpr(expr) ); }

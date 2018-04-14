@@ -73,10 +73,15 @@ OdotBundle::OdotBundle( vector<OdotMessage> msg_vec )
     addMessage( msg_vec );
 }
 
-void OdotBundle::unionWith( const OdotBundle& other )
+void OdotBundle::unionWith( const OdotBundle& other, bool passive )
 {
     t_osc_bndl_u *unioned = osc_bundle_u_alloc();
-    osc_bundle_u_union( ptr.get(), other.ptr.get(), &unioned );
+    
+    if( !passive )
+        osc_bundle_u_union( ptr.get(), other.ptr.get(), &unioned );
+    else
+        osc_bundle_u_union( other.ptr.get(), ptr.get(), &unioned );
+
     ptr = odot::newOdotBundlePtr( unioned );
 }
 

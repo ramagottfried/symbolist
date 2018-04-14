@@ -10,8 +10,8 @@
 template <class ObservableClass, class ControllerClass>
 class View : public virtual Observer {
 
-    ObservableClass* model;
-    ControllerClass* controller;
+    ObservableClass* model = nullptr;
+    ControllerClass* controller = nullptr;
     
 public:
     /************************************************

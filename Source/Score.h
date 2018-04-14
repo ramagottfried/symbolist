@@ -86,8 +86,9 @@ public:
      * Actually, a new symbol is created by copying
      * the one in parameter, then it is added to the score.
      * If the symbol in parameter already exists in the score
-     * then no symbol is added, and a pointer to the currently
-     * existing symbol in the score is returned.
+     * then the symbol is updated with the values of the incoming
+     * symbol, and a pointer to the currently existing symbol
+     * in the score is returned.
      *
      * @param symbol a pointer to the symbol which will be copied
      *               to create a new symbol in the score.

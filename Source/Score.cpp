@@ -72,22 +72,33 @@ Symbol* Score::createSymbol()
  ***********************************/
 Symbol* Score::addSymbol(Symbol* symbol)
 {
-    auto iteratorToSymbol = find_if(score_symbols.begin(),
-                                    score_symbols.end(),
-                                    [symbol](unique_ptr<Symbol>& ptrToSymbol) {
-                                        return ptrToSymbol.get() == symbol;
-                                    });
-    
-    // If symbol exists in score, then return its reference.
-    if (iteratorToSymbol != score_symbols.end())
-        return (*iteratorToSymbol).get();
-    
     // Calls symbol's empty constructor if reference is NULL.
     if (symbol == NULL)
+    {
         score_symbols.push_back(unique_ptr<Symbol>(new Symbol()));
-    else
-        score_symbols.push_back(unique_ptr<Symbol>(new Symbol(*symbol)));
+        return score_symbols.back().get();
+    }
     
+    // make copy and add to symbol vector
+    score_symbols.push_back(unique_ptr<Symbol>(new Symbol(*symbol)));
+    
+    /* If symbol id exists in score, then union the incoming values with the current values
+     * and return the symbol reference.
+     */
+    string id = symbol->getID();
+    auto iteratorToSymbol = find_if(score_symbols.begin(),
+                                    score_symbols.end(),
+                                    [id]( unique_ptr<Symbol>& ptrToSymbol )
+                                    {
+                                        return ptrToSymbol->getID() == id;
+                                    });
+    
+    if (iteratorToSymbol != score_symbols.end())
+    {
+        (*iteratorToSymbol)->unionWith( symbol, true );
+        return (*iteratorToSymbol).get();
+    }
+
     /* Retrieves the last inserted symbol's reference
      * before sorting the score
      */

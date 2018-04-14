@@ -15,10 +15,10 @@
 template <class ObservableClass, class ViewClass>
 class Controller : public virtual Observer {
     
-    ObservableClass* model;
-    ViewClass* view;
+    ObservableClass* model = nullptr;
+    ViewClass* view = nullptr;
     
-    Observer* parentController;
+    Observer* parentController = nullptr;
     
 public:
     /************************************************

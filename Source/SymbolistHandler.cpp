@@ -12,6 +12,7 @@ SymbolistHandler* SymbolistHandler::INSTANCE = NULL;
 
 SymbolistHandler::SymbolistHandler()
 {
+    MessageManager::getInstance(); //<< this wasn't necessary before, I think there might be some JUCE code starting too soon now?
     cout << "SymbolistHandler's default constructor " << this << endl;
 }
 

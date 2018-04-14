@@ -130,21 +130,6 @@ public:
 
     string getSVG();
     
-    /**
-     * Exports the Score as an SVG file on disk.
-     *
-     *
-     * @param filename          name of file to write, including path
-     *
-     * @throws invalid_argument (nothing yet)
-     *
-     * @throws logic_error      (nothing yet)
-     */
-    int exportSVG( const char * filename )
-    {
-        
-        return 0;
-    }
     
     /**
      * Imports the Score from an SVG file on disk.
@@ -160,6 +145,24 @@ public:
     {
         SVGFileIO svg;
         svg.read( filename );
+        
+        return 0;
+    }
+    
+    /**
+     * Exports the Score from to SVG file on disk.
+     *
+     *
+     * @param filename          name of file to write, including path
+     *
+     * @throws invalid_argument (nothing yet)
+     *
+     * @throws logic_error      (nothing yet)
+     */
+    int exportSVG( const char * filename )
+    {
+        SVGFileIO svg;
+        svg.write( score_symbols, filename );
         
         return 0;
     }

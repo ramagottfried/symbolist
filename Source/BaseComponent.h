@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef BaseComponent_h
-#define BaseComponent_h
-
 #include "../JuceLibraryCode/JuceHeader.h"
 
 #include "Symbol.h"
@@ -193,4 +190,4 @@ public:
     
 };
 
-#endif
+

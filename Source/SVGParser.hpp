@@ -1,6 +1,8 @@
 #pragma once
 
-#include "SVGFileIO.hpp"
+#include "pugixml.hpp"
+#include "Symbol.h"
+#include "StringTools.hpp"
 
 class SVGParser
 {

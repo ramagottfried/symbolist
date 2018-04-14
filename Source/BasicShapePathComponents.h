@@ -142,7 +142,10 @@ class RectanglePathComponent : public BasicShapePathComponent
 {
 public:
     
-    RectanglePathComponent() = default;
+    RectanglePathComponent()
+    {
+        addAndMakeVisible(svg.get());
+    }
     ~RectanglePathComponent() = default;
 
     string getSymbolTypeStr() const override { return ( modif_flag ? "path" : "rectangle" ) ; }
@@ -160,6 +163,26 @@ public:
     }
     
 private:
+    String svgFile = R"(<?xml version="1.0" encoding="utf-8"?>
+    <!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+    <svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+    width="841.9px" height="595.3px" viewBox="0 0 841.9 595.3" style="enable-background:new 0 0 841.9 595.3;" xml:space="preserve"
+    >
+    <line style="fill:none;stroke:#000000;stroke-miterlimit:10;" x1="263.8" y1="235.1" x2="337.4" y2="218.5"/>
+    <path style="fill:none;stroke:#000000;stroke-miterlimit:10;" d="M163.8,135.1 337.4,218.5"/>
+    <rect x="284.5" y="83.8" style="fill:none;stroke:#000000;stroke-miterlimit:10;" width="52.1" height="43"/>
+    <g id="test">
+    <circle style="fill:none;stroke:#000000;stroke-miterlimit:10;" cx="149.4" cy="249.5" r="19.4"/>
+    <path style="fill:none;stroke:#000000;stroke-miterlimit:10;" d="M258.9,303.7c0,0,49.6-66.1,63.6-28.9"/>
+    </g>
+    </svg>
+)";
+    
+    std::unique_ptr<DrawableComposite> svg = std::unique_ptr<DrawableComposite>( dynamic_cast<DrawableComposite*> ( DrawableComposite::createFromSVG( *std::unique_ptr<XmlElement>( XmlDocument::parse( svgFile ) ).get() ) )
+                                                                                );
+    
+    
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (RectanglePathComponent)
 };

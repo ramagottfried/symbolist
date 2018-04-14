@@ -263,7 +263,11 @@ void SymbolistHandler::symbolistAPI_setSymbols(const OdotBundle_s& bundleArray)
 int SymbolistHandler::symbolistAPI_importSVG( const char * filename )
 {
     return getModel()->getScore()->importSVG( filename );
+}
 
+int SymbolistHandler::symbolistAPI_exportSVG( const char * filename )
+{
+    return getModel()->getScore()->exportSVG( filename );
 }
 
 int SymbolistHandler::symbolistAPI_getNumPaletteSymbols()
@@ -520,6 +524,8 @@ void SymbolistHandler::log_score_change()
 {
     redo_stack.clear();
     push_undo_stack();
+    
+    symbolistAPI_exportSVG( nullptr );
 }
 
 

@@ -1,5 +1,4 @@
 #include "SVGParser.hpp"
-#include "StringTools.hpp"
 
 Symbol SVGParser::parseStyle( pugi::xml_attribute& style )
 {

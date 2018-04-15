@@ -3,7 +3,7 @@
 #include "SymbolistMainComponent.h"
 #include "PageComponent.h"
 #include "PathHandleComponent.h"
-
+#include "StringTools.hpp"
 
 PathBaseComponent::~PathBaseComponent()
 {
@@ -185,6 +185,10 @@ void PathBaseComponent::addSymbolMessages(Symbol* s )
         s->addMessage( "/path/" + to_string(np) + "/str",    p->toString().getCharPointer() );
         s->addMessage( "/path/" + to_string(np) + "/length", p->getLength() );
 
+        
+        cout << p->toString() << endl;
+        cout << exportSVG() << endl;
+
         /* time is set by staff now */
 //        auto sub_bounds = Sym_PathBounds( *p );
 //        s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/time/start",    s->pixelsToTime( sub_bounds.getX() ) ) );
@@ -215,6 +219,8 @@ void PathBaseComponent::importFromSymbol(const Symbol &s)
         Path* subp = new Path();
         string path_str = s.getMessage("/path/" + to_string(np) + "/str").getString();
         subp->restoreFromString( path_str.c_str() );
+//        Drawable::parseSVGPath( ... ) << change to this
+
         m_path_array.add(subp);
     }
     
@@ -355,6 +361,47 @@ void PathBaseComponent::insertHandleBefore( PathHandle* target )
         addSubcomponent(h);
         path_handles.insert(position, h);
     }
+}
+
+string PathBaseComponent::exportSVG()
+{
+    string path_d;
+    for ( int np = 0; np < m_path_array.size(); np++ )
+    {
+        Path* m_path = m_path_array[np];
+        Path::Iterator it( *m_path );
+        
+        while( it.next() )
+        {
+            if (it.elementType == it.startNewSubPath)
+            {
+                path_d += "M" + trimStringzeros(to_string(it.x1)) + "," + trimStringzeros(to_string(it.y1));
+            }
+            else if (it.elementType == it.lineTo)
+            {
+                path_d += "L" + trimStringzeros(to_string(it.x1)) + "," + trimStringzeros(to_string(it.y1));
+            }
+            else if (it.elementType == it.quadraticTo)
+            {
+                path_d += "Q" + trimStringzeros(to_string(it.x1)) + "," + trimStringzeros(to_string(it.y1)) +" " + trimStringzeros(to_string(it.x2)) + "," + trimStringzeros(to_string(it.y2));
+            }
+            else if (it.elementType == it.cubicTo)
+            {
+                path_d += "C" + trimStringzeros(to_string(it.x1)) + "," + trimStringzeros(to_string(it.y1)) +
+                " " + trimStringzeros(to_string(it.x2)) + "," + trimStringzeros(to_string(it.y2)) +
+                " " + trimStringzeros(to_string(it.x3)) + "," + trimStringzeros(to_string(it.y3));
+            }
+            else if( it.elementType == it.closePath )
+            {
+                path_d += "Z";
+            }
+            else
+            {
+                cout << "undefined JUCE Path type -- (probalby not possible) " << it.elementType << endl;
+            }
+        }
+    }
+    return path_d;
 }
 
 

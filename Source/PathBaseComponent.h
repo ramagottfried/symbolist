@@ -83,7 +83,8 @@ public:
     
     inline Rectangle<float> getPathBounds() { return m_path_bounds; }
 
-    
+    string exportSVG();
+
     
 protected:
     

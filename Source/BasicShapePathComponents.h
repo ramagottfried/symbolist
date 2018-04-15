@@ -163,25 +163,15 @@ public:
     }
     
 private:
-    String svgFile = R"(<?xml version="1.0" encoding="utf-8"?>
-    <!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-    <svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-    width="841.9px" height="595.3px" viewBox="0 0 841.9 595.3" style="enable-background:new 0 0 841.9 595.3;" xml:space="preserve"
-    >
-    <line style="fill:none;stroke:#000000;stroke-miterlimit:10;" x1="263.8" y1="235.1" x2="337.4" y2="218.5"/>
-    <path style="fill:none;stroke:#000000;stroke-miterlimit:10;" d="M163.8,135.1 337.4,218.5"/>
-    <rect x="284.5" y="83.8" style="fill:none;stroke:#000000;stroke-miterlimit:10;" width="52.1" height="43"/>
-    <g id="test">
-    <circle style="fill:none;stroke:#000000;stroke-miterlimit:10;" cx="149.4" cy="249.5" r="19.4"/>
-    <path style="fill:none;stroke:#000000;stroke-miterlimit:10;" d="M258.9,303.7c0,0,49.6-66.1,63.6-28.9"/>
-    </g>
-    </svg>
-)";
+    String svgFile = R"(<svg>
+    <rect x='119.2' y='139.2' transform='matrix(0.8965 -0.443 0.443 0.8965 -57.7869 83.0835)' fill='#ED1C24' stroke='#000000' stroke-miterlimit='10' width='59.5' height='52.1'/>
+    <path fill='#ED1C24' stroke='#000000' stroke-miterlimit='10' d='M234.9,110.3c9.1-31.4,71.1,38,71.1,38s31.4,130.6-18.2,84.3
+    s-47.9-83.5-5.8-49.6s97.5,38,101.7,65.3s-54.5,90.1-74.4,76c-19.8-14,80.2-68.6,97.5-55.4'/>
+    <path fill='#ED1C24' stroke='#000000' stroke-miterlimit='10' d='M475.4,416.1'/>
+    </svg>)";
     
     std::unique_ptr<DrawableComposite> svg = std::unique_ptr<DrawableComposite>( dynamic_cast<DrawableComposite*> ( DrawableComposite::createFromSVG( *std::unique_ptr<XmlElement>( XmlDocument::parse( svgFile ) ).get() ) )
                                                                                 );
-    
-    
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (RectanglePathComponent)

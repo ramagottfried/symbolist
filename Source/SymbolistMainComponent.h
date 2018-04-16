@@ -41,8 +41,8 @@ public:
     {
         return inspector;
     }
-    inline PaletteComponent* getPaletteView() { return &paletteView; }
-    inline PageComponent*    getScoreView() { return &scoreView; }
+    inline PaletteComponent* getPaletteView() { return &palette_view; }
+    inline PageComponent*    getScoreView() { return &score_view; }
     
     /*********************************************
      *        GUI FUNCTIONALITY AND TOOLS        *
@@ -87,12 +87,12 @@ public:
     void setTimePoint( float t )
     {
         getPageComponent()->setTimePoint(t);
-        timeDisplayView.setTime(t);
+        time_display_view.setTime(t);
     }
     
     void toggleTimeAndCursorDisplay()
     {
-        timeDisplayView.toggleView();
+        time_display_view.toggleView();
         getPageComponent()->toggleCursorDisplay();
     }
     
@@ -122,12 +122,12 @@ private:
     /**
      * A graphic component representing the score.
      */
-    PageComponent                    scoreView;
+    PageComponent                    score_view;
 	
     /**
      * A graphic component representing the palette.
      */
-    PaletteComponent                 paletteView;
+    PaletteComponent                 palette_view;
 	
     /**
      * A graphic component for the application's menu.
@@ -136,8 +136,8 @@ private:
      */
     SymbolistMenu                    menu;
     ScopedPointer<PropertyPanelTabs> inspector;
-    MouseModeComponent               mouseModeView;
-    TimeDisplayComponent             timeDisplayView;
+    MouseModeComponent               mouse_mode_view;
+    TimeDisplayComponent             time_display_view;
 	
 	/***************************************************
      *             MISC GRAPHIC PROPERTIES             *

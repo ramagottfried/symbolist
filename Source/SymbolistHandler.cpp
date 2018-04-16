@@ -48,8 +48,8 @@ SymbolistHandler::SymbolistHandler()
      * all its child controllers as observers of the model.
      */
     getModel()->attach(this);
-    getModel()->attach(paletteController.get());
-    getModel()->attach(pageController.get());
+    getModel()->attach(palette_controller.get());
+    getModel()->attach(page_controller.get());
 }
 
 SymbolistHandler::SymbolistHandler(SymbolistModel* model, SymbolistMainComponent* view)
@@ -75,9 +75,9 @@ void SymbolistHandler::createPaletteController()
     /* Creates the paletteController and sets its model
      * and parent controller.
      */
-    this->paletteController = unique_ptr<PaletteController>(new PaletteController());
-    this->paletteController->setParentController(this);
-    this->paletteController->setModel(getModel());
+    this->palette_controller = unique_ptr<PaletteController>(new PaletteController());
+    this->palette_controller->setParentController(this);
+    this->palette_controller->setModel(getModel());
 }
 
 void SymbolistHandler::createPageController()
@@ -85,9 +85,9 @@ void SymbolistHandler::createPageController()
     /* Creates the pageController and sets its model
      * and parent controller.
      */
-    this->pageController = unique_ptr<PageController>(new PageController());
-    this->pageController->setParentController(this);
-    this->pageController->setModel(getModel());
+    this->page_controller = unique_ptr<PageController>(new PageController());
+    this->page_controller->setParentController(this);
+    this->page_controller->setModel(getModel());
 }
 
 /*********************************************
@@ -123,10 +123,10 @@ void SymbolistHandler::symbolistAPI_openWindow()
      * and all its child controllers.
      */
     setView(main_window->getMainComponent());
-    paletteController->setView(getView()->getPaletteView());
-    pageController->setView(getView()->getScoreView());
+    palette_controller->setView(getView()->getPaletteView());
+    page_controller->setView(getView()->getScoreView());
     
-    pageController->addComponentsFromScore();
+    page_controller->addComponentsFromScore();
     getView()->grabKeyboardFocus();
 
 }
@@ -170,22 +170,22 @@ void SymbolistHandler::symbolistAPI_windowSetName(String name)
 
 void SymbolistHandler::symbolistAPI_registerUpdateCallback(symbolistUpdateCallback c)
 {
-    myUpdateCallback = c;
+    my_update_callback = c;
 }
 
 void SymbolistHandler::symbolistAPI_registerCloseCallback(symbolistCloseCallback c)
 {
-    myCloseCallback = c;
+    my_close_callback = c;
 }
 
 void SymbolistHandler::symbolistAPI_registerTransportCallback(symbolistTransportCallback c)
 {
-    myTransportCallback = c;
+    my_transport_callback = c;
 }
 
 int SymbolistHandler::symbolistAPI_getNumSymbols()
 {
-    return pageController->getCountOfSymbols();
+    return page_controller->getCountOfSymbols();
 }
 
 Symbol* SymbolistHandler::symbolistAPI_getSymbol(int n)
@@ -193,7 +193,7 @@ Symbol* SymbolistHandler::symbolistAPI_getSymbol(int n)
     try
     {
         // May throw length_error exception.
-        return pageController->getSymbolAtIndex(n);
+        return page_controller->getSymbolAtIndex(n);
     }
     catch (length_error &error)
     {
@@ -207,7 +207,7 @@ OdotBundle_s SymbolistHandler::symbolistAPI_getSymbolBundle_s(int n)
     try
     {
         // May throw length_error exception.
-        return pageController->getSymbolAtIndex(n)->serialize();
+        return page_controller->getSymbolAtIndex(n)->serialize();
     }
     catch (length_error &error)
     {
@@ -221,11 +221,11 @@ void SymbolistHandler::symbolistAPI_setOneSymbol(const OdotBundle_s& bundle)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
     
-    Symbol* symbol = pageController->setOneSymbol(bundle);
+    Symbol* symbol = page_controller->setOneSymbol(bundle);
     
     if (getView() != nullptr)
         // Calls internally the executeUpdateCallback.
-        pageController->makeComponentFromSymbol(symbol, true);
+        page_controller->makeComponentFromSymbol(symbol, true);
     else
     {
         executeUpdateCallback( -1 );
@@ -237,12 +237,12 @@ void SymbolistHandler::symbolistAPI_setSymbols(const OdotBundle_s& bundleArray)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
     
-    pageController->importScoreFromOSC(bundleArray);
+    page_controller->importScoreFromOSC(bundleArray);
     
     if ( getView() != NULL)
     {
-        pageController->clearAllSubcomponents();
-        pageController->addComponentsFromScore();
+        page_controller->clearAllSubcomponents();
+        page_controller->addComponentsFromScore();
     }
 }
 
@@ -258,24 +258,24 @@ int SymbolistHandler::symbolistAPI_exportSVG( const char * filename )
 
 int SymbolistHandler::symbolistAPI_getNumPaletteSymbols()
 {
-    return paletteController->getNumPaletteSymbols();
+    return palette_controller->getNumPaletteSymbols();
 }
 
 Symbol* SymbolistHandler::symbolistAPI_getPaletteSymbol(int n)
 {
-    return paletteController->getPaletteSymbol(n);
+    return palette_controller->getPaletteSymbol(n);
 }
 
 void SymbolistHandler::symbolistAPI_setOnePaletteSymbol(const OdotBundle_s& bundle)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
-    paletteController->setOnePaletteSymbol(bundle);
+    palette_controller->setOnePaletteSymbol(bundle);
 }
 
 void SymbolistHandler::symbolistAPI_setPaletteSymbols(const OdotBundle_s& bundle_array)
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
-    paletteController->setPaletteSymbols(bundle_array);
+    palette_controller->setPaletteSymbols(bundle_array);
 }
 
 void SymbolistHandler::symbolistAPI_setTime(float time_ms)
@@ -295,17 +295,17 @@ void SymbolistHandler::symbolistAPI_toggleTimeCusor()
 
 OdotBundle_s SymbolistHandler::symbolistAPI_getSymbolsAtTime( float t )
 {
-    return pageController->getSymbolsAtTime(t);
+    return page_controller->getSymbolsAtTime(t);
 }
 
 OdotBundle_s SymbolistHandler::symbolistAPI_getdurationBundle()
 {
-    return pageController->getDurationBundle();
+    return page_controller->getDurationBundle();
 }
 
 OdotBundle_s SymbolistHandler::symbolistAPI_getScoreBundle()
 {
-    return pageController->getScoreBundle();
+    return page_controller->getScoreBundle();
 }
 
 void SymbolistHandler::symbolistAPI_clearScore()
@@ -313,9 +313,9 @@ void SymbolistHandler::symbolistAPI_clearScore()
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
 
     if ( getView() != NULL )
-        pageController->clearAllSubcomponents();
+        page_controller->clearAllSubcomponents();
     
-    pageController->removeAllSymbols();
+    page_controller->removeAllSymbols();
 }
 
 
@@ -324,18 +324,18 @@ void SymbolistHandler::symbolistAPI_clearScore()
  *******************************/
 void SymbolistHandler::executeCloseCallback()
 {
-    if (myCloseCallback) { myCloseCallback( this ); }
+    if (my_close_callback) { my_close_callback( this ); }
 }
 
 void SymbolistHandler::executeUpdateCallback(int arg)
 {
     //cout << "executeUpdateCallback" << endl;
-    if (myUpdateCallback) { myUpdateCallback( this, arg ); }
+    if (my_update_callback) { my_update_callback( this, arg ); }
 }
 
 void SymbolistHandler::executeTransportCallback(int arg)
 {
-    if (myTransportCallback) { myTransportCallback( this, arg ); }
+    if (my_transport_callback) { my_transport_callback( this, arg ); }
 }
 
 //=================================
@@ -343,7 +343,7 @@ void SymbolistHandler::executeTransportCallback(int arg)
 //=================================
 Symbol* SymbolistHandler::createSymbolFromTemplate()
 {
-    return pageController->getModel()->addSymbolToScore(getSelectedSymbolInPalette());
+    return page_controller->getModel()->addSymbolToScore(getSelectedSymbolInPalette());
 }
 
 Symbol* SymbolistHandler::createSymbol()
@@ -353,7 +353,7 @@ Symbol* SymbolistHandler::createSymbol()
 
 StaffComponent* SymbolistHandler::getStaveAtTime(float time)
 {
-    return pageController->getStaveAtTime(time);
+    return page_controller->getStaveAtTime(time);
 }
 //=================================
 // PALETTE
@@ -361,7 +361,7 @@ StaffComponent* SymbolistHandler::getStaveAtTime(float time)
 
 Symbol* SymbolistHandler::getSelectedSymbolInPalette()
 {
-    return paletteController->getSelectedSymbolInPalette();
+    return palette_controller->getSelectedSymbolInPalette();
 }
 
 //=================================
@@ -552,7 +552,7 @@ void SymbolistHandler::undo()
             getModel()->getScore()->removeAllSymbols();
             getModel()->setScore(undo_stack.removeAndReturn( undo_stack.size() - 1 ));
             
-            pageController->addComponentsFromScore();
+            page_controller->addComponentsFromScore();
             getView()->repaint();
         }
         
@@ -574,7 +574,7 @@ void SymbolistHandler::redo()
             getModel()->getScore()->removeAllSymbols();
             getModel()->setScore(redo_stack.removeAndReturn( redo_stack.size() - 1 ));
             
-            pageController->addComponentsFromScore();
+            page_controller->addComponentsFromScore();
             getView()->repaint();
         }
         
@@ -604,8 +604,6 @@ void SymbolistHandler::convertSelectedToStaff()
     getView()->getPageComponent()->createStaffFromSelected();
 }
 
-
-
 void SymbolistHandler::copySelectedToClipBoard()
 {
     clipboard.clear();
@@ -625,8 +623,6 @@ void SymbolistHandler::newFromClipBoard()
 	
     for( auto s : clipboard )
     {
-        // cout << " SymbolistHandler::newFromClipBoard " << endl;
-        // cout << s->getID() << endl;
         Symbol* new_sym = new Symbol(*s);
         BaseComponent *c = makeComponentFromSymbol(new_sym, true);
         

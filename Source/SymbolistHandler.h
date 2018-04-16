@@ -46,8 +46,8 @@ public:
     /**
      * @return The PaletteController instance owned by the SymbolistHandler.
      */
-    inline PaletteController* getPaletteController() { return paletteController.get(); };
-    inline PageController*    getPageController() { return pageController.get(); }
+    inline PaletteController* getPaletteController() { return palette_controller.get(); };
+    inline PageController*    getPageController() { return page_controller.get(); }
     inline float getCurrentTime() { return current_time; }
     
     /**************************************************************
@@ -204,12 +204,12 @@ private:
     /**
      * A Controller to handle palette-connected actions.
      */
-    std::unique_ptr<PaletteController> paletteController;
+    std::unique_ptr<PaletteController> palette_controller;
 	
     /**
      * A Controller to handle score-connected actions.
      */
-    std::unique_ptr<PageController> pageController;
+    std::unique_ptr<PageController> page_controller;
 	
     /**
      * The main graphic window of the application.
@@ -229,19 +229,19 @@ private:
     /**
      * On update callback to the host environment.
      */
-    symbolistUpdateCallback myUpdateCallback = NULL;
+    symbolistUpdateCallback my_update_callback = NULL;
 	
     /**
      * On close callback to the host environment.
      */
-    symbolistCloseCallback myCloseCallback = NULL;
+    symbolistCloseCallback my_close_callback = NULL;
 	
     /**
      * On transport callback to the host environment.
      * This function is called when the user invokes
      * the time cursor view.
      */
-    symbolistTransportCallback myTransportCallback = NULL;
+    symbolistTransportCallback my_transport_callback = NULL;
 	
     OwnedArray<Symbol> clipboard;
     OwnedArray<Score> undo_stack;

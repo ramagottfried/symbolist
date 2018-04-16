@@ -3,7 +3,7 @@
 
 SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
 {
-    std::cout << "SymbolistMainComponent's constructor " << this << std::endl;
+    std::cout << __func__ << " " << this << std::endl;
     setComponentID("MainComponent");
 
     /* Sets the corresponding controllers for this
@@ -11,45 +11,45 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
      * its child component.
      */
     setController(mainController);
-    getPaletteView()->setController(getController()->getPaletteController());
-    getScoreView()->setController(getController()->getPageController());
+    palette_view.setController(getController()->getPaletteController());
+    score_view.setController(getController()->getPageController());
     
     /*
      * Sets model for this SymbolistMainComponent instance
      * and all its child components.
      */
     setModel(getController()->getModel());
-    paletteView.setModel(getModel());
-    scoreView.setModel(getModel());
+    palette_view.setModel(getModel());
+    score_view.setModel(getModel());
     
     /* Adds this SymbolistMainComponent instance and
      * its child components as observers of the model.
      */
     getModel()->attach(this);
-    getModel()->attach(&paletteView);
-    getModel()->attach(&scoreView);
+    getModel()->attach(&palette_view);
+    getModel()->attach(&score_view);
     
     // Sets UI look and creates the palette buttons.
     setLookAndFeel(&look_and_feel);
     updatePaletteView();
     
     // Sets scoreView properties and makes it visible.
-    score_viewport.setViewedComponent(&scoreView, false);
+    score_viewport.setViewedComponent(&score_view, false);
     score_viewport.setFocusContainer (true);
     score_viewport.setScrollBarsShown(true, true);
     
-    scoreView.setSize(6000, 2000);
+    score_view.setSize(6000, 2000);
     addAndMakeVisible(score_viewport);
     
     /* Highlights the default selected
      * button on the palette.
      */
-    paletteView.selectPaletteButton(-1);
+    palette_view.selectPaletteButton(-1);
     
     // Makes all the other views visible.
-    addAndMakeVisible(paletteView);
-    addAndMakeVisible(mouseModeView);
-    addChildComponent(timeDisplayView);
+    addAndMakeVisible(palette_view);
+    addAndMakeVisible(mouse_mode_view);
+    addChildComponent(time_display_view);
     addAndMakeVisible(menu);
     menu_h = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
     
@@ -63,15 +63,15 @@ SymbolistMainComponent::~SymbolistMainComponent()
     assert(getController() != NULL);
     setLookAndFeel(nullptr);
     
-    paletteView.deleteAllChildren();
+    palette_view.deleteAllChildren();
     inspector->removeAllChildren();
     
     /* Removes SymbolistMainComponent and its child components
      * from the SymbolistModel's observers list.
      */
     getModel()->detach(this);
-    getModel()->detach(&paletteView);
-    getModel()->detach(&scoreView);
+    getModel()->detach(&palette_view);
+    getModel()->detach(&score_view);
     
 }
 
@@ -82,11 +82,11 @@ void SymbolistMainComponent::resized()
     
     menu_h = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
     
-    paletteView.setBounds( 0, 0, palette_w, h );
+    palette_view.setBounds( 0, 0, palette_w, h );
     score_viewport.setBounds( palette_w, menu_h, w-palette_w, h );
-    mouseModeView.setBounds( palette_w, h-25, w-palette_w, 25 );
+    mouse_mode_view.setBounds( palette_w, h-25, w-palette_w, 25 );
     menu.setBounds(palette_w, 0, w-palette_w, menu_h );
-    timeDisplayView.setBounds(palette_w, menu_h+2, 12, 13);
+    time_display_view.setBounds(palette_w, menu_h+2, 12, 13);
     
     if( inspector->isVisible() )
     {
@@ -100,12 +100,12 @@ void SymbolistMainComponent::resized()
 
 void SymbolistMainComponent::updatePaletteView()
 {
-    paletteView.buildFromPalette();
+    palette_view.buildFromPalette();
 }
 
 void SymbolistMainComponent::addSelectedSymbolsToPalette()
 {
-    paletteView.addSymbolsToPalette(scoreView.getSelectedItems());
+    palette_view.addSymbolsToPalette(score_view.getSelectedItems());
     updatePaletteView();
 }
 
@@ -133,7 +133,7 @@ void SymbolistMainComponent::toggleInspector()
 void SymbolistMainComponent::zoom( float delta )
 {
     m_zoom += delta;
-    scoreView.setTransform( AffineTransform().scale( m_zoom ) );
+    score_view.setTransform( AffineTransform().scale( m_zoom ) );
     repaint();
 }
 
@@ -154,7 +154,7 @@ Rectangle<float> SymbolistMainComponent::getViewRect()
 void SymbolistMainComponent::setMouseMode( UI_EditType m )
 {
     mouse_mode = m;
-    mouseModeView.setMouseMode( m );
+    mouse_mode_view.setMouseMode( m );
 }
 
 UI_EditType SymbolistMainComponent::getMouseMode()
@@ -165,7 +165,7 @@ UI_EditType SymbolistMainComponent::getMouseMode()
 void SymbolistMainComponent::setDrawMode(UI_DrawType m)
 {
     draw_mode = m;
-    mouseModeView.setDrawMode(m);
+    mouse_mode_view.setDrawMode(m);
 }
 
 UI_DrawType SymbolistMainComponent::getDrawMode()

@@ -1,7 +1,7 @@
 #include "SymbolistMainComponent.h"
 #include "SymbolistMainWindow.h"
 
-SymbolistMainComponent::SymbolistMainComponent()
+SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
 {
     std::cout << "SymbolistMainComponent's constructor " << this << std::endl;
     setComponentID("MainComponent");
@@ -10,7 +10,7 @@ SymbolistMainComponent::SymbolistMainComponent()
      * instance of SymbolistMainComponent and all
      * its child component.
      */
-    setController(SymbolistHandler::getInstance());
+    setController(mainController);
     getPaletteView()->setController(getController()->getPaletteController());
     getScoreView()->setController(getController()->getPageController());
     
@@ -53,7 +53,7 @@ SymbolistMainComponent::SymbolistMainComponent()
     addAndMakeVisible(menu);
     menu_h = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
     
-    inspector = new PropertyPanelTabs(SymbolistHandler::getInstance());
+    inspector = new PropertyPanelTabs(mainController);
     
     setSize(600, 400);
 }
@@ -71,6 +71,7 @@ SymbolistMainComponent::~SymbolistMainComponent()
      */
     getModel()->detach(this);
     getModel()->detach(&paletteView);
+    getModel()->detach(&scoreView);
     
 }
 

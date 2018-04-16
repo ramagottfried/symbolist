@@ -90,7 +90,7 @@ Symbol* Score::addSymbol(Symbol* symbol)
                                     score_symbols.end(),
                                     [id]( unique_ptr<Symbol>& ptrToSymbol )
                                     {
-                                        return ptrToSymbol->getID() == id;
+                                        return ptrToSymbol->getID() == id && id != "";
                                     });
     
     if (iteratorToSymbol != score_symbols.end())

@@ -5,7 +5,7 @@ TEST_CASE_METHOD(ScoreTestsFixture, "After creation, score_symbols, time_points 
 {
     REQUIRE(score->getSize() == 0);
     REQUIRE(score->getStaves().size() == 0);
-    REQUIRE(score->getTimePoints()->getSymbolTimePoints()->size() == 0);
+    REQUIRE(score->getTimePoints()->getSymbolTimePoints().size() == 0);
 }
 
 TEST_CASE_METHOD(ScoreTestsFixture, "Symbols are well sorted in the score.", "[model][score]")
@@ -84,7 +84,7 @@ TEST_CASE_METHOD(ScoreTestsFixture, "Timepoints are well created when staff-link
     
     SECTION("Timepoints size is zero when no symbol in score.")
     {
-        REQUIRE(score->getTimePoints()->getSymbolTimePoints()->size() == 0);
+        REQUIRE(score->getTimePoints()->getSymbolTimePoints().size() == 0);
     }
     
     SECTION("Timepoints size increase when staff-linked symbol is added to score.")
@@ -101,7 +101,7 @@ TEST_CASE_METHOD(ScoreTestsFixture, "Timepoints are well created when staff-link
         /* TimePoints size is 2 because timepoints have been added
          * for the symbol's start time and end time.
          */
-        REQUIRE(score->getTimePoints()->getSymbolTimePoints()->size() == 2);
+        REQUIRE(score->getTimePoints()->getSymbolTimePoints().size() == 2);
     }
     
 }

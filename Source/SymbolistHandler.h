@@ -13,89 +13,31 @@ class BaseComponent;
 class StaffComponent;
 class SymbolPropertiesPanel;
 
-class SymbolistHandler : public virtual Controller<SymbolistModel, SymbolistMainComponent>
-{
-    /**
-     * The static singleton instance of SymbolistHandler.
-     */
-    static SymbolistHandler* INSTANCE;
-    
-    /**
-     * A Controller to handle palette-connected actions.
-     */
-    std::unique_ptr<PaletteController> paletteController;
-    
-    /**
-     * A Controller to handle score-connected actions.
-     */
-    std::unique_ptr<PageController> pageController;
-    
-    /**
-     * The main graphic window of the application.
-     * Normally, SymbolistMainWindow should be defined as
-     * the view of SymbolistHandler class, but since it is
-     * only a wrapper window around the main graphic component
-     * it is only referenced here as an instance variable.
-     */
-    std::unique_ptr<SymbolistMainWindow> main_window;
-    
-    /**
-     * The current play-time in ms.
-     * (change for float or long_int?)
-     */
-    float current_time = 0;
-    
-    /**
-     * On update callback to the host environment.
-     */
-    symbolistUpdateCallback myUpdateCallback = NULL;
-    
-    /**
-     * On close callback to the host environment.
-     */
-    symbolistCloseCallback myCloseCallback = NULL;
-    
-    /**
-     * On transport callback to the host environment.
-     * This function is called when the user invokes
-     * the time cursor view.
-     */
-    symbolistTransportCallback myTransportCallback = NULL;
-    
-    OwnedArray<Symbol> clipboard;
-    OwnedArray<Score> undo_stack;
-    OwnedArray<Score> redo_stack;
-    bool in_standalone = false;
-    
+class SymbolistHandler : public virtual Controller<SymbolistModel, SymbolistMainComponent> {
+        
+public:
+
     /*********************************************
      *                CONSTRUCTORS               *
      *********************************************/
-    /* All constructors are private to implement
-     * the singleton design pattern.
-     */
+	
     /**
      * SymbolistHandler's default constructor.
      * Creates a model and a view from call to
      * model and view's default constructors.
      */
     SymbolistHandler();
-    
+	
     /**
      * SymbolistHandler's constructor with model
      * and view passed as parameters.
      */
     SymbolistHandler(SymbolistModel* model, SymbolistMainComponent* view);
-        
-public:
+	
     /**
      * SymbolistHandler's default destructor.
      */
     virtual ~SymbolistHandler() override;
-    
-    /**
-     * @return The singleton instance of SymbolistHandler.
-     */
-    static SymbolistHandler* getInstance();
     
     /*********************************************
      *             GETTERS & SETTERS             *
@@ -131,15 +73,14 @@ public:
      ********************************************************/
     
     /**
-     * Returns the SymbolistHandler singleton instance
-     * with setted model and child controllers.
+     * Returns an instance of SymbolistHandler
+     * with set up model and child controllers.
      *
      * Normally, this is the first method called when launching
      * the application or creating the Max or OpenMusic
      * object.
      *
-     * @return a pointer to the singleton instance of
-     *         SymbolistHandler.
+     * @return a pointer to an instance of SymbolistHandler.
      */
     static SymbolistHandler* symbolistAPI_newSymbolist();
     
@@ -257,6 +198,55 @@ public:
     
     /* Overrides the update method inherited from the Observer class. */
     inline void update() override {}
-    
+
+private:
+	
+    /**
+     * A Controller to handle palette-connected actions.
+     */
+    std::unique_ptr<PaletteController> paletteController;
+	
+    /**
+     * A Controller to handle score-connected actions.
+     */
+    std::unique_ptr<PageController> pageController;
+	
+    /**
+     * The main graphic window of the application.
+     * Normally, SymbolistMainWindow should be defined as
+     * the view of SymbolistHandler class, but since it is
+     * only a wrapper window around the main graphic component
+     * it is only referenced here as an instance variable.
+     */
+    std::unique_ptr<SymbolistMainWindow> main_window;
+	
+    /**
+     * The current play-time in ms.
+     * (change for float or long_int?)
+     */
+    float current_time = 0;
+	
+    /**
+     * On update callback to the host environment.
+     */
+    symbolistUpdateCallback myUpdateCallback = NULL;
+	
+    /**
+     * On close callback to the host environment.
+     */
+    symbolistCloseCallback myCloseCallback = NULL;
+	
+    /**
+     * On transport callback to the host environment.
+     * This function is called when the user invokes
+     * the time cursor view.
+     */
+    symbolistTransportCallback myTransportCallback = NULL;
+	
+    OwnedArray<Symbol> clipboard;
+    OwnedArray<Score> undo_stack;
+    OwnedArray<Score> redo_stack;
+    bool in_standalone = false;
+	
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistHandler)
 };

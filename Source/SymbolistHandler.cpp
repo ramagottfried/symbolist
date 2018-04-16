@@ -8,12 +8,48 @@
 #include "PathBaseComponent.h"
 #include "TextGlyphComponent.h"
 
-SymbolistHandler* SymbolistHandler::INSTANCE = NULL;
-
 SymbolistHandler::SymbolistHandler()
 {
-    MessageManager::getInstance(); //<< this wasn't necessary before, I think there might be some JUCE code starting too soon now?
-    cout << "SymbolistHandler's default constructor " << this << endl;
+    MessageManager::getInstance(); // this wasn't necessary before, I think there might be some JUCE code starting too soon now?
+    cout << __func__ << " " << this << endl;
+	
+    // Instantiates the model.
+    SymbolistModel* model = new SymbolistModel();
+	
+    // Adds four default items to the model.
+    float symbol_size = 30.0;
+    float symbol_pos = 0.0;
+	
+    Palette* palette = model->getPalette();
+	
+    Symbol s1 = Symbol();
+    s1.setTypeXYWH("text", symbol_pos, symbol_pos, 20 , 20);
+    palette->addDefaultItem(s1);
+	
+    Symbol s2 = Symbol();
+    s2.setTypeXYWH("circle", symbol_pos, symbol_pos, symbol_size, symbol_size);
+    palette->addDefaultItem(s2);
+	
+    Symbol s3 = Symbol();
+    s3.setTypeXYWH("rectangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
+    palette->addDefaultItem(s3);
+	
+    Symbol s4 = Symbol();
+    s4.setTypeXYWH("triangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
+    palette->addDefaultItem(s4);
+	
+    setModel(model);
+	
+    // Creates the child controllers.
+	createPaletteController();
+    createPageController();
+	
+    /* Adds the SymbolistHandler instance and
+     * all its child controllers as observers of the model.
+     */
+    getModel()->attach(this);
+    getModel()->attach(paletteController.get());
+    getModel()->attach(pageController.get());
 }
 
 SymbolistHandler::SymbolistHandler(SymbolistModel* model, SymbolistMainComponent* view)
@@ -32,16 +68,6 @@ SymbolistHandler::~SymbolistHandler()
     
     if (getModel() != NULL)
         delete getModel();
-}
-
-SymbolistHandler* SymbolistHandler::getInstance()
-{
-    if (INSTANCE == NULL)
-    {
-        INSTANCE = new SymbolistHandler();
-    }
-    
-    return INSTANCE;
 }
 
 void SymbolistHandler::createPaletteController()
@@ -72,48 +98,7 @@ void SymbolistHandler::createPageController()
 SymbolistHandler* SymbolistHandler::symbolistAPI_newSymbolist()
 {
     cout << __func__ << endl;
-    
-    // Instantiates the model.
-    SymbolistModel* model = new SymbolistModel();
-    
-    // Adds four default items to the model.
-    float symbol_size = 30.0;
-    float symbol_pos = 0.0;
-    
-    Palette* palette = model->getPalette();
-    
-    Symbol s1 = Symbol();
-    s1.setTypeXYWH("text", symbol_pos, symbol_pos, 20 , 20);
-    palette->addDefaultItem(s1);
-    
-    Symbol s2 = Symbol();
-    s2.setTypeXYWH("circle", symbol_pos, symbol_pos, symbol_size, symbol_size);
-    palette->addDefaultItem(s2);
-    
-    Symbol s3 = Symbol();
-    s3.setTypeXYWH("rectangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
-    palette->addDefaultItem(s3);
-    
-    Symbol s4 = Symbol();
-    s4.setTypeXYWH("triangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
-    palette->addDefaultItem(s4);
-    
-    SymbolistHandler::getInstance()->setModel(model);
-    
-    // Creates the child controllers.
-    SymbolistHandler::getInstance()->createPaletteController();
-    SymbolistHandler::getInstance()->createPageController();
-    
-    /* Adds the SymbolistHandler instance and
-     * all its child controllers as observers of the model.
-     */
-    SymbolistHandler::getInstance()->getModel()->attach(SymbolistHandler::getInstance());
-    SymbolistHandler::getInstance()->getModel()->attach(SymbolistHandler::getInstance()
-                                                        ->getPaletteController());
-    SymbolistHandler::getInstance()->getModel()->attach(SymbolistHandler::getInstance()
-                                                        ->getPageController());
-    
-    return SymbolistHandler::getInstance();
+    return new SymbolistHandler();
 }
 
 void SymbolistHandler::symbolistAPI_freeSymbolist()
@@ -132,7 +117,7 @@ void SymbolistHandler::symbolistAPI_openWindow()
     /* Creates the SymbolistMainWindow instance which in its turn
      * creates the SymbolistMainComponent instance.
      */
-    main_window = unique_ptr<SymbolistMainWindow>(new SymbolistMainWindow());
+    main_window = unique_ptr<SymbolistMainWindow>(new SymbolistMainWindow(this));
     
     /* Sets the corresponding views for SymbolistHandler's instance
      * and all its child controllers.
@@ -633,8 +618,11 @@ void SymbolistHandler::copySelectedToClipBoard()
 
 void SymbolistHandler::newFromClipBoard()
 {
+
     auto pc = getView()->getPageComponent();
-    
+	
+	pc->unselectAllComponents();
+	
     for( auto s : clipboard )
     {
         // cout << " SymbolistHandler::newFromClipBoard " << endl;

@@ -276,6 +276,11 @@
 		751E31572069410400C3318F /* PaletteButton.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 751E31522069410400C3318F /* PaletteButton.hpp */; };
 		751E31582069410400C3318F /* PaletteButton.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 751E31522069410400C3318F /* PaletteButton.hpp */; };
 		751E315C2069493F00C3318F /* PaletteController.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 751E314A2069378600C3318F /* PaletteController.hpp */; };
+		7571E6F42084EA240092A3E0 /* pugixml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 112630AD207F4AC20086653D /* pugixml.cpp */; };
+		7571E6F52084EA3F0092A3E0 /* SVGFileIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11263093207F3D520086653D /* SVGFileIO.cpp */; };
+		7571E6F62084EA3F0092A3E0 /* SVGParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11E8082C207FCAC000E0342F /* SVGParser.cpp */; };
+		7571E6F72084EA3F0092A3E0 /* SVGEncoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11E80833208082CB00E0342F /* SVGEncoder.cpp */; };
+		7571E6F82084EA3F0092A3E0 /* StringTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11E808392080A12F00E0342F /* StringTools.cpp */; };
 		75774F98206176790069A89D /* Controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F90206176780069A89D /* Controller.cpp */; };
 		75774F99206176790069A89D /* Observable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F91206176780069A89D /* Observable.cpp */; };
 		75774F9A206176790069A89D /* Observer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F93206176780069A89D /* Observer.cpp */; };
@@ -1640,13 +1645,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7571E6F42084EA240092A3E0 /* pugixml.cpp in Sources */,
 				758F6F42207BCB00006EDD53 /* PaletteController.cpp in Sources */,
 				758F6F43207BCB00006EDD53 /* SymbolistHandler.cpp in Sources */,
+				7571E6F62084EA3F0092A3E0 /* SVGParser.cpp in Sources */,
 				758F6F44207BCB00006EDD53 /* OdotExpr.cpp in Sources */,
 				758F6F45207BCB00006EDD53 /* OdotBundle.cpp in Sources */,
 				758F6F46207BCB00006EDD53 /* OdotBundle_s.cpp in Sources */,
 				758F6F47207BCB00006EDD53 /* OdotMessage.cpp in Sources */,
+				7571E6F82084EA3F0092A3E0 /* StringTools.cpp in Sources */,
 				758F6F48207BCB00006EDD53 /* OdotAtom.cpp in Sources */,
+				7571E6F52084EA3F0092A3E0 /* SVGFileIO.cpp in Sources */,
 				758F6F4A207BCB00006EDD53 /* Symbol.cpp in Sources */,
 				758F6F4B207BCB00006EDD53 /* Score.cpp in Sources */,
 				758F6F4C207BCB00006EDD53 /* Palette.cpp in Sources */,
@@ -1687,6 +1696,7 @@
 				758F6F6D207BCB00006EDD53 /* Observable.cpp in Sources */,
 				758F6F6E207BCB00006EDD53 /* Observer.cpp in Sources */,
 				758F6F6F207BCB00006EDD53 /* View.cpp in Sources */,
+				7571E6F72084EA3F0092A3E0 /* SVGEncoder.cpp in Sources */,
 				758F6F70207BCB00006EDD53 /* symbolist.cpp in Sources */,
 				758F6F71207BCB00006EDD53 /* include_juce_osc.cpp in Sources */,
 				758F6F72207BCB00006EDD53 /* include_juce_core.mm in Sources */,

@@ -4,14 +4,14 @@
 ScopedPointer<ApplicationCommandManager>
 SymbolistMainWindow::applicationCommandManager = nullptr;
 
-SymbolistMainWindow::SymbolistMainWindow () :
+SymbolistMainWindow::SymbolistMainWindow (SymbolistHandler* mainController) :
     DocumentWindow ("symbolist", Colours::white, DocumentWindow::allButtons)
 {
     cout << "SymbolistMainWindow's default constructor." << endl;
     
     // default stuff copied from Juce
     setUsingNativeTitleBar (true);
-    main_component = new SymbolistMainComponent();
+    main_component = new SymbolistMainComponent(mainController);
     
     setContentOwned(main_component, true);
     
@@ -27,7 +27,7 @@ SymbolistMainWindow::SymbolistMainWindow () :
 
 SymbolistMainWindow::~SymbolistMainWindow ()
 {
-    cout << "SymbolistMainWindow's destructor." << endl;
+    cout << __func__ << endl;
     
     main_component = nullptr;
     applicationCommandManager = nullptr;

@@ -15,14 +15,11 @@
  */
 class SymbolistMainWindow : public DocumentWindow, private AsyncUpdater
 {
-protected:
-    
-    SymbolistMainComponent* main_component;
-    
+	
 public:
     static ScopedPointer<ApplicationCommandManager> applicationCommandManager;
     
-    SymbolistMainWindow() ;
+    SymbolistMainWindow(SymbolistHandler* mainController) ;
     ~SymbolistMainWindow();
     
     SymbolistMainComponent* getMainComponent();
@@ -30,6 +27,9 @@ public:
 
     void handleAsyncUpdate() override;
     void closeButtonPressed() override;
+
+protected:
+    ScopedPointer<SymbolistMainComponent> main_component;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainWindow)
 };

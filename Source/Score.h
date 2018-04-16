@@ -25,13 +25,8 @@ struct ScoreSorter
     }
 };
 
-class Score
-{
-    vector<unique_ptr<Symbol> > score_symbols;
-    TimePointArray              time_points;
-    SortedStaves                staves;
-    ScoreSorter                 score_sorter;
-    
+class Score {
+
 public:
     
     /***************************************
@@ -201,7 +196,14 @@ public:
         
         return false;
     }
-    
+	
+private:
+
+	vector<unique_ptr<Symbol> > score_symbols;
+    TimePointArray              time_points;
+    SortedStaves                staves;
+    ScoreSorter                 score_sorter;
+	
     //==============================================================================
     JUCE_LEAK_DETECTOR (Score)
 };

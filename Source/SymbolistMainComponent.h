@@ -24,57 +24,14 @@
  */
 class SymbolistMainComponent : public virtual SymbolistComponent,
                                public virtual ApplicationCommandTarget,
-                               public virtual View<SymbolistModel, SymbolistHandler>
-{
-    
-    // SymbolistHandler*    symbolist_handler = nullptr; // (not allocated here)
-    SymbolistLookAndFeel look_and_feel;
-    
-    /*******************************************************
-     *                      UI ELEMENTS                    *
-     *******************************************************/
-    
-    /**
-     * A graphic component which surrounds the PageComponent
-     * with scrollbars.
-     */
-    Viewport                         score_viewport;
-    
-    /**
-     * A graphic component representing the score.
-     */
-    PageComponent                    scoreView;
-    
-    /**
-     * A graphic component representing the palette.
-     */
-    PaletteComponent                 paletteView;
-    
-    /**
-     * A graphic component for the application's menu.
-     * All commands to interact with the symbolist application
-     * are referenced here.
-     */
-    SymbolistMenu                    menu;
-    ScopedPointer<PropertyPanelTabs> inspector;
-    MouseModeComponent               mouseModeView;
-    TimeDisplayComponent             timeDisplayView;
-    
-    int palette_w = 50;
-    int menu_h; // set internally
-    
-    float            m_zoom = 1.0f;
-    ModifierKeys     current_mods;
-    
-    UI_EditType      mouse_mode = SELECTION;
-    UI_DrawType      draw_mode = FREE_DRAW;
-    
+                               public virtual View<SymbolistModel, SymbolistHandler> {
+	
 public:
     
     /**************************************************
      *        CONSTRUCTORS AND FACTORY FUNCTIONS      *
      **************************************************/
-    SymbolistMainComponent();
+    SymbolistMainComponent(SymbolistHandler* mainController);
     ~SymbolistMainComponent();
 
     /*************************************
@@ -149,6 +106,52 @@ public:
     
     /* Overrides the update method inherited from the Observer class. */
     inline void update() override { repaint(); }
+
+private:
+	
+    /*******************************************************
+     *                 CHILD COMPONENTS                    *
+     *******************************************************/
+	
+    /**
+     * A graphic component which surrounds the PageComponent
+     * with scrollbars.
+     */
+    Viewport                         score_viewport;
+	
+    /**
+     * A graphic component representing the score.
+     */
+    PageComponent                    scoreView;
+	
+    /**
+     * A graphic component representing the palette.
+     */
+    PaletteComponent                 paletteView;
+	
+    /**
+     * A graphic component for the application's menu.
+     * All commands to interact with the symbolist application
+     * are referenced here.
+     */
+    SymbolistMenu                    menu;
+    ScopedPointer<PropertyPanelTabs> inspector;
+    MouseModeComponent               mouseModeView;
+    TimeDisplayComponent             timeDisplayView;
+	
+	/***************************************************
+     *             MISC GRAPHIC PROPERTIES             *
+     ***************************************************/
+    SymbolistLookAndFeel look_and_feel;
+     
+    int palette_w = 50;
+    int menu_h; // set internally
+	
+    float            m_zoom = 1.0f;
+    ModifierKeys     current_mods;
+	
+    UI_EditType      mouse_mode = SELECTION;
+    UI_DrawType      draw_mode = FREE_DRAW;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistMainComponent)
 };

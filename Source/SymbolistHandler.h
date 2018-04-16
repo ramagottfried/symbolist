@@ -232,7 +232,7 @@ public:
     void inStandalone(){ in_standalone = true; };
     bool isStandalone(){ return in_standalone; };
 
-    const TimePointArray* getTimePointArray() { return getModel()->getScore()->getTimePointArray(); }
+    TimePointArray const& getTimePointArray() { return getModel()->getScore()->getTimePointArray(); }
     void removeTimePointsForSymbol(Symbol* s){ getModel()->getScore()->removeSymbolTimePoints( s ); }
     
     void copySelectedToClipBoard();

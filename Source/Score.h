@@ -45,10 +45,13 @@ public:
     /**********************************************
      *             GETTERS AND SETTERS            *
      **********************************************/
+    
+    // why do we need two methods to get the time_points?
     inline TimePointArray* getTimePoints() { return &time_points; };
-    inline const TimePointArray* getTimePointArray() const
+    
+    inline const TimePointArray& getTimePointArray() const
     {
-        return &time_points;
+        return time_points;
     }
     
     /**

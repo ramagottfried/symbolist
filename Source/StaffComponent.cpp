@@ -166,14 +166,14 @@ void StaffComponent::paint(Graphics& g)
  
     if( draw_timepoints )
     {
-        auto timePointArray = getSymbolistHandler()->getTimePointArray();
+        auto& timePointArray = getSymbolistHandler()->getTimePointArray().getConstSymbolTimePoints();
         
         float start_t = getScoreSymbolPointer()->getTime();
         float end_t = start_t + getScoreSymbolPointer()->getDuration();
         
-        for (int i = 0; i < timePointArray->getConstSymbolTimePoints()->size(); i++)
+        for (int i = 0; i < timePointArray.size(); i++)
         {
-            auto t = (*timePointArray->getConstSymbolTimePoints())[i];
+            auto& t = timePointArray[i];
             if( t->time >= start_t && t->time <= end_t )
                 g.fillEllipse( (t->time - start_t) * 100.0f, getHeight() / 2, 2, 2);
         }

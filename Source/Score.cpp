@@ -55,7 +55,7 @@ void Score::print() const
 void Score::removeAllSymbols()
 {
     score_symbols.clear();
-    time_points.getSymbolTimePoints()->clear();
+    time_points.getSymbolTimePoints().clear();
     staves.clear();
 }
 
@@ -231,7 +231,7 @@ void Score::addSymbolTimePoints( Symbol* s )
 
 OdotBundle_s Score::getDurationBundle()
 {
-    SymbolTimePoint* lastTimePoint = time_points.getSymbolTimePoints()->back();
+    auto lastTimePoint = time_points.getLastTimePoint();
     if( !lastTimePoint )
         return NULL;
     

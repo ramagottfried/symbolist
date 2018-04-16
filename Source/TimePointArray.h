@@ -15,12 +15,6 @@ class Score;
 
 struct SymbolTimePoint
 {
-    
-public:
-    double           time;
-    vector<Symbol* > symbols_at_time;
-    Symbol*          staff_ref; // << add reference to staff for timepoint (a timepoint can only be on one staff)
-
     inline SymbolTimePoint() {}
     SymbolTimePoint(Symbol* s, double t, Symbol* staff)
     {
@@ -57,48 +51,21 @@ public:
         symbols_at_time.emplace_back(s);
     }
     
+    double           time;
+    vector<Symbol* > symbols_at_time;
+    Symbol*          staff_ref; // << add reference to staff for timepoint (a timepoint can only be on one staff)
+
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolTimePoint)
     
 };
 
 class TimePointArray
 {
-    vector<SymbolTimePoint* >    symbolTimePoints;
-    Score*                       score_ptr = NULL;
-    const SymbolTimePoint*       prev_timepoint = NULL;
-    vector<pair<const Symbol*,
-                const Symbol*> > voice_staff_vector;
-    int                          current_point = 0;
-    float                        current_time = 0;
-    
 public:
-    TimePointArray();
-    ~TimePointArray();
     
-    /*
-    TimePointArray(TimePointArray& t)
-    {
-        score_ptr = t.score_ptr;
-        for( auto tpoint : t )
-        {
-            add( new SymbolTimePoint( *tpoint ) );
-        }
-    }
-    
-    TimePointArray& operator=(TimePointArray& other)
-    {
-        if (this != &other) // protect against invalid self-assignment
-        {
-            score_ptr = other.score_ptr;
-            for( auto tpoint : other )
-            {
-                add( new SymbolTimePoint( *tpoint ) );
-            }
-        }
-        
-        return *this;
-    }
-    */
+    TimePointArray(){}
+    ~TimePointArray(){}
     
     /**
      * Sets the score_ptr of this TimePointArray instance.
@@ -108,13 +75,19 @@ public:
         this->score_ptr = pointerToScore;
     }
     
-    inline const vector<SymbolTimePoint* >* getConstSymbolTimePoints() const
+    // do we really need both of these?
+    inline const vector< unique_ptr<SymbolTimePoint> >& getConstSymbolTimePoints() const
     {
-        return &symbolTimePoints;
+        return symbolTimePoints;
     }
-    inline vector<SymbolTimePoint* >* getSymbolTimePoints()
+    inline vector< unique_ptr<SymbolTimePoint> >& getSymbolTimePoints()
     {
-        return &symbolTimePoints;
+        return symbolTimePoints;
+    }
+    
+    SymbolTimePoint* getLastTimePoint()
+    {
+        return symbolTimePoints[symbolTimePoints.size()-1].get();
     }
     
     void printTimePoints();
@@ -186,7 +159,18 @@ public:
         symbolTimePoints.clear();
         prev_timepoint = nullptr;
     }
-
+    
+private:
+    vector< unique_ptr<SymbolTimePoint> >    symbolTimePoints;
+    
+    Score*                       score_ptr = nullptr;
+    const SymbolTimePoint*       prev_timepoint = nullptr;
+    
+    vector< pair<const Symbol*, const Symbol*> > voice_staff_vector;
+    
+    int                          current_point = 0;
+    float                        current_time = 0;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimePointArray)
 };
 

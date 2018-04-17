@@ -281,6 +281,13 @@
 		7571E6F62084EA3F0092A3E0 /* SVGParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11E8082C207FCAC000E0342F /* SVGParser.cpp */; };
 		7571E6F72084EA3F0092A3E0 /* SVGEncoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11E80833208082CB00E0342F /* SVGEncoder.cpp */; };
 		7571E6F82084EA3F0092A3E0 /* StringTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11E808392080A12F00E0342F /* StringTools.cpp */; };
+		7571E6FB2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E6F92085FEE80092A3E0 /* symbolist-utils.cpp */; };
+		7571E6FC2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E6F92085FEE80092A3E0 /* symbolist-utils.cpp */; };
+		7571E6FD2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E6F92085FEE80092A3E0 /* symbolist-utils.cpp */; };
+		7571E6FE2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E6F92085FEE80092A3E0 /* symbolist-utils.cpp */; };
+		7571E6FF2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E6F92085FEE80092A3E0 /* symbolist-utils.cpp */; };
+		7571E7002085FEE80092A3E0 /* symbolist-utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7571E6FA2085FEE80092A3E0 /* symbolist-utils.hpp */; };
+		7571E7012085FEE80092A3E0 /* symbolist-utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7571E6FA2085FEE80092A3E0 /* symbolist-utils.hpp */; };
 		75774F98206176790069A89D /* Controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F90206176780069A89D /* Controller.cpp */; };
 		75774F99206176790069A89D /* Observable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F91206176780069A89D /* Observable.cpp */; };
 		75774F9A206176790069A89D /* Observer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F93206176780069A89D /* Observer.cpp */; };
@@ -604,6 +611,8 @@
 		751E314A2069378600C3318F /* PaletteController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = PaletteController.hpp; path = ../../Source/PaletteController.hpp; sourceTree = "<group>"; };
 		751E31512069410400C3318F /* PaletteButton.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PaletteButton.cpp; path = ../../Source/PaletteButton.cpp; sourceTree = "<group>"; };
 		751E31522069410400C3318F /* PaletteButton.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = PaletteButton.hpp; path = ../../Source/PaletteButton.hpp; sourceTree = "<group>"; };
+		7571E6F92085FEE80092A3E0 /* symbolist-utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "symbolist-utils.cpp"; sourceTree = "<group>"; };
+		7571E6FA2085FEE80092A3E0 /* symbolist-utils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "symbolist-utils.hpp"; sourceTree = "<group>"; };
 		75774F90206176780069A89D /* Controller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Controller.cpp; path = ../../Source/Controller.cpp; sourceTree = "<group>"; };
 		75774F91206176780069A89D /* Observable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Observable.cpp; path = ../../Source/Observable.cpp; sourceTree = "<group>"; };
 		75774F92206176780069A89D /* View.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = View.hpp; path = ../../Source/View.hpp; sourceTree = "<group>"; };
@@ -1057,6 +1066,8 @@
 				44A3C1ED1EC317BE00C4AD14 /* symbolist.hpp */,
 				44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */,
 				446363961EC8EF9C0054CB6D /* types.h */,
+				7571E6F92085FEE80092A3E0 /* symbolist-utils.cpp */,
+				7571E6FA2085FEE80092A3E0 /* symbolist-utils.hpp */,
 			);
 			name = "symbolist-api";
 			sourceTree = "<group>";
@@ -1189,6 +1200,7 @@
 				11263098207F3D520086653D /* SVGFileIO.hpp in Headers */,
 				75774FA12062960C0069A89D /* SymbolistModel.hpp in Headers */,
 				75FB5F0A207F54C80083A1C0 /* PageController.hpp in Headers */,
+				7571E7002085FEE80092A3E0 /* symbolist-utils.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1225,6 +1237,7 @@
 				116A7ECD2046CFCD004B545D /* osc_byteorder.h in Headers */,
 				116A7EEB2046CFCD004B545D /* osc.h in Headers */,
 				116A7EE12046CFCD004B545D /* osc_profile.h in Headers */,
+				7571E7012085FEE80092A3E0 /* symbolist-utils.hpp in Headers */,
 				116A7EDC2046CFCD004B545D /* osc_message_iterator_s.h in Headers */,
 				116A7ED02046CFCD004B545D /* osc_expr_func.h in Headers */,
 				116A7EC62046CFCD004B545D /* osc_atom_array_u.h in Headers */,
@@ -1444,6 +1457,7 @@
 				1107B3F71EF7D55D00E2DFA9 /* TextGlyphComponent.cpp in Sources */,
 				75FB5F0E207F8C3B0083A1C0 /* Controller.cpp in Sources */,
 				118648981EFA811800904672 /* TimePointArray.cpp in Sources */,
+				7571E6FD2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */,
 				11B71DD91F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
 				116A7EF82047E99D004B545D /* OdotMessage.cpp in Sources */,
 				118648711EF7E68B00904672 /* include_juce_gui_extra.mm in Sources */,
@@ -1490,6 +1504,7 @@
 				116A7E852046CFB6004B545D /* osc_expr_rec.c in Sources */,
 				116A7E9A2046CFB6004B545D /* osc_util.c in Sources */,
 				751E31562069410400C3318F /* PaletteButton.cpp in Sources */,
+				7571E6FE2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */,
 				116A7E862046CFB6004B545D /* osc_expr_scanner.c in Sources */,
 				116A7E8E2046CFB6004B545D /* osc_message_iterator_s.c in Sources */,
 				116A7E892046CFB6004B545D /* osc_legacy_parser.c in Sources */,
@@ -1570,6 +1585,7 @@
 				11B71DCE1F09844300CDE209 /* symbolist.cpp in Sources */,
 				11E8083C2080A12F00E0342F /* StringTools.cpp in Sources */,
 				751E31542069410400C3318F /* PaletteButton.cpp in Sources */,
+				7571E6FC2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */,
 				113980B4206449EA002A2408 /* OdotExpr.cpp in Sources */,
 				118C38F01EC61404006FF4A1 /* PaletteComponent.cpp in Sources */,
 			);
@@ -1623,6 +1639,7 @@
 				118648961EFA811800904672 /* TimePointArray.cpp in Sources */,
 				75774FA4206296C50069A89D /* Palette.cpp in Sources */,
 				116A7EF62047E99D004B545D /* OdotMessage.cpp in Sources */,
+				7571E6FB2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */,
 				11B71DD71F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
 				116A7EEF2046DCAE004B545D /* OdotBundle.cpp in Sources */,
 				751E31532069410400C3318F /* PaletteButton.cpp in Sources */,
@@ -1704,6 +1721,7 @@
 				758F6F74207BCB00006EDD53 /* include_juce_events.mm in Sources */,
 				758F6F75207BCB00006EDD53 /* include_juce_graphics.mm in Sources */,
 				758F6F76207BCB00006EDD53 /* include_juce_gui_basics.mm in Sources */,
+				7571E6FF2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */,
 				758F6F77207BCB00006EDD53 /* include_juce_gui_extra.mm in Sources */,
 				758F6F78207BCB00006EDD53 /* main.cpp in Sources */,
 				758F6F79207BCB00006EDD53 /* SymbolistModelTestsFixture.cpp in Sources */,

@@ -13,10 +13,8 @@ template <typename T> void printPoint(Point<T> point, String name = "point" )
 
 BaseComponent::~BaseComponent()
 {
-    if( staff )
-    {
+    if ( staff )
         ((StaffComponent*)staff)->removeStaffOjbect(this);
-    }
 }
 
 bool BaseComponent::isTopLevelComponent()

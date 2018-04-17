@@ -11,13 +11,6 @@
 
 #include <vector>
 #include "osc_bundle_s.h"
-// the interchange structure used for OSC bundles
-// compatible with odot 'bundle_s' struct
-struct odot_bundle
-{
-    long len;
-    char* data;
-};
 
 // type for callbacks to the host environment
 typedef void (*symbolistCloseCallback)( void * win);
@@ -28,4 +21,5 @@ enum UI_EditType { SELECTION, DRAW };
 enum UI_DrawType { FROM_TEMPLATE, FREE_DRAW };
 
 #endif
+
 

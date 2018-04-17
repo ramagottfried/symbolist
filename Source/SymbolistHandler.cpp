@@ -136,7 +136,10 @@ void SymbolistHandler::symbolistAPI_closeWindow()
 {
     cout << __func__ << endl;
     MessageManagerLock mml;
-  
+	
+  	/* Calls the destructor of SymbolistMainWindow
+	 * therefore invoking the destructor of SymbolistMainComponent.
+  	 */
     if (main_window)
         main_window = nullptr;
 	
@@ -320,11 +323,7 @@ void SymbolistHandler::symbolistAPI_clearScore()
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
 
     if ( getView() != NULL )
-    {
-		cout << __func__ << " View is not NULL" << endl;
 		page_controller->clearAllSubcomponents();
-	}
-	
     
     page_controller->removeAllSymbols();
 }

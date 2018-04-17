@@ -56,9 +56,8 @@ public:
     
 private:
     
-    vector<BaseComponent* >  symbols_on_staff;
-    
-    bool    draw_timepoints = false;
+    vector<BaseComponent* > symbols_on_staff;
+    bool draw_timepoints = false;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StaffComponent)

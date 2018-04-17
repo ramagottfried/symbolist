@@ -2,6 +2,7 @@
 #pragma once
 
 #include "BaseComponent.h"
+#include "symbolist-utils.hpp"
 
 // Use Label for creating text editor on click
 using namespace std;

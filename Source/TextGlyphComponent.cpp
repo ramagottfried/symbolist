@@ -97,8 +97,9 @@ TextGlphComponent::TextGlphComponent()
     addAndMakeVisible(textobj);
 }
     
-TextGlphComponent::~TextGlphComponent(){
-    cout << "deleting text " <<  this << endl;
+TextGlphComponent::~TextGlphComponent()
+{	
+    D_("Deleting text " << this);
 };
 
 void TextGlphComponent::setBoundsFromSymbol( float x, float y , float w , float h)

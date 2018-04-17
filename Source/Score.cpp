@@ -6,7 +6,7 @@
 
 Score::Score()
 {
-    cout << __func__ << " " << this << " " << score_symbols.size() << endl;
+    DEBUG_FULL("Score instance address: " << this << ", score size: " << score_symbols.size() << endl);
     
     // Sets the score_ptr reference for time_points instance variable.
     time_points.setScore(this);
@@ -25,7 +25,8 @@ Score::Score(Score& src)
     
     updateStavesAndTimepoints();
     
-    cout << "copying score " << this << " " << score_symbols.size() << " n staves " << staves.size() << endl;
+    DEBUG_FULL("Copying score of address " << this << " and size " << score_symbols.size()
+    			<< ", owning " << staves.size() << " staves " << endl);
 }
 
 Score::Score( const OdotBundle_s& s_bundle  )
@@ -43,7 +44,7 @@ void Score::print() const
     int count = 1;
     for (auto it = score_symbols.begin(); it != score_symbols.end(); it++)
     {
-        cout << "symbol : " << count << endl;
+        DEBUG_INLINE("Symbol n° " << count << endl);
         (*it)->print();
         count++;
     }
@@ -305,7 +306,7 @@ void Score::importScoreFromOSC( const OdotBundle_s& s_bundle )
     
     OdotBundle bundle( s_bundle ); //<< deserializes the bundle
     
-    std::cout << "===IMPORTRING OSC (" << bundle.size() << " messages)" << std::endl;
+    DEBUG_FULL("===IMPORTING OSC (" << bundle.size() << " messages)" << endl);
     for ( auto msg : bundle.getMessageArray() )
     {
         if( msg.getAddress().find("/symbol") == 0 && msg[0].getType() == OdotAtom::O_ATOM_BUNDLE )
@@ -314,8 +315,7 @@ void Score::importScoreFromOSC( const OdotBundle_s& s_bundle )
             addSymbol(s);
         }
     }
-    
-    std::cout << "===IMPORT DONE" << std::endl;
+    DEBUG_FULL("===IMPORT DONE" << endl);
 }
 
 /***********************************

@@ -3,16 +3,16 @@
 
 void TimePointArray::printTimePoints()
 {
-    cout << "-------- timepoint list ----------" << endl;
+    DEBUG_INLINE("-------- timepoint list ----------" << endl);
     for (int i = 0; i < symbolTimePoints.size(); i++)
     {
         auto t = symbolTimePoints[i].get();
-        cout << "timepoint " << i << " " << t->time << " nsyms " << t->symbols_at_time.size() << endl;
+        DEBUG_INLINE("Timepoint n°" << i << ", time = " << t->time << ", nsyms = " << t->symbols_at_time.size() << endl);
         
         int symcount = 0;
         for( auto sym : t->symbols_at_time )
         {
-            cout << symcount++ << " " << sym << " " << sym->size() << endl;
+            DEBUG_INLINE("\tSymbol n°" << symcount++ << ", address = " << sym << ", size (number of messages) = " << sym->size() << endl);
         }
     }
 }
@@ -48,8 +48,8 @@ void TimePointArray::removeSymbolTimePoints(Symbol* symbol)
     
     if( !match )
     {
-         cout << " Could not find existing timepoint at time " << start_t << endl;
-         printTimePoints();
+		DEBUG_FULL(" Could not find existing timepoint at time " << start_t << endl);
+		printTimePoints();
         return;
     }
     
@@ -168,7 +168,8 @@ void TimePointArray::addSymbolTimePoints( Symbol* s )
     
     s->setTimeAndDuration(start_t, s->pixelsToTime(dur_x) );
     
-    cout << "adding timepoints on " << staff_name << " " << staff_start << " t start " << start_t << endl;
+    DEBUG_FULL("Adding timepoints starting at time " << start_t << ", on " << staff_name
+    			<< " (own starting value = " << staff_start << ")"  << endl);
     
     // 2) add start and end points to array
     // 3) check previous start-1 and end-1 points for continuing symbols to add to new start/end points
@@ -224,27 +225,27 @@ int TimePointArray::addSymbol_atTime(Symbol* s, float time, Symbol* staff)
 
 void TimePointArray::printBundle(OSCBundle bndl)
 {
-    std::cout << "\t==== TIMEPOINT OSC BUNDLE ====" << std::endl;
+    DEBUG_INLINE("\t==== TIMEPOINT OSC BUNDLE ====" << endl);
     for (auto osc : bndl )
     {
         OSCMessage msg = osc.getMessage();
-        std::cout << "\t" << msg.getAddressPattern().toString();
+        DEBUG_INLINE("\t" << msg.getAddressPattern().toString())	;
         
         for (auto arg : msg )
         {
             if( arg.isString() )
-                std::cout << " " << arg.getString();
+                DEBUG_INLINE(" " << arg.getString());
             else if( arg.isFloat32() )
-                std::cout << " " << (String)arg.getFloat32();
+                DEBUG_INLINE(" " << (String)arg.getFloat32());
             else if( arg.isInt32() )
-                std::cout << " " << (String)arg.getInt32();
+                DEBUG_INLINE(" " << (String)arg.getInt32());
             else if( arg.isBlob() )
-                std::cout << " " << "blob";
+                DEBUG_INLINE(" " << "blob");
         }
         
-        std::cout << std::endl;
+        DEBUG_INLINE(endl);
     }
-    std::cout << "\t====-===-======-====" << std::endl;
+    DEBUG_INLINE("\t====-===-======-====" << endl);
     
 }
 
@@ -673,7 +674,7 @@ int TimePointArray::lookupTimePoint( float t )
         if( idx >= symbolTimePoints.size() )
             current_point = static_cast<int>(symbolTimePoints.size() - 1);
         else
-            cout << "shouldn't happen " << current_point <<  endl;
+            DEBUG_FULL("Shouldn't happen " << current_point << endl);
         
         current_time = t;
         return current_point;

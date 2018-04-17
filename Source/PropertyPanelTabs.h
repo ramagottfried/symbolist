@@ -5,13 +5,8 @@
 #include "ScoreBundleViewer.h"
 
 
-class PropertyPanelTabs   : public TabbedComponent
-{
-    
-    SymbolistHandler*                       symbolist_handler;
-    ScopedPointer<SymbolPropertiesPanel>    symbol_panel_tab;
-    ScopedPointer<ScoreBundleViewer>        symbol_panel_bundleviewer;
-
+class PropertyPanelTabs : public TabbedComponent {
+	
 public:
     /**************************************************
      *                CONSTRUCTORS                    *
@@ -49,7 +44,12 @@ public:
     inline void createOSCview (){ symbol_panel_tab->createOSCview(); }
     inline void updateBundle(){ symbol_panel_tab->updateBundle(); }
     inline void clearInspector(){ symbol_panel_tab->clearInspector(); }
-    
+	
+private:
+	SymbolistHandler*                    symbolist_handler;
+    ScopedPointer<SymbolPropertiesPanel> symbol_panel_tab;
+    ScopedPointer<ScoreBundleViewer>     symbol_panel_bundleviewer;
+	
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PropertyPanelTabs)
 
 };

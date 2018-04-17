@@ -49,9 +49,9 @@ void PageController::importScoreFromOSC(const OdotBundle_s& bundleArray)
 
 void PageController::addComponentsFromScore()
 {
-    // Recreates and adds components from score symbols.
+    // Creates components from score symbols.
     Score* score = getModel()->getScore();
-    cout << __func__ << " ADDING " << score->getSize() << " SYMBOLS" << endl;
+    DEBUG_FULL("ADDING " << score->getSize() << " SYMBOLS" << endl);
     
     for (int i = 0; i < score->getSize(); i++)
         try

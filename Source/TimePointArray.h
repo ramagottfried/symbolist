@@ -32,7 +32,7 @@ struct SymbolTimePoint
     */
     ~SymbolTimePoint()
     {
-        cout << "TimePoint's destructor. " << time << endl;
+		DEBUG_FULL("Time point value = " << time << endl);
         staff_ref = NULL;
         for (Symbol* symbol : symbols_at_time)
             symbol = NULL;

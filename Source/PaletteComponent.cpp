@@ -122,6 +122,7 @@ void PaletteComponent::selectPaletteButton(int indexOfSelectedButton)
         else
             smc->setDrawMode(UI_DrawType::FREE_DRAW);
     }
+    
     repaint();
 }
 

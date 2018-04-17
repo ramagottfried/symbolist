@@ -24,12 +24,9 @@
  
  */
 
-class SortedStaves
-{
-    vector<Symbol* > staves;
+class SortedStaves {
 
 public:
-    
     SortedStaves();
     ~SortedStaves();
     
@@ -45,7 +42,10 @@ public:
     
     Symbol* getStaveAtTime(float time);
     const Symbol* getStaveByID( const String& id );
-    
+	
+private:
+	vector<Symbol* > staves;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SortedStaves)
 };
 

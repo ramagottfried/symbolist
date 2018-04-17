@@ -55,7 +55,7 @@ bool Symbol::symbol_parse_error( int p, const string& address ) const
 {
     if( p == -1 )
     {
-        std::cout << "failed to parse symbol:\t" << address << std::endl;
+        DEBUG_FULL("Failed to parse symbol of address " << address << endl);
         return true; // there is an error
     }
     return false;
@@ -70,7 +70,7 @@ void Symbol::setPosition( const Point<float> pos )
 void Symbol::setTimeAndDurationFromRelPix( const float start_x, const float dur_x )
 {
 
-    cout << "setting " << pixelsToTime(start_x) << " " << pixelsToTime(dur_x) << endl;
+    DEBUG_FULL("Setting " << pixelsToTime(start_x) << " " << pixelsToTime(dur_x) << endl);
     
     addMessage("/time/start",    pixelsToTime(start_x) );
     addMessage("/time/duration", pixelsToTime(dur_x) );

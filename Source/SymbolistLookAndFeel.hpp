@@ -46,12 +46,10 @@ public:
         //setColour( ScrollBar::backgroundColourId, Colours::yellow  );
         //setColour( ScrollBar::trackColourId, Colours::blue  );
         setColour( ScrollBar::thumbColourId, Colour::fromFloatRGBA(0., 0., 0., 0.4)  );
-        
-        
+		
     }
     ~SymbolistLookAndFeel() = default;
-    
-    
+	
     void drawResizableFrame (Graphics& g, int w, int h, const BorderSize<int>& border) override
     {
         if (! border.isEmpty() )
@@ -86,8 +84,7 @@ public:
             g.restoreState();
         }
     }
-    
-    
+	
     void drawScrollbar (Graphics& g, ScrollBar& scrollbar, int x, int y, int width, int height,
                                         bool isScrollbarVertical, int thumbStartPosition, int thumbSize, bool isMouseOver, bool isMouseDown) override
     {

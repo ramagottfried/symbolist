@@ -69,10 +69,9 @@ SymbolistMainComponent::~SymbolistMainComponent()
     /* Removes SymbolistMainComponent and its child components
      * from the SymbolistModel's observers list.
      */
-    getModel()->detach(this);
-    getModel()->detach(&palette_view);
+	getModel()->detach(&palette_view);
     getModel()->detach(&score_view);
-    
+    getModel()->detach(this);
 }
 
 void SymbolistMainComponent::resized()

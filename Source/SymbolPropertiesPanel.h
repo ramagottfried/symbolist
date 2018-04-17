@@ -4,23 +4,14 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SymbolistHandler.h"
 #include "BaseComponent.h"
+#include "symbolist-utils.hpp"
 
 //==============================================================================
 
 typedef std::function<void(const OdotMessage&)> osc_callback_t;
 
-class SymbolPropertiesPanel : public Component
-{
-    BaseComponent*              symbol_component = nullptr;
-    PropertyPanel               symbol_inspector;
-    Array<PropertyComponent*>   properties;
-    
-    osc_callback_t              change_callback_fn;
-    
-    SymbolistHandler*           symbolist_handler;
-    
-    int title_offset = 25;
-    
+class SymbolPropertiesPanel : public Component {
+
 public:
     SymbolPropertiesPanel(SymbolistHandler *sh );
     
@@ -36,6 +27,17 @@ public:
     void updateBundle();
 
     void change_callback(const OdotMessage& msg);
-    
+
+private:
+	BaseComponent*              symbol_component = nullptr;
+    PropertyPanel               symbol_inspector;
+    Array<PropertyComponent* >   properties;
+	
+    osc_callback_t              change_callback_fn;
+	
+    SymbolistHandler*           symbolist_handler;
+	
+    int title_offset = 25;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolPropertiesPanel)
 };

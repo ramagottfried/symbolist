@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "Controller.hpp"
 #include "SymbolistModel.hpp"
+#include "symbolist-utils.hpp"
 
 class PageComponent;
 class BaseComponent;

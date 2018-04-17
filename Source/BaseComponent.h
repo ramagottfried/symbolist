@@ -7,52 +7,8 @@
 #include "ScoreComponent.h"
 #include <typeinfo>
 
-class BaseComponent : public ScoreComponent
-{
-    
-protected:
-    
-    /**
-     * Pointer to the score symbol.
-     * (set when this is a topLevel symbol, NULL otherwise)
-     */
-    Symbol* score_symbol = NULL;
-    
-    string          name;
-    string          staff_name;
-    string          lambda;
-    
-    /**
-     * Pointer to the graphic component which acts as a staff
-     * for this BaseComponent.
-     */
-    BaseComponent   *staff = nullptr; // place holder ...
-    
-    // when loaded, if staff exists attach it
-    // when staff is loaded, scan score and try to find symbols with matching staff names and attach them
-    
-    // parameters
-    float           strokeWeight = 2;
-    
-    // interaction
-    Point<float>    m_down;
-    Colour          current_color = Colours::black;
-    
-    float           relative_x = 0.0, relative_y = 0.0 , relative_w = 1.0 , relative_h = 1.0 ;  // values between 0.0 and 1.0 relative to the size of its container
-    int             resize_mode = 0; // 0 = scale symbol to bounds, 1 = scale spacing (not resizing)
-    float           m_min_size = 5;
-    
-    bool            showBoundingBox = false;
-    float           bb_strokeWeight = 1;
-    Colour          bb_color = Colours::cornflowerblue;
-    Colour          sel_color = Colours::cornflowerblue;
-    
-    bool            in_edit_mode = false;
-    bool            in_staff_selection_mode = false;
-    
-    bool            is_alt_copying = false;
-    Point<float>    m_prev_event;
-    
+class BaseComponent : public ScoreComponent {
+	
 public:
     
     BaseComponent() = default;
@@ -184,7 +140,49 @@ public:
     }
     
     void attachToStaff();
-    
+	
+protected:
+	
+    /**
+     * Pointer to the score symbol.
+     * (set when this is a topLevel symbol, NULL otherwise)
+     */
+    Symbol* score_symbol = NULL;
+	
+    string          name;
+    string          staff_name;
+    string          lambda;
+	
+    /**
+     * Pointer to the graphic component which acts as a staff
+     * for this BaseComponent.
+     */
+    BaseComponent   *staff = nullptr; // place holder ...
+	
+    // when loaded, if staff exists attach it
+    // when staff is loaded, scan score and try to find symbols with matching staff names and attach them
+	
+    // parameters
+    float           strokeWeight = 2;
+	
+    // interaction
+    Point<float>    m_down;
+    Colour          current_color = Colours::black;
+	
+    float           relative_x = 0.0, relative_y = 0.0 , relative_w = 1.0 , relative_h = 1.0 ;  // values between 0.0 and 1.0 relative to the size of its container
+    int             resize_mode = 0; // 0 = scale symbol to bounds, 1 = scale spacing (not resizing)
+    float           m_min_size = 5;
+	
+    bool            showBoundingBox = false;
+    float           bb_strokeWeight = 1;
+    Colour          bb_color = Colours::cornflowerblue;
+    Colour          sel_color = Colours::cornflowerblue;
+	
+    bool            in_edit_mode = false;
+    bool            in_staff_selection_mode = false;
+	
+    bool            is_alt_copying = false;
+    Point<float>    m_prev_event;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BaseComponent)
     

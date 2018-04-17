@@ -25,12 +25,6 @@ void SymbolPropertiesPanel::change_callback( const OdotMessage& msg)
     
     symbolist_handler->updateSymbolFromInspector( symbol_component );
     
-    // if the action was to set a staff, we need to add this symbol to the stave
-    if( msg.getAddress() == "/staff" )
-        ;
-    
-   // setInspectorObject( symbol_component );
-    
     //cout << "*********************** updated bundle from inspector ********** " << endl;
 
     
@@ -43,7 +37,7 @@ void SymbolPropertiesPanel::createOSCview ()
     if( symbol_component )
     {
         Symbol* s = symbol_component->getScoreSymbolPointer();
-        std::cout << __func__ << " Retrieving pointer from component" << std::endl;
+        DEBUG_FULL("Retrieving pointer from component" << endl);
         s->print();
         
         if( !s )

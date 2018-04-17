@@ -3,6 +3,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "types.h"
 #include "OdotBundle.hpp"
+#include "symbolist-utils.hpp"
 
 using namespace std;
 

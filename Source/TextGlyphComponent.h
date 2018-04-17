@@ -58,8 +58,8 @@ private:
 
 };
 
-class TextGlphComponent : public BaseComponent
-{
+class TextGlphComponent : public BaseComponent {
+
 public:
     TextGlphComponent();
     ~TextGlphComponent();

@@ -70,7 +70,7 @@ void PageController::addComponentsFromScore()
 
 void PageController::clearAllSubcomponents()
 {
-    getView()->clearAllSubcomponents();
+	getView()->clearAllSubcomponents();
 }
 
 StaffComponent* PageController::getStaveAtTime(float time)

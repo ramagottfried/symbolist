@@ -125,7 +125,8 @@ void SymbolistHandler::symbolistAPI_openWindow()
     setView(main_window->getMainComponent());
     palette_controller->setView(getView()->getPaletteView());
     page_controller->setView(getView()->getScoreView());
-    
+	
+    // Populates palette and gives focus to the main view.
     page_controller->addComponentsFromScore();
     getView()->grabKeyboardFocus();
 
@@ -138,6 +139,12 @@ void SymbolistHandler::symbolistAPI_closeWindow()
   
     if (main_window)
         main_window = nullptr;
+	
+	// Unsets the view references for each controller.
+	setView(NULL);
+	palette_controller->setView(NULL);
+	page_controller->setView(NULL);
+	
 }
 
 void SymbolistHandler::symbolistAPI_windowToFront()
@@ -313,7 +320,11 @@ void SymbolistHandler::symbolistAPI_clearScore()
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
 
     if ( getView() != NULL )
-        page_controller->clearAllSubcomponents();
+    {
+		cout << __func__ << " View is not NULL" << endl;
+		page_controller->clearAllSubcomponents();
+	}
+	
     
     page_controller->removeAllSymbols();
 }
@@ -617,9 +628,9 @@ void SymbolistHandler::copySelectedToClipBoard()
 void SymbolistHandler::newFromClipBoard()
 {
 
-    auto pc = getView()->getPageComponent();
+    auto scoreView = page_controller->getView();
 	
-	pc->unselectAllComponents();
+	scoreView->unselectAllComponents();
 	
     for( auto s : clipboard )
     {
@@ -628,9 +639,9 @@ void SymbolistHandler::newFromClipBoard()
         
         if ( c != NULL)
         {
-            pc->addSubcomponent( c );
+            scoreView->addSubcomponent( c );
             c->toFront(true);
-            pc->addToSelection( c );
+            scoreView->addToSelection( c );
         }
 
     }

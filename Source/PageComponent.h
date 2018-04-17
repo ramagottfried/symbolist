@@ -13,11 +13,7 @@
  * PageComponent is a graphic component.
  */
 class PageComponent : public virtual ScoreComponent,
-                      public virtual View<SymbolistModel, PageController>
-{
-
-    BaseComponent* edited_component;
-    ScoreCursor    score_cursor;
+                      public virtual View<SymbolistModel, PageController> {
 
 public:
     PageComponent();
@@ -87,8 +83,9 @@ public:
     virtual inline void update() override {}
     
 private:
-    DisplayMode display_mode = MAIN;
-
+    DisplayMode    display_mode = MAIN;
+	BaseComponent* edited_component;
+    ScoreCursor    score_cursor;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PageComponent)
 };

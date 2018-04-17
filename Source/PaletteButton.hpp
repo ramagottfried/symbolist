@@ -13,12 +13,8 @@
  */
 class PaletteButton : public SymbolistComponent
 {
-    ScopedPointer<BaseComponent> graphic_comp;
-    int button_id;
-    bool selected;
-    
+	
 public:
-    
     PaletteButton(int i, Symbol* s);
     inline ~PaletteButton() {};
     
@@ -29,7 +25,11 @@ public:
     void mouseDown(const MouseEvent& event) override;
     
     int getID() { return button_id; }
-        
+	
+private:
+	ScopedPointer<BaseComponent> graphic_comp;
+    int button_id;
+    bool selected;
 };
 
 #endif /* PaletteButton_hpp */

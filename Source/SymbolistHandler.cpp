@@ -381,17 +381,17 @@ Symbol* SymbolistHandler::getSelectedSymbolInPalette()
 // Component factory
 BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_the_symbol)
 {
-    cout << "SymbolistHandler::makeComponentFromSymbol : Creating component from Symbol: ";
+    D_("Creating component from Symbol: ");
     
     string typeofSymbol = s->getMessage("/type").getString();
     if (typeofSymbol.size() == 0)
     {
-        cout << "Could not find '/type' message in OSC Bundle.. " << endl;
+		D_INLINE("Could not find '/type' message in OSC Bundle.. " << endl);
         return NULL;
         
     } else {
         
-        std::cout << typeofSymbol << std::endl;
+        D_INLINE(typeofSymbol << endl);
         BaseComponent *newComponent;
         
         // allocates component based on type, all are derived from the BaseComponent
@@ -410,7 +410,7 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
         } else if ( typeofSymbol == "staff" ) {
             newComponent = new StaffComponent();
         } else {
-            cout << "Unknown symbol type : " << typeofSymbol << endl;
+		  	D_("Unknown symbol type : " << typeofSymbol << endl);
             newComponent = NULL;
         }
         

@@ -37,7 +37,7 @@ void PaletteComponent::buildFromPalette()
     int y_separator = 5; // gap between default and user buttons
     
     
-    // default "draw" buttons (only one for now)
+    // Default "draw" buttons (only one for now)
     {
         Symbol s;
         s.setTypeXYWH("path", 0, 0, d_bh, d_bw);
@@ -66,10 +66,10 @@ void PaletteComponent::buildFromPalette()
 
     }
     
-    for (int i = 0; i < getModel()->getPalette()->getPaletteNumUserItems(); i++)
+    for (int j = 0; j < getModel()->getPalette()->getPaletteNumUserItems(); j++)
     {
-        PaletteButton *pb = new PaletteButton(i + getModel()->getPalette()->getPaletteNumDefaultItems(),
-                                              getModel()->getPalette()->getPaletteUserItem(i));
+        PaletteButton *pb = new PaletteButton(j + getModel()->getPalette()->getPaletteNumDefaultItems(),
+                                              getModel()->getPalette()->getPaletteUserItem(j));
         pb->setSize(bw , bh);
         pb->setCentrePosition( b_cX, b_cY);
         addAndMakeVisible(pb);
@@ -107,10 +107,9 @@ void PaletteComponent::selectPaletteButton(int indexOfSelectedButton)
         }
         
     }
-    
-    PaletteController *extractedExpr = getController();
+	
     if (indexOfSelectedButton >= 0)
-        extractedExpr->setSelectedItem(indexOfSelectedButton);
+        getController()->setSelectedItem(indexOfSelectedButton);
     
     SymbolistMainComponent* smc = dynamic_cast<SymbolistMainComponent*>(getParentComponent());
     

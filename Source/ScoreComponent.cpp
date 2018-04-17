@@ -452,7 +452,7 @@ void ScoreComponent::mouseAddClick(const MouseEvent& event)
     }
     else
     {
-        Symbol* s = sh->createSymbolFromTemplate();
+        Symbol* s = sh->createSymbol();
         s->setTypeXYWH("path", event.position.x, event.position.y, 40.0, 40.0) ;
         
         c = sh->makeComponentFromSymbol(s, top_level);

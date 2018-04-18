@@ -1,7 +1,7 @@
 #include "SVGFileIO.hpp"
 
 
-vector<unique_ptr<Symbol>> SVGFileIO::read( const char * filename )
+vector<unique_ptr<Symbol> > SVGFileIO::read( const char * filename )
 {
     pugi::xml_parse_result result = m_doc.load_file( filename );
     
@@ -19,12 +19,12 @@ vector<unique_ptr<Symbol>> SVGFileIO::read( const char * filename )
     }
     else
     {
-        std::cout << "XML [" << filename << "] parsed with errors, attr value: [" << m_doc.child("node").attribute("attr").value() << "]\n";
-        std::cout << "Error description: " << result.description() << "\n";
-        std::cout << "Error offset: " << result.offset << " (error at [..." << (filename + result.offset) << "]\n\n";
+        DEBUG_FULL("XML [" << filename << "] parsed with errors, attr value: [" << m_doc.child("node").attribute("attr").value() << "]\n");
+        DEBUG_FULL("Error description: " << result.description() << "\n");
+        DEBUG_FULL("Error offset: " << result.offset << " (error at [..." << (filename + result.offset) << "]\n\n");
     }
     
-    return vector<unique_ptr<Symbol>>();
+    return vector<unique_ptr<Symbol> >();
 }
 
 void SVGFileIO::write( vector<unique_ptr<Symbol>>& score, const char * filename )

@@ -10,7 +10,6 @@
 class BaseComponent : public ScoreComponent {
 	
 public:
-    
     BaseComponent() = default;
     ~BaseComponent();
     
@@ -23,13 +22,22 @@ public:
     void setSymbolID();
     
     void paint( Graphics& g ) override;
-    
+	
     // it shouldn't be possible to set the symbol without updating the whole component
     void setScoreSymbolPointer(Symbol* s) { score_symbol = s; }
     
     Symbol* getScoreSymbolPointer () { return score_symbol; }
     void createAndAttachSymbol();
-    
+	
+    /**
+     * Creates a symbol and populates it with messages
+     * retrieved from this BaseComponent.
+     *
+     * @return A copy of the symbol set with this BaseComponent
+     *  	   messages.
+     */
+	Symbol createSymbolFromComponent();
+	
     bool isTopLevelComponent();
     void reportModification();
 
@@ -38,7 +46,6 @@ public:
     void moved () override;
     void resized () override;
 
-    
     // these are standard interactions
     void mouseEnter( const MouseEvent& event ) override {};
     void mouseExit( const MouseEvent& event ) override {};
@@ -65,15 +72,13 @@ public:
     
     // not very happy with therm "Symbol" here
     virtual inline void setSymbolComponentStrokeWeight( float s ){ strokeWeight = s; }
-    
-    
+	
     // helper functions
     inline void symbol_debug_function(const char* func)
     {
         std::cout << juce::Time::currentTimeMillis() << " " << getSymbolTypeStr() << " " << this << " " << func << std::endl;
     }
-    
-    
+	
     inline void setBoundsFloatRect( Rectangle<float> r )
     {
         setBounds ( r.getX(), r.getY(), r.getWidth(), r.getHeight() );
@@ -90,7 +95,6 @@ public:
     virtual void scaleScoreComponent(float scale_w, float scale_h) override;
     virtual void setScoreComponentSize(int w, int h) override;
 
-    
     void selectComponent() override;
     void deselectComponent() override;
     
@@ -169,8 +173,11 @@ protected:
     Point<float>    m_down;
     Colour          current_color = Colours::black;
 	
-    float           relative_x = 0.0, relative_y = 0.0 , relative_w = 1.0 , relative_h = 1.0 ;  // values between 0.0 and 1.0 relative to the size of its container
-    int             resize_mode = 0; // 0 = scale symbol to bounds, 1 = scale spacing (not resizing)
+	// values between 0.0 and 1.0 relative to the size of its container
+    float           relative_x = 0.0, relative_y = 0.0 , relative_w = 1.0 , relative_h = 1.0;
+	
+	// 0 = scale symbol to bounds, 1 = scale spacing (not resizing)
+    int             resize_mode = 0;
     float           m_min_size = 5;
 	
     bool            showBoundingBox = false;
@@ -183,6 +190,7 @@ protected:
 	
     bool            is_alt_copying = false;
     Point<float>    m_prev_event;
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BaseComponent)
     

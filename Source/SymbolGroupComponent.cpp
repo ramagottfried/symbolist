@@ -4,6 +4,79 @@
 #include "PageComponent.h"
 #include "ScoreComponent.h"
 
+void SymbolGroupComponent::groupSelectedSymbols()
+{
+	DEBUG_TRACE();
+	
+	if ( selected_components.size() > 1 )
+    {
+    	DEBUG_FULL("Creating a group from " << selected_components.size()
+										    << " selected components." << endl);
+		
+        // get the position an bounds of the group
+        int minx = getWidth(), maxx = 0, miny = getHeight(), maxy = 0;
+        for( auto it = selected_components.begin(); it != selected_components.end(); it++ )
+        {
+            Rectangle<int> compBounds = (*it)->getBounds();
+            minx =  min( minx, compBounds.getX() );
+            miny =  min( miny, compBounds.getY() );
+            maxx =  max( maxx, compBounds.getRight() );
+            maxy =  max( maxy, compBounds.getBottom() );
+        }
+
+        auto symbolistHandler = getSymbolistHandler();
+		
+		// Creating a temporary symbol, because it will not integrate the score.
+        Symbol groupSymbol = Symbol();
+        groupSymbol.setTypeXYWH("group", minx, miny, maxx-minx, maxy-miny);
+		
+        int count = 0;
+		
+		/* Adds a "/subsymbol" message in the group symbol bundle
+		 * for each selected component.
+		 */
+        for (SymbolistComponent *c : selected_components)
+        {
+            auto selectedComponent = dynamic_cast<BaseComponent* >(c);
+			
+            // Checks downcast result.
+            if (selectedComponent != NULL)
+            {
+            	/* Creates a symbol for the selectedComponent.
+				 * Adding messages to the bundle is easier then.
+            	 */
+                Symbol associatedSymbol = selectedComponent->createSymbolFromComponent();
+				
+                if (associatedSymbol.size() > 0)
+                {
+                    // Copies bundle from subcomponent symbol and join into new group symbol
+                    associatedSymbol.addMessage("/x", selectedComponent->getX() - minx);
+                    associatedSymbol.addMessage("/y", selectedComponent->getY() - miny);
+					
+                    groupSymbol.addMessage( "/subsymbol/" + to_string(count++), associatedSymbol );
+					
+                }
+				
+            }
+        }
+		
+        SymbolGroupComponent *group = dynamic_cast<SymbolGroupComponent*>(
+									  	symbolistHandler->makeComponentFromSymbol(&groupSymbol, true)
+									  );
+        addSubcomponent(group);
+        deleteSelectedComponents();
+		
+        addToSelection(group);
+    }
+	
+	DEBUG_TRACE();
+}
+
+void SymbolGroupComponent::deleteSelectedComponents()
+{
+	DEBUG_TRACE();
+	ScoreComponent::deleteSelectedComponents();
+}
 
 bool SymbolGroupComponent::hitTest (int x, int y)
 {
@@ -22,7 +95,6 @@ bool SymbolGroupComponent::hitTest (int x, int y)
     
     return false;
 }
-
 
 void SymbolGroupComponent::setSymbolComponentColor( Colour c )
 {
@@ -63,8 +135,6 @@ void SymbolGroupComponent::deselectComponent()
         getSubcomponent(i)->deselectComponent();
     }
 }
-
-
 
 void SymbolGroupComponent::setEditMode( bool val )
 {
@@ -177,8 +247,6 @@ void SymbolGroupComponent::scaleScoreComponent(float scale_w, float scale_h)
     
     setSize(getWidth() * scale_w, getHeight() * scale_h);
 }
-
-
 
 /*============================*
  * SYMBOL MANAGEMENT

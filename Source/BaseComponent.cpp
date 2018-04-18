@@ -75,6 +75,14 @@ void BaseComponent::createAndAttachSymbol()
     setScoreSymbolPointer(s);
 }
 
+Symbol BaseComponent::createSymbolFromComponent()
+{
+	Symbol symbol;
+	addSymbolMessages(&symbol);
+	
+	return symbol;
+}
+
 // addSymbolMessages outputs the component's values into the symbol
 void BaseComponent::addSymbolMessages(Symbol* s)
 {

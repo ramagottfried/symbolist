@@ -31,6 +31,8 @@ public:
     void addSubcomponent(SymbolistComponent *c) override ;
     void removeSubcomponent(SymbolistComponent *c) override ;
     
+    virtual void groupSelectedSymbols() override;
+    
     // single_component edit mode
     void enterEditMode( BaseComponent* c );
     void exitEditMode();
@@ -72,12 +74,6 @@ public:
     vector<BaseComponent*> getSubcomponentsByStaff( String& staff_name );
 
     DisplayMode getDisplayMode(){ return display_mode; }
-/*
-    Component * queryPoint( float x, float y )
-    {
-        return getComponentAt(x, y);
-    }
-  */
     
     /* Overrides the update method inherited from the Observer class. */
     virtual inline void update() override {}

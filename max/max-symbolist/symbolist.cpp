@@ -299,7 +299,6 @@ void symbolist_free(t_symbolist *x)
     
 }
 
-
 void *symbolist_new(t_symbol *s, long argc, t_atom *argv)
 {
     t_symbolist *x;

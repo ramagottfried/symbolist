@@ -113,7 +113,7 @@ public:
      */
     void removeSymbol(Symbol* symbol);
     void removeAllSymbols();
-        
+		
     void importScoreFromOSC( const OdotBundle_s& s_bundle );
     
     void print() const;

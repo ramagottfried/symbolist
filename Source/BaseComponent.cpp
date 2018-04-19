@@ -255,15 +255,10 @@ void BaseComponent::setSymbolID()
 
         if (s)
         {
-            string typeOfSymbol = s->getType();
-            string id = s->getMessage("/id").getString();
+            String typeOfSymbol = s->getType();
+            String id = s->getMessage("/id").getString();
             
-            // this was updated in the master branch
-            if (id.size() == 0
-                || getComponentID() != id
-                || id == (typeOfSymbol + "/palette")
-                || id == (name + "/palette")
-                || id.rfind(name) == string::npos)
+            if( id.isEmpty() || id == (typeOfSymbol + "/palette")  || id == (name + "/palette") || !id.contains(String(name)))
             {
                 // if there is a name use this for the id
                 // for the id, check to see if there are others with this name and then increment 1
@@ -272,14 +267,20 @@ void BaseComponent::setSymbolID()
                 int count = sh->symbolNameCount( name );
                 
                 id = name + "/" + to_string(count);
-                
-                while(!sh->uniqueIDCheck(id))
-                    id = name + "/" + to_string(count++);
-                
+				
+				// Cannot pass directly id.toStdString() to uniqueIDCheck
+				string stdStringId = id.toStdString();
+				
+                while(!sh->uniqueIDCheck(stdStringId))
+                {
+					id = name + "/" + to_string(count++);
+					stdStringId = id.toStdString();
+				}
+				
             }
             
             setComponentID( id );
-            s->addMessage( "/id", id );
+            s->addMessage( "/id", id.toStdString() );
         }
     }
 }

@@ -54,18 +54,8 @@ void PageController::addComponentsFromScore()
     DEBUG_FULL("ADDING " << score->getSize() << " SYMBOLS" << endl);
     
     for (int i = 0; i < score->getSize(); i++)
-        try
-        {
-            makeComponentFromSymbol(score->getSymbol(i), false);
-        }
-        catch(length_error& error)
-        {
-            cout << error.what() << endl;
-        }
-        catch(logic_error& error)
-        {
-            cout << error.what() << endl;
-        }
+        makeComponentFromSymbol( score->getSymbol(i), true );
+    
 }
 
 void PageController::clearAllSubcomponents()

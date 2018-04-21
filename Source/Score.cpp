@@ -73,6 +73,8 @@ Symbol* Score::createSymbol()
  ***********************************/
 Symbol* Score::addSymbol(Symbol* symbol)
 {
+    DEBUG_FULL(symbol << endl );
+
     // Calls symbol's empty constructor if reference is NULL.
     if (symbol == NULL)
     {
@@ -80,18 +82,18 @@ Symbol* Score::addSymbol(Symbol* symbol)
         return score_symbols.back().get();
     }
     
-    // make copy and add to symbol vector
-    score_symbols.push_back(unique_ptr<Symbol>(new Symbol(*symbol)));
-    
     /* If symbol id exists in score, then union the incoming values with the current values
      * and return the symbol reference.
      */
     string id = symbol->getID();
+    if( id == "" )
+        DEBUG_FULL("possible error: this symbol has no id text " << endl );
+    
     auto iteratorToSymbol = find_if(score_symbols.begin(),
                                     score_symbols.end(),
                                     [id]( unique_ptr<Symbol>& ptrToSymbol )
                                     {
-                                        return ptrToSymbol->getID() == id && id != "";
+                                        return (ptrToSymbol->getID() == id );
                                     });
     
     if (iteratorToSymbol != score_symbols.end())
@@ -99,18 +101,24 @@ Symbol* Score::addSymbol(Symbol* symbol)
         (*iteratorToSymbol)->unionWith( symbol, true );
         return (*iteratorToSymbol).get();
     }
+    
+    // make copy and add to symbol vector
+    score_symbols.push_back( unique_ptr<Symbol>( new Symbol(*symbol) ) );
+    
 
     /* Retrieves the last inserted symbol's reference
      * before sorting the score
      */
     Symbol* lastInsertedSymbol = score_symbols.back().get();
-    
+    DEBUG_FULL("lastInsertedSymbol" << lastInsertedSymbol << endl );
+
     // Calls the sort function to properly insert the new symbol.
     sort(score_symbols.begin(), score_symbols.end(), score_sorter);
     
     /* lastInsertedSymbol is added to staves
      * only if it is of type staff.
      */
+    DEBUG_FULL("attempt to add staff " << lastInsertedSymbol << endl );
     bool newstaff = staves.addStaff(lastInsertedSymbol);
     
     /* if lastInsertedSymbol is linked to a staff

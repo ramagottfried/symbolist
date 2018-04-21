@@ -38,7 +38,7 @@ Symbol* PageController::getSymbolAtIndex(int n)
 
 Symbol* PageController::setOneSymbol(const OdotBundle_s& bundle)
 {
-    Symbol symbol = Symbol(bundle);
+    Symbol symbol = Symbol( bundle );
     return getModel()->addSymbolToScore(&symbol);
 }
 

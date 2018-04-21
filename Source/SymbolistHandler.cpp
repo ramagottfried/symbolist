@@ -158,14 +158,6 @@ void SymbolistHandler::symbolistAPI_windowToFront()
         getView()->getTopLevelComponent()->toFront(true);
     }
 
-    if ( getView()->getInspector()->getSymbolPanelTab() != NULL)
-    {
-        getView()
-                ->getInspector()
-                ->getSymbolPanelTab()
-                ->getTopLevelComponent()
-                ->toFront(true);
-    }
 }
 
 void SymbolistHandler::symbolistAPI_windowSetName(String name)

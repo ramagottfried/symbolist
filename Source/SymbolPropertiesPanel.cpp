@@ -38,7 +38,7 @@ void SymbolPropertiesPanel::createOSCview ()
     {
         Symbol* s = symbol_component->getScoreSymbolPointer();
         DEBUG_FULL("Retrieving pointer from component" << endl);
-        s->print();
+        //s->print();
         
         if( !s )
             return;

@@ -200,38 +200,19 @@ void symbolist_setSymbol( t_symbolist *x, t_symbol *msg, int argc, t_atom *argv 
         return;
     }
     long len = atom_getlong(argv);
-    char *ptr = (char *)atom_getlong(argv + 1);
-    
-    t_osc_bndl_u *b = osc_bundle_s_deserialize(len, ptr);
-    if(!b){
-        object_error((t_object *)x, "invalid OSC packet");
-        return;
-    }
-    
-    
- //   t_osc_msg_ar_u *symbols = osc_bundle_u_lookupAddress( b , "/symbol", 0);
-    
-    
-    
-    // remove downcast once symbolist odot is working
-    t_osc_timetag timetag = OSC_TIMETAG_NULL;
-    t_osc_bundle_u *blobbed_b = odowncast_iterBundle(x, b, &timetag);
-    if( !blobbed_b )
+    char *ptr = NULL;
+    ptr = (char *)atom_getlong(argv + 1);
+ 
+    if( len && ptr )
     {
-        object_error((t_object *)x, "invalid OSC packet");
-        osc_bundle_u_free(b);
-        return;
-    }
-
-    t_osc_bndl_s *s_bndl = osc_bundle_u_serialize( blobbed_b );
-
-    if( s_bndl )
-    {
-        symbolistSetOneSymbol( x->symbolist_handler, s_bndl );
-        osc_bundle_s_deepFree(s_bndl);
+        t_osc_bndl_s *s_bndl = osc_bundle_s_alloc(len, ptr);
+        if( s_bndl )
+        {
+            symbolistSetOneSymbol( x->symbolist_handler, s_bndl );
+            osc_bundle_s_free(s_bndl);
+        }
     }
     
-    osc_bundle_u_free( blobbed_b );
 }
 
 void symbolist_clearScore( t_symbolist *x )

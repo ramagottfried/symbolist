@@ -437,7 +437,7 @@ void SymbolistHandler::removeSymbolFromScore(BaseComponent* component)
     
     log_score_change();
 
-    symbol->print();
+    //symbol->print();
 
     if (getView())
         getView()->clearInspector();
@@ -518,8 +518,8 @@ void SymbolistHandler::log_score_change()
 
 void SymbolistHandler::push_undo_stack()
 {
-    DEBUG_FULL("Previous score :" << endl);
-    getModel()->getScore()->print();
+    // DEBUG_FULL("Previous score :" << endl);
+    // getModel()->getScore()->print();
     
     undo_stack.add( new Score( *getModel()->getScore() ) );
     

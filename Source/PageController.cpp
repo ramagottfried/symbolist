@@ -42,9 +42,9 @@ Symbol* PageController::setOneSymbol(const OdotBundle_s& bundle)
     return getModel()->addSymbolToScore(&symbol);
 }
 
-void PageController::importScoreFromOSC(const OdotBundle_s& bundleArray)
+void PageController::importSymbols( const OdotBundle_s& bundle )
 {
-    getModel()->importScoreFromOSC(bundleArray);
+    getModel()->importSymbols( bundle );
 }
 
 void PageController::addComponentsFromScore()

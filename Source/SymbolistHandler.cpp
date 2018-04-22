@@ -234,11 +234,11 @@ void SymbolistHandler::symbolistAPI_setOneSymbol(const OdotBundle_s& bundle)
     }
 }
 
-void SymbolistHandler::symbolistAPI_setSymbols(const OdotBundle_s& bundleArray)
+void SymbolistHandler::symbolistAPI_setSymbols( const OdotBundle_s& bundle )
 {
     const MessageManagerLock mmLock; // Will lock the MainLoop until out of scope
     
-    page_controller->importScoreFromOSC(bundleArray);
+    page_controller->importSymbols( bundle );
     
     if ( getView() != NULL)
     {
@@ -344,7 +344,7 @@ void SymbolistHandler::executeTransportCallback(int arg)
 //=================================
 Symbol* SymbolistHandler::createSymbolFromTemplate()
 {
-    return page_controller->getModel()->addSymbolToScore(getSelectedSymbolInPalette());
+    return page_controller->getModel()->addSymbolToScore( getSelectedSymbolInPalette() );
 }
 
 Symbol* SymbolistHandler::createSymbol()
@@ -416,7 +416,7 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
             if (attach_the_symbol)
             {
                 newComponent->setScoreSymbolPointer(s);
-                getModel()->getScore()->addStaff(s); // << /type checked internally and added if staff
+                getModel()->getScore()->addStaff( s ); // << /type checked internally and added if staff
             }
         }
         
@@ -512,7 +512,7 @@ void SymbolistHandler::log_score_change()
     redo_stack.clear();
     push_undo_stack();
     
-    symbolistAPI_exportSVG( nullptr );
+    //symbolistAPI_exportSVG( nullptr );
 }
 
 
@@ -551,7 +551,7 @@ void SymbolistHandler::undo()
             getView()->getPageComponent()->unselectAllComponents();
             getView()->getPageComponent()->clearAllSubcomponents();
             getModel()->getScore()->removeAllSymbols();
-            getModel()->setScore(undo_stack.removeAndReturn( undo_stack.size() - 1 ));
+            getModel()->setScore( undo_stack.removeAndReturn( undo_stack.size() - 1 ) );
             
             page_controller->addComponentsFromScore();
             getView()->repaint();
@@ -624,7 +624,7 @@ void SymbolistHandler::newFromClipBoard()
 	
     for( auto s : clipboard )
     {
-        Symbol* new_sym = new Symbol(*s);
+        Symbol* new_sym = getModel()->getScore()->addDuplicateSymbol(s);
         BaseComponent *c = makeComponentFromSymbol(new_sym, true);
         
         if ( c != NULL)

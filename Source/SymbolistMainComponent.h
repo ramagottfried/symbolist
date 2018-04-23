@@ -43,24 +43,10 @@ public:
     }
     inline PaletteComponent* getPaletteView() { return &palette_view; }
     inline PageComponent*    getScoreView() { return &score_view; }
-    
-    /*********************************************
-     *        GUI FUNCTIONALITY AND TOOLS        *
-     *********************************************/
-    void updatePaletteView();
-    void addSelectedSymbolsToPalette();
-    
-    // Redefinition of methods from Juce::Component
-    void resized() override;
-    void zoom( float delta );
-    
-    void modifierKeysChanged (const ModifierKeys& modifiers) override;
-
-    void setMouseMode(UI_EditType m);
+	void setMouseMode(UI_EditType m);
     UI_EditType getMouseMode();
     void setDrawMode(UI_DrawType m);
     UI_DrawType getDrawMode();
-    
     
     // Redefine these from SymbolistComponent
     inline PageComponent* getPageComponent() override
@@ -71,18 +57,51 @@ public:
         return getController();
     }
     inline Viewport* getViewer() { return &score_viewport; }
-    Rectangle<float> getViewRect();
-    Rectangle<float> getZoomedRect();
+	inline ModifierKeys* getCurrentMods(){ return &current_mods; }
 
-    inline ModifierKeys* getCurrentMods(){ return &current_mods; }
+    /**************************************
+     *        PALETTE VIEW METHODS        *
+     **************************************/
+    void updatePaletteView();
+    void addSelectedSymbolsToPalette();
     
-    /*********************************************
-     *        PROPERTIES PANEL (INSPECTOR)       *
-     *********************************************/
+	/**************************************
+     *        SCORE VIEW METHODS          *
+     **************************************/
+     
+     /**
+      * Calls groupSelectedSymbols on the currently edited component in
+      * the score view.
+      * The currently edited component could be the score view itself or
+      * a lower level graphic components (for instance if one is grouping
+      * sysmbols within a symbol group).
+      */
+    void groupSelectedSymbols();
+    
+     /**
+      * Calls ungroupSelectedSymbols on the currently edited component in
+      * the score view.
+      * The currently edited component could be the score view itself or
+      * a lower level graphic components (for instance if one is grouping
+      * sysmbols within a symbol group).
+      */
+    void ungroupSelectedSymbols();
+	Rectangle<float> getViewRect();
+    Rectangle<float> getZoomedRect();
+    
+	/***************************************
+     *        INSPECTOR VIEW METHODS       *
+     ***************************************/
     void toggleInspector();
     inline void clearInspector(){ inspector->clearInspector(); }
     inline void setInspectorObject( BaseComponent *c ){ inspector->setInspectorObject( c ); }
-
+    
+    // Redefinition of methods from Juce::Component
+    void resized() override;
+    void zoom( float delta );
+    
+    void modifierKeysChanged (const ModifierKeys& modifiers) override;
+    
 
     void setTimePoint( float t )
     {

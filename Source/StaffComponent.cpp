@@ -11,7 +11,7 @@ void StaffComponent::importFromSymbol( const Symbol &s )
     
     BaseComponent::importFromSymbol(s);
     
-    auto subsym = new Symbol(s.getMessage( "/subsymbol" ).getBundle().get_o_ptr()); // there can be only one staff subsymbol, must be grouped if multiple
+    auto subsym = new Symbol( s.getMessage( "/subsymbol" ).getBundle().get_o_ptr() ); // there can be only one staff subsymbol, must be grouped if multiple
     
     if (subsym->size() == 0)
     {

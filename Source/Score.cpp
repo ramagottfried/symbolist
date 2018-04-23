@@ -19,8 +19,8 @@ Score::Score(Score& src)
     
     for(auto it = src.score_symbols.begin(); it != src.score_symbols.end(); it++)
     {
-        score_symbols.push_back(std::unique_ptr<Symbol>(new Symbol( it->get() ) ) );
-        addStaff(score_symbols.back().get());
+        score_symbols.push_back( std::unique_ptr<Symbol>( new Symbol( it->get() ) ) );
+        addStaff( score_symbols.back().get() );
     }
     
     updateStavesAndTimepoints();

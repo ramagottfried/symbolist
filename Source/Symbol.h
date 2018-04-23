@@ -15,7 +15,17 @@ class Symbol : public OdotBundle
 {
 public:
     
-    using OdotBundle::OdotBundle;
+//    using OdotBundle::OdotBundle;
+    
+    Symbol() : OdotBundle() {}
+    Symbol(const Symbol& src) : OdotBundle(src) { copySubSymbols( src.subsymbols ); }
+    Symbol(const Symbol* src) : OdotBundle(src) { copySubSymbols( src->subsymbols ); }
+    Symbol( const OdotBundle_s& src ) : OdotBundle(src) {}
+    Symbol( const t_osc_bndl_u *src ) : OdotBundle(src) {}
+
+    Symbol( Symbol&& src ) : OdotBundle(src) { moveSubSymbols( src.subsymbols );  }
+    Symbol& operator=( Symbol&& src ) = default;
+    ~Symbol(){}
     
     void setTypeXYWH(const string & type, float x, float y, float w, float h);
 
@@ -57,11 +67,32 @@ public:
         float start = getTime();
         return t >= start && t <= ( start + getDuration() );
     }
-        
+    
+    
+    
 private:
+
+    vector<unique_ptr<Symbol> > subsymbols;
     
     float       m_pixels_to_time = 0.01f;
     float       m_time_to_pixels = 100.0f;
 
+    inline void copySubSymbols(const vector<unique_ptr<Symbol> >& src )
+    {
+        for(auto it = src.begin(); it != src.end(); it++)
+            subsymbols.push_back( std::unique_ptr<Symbol>( new Symbol( it->get() ) ) );
+    }
+    
+    inline void moveSubSymbols( vector<unique_ptr<Symbol> >& src )
+    {
+        subsymbols.insert( src.end(), std::make_move_iterator(src.begin()),
+                  std::make_move_iterator(src.end()));
+        
+        /*
+        for(auto it = src.begin(); it != src.end(); it++)
+            subsymbols.push_back( std::move(*it) );
+         */
+    }
+    
 };
 

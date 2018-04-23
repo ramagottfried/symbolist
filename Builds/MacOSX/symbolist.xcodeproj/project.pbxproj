@@ -902,17 +902,17 @@
 				11B71DD61F0AA83A00CDE209 /* OSCPropertyComponents.h */,
 				116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */,
 				116F87731F9D04B90062EE91 /* ScoreBundleViewer.h */,
-				116F87781F9D04FC0062EE91 /* PropertyPanelTabs.cpp */,
-				116F87791F9D04FC0062EE91 /* PropertyPanelTabs.h */,
 				11AEF237207A943800B1398D /* JsonTreeItem.cpp */,
 				11AEF238207A943800B1398D /* JsonTreeItem.hpp */,
 			);
 			name = "property-panel";
 			sourceTree = "<group>";
 		};
-		11CE00151EC3231E00E4F624 /* symbol-components */ = {
+		11CE00151EC3231E00E4F624 /* score-components */ = {
 			isa = PBXGroup;
 			children = (
+				11CE005D1EC4B31200E4F624 /* ScoreComponent.h */,
+				11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */,
 				11CE00651EC4B90700E4F624 /* BaseComponent.h */,
 				118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */,
 				11D86B8A1EEAEF7900681F6D /* PathBaseComponent.h */,
@@ -925,7 +925,7 @@
 				114027C91F4B185E00A9B8C4 /* StaffComponent.hpp */,
 				114027C81F4B185E00A9B8C4 /* StaffComponent.cpp */,
 			);
-			name = "symbol-components";
+			name = "score-components";
 			sourceTree = "<group>";
 		};
 		11CE00431EC3275500E4F624 /* application */ = {
@@ -939,17 +939,13 @@
 		11D123561F44712800A5EA5B /* tool-ui-components */ = {
 			isa = PBXGroup;
 			children = (
-				118C38EE1EC61404006FF4A1 /* PaletteComponent.h */,
-				118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */,
+				113DEE0A1FA1D7C600A45220 /* EditSelectionBox.cpp */,
+				113DEE0B1FA1D7C600A45220 /* EditSelectionBox.h */,
 				751E31512069410400C3318F /* PaletteButton.cpp */,
 				751E31522069410400C3318F /* PaletteButton.hpp */,
-				111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */,
-				111A261B1F40B0C200D3713C /* MouseModeComponent.hpp */,
 				111A26201F40CBAD00D3713C /* time-components */,
 				11D123571F4471EA00A5EA5B /* ToolBarComp.cpp */,
 				11D123581F4471EA00A5EA5B /* ToolBarComp.hpp */,
-				11D1235A1F44796800A5EA5B /* SymbolistMenu.cpp */,
-				11D1235B1F44796800A5EA5B /* SymbolistMenu.hpp */,
 				11B71DE11F0AD8EA00CDE209 /* property-panel */,
 				11AEF23F207A94D000B1398D /* CodeboxComponent.cpp */,
 				11AEF240207A94D000B1398D /* CodeboxComponent.hpp */,
@@ -983,19 +979,11 @@
 			name = "path-tools";
 			sourceTree = "<group>";
 		};
-		44DFA0951ED2C96600A6847A /* page-score-components */ = {
+		44DFA0951ED2C96600A6847A /* score-components */ = {
 			isa = PBXGroup;
 			children = (
-				113DEE0A1FA1D7C600A45220 /* EditSelectionBox.cpp */,
-				113DEE0B1FA1D7C600A45220 /* EditSelectionBox.h */,
-				445A661F1EDABDED00E2ADA2 /* SymbolistComponent.h */,
-				444CD9021EDDAF1B001AC03A /* SymbolistComponent.cpp */,
-				11CE005D1EC4B31200E4F624 /* ScoreComponent.h */,
-				11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */,
-				444C43A01EE4A2E4000C6F69 /* PageComponent.h */,
-				444C439F1EE4A2E4000C6F69 /* PageComponent.cpp */,
 			);
-			name = "page-score-components";
+			name = "score-components";
 			sourceTree = "<group>";
 		};
 		5BA2DB05C7718E6A683CC674 /* symbolist */ = {
@@ -1022,6 +1010,23 @@
 			name = Source;
 			sourceTree = "<group>";
 		};
+		7571E706208DECEC0092A3E0 /* child-views */ = {
+			isa = PBXGroup;
+			children = (
+				444C43A01EE4A2E4000C6F69 /* PageComponent.h */,
+				444C439F1EE4A2E4000C6F69 /* PageComponent.cpp */,
+				118C38EE1EC61404006FF4A1 /* PaletteComponent.h */,
+				118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */,
+				111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */,
+				111A261B1F40B0C200D3713C /* MouseModeComponent.hpp */,
+				11D1235A1F44796800A5EA5B /* SymbolistMenu.cpp */,
+				11D1235B1F44796800A5EA5B /* SymbolistMenu.hpp */,
+				116F87781F9D04FC0062EE91 /* PropertyPanelTabs.cpp */,
+				116F87791F9D04FC0062EE91 /* PropertyPanelTabs.h */,
+			);
+			name = "child-views";
+			sourceTree = "<group>";
+		};
 		75774F7F206173470069A89D /* view */ = {
 			isa = PBXGroup;
 			children = (
@@ -1029,11 +1034,14 @@
 				446388D41EC34DC90038CFCB /* SymbolistMainWindow.cpp */,
 				44CFE0411EC37BA5009135F8 /* SymbolistMainComponent.h */,
 				11CE00531EC328EC00E4F624 /* SymbolistMainComponent.cpp */,
+				445A661F1EDABDED00E2ADA2 /* SymbolistComponent.h */,
+				444CD9021EDDAF1B001AC03A /* SymbolistComponent.cpp */,
 				118353441F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp */,
 				118353451F26AD0600DB1DF5 /* SymbolistLookAndFeel.hpp */,
+				7571E706208DECEC0092A3E0 /* child-views */,
 				444572681EFA67BE00A7DECD /* path-tools */,
-				11CE00151EC3231E00E4F624 /* symbol-components */,
-				44DFA0951ED2C96600A6847A /* page-score-components */,
+				11CE00151EC3231E00E4F624 /* score-components */,
+				44DFA0951ED2C96600A6847A /* score-components */,
 				11D123561F44712800A5EA5B /* tool-ui-components */,
 			);
 			name = view;

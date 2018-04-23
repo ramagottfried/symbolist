@@ -42,6 +42,10 @@ public:
         setBounds( x , y - (h * 0.5), bounds.getWidth() , bounds.getHeight() );
     }
     
+    Point<float> computeSymbolPosition(float x, float y, float w, float h) override
+    {
+        return Point<float>( x , y + (h * 0.5) );
+    }
     
     void accumTheta ( float theta ) override
     {

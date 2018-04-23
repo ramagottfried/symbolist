@@ -320,6 +320,10 @@ void BaseComponent::setBoundsFromSymbol( float x, float y , float w , float h)
     setBounds(x, y, w, h);
 }
 
+Point<float> BaseComponent::computeSymbolPosition(float x, float y, float w, float h)
+{
+    return Point<float>(x,y);
+}
 
 /******************
  * Called by selection mechanism

@@ -72,15 +72,20 @@ public:
     {
         std::cout << juce::Time::currentTimeMillis() << " " << getSymbolTypeStr() << " " << this << " " << func << std::endl;
     }
-    
-    
+        
     inline void setBoundsFloatRect( Rectangle<float> r )
     {
         setBounds ( r.getX(), r.getY(), r.getWidth(), r.getHeight() );
     }
-
+    
+    // set graphical component's bounds from the symbol attributes
+    // (can be different for special types of components)
     virtual void setBoundsFromSymbol( float x, float y , float w , float h);
-        
+    
+    // returns the symbol position from grapical component position and size
+    // (can be different for special types of components)
+    virtual Point<float> computeSymbolPosition( float x, float y, float w, float h );
+    
     virtual void setMinimalBounds ();
     Rectangle<int> getMinimalBounds();
 

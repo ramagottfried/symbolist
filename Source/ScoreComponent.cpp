@@ -301,8 +301,10 @@ void ScoreComponent::groupSelectedSymbols()
                 if (associatedSymbol->size() > 0)  // this fails within groups because subcomponents do not have score symbols...
                 {
                     // copies bundles from subcomponent symbols and join into new group symbol
-                    associatedSymbol->addMessage("/x", selectedComponent->getX() - minx);
-                    associatedSymbol->addMessage("/y", selectedComponent->getY() - miny);
+                    Point<float> symbolPos = selectedComponent->computeSymbolPosition( selectedComponent->getX() - minx, selectedComponent->getY() - miny,
+                                                                                       selectedComponent->getWidth() , selectedComponent->getHeight() );
+                    associatedSymbol->addMessage("/x", symbolPos.getX() );
+                    associatedSymbol->addMessage("/y", symbolPos.getY() );
                     
                     groupSymbol->addMessage( "/subsymbol/" + to_string(count++), *associatedSymbol );
                 }

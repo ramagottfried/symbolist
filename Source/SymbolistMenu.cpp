@@ -212,11 +212,11 @@ bool SymbolistMenu::perform(const juce::ApplicationCommandTarget::InvocationInfo
         switch (info.commandID)
         {
             case cmd_group:
-                score->getEditedComponent()->groupSelectedSymbols();
+                main->groupSelectedSymbols();
                 break;
                 
             case cmd_ungroup:
-                score->getEditedComponent()->ungroupSelectedSymbols();
+                main->ungroupSelectedSymbols();
                 break;
                 
             case cmd_deleteSelected:

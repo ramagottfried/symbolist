@@ -90,17 +90,17 @@ public:
     Symbol* setOneSymbol(const OdotBundle_s& bundle);
     
     /**
-     * Resets the score and creates new symbols from
-     * the serialized OSC bundle array in parameter.
+     * Imports the symbols from bundle into score
      *
-     * @param bundleArray the serialized OSC bundle array containing
+     * @param bundle a serialized OSC bundle containing
      *                     one or many symbols as OSC bundles.
      *
-     * @see               SymbolistModel#importScoreFromOSC(const OdotBundle_s&)
+     * @see               SymbolistModel#importSymbols(const OdotBundle_s&)
      *
-     * @see               Score#importScoreFromOSC(const OdotBundle_s&)
+     * @see               Score#importSymbols(const OdotBundle_s&)
      */
-    void importScoreFromOSC(const OdotBundle_s& bundleArray);
+    void importSymbols( const OdotBundle_s& bundle );
+    
     
     /**
      * Creates a graphic component for each symbol in the score

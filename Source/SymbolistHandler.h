@@ -103,8 +103,8 @@ public:
     int          symbolistAPI_getNumSymbols();
     OdotBundle_s symbolistAPI_getSymbolBundle_s(int n);
     Symbol*      symbolistAPI_getSymbol(int n);
-    void         symbolistAPI_setOneSymbol(const OdotBundle_s& bundle);
-    void         symbolistAPI_setSymbols(const OdotBundle_s& bundle_array);
+    void         symbolistAPI_setOneSymbol( const OdotBundle_s& bundle );
+    void         symbolistAPI_setSymbols( const OdotBundle_s& bundle );
     
     /* File IO controller's methods. */
     int         symbolistAPI_importSVG( const char * filename );

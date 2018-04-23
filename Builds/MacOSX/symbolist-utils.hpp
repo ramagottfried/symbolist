@@ -36,8 +36,8 @@ using namespace std;
 
 #else
 
-#define DEBUG_FULL(debugMessage);
-#define DEBUG_INLINE(debugMessage);
+#define DEBUG_FULL(debugMessage)
+#define DEBUG_INLINE(debugMessage)
 
 #endif
 

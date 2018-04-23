@@ -74,29 +74,9 @@ SymbolistMainComponent::~SymbolistMainComponent()
     getModel()->detach(this);
 }
 
-void SymbolistMainComponent::resized()
-{
-    auto w = getWidth();
-    auto h = getHeight();
-    
-    menu_h = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
-    
-    palette_view.setBounds( 0, 0, palette_w, h );
-    score_viewport.setBounds( palette_w, menu_h, w-palette_w, h );
-    mouse_mode_view.setBounds( palette_w, h-25, w-palette_w, 25 );
-    menu.setBounds(palette_w, 0, w-palette_w, menu_h );
-    time_display_view.setBounds(palette_w, menu_h+2, 12, 13);
-    
-    if( inspector->isVisible() )
-    {
-        inspector->setSize(400, h - score_viewport.getScrollBarThickness() - menu_h);
-        inspector->setTopRightPosition( w - score_viewport.getScrollBarThickness(), menu_h );
-    }
-    
-//    score_cursor.setBounds( score_cursor.getPlayPoint() * 100, menu_h, 50, getHeight()-menu_h );
-//    time_pointGUI.setBounds(palette_w, getBottom() - 50, getWidth()-palette_w, 50);
-}
-
+/***********************************
+ *       PALETTE VIEW METHODS      *
+ ***********************************/
 void SymbolistMainComponent::updatePaletteView()
 {
     palette_view.buildFromPalette();
@@ -107,6 +87,24 @@ void SymbolistMainComponent::addSelectedSymbolsToPalette()
     palette_view.addSymbolsToPalette(score_view.getSelectedItems());
     updatePaletteView();
 }
+
+/***********************************
+ *        SCORE VIEW METHODS       *
+ ***********************************/
+
+void SymbolistMainComponent::groupSelectedSymbols()
+{
+	score_view.getEditedComponent()->groupSelectedSymbols();
+}
+
+void SymbolistMainComponent::ungroupSelectedSymbols()
+{
+	score_view.getEditedComponent()->ungroupSelectedSymbols();
+}
+
+/***************************************
+ *        INSPECTOR VIEW METHODS       *
+ ***************************************/
 
 void SymbolistMainComponent::toggleInspector()
 {
@@ -127,6 +125,29 @@ void SymbolistMainComponent::toggleInspector()
         removeChildComponent(inspector);
         inspector->setVisible(false);
     }
+}
+
+void SymbolistMainComponent::resized()
+{
+    auto w = getWidth();
+    auto h = getHeight();
+	
+    menu_h = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
+	
+    palette_view.setBounds( 0, 0, palette_w, h );
+    score_viewport.setBounds( palette_w, menu_h, w-palette_w, h );
+    mouse_mode_view.setBounds( palette_w, h-25, w-palette_w, 25 );
+    menu.setBounds(palette_w, 0, w-palette_w, menu_h );
+    time_display_view.setBounds(palette_w, menu_h+2, 12, 13);
+	
+    if( inspector->isVisible() )
+    {
+        inspector->setSize(400, h - score_viewport.getScrollBarThickness() - menu_h);
+        inspector->setTopRightPosition( w - score_viewport.getScrollBarThickness(), menu_h );
+    }
+	
+//    score_cursor.setBounds( score_cursor.getPlayPoint() * 100, menu_h, 50, getHeight()-menu_h );
+//    time_pointGUI.setBounds(palette_w, getBottom() - 50, getWidth()-palette_w, 50);
 }
 
 void SymbolistMainComponent::zoom( float delta )

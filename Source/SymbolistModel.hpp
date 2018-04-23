@@ -73,17 +73,17 @@ public:
     Symbol* addSymbolToScore(Symbol* symbol);
     
     /**
-     * Wrapper method around Score::importScoreFromOSC(const OdotBundle_s&).
+     * Wrapper method around Score::importSymbols(const OdotBundle_s&).
      *
      * Notifies the observers of this SymbolistModel instance
      * that the score has been changed.
      *
-     * @param bundleArray the serialized OSC bundle array containing
+     * @param bundle    a serialized OSC bundle containing
      *                    one or many symbols as OSC bundles.
      *
-     * @see               Score#importScoreFromOSC(const OdotBundle_s&) Score::importScoreFromOSC
+     * @see               Score#importSymbols(const OdotBundle_s&) Score::importSymbols
      */
-    void importScoreFromOSC(const OdotBundle_s& bundleArray);
+    void importSymbols( const OdotBundle_s& bundle );
     
     /**
      * Wrapper method around Score::removeAllSymbols().

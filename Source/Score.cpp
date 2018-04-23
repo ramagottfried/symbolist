@@ -32,7 +32,7 @@ Score::Score(Score& src)
 
 Score::Score( const OdotBundle_s& s_bundle  )
 {
-    importScoreFromOSC( s_bundle );
+    importSymbols( s_bundle );
 }
 
 Score::~Score()
@@ -74,6 +74,8 @@ Symbol* Score::createSymbol()
  ***********************************/
 Symbol* Score::addSymbol(Symbol* symbol)
 {
+    DEBUG_FULL(symbol << endl );
+
     // Calls symbol's empty constructor if reference is NULL.
     if (symbol == NULL)
     {
@@ -81,37 +83,46 @@ Symbol* Score::addSymbol(Symbol* symbol)
         return score_symbols.back().get();
     }
     
-    // make copy and add to symbol vector
-    score_symbols.push_back(unique_ptr<Symbol>(new Symbol(*symbol)));
-    
     /* If symbol id exists in score, then union the incoming values with the current values
      * and return the symbol reference.
      */
     string id = symbol->getID();
+    DEBUG_FULL("checking for " << id << endl );
+
+    if( id == "" )
+        DEBUG_FULL("possible error: this symbol has no id text " << endl );
+    
     auto iteratorToSymbol = find_if(score_symbols.begin(),
                                     score_symbols.end(),
                                     [id]( unique_ptr<Symbol>& ptrToSymbol )
                                     {
-                                        return ptrToSymbol->getID() == id && id != "";
+                                        return (ptrToSymbol->getID() == id );
                                     });
     
     if (iteratorToSymbol != score_symbols.end())
     {
         (*iteratorToSymbol)->unionWith( symbol, true );
+        DEBUG_FULL("iteratorToSymbol " << endl );
         return (*iteratorToSymbol).get();
     }
+    
+    // make copy and add to symbol vector
+    score_symbols.push_back( unique_ptr<Symbol>( new Symbol(*symbol) ) );
+    
 
     /* Retrieves the last inserted symbol's reference
      * before sorting the score
      */
     Symbol* lastInsertedSymbol = score_symbols.back().get();
-    
+    DEBUG_FULL("lastInsertedSymbol" << lastInsertedSymbol << endl );
+
     // Calls the sort function to properly insert the new symbol.
     sort(score_symbols.begin(), score_symbols.end(), score_sorter);
     
     /* lastInsertedSymbol is added to staves
      * only if it is of type staff.
      */
+    DEBUG_FULL("attempt to add staff " << lastInsertedSymbol << endl );
     bool newstaff = staves.addStaff(lastInsertedSymbol);
     
     /* if lastInsertedSymbol is linked to a staff
@@ -131,6 +142,35 @@ Symbol* Score::addSymbol(Symbol* symbol)
     
     return lastInsertedSymbol;
 }
+
+/***********************************
+ * Add a new Symbol in the Score duplicating the input symbol (but with a unique id)
+ ***********************************/
+Symbol* Score::addDuplicateSymbol(Symbol* symbol)
+{
+    string name = symbol->getName();
+    string id = symbol->getID();
+    
+    vector<string> ids;
+    for( auto it = score_symbols.begin(); it != score_symbols.end(); it++ )
+    {
+        if( (*it)->getName() == name )
+            ids.emplace_back( (*it)->getID() );
+    }
+    
+    size_t count = ids.size();
+    string nextID = name+"/"+to_string(count++);
+    
+    while( find( ids.begin(), ids.end(), nextID ) != ids.end() )
+    {
+        nextID = name+"/"+to_string(count++);
+    }
+    
+    symbol->addMessage("/id", nextID );
+    //DEBUG_FULL(nextID << endl);
+    return addSymbol(symbol);
+}
+
 
 /***********************************
  * Removes a Symbol from the Score
@@ -298,26 +338,35 @@ const Symbol* Score::getStaveByID( const string& id )
 }
 
 /***********************************
- * OSC encoding/decoding
+ * Add symbols from bundle, updating values if already in the score
  ***********************************/
 
-void Score::importScoreFromOSC( const OdotBundle_s& s_bundle )
+void Score::importSymbols( const OdotBundle_s& s_bundle )
 {
-    removeAllSymbols();
+    OdotBundle bundle( s_bundle ); // Deserializes the bundle
     
-    OdotBundle bundle( s_bundle ); // << Deserializes the bundle
-    
-    DEBUG_FULL("===IMPORTING OSC (" << bundle.size() << " messages)" << endl);
+    DEBUG_FULL("===ITERATE OSC (" << bundle.size() << " messages)" << endl);
     for ( auto msg : bundle.getMessageArray() )
     {
         if( msg.getAddress().find("/symbol") == 0 && msg[0].getType() == OdotAtom::O_ATOM_BUNDLE )
         {
-            Symbol* s = new Symbol(msg.getBundle().get_o_ptr());
-            addSymbol(s);
+            Symbol* s = new Symbol( msg.getBundle().get_o_ptr() );
+            addSymbol( s );
         }
     }
-    DEBUG_FULL("===IMPORT DONE" << endl);
+    DEBUG_FULL("===ITERATE DONE" << endl);
 }
+
+/***********************************
+ * Clear current score and add symbols from bundle
+ ***********************************/
+
+void Score::importReplaceScore( const OdotBundle_s& s_bundle )
+{
+    removeAllSymbols();
+    importSymbols( s_bundle );
+}
+
 
 /***********************************
  * Staff/Stave handling

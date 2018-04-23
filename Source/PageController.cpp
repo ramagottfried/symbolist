@@ -45,13 +45,13 @@ Symbol* PageController::getSymbolAtIndex(int n)
 
 Symbol* PageController::setOneSymbol(const OdotBundle_s& bundle)
 {
-    Symbol symbol = Symbol(bundle);
+    Symbol symbol = Symbol( bundle );
     return getModel()->addSymbolToScore(&symbol);
 }
 
-void PageController::importScoreFromOSC(const OdotBundle_s& bundleArray)
+void PageController::importSymbols( const OdotBundle_s& bundle )
 {
-    getModel()->importScoreFromOSC(bundleArray);
+    getModel()->importSymbols( bundle );
 }
 
 void PageController::addComponentsFromScore()
@@ -61,6 +61,7 @@ void PageController::addComponentsFromScore()
     DEBUG_FULL("ADDING " << score->getSize() << " SYMBOLS" << endl);
     
     for (int i = 0; i < score->getSize(); i++)
+    {
         try
         {
             BaseComponent* newComponent = makeComponentFromSymbol(score->getSymbol(i), false);
@@ -74,6 +75,7 @@ void PageController::addComponentsFromScore()
         {
             cout << error.what() << endl;
         }
+    }
 }
 
 void PageController::clearAllSubcomponents()

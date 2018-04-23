@@ -8,7 +8,7 @@ SymbolistModel::SymbolistModel()
     this->palette = unique_ptr<Palette>(new Palette());
 }
 
-Symbol* SymbolistModel::addSymbolToScore(Symbol* symbol)
+Symbol* SymbolistModel::addSymbolToScore( Symbol* symbol )
 {
     Symbol* newSymbol = score->addSymbol(symbol);
     notify();
@@ -16,9 +16,9 @@ Symbol* SymbolistModel::addSymbolToScore(Symbol* symbol)
     return newSymbol;
 }
 
-void SymbolistModel::importScoreFromOSC(const OdotBundle_s& bundleArray)
+void SymbolistModel::importSymbols( const OdotBundle_s& bundle )
 {
-    score->importScoreFromOSC(bundleArray);
+    score->importSymbols( bundle );
     notify();
 }
 

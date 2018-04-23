@@ -95,6 +95,18 @@ public:
      */
     Symbol* addSymbol(Symbol* symbol);
     
+    
+    /**
+     * Makes a copy of a symbol an adds it to the score.
+     *
+     *
+     * @param symbol a pointer to the symbol which will be copied
+     *               to create a new symbol in the score.
+     *
+     * @return       a pointer to the newly created symbol.
+     */
+    Symbol* addDuplicateSymbol(Symbol* symbol);
+    
     /**
      * Removes a symbol from the score.
      *
@@ -114,7 +126,9 @@ public:
     void removeSymbol(Symbol* symbol);
     void removeAllSymbols();
 		
-    void importScoreFromOSC( const OdotBundle_s& s_bundle );
+    void importReplaceScore( const OdotBundle_s& s_bundle );
+    void importSymbols( const OdotBundle_s& s_bundle );
+
     
     void print() const;
     

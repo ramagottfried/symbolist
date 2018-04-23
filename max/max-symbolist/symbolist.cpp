@@ -111,80 +111,6 @@ void symbolist_getDuration( t_symbolist *x )
     
 }
 
-t_osc_bundle_u *odowncast_iterBundle(t_symbolist *x, t_osc_bundle_u *b, t_osc_timetag *timetag)
-{
-    t_osc_bndl_it_u *bit = osc_bndl_it_u_get(b);
-    while(osc_bndl_it_u_hasNext(bit))
-    {
-        t_osc_msg_u *m = osc_bndl_it_u_next(bit);
-        t_osc_msg_it_u *mit = osc_msg_it_u_get(m);
-        while(osc_msg_it_u_hasNext(mit)){
-            t_osc_atom_u *a = osc_msg_it_u_next(mit);
-            int i = 0;
-            switch(osc_atom_u_getTypetag(a)){
-                case 'c':
-                case 'C':
-                case 'I':
-                case 'h':
-                case 'H':
-                case 'u':
-                case 'U':
-                case 'N':
-                case 'T':
-                case 'F':
-                    osc_atom_u_setInt32(a, osc_atom_u_getInt32(a));
-                    break;
-                case 'd':
-                    osc_atom_u_setFloat(a, osc_atom_u_getFloat(a));
-                    break;
-                case OSC_BUNDLE_TYPETAG:
-                {
-                    // get pointer to bundle (not a copy)
-                    t_osc_bundle_u *sub_b_u = osc_atom_u_getBndl(a);
-                    
-                    sub_b_u = odowncast_iterBundle(x, sub_b_u, timetag);
-                    
-                    // after downcasting, and blobbing subbundles, serialize and convert to blob
-                    t_osc_bundle_s *sub_b_s = osc_bundle_u_serialize(sub_b_u);
-                    if( sub_b_s )
-                    {
-                        // temp atom for conversion
-                        t_osc_atom_u *tmp_atom_s_bnd = osc_atom_u_alloc();
-                        osc_atom_u_setBndl_s(tmp_atom_s_bnd, osc_bundle_s_getLen(sub_b_s), osc_bundle_s_getPtr(sub_b_s));
-                        
-                        // make the blob
-                        char *blob = NULL;
-                        int32_t blob_l;
-                        osc_atom_u_getBlobCopy(tmp_atom_s_bnd, &blob_l, &blob); //<< internally checks for and copies bundle into blob format
-                        
-                        if( blob )
-                        {
-                            // transfer to the current atom (a)
-                            // internally calls atom_u_clear/free which frees our sub_b_u pointer, so we don't have to do that
-                            osc_atom_u_setBlob(a, blob);
-                            
-                            // release the blob
-                            osc_mem_free(blob);
-                            blob = NULL;
-                        }
-                        
-                        // release temp bundle atom
-                        osc_atom_u_free(tmp_atom_s_bnd);
-                        osc_bundle_s_deepFree(sub_b_s);
-                    }
-                    
-                    
-                }
-                break;
-            }
-            i++;
-        }
-        osc_msg_it_u_destroy(mit);
-    }
-    osc_bndl_it_u_destroy(bit);
-    return b;
-}
-
 void symbolist_setSymbol( t_symbolist *x, t_symbol *msg, int argc, t_atom *argv )
 {
     if(argc != 2){
@@ -200,38 +126,19 @@ void symbolist_setSymbol( t_symbolist *x, t_symbol *msg, int argc, t_atom *argv 
         return;
     }
     long len = atom_getlong(argv);
-    char *ptr = (char *)atom_getlong(argv + 1);
+    char *ptr = NULL;
+    ptr = (char *)atom_getlong(argv + 1);
     
-    t_osc_bndl_u *b = osc_bundle_s_deserialize(len, ptr);
-    if(!b){
-        object_error((t_object *)x, "invalid OSC packet");
-        return;
-    }
-    
-    
- //   t_osc_msg_ar_u *symbols = osc_bundle_u_lookupAddress( b , "/symbol", 0);
-    
-    
-    
-    // remove downcast once symbolist odot is working
-    t_osc_timetag timetag = OSC_TIMETAG_NULL;
-    t_osc_bundle_u *blobbed_b = odowncast_iterBundle(x, b, &timetag);
-    if( !blobbed_b )
+    if( len && ptr )
     {
-        object_error((t_object *)x, "invalid OSC packet");
-        osc_bundle_u_free(b);
-        return;
-    }
-
-    t_osc_bndl_s *s_bndl = osc_bundle_u_serialize( blobbed_b );
-
-    if( s_bndl )
-    {
-        symbolistSetOneSymbol( x->symbolist_handler, s_bndl );
-        osc_bundle_s_deepFree(s_bndl);
+        t_osc_bndl_s *s_bndl = osc_bundle_s_alloc(len, ptr);
+        if( s_bndl )
+        {
+            symbolistSetSymbols( x->symbolist_handler, s_bndl );
+            osc_bundle_s_free(s_bndl);
+        }
     }
     
-    osc_bundle_u_free( blobbed_b );
 }
 
 void symbolist_clearScore( t_symbolist *x )

@@ -44,12 +44,19 @@ SYMBOLIST_API void symbolistWindowSetName(void* symbolist_handler, char *name);
 SYMBOLIST_API int  symbolistGetNumSymbols(void* symbolist_handler);
 SYMBOLIST_API t_osc_bndl_s * symbolistGetSymbol(void* symbolist_handler, int n);
 SYMBOLIST_API void symbolistSetOneSymbol(void* symbolist_handler, t_osc_bndl_s *bundle);
-SYMBOLIST_API void symbolistSetSymbols(void* symbolist_handler, int n, t_osc_bndl_s **bundle_array);
+SYMBOLIST_API void symbolistSetSymbols(void* symbolist_handler, t_osc_bndl_s *bundle);
+
+// may need to reimplement this for OM
+// SYMBOLIST_API void symbolistSetSymbolArray(void* symbolist_handler, int n, t_osc_bndl_s **bundle_array){}
 
 SYMBOLIST_API int  symbolistGetNumPaletteSymbols(void* symbolist_handler);
 SYMBOLIST_API t_osc_bndl_s* symbolistGetPaletteSymbol(void* symbolist_handler, int n);
+
 SYMBOLIST_API void symbolistSetOnePaletteSymbol(void* symbolist_handler, t_osc_bndl_s *bundle);
-SYMBOLIST_API void symbolistSetPaletteSymbols(void* symbolist_handler, int n, t_osc_bndl_s **bundle_array);
+SYMBOLIST_API void symbolistSetPaletteSymbols(void* symbolist_handler, t_osc_bndl_s *bundle);
+
+// may need to reimplement this for OM
+// SYMBOLIST_API void symbolistSetPaletteSymbolArray(void* symbolist_handler, int n, t_osc_bndl_s **bundle_array){}
 
 SYMBOLIST_API void symbolistClearScore(void* symbolist_handler);
 SYMBOLIST_API void symbolistSetTime(void* symbolist_handler, float time_ms);

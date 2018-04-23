@@ -455,7 +455,10 @@ public:
         refresh();
     }
     
-    ~OSCValueDisplay(){}
+    ~OSCValueDisplay()
+    {
+//        DEBUG_FULL("deleting value display");
+    }
     
     void refresh() override {}
     

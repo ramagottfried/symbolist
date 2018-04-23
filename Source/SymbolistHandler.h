@@ -23,8 +23,8 @@ public:
 	
     /**
      * SymbolistHandler's default constructor.
-     * Creates a model and a view from call to
-     * model and view's default constructors.
+     * Creates a model and sets all the child controllers
+     * for this SymbolistHandler instance.
      */
     SymbolistHandler();
 	
@@ -44,9 +44,13 @@ public:
      *********************************************/
     
     /**
-     * @return The PaletteController instance owned by the SymbolistHandler.
+     * @return The PaletteController instance owned by this SymbolistHandler.
      */
     inline PaletteController* getPaletteController() { return palette_controller.get(); };
+	
+	/**
+     * @return The PageController instance owned by this SymbolistHandler.
+     */
     inline PageController*    getPageController() { return page_controller.get(); }
     inline float getCurrentTime() { return current_time; }
     
@@ -56,13 +60,13 @@ public:
     
     /**
      * Creates and sets up the PaletteController
-     * for the singleton instance of SymbolistHandler.
+     * for this instance of SymbolistHandler.
      */
     void createPaletteController();
     
     /**
      * Creates and sets up the PageController
-     * for the singleton instance of SymbolistHandler.
+     * for this instance of SymbolistHandler.
      */
     void createPageController();
     
@@ -167,8 +171,27 @@ public:
     Symbol* createSymbol();
     
     Symbol* getSelectedSymbolInPalette();
-    
-    BaseComponent* makeComponentFromSymbol(Symbol* s, bool attach_the_symbol);
+	
+    /**
+     *
+     * Creates a new graphic component from the symbol in parameter.
+     *
+     * @param symbol          the symbol from which the new graphic component
+     *				          will be created.
+     *
+     * @param attachTheSymbol a boolean indicating if the symbol in
+     *						  parameter should be attached to the newly
+     *						  created graphic component.
+     *						  If <code>true</code> then the symbol is attached
+     *                        to the graphic component by a call to the
+     *						  BaseComponent::setScoreSymbolPointer() method.
+     *
+     * @return                a pointer to the newly created BaseComponent.
+     *
+     * @see					  BaseComponent#setScoreSymbolPointer(Symbol*)
+     *						  BaseComponent::setScoreSymbolPointer
+     */
+    BaseComponent* makeComponentFromSymbol(Symbol* symbol, bool attachTheSymbol);
     
     void inStandalone(){ in_standalone = true; };
     bool isStandalone(){ return in_standalone; };
@@ -188,14 +211,29 @@ public:
 
     int symbolNameCount( string& name )
     {
-        return getModel()->getScore()->getNameCount( name );
+		return getModel()->getScore()->getNameCount( name );
     }
     
-    bool uniqueIDCheck( string& name )
+    bool uniqueIDCheck( string& idToCheck )
     {
-        return !getModel()->getScore()->idExists( name );
+        return !getModel()->getScore()->idExists( idToCheck );
     }
-    
+	
+	/**
+	 * Creates a unique id based on the name in parameter.
+	 * The created id is of the form "{name}/{number}",
+	 * where name is the name in parameter and number is
+	 * calculated depending on the existing ids in the score.
+	 *
+	 * @param name the name of a symbol or a graphic component
+	 *             serving as a base to create the new id.
+	 *
+	 * @return     a string representing a unique id in the score,
+	 *			   meaning that no symbol or graphic component
+	 *             possess this id.
+	 */
+	string createIdFromName(string& name);
+	
     /* Overrides the update method inherited from the Observer class. */
     inline void update() override {}
 

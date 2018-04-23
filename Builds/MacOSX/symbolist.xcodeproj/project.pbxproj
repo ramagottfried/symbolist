@@ -288,6 +288,7 @@
 		7571E6FF2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E6F92085FEE80092A3E0 /* symbolist-utils.cpp */; };
 		7571E7002085FEE80092A3E0 /* symbolist-utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7571E6FA2085FEE80092A3E0 /* symbolist-utils.hpp */; };
 		7571E7012085FEE80092A3E0 /* symbolist-utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7571E6FA2085FEE80092A3E0 /* symbolist-utils.hpp */; };
+		7571E7052089EA9E0092A3E0 /* SymbolTestsFixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E7022089DAFF0092A3E0 /* SymbolTestsFixture.cpp */; };
 		75774F98206176790069A89D /* Controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F90206176780069A89D /* Controller.cpp */; };
 		75774F99206176790069A89D /* Observable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F91206176780069A89D /* Observable.cpp */; };
 		75774F9A206176790069A89D /* Observer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F93206176780069A89D /* Observer.cpp */; };
@@ -613,6 +614,8 @@
 		751E31522069410400C3318F /* PaletteButton.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = PaletteButton.hpp; path = ../../Source/PaletteButton.hpp; sourceTree = "<group>"; };
 		7571E6F92085FEE80092A3E0 /* symbolist-utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "symbolist-utils.cpp"; sourceTree = "<group>"; };
 		7571E6FA2085FEE80092A3E0 /* symbolist-utils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "symbolist-utils.hpp"; sourceTree = "<group>"; };
+		7571E7022089DAFF0092A3E0 /* SymbolTestsFixture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SymbolTestsFixture.cpp; sourceTree = "<group>"; };
+		7571E7032089DAFF0092A3E0 /* SymbolTestsFixture.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SymbolTestsFixture.hpp; sourceTree = "<group>"; };
 		75774F90206176780069A89D /* Controller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Controller.cpp; path = ../../Source/Controller.cpp; sourceTree = "<group>"; };
 		75774F91206176780069A89D /* Observable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Observable.cpp; path = ../../Source/Observable.cpp; sourceTree = "<group>"; };
 		75774F92206176780069A89D /* View.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = View.hpp; path = ../../Source/View.hpp; sourceTree = "<group>"; };
@@ -1096,6 +1099,8 @@
 				758F6EF8207BC2C1006EDD53 /* SymbolistModelTestsFixture.hpp */,
 				75FB5EF1207CAD7E0083A1C0 /* ScoreTestsFixture.cpp */,
 				75FB5EF2207CAD7E0083A1C0 /* ScoreTestsFixture.hpp */,
+				7571E7022089DAFF0092A3E0 /* SymbolTestsFixture.cpp */,
+				7571E7032089DAFF0092A3E0 /* SymbolTestsFixture.hpp */,
 			);
 			name = SymbolistTests;
 			path = ../../SymbolistTests;
@@ -1717,6 +1722,7 @@
 				758F6F70207BCB00006EDD53 /* symbolist.cpp in Sources */,
 				758F6F71207BCB00006EDD53 /* include_juce_osc.cpp in Sources */,
 				758F6F72207BCB00006EDD53 /* include_juce_core.mm in Sources */,
+				7571E7052089EA9E0092A3E0 /* SymbolTestsFixture.cpp in Sources */,
 				758F6F73207BCB00006EDD53 /* include_juce_data_structures.mm in Sources */,
 				758F6F74207BCB00006EDD53 /* include_juce_events.mm in Sources */,
 				758F6F75207BCB00006EDD53 /* include_juce_graphics.mm in Sources */,

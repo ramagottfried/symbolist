@@ -33,7 +33,7 @@ void SVGFileIO::write( vector<unique_ptr<Symbol>>& score, const char * filename 
     pugi::xml_document svg = encoder.encode( score );
     
     // print to std::cout
-    svg.save(std::cout);
+    // svg.save(std::cout);
 
     if( filename )
     {

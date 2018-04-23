@@ -5,7 +5,7 @@
 
 SymbolistMenu::SymbolistMenu()
 {
-    addAndMakeVisible(menuBar = new MenuBarComponent(this));
+    addAndMakeVisible(menu_bar = new MenuBarComponent(this));
     setApplicationCommandManagerToWatch(&SymbolistMainWindow::getApplicationCommandManager());
 }
 
@@ -17,7 +17,7 @@ SymbolistMenu::~SymbolistMenu()
 void SymbolistMenu::resized()
 {
     Rectangle<int> area (getLocalBounds());
-    menuBar->setBounds (area.removeFromTop (LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight()));
+    menu_bar->setBounds (area.removeFromTop (LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight()));
 }
 
 void SymbolistMenu::getAllCommands (Array<CommandID>& commands)
@@ -228,7 +228,7 @@ bool SymbolistMenu::perform(const juce::ApplicationCommandTarget::InvocationInfo
                 break;
                 
             case cmd_addToPalette:
-                score->addSelectedSymbolsToPalette();
+                main->addSelectedSymbolsToPalette();
                 break;
                 
             case cmd_copy:

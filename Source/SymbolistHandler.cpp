@@ -233,8 +233,11 @@ void SymbolistHandler::symbolistAPI_setOneSymbol(const OdotBundle_s& bundle)
     Symbol* symbol = page_controller->setOneSymbol(bundle);
     
     if (getView() != nullptr)
-        // Calls internally the executeUpdateCallback.
-        page_controller->makeComponentFromSymbol(symbol, true);
+    {
+		// Calls internally the executeUpdateCallback.
+        BaseComponent* newComponent = page_controller->makeComponentFromSymbol(symbol, true);
+        page_controller->getView()->addSubcomponent(newComponent);
+	}
     else
     {
         executeUpdateCallback( -1 );
@@ -378,11 +381,11 @@ Symbol* SymbolistHandler::getSelectedSymbolInPalette()
 //=================================
 
 // Component factory
-BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_the_symbol)
+BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* symbol, bool attachTheSymbol)
 {
     DEBUG_FULL("Creating component from Symbol: ");
     
-    string typeofSymbol = s->getMessage("/type").getString();
+    string typeofSymbol = symbol->getMessage("/type").getString();
     if (typeofSymbol.size() == 0)
     {
 		DEBUG_INLINE("Could not find '/type' message in OSC Bundle.. " << endl);
@@ -416,15 +419,14 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
         if (newComponent != NULL)
         {
             // reads base component symbol values, and sets component bounds for display
-            newComponent->importFromSymbol(s) ;
-            
-            // initializes object specific messages if not present
-            newComponent->addSymbolMessages(s);
-            
-            if (attach_the_symbol)
+            newComponent->importFromSymbol(symbol) ;
+			
+            if (attachTheSymbol)
             {
-                newComponent->setScoreSymbolPointer(s);
-                getModel()->getScore()->addStaff(s); // << /type checked internally and added if staff
+            	// initializes object specific messages if not present
+            	newComponent->addSymbolMessages(symbol);
+                newComponent->setScoreSymbolPointer(symbol);
+                getModel()->getScore()->addStaff(symbol); // << /type checked internally and added if staff
             }
         }
         
@@ -526,8 +528,8 @@ void SymbolistHandler::log_score_change()
 
 void SymbolistHandler::push_undo_stack()
 {
-    DEBUG_FULL("Previous score :" << endl);
-    getModel()->getScore()->print();
+    // DEBUG_FULL("Previous score :" << endl);
+    // getModel()->getScore()->print();
     
     undo_stack.add( new Score( *getModel()->getScore() ) );
     
@@ -625,7 +627,6 @@ void SymbolistHandler::copySelectedToClipBoard()
 
 void SymbolistHandler::newFromClipBoard()
 {
-
     auto scoreView = page_controller->getView();
 	
 	scoreView->unselectAllComponents();
@@ -643,4 +644,18 @@ void SymbolistHandler::newFromClipBoard()
         }
 
     }
+}
+
+string SymbolistHandler::createIdFromName(string& name)
+{
+	string id;
+	int count = symbolNameCount( name );
+	
+	id = name + "/" + to_string(count);
+
+	// Check to see if there are others with this id and then increment 1.
+	while(!uniqueIDCheck(id))
+		id = name + "/" + to_string(count++);
+	
+	return id;
 }

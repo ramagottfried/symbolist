@@ -107,10 +107,6 @@ public:
      */
     void addSymbolFromComponent(BaseComponent* component);
     
-    /**
-     *
-     */
-    
     
     /* Overrides the update method inherited from the Observer class. */
     virtual inline void update() override {}

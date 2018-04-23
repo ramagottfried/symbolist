@@ -75,5 +75,12 @@ void PaletteController::addSymbolFromComponent(BaseComponent* component)
 {
     Symbol newPaletteSymbol = Symbol();
     component->addSymbolMessages(&newPaletteSymbol);
+	
+	/* Resets the symbol id and the ids of its nested symbols
+	 * before adding it to the palette.
+	 * Palette symbols have no id.
+	 */
+    newPaletteSymbol.resetAllIds();
+	
     getModel()->addSymbolToPalette(newPaletteSymbol);
 }

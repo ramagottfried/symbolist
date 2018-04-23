@@ -400,23 +400,6 @@ void ScoreComponent::nudgeSelected(int direction)
     }
 }
 
-void ScoreComponent::addSelectedSymbolsToPalette( )
-{
-    for (int i = 0; i < selected_components.size(); i++)
-    {
-        BaseComponent* c = dynamic_cast<BaseComponent*>(selected_components[i]);
-        
-        // Checks downcast result.
-        if (c != NULL)
-        {
-            Symbol s = Symbol();
-            c->addSymbolMessages(&s);
-            getSymbolistHandler()->getModel()->getPalette()->addUserItem(s);
-        }
-    }
-    getMainComponent()->updatePaletteView();
-}
-
 /***************************/
 /* UI callbacks from Juce  */
 /***************************/

@@ -31,8 +31,6 @@ public:
     virtual void scaleScoreComponent(float scale_w, float scale_h) override;
     
     virtual void setSymbolComponentColor( Colour c ) override;
-
-private :
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolGroupComponent)

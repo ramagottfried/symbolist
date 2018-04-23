@@ -19,8 +19,8 @@ public:
     Symbol exportSymbol();
 
     void parentHierarchyChanged() override;
-    void setSymbolID();
-    
+    void setIdFromSymbol();
+	
     void paint( Graphics& g ) override;
 	
     // it shouldn't be possible to set the symbol without updating the whole component
@@ -28,15 +28,6 @@ public:
     
     Symbol* getScoreSymbolPointer () { return score_symbol; }
     void createAndAttachSymbol();
-	
-    /**
-     * Creates a symbol and populates it with messages
-     * retrieved from this BaseComponent.
-     *
-     * @return A copy of the symbol set with this BaseComponent
-     *  	   messages.
-     */
-	Symbol createSymbolFromComponent();
 	
     bool isTopLevelComponent();
     void reportModification();
@@ -62,7 +53,8 @@ public:
     
     bool respondsToMouseEvents();
     
-    virtual Rectangle<float> symbol_export_bounds(){ return getBounds().toFloat(); }
+    virtual Rectangle<float>
+    symbol_export_bounds(){ return getBounds().toFloat(); }
     
     const string symbol_export_name()
     {

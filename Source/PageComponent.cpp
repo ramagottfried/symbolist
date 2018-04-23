@@ -24,66 +24,37 @@ void PageComponent::addSubcomponent(SymbolistComponent *c)
 
 void PageComponent::removeSubcomponent( SymbolistComponent *c )
 {
-    if ( dynamic_cast<BaseComponent*>(c)->getScoreSymbolPointer() != NULL )
-    {
-        getSymbolistHandler()->removeSymbolFromScore( dynamic_cast<BaseComponent*>(c) );
-    }
-    
+	BaseComponent* componentToRemove = dynamic_cast<BaseComponent*>(c);
+	
+	if (componentToRemove != NULL)
+	{
+		getController()->removeAttachedSymbolFromScore(componentToRemove);
+	}
+	
     ScoreComponent::removeSubcomponent( c );
 }
 
 void PageComponent::groupSelectedSymbols()
-{
-	DEBUG_TRACE();
-	
+{	
 	if ( selected_components.size() > 1 )
     {
     	DEBUG_FULL("Creating a top level group from " << selected_components.size()
 												      << " selected components." << endl);
 		
-        // get the position an bounds of the group
-        int minx = getWidth(), maxx = 0, miny = getHeight(), maxy = 0;
-        for( auto it = selected_components.begin(); it != selected_components.end(); it++ )
-        {
-            Rectangle<int> compBounds = (*it)->getBounds();
-            minx =  min( minx, compBounds.getX() );
-            miny =  min( miny, compBounds.getY() );
-            maxx =  max( maxx, compBounds.getRight() );
-            maxy =  max( maxy, compBounds.getBottom() );
-        }
-
-        auto symbolistHandler = getSymbolistHandler();
-
-        Symbol* groupSymbol = symbolistHandler->createSymbol();
-        groupSymbol->setTypeXYWH("group", minx, miny, maxx-minx, maxy-miny);
-		
-        int count = 0;
-
-        for (SymbolistComponent *c : selected_components)
-        {
-            auto selectedComponent = dynamic_cast<BaseComponent*>(c);
-			
-            // Checks downcast result.
-            if (selectedComponent != NULL)
-            {
-                auto associatedSymbol = selectedComponent->getScoreSymbolPointer();
-                if (associatedSymbol->size() > 0)  // this fails within groups because subcomponents do not have score symbols...
-                {
-                    // copies bundles from subcomponent symbols and join into new group symbol
-                    associatedSymbol->addMessage("/x", selectedComponent->getX() - minx);
-                    associatedSymbol->addMessage("/y", selectedComponent->getY() - miny);
-					
-                    groupSymbol->addMessage( "/subsymbol/" + to_string(count++), *associatedSymbol );
-                }
-            }
-        }
-
+        Symbol* symbolGroup = getController()->createTopLevelSymbolGroup(selected_components);
+	
+		/* Creates the corresponding graphic component and adds it to
+		 * this PageComponent instance.
+		 */
         SymbolGroupComponent *group = dynamic_cast<SymbolGroupComponent*>(
-									  	symbolistHandler->makeComponentFromSymbol(groupSymbol, true)
+									  	getController()->makeComponentFromSymbol(symbolGroup, true)
 									  );
-        addSubcomponent(group);
 		
-        getPageComponent()->deleteSelectedComponents();
+		/* Adds the new symbol group component as a subcomponent of this PageComponent
+		 * and destroy the previously selected components and their score symbols.
+		 */
+        addSubcomponent(group);
+        deleteSelectedComponents();
 		
         addToSelection(group);
     }

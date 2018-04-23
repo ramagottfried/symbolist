@@ -7,6 +7,7 @@
 
 bool SymbolGroupComponent::hitTest (int x, int y)
 {
+   
     if( in_edit_mode || is_selected )
     {
         return true; // true in edit mode for drawing?
@@ -14,12 +15,11 @@ bool SymbolGroupComponent::hitTest (int x, int y)
     
     for (int i = 0; i < getNumSubcomponents(); i++ )
     {
-        if( getSubcomponent(i)->hitTest(x, y) )
+        if( getSubcomponent(i)->hitTest ( x - getSubcomponent(i)->getX() , y - getSubcomponent(i)->getY() ) )
         {
             return true;
         }
     }
-    
     return false;
 }
 

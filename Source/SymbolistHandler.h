@@ -1,10 +1,11 @@
 #pragma once
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "PaletteController.hpp"
 #include "PageController.hpp"
 #include "MouseModeController.hpp"
 #include "InspectorController.hpp"
+#include "TimeDisplayController.hpp"
 #include "SymbolistModel.hpp"
 #include <iostream>
 #include <memory>
@@ -59,6 +60,11 @@ public:
      */
     inline InspectorController* getInspectorController() { return inspector_controller.get(); }
 	
+    /**
+     * @return The TimeDisplayController instance owned by this SymbolistHandler.
+     */
+    inline TimeDisplayController* getTimeDisplayController() { return time_display_controller.get(); }
+	
 	/**
 	 * @return The current playtime in milliseconds.
 	 */
@@ -96,6 +102,12 @@ public:
      * for this instance of SymbolistHandler.
      */
     void createInspectorController();
+	
+    /**
+     * Creates and sets up the TimeDisplayController
+     * for this instance of SymbolistHandler.
+     */
+    void createTimeDisplayController();
 	
     /********************************************************
      ********************************************************
@@ -261,12 +273,12 @@ private:
     /**
      * A Controller to handle palette-related actions.
      */
-    unique_ptr<PaletteController > palette_controller;
+    unique_ptr<PaletteController >   palette_controller;
 	
     /**
      * A Controller to handle score-related actions.
      */
-    unique_ptr<PageController > page_controller;
+    unique_ptr<PageController >      page_controller;
 	
 	/**
      * A Controller to handle mouse mode messages.
@@ -277,6 +289,11 @@ private:
      * A Controller to handle inspector-related actions.
      */
     unique_ptr<InspectorController > inspector_controller;
+	
+	/**
+     * A Controller to handle time display messages.
+     */
+    unique_ptr<TimeDisplayController > time_display_controller;
 	
     /**
      * The main graphic window of the application.

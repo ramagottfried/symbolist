@@ -14,6 +14,7 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
     palette_view.setController(getController()->getPaletteController());
     score_view.setController(getController()->getPageController());
 	mouse_mode_view.setController(getController()->getMouseModeController());
+	time_display_view.setController(getController()->getTimeDisplayController());
 	
 	inspector = new InspectorComponent(mainController);
 	inspector->setController(getController()->getInspectorController());
@@ -26,8 +27,9 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
     palette_view.setModel(getModel());
     score_view.setModel(getModel());
     mouse_mode_view.setModel(getModel());
+	time_display_view.setModel(getModel());
     inspector->setModel(getModel());
-    
+	
     /* Adds this SymbolistMainComponent instance and
      * its child components as observers of the model.
      */
@@ -35,6 +37,7 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
     getModel()->attach(&palette_view);
     getModel()->attach(&score_view);
     getModel()->attach(&mouse_mode_view);
+    getModel()->attach(&time_display_view);
     getModel()->attach(inspector);
     
     // Sets UI look and creates the palette buttons.
@@ -76,6 +79,7 @@ SymbolistMainComponent::~SymbolistMainComponent()
      * from the SymbolistModel's observers list.
      */
     getModel()->detach(inspector);
+    getModel()->detach(&time_display_view);
     getModel()->detach(&mouse_mode_view);
 	getModel()->detach(&palette_view);
     getModel()->detach(&score_view);

@@ -45,6 +45,7 @@ SymbolistHandler::SymbolistHandler()
     createPageController();
     createMouseModeController();
     createInspectorController();
+    createTimeDisplayController();
 	
     /* Adds the SymbolistHandler instance and
      * all its child controllers as observers of the model.
@@ -54,6 +55,7 @@ SymbolistHandler::SymbolistHandler()
     getModel()->attach(page_controller.get());
     getModel()->attach(mouse_mode_controller.get());
 	getModel()->attach(inspector_controller.get());
+	getModel()->attach(time_display_controller.get());
 	
 }
 
@@ -109,6 +111,16 @@ void SymbolistHandler::createInspectorController()
     inspector_controller->setModel(getModel());
 }
 
+void SymbolistHandler::createTimeDisplayController()
+{
+	/* Creates the time_display_controller and sets its model
+     * and parent controller.
+     */
+    time_display_controller = unique_ptr<TimeDisplayController >(new TimeDisplayController());
+    time_display_controller->setParentController(this);
+    time_display_controller->setModel(getModel());
+}
+
 /*********************************************
  * CONTROLLER METHODS CALLED FROM THE LIB API
  *********************************************/
@@ -145,6 +157,7 @@ void SymbolistHandler::symbolistAPI_openWindow()
     page_controller->setView(getView()->getScoreView());
 	mouse_mode_controller->setView(getView()->getMouseModeView());
 	inspector_controller->setView(getView()->getInspectorView());
+	time_display_controller->setView(getView()->getTimeDisplayView());
 	
     // Populates palette and gives focus to the main view.
     page_controller->addComponentsFromScore();
@@ -169,6 +182,7 @@ void SymbolistHandler::symbolistAPI_closeWindow()
 	page_controller->setView(NULL);
 	mouse_mode_controller->setView(NULL);
 	inspector_controller->setView(NULL);
+	time_display_controller->setView(NULL);
 	
 }
 
@@ -513,7 +527,6 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* component )
     
 }
 
-
 /***
  * called when something is changed, added, deleted (not but not undo)
  ***/
@@ -524,7 +537,6 @@ void SymbolistHandler::log_score_change()
     
     //symbolistAPI_exportSVG( nullptr );
 }
-
 
 void SymbolistHandler::push_undo_stack()
 {

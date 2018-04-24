@@ -12,7 +12,7 @@
 
 #include "InspectorComponent.h"
 #include "MouseModeComponent.hpp"
-#include "TimeDisplay.hpp"
+#include "TimeDisplayComponent.hpp"
 
 #include "SymbolistMenu.hpp"
 #include "SymbolistLookAndFeel.hpp"
@@ -37,10 +37,11 @@ public:
     /*************************************
      *        GETTERS AND SETTERS        *
      *************************************/
-    inline PaletteComponent*   getPaletteView() { return &palette_view; }
-    inline PageComponent*      getScoreView() { return &score_view; }
-	inline MouseModeComponent* getMouseModeView() { return &mouse_mode_view; }
-	inline InspectorComponent* getInspectorView() { return inspector; }
+    inline PaletteComponent*     getPaletteView() { return &palette_view; }
+    inline PageComponent*        getScoreView() { return &score_view; }
+	inline MouseModeComponent*   getMouseModeView() { return &mouse_mode_view; }
+	inline InspectorComponent*   getInspectorView() { return inspector; }
+	inline TimeDisplayComponent* getTimeDisplayView() { return &time_display_view; }
 	
 	void setMouseMode(UI_EditType m);
     UI_EditType getMouseMode();
@@ -279,9 +280,8 @@ private:
     SymbolistMenu                    menu;
     
     /**
-     * A graphic component representing the OSC bundle
-     * underlying the selected component as a list
-     * of properties.
+     * A graphic component describing the OSC bundle
+     * associated with the currently selected component.
      *
      * The inspector can be toggle at the right side of
      * the application window by hitting the 'i' key.

@@ -57,45 +57,71 @@ void PathBaseComponent::printPath( Path p, const char* name )
 }
 
 
+/******************
+ * Paint
+ *****************/
 
-// Juce callback
-void PathBaseComponent::resized()
+void PathBaseComponent::paint ( Graphics& g )
 {
-    BaseComponent::resized();
+    
+    printPath( m_path ) ;
+    
+    BaseComponent::paint(g);
     
     /*
-     if( ! in_edit_mode )
+     int cur_t,local_t = 0;
+     float strok = m_stroke_type.getStrokeThickness();
+     
+     if ( isTopLevelComponent() )
      {
-     resizeToFit(getX(),
-     getY(),
-     getWidth(),
-     getHeight());
-     }*/
+     cur_t = getSymbolistHandler()->getCurrentTime();
+     local_t =  cur_t - getScoreSymbolPointer()->getTime() ;
+     
+     
+     if (local_t >= 0 && local_t <= getScoreSymbolPointer()->getDuration())
+     {
+     strok = m_stroke_type.getStrokeThickness() * (1 + local_t) * 0.003;
+     g.setColour( Colours::indianred );
+     }
+     }
+     */
+    
+    // to do: add other stroke options
+    //float dashes[] = {1.0, 2.0};
+    //m_stroke_type.createDashedStroke(p, p, dashes, 2 );
+    
+    g.setColour( getCurrentColor() );
+    
+    // workaround since we don't know which context we're in, draw and return if in palette
+    if( getPageComponent() == NULL )
+    {
+        g.strokePath( m_path , m_stroke_type );
+        if( m_fill ) g.fillPath( m_path );
+    }
+    else
+    {
+        g.setColour( getCurrentColor() );
+        g.strokePath( m_path, m_stroke_type );
+        if( m_fill ) g.fillPath( m_path );
+    }
+    
+    if( !m_preview_path.isEmpty() )
+    {
+        g.setColour( preview_stroke_color );
+        g.strokePath( m_preview_path, PathStrokeType(0.5) ); // different color for preview?
+    }
+    
+    if( in_edit_mode )
+    {
+        drawHandlesLines(g);
+    }
+    
+    /*
+     auto c = getLocalBounds().getCentre();
+     g.drawEllipse(c.getX()-2, c.getY()-2, 4, 4, 1);
+     g.drawRect( getLocalBounds() );
+     */
 }
-
-
-// this shoudl be easy to simplify...
-bool PathBaseComponent::intersectRect( Rectangle<int> rect)
-{
-    Sym_PathBounds pb;
-    
-    Rectangle<int> shifted_rect = rect.translated( - getBoundsInParent().getX(), - getBoundsInParent().getY() );
-    
-    Rectangle<float> r_path = pb.getRealPathBounds( m_path );
-    
-    return (
-            (  r_path.getX() >= shifted_rect.getX() && r_path.getY() >= shifted_rect.getY()     &&
-             r_path.getRight() <= shifted_rect.getRight() && r_path.getBottom() <= shifted_rect.getBottom() )
-            // => he path is _inside_ the rect
-            ||
-            (   m_path.intersectsLine( Line<float>( shifted_rect.getX() , shifted_rect.getY() , shifted_rect.getRight() , shifted_rect.getY())) ||
-             m_path.intersectsLine( Line<float>( shifted_rect.getRight() , shifted_rect.getY() , shifted_rect.getRight() , shifted_rect.getBottom())) ||
-             m_path.intersectsLine( Line<float>( shifted_rect.getX() , shifted_rect.getBottom() , shifted_rect.getRight() , shifted_rect.getBottom())) ||
-             m_path.intersectsLine( Line<float>( shifted_rect.getX() , shifted_rect.getY() , shifted_rect.getX() , shifted_rect.getBottom())) )
-            // => the path intersects one of the vertices of the rect
-            ) ;
-}
-
 
 
 /******************
@@ -122,31 +148,36 @@ void PathBaseComponent::addSymbolMessages(Symbol* s )
     
 }
 
+
 /******************
  * Imports components' data from the symbol's OSC bundle
  *****************/
 
 void PathBaseComponent::importFromSymbol(const Symbol &s)
 {
+    cout << "IMPORTING PATH FROM SYMBOL " << Symbol::stringFromSymType( type ) << " " << this << endl ;
+    
     BaseComponent::importFromSymbol(s);
     
     switch ( type ) {
             
-        case PATH: {
-            string path_str = s.getMessage("/str").getString();
-            m_path.restoreFromString( path_str.c_str() );
-            break; }
+        case PATH:
+            m_path.restoreFromString( s.getMessage("/str").getString().c_str() );
+            break;
             
         case CIRCLE:
             m_path.addEllipse( getX(), getY(), getWidth(), getHeight());
+            m_component_center = Point<float>( 0.0 , getHeight()*0.5 );
             break;
             
         case RECTANGLE:
             m_path.addRectangle(getX(), getY(), getWidth(), getHeight());
+            m_component_center = Point<float>( 0.0 , getHeight()*0.5 );
             break;
             
         case TRIANGLE:
             m_path.addTriangle(getX() + getWidth()*0.5, getY(), getX(), getBottom(), getRight(), getBottom());
+            m_component_center = Point<float>( 0.0 , getHeight()*0.5 );
             break;
             
         default: break;
@@ -164,41 +195,49 @@ void PathBaseComponent::importFromSymbol(const Symbol &s)
     updatePathBounds();
 }
 
+
+
+
+
 /******************
  * MODES
  *****************/
+
+Rectangle<float> PathBaseComponent::symbol_export_bounds() 
+{
+    // initially for simple path:
+    //return getBounds().toFloat();
+    
+    auto b = getBounds().toFloat();
+    
+    Sym_PathBounds pbounds( m_path );
+    
+    // rotate backwards and to get size values
+    m_path.applyTransform( AffineTransform().rotation( -m_rotation, pbounds.getCentreX(), pbounds.getCentreY()  ) );
+    auto pb = pbounds.getRealPathBounds( m_path ).expanded( m_stroke_type.getStrokeThickness() );
+    
+    return Rectangle<float>( b.getX(), b.getCentreY(), pb.getWidth(), pb.getHeight() );
+}
+
+
+
 // in the case of BasicShapes, w & h are the *pre-rotated values*
 void PathBaseComponent::setBoundsFromSymbol( float x, float y , float w , float h)
 {
     auto bounds = drawAndRotateShape(x, y, w, h).expanded( m_stroke_type.getStrokeThickness() );
-    
-    if ( type == PATH )
-    {
-        setBounds( bounds.getX() , bounds.getY(), bounds.getWidth() , bounds.getHeight() );
-    }
-    else
-    {
-        setBounds( x , y - (h * 0.5), bounds.getWidth() , bounds.getHeight() );
-    }
+    setBounds( x - m_component_center.getX() , y - m_component_center.getY() , bounds.getWidth() , bounds.getHeight() );
 }
+
 
 Point<float> PathBaseComponent::computeSymbolPosition(float x, float y, float w, float h)
 {
-    if ( type == PATH )
-    {
-        return Point<float>(x,y);
-    }
-    else
-    {
-        return Point<float>( x , y + (h * 0.5) );
-    }
+    return Point<float>( x + m_component_center.getX() , y + m_component_center.getY() );
 }
 
 
 void PathBaseComponent::updatePathBounds ()
 {
     m_path_bounds.getRealPathBounds( m_path );
-    m_path_origin = m_path_bounds.getPosition();
     m_path_centroid = m_path_bounds.getCentre();
 }
 
@@ -227,6 +266,65 @@ Rectangle<float> PathBaseComponent::drawAndRotateShape(float cx, float cy, float
 
 
 
+
+
+
+
+// this shoudl be easy to simplify...
+bool PathBaseComponent::intersectRect( Rectangle<int> rect)
+{
+    Sym_PathBounds pb;
+    
+    Rectangle<int> shifted_rect = rect.translated( - getBoundsInParent().getX(), - getBoundsInParent().getY() );
+    
+    Rectangle<float> r_path = pb.getRealPathBounds( m_path );
+    
+    return (
+            (  r_path.getX() >= shifted_rect.getX() && r_path.getY() >= shifted_rect.getY()     &&
+             r_path.getRight() <= shifted_rect.getRight() && r_path.getBottom() <= shifted_rect.getBottom() )
+            // => he path is _inside_ the rect
+            ||
+            (   m_path.intersectsLine( Line<float>( shifted_rect.getX() , shifted_rect.getY() , shifted_rect.getRight() , shifted_rect.getY())) ||
+             m_path.intersectsLine( Line<float>( shifted_rect.getRight() , shifted_rect.getY() , shifted_rect.getRight() , shifted_rect.getBottom())) ||
+             m_path.intersectsLine( Line<float>( shifted_rect.getX() , shifted_rect.getBottom() , shifted_rect.getRight() , shifted_rect.getBottom())) ||
+             m_path.intersectsLine( Line<float>( shifted_rect.getX() , shifted_rect.getY() , shifted_rect.getX() , shifted_rect.getBottom())) )
+            // => the path intersects one of the vertices of the rect
+            ) ;
+}
+
+
+
+/************************************************
+ ************************************************
+ ************************************************
+ ************************************************
+ * EDIT MODE
+ ************************************************
+ ************************************************
+ ************************************************
+ ************************************************/
+
+void PathBaseComponent::setEditMode( bool val )
+{
+    in_edit_mode = val;
+    if ( val == false ) // = exit
+    {
+        ScoreComponent* sc = dynamic_cast<ScoreComponent*>(getParentComponent());
+        
+        // Checks the downcast result.
+        if (sc != NULL)
+        {
+            sc->addToSelection(this);
+            
+            removeHandles();
+            
+            // sc->deleteSelectedComponents();
+        }
+        
+    }
+}
+
+
 void PathBaseComponent::setMinimalBounds ()
 {
     m_path_bounds.getRealPathBounds(m_path);
@@ -250,25 +348,6 @@ void PathBaseComponent::setMaximalBounds ()
     makeHandlesFromPath();
 }
 
-void PathBaseComponent::setEditMode( bool val )
-{
-    in_edit_mode = val;
-    if ( val == false ) // = exit
-    {
-        ScoreComponent* sc = dynamic_cast<ScoreComponent*>(getParentComponent());
-        
-        // Checks the downcast result.
-        if (sc != NULL)
-        {
-            sc->addToSelection(this);
-            
-            removeHandles();
-            
-            // sc->deleteSelectedComponents();
-        }
-        
-    }
-}
 
 
 void PathBaseComponent::unselectAllComponents()
@@ -277,10 +356,6 @@ void PathBaseComponent::unselectAllComponents()
     if ( rotation_handle != NULL )
         removeFromSelection(rotation_handle);
 }
-
-/******************
- * HANDLES (path edit)
- *****************/
 
 void PathBaseComponent::addHandle( PathHandle::handleType type, float x, float y )
 {
@@ -985,71 +1060,7 @@ void PathBaseComponent::scaleScoreComponent(float scale_w, float scale_h)
 }
 
 
-/******************
- * Paint
- *****************/
 
-void PathBaseComponent::paint ( Graphics& g )
-{
-    
-    printPath( m_path ) ;
-    
-    BaseComponent::paint(g);
-    
-    /*
-     int cur_t,local_t = 0;
-     float strok = m_stroke_type.getStrokeThickness();
-     
-     if ( isTopLevelComponent() )
-     {
-     cur_t = getSymbolistHandler()->getCurrentTime();
-     local_t =  cur_t - getScoreSymbolPointer()->getTime() ;
-     
-     
-     if (local_t >= 0 && local_t <= getScoreSymbolPointer()->getDuration())
-     {
-     strok = m_stroke_type.getStrokeThickness() * (1 + local_t) * 0.003;
-     g.setColour( Colours::indianred );
-     }
-     }
-     */
-    
-    // to do: add other stroke options
-    //float dashes[] = {1.0, 2.0};
-    //m_stroke_type.createDashedStroke(p, p, dashes, 2 );
-    
-    g.setColour( getCurrentColor() );
-    
-    // workaround since we don't know which context we're in, draw and return if in palette
-    if( getPageComponent() == NULL )
-    {
-        g.strokePath( m_path , m_stroke_type );
-        if( m_fill ) g.fillPath( m_path );
-    }
-    else
-    {
-        g.setColour( getCurrentColor() );
-        g.strokePath( m_path, m_stroke_type );
-        if( m_fill ) g.fillPath( m_path );
-        }
-        
-        if( !m_preview_path.isEmpty() )
-        {
-            g.setColour( preview_stroke_color );
-            g.strokePath( m_preview_path, PathStrokeType(0.5) ); // different color for preview?
-        }
-        
-        if( in_edit_mode )
-        {
-            drawHandlesLines(g);
-        }
-        
-        /*
-         auto c = getLocalBounds().getCentre();
-         g.drawEllipse(c.getX()-2, c.getY()-2, 4, 4, 1);
-         g.drawRect( getLocalBounds() );
-         */
-}
 
 
 void PathBaseComponent::drawHandlesLines( Graphics& g)
@@ -1110,30 +1121,4 @@ void PathBaseComponent::drawHandlesLines( Graphics& g)
 
 
 
-/*
- void PathBaseComponent::resizeToFit(int x, int y, int w, int h)
- {
- cout << "PathBaseComponent::resizeToFit" << endl;
- BaseComponent::resizeToFit(x, y, w, h);
- 
- // input bounds are for the visible path, not the handles...
- Rectangle<int> r = Rectangle<int>(x,y,w,h).reduced( m_stroke_type.getStrokeThickness() );
- 
- if( r.getWidth() > 0 && r.getHeight() > 0 )
- {
- float w_scale = (m_path_bounds.getWidth()   > 0)    ? (float)r.getWidth()   / m_path_bounds.getWidth()  : 1;
- float h_scale = (m_path_bounds.getHeight()  > 0)    ? (float)r.getHeight()  / m_path_bounds.getHeight() : 1;
- 
- Path temp = mergePathArray();
- 
- Rectangle<float> tmp_bounds = m_path_bounds.getRealPathBounds( temp ).expanded( m_stroke_type.getStrokeThickness() );
- Point<float> newpos = tmp_bounds.getPosition();
- 
- temp.applyTransform( AffineTransform().scale(w_scale, h_scale).translated( x - newpos.x, y - newpos.y ) );
- 
- makePathArrayFromPath(temp);
- updateHandlePositions();
- updatePathBounds();
- }
- }
- */
+

@@ -15,37 +15,30 @@ public:
     PathBaseComponent() = default;
     ~PathBaseComponent() ;
     
+    // utility
     static void printPath( Path p, const char* name = "path" );
     
+    void paint ( Graphics& g ) override;
+    
+    bool intersectRect( Rectangle<int> rect) override;
+
     virtual void addSymbolMessages(Symbol* s) override;
     virtual void importFromSymbol(const Symbol &s) override;
 
     virtual void setBoundsFromSymbol( float x, float y , float w , float h) override;
     virtual Point<float> computeSymbolPosition( float x, float y, float w, float h ) override;
 
-    Rectangle<float> symbol_export_bounds() override
-    {
-        
-        // initially for simple path:
-        //return getBounds().toFloat();
-        
-        auto b = getBounds().toFloat();
-        
-        Sym_PathBounds pbounds( m_path );
-        
-        // rotate backwards and to get size values
-        m_path.applyTransform( AffineTransform().rotation( -m_rotation, pbounds.getCentreX(), pbounds.getCentreY()  ) );
-        auto pb = pbounds.getRealPathBounds( m_path ).expanded( m_stroke_type.getStrokeThickness() );
-        
-        return Rectangle<float>( b.getX(), b.getCentreY(), pb.getWidth(), pb.getHeight() );
-    }
-    
-    void addHandle( PathHandle::handleType type, float x, float y );
-    void updateRotationHandle();
-    
-    void subtractHandle( int i );
+    Rectangle<float> drawAndRotateShape(float cx, float cy, float w, float h);
 
     
+    Rectangle<float> symbol_export_bounds() override;
+    
+    /****
+     * FOR EDIT MODE ONLY
+     **/
+    void addHandle( PathHandle::handleType type, float x, float y );
+    void updateRotationHandle();
+    void subtractHandle( int i );
     void addHandlesTo( Point<float> p, PathHandle* last );
     void insertHandleBefore( PathHandle* target );
     void makeHandlesFromPath();
@@ -57,10 +50,6 @@ public:
     void removeSubcomponent(SymbolistComponent* c) override;
     void unselectAllComponents() override;
     
-    void paint ( Graphics& g ) override;
-    void resized () override;
-
-    bool intersectRect( Rectangle<int> rect) override;
     
     void mouseUp(const MouseEvent& event) override;
     void mouseMove(const MouseEvent& event) override;
@@ -84,10 +73,6 @@ public:
     virtual void rotateScoreComponent(float theta, float ax, float ay) override;
     virtual void scaleScoreComponent(float scale_w, float scale_h) override;
     
-    Rectangle<float> drawAndRotateShape(float cx, float cy, float w, float h);
-
-    // void resizeToFit(int x, int y, int w, int h) override;
-    
     void rotatePath ( float theta, bool accum = true );
     void rotatePath ( float theta, float ax, float ay );
     
@@ -100,28 +85,40 @@ public:
 protected:
     
     /**
-     * An array containing the Path objects composing this PathBaseComponent.
+     * The actual Juce 'Path' object
      */
     Path                    m_path;
+    
+    /**
+     * Draw attributes
+     */
     PathStrokeType          m_stroke_type = PathStrokeType(2.0) ;
+    Colour                  m_stroke_color;
     bool                    m_fill = false;
     Colour                  m_fill_color;
-    Colour                  m_stroke_color;
     
-    // editing utils
+    /**
+     * The 'symbolic' center of the component, as specified in the Symbol
+     * Also used as the center of rotation
+     */
+    Point<float>            m_component_center = Point<float>( 0.0 , 0.0 );
+    
+    
+    /**
+     * EDITING UTILS (only in Edit mode)
+     */
     bool                    drawing = false;
     Path                    m_preview_path;
     Colour                  preview_stroke_color = Colours::cornflowerblue ;
     
-    Point<float>            m_path_origin;
-    
-    // note: path_handles are also stored as subcomponents in the main score, to use the selection system... maybe not both necessary...
     /**
      * An array containing PathHandle objects used to manipulate the paths
      * composing this PathBaseComponent.
      */
     Array<PathHandle*>      path_handles;
-    
+    // note: path_handles are also stored as subcomponents in the main score
+    // to use the selection system... maybe not both necessary...
+
     /**
      * A pointer to the PathHandle object controlling
      * the rotation of this PathBaseComponent.

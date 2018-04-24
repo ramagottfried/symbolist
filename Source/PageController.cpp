@@ -198,9 +198,15 @@ Symbol *PageController::createTopLevelSymbolGroup(Array<SymbolistComponent *> se
                 auto associatedSymbol = selectedComponent->getScoreSymbolPointer();
                 if (associatedSymbol->size() > 0)
                 {
+                	// copies bundles from subcomponent symbols and join into new group symbol
+                    Point<float> symbolPos = selectedComponent->computeSymbolPosition( selectedComponent->getX() - minx,
+																					   selectedComponent->getY() - miny,
+                                                                                       selectedComponent->getWidth(),
+                                                                                       selectedComponent->getHeight() );
+					
                     // Copies bundles from subcomponent symbols and join into new group symbol.
-                    associatedSymbol->addMessage("/x", selectedComponent->getX() - minx);
-                    associatedSymbol->addMessage("/y", selectedComponent->getY() - miny);
+                    associatedSymbol->addMessage("/x", symbolPos.getX());
+                    associatedSymbol->addMessage("/y", symbolPos.getY());
 					
                     symbolGroup->addMessage("/subsymbol/" + to_string(count++), *associatedSymbol);
                 }
@@ -246,9 +252,14 @@ Symbol PageController::createNestedSymbolGroup(Array<SymbolistComponent* > selec
 			
 			if (subSymbol.size() > 0)
 			{
+				Point<float> symbolPos = selectedComponent->computeSymbolPosition( selectedComponent->getX() - minx,
+																					   selectedComponent->getY() - miny,
+                                                                                       selectedComponent->getWidth(),
+                                                                                       selectedComponent->getHeight() );
+				
 				// Copies bundle from subcomponent symbol and join into new group symbol
-				subSymbol.addMessage("/x", selectedComponent->getX() - minx);
-				subSymbol.addMessage("/y", selectedComponent->getY() - miny);
+				subSymbol.addMessage("/x", symbolPos.getX());
+				subSymbol.addMessage("/y", symbolPos.getY());
 				
 				symbolGroup.addMessage( "/subsymbol/" + to_string(count++), subSymbol );
 				

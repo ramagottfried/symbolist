@@ -46,7 +46,12 @@ public:
     virtual void deleteSelectedComponents();
 
     void translateSelectedComponents( Point<int> delta_xy );
-    
+	
+    /* Method about grouping and ungrouping
+	 * shouldn't be here because simple components
+	 * (which are not a composition of components) don't
+	 * care about these methods.
+     */
     virtual void groupSelectedSymbols();
     void ungroupSelectedSymbols();
         

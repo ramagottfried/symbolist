@@ -205,11 +205,11 @@ void ScoreComponent::groupSelectedSymbols()
 	if ( selected_components.size() > 1 )
     {
     	bool creating_a_top_level_group = ( this == getPageComponent() );
-    
+
     	DEBUG_FULL("Creating a group (top level? " << creating_a_top_level_group << "), from "
 												   << selected_components.size()
 												   << " selected components." << endl);
-		
+
         // get the position an bounds of the group
         int minx = getWidth(), maxx = 0, miny = getHeight(), maxy = 0;
         for( auto it = selected_components.begin(); it != selected_components.end(); it++ )
@@ -225,13 +225,13 @@ void ScoreComponent::groupSelectedSymbols()
 
         Symbol* groupSymbol = symbolistHandler->createSymbol();
         groupSymbol->setTypeXYWH("group", minx, miny, maxx-minx, maxy-miny);
-        
+
         int count = 0;
 
         for (SymbolistComponent *c : selected_components)
         {
             auto selectedComponent = dynamic_cast<BaseComponent*>(c);
-            
+
             // Checks downcast result.
             if (selectedComponent != NULL)
             {
@@ -243,7 +243,7 @@ void ScoreComponent::groupSelectedSymbols()
                                                                                        selectedComponent->getWidth() , selectedComponent->getHeight() );
                     associatedSymbol->addMessage("/x", symbolPos.getX() );
                     associatedSymbol->addMessage("/y", symbolPos.getY() );
-                    
+
                     groupSymbol->addMessage( "/subsymbol/" + to_string(count++), *associatedSymbol );
                 }
             }
@@ -253,9 +253,9 @@ void ScoreComponent::groupSelectedSymbols()
 									  	symbolistHandler->makeComponentFromSymbol(groupSymbol, creating_a_top_level_group)
 									  );
         addSubcomponent(group);
-        
+
         getPageComponent()->deleteSelectedComponents();
-        
+
         addToSelection(group);
     }
 }

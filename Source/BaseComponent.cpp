@@ -132,7 +132,8 @@ Symbol BaseComponent::exportSymbol()
 void BaseComponent::importFromSymbol(const Symbol &s)
 {
     
-    type = Symbol::symTypeFromString( s.getMessage( "/type" ).getString() );
+    string typeStr = s.getMessage( "/type" ).getString() ;
+    type = Symbol::symTypeFromString( typeStr );
     
     if ( type == UNKNOWN )
     {
@@ -191,7 +192,7 @@ void BaseComponent::importFromSymbol(const Symbol &s)
     else if (isVisible())
 		setIdFromSymbol();
 	else
-		setComponentID(typeOfSymbol + "/palette");
+		setComponentID( typeStr + "/palette" );
   
     staff_name = s.getMessage("/staff").getString();
     if(staff_name == "<none>") staff_name = "";

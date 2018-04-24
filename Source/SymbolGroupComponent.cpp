@@ -233,7 +233,7 @@ void SymbolGroupComponent::addSymbolMessages(Symbol* s )
            	s->addMessage( "/subsymbol/" + to_string(i), subSymbol);
 			
 			String componentId = subComponent->getComponentID();
-			string typeOfSymbol = s->getType();
+            string typeOfSymbol = Symbol::stringFromSymType( s->getType() );
 			
 			/* If the component has a default or empty id then calculate a new one
 			 * and modify the subsymbol bundle.

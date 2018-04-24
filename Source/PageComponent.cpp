@@ -136,7 +136,7 @@ void PageComponent::createStaffFromSelected()
     // Checks downcast result.
     if( staffRefComponent != NULL )
     {
-        if( staffRefComponent->getSymbolTypeStr() == "staff" )
+        if( staffRefComponent->getSymbolType() == STAFF )
             return;
 		
         Symbol staffRefSymbol = *(staffRefComponent->getScoreSymbolPointer());

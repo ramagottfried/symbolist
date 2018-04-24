@@ -89,8 +89,10 @@ void PageComponent::enterStaffSelMode()
         BaseComponent* b = dynamic_cast<BaseComponent*>(subComponent);
         if ( b )
         {
-            if( b->getSymbolTypeStr() == "staff" || b->componentSelected() )
+            if( b->getSymbolType() == STAFF || b->componentSelected() )
+            {
                 b->setStaffSelectionMode( true );
+            }
 			else
 			{
                     b->setStaffSelectionMode( false );
@@ -221,12 +223,17 @@ void PageComponent::exitEditMode( )
         edited_component->reportModification();
         // reportModificaiton must be before setting Edit mode to handle case of repositioned sub symbols
         edited_component->setEditMode(false);
+        edited_component->unselectAllComponents();
         edited_component = NULL;
+        
+        exitStaffSelMode();
     }
     
     display_mode = MAIN;
 
 }
+
+
 
 ScoreComponent* PageComponent::getEditedComponent()
 {

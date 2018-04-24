@@ -79,8 +79,6 @@ public:
     
     void setWidthInPixels(float w);
     
-    string getSymbolTypeStr() const override { return "text"; }
-    
     void updateText( String str);
 
     void setFont( Font f ){ m_font = f; }

@@ -7,6 +7,7 @@
 #include "ScoreComponent.h"
 #include <typeinfo>
 
+
 class BaseComponent : public ScoreComponent {
 	
 public:
@@ -58,17 +59,13 @@ public:
     
     const string symbol_export_name()
     {
-        cout << "name " << getComponentID() <<  " " << getSymbolTypeStr() << endl;
         return ( name.size() == 0 ? name : string( getComponentID().getCharPointer() ) );
     }
     
-    // not very happy with therm "Symbol" here
-    virtual inline void setSymbolComponentStrokeWeight( float s ){ strokeWeight = s; }
-	
     // helper functions
     inline void symbol_debug_function(const char* func)
     {
-        std::cout << juce::Time::currentTimeMillis() << " " << getSymbolTypeStr() << " " << this << " " << func << std::endl;
+        std::cout << juce::Time::currentTimeMillis() << " " << type << " " << this << " " << func << std::endl;
     }
     
     inline void setBoundsFloatRect( Rectangle<float> r )
@@ -136,10 +133,9 @@ public:
         DEBUG_INLINE("/t/t ------------------------- \n" << this << " attached to staff " << staff_name << " " << staff << endl);
     }
     
-    inline  BaseComponent* getStaff()
-    {
-        return staff;
-    }
+    inline  BaseComponent* getStaff(){ return staff; }
+
+    inline t_sym_type getSymbolType() { return type ; } ;
     
     void attachToStaff();
 	
@@ -151,6 +147,7 @@ protected:
      */
     Symbol* score_symbol = NULL;
 	
+    t_sym_type      type;
     string          name;
     string          staff_name;
     string          lambda;
@@ -163,9 +160,6 @@ protected:
 	
     // when loaded, if staff exists attach it
     // when staff is loaded, scan score and try to find symbols with matching staff names and attach them
-	
-    // parameters
-    float           strokeWeight = 2;
 	
     // interaction
     Point<float>    m_down;

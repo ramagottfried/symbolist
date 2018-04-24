@@ -7,6 +7,19 @@
 
 using namespace std;
 
+
+typedef enum {
+    PATH,
+    CIRCLE,
+    TRIANGLE,
+    RECTANGLE,
+    STAFF,
+    GROUP,
+    UNKNOWN
+} t_sym_type;
+
+
+
 //============================
 // SYMBOL
 //============================
@@ -30,7 +43,7 @@ public:
     string getName() const;
     string getID();
     string getSaff();
-    string getType();
+    t_sym_type getType();
     
     void setPosition( const Point<float> pos );
 
@@ -76,6 +89,28 @@ public:
 	 */
 	void resetAllIds();
 	
+    
+  inline static t_sym_type symTypeFromString( string s ) {
+        if ( s == "path" ) return PATH;
+        else if ( s == "circle" ) return CIRCLE;
+        else if ( s == "triangle" ) return TRIANGLE;
+        else if ( s == "rectangle" ) return RECTANGLE;
+        else if ( s == "staff" ) return STAFF;
+        else if ( s == "group" ) return GROUP;
+        else return UNKNOWN;
+    }
+    
+    inline static string stringFromSymType( t_sym_type st ) {
+        if ( st == PATH ) return "path";
+        else if ( st == CIRCLE ) return "circle";
+        else if ( st == TRIANGLE  ) return "triangle" ;
+        else if ( st == RECTANGLE  ) return "rectangle";
+        else if ( st == STAFF ) return "staff" ;
+        else if ( st == GROUP ) return "group";
+        else return "<none>";
+    }
+        
+
 private:
     
     float       m_pixels_to_time = 0.01f;

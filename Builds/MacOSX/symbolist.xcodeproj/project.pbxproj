@@ -581,7 +581,6 @@
 		11D1235B1F44796800A5EA5B /* SymbolistMenu.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SymbolistMenu.hpp; path = ../../Source/SymbolistMenu.hpp; sourceTree = "<group>"; };
 		11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PathBaseComponent.cpp; path = ../../Source/PathBaseComponent.cpp; sourceTree = "<group>"; };
 		11D86B8A1EEAEF7900681F6D /* PathBaseComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PathBaseComponent.h; path = ../../Source/PathBaseComponent.h; sourceTree = "<group>"; };
-		11D86B8F1EEAF9FD00681F6D /* BasicShapePathComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicShapePathComponents.h; path = ../../Source/BasicShapePathComponents.h; sourceTree = "<group>"; };
 		11E8082C207FCAC000E0342F /* SVGParser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SVGParser.cpp; path = ../../Source/SVGParser.cpp; sourceTree = "<group>"; };
 		11E8082D207FCAC000E0342F /* SVGParser.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = SVGParser.hpp; path = ../../Source/SVGParser.hpp; sourceTree = "<group>"; };
 		11E80833208082CB00E0342F /* SVGEncoder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SVGEncoder.cpp; path = ../../Source/SVGEncoder.cpp; sourceTree = "<group>"; };
@@ -928,7 +927,6 @@
 				118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */,
 				11D86B8A1EEAEF7900681F6D /* PathBaseComponent.h */,
 				11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */,
-				11D86B8F1EEAF9FD00681F6D /* BasicShapePathComponents.h */,
 				1107B3DC1EF1751900E2DFA9 /* TextGlyphComponent.h */,
 				1107B3DB1EF1751900E2DFA9 /* TextGlyphComponent.cpp */,
 				444C43A41EE4A748000C6F69 /* SymbolGroupComponent.h */,

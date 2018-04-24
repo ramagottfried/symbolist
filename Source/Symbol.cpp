@@ -31,9 +31,9 @@ string Symbol::getSaff()
     return getMessage("/staff").getString();
 }
 
-string Symbol::getType()
+t_sym_type Symbol::getType()
 {
-    return getMessage("/type").getString();
+    return symTypeFromString( getMessage("/type").getString());
 }
 
 float Symbol::getTime() const

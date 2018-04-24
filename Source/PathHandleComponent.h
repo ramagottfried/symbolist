@@ -19,8 +19,6 @@ public:
     PathHandle( handleType type, float x, float y);
     ~PathHandle(){}
     
-    string getSymbolTypeStr() const override { return string("path_point"); }
-    
     void paint ( Graphics& g ) override;
     void mouseDown( const MouseEvent& event ) override;
     void mouseDrag( const MouseEvent& event ) override;

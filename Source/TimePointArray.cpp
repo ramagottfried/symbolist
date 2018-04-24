@@ -19,7 +19,7 @@ void TimePointArray::printTimePoints()
 
 void TimePointArray::removeStaffAndSymbolTimePoints( Symbol* symbol )
 {
-    if( symbol->getType() == "staff" )
+    if( symbol->getType() == STAFF )
     {
         for(auto it = symbolTimePoints.begin(); it != symbolTimePoints.end(); it++)
         {
@@ -583,7 +583,7 @@ OdotBundle_s TimePointArray::timePointStreamToOSC(const SymbolTimePoint* tpoint 
                 float time_ratio = (current_time - s->getTime()) / s->getDuration() ;
                 bndl.addMessage( s_prefix + "/time/ratio", time_ratio );
                 
-                if( s->getType() == "path" )
+                if( s->getType() == PATH )
                 {
                     int npaths = s->getMessage( "/num_sub_paths" ).getInt();
 
@@ -596,7 +596,7 @@ OdotBundle_s TimePointArray::timePointStreamToOSC(const SymbolTimePoint* tpoint 
                     }
 
                 }
-                else if( s->getType() == "group" )
+                else if( s->getType() == GROUP )
                 {
                     string group_prefix = "/staff/" + staff->getName() + "/voice/" + to_string(voice_num_state.first);
                     groupLookup(s, group_prefix, staff_x, staff_y, time_ratio, bndl );

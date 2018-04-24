@@ -101,6 +101,7 @@ void ScoreComponent::selectedToBack()
     }
 }
 
+
 /*****************
  * Custom lasso tool
  *****************/
@@ -225,7 +226,7 @@ void ScoreComponent::createStaffFromSelected()
     // Checks downcast result.
     if( staff_ref_comp != NULL )
     {
-        if( staff_ref_comp->getSymbolTypeStr() == "staff" )
+        if( staff_ref_comp->getSymbolType() == STAFF )
             return;
         
         Symbol ref_sym = *(staff_ref_comp->getScoreSymbolPointer());
@@ -473,7 +474,11 @@ void ScoreComponent::mouseAddClick(const MouseEvent& event)
 
 void ScoreComponent::mouseDown ( const MouseEvent& event )
 {
+    //getPageComponent()->getEditedComponent()->unselectAllComponents();
+    //getPageComponent()->exitEditMode() ;
+    
     UI_EditType ed = getMainMouseMode();
+
     if( ed == SELECTION )
     {
         beginLassoSelection( event.getPosition() );

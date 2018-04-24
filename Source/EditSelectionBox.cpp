@@ -417,7 +417,7 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
 
                 /* TEMPORARILY DISABLING PREVIEW SCALING FOR GROUPS AND STAFFS */
                 
-                if( c->getScoreSymbolPointer()->getType() == "group" || c->getScoreSymbolPointer()->getType() == "staff" )
+                if( c->getScoreSymbolPointer()->getType() == GROUP || c->getScoreSymbolPointer()->getType() == STAFF )
                     continue;
                 
                 cout << "rel width " << (float)c->getWidth() / original_bounds.getWidth() << endl;;

@@ -31,8 +31,7 @@ protected :
     bool                         is_selected = false;
 
 public:
-    virtual string getSymbolTypeStr() const { return string(" ??? "); } ; // every component defines its type
-
+    
     virtual PageComponent* getPageComponent();
     virtual SymbolistHandler* getSymbolistHandler();
     SymbolistMainComponent* getMainComponent();

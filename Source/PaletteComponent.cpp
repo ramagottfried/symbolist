@@ -41,8 +41,7 @@ void PaletteComponent::buildFromPalette()
     {
         Symbol s;
         s.setTypeXYWH("path", 0, 0, d_bh, d_bw);
-        s.addMessage("/num_sub_paths", 1 );
-        s.addMessage("/path/0/str", "m 4. 4. c 14. 2. 22. 8. 16. 14. c 12. 20. 14. 24. 20. 22.");
+        s.addMessage("/str", "m 4. 4. c 14. 2. 22. 8. 16. 14. c 12. 20. 14. 24. 20. 22.");
         
         PaletteButton *pb = new PaletteButton(-1, &s);
         pb->setSize(d_bh , d_bw);

@@ -11,7 +11,6 @@
 class BaseComponent : public ScoreComponent {
 	
 public:
-    
     BaseComponent() = default;
     ~BaseComponent();
     
@@ -21,16 +20,16 @@ public:
     Symbol exportSymbol();
 
     void parentHierarchyChanged() override;
-    void setSymbolID();
-    
+    void setIdFromSymbol();
+	
     void paint( Graphics& g ) override;
-    
+	
     // it shouldn't be possible to set the symbol without updating the whole component
     void setScoreSymbolPointer(Symbol* s) { score_symbol = s; }
     
     Symbol* getScoreSymbolPointer () { return score_symbol; }
     void createAndAttachSymbol();
-    
+	
     bool isTopLevelComponent();
     void reportModification();
 
@@ -39,7 +38,6 @@ public:
     void moved () override;
     void resized () override;
 
-    
     // these are standard interactions
     void mouseEnter( const MouseEvent& event ) override {};
     void mouseExit( const MouseEvent& event ) override {};
@@ -56,7 +54,8 @@ public:
     
     bool respondsToMouseEvents();
     
-    virtual Rectangle<float> symbol_export_bounds(){ return getBounds().toFloat(); }
+    virtual Rectangle<float>
+    symbol_export_bounds(){ return getBounds().toFloat(); }
     
     const string symbol_export_name()
     {
@@ -68,7 +67,7 @@ public:
     {
         std::cout << juce::Time::currentTimeMillis() << " " << type << " " << this << " " << func << std::endl;
     }
-        
+    
     inline void setBoundsFloatRect( Rectangle<float> r )
     {
         setBounds ( r.getX(), r.getY(), r.getWidth(), r.getHeight() );
@@ -91,7 +90,6 @@ public:
     virtual void scaleScoreComponent(float scale_w, float scale_h) override;
     virtual void setScoreComponentSize(int w, int h) override;
 
-    
     void selectComponent() override;
     void deselectComponent() override;
     
@@ -132,7 +130,7 @@ public:
     {
         staff_name = c->getScoreSymbolPointer()->getID();
         staff = c;
-        //cout << "/t/t ------------------------- \n" << this << " attched to staff " << staff_name << " " << staff << endl;
+        DEBUG_INLINE("/t/t ------------------------- \n" << this << " attached to staff " << staff_name << " " << staff << endl);
     }
     
     inline  BaseComponent* getStaff(){ return staff; }
@@ -167,8 +165,11 @@ protected:
     Point<float>    m_down;
     Colour          current_color = Colours::black;
 	
-    float           relative_x = 0.0, relative_y = 0.0 , relative_w = 1.0 , relative_h = 1.0 ;  // values between 0.0 and 1.0 relative to the size of its container
-    int             resize_mode = 0; // 0 = scale symbol to bounds, 1 = scale spacing (not resizing)
+	// values between 0.0 and 1.0 relative to the size of its container
+    float           relative_x = 0.0, relative_y = 0.0 , relative_w = 1.0 , relative_h = 1.0;
+	
+	// 0 = scale symbol to bounds, 1 = scale spacing (not resizing)
+    int             resize_mode = 0;
     float           m_min_size = 5;
 	
     bool            showBoundingBox = false;
@@ -181,6 +182,7 @@ protected:
 	
     bool            is_alt_copying = false;
     Point<float>    m_prev_event;
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BaseComponent)
     

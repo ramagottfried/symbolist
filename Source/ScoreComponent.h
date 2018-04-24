@@ -20,23 +20,11 @@ private:
     float start_x, start_y;
 };
 
-
 /*********************
  * Superclass for score-editable containers : PageComponent or BaseComponent (when in_edit_mode)
  *********************/
-class ScoreComponent : public SymbolistComponent
-{
-protected:
-    
-    Array<SymbolistComponent* > selected_components;
-    SymbolistLasso s_lasso;
-    
-    void beginLassoSelection(Point<int> position);
-    void dragLassoSelection(Point<int> position);
-    void endLassoSelection();
-    
-    ScopedPointer<EditSelectionBox> sel_resize_box;
-    
+class ScoreComponent : public SymbolistComponent {
+	
 public:
     
     ScoreComponent();
@@ -55,21 +43,21 @@ public:
     
     void reportModificationForSelectedSymbols();
     
-    void deleteSelectedComponents();
+    virtual void deleteSelectedComponents();
 
     void translateSelectedComponents( Point<int> delta_xy );
-    
-    void groupSelectedSymbols();
+	
+    /* Method about grouping and ungrouping
+	 * shouldn't be here because simple components
+	 * (which are not a composition of components) don't
+	 * care about these methods.
+     */
+    virtual void groupSelectedSymbols();
     void ungroupSelectedSymbols();
-    
-    void createStaffFromSelected();
-    
+        
     void flipSelectedSymbols( int axis );
-    
     void nudgeSelected( int direction );
-    
-    void addSelectedSymbolsToPalette();
-    
+        
     void mouseDown ( const MouseEvent& event ) override;
     void mouseDrag ( const MouseEvent& event ) override;
     void mouseUp ( const MouseEvent& event ) override;
@@ -77,6 +65,17 @@ public:
     virtual void mouseAddClick ( const MouseEvent& event );
     
     Rectangle<int> getSelectionBounds();
+	
+protected:
+	
+    Array<SymbolistComponent* > selected_components;
+    SymbolistLasso s_lasso;
+	
+    void beginLassoSelection(Point<int> position);
+    void dragLassoSelection(Point<int> position);
+    void endLassoSelection();
+	
+    ScopedPointer<EditSelectionBox > sel_resize_box;
 
 };
 

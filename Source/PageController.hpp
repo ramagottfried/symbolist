@@ -9,6 +9,8 @@
 class PageComponent;
 class BaseComponent;
 class StaffComponent;
+class SymbolistComponent;
+class SymbolGroupComponent;
 
 /**
  * Represents the controller class for the PageComponent of the application.
@@ -32,20 +34,27 @@ public:
     PageController(SymbolistModel* model, PageComponent* view);
     
     /**
-     * Creates a new component from the symbol in parameter
-     * and adds it to the view.
+     * Wrapper method around the SymbolistHandler::makeComponentFromSymbol
+     * method.
      *
-     * Calls the makeComponentFromSymbol method of the parent controller,
-     * which normally is a SymbolistHandler instance.
-     *
-     * @return A pointer to the newly created BaseComponent or <code>NULL</code>
-     *         if the parent controller of this PageController instance is
-     *         not of type SymbolistHandler.
+     * @throws logic_error If this PageController has no parent controller,
+     *                     or if it is not a SymbolistHandler instance.
      *
      * @see    SymbolistHandler#makeComponentFromSymbol(Symbol*, bool)
      */
-    BaseComponent* makeComponentFromSymbol(Symbol* s, bool attach_the_symbol);
-    
+    BaseComponent* makeComponentFromSymbol(Symbol* s, bool attachTheSymbol);
+	
+	/**
+	 * Wrapper method around the SymbolistHandler::createIdFromName method.
+	 *
+	 * @throws logic_error If this PageController has no parent controller,
+     *                     or if it is not a SymbolistHandler instance.
+     *
+	 * @see SymbolistHandler#createIdFromName(string&) SymbolistHandler::createIdFromName
+	 *
+	 */
+	string createIdFromName(string& name);
+	
     /**
      * Gets the count of symbols in the score.
      *
@@ -91,8 +100,7 @@ public:
      * @see               Score#importSymbols(const OdotBundle_s&)
      */
     void importSymbols( const OdotBundle_s& bundle );
-    
-    
+	
     /**
      * Creates a graphic component for each symbol in the score
      * and adds it to the view.
@@ -103,7 +111,22 @@ public:
      * Erases all graphic components from the view.
      */
     void clearAllSubcomponents();
-    
+
+	/**
+	 * Puts the symbols attached to the selected components
+	 * in the score view into the clipboard.
+	 *
+	 * Works only when the selected components are not nested
+	 * into a symbol.
+	 */
+	void copySelectedToClipBoard();
+
+	/**
+	 * Creates new components in the score view according
+	 * to the clipboard's content.
+	 */
+	void newFromClipBoard();
+
     /**
      * Gets the staff component (if exists) placed at the specified time
      * in the score.
@@ -153,9 +176,61 @@ public:
      * are also deleted.
      */
     void removeAllSymbols();
-    
+	
+	/**
+	 * Wrapper method around the SymbolistHandler::removeSymbolFromScore()
+	 * method.
+	 * Removes the component's attached symbol from the score.
+	 *
+	 * @param component the graphic component referencing the
+	 * 					symbol that will be removed from the
+	 *					score.
+	 *
+	 * @throws logic_error If this PageController has no parent controller,
+     *                     or if it is not a SymbolistHandler instance.
+	 */
+	void removeAttachedSymbolFromScore(BaseComponent* component);
+	
+	/**
+	 * Creates a symbol group from the symbols attached
+	 * to the selected components passed in parameter.
+	 * The created symbol group is then added to the score.
+	 *
+	 * @param selectedComponents the array of SymbolistComponent from which
+	 *                           the attached symbols will be retrieved to
+	 *                           create a new group symbol in the score.
+	 *
+	 * @return                   a pointer to the newly created group symbol
+	 *                           in the score.
+	 *
+	 * @throws logic_error       If this PageController has no parent controller,
+     *                           or if it is not a SymbolistHandler instance.
+	 */
+	Symbol* createTopLevelSymbolGroup(Array<SymbolistComponent* > selectedComponents);
+	
+	/**
+	 * Creates a symbol group from the symbols attached to the selected components.
+	 * The symbol group is not added to the score because it is nested
+	 * into a higher level symbol group.
+	 *
+	 * @param selectedComponents the array of SymbolistComponent from which
+	 *                           the attached symbols will be retrieved to
+	 *                           create a new group symbol.
+	 *
+	 * @param container          the SymbolGroupComponent containing the
+	 *                           selected components.
+	 *
+	 * @return                   a copy of the symbol group created from
+	 *                           the selected components.
+	 */
+	Symbol createNestedSymbolGroup(Array<SymbolistComponent* > selectedComponents, SymbolGroupComponent* container);
+	
     /* Overrides the update method inherited from the Observer class. */
     virtual inline void update() override {}
+
+private:
+	OwnedArray<Symbol> clipboard;
+
 };
 
 #endif /* PageController_hpp */

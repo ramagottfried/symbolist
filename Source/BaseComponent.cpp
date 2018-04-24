@@ -22,19 +22,15 @@ bool BaseComponent::isTopLevelComponent()
     if ( getParentComponent() != NULL && getParentComponent() == getPageComponent() )
     {
         if ( score_symbol != NULL )
-        {
             return true;
-        }
         else
         {
-            std::cout << "Warning: BaseComponent is TopLevel but has no attached score symbol!" << std::endl ;
+            DEBUG_FULL("Warning: BaseComponent is TopLevel but has no attached score symbol!" << endl);
             return false;
         }
     }
     else
-    {
         return false;
-    }
     
 }
 
@@ -90,7 +86,7 @@ void BaseComponent::addSymbolMessages(Symbol* s)
     s->addMessage("/w", b.getWidth());
     s->addMessage("/h", b.getHeight());
     s->addMessage("/color", sym_color.getFloatRed(), sym_color.getFloatGreen(), sym_color.getFloatBlue(), sym_color.getFloatAlpha());
-    
+
     /*
     addr = "/time/start";
     if( s->getOSCMessagePos(addr) == -1 )
@@ -118,7 +114,7 @@ void BaseComponent::addSymbolMessages(Symbol* s)
     
 //    cout << "*********** START BASE ADD DATA ************ " << endl;
 //    s->printBundle();
-    
+
 }
 
 
@@ -183,60 +179,53 @@ void BaseComponent::importFromSymbol(const Symbol &s)
     name = s.getMessage("/name").getString();
     if (name.size() == 0) name = Symbol::stringFromSymType( type );
         
-    // set /id via component ID
-    if( isVisible() )setSymbolID();
-    else setComponentID(name + "/palette");
-    
+    // Set /id via component ID
+    string id = s.getMessage("/id").getString();
+	
+    // If the symbol id already exists, sets the component id with it.
+	if (id.size() > 0)
+		setComponentID(id);
+	/* If the component is already visible, sets the component id
+	 * with the id of ots attached symbol
+	 */
+    else if (isVisible())
+		setIdFromSymbol();
+	else
+		setComponentID(typeOfSymbol + "/palette");
+  
     staff_name = s.getMessage("/staff").getString();
     if(staff_name == "<none>") staff_name = "";
     attachToStaff();
-    
-    /* // not sure how to best do this yet
-    int lambda_pos = s.getOSCMessagePos("/lambda");
-    if( lambda_pos != -1 )
-    {
-        lambda = s.getOSCMessageValue(lambda_pos).getString();
-    }
-    */
+	
 }
 
-void BaseComponent::setSymbolID()
+void BaseComponent::setIdFromSymbol()
 {
-    PageComponent *pc = getPageComponent();
+    PageComponent* pc = getPageComponent();
+	
     if (pc)
     {
         Symbol* s = getScoreSymbolPointer();
-
+		String id;
+		
+		/* If the component is attached to a score symbol
+		 * then gets its id or calculate a new one if it is an empty
+		 * or a default id.
+		 */
         if (s)
         {
-            String typeOfSymbol = Symbol::stringFromSymType( s->getType() );
-            String id = s->getMessage("/id").getString();
+          String typeOfSymbol = Symbol::stringFromSymType( s->getType() );
+			    id = s->getMessage("/id").getString();
             
             if( id.isEmpty() || id == (typeOfSymbol + "/palette")  || id == (name + "/palette") || !id.contains(String(name)))
-            {
-                // if there is a name use this for the id
-                // for the id, check to see if there are others with this name and then increment 1
-                
-                auto sh = getSymbolistHandler();
-                int count = sh->symbolNameCount( name );
-                
-                id = name + "/" + to_string(count);
-				
-				// Cannot pass directly id.toStdString() to uniqueIDCheck
-				string stdStringId = id.toStdString();
-				
-                while(!sh->uniqueIDCheck(stdStringId))
-                {
-					id = name + "/" + to_string(count++);
-					stdStringId = id.toStdString();
-				}
-				
-            }
-            
-            setComponentID( id );
+                id = pc->getController()->createIdFromName(name);
+			
             s->addMessage( "/id", id.toStdString() );
         }
+		
+		setComponentID( id );
     }
+
 }
 
 void BaseComponent::attachToStaff()
@@ -260,14 +249,12 @@ void BaseComponent::attachToStaff()
     }
 }
 
-// a component can't access the score until it's been added and made visible, so we wait to process the the naming
+// a component can't access the score until it's been added and made visible, so we wait to process the naming
 void BaseComponent::parentHierarchyChanged()
 {
-//    cout << "BaseComponent::parentHierarchyChanged" << endl;
-    setSymbolID();
+    setIdFromSymbol();
     attachToStaff();
 }
-
 
 void BaseComponent::setBoundsFromSymbol( float x, float y , float w , float h)
 {
@@ -483,11 +470,20 @@ void BaseComponent::altDragCopy( const MouseEvent& event  )
     
     if ( ! componentSelected() )
         parent->addToSelection(this);
-    
-    getSymbolistHandler()->copySelectedToClipBoard();
-    
-    parent->unselectAllComponents();
-    getSymbolistHandler()->newFromClipBoard();
+	
+	PageComponent* scoreView = getPageComponent();
+	
+	/*
+	 * If the component is attached to the score view,
+	 * then makes a copy.
+	 */
+	if (scoreView != NULL)
+	{
+		scoreView->copySelectedToClipBoard();
+		
+    	parent->unselectAllComponents();
+    	scoreView->newFromClipBoard();
+	}
     
 }
 

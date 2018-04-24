@@ -3,17 +3,22 @@
 
 SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
 {
-    std::cout << __func__ << " " << this << std::endl;
+    DEBUG_FULL("Instance address: " << this << endl);
     setComponentID("MainComponent");
-
+	
     /* Sets the corresponding controllers for this
      * instance of SymbolistMainComponent and all
-     * its child component.
+     * its child views.
      */
     setController(mainController);
     palette_view.setController(getController()->getPaletteController());
     score_view.setController(getController()->getPageController());
-    
+	mouse_mode_view.setController(getController()->getMouseModeController());
+	time_display_view.setController(getController()->getTimeDisplayController());
+	
+	inspector = new InspectorComponent(mainController);
+	inspector->setController(getController()->getInspectorController());
+	
     /*
      * Sets model for this SymbolistMainComponent instance
      * and all its child components.
@@ -21,13 +26,19 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
     setModel(getController()->getModel());
     palette_view.setModel(getModel());
     score_view.setModel(getModel());
-    
+    mouse_mode_view.setModel(getModel());
+	time_display_view.setModel(getModel());
+    inspector->setModel(getModel());
+	
     /* Adds this SymbolistMainComponent instance and
      * its child components as observers of the model.
      */
     getModel()->attach(this);
     getModel()->attach(&palette_view);
     getModel()->attach(&score_view);
+    getModel()->attach(&mouse_mode_view);
+    getModel()->attach(&time_display_view);
+    getModel()->attach(inspector);
     
     // Sets UI look and creates the palette buttons.
     setLookAndFeel(&look_and_feel);
@@ -52,9 +63,7 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
     addChildComponent(time_display_view);
     addAndMakeVisible(menu);
     menu_h = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
-    
-    inspector = new PropertyPanelTabs(mainController);
-    
+	
     setSize(600, 400);
 }
 
@@ -66,9 +75,12 @@ SymbolistMainComponent::~SymbolistMainComponent()
     palette_view.deleteAllChildren();
     inspector->removeAllChildren();
     
-    /* Removes SymbolistMainComponent and its child components
+    /* Removes SymbolistMainComponent and its child views
      * from the SymbolistModel's observers list.
      */
+    getModel()->detach(inspector);
+    getModel()->detach(&time_display_view);
+    getModel()->detach(&mouse_mode_view);
 	getModel()->detach(&palette_view);
     getModel()->detach(&score_view);
     getModel()->detach(this);
@@ -91,7 +103,6 @@ void SymbolistMainComponent::addSelectedSymbolsToPalette()
 /***********************************
  *        SCORE VIEW METHODS       *
  ***********************************/
-
 void SymbolistMainComponent::groupSelectedSymbols()
 {
 	score_view.getEditedComponent()->groupSelectedSymbols();
@@ -102,6 +113,74 @@ void SymbolistMainComponent::ungroupSelectedSymbols()
 	score_view.getEditedComponent()->ungroupSelectedSymbols();
 }
 
+void SymbolistMainComponent::deleteSelectedComponents()
+{
+	score_view.getEditedComponent()->deleteSelectedComponents();
+}
+
+void SymbolistMainComponent::copySelectedToClipBoard()
+{
+	score_view.copySelectedToClipBoard();
+}
+
+void SymbolistMainComponent::newFromClipBoard()
+{
+	score_view.newFromClipBoard();
+}
+
+void SymbolistMainComponent::flipSelectedSymbolsHorizontally()
+{
+	score_view.flipSelectedSymbols(1);
+}
+
+void SymbolistMainComponent::flipSelectedSymbolsVertically()
+{
+	score_view.flipSelectedSymbols(1);
+}
+
+void SymbolistMainComponent::nudgeSelectedLeft()
+{
+	score_view.nudgeSelected(0);
+}
+
+void SymbolistMainComponent::nudgeSelectedRight()
+{
+	score_view.nudgeSelected(1);
+}
+
+void SymbolistMainComponent::nudgeSelectedUp()
+{
+	score_view.nudgeSelected(2);
+}
+
+void SymbolistMainComponent::nudgeSelectedDown()
+{
+	score_view.nudgeSelected(3);
+}
+
+void SymbolistMainComponent::attachSelectedToStaff()
+{
+	score_view.enterStaffSelMode();
+	score_view.repaint();
+}
+
+void SymbolistMainComponent::escapeScoreViewMode()
+{
+	// Exits current selection mode.
+	score_view.getEditedComponent()->unselectAllComponents();
+	score_view.exitEditMode();
+	score_view.exitStaffSelMode();
+
+	// Stops transport view and resets time position to zero.
+	getController()->executeTransportCallback(0);
+	getController()->symbolistAPI_setTime(0);
+	
+	// Clears inspector view.
+	getController()->clearInspector();
+
+	score_view.repaint();
+}
+
 /***************************************
  *        INSPECTOR VIEW METHODS       *
  ***************************************/
@@ -110,7 +189,7 @@ void SymbolistMainComponent::toggleInspector()
 {
     if( !inspector->isVisible() )
     {
-        auto selectedItems = getPageComponent()->getSelectedItems();
+        auto selectedItems = score_view.getSelectedItems();
         inspector->setInspectorObject( dynamic_cast<BaseComponent*>(selectedItems.getLast()) );
         
         addAndMakeVisible( inspector );

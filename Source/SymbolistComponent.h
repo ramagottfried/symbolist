@@ -6,6 +6,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "types.h"
 #include "SymbolistHandler.h"
+#include "symbolist-utils.hpp"
 
 class PageComponent; // forward declaration of subclass
 
@@ -13,22 +14,17 @@ class PageComponent; // forward declaration of subclass
 template <typename T>
 void printRect( const Rectangle<T> &rect, const String &name = "rect" )
 {
-    std::cout << name << " " << rect.getX() << " " << rect.getY() << " " << rect.getWidth() << " " << rect.getHeight() << std::endl ;
+	DEBUG_INLINE(name << " " << rect.getX() << " " << rect.getY() << " " << rect.getWidth() << " " << rect.getHeight() << std::endl);
 }
 
 template <typename T>
 void printPoint(Point<T> point, const String &name = "point" )
 {
-    std::cout << name << " " << point.getX() << " " << point.getY() << "\n";
+    DEBUG_INLINE(name << " " << point.getX() << " " << point.getY() << "\n");
 }
 
 
-class SymbolistComponent : public Component
-{
-protected :
-    Array<SymbolistComponent* >  subcomponents;
-    Colour                       sym_color = Colours::black;
-    bool                         is_selected = false;
+class SymbolistComponent : public Component {
 
 public:
     
@@ -66,7 +62,12 @@ public:
     virtual void setScoreComponentSize(int w, int h) {}
     
     virtual inline void setSymbolComponentColor(Colour c) { sym_color = c; }
-    
+	
+protected :
+    Array<SymbolistComponent* >  subcomponents;
+    Colour                       sym_color = Colours::black;
+    bool                         is_selected = false;
+	
 };
 
 #endif

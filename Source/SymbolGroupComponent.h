@@ -2,8 +2,7 @@
 
 #include "BaseComponent.h"
 
-class SymbolGroupComponent : public BaseComponent
-{
+class SymbolGroupComponent : public BaseComponent {
     
 public:
     
@@ -13,6 +12,9 @@ public:
     void addSymbolMessages(Symbol* s ) override ;
     void importFromSymbol( const Symbol &s ) override;
 
+	virtual void groupSelectedSymbols() override;
+	void deleteSelectedComponents() override;
+	
     void selectComponent() override;
     void deselectComponent() override;
     void setEditMode( bool val ) override;
@@ -28,8 +30,6 @@ public:
     virtual void scaleScoreComponent(float scale_w, float scale_h) override;
     
     virtual void setSymbolComponentColor( Colour c ) override;
-
-private :
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolGroupComponent)

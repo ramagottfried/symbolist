@@ -84,6 +84,71 @@ void Symbol::setTimeAndDuration( const float start_t, const float dur_t )
     
 }
 
+bool Symbol::idExists(string& searchedId)
+{
+	bool idFound = (getID() == searchedId);
+	
+	/* If the current symbol's id doesn't match searchedId
+	 * then, if it's a group, looks for the id in its inner symbols.
+	 */
+	if (!idFound && getType() == "group")
+	{
+		/* Returns the list of OdotMessage in this Symbol instance
+		 * which address matches "/subsymbol"
+		 */
+    	vector<OdotMessage > subSymbolMessages = matchAddress( "/subsymbol", false );
+		auto iteratorToMessage = subSymbolMessages.begin();
+		OdotMessage subSymbolMessage;
+		Symbol subSymbol;
+		
+		while (!idFound && iteratorToMessage != subSymbolMessages.end())
+    	{
+			subSymbolMessage = (*iteratorToMessage);
+			
+			/* Verifies that the first argument of
+			 * the subsymbol message is a bundle.
+			 */
+			if( subSymbolMessage[0].isBundle() )
+			{
+				subSymbol = Symbol(subSymbolMessage.getBundle().get_o_ptr());
+				idFound = subSymbol.idExists(searchedId);
+			}
+			
+			iteratorToMessage++;
+    	}
+	}
+	
+	return idFound;
+}
 
-
+void Symbol::resetAllIds()
+{
+	addMessage("/id", "");
+	
+	/* If the current symbol is a group,
+	 * resets its inner symbols' id.
+	 */
+	if (getType() == "group")
+	{
+		/* Returns the list of OdotMessage in this Symbol instance
+		 * matching the address "/subsymbol"
+		 */
+    	vector<OdotMessage > subSymbolMessages = matchAddress( "/subsymbol", false );
+		Symbol subSymbol;
+		
+		for (OdotMessage subSymbolMessage : subSymbolMessages)
+			/* Verifies that the first argument of
+			 * the subsymbol message is a bundle.
+			 */
+			if( subSymbolMessage[0].isBundle() )
+			{
+				subSymbol = Symbol(subSymbolMessage.getBundle().get_o_ptr());
+				subSymbol.resetAllIds();
+				
+				addMessage(subSymbolMessage.getAddress(), subSymbol);
+				
+			}
+	}
+	
+}
 

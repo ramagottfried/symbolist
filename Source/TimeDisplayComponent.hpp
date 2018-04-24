@@ -1,8 +1,11 @@
 #pragma once
 
 #include "TextGlyphComponent.h"
+#include "View.hpp"
+#include "TimeDisplayController.hpp"
 
-class TimeDisplayComponent : public TextGlphComponent {
+class TimeDisplayComponent : public virtual TextGlphComponent,
+							 public virtual View<SymbolistModel, TimeDisplayController > {
 	
 public:
     TimeDisplayComponent()
@@ -27,7 +30,10 @@ public:
     }
     
     inline bool hitTest (int x, int y) override { return false; }
-
+	
+	/* Overrides the update method inherited from the Observer class. */
+    virtual inline void update() override {}
+	
 private:
 	String m_time_str = "t = 0";
     float  m_time     = 0;

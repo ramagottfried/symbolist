@@ -14,14 +14,14 @@ void MouseModeComponent::paint( Graphics &g )
 
 void MouseModeComponent::drawString()
 {
-    if ( m_editType == UI_EditType::SELECTION )
+    if ( m_edit_type == UI_EditType::SELECTION )
     {
         m_str = " select " ;
     }
-    else if ( m_drawType == UI_DrawType::FROM_TEMPLATE )
+    else if ( m_draw_type == UI_DrawType::FROM_TEMPLATE )
     {
         m_str = " draw " ;
-        m_str += getSymbolistHandler()->getSelectedSymbolInPalette()->getType();
+        m_str += getModel()->getPalette()->getSelectedSymbol()->getType();
     }
     else
     {
@@ -33,12 +33,12 @@ void MouseModeComponent::drawString()
 
 void MouseModeComponent::setMouseMode( UI_EditType t )
 {
-    m_editType = t;
+    m_edit_type = t;
     drawString();
 }
 
 void MouseModeComponent::setDrawMode( UI_DrawType t )
 {
-    m_drawType = t;
+    m_draw_type = t;
     drawString();
 }

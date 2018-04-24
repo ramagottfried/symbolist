@@ -186,7 +186,7 @@ void ScoreComponent::deleteSelectedComponents()
     
     for ( SymbolistComponent *c : selected_components ) // there's probably a better way to copy a vector's contents :)
     {
-        std::cout << c << std::endl;
+        DEBUG_FULL(c << endl);
         items.push_back(c);
     }
     
@@ -194,84 +194,22 @@ void ScoreComponent::deleteSelectedComponents()
     
     for ( SymbolistComponent *c : items )
     {
-        //ScoreComponent* parent = (ScoreComponent*) c->getParentComponent() ; // the selected_items are not necesarily direct children
-        //parent->
         removeSubcomponent( c );
         delete c;
     }
-}
-
-void ScoreComponent::createStaffFromSelected()
-{
-    auto scoreView = getPageComponent();
-
-    bool creating_a_top_level_group = ( this == scoreView );
-    
-    if( !creating_a_top_level_group )
-    {
-        cout << "must be top level to create staff " << endl;
-        return;
-    }
-    
-    
-    auto selectedItems = scoreView->getSelectedItems();
-    if( selectedItems.size() > 1 )
-    {
-        scoreView->groupSelectedSymbols();
-    }
-    
-    auto staff_ref_comp = dynamic_cast<BaseComponent*>(scoreView->getSelectedItems().getFirst());
-    
-    // Checks downcast result.
-    if( staff_ref_comp != NULL )
-    {
-        if( staff_ref_comp->getSymbolTypeStr() == "staff" )
-            return;
-        
-        Symbol ref_sym = *(staff_ref_comp->getScoreSymbolPointer());
-        
-        auto sh = getSymbolistHandler();
-        
-        // Calls controller to create new symbol in score.
-        Symbol* staff_sym = sh->createSymbol();
-        staff_sym->setTypeXYWH("staff", staff_ref_comp->getX(), staff_ref_comp->getY(), staff_ref_comp->getWidth(), staff_ref_comp->getHeight() );
-        
-        // create the new component and attach the new symbol pointer to it
-        StaffComponent *staff_comp = (StaffComponent *)sh->makeComponentFromSymbol(staff_sym, true);
-
-        // remove from parent (which also sets the ref_sym to null)
-        // the parent is not necessarily 'this' (selected_items can be indirect children...)
-        ScoreComponent* parentOfStaffRefComponent = dynamic_cast<ScoreComponent*>(staff_ref_comp->getParentComponent());
-        
-        // Checks downcast result.
-        if (parentOfStaffRefComponent != NULL)
-            parentOfStaffRefComponent->removeSubcomponent( staff_ref_comp );
-        
-        // sets the position now relative to the group
-        staff_ref_comp->setBounds( 0, 0, staff_ref_comp->getWidth(), staff_ref_comp->getHeight() );
-        
-        // add subcomponent to the parent staff component
-        staff_comp->addSubcomponent( staff_ref_comp );
-        
-        // once the subcomponent is in place, the attached staff symbol can be updated
-        // note: add symbol messages does not attache the symbol, it just adds the messages
-        staff_comp->addSymbolMessages( staff_sym );
-        
-        addSubcomponent(staff_comp);
-        addToSelection(staff_comp);
-        
-    }
-    
+	
 }
 
 void ScoreComponent::groupSelectedSymbols()
 {
-    bool creating_a_top_level_group = ( this == getPageComponent() );
-    
-    cout << "creating_a_top_level_group " << creating_a_top_level_group << " n selected " << selected_components.size() << endl;
-    
-    if ( selected_components.size() > 1 )
+	if ( selected_components.size() > 1 )
     {
+    	bool creating_a_top_level_group = ( this == getPageComponent() );
+    
+    	DEBUG_FULL("Creating a group (top level? " << creating_a_top_level_group << "), from "
+												   << selected_components.size()
+												   << " selected components." << endl);
+		
         // get the position an bounds of the group
         int minx = getWidth(), maxx = 0, miny = getHeight(), maxy = 0;
         for( auto it = selected_components.begin(); it != selected_components.end(); it++ )
@@ -311,8 +249,9 @@ void ScoreComponent::groupSelectedSymbols()
             }
         }
 
-        SymbolGroupComponent *group = (SymbolGroupComponent*) symbolistHandler
-                                        ->makeComponentFromSymbol(groupSymbol, creating_a_top_level_group);
+        SymbolGroupComponent *group = dynamic_cast<SymbolGroupComponent*>(
+									  	symbolistHandler->makeComponentFromSymbol(groupSymbol, creating_a_top_level_group)
+									  );
         addSubcomponent(group);
         
         getPageComponent()->deleteSelectedComponents();
@@ -320,7 +259,6 @@ void ScoreComponent::groupSelectedSymbols()
         addToSelection(group);
     }
 }
-
 
 void ScoreComponent::ungroupSelectedSymbols()
 {
@@ -363,7 +301,6 @@ void ScoreComponent::ungroupSelectedSymbols()
     }
 }
 
-
 void ScoreComponent::translateSelectedComponents( Point<int> delta_xy )
 {
     for ( auto c : selected_components )
@@ -377,7 +314,6 @@ Rectangle<int> ScoreComponent::getSelectionBounds()
 {
     return sel_resize_box->getSelectionBounds();
 }
-
 
 void ScoreComponent::flipSelectedSymbols( int axis )
 {
@@ -402,24 +338,6 @@ void ScoreComponent::nudgeSelected(int direction)
             break;
     }
 }
-
-void ScoreComponent::addSelectedSymbolsToPalette( )
-{
-    for (int i = 0; i < selected_components.size(); i++)
-    {
-        BaseComponent* c = dynamic_cast<BaseComponent*>(selected_components[i]);
-        
-        // Checks downcast result.
-        if (c != NULL)
-        {
-            Symbol s = Symbol();
-            c->addSymbolMessages(&s);
-            getSymbolistHandler()->getModel()->getPalette()->addUserItem(s);
-        }
-    }
-    getMainComponent()->updatePaletteView();
-}
-
 
 /***************************/
 /* UI callbacks from Juce  */

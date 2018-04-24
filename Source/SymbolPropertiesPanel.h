@@ -8,6 +8,7 @@
 
 //==============================================================================
 
+class InspectorComponent;
 typedef std::function<void(const OdotMessage&)> osc_callback_t;
 
 class SymbolPropertiesPanel : public Component {
@@ -31,7 +32,7 @@ public:
 private:
 	BaseComponent*              symbol_component = nullptr;
     PropertyPanel               symbol_inspector;
-    Array<PropertyComponent* >   properties;
+    Array<PropertyComponent* >  properties;
 	
     osc_callback_t              change_callback_fn;
 	

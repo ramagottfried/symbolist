@@ -7,7 +7,8 @@
 Score::Score()
 {
     DEBUG_FULL("Score instance address: " << this << ", score size: " << score_symbols.size() << endl);
-    
+	score_symbols = vector<unique_ptr<Symbol> >();
+	
     // Sets the score_ptr reference for time_points instance variable.
     time_points.setScore(this);
 }
@@ -158,11 +159,11 @@ Symbol* Score::addDuplicateSymbol(Symbol* symbol)
     }
     
     size_t count = ids.size();
-    string nextID = name+"/"+to_string(count++);
+    string nextID = name + "/" + to_string(count++);
     
     while( find( ids.begin(), ids.end(), nextID ) != ids.end() )
     {
-        nextID = name+"/"+to_string(count++);
+        nextID = name + "/" + to_string(count++);
     }
     
     symbol->addMessage("/id", nextID );
@@ -342,7 +343,7 @@ const Symbol* Score::getStaveByID( const string& id )
 
 void Score::importSymbols( const OdotBundle_s& s_bundle )
 {
-    OdotBundle bundle( s_bundle ); //<< deserializes the bundle
+    OdotBundle bundle( s_bundle ); // Deserializes the bundle
     
     DEBUG_FULL("===ITERATE OSC (" << bundle.size() << " messages)" << endl);
     for ( auto msg : bundle.getMessageArray() )
@@ -441,15 +442,17 @@ const StringArray Score::getStaves()
     return staves.getStaveNames();
 }
 
-
-/*
-void Score::deleteOdotBundleArray(odot_bundle** bundle_array, int size)
+bool Score::idExists( string& searchedId )
 {
-    for (int i = 0; i < size; i++) {
-        cout << "delete " << i << " " << bundle_array[i] << endl;
-        delete bundle_array[i] ;
-    }
-    delete bundle_array ;
+	bool idFound = false;
+	auto iteratorToSymbol = score_symbols.begin();
+	
+	while (!idFound && iteratorToSymbol != score_symbols.end())
+	{
+		idFound = (*iteratorToSymbol)->idExists(searchedId);
+		iteratorToSymbol++;
+	}
+	
+	return idFound;
 }
-*/
 

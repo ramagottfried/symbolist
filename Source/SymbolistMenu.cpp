@@ -5,7 +5,7 @@
 
 SymbolistMenu::SymbolistMenu()
 {
-    addAndMakeVisible(menuBar = new MenuBarComponent(this));
+    addAndMakeVisible(menu_bar = new MenuBarComponent(this));
     setApplicationCommandManagerToWatch(&SymbolistMainWindow::getApplicationCommandManager());
 }
 
@@ -17,7 +17,7 @@ SymbolistMenu::~SymbolistMenu()
 void SymbolistMenu::resized()
 {
     Rectangle<int> area (getLocalBounds());
-    menuBar->setBounds (area.removeFromTop (LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight()));
+    menu_bar->setBounds (area.removeFromTop (LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight()));
 }
 
 void SymbolistMenu::getAllCommands (Array<CommandID>& commands)
@@ -220,47 +220,63 @@ bool SymbolistMenu::perform(const juce::ApplicationCommandTarget::InvocationInfo
                 break;
                 
             case cmd_deleteSelected:
-                score->getEditedComponent()->deleteSelectedComponents();
+                main->deleteSelectedComponents();
                 break;
-                
-            case cmd_toggleInspector:
-                main->toggleInspector();
-                break;
-                
-            case cmd_addToPalette:
-                score->addSelectedSymbolsToPalette();
-                break;
-                
-            case cmd_copy:
-                main->getSymbolistHandler()->copySelectedToClipBoard();
-                break;
-                
+				
+			case cmd_copy:
+				main->copySelectedToClipBoard();
+				break;
+			
             case cmd_paste:
-                main->getSymbolistHandler()->newFromClipBoard();
+                main->newFromClipBoard();
                 break;
-                
+				
             case cmd_flipH:
-                score->flipSelectedSymbols(1);
+                main->flipSelectedSymbolsHorizontally();
                 break;
-                
+				
             case cmd_flipV:
-                score->flipSelectedSymbols(0);
+                main->flipSelectedSymbolsVertically();
                 break;
-                
+				
             case cmd_nudgeLeft:
-                score->nudgeSelected(0);
+				main->nudgeSelectedLeft();
                 break;
-            
+				
             case cmd_nudgeRight:
-                score->nudgeSelected(1);
+                main->nudgeSelectedRight();
                 break;
-            
+				
             case cmd_nudgeUp:
-                score->nudgeSelected(2);
+                main->nudgeSelectedUp();
                 break;
-            
+				
             case cmd_nudgeDown:
-                score->nudgeSelected(3);
+                main->nudgeSelectedDown();
+                break;
+			
+			case cmd_selectedToFront:
+                main->selectedToFront();
+                break;
+				
+            case cmd_selectedToBack:
+                main->selectedToBack();
+                break;
+				
+			case cmd_objToStaff:
+                main->convertSelectedToStaff();
+                break;
+				
+            case cmd_attachToStaff:
+                main->attachSelectedToStaff();
+                break;
+				
+			case cmd_esc:
+                main->escapeScoreViewMode();
+                break;
+			
+            case cmd_addToPalette:
+                main->addSelectedSymbolsToPalette();
                 break;
                 
             case cmd_zoomIn:
@@ -270,50 +286,25 @@ bool SymbolistMenu::perform(const juce::ApplicationCommandTarget::InvocationInfo
             case cmd_zoomOut:
                 main->zoom( -0.1 );
                 break;
-                
-            case cmd_esc:
-                score->getEditedComponent()->unselectAllComponents();
-                score->exitEditMode();
-                score->exitStaffSelMode();
-                
-                main->getSymbolistHandler()->executeTransportCallback(0); // = stop
-                main->getSymbolistHandler()->symbolistAPI_setTime(0);
-                main->getSymbolistHandler()->clearInspector();
-                
-                score->repaint();
+				
+			case cmd_toggleInspector:
+                main->toggleInspector();
                 break;
-                
+				
             case cmd_playmsg:
-                main->getSymbolistHandler()->executeTransportCallback(1);
-                break;
-                
-            case cmd_objToStaff:
-                main->getSymbolistHandler()->convertSelectedToStaff();
-                break;
-                
-            case cmd_attachToStaff:
-                score->enterStaffSelMode();
-                score->repaint();
-                break;
-                
-            case cmd_selectedToFront:
-                score->selectedToFront();
-                break;
-                
-            case cmd_selectedToBack:
-                score->selectedToBack();
+                main->getController()->executeTransportCallback(1);
                 break;
                 
             case cmd_toggleCursor:
-                main->getSymbolistHandler()->symbolistAPI_toggleTimeCusor();
+                main->getController()->symbolistAPI_toggleTimeCusor();
                 break;
                 
             case cmd_undo:
-                main->getSymbolistHandler()->undo();
+                main->getController()->undo();
                 break;
             
             case cmd_redo:
-                main->getSymbolistHandler()->redo();
+                main->getController()->redo();
                 break;
                 
             default:

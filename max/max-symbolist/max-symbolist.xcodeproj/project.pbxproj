@@ -213,7 +213,7 @@
 					"$(C74SUPPORT)/msp-includes",
 				);
 				LIBRARY_SEARCH_PATHS = (
-					../../Builds/MacOSX/Build/Debug/,
+					../../Builds/MacOSX/Build/Products/Debug/,
 					../../../libo,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
@@ -224,7 +224,7 @@
 					"-DNO_TRANSLATION_SUPPORT",
 				);
 				OTHER_LDFLAGS = "@$(C74SUPPORT)/max-includes/c74_linker_flags.txt";
-				PRELINK_LIBS = ../../Builds/MacOSX/Build/Debug/libsymbolist.a;
+				PRELINK_LIBS = ../Builds/MacOSX/Build/Products/Debug/libsymbolist.a;
 				SDKROOT = macosx;
 				VALID_ARCHS = "x86_64 i386";
 				WARNING_CFLAGS = (
@@ -287,7 +287,7 @@
 					"$(C74SUPPORT)/msp-includes",
 				);
 				LIBRARY_SEARCH_PATHS = (
-					../../Builds/MacOSX/Build/Release/,
+					../../Builds/MacOSX/Build/Products/Release/,
 					../../../libo,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
@@ -298,7 +298,7 @@
 					"-DNO_TRANSLATION_SUPPORT",
 				);
 				OTHER_LDFLAGS = "@$(C74SUPPORT)/max-includes/c74_linker_flags.txt";
-				PRELINK_LIBS = ../../Builds/MacOSX/Build/Release/libsymbolist.a;
+				PRELINK_LIBS = ../Builds/MacOSX/Build/Products/Debug/libsymbolist.a;
 				SDKROOT = macosx;
 				VALID_ARCHS = "x86_64 i386";
 				WARNING_CFLAGS = (
@@ -332,7 +332,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LIBRARY_SEARCH_PATHS = (
-					../../Builds/MacOSX/Build/Debug/,
+					../../Builds/MacOSX/Build/Products/Debug/,
 					../../../libo,
 					../../../libomax,
 				);
@@ -341,7 +341,7 @@
 					"-g",
 				);
 				OTHER_LDFLAGS = "@$(C74SUPPORT)/max-includes/c74_linker_flags.txt";
-				PRELINK_LIBS = "../../Builds/MacOSX/Build/Debug/libsymbolist.a ../../../libomax/libomax.a ../../../libo/libo.a";
+				PRELINK_LIBS = "../../Builds/MacOSX/Build/Products/Debug/libsymbolist.a ../../../libomax/libomax.a ../../../libo/libo.a";
 				PRODUCT_BUNDLE_IDENTIFIER = "ircam.cnmat.zkm.yay.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -373,7 +373,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LIBRARY_SEARCH_PATHS = (
-					../../Builds/MacOSX/Build/Release/,
+					../../Builds/MacOSX/Build/Products/Release/,
 					../../../libo,
 					../../../libomax,
 				);
@@ -382,6 +382,7 @@
 					"-g",
 				);
 				OTHER_LDFLAGS = "@$(C74SUPPORT)/max-includes/c74_linker_flags.txt";
+				PRELINK_LIBS = ../Builds/MacOSX/Build/Products/Release/libsymbolist.a;
 				PRODUCT_BUNDLE_IDENTIFIER = "ircam.cnmat.zkm.yay.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

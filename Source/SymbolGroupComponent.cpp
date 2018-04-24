@@ -4,6 +4,40 @@
 #include "PageComponent.h"
 #include "ScoreComponent.h"
 
+void SymbolGroupComponent::groupSelectedSymbols()
+{
+	if ( selected_components.size() > 1 )
+    {
+    	DEBUG_FULL("Creating a group from " << selected_components.size()
+										    << " selected components." << endl);
+		
+        PageController* controller = getPageComponent()->getController();
+		Symbol symbolGroup = controller->createNestedSymbolGroup(selected_components, this);
+		
+        SymbolGroupComponent *groupComponent = dynamic_cast<SymbolGroupComponent*>(
+									  	controller->makeComponentFromSymbol(&symbolGroup, true)
+									  );
+		
+		addSubcomponent(groupComponent);
+        deleteSelectedComponents();
+		
+		/* Adds a new /subsymbol entry in the symbol bundle
+		 * attached to this SymbolGroupComponent.
+		 */
+		if (getScoreSymbolPointer() != NULL)
+			getScoreSymbolPointer()->addMessage("/subsymbol/" + to_string(getNumSubcomponents() + 1), symbolGroup);
+		
+        addToSelection(groupComponent);
+    }
+	
+}
+
+void SymbolGroupComponent::deleteSelectedComponents()
+{
+	DEBUG_TRACE();
+	ScoreComponent::deleteSelectedComponents();
+	
+}
 
 bool SymbolGroupComponent::hitTest (int x, int y)
 {
@@ -23,7 +57,6 @@ bool SymbolGroupComponent::hitTest (int x, int y)
     return false;
 }
 
-
 void SymbolGroupComponent::setSymbolComponentColor( Colour c )
 {
     sym_color = c;
@@ -41,7 +74,6 @@ void SymbolGroupComponent::paint ( Graphics& g )
     const Rectangle<int> b = ((BaseComponent*)this)->getLocalBounds();
     g.drawRect(b);
 }
-
 
 void SymbolGroupComponent::selectComponent()
 {
@@ -63,8 +95,6 @@ void SymbolGroupComponent::deselectComponent()
         getSubcomponent(i)->deselectComponent();
     }
 }
-
-
 
 void SymbolGroupComponent::setEditMode( bool val )
 {
@@ -173,12 +203,10 @@ void SymbolGroupComponent::scaleScoreComponent(float scale_w, float scale_h)
     
     cout << "SymbolGroupComponent::scaleScoreComponent " << scale_w << " " << scale_h << endl;
     
-    BaseComponent::scaleScoreComponent(scale_w, scale_h); //<< base component only scales subcomponents
+    BaseComponent::scaleScoreComponent(scale_w, scale_h); // base component only scales subcomponents
     
     setSize(getWidth() * scale_w, getHeight() * scale_h);
 }
-
-
 
 /*============================*
  * SYMBOL MANAGEMENT
@@ -186,69 +214,82 @@ void SymbolGroupComponent::scaleScoreComponent(float scale_w, float scale_h)
 
 void SymbolGroupComponent::addSymbolMessages(Symbol* s )
 {
-    
-//    cout << "SymbolGroupComponent::addSymbolMessages " << s << " " << base_address << " " << getNumSubcomponents() << endl;
-    
+        
     BaseComponent::addSymbolMessages(s);
-    
     s->addMessage( "/numsymbols", (int)getNumSubcomponents() );
-
-    /*
-     * the group symbol is created first (with the default state), then added to, then updated,
-     * so we need (getNumSubcomponents() > 0) to wait to set /numsymbols until after the symbol has been updated,
-     * otherwise, /numsymbols gets stuck at 0
-    
-    
-     i don't understand this again, commenting out to test
-    if( getNumSubcomponents() )
-    {
-        s->addMessage( addr, (int)getNumSubcomponents() );
-    }
-    */
    
-    BaseComponent* subComponent; 
-    Symbol* subSymbol = new Symbol();
-    
+    BaseComponent* subComponent;
+    Symbol subSymbol = Symbol();
+
+    /* For each subcomponent of this SymbolGroupComponent instance
+	 * add a /subsymbol message in s.
+     */
     for (int i = 0; i < getNumSubcomponents(); i++)
     {
         subComponent = dynamic_cast<BaseComponent*>(getSubcomponent(i));
         if (subComponent != NULL)
         {
-           subComponent->addSymbolMessages(subSymbol);
-           s->addMessage( "/subsymbol/" + to_string(i), *subSymbol);
+			subComponent->addSymbolMessages(&subSymbol);
+           	s->addMessage( "/subsymbol/" + to_string(i), subSymbol);
+			
+			String componentId = subComponent->getComponentID();
+			string typeOfSymbol = s->getType();
+			
+			/* If the component has a default or empty id then calculate a new one
+			 * and modify the subsymbol bundle.
+			 */
+//			if( componentId.isEmpty() ||
+//				componentId == (typeOfSymbol + "/palette")  ||
+//				componentId == (name + "/palette") ||
+//				!componentId.contains(String(name)))
+//			{
+//				componentId = getSymbolistHandler()->createIdFromName(name);
+//				subSymbol.addMessage("/id", componentId.toStdString());
+//				s->addMessage( "/subsymbol/" + to_string(i), subSymbol);
+//
+//			}
+			
+			
         }
+		
+        DEBUG_FULL("Sub component ID : " << subComponent->getComponentID() << endl);
     }
-    
+	
 }
 
-void SymbolGroupComponent::importFromSymbol( const Symbol &s )
+void SymbolGroupComponent::importFromSymbol( const Symbol &symbol )
 {
     clearAllSubcomponents();
     
-    BaseComponent::importFromSymbol(s);
-    
-    auto subsymbols = s.matchAddress( "/subsymbol", false ); // later try /* with full match at default true
+    BaseComponent::importFromSymbol(symbol);
+	
+    // Returns the list of OdotMessage in s which address matches "/subsymbol"
+    auto subsymbols = symbol.matchAddress( "/subsymbol", false ); // later try /* with full match at default true
     
     int count = 0;
-    for ( auto sub : subsymbols )
+    for ( auto subsymbolMessage : subsymbols )
     {
-        if( sub[0].isBundle() )
+    	/* Verifies that the first argument of
+    	 * the subsymbol message is a bundle.
+    	 */
+        if( subsymbolMessage[0].isBundle() )
         {
-            cout << "IMPORT FROM: " << sub.getAddress() << endl;
-            Symbol* sub_s = new Symbol(sub.getBundle().get_o_ptr());
-            
-            BaseComponent* c = getSymbolistHandler()->makeComponentFromSymbol(sub_s, false);
-            
-            if ( c != NULL)
-            {
-                addSubcomponent( c );
-                count++;
-            }
-            else
-                cout << "Error importing subsymbol #" << count << endl;
+            DEBUG_FULL("IMPORT FROM: " << subsymbolMessage.getAddress() << endl);
+            Symbol subSymbol = Symbol(subsymbolMessage.getBundle().get_o_ptr());
+			
+			BaseComponent* c = getSymbolistHandler()->makeComponentFromSymbol(&subSymbol, false);
+			
+			if (c != NULL)
+			{
+				addSubcomponent(c);
+				count++;
+			}
+			else
+				DEBUG_FULL("Error importing subsymbol #" << count << endl);
+			
         }
     }
     
-    std::cout << "Imported Group of " << count << " symbols..." << std::endl;
+    DEBUG_FULL("Imported Group of " << count << " symbols..." << endl);
 }
 

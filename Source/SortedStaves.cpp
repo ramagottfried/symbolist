@@ -53,19 +53,19 @@ void SortedStaves::resetTimes()
     float time = 0.0f;
     for( auto it = staves.begin(); it != staves.end(); it++)
     {
-        Symbol* sym = *it;
+        Symbol* staff = *it;
                 
-        float w = sym->getMessage("/w").getFloat();
+        float w = staff->getMessage("/w").getFloat();
         
-        sym->addMessage( "/time/start", time );
+        staff->addMessage( "/time/start", time );
         
-        cout << "staff time " << time << " ";
+        DEBUG_FULL("Staff's start time = " << time);
         
-        time += sym->pixelsToTime(w) ;
+        time += staff->pixelsToTime(w) ;
         
-        sym->addMessage( "/time/duration", time );
+        staff->addMessage( "/time/duration", time );
         
-        cout << time << endl;
+        DEBUG_INLINE(", end time = " << time << endl);
         
     }
     
@@ -78,14 +78,14 @@ bool SortedStaves::addStaff(Symbol* s)
     
     removeStaff(s);
     
-    cout << "adding staff " << endl;
+    DEBUG_FULL("Adding staff " << endl);
     staves.emplace_back(s);
     
     resetTimes();
     
     // probably not the right place to deal with names.. maybe duplicates should be allowed?
     
-    cout << "setting staff name -- size: " << staves.size() << endl;
+    DEBUG_FULL("Setting staff name -- staff size: " << staves.size() << endl);
     string name = s->getMessage("/name").getString();
     if( name.empty() ) // for now allow  name == s->getID()
         s->addMessage( "/name", "staff_" + to_string(staves.size() ) );

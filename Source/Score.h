@@ -202,14 +202,7 @@ public:
         return count;
     }
     
-    bool idExists( string& idStr )
-    {
-        for(auto iteratorToSymbol = score_symbols.begin(); iteratorToSymbol != score_symbols.end(); iteratorToSymbol++)
-            if( (*iteratorToSymbol)->getID() == idStr )
-                return true;
-        
-        return false;
-    }
+    bool idExists( string& searchedId );
 	
 private:
 

@@ -57,7 +57,25 @@ public:
         float start = getTime();
         return t >= start && t <= ( start + getDuration() );
     }
-        
+	
+	/**
+	 * Says whether the id in parameter is the current symbol's id
+	 * or one of its subsymbols.
+	 *
+	 * @param searchedId the id to compare with the current symbol's id.
+	 *
+	 * @return           <code>true</code>, if searchedID matches the current symbol's
+	 *                   id or one of its subsymbols (if the current symbol
+	 *                   is a group). <code>false</code> otherwise.
+	 */
+    bool idExists(string& searchedId);
+	
+	/**
+	 * Resets all messages of address /id in the current symbol
+	 * and all its nested symbols if it's a group.
+	 */
+	void resetAllIds();
+	
 private:
     
     float       m_pixels_to_time = 0.01f;

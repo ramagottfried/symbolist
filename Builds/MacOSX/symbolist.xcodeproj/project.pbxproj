@@ -148,9 +148,9 @@
 		116F87751F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */; };
 		116F87761F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */; };
 		116F87771F9D04B90062EE91 /* ScoreBundleViewer.h in Headers */ = {isa = PBXBuildFile; fileRef = 116F87731F9D04B90062EE91 /* ScoreBundleViewer.h */; };
-		116F877A1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87781F9D04FC0062EE91 /* PropertyPanelTabs.cpp */; };
-		116F877B1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87781F9D04FC0062EE91 /* PropertyPanelTabs.cpp */; };
-		116F877C1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87781F9D04FC0062EE91 /* PropertyPanelTabs.cpp */; };
+		116F877A1F9D04FC0062EE91 /* InspectorComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87781F9D04FC0062EE91 /* InspectorComponent.cpp */; };
+		116F877B1F9D04FC0062EE91 /* InspectorComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87781F9D04FC0062EE91 /* InspectorComponent.cpp */; };
+		116F877C1F9D04FC0062EE91 /* InspectorComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87781F9D04FC0062EE91 /* InspectorComponent.cpp */; };
 		118353461F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118353441F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp */; };
 		118353471F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118353441F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp */; };
 		118353481F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118353441F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp */; };
@@ -201,23 +201,17 @@
 		11B71DD71F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */; };
 		11B71DD81F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */; };
 		11B71DD91F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */; };
-		11C442D01F585C1B00F2E9B6 /* TimeDisplay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11C442CE1F585C1B00F2E9B6 /* TimeDisplay.cpp */; };
-		11C442D11F585C1B00F2E9B6 /* TimeDisplay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11C442CE1F585C1B00F2E9B6 /* TimeDisplay.cpp */; };
-		11C442D21F585C1B00F2E9B6 /* TimeDisplay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11C442CE1F585C1B00F2E9B6 /* TimeDisplay.cpp */; };
-		11C442D31F585C1B00F2E9B6 /* TimeDisplay.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11C442CF1F585C1B00F2E9B6 /* TimeDisplay.hpp */; };
+		11C442D01F585C1B00F2E9B6 /* TimeDisplayComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11C442CE1F585C1B00F2E9B6 /* TimeDisplayComponent.cpp */; };
+		11C442D11F585C1B00F2E9B6 /* TimeDisplayComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11C442CE1F585C1B00F2E9B6 /* TimeDisplayComponent.cpp */; };
+		11C442D21F585C1B00F2E9B6 /* TimeDisplayComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11C442CE1F585C1B00F2E9B6 /* TimeDisplayComponent.cpp */; };
+		11C442D31F585C1B00F2E9B6 /* TimeDisplayComponent.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11C442CF1F585C1B00F2E9B6 /* TimeDisplayComponent.hpp */; };
 		11CE00571EC328EC00E4F624 /* SymbolistMainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00531EC328EC00E4F624 /* SymbolistMainComponent.cpp */; };
 		11CE00581EC328EC00E4F624 /* SymbolistMainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00531EC328EC00E4F624 /* SymbolistMainComponent.cpp */; };
 		11CE005E1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */; };
 		11CE005F1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */; };
-		11D123591F4471EA00A5EA5B /* ToolBarComp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D123571F4471EA00A5EA5B /* ToolBarComp.cpp */; };
 		11D1235C1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D1235A1F44796800A5EA5B /* SymbolistMenu.cpp */; };
 		11D1235D1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D1235A1F44796800A5EA5B /* SymbolistMenu.cpp */; };
 		11D1235E1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D1235A1F44796800A5EA5B /* SymbolistMenu.cpp */; };
-		11D123601F4583B800A5EA5B /* ToolBarComp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D123571F4471EA00A5EA5B /* ToolBarComp.cpp */; };
-		11D123611F4583B900A5EA5B /* ToolBarComp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D123571F4471EA00A5EA5B /* ToolBarComp.cpp */; };
-		11D123661F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D123641F46E4BA00A5EA5B /* OutputViewer.cpp */; };
-		11D123671F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D123641F46E4BA00A5EA5B /* OutputViewer.cpp */; };
-		11D123681F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D123641F46E4BA00A5EA5B /* OutputViewer.cpp */; };
 		11D86B8B1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */; };
 		11D86B8C1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */; };
 		11E8082E207FCAC000E0342F /* SVGParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11E8082C207FCAC000E0342F /* SVGParser.cpp */; };
@@ -288,6 +282,28 @@
 		7571E6FF2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E6F92085FEE80092A3E0 /* symbolist-utils.cpp */; };
 		7571E7002085FEE80092A3E0 /* symbolist-utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7571E6FA2085FEE80092A3E0 /* symbolist-utils.hpp */; };
 		7571E7012085FEE80092A3E0 /* symbolist-utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7571E6FA2085FEE80092A3E0 /* symbolist-utils.hpp */; };
+		7571E7052089EA9E0092A3E0 /* SymbolTestsFixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E7022089DAFF0092A3E0 /* SymbolTestsFixture.cpp */; };
+		7571E709208E41C60092A3E0 /* MouseModeController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E707208E41C60092A3E0 /* MouseModeController.cpp */; };
+		7571E70A208E41C60092A3E0 /* MouseModeController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E707208E41C60092A3E0 /* MouseModeController.cpp */; };
+		7571E70B208E41C60092A3E0 /* MouseModeController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E707208E41C60092A3E0 /* MouseModeController.cpp */; };
+		7571E70C208E41C60092A3E0 /* MouseModeController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E707208E41C60092A3E0 /* MouseModeController.cpp */; };
+		7571E70D208E41C60092A3E0 /* MouseModeController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E707208E41C60092A3E0 /* MouseModeController.cpp */; };
+		7571E70E208E41C60092A3E0 /* MouseModeController.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7571E708208E41C60092A3E0 /* MouseModeController.hpp */; };
+		7571E70F208E41C60092A3E0 /* MouseModeController.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7571E708208E41C60092A3E0 /* MouseModeController.hpp */; };
+		7571E712208F2F1A0092A3E0 /* InspectorController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E710208F2F1A0092A3E0 /* InspectorController.cpp */; };
+		7571E713208F2F1A0092A3E0 /* InspectorController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E710208F2F1A0092A3E0 /* InspectorController.cpp */; };
+		7571E714208F2F1A0092A3E0 /* InspectorController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E710208F2F1A0092A3E0 /* InspectorController.cpp */; };
+		7571E715208F2F1A0092A3E0 /* InspectorController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E710208F2F1A0092A3E0 /* InspectorController.cpp */; };
+		7571E716208F2F1A0092A3E0 /* InspectorController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E710208F2F1A0092A3E0 /* InspectorController.cpp */; };
+		7571E717208F2F1A0092A3E0 /* InspectorController.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7571E711208F2F1A0092A3E0 /* InspectorController.hpp */; };
+		7571E718208F2F1A0092A3E0 /* InspectorController.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7571E711208F2F1A0092A3E0 /* InspectorController.hpp */; };
+		7571E71B208F59B90092A3E0 /* TimeDisplayController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E719208F59B90092A3E0 /* TimeDisplayController.cpp */; };
+		7571E71C208F59B90092A3E0 /* TimeDisplayController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E719208F59B90092A3E0 /* TimeDisplayController.cpp */; };
+		7571E71D208F59B90092A3E0 /* TimeDisplayController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E719208F59B90092A3E0 /* TimeDisplayController.cpp */; };
+		7571E71E208F59B90092A3E0 /* TimeDisplayController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E719208F59B90092A3E0 /* TimeDisplayController.cpp */; };
+		7571E71F208F59B90092A3E0 /* TimeDisplayController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E719208F59B90092A3E0 /* TimeDisplayController.cpp */; };
+		7571E720208F59B90092A3E0 /* TimeDisplayController.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7571E71A208F59B90092A3E0 /* TimeDisplayController.hpp */; };
+		7571E721208F59B90092A3E0 /* TimeDisplayController.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7571E71A208F59B90092A3E0 /* TimeDisplayController.hpp */; };
 		75774F98206176790069A89D /* Controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F90206176780069A89D /* Controller.cpp */; };
 		75774F99206176790069A89D /* Observable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F91206176780069A89D /* Observable.cpp */; };
 		75774F9A206176790069A89D /* Observer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F93206176780069A89D /* Observer.cpp */; };
@@ -341,15 +357,13 @@
 		758F6F5E207BCB00006EDD53 /* PaletteComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */; };
 		758F6F5F207BCB00006EDD53 /* PaletteButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 751E31512069410400C3318F /* PaletteButton.cpp */; };
 		758F6F60207BCB00006EDD53 /* MouseModeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */; };
-		758F6F61207BCB00006EDD53 /* TimeDisplay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11C442CE1F585C1B00F2E9B6 /* TimeDisplay.cpp */; };
+		758F6F61207BCB00006EDD53 /* TimeDisplayComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11C442CE1F585C1B00F2E9B6 /* TimeDisplayComponent.cpp */; };
 		758F6F62207BCB00006EDD53 /* ScoreCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1186489A1EFAC44100904672 /* ScoreCursor.cpp */; };
-		758F6F63207BCB00006EDD53 /* OutputViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D123641F46E4BA00A5EA5B /* OutputViewer.cpp */; };
-		758F6F64207BCB00006EDD53 /* ToolBarComp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D123571F4471EA00A5EA5B /* ToolBarComp.cpp */; };
 		758F6F65207BCB00006EDD53 /* SymbolistMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11D1235A1F44796800A5EA5B /* SymbolistMenu.cpp */; };
 		758F6F66207BCB00006EDD53 /* SymbolPropertiesPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DCF1F098F1400CDE209 /* SymbolPropertiesPanel.cpp */; };
 		758F6F67207BCB00006EDD53 /* OSCPropertyComponents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */; };
 		758F6F68207BCB00006EDD53 /* ScoreBundleViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */; };
-		758F6F69207BCB00006EDD53 /* PropertyPanelTabs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87781F9D04FC0062EE91 /* PropertyPanelTabs.cpp */; };
+		758F6F69207BCB00006EDD53 /* InspectorComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87781F9D04FC0062EE91 /* InspectorComponent.cpp */; };
 		758F6F6A207BCB00006EDD53 /* JsonTreeItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF237207A943800B1398D /* JsonTreeItem.cpp */; };
 		758F6F6B207BCB00006EDD53 /* CodeboxComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF23F207A94D000B1398D /* CodeboxComponent.cpp */; };
 		758F6F6C207BCB00006EDD53 /* Controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F90206176780069A89D /* Controller.cpp */; };
@@ -532,8 +546,8 @@
 		116A7F35204C4F20004B545D /* OdotPointers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OdotPointers.h; path = ../../Source/OdotPointers.h; sourceTree = "<group>"; };
 		116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreBundleViewer.cpp; path = ../../Source/ScoreBundleViewer.cpp; sourceTree = "<group>"; };
 		116F87731F9D04B90062EE91 /* ScoreBundleViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreBundleViewer.h; path = ../../Source/ScoreBundleViewer.h; sourceTree = "<group>"; };
-		116F87781F9D04FC0062EE91 /* PropertyPanelTabs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PropertyPanelTabs.cpp; path = ../../Source/PropertyPanelTabs.cpp; sourceTree = "<group>"; };
-		116F87791F9D04FC0062EE91 /* PropertyPanelTabs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyPanelTabs.h; path = ../../Source/PropertyPanelTabs.h; sourceTree = "<group>"; };
+		116F87781F9D04FC0062EE91 /* InspectorComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InspectorComponent.cpp; path = ../../Source/InspectorComponent.cpp; sourceTree = "<group>"; };
+		116F87791F9D04FC0062EE91 /* InspectorComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InspectorComponent.h; path = ../../Source/InspectorComponent.h; sourceTree = "<group>"; };
 		118353441F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolistLookAndFeel.cpp; path = ../../Source/SymbolistLookAndFeel.cpp; sourceTree = "<group>"; };
 		118353451F26AD0600DB1DF5 /* SymbolistLookAndFeel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SymbolistLookAndFeel.hpp; path = ../../Source/SymbolistLookAndFeel.hpp; sourceTree = "<group>"; };
 		118648941EFA811800904672 /* TimePointArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TimePointArray.cpp; path = ../../Source/TimePointArray.cpp; sourceTree = "<group>"; };
@@ -555,20 +569,16 @@
 		11B71DD01F098F1400CDE209 /* SymbolPropertiesPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SymbolPropertiesPanel.h; path = ../../Source/SymbolPropertiesPanel.h; sourceTree = "<group>"; };
 		11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OSCPropertyComponents.cpp; path = ../../Source/OSCPropertyComponents.cpp; sourceTree = "<group>"; };
 		11B71DD61F0AA83A00CDE209 /* OSCPropertyComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OSCPropertyComponents.h; path = ../../Source/OSCPropertyComponents.h; sourceTree = "<group>"; };
-		11C442CE1F585C1B00F2E9B6 /* TimeDisplay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TimeDisplay.cpp; path = ../../Source/TimeDisplay.cpp; sourceTree = "<group>"; };
-		11C442CF1F585C1B00F2E9B6 /* TimeDisplay.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TimeDisplay.hpp; path = ../../Source/TimeDisplay.hpp; sourceTree = "<group>"; };
+		11C442CE1F585C1B00F2E9B6 /* TimeDisplayComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TimeDisplayComponent.cpp; path = ../../Source/TimeDisplayComponent.cpp; sourceTree = "<group>"; };
+		11C442CF1F585C1B00F2E9B6 /* TimeDisplayComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TimeDisplayComponent.hpp; path = ../../Source/TimeDisplayComponent.hpp; sourceTree = "<group>"; };
 		11CE00201EC3271700E4F624 /* symbolist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = symbolist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11CE00511EC328DE00E4F624 /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Main.cpp; path = ../../Source/Main.cpp; sourceTree = "<group>"; };
 		11CE00531EC328EC00E4F624 /* SymbolistMainComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolistMainComponent.cpp; path = ../../Source/SymbolistMainComponent.cpp; sourceTree = "<group>"; };
 		11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreComponent.cpp; path = ../../Source/ScoreComponent.cpp; sourceTree = "<group>"; };
 		11CE005D1EC4B31200E4F624 /* ScoreComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreComponent.h; path = ../../Source/ScoreComponent.h; sourceTree = "<group>"; };
 		11CE00651EC4B90700E4F624 /* BaseComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BaseComponent.h; path = ../../Source/BaseComponent.h; sourceTree = "<group>"; };
-		11D123571F4471EA00A5EA5B /* ToolBarComp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToolBarComp.cpp; path = ../../Source/ToolBarComp.cpp; sourceTree = "<group>"; };
-		11D123581F4471EA00A5EA5B /* ToolBarComp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ToolBarComp.hpp; path = ../../Source/ToolBarComp.hpp; sourceTree = "<group>"; };
 		11D1235A1F44796800A5EA5B /* SymbolistMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolistMenu.cpp; path = ../../Source/SymbolistMenu.cpp; sourceTree = "<group>"; };
 		11D1235B1F44796800A5EA5B /* SymbolistMenu.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SymbolistMenu.hpp; path = ../../Source/SymbolistMenu.hpp; sourceTree = "<group>"; };
-		11D123641F46E4BA00A5EA5B /* OutputViewer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OutputViewer.cpp; path = ../../Source/OutputViewer.cpp; sourceTree = "<group>"; };
-		11D123651F46E4BA00A5EA5B /* OutputViewer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = OutputViewer.hpp; path = ../../Source/OutputViewer.hpp; sourceTree = "<group>"; };
 		11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PathBaseComponent.cpp; path = ../../Source/PathBaseComponent.cpp; sourceTree = "<group>"; };
 		11D86B8A1EEAEF7900681F6D /* PathBaseComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PathBaseComponent.h; path = ../../Source/PathBaseComponent.h; sourceTree = "<group>"; };
 		11D86B8F1EEAF9FD00681F6D /* BasicShapePathComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicShapePathComponents.h; path = ../../Source/BasicShapePathComponents.h; sourceTree = "<group>"; };
@@ -613,6 +623,14 @@
 		751E31522069410400C3318F /* PaletteButton.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = PaletteButton.hpp; path = ../../Source/PaletteButton.hpp; sourceTree = "<group>"; };
 		7571E6F92085FEE80092A3E0 /* symbolist-utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "symbolist-utils.cpp"; sourceTree = "<group>"; };
 		7571E6FA2085FEE80092A3E0 /* symbolist-utils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "symbolist-utils.hpp"; sourceTree = "<group>"; };
+		7571E7022089DAFF0092A3E0 /* SymbolTestsFixture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SymbolTestsFixture.cpp; sourceTree = "<group>"; };
+		7571E7032089DAFF0092A3E0 /* SymbolTestsFixture.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SymbolTestsFixture.hpp; sourceTree = "<group>"; };
+		7571E707208E41C60092A3E0 /* MouseModeController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = MouseModeController.cpp; path = ../../Source/MouseModeController.cpp; sourceTree = "<group>"; };
+		7571E708208E41C60092A3E0 /* MouseModeController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = MouseModeController.hpp; path = ../../Source/MouseModeController.hpp; sourceTree = "<group>"; };
+		7571E710208F2F1A0092A3E0 /* InspectorController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = InspectorController.cpp; path = ../../Source/InspectorController.cpp; sourceTree = "<group>"; };
+		7571E711208F2F1A0092A3E0 /* InspectorController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = InspectorController.hpp; path = ../../Source/InspectorController.hpp; sourceTree = "<group>"; };
+		7571E719208F59B90092A3E0 /* TimeDisplayController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TimeDisplayController.cpp; path = ../../Source/TimeDisplayController.cpp; sourceTree = "<group>"; };
+		7571E71A208F59B90092A3E0 /* TimeDisplayController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = TimeDisplayController.hpp; path = ../../Source/TimeDisplayController.hpp; sourceTree = "<group>"; };
 		75774F90206176780069A89D /* Controller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Controller.cpp; path = ../../Source/Controller.cpp; sourceTree = "<group>"; };
 		75774F91206176780069A89D /* Observable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Observable.cpp; path = ../../Source/Observable.cpp; sourceTree = "<group>"; };
 		75774F92206176780069A89D /* View.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = View.hpp; path = ../../Source/View.hpp; sourceTree = "<group>"; };
@@ -738,12 +756,8 @@
 		111A26201F40CBAD00D3713C /* time-components */ = {
 			isa = PBXGroup;
 			children = (
-				11C442CE1F585C1B00F2E9B6 /* TimeDisplay.cpp */,
-				11C442CF1F585C1B00F2E9B6 /* TimeDisplay.hpp */,
 				1186489A1EFAC44100904672 /* ScoreCursor.cpp */,
 				1186489B1EFAC44100904672 /* ScoreCursor.h */,
-				11D123641F46E4BA00A5EA5B /* OutputViewer.cpp */,
-				11D123651F46E4BA00A5EA5B /* OutputViewer.hpp */,
 			);
 			name = "time-components";
 			sourceTree = "<group>";
@@ -899,17 +913,17 @@
 				11B71DD61F0AA83A00CDE209 /* OSCPropertyComponents.h */,
 				116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */,
 				116F87731F9D04B90062EE91 /* ScoreBundleViewer.h */,
-				116F87781F9D04FC0062EE91 /* PropertyPanelTabs.cpp */,
-				116F87791F9D04FC0062EE91 /* PropertyPanelTabs.h */,
 				11AEF237207A943800B1398D /* JsonTreeItem.cpp */,
 				11AEF238207A943800B1398D /* JsonTreeItem.hpp */,
 			);
 			name = "property-panel";
 			sourceTree = "<group>";
 		};
-		11CE00151EC3231E00E4F624 /* symbol-components */ = {
+		11CE00151EC3231E00E4F624 /* score-components */ = {
 			isa = PBXGroup;
 			children = (
+				11CE005D1EC4B31200E4F624 /* ScoreComponent.h */,
+				11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */,
 				11CE00651EC4B90700E4F624 /* BaseComponent.h */,
 				118C38E21EC5EB23006FF4A1 /* BaseComponent.cpp */,
 				11D86B8A1EEAEF7900681F6D /* PathBaseComponent.h */,
@@ -922,7 +936,7 @@
 				114027C91F4B185E00A9B8C4 /* StaffComponent.hpp */,
 				114027C81F4B185E00A9B8C4 /* StaffComponent.cpp */,
 			);
-			name = "symbol-components";
+			name = "score-components";
 			sourceTree = "<group>";
 		};
 		11CE00431EC3275500E4F624 /* application */ = {
@@ -936,17 +950,11 @@
 		11D123561F44712800A5EA5B /* tool-ui-components */ = {
 			isa = PBXGroup;
 			children = (
-				118C38EE1EC61404006FF4A1 /* PaletteComponent.h */,
-				118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */,
+				113DEE0A1FA1D7C600A45220 /* EditSelectionBox.cpp */,
+				113DEE0B1FA1D7C600A45220 /* EditSelectionBox.h */,
 				751E31512069410400C3318F /* PaletteButton.cpp */,
 				751E31522069410400C3318F /* PaletteButton.hpp */,
-				111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */,
-				111A261B1F40B0C200D3713C /* MouseModeComponent.hpp */,
 				111A26201F40CBAD00D3713C /* time-components */,
-				11D123571F4471EA00A5EA5B /* ToolBarComp.cpp */,
-				11D123581F4471EA00A5EA5B /* ToolBarComp.hpp */,
-				11D1235A1F44796800A5EA5B /* SymbolistMenu.cpp */,
-				11D1235B1F44796800A5EA5B /* SymbolistMenu.hpp */,
 				11B71DE11F0AD8EA00CDE209 /* property-panel */,
 				11AEF23F207A94D000B1398D /* CodeboxComponent.cpp */,
 				11AEF240207A94D000B1398D /* CodeboxComponent.hpp */,
@@ -980,21 +988,6 @@
 			name = "path-tools";
 			sourceTree = "<group>";
 		};
-		44DFA0951ED2C96600A6847A /* page-score-components */ = {
-			isa = PBXGroup;
-			children = (
-				113DEE0A1FA1D7C600A45220 /* EditSelectionBox.cpp */,
-				113DEE0B1FA1D7C600A45220 /* EditSelectionBox.h */,
-				445A661F1EDABDED00E2ADA2 /* SymbolistComponent.h */,
-				444CD9021EDDAF1B001AC03A /* SymbolistComponent.cpp */,
-				11CE005D1EC4B31200E4F624 /* ScoreComponent.h */,
-				11CE005C1EC4B31200E4F624 /* ScoreComponent.cpp */,
-				444C43A01EE4A2E4000C6F69 /* PageComponent.h */,
-				444C439F1EE4A2E4000C6F69 /* PageComponent.cpp */,
-			);
-			name = "page-score-components";
-			sourceTree = "<group>";
-		};
 		5BA2DB05C7718E6A683CC674 /* symbolist */ = {
 			isa = PBXGroup;
 			children = (
@@ -1019,6 +1012,25 @@
 			name = Source;
 			sourceTree = "<group>";
 		};
+		7571E706208DECEC0092A3E0 /* child-views */ = {
+			isa = PBXGroup;
+			children = (
+				444C43A01EE4A2E4000C6F69 /* PageComponent.h */,
+				444C439F1EE4A2E4000C6F69 /* PageComponent.cpp */,
+				118C38EE1EC61404006FF4A1 /* PaletteComponent.h */,
+				118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */,
+				111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */,
+				111A261B1F40B0C200D3713C /* MouseModeComponent.hpp */,
+				11D1235A1F44796800A5EA5B /* SymbolistMenu.cpp */,
+				11D1235B1F44796800A5EA5B /* SymbolistMenu.hpp */,
+				116F87781F9D04FC0062EE91 /* InspectorComponent.cpp */,
+				116F87791F9D04FC0062EE91 /* InspectorComponent.h */,
+				11C442CE1F585C1B00F2E9B6 /* TimeDisplayComponent.cpp */,
+				11C442CF1F585C1B00F2E9B6 /* TimeDisplayComponent.hpp */,
+			);
+			name = "child-views";
+			sourceTree = "<group>";
+		};
 		75774F7F206173470069A89D /* view */ = {
 			isa = PBXGroup;
 			children = (
@@ -1026,11 +1038,13 @@
 				446388D41EC34DC90038CFCB /* SymbolistMainWindow.cpp */,
 				44CFE0411EC37BA5009135F8 /* SymbolistMainComponent.h */,
 				11CE00531EC328EC00E4F624 /* SymbolistMainComponent.cpp */,
+				445A661F1EDABDED00E2ADA2 /* SymbolistComponent.h */,
+				444CD9021EDDAF1B001AC03A /* SymbolistComponent.cpp */,
 				118353441F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp */,
 				118353451F26AD0600DB1DF5 /* SymbolistLookAndFeel.hpp */,
+				7571E706208DECEC0092A3E0 /* child-views */,
 				444572681EFA67BE00A7DECD /* path-tools */,
-				11CE00151EC3231E00E4F624 /* symbol-components */,
-				44DFA0951ED2C96600A6847A /* page-score-components */,
+				11CE00151EC3231E00E4F624 /* score-components */,
 				11D123561F44712800A5EA5B /* tool-ui-components */,
 			);
 			name = view;
@@ -1056,6 +1070,12 @@
 				4425D3041EF8599300B8BF1C /* SymbolistHandler.cpp */,
 				75FB5F03207F54C80083A1C0 /* PageController.cpp */,
 				75FB5F04207F54C80083A1C0 /* PageController.hpp */,
+				7571E707208E41C60092A3E0 /* MouseModeController.cpp */,
+				7571E708208E41C60092A3E0 /* MouseModeController.hpp */,
+				7571E710208F2F1A0092A3E0 /* InspectorController.cpp */,
+				7571E711208F2F1A0092A3E0 /* InspectorController.hpp */,
+				7571E719208F59B90092A3E0 /* TimeDisplayController.cpp */,
+				7571E71A208F59B90092A3E0 /* TimeDisplayController.hpp */,
 			);
 			name = controller;
 			sourceTree = "<group>";
@@ -1096,6 +1116,8 @@
 				758F6EF8207BC2C1006EDD53 /* SymbolistModelTestsFixture.hpp */,
 				75FB5EF1207CAD7E0083A1C0 /* ScoreTestsFixture.cpp */,
 				75FB5EF2207CAD7E0083A1C0 /* ScoreTestsFixture.hpp */,
+				7571E7022089DAFF0092A3E0 /* SymbolTestsFixture.cpp */,
+				7571E7032089DAFF0092A3E0 /* SymbolTestsFixture.hpp */,
 			);
 			name = SymbolistTests;
 			path = ../../SymbolistTests;
@@ -1128,8 +1150,8 @@
 			children = (
 				11CE00431EC3275500E4F624 /* application */,
 				75774F812061737F0069A89D /* controller */,
-				75774F802061736B0069A89D /* model */,
 				75774F7F206173470069A89D /* view */,
+				75774F802061736B0069A89D /* model */,
 				75774F83206173E30069A89D /* mvc-api */,
 				75774F822061739B0069A89D /* symbolist-api */,
 			);
@@ -1175,7 +1197,7 @@
 				113980B6206449EA002A2408 /* OdotExpr.hpp in Headers */,
 				116A7EFF2047ECB8004B545D /* OdotAtom.hpp in Headers */,
 				75FB5F00207F51940083A1C0 /* Symbol.h in Headers */,
-				11C442D31F585C1B00F2E9B6 /* TimeDisplay.hpp in Headers */,
+				11C442D31F585C1B00F2E9B6 /* TimeDisplayComponent.hpp in Headers */,
 				11E80831207FCAC000E0342F /* SVGParser.hpp in Headers */,
 				114027C71F49C21E00A9B8C4 /* SortedStaves.hpp in Headers */,
 				112630B3207F4AC20086653D /* pugixml.hpp in Headers */,
@@ -1189,12 +1211,15 @@
 				751E315C2069493F00C3318F /* PaletteController.hpp in Headers */,
 				116A7EF92047E99D004B545D /* OdotMessage.hpp in Headers */,
 				75FB5EFF207F51760083A1C0 /* OdotPointers.h in Headers */,
+				7571E70E208E41C60092A3E0 /* MouseModeController.hpp in Headers */,
 				751E31572069410400C3318F /* PaletteButton.hpp in Headers */,
 				75FB5F02207F51AA0083A1C0 /* TimePointArray.h in Headers */,
 				75FB5F0F207F8C460083A1C0 /* Observable.hpp in Headers */,
 				113DEE0F1FA1D7C600A45220 /* EditSelectionBox.h in Headers */,
 				11AEF23D207A943800B1398D /* JsonTreeItem.hpp in Headers */,
 				75FB5F01207F519A0083A1C0 /* Score.h in Headers */,
+				7571E720208F59B90092A3E0 /* TimeDisplayController.hpp in Headers */,
+				7571E717208F2F1A0092A3E0 /* InspectorController.hpp in Headers */,
 				11E80838208082CB00E0342F /* SVGEncoder.hpp in Headers */,
 				75774FA92062A4D40069A89D /* Palette.hpp in Headers */,
 				11263098207F3D520086653D /* SVGFileIO.hpp in Headers */,
@@ -1235,6 +1260,7 @@
 				116A7EDB2046CFCD004B545D /* osc_mem.h in Headers */,
 				116A7ED82046CFCD004B545D /* osc_legacy_scanner.h in Headers */,
 				116A7ECD2046CFCD004B545D /* osc_byteorder.h in Headers */,
+				7571E70F208E41C60092A3E0 /* MouseModeController.hpp in Headers */,
 				116A7EEB2046CFCD004B545D /* osc.h in Headers */,
 				116A7EE12046CFCD004B545D /* osc_profile.h in Headers */,
 				7571E7012085FEE80092A3E0 /* symbolist-utils.hpp in Headers */,
@@ -1247,6 +1273,8 @@
 				116A7ECF2046CFCD004B545D /* osc_error.h in Headers */,
 				116A7ECE2046CFCD004B545D /* osc_dispatch.h in Headers */,
 				116A7EC92046CFCD004B545D /* osc_bundle_iterator_s.h in Headers */,
+				7571E721208F59B90092A3E0 /* TimeDisplayController.hpp in Headers */,
+				7571E718208F2F1A0092A3E0 /* InspectorController.hpp in Headers */,
 				116A7ECC2046CFCD004B545D /* osc_bundle_u.h in Headers */,
 				116A7EC52046CFCD004B545D /* osc_atom_array_s.h in Headers */,
 				116A7ED72046CFCD004B545D /* osc_legacy_parser.h in Headers */,
@@ -1415,6 +1443,7 @@
 			files = (
 				1186486F1EF7E68B00904672 /* include_juce_graphics.mm in Sources */,
 				11E80837208082CB00E0342F /* SVGEncoder.cpp in Sources */,
+				7571E71D208F59B90092A3E0 /* TimeDisplayController.cpp in Sources */,
 				75FB5F07207F54C80083A1C0 /* PageController.cpp in Sources */,
 				1107B3FC1EF7D55D00E2DFA9 /* BaseComponent.cpp in Sources */,
 				75774FA02062960C0069A89D /* SymbolistModel.cpp in Sources */,
@@ -1431,7 +1460,6 @@
 				757E1B47206A83D5002E472E /* Observable.cpp in Sources */,
 				4425D3071EF8599300B8BF1C /* SymbolistHandler.cpp in Sources */,
 				1107B3FD1EF7D55D00E2DFA9 /* SymbolGroupComponent.cpp in Sources */,
-				11D123611F4583B900A5EA5B /* ToolBarComp.cpp in Sources */,
 				1186486D1EF7E68B00904672 /* include_juce_data_structures.mm in Sources */,
 				75774FA6206296C50069A89D /* Palette.cpp in Sources */,
 				11A3939E20528799002C8916 /* OdotBundle_s.cpp in Sources */,
@@ -1444,12 +1472,14 @@
 				112630B2207F4AC20086653D /* pugixml.cpp in Sources */,
 				111A261E1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */,
 				11AEF243207A94D000B1398D /* CodeboxComponent.cpp in Sources */,
+				7571E714208F2F1A0092A3E0 /* InspectorController.cpp in Sources */,
 				751E314D2069378600C3318F /* PaletteController.cpp in Sources */,
+				7571E70B208E41C60092A3E0 /* MouseModeController.cpp in Sources */,
 				1107B3FA1EF7D55D00E2DFA9 /* PathHandleComponent.cpp in Sources */,
 				1107B3FF1EF7D55D00E2DFA9 /* PageComponent.cpp in Sources */,
 				1107B4021EF7D55D00E2DFA9 /* SymbolistMainComponent.cpp in Sources */,
 				116F87761F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */,
-				11C442D21F585C1B00F2E9B6 /* TimeDisplay.cpp in Sources */,
+				11C442D21F585C1B00F2E9B6 /* TimeDisplayComponent.cpp in Sources */,
 				1107B3F51EF7D55D00E2DFA9 /* Symbol.cpp in Sources */,
 				1107B4001EF7D55D00E2DFA9 /* ScoreComponent.cpp in Sources */,
 				114027C61F49C21E00A9B8C4 /* SortedStaves.cpp in Sources */,
@@ -1465,8 +1495,7 @@
 				116A7EF12046DCAE004B545D /* OdotBundle.cpp in Sources */,
 				1107B4031EF7D55D00E2DFA9 /* SymbolistMainWindow.cpp in Sources */,
 				113980B5206449EA002A2408 /* OdotExpr.cpp in Sources */,
-				116F877C1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */,
-				11D123681F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */,
+				116F877C1F9D04FC0062EE91 /* InspectorComponent.cpp in Sources */,
 				11AEF23B207A943800B1398D /* JsonTreeItem.cpp in Sources */,
 				1107B3F91EF7D55D00E2DFA9 /* PathInfo.cpp in Sources */,
 				1107B3FE1EF7D55D00E2DFA9 /* PaletteComponent.cpp in Sources */,
@@ -1490,6 +1519,7 @@
 				116A7E952046CFB6004B545D /* osc_scanner.c in Sources */,
 				116A7E7D2046CFB6004B545D /* osc_atom_u.c in Sources */,
 				116A7E8A2046CFB6004B545D /* osc_legacy_scanner.c in Sources */,
+				7571E70C208E41C60092A3E0 /* MouseModeController.cpp in Sources */,
 				116A7E9B2046CFB6004B545D /* osc_vtable.c in Sources */,
 				116A7E7B2046CFB6004B545D /* osc_atom_array_u.c in Sources */,
 				116A7E7A2046CFB6004B545D /* osc_atom_array_s.c in Sources */,
@@ -1509,9 +1539,11 @@
 				116A7E8E2046CFB6004B545D /* osc_message_iterator_s.c in Sources */,
 				116A7E892046CFB6004B545D /* osc_legacy_parser.c in Sources */,
 				116A7E8D2046CFB6004B545D /* osc_mem.c in Sources */,
+				7571E71E208F59B90092A3E0 /* TimeDisplayController.cpp in Sources */,
 				116A7E882046CFB6004B545D /* osc_hashtab.c in Sources */,
 				116A7E942046CFB6004B545D /* osc_rset.c in Sources */,
 				116A7E902046CFB6004B545D /* osc_message_s.c in Sources */,
+				7571E715208F2F1A0092A3E0 /* InspectorController.cpp in Sources */,
 				11AEF23C207A943800B1398D /* JsonTreeItem.cpp in Sources */,
 				116A7E992046CFB6004B545D /* osc_typetag.c in Sources */,
 				116A7E8B2046CFB6004B545D /* osc_linkedlist.c in Sources */,
@@ -1527,22 +1559,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11D123671F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */,
 				11263096207F3D520086653D /* SVGFileIO.cpp in Sources */,
 				11CE005F1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */,
 				44EE9BBE1EC37D3E0021C5A8 /* Main.cpp in Sources */,
 				44CFE03D1EC3789C009135F8 /* include_juce_graphics.mm in Sources */,
-				11D123601F4583B800A5EA5B /* ToolBarComp.cpp in Sources */,
 				11CE00581EC328EC00E4F624 /* SymbolistMainComponent.cpp in Sources */,
 				44B718B21EDD9D010039884E /* Symbol.cpp in Sources */,
 				114027C51F49C21E00A9B8C4 /* SortedStaves.cpp in Sources */,
-				11C442D11F585C1B00F2E9B6 /* TimeDisplay.cpp in Sources */,
+				11C442D11F585C1B00F2E9B6 /* TimeDisplayComponent.cpp in Sources */,
 				757E1B42206A83B7002E472E /* Observable.cpp in Sources */,
 				757E1B44206A83C9002E472E /* Observer.cpp in Sources */,
+				7571E713208F2F1A0092A3E0 /* InspectorController.cpp in Sources */,
 				4425D3061EF8599300B8BF1C /* SymbolistHandler.cpp in Sources */,
 				75774F9F2062960C0069A89D /* SymbolistModel.cpp in Sources */,
 				444C43A21EE4A2E4000C6F69 /* PageComponent.cpp in Sources */,
 				111A261D1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */,
+				7571E71C208F59B90092A3E0 /* TimeDisplayController.cpp in Sources */,
 				44CFE03A1EC3789C009135F8 /* include_juce_core.mm in Sources */,
 				44CFE03F1EC3789C009135F8 /* include_juce_gui_extra.mm in Sources */,
 				118C38E41EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */,
@@ -1569,7 +1601,7 @@
 				44C0729F1EC4AF8C0028D5F8 /* include_juce_osc.cpp in Sources */,
 				116A7EF02046DCAE004B545D /* OdotBundle.cpp in Sources */,
 				116F87751F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */,
-				116F877B1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */,
+				116F877B1F9D04FC0062EE91 /* InspectorComponent.cpp in Sources */,
 				751E314C2069378600C3318F /* PaletteController.cpp in Sources */,
 				118648971EFA811800904672 /* TimePointArray.cpp in Sources */,
 				1107B3DE1EF1751900E2DFA9 /* TextGlyphComponent.cpp in Sources */,
@@ -1579,6 +1611,7 @@
 				116A7EF72047E99D004B545D /* OdotMessage.cpp in Sources */,
 				113DEE0D1FA1D7C600A45220 /* EditSelectionBox.cpp in Sources */,
 				44CFE03B1EC3789C009135F8 /* include_juce_data_structures.mm in Sources */,
+				7571E70A208E41C60092A3E0 /* MouseModeController.cpp in Sources */,
 				11A3939D20528799002C8916 /* OdotBundle_s.cpp in Sources */,
 				44CFE0391EC377EA009135F8 /* SymbolistMainWindow.cpp in Sources */,
 				444C43A61EE4A748000C6F69 /* SymbolGroupComponent.cpp in Sources */,
@@ -1597,8 +1630,8 @@
 			files = (
 				11CE005E1EC4B31200E4F624 /* ScoreComponent.cpp in Sources */,
 				11E80835208082CB00E0342F /* SVGEncoder.cpp in Sources */,
+				7571E71B208F59B90092A3E0 /* TimeDisplayController.cpp in Sources */,
 				11263095207F3D520086653D /* SVGFileIO.cpp in Sources */,
-				11D123591F4471EA00A5EA5B /* ToolBarComp.cpp in Sources */,
 				AC7BC43E089630154F7F79D6 /* include_juce_core.mm in Sources */,
 				118353461F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp in Sources */,
 				52B193FE560B5C8022529FF5 /* include_juce_data_structures.mm in Sources */,
@@ -1626,7 +1659,9 @@
 				444CD9031EDDAF1B001AC03A /* SymbolistComponent.cpp in Sources */,
 				116F87741F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */,
 				75FB5F05207F54C80083A1C0 /* PageController.cpp in Sources */,
-				11C442D01F585C1B00F2E9B6 /* TimeDisplay.cpp in Sources */,
+				7571E712208F2F1A0092A3E0 /* InspectorController.cpp in Sources */,
+				11C442D01F585C1B00F2E9B6 /* TimeDisplayComponent.cpp in Sources */,
+				7571E709208E41C60092A3E0 /* MouseModeController.cpp in Sources */,
 				11AEF241207A94D000B1398D /* CodeboxComponent.cpp in Sources */,
 				41C3942D9A94933B560F98F2 /* include_juce_gui_basics.mm in Sources */,
 				1107B3E91EF5388500E2DFA9 /* PathInfo.cpp in Sources */,
@@ -1646,8 +1681,7 @@
 				11E8082E207FCAC000E0342F /* SVGParser.cpp in Sources */,
 				1107B3DD1EF1751900E2DFA9 /* TextGlyphComponent.cpp in Sources */,
 				113980B3206449EA002A2408 /* OdotExpr.cpp in Sources */,
-				116F877A1F9D04FC0062EE91 /* PropertyPanelTabs.cpp in Sources */,
-				11D123661F46E4BA00A5EA5B /* OutputViewer.cpp in Sources */,
+				116F877A1F9D04FC0062EE91 /* InspectorComponent.cpp in Sources */,
 				75774F9B206176790069A89D /* View.cpp in Sources */,
 				75774F9E2062960C0069A89D /* SymbolistModel.cpp in Sources */,
 				1107B3E11EF2D2BA00E2DFA9 /* PathHandleComponent.cpp in Sources */,
@@ -1678,12 +1712,14 @@
 				758F6F4C207BCB00006EDD53 /* Palette.cpp in Sources */,
 				758F6F4D207BCB00006EDD53 /* TimePointArray.cpp in Sources */,
 				758F6F4E207BCB00006EDD53 /* SortedStaves.cpp in Sources */,
+				7571E71F208F59B90092A3E0 /* TimeDisplayController.cpp in Sources */,
 				75FB5EF3207CAD7E0083A1C0 /* ScoreTestsFixture.cpp in Sources */,
 				758F6F4F207BCB00006EDD53 /* SymbolistModel.cpp in Sources */,
 				758F6F50207BCB00006EDD53 /* SymbolistMainWindow.cpp in Sources */,
 				758F6F51207BCB00006EDD53 /* SymbolistMainComponent.cpp in Sources */,
 				758F6F52207BCB00006EDD53 /* SymbolistLookAndFeel.cpp in Sources */,
 				758F6F53207BCB00006EDD53 /* PathHandleComponent.cpp in Sources */,
+				7571E70D208E41C60092A3E0 /* MouseModeController.cpp in Sources */,
 				758F6F54207BCB00006EDD53 /* PathInfo.cpp in Sources */,
 				758F6F55207BCB00006EDD53 /* BaseComponent.cpp in Sources */,
 				758F6F56207BCB00006EDD53 /* PathBaseComponent.cpp in Sources */,
@@ -1698,25 +1734,25 @@
 				75FB5F09207F54C80083A1C0 /* PageController.cpp in Sources */,
 				758F6F5F207BCB00006EDD53 /* PaletteButton.cpp in Sources */,
 				758F6F60207BCB00006EDD53 /* MouseModeComponent.cpp in Sources */,
-				758F6F61207BCB00006EDD53 /* TimeDisplay.cpp in Sources */,
+				758F6F61207BCB00006EDD53 /* TimeDisplayComponent.cpp in Sources */,
 				758F6F62207BCB00006EDD53 /* ScoreCursor.cpp in Sources */,
-				758F6F63207BCB00006EDD53 /* OutputViewer.cpp in Sources */,
-				758F6F64207BCB00006EDD53 /* ToolBarComp.cpp in Sources */,
 				758F6F65207BCB00006EDD53 /* SymbolistMenu.cpp in Sources */,
 				758F6F66207BCB00006EDD53 /* SymbolPropertiesPanel.cpp in Sources */,
 				758F6F67207BCB00006EDD53 /* OSCPropertyComponents.cpp in Sources */,
 				758F6F68207BCB00006EDD53 /* ScoreBundleViewer.cpp in Sources */,
-				758F6F69207BCB00006EDD53 /* PropertyPanelTabs.cpp in Sources */,
+				758F6F69207BCB00006EDD53 /* InspectorComponent.cpp in Sources */,
 				758F6F6A207BCB00006EDD53 /* JsonTreeItem.cpp in Sources */,
 				758F6F6B207BCB00006EDD53 /* CodeboxComponent.cpp in Sources */,
 				758F6F6C207BCB00006EDD53 /* Controller.cpp in Sources */,
 				758F6F6D207BCB00006EDD53 /* Observable.cpp in Sources */,
 				758F6F6E207BCB00006EDD53 /* Observer.cpp in Sources */,
+				7571E716208F2F1A0092A3E0 /* InspectorController.cpp in Sources */,
 				758F6F6F207BCB00006EDD53 /* View.cpp in Sources */,
 				7571E6F72084EA3F0092A3E0 /* SVGEncoder.cpp in Sources */,
 				758F6F70207BCB00006EDD53 /* symbolist.cpp in Sources */,
 				758F6F71207BCB00006EDD53 /* include_juce_osc.cpp in Sources */,
 				758F6F72207BCB00006EDD53 /* include_juce_core.mm in Sources */,
+				7571E7052089EA9E0092A3E0 /* SymbolTestsFixture.cpp in Sources */,
 				758F6F73207BCB00006EDD53 /* include_juce_data_structures.mm in Sources */,
 				758F6F74207BCB00006EDD53 /* include_juce_events.mm in Sources */,
 				758F6F75207BCB00006EDD53 /* include_juce_graphics.mm in Sources */,

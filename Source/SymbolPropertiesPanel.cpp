@@ -1,5 +1,6 @@
 #include "SymbolPropertiesPanel.h"
 #include "OSCPropertyComponents.h"
+#include "InspectorComponent.h"
 
 SymbolPropertiesPanel::SymbolPropertiesPanel(SymbolistHandler *sh )
 {
@@ -20,13 +21,15 @@ SymbolPropertiesPanel::SymbolPropertiesPanel(SymbolistHandler *sh )
 void SymbolPropertiesPanel::change_callback( const OdotMessage& msg)
 {
     Symbol* s = symbol_component->getScoreSymbolPointer();
-    
-    s->addMessage( msg ); // this overwrites any duplicate messages
-    
-    symbolist_handler->updateSymbolFromInspector( symbol_component );
-    
-    //cout << "*********************** updated bundle from inspector ********** " << endl;
-
+	
+    if (s != NULL)
+    {
+    	s->addMessage( msg ); // this overwrites any duplicate messages
+		InspectorComponent* inspectorView = dynamic_cast<InspectorComponent* >(getParentComponent());
+		
+    	inspectorView->updateSymbolFromComponent( symbol_component );
+    }
+    // DEBUG_INLINE("******************** updated bundle from inspector ********** " << endl);
     
 }
 
@@ -37,8 +40,8 @@ void SymbolPropertiesPanel::createOSCview ()
     if( symbol_component )
     {
         Symbol* s = symbol_component->getScoreSymbolPointer();
-//        DEBUG_FULL("Retrieving pointer from component" << endl);
-        //s->print();
+        // DEBUG_FULL("Retrieving pointer from component" << endl);
+        // s->print();
         
         if( !s )
             return;
@@ -46,7 +49,7 @@ void SymbolPropertiesPanel::createOSCview ()
         if ( !s->size() )  return;
 
         
-        for( auto msg : s->getMessageArray() )
+        for ( auto msg : s->getMessageArray() )
         {
             const string& addr = msg.getAddress();
             
@@ -124,9 +127,7 @@ void SymbolPropertiesPanel::setInspectorObject( BaseComponent *c )
 void SymbolPropertiesPanel::clearInspector()
 {
     if( !symbol_inspector.isEmpty() )
-    {
         symbol_inspector.clear();
-    }
     
     symbol_component = nullptr;
 }

@@ -17,25 +17,25 @@ SymbolistHandler::SymbolistHandler()
     SymbolistModel* model = new SymbolistModel();
 	
     // Adds four default items to the model.
-    float symbol_size = 30.0;
-    float symbol_pos = 0.0;
+    float symbolSize = 30.0;
+    float symbolPos = 0.0;
 	
     Palette* palette = model->getPalette();
 	
     Symbol s1 = Symbol();
-    s1.setTypeXYWH("text", symbol_pos, symbol_pos, 20 , 20);
+    s1.setTypeXYWH("text", symbolPos, symbolPos, 20 , 20);
     palette->addDefaultItem(s1);
 	
     Symbol s2 = Symbol();
-    s2.setTypeXYWH("circle", symbol_pos, symbol_pos, symbol_size, symbol_size);
+    s2.setTypeXYWH("circle", symbolPos, symbolPos, symbolSize, symbolSize);
     palette->addDefaultItem(s2);
 	
     Symbol s3 = Symbol();
-    s3.setTypeXYWH("rectangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
+    s3.setTypeXYWH("rectangle", symbolPos, symbolPos, symbolSize, symbolSize);
     palette->addDefaultItem(s3);
 	
     Symbol s4 = Symbol();
-    s4.setTypeXYWH("triangle", symbol_pos, symbol_pos, symbol_size, symbol_size);
+    s4.setTypeXYWH("triangle", symbolPos, symbolPos, symbolSize, symbolSize);
     palette->addDefaultItem(s4);
 	
     setModel(model);
@@ -43,6 +43,9 @@ SymbolistHandler::SymbolistHandler()
     // Creates the child controllers.
 	createPaletteController();
     createPageController();
+    createMouseModeController();
+    createInspectorController();
+    createTimeDisplayController();
 	
     /* Adds the SymbolistHandler instance and
      * all its child controllers as observers of the model.
@@ -50,12 +53,10 @@ SymbolistHandler::SymbolistHandler()
     getModel()->attach(this);
     getModel()->attach(palette_controller.get());
     getModel()->attach(page_controller.get());
-}
-
-SymbolistHandler::SymbolistHandler(SymbolistModel* model, SymbolistMainComponent* view)
-{
-    setModel(model);
-    setView(view);
+    getModel()->attach(mouse_mode_controller.get());
+	getModel()->attach(inspector_controller.get());
+	getModel()->attach(time_display_controller.get());
+	
 }
 
 SymbolistHandler::~SymbolistHandler()
@@ -72,22 +73,52 @@ SymbolistHandler::~SymbolistHandler()
 
 void SymbolistHandler::createPaletteController()
 {
-    /* Creates the paletteController and sets its model
+    /* Creates the palette_controller and sets its model
      * and parent controller.
      */
-    this->palette_controller = unique_ptr<PaletteController>(new PaletteController());
-    this->palette_controller->setParentController(this);
-    this->palette_controller->setModel(getModel());
+    palette_controller = unique_ptr<PaletteController>(new PaletteController());
+    palette_controller->setParentController(this);
+    palette_controller->setModel(getModel());
 }
 
 void SymbolistHandler::createPageController()
 {
-    /* Creates the pageController and sets its model
+    /* Creates the page_controller and sets its model
      * and parent controller.
      */
-    this->page_controller = unique_ptr<PageController>(new PageController());
-    this->page_controller->setParentController(this);
-    this->page_controller->setModel(getModel());
+    page_controller = unique_ptr<PageController>(new PageController());
+    page_controller->setParentController(this);
+    page_controller->setModel(getModel());
+}
+
+void SymbolistHandler::createMouseModeController()
+{
+    /* Creates the mouse_mode_controller and sets its model
+     * and parent controller.
+     */
+    mouse_mode_controller = unique_ptr<MouseModeController>(new MouseModeController());
+    mouse_mode_controller->setParentController(this);
+    mouse_mode_controller->setModel(getModel());
+}
+
+void SymbolistHandler::createInspectorController()
+{
+	/* Creates the mouse_mode_controller and sets its model
+     * and parent controller.
+     */
+    inspector_controller = unique_ptr<InspectorController >(new InspectorController());
+    inspector_controller->setParentController(this);
+    inspector_controller->setModel(getModel());
+}
+
+void SymbolistHandler::createTimeDisplayController()
+{
+	/* Creates the time_display_controller and sets its model
+     * and parent controller.
+     */
+    time_display_controller = unique_ptr<TimeDisplayController >(new TimeDisplayController());
+    time_display_controller->setParentController(this);
+    time_display_controller->setModel(getModel());
 }
 
 /*********************************************
@@ -124,6 +155,9 @@ void SymbolistHandler::symbolistAPI_openWindow()
     setView(main_window->getMainComponent());
     palette_controller->setView(getView()->getPaletteView());
     page_controller->setView(getView()->getScoreView());
+	mouse_mode_controller->setView(getView()->getMouseModeView());
+	inspector_controller->setView(getView()->getInspectorView());
+	time_display_controller->setView(getView()->getTimeDisplayView());
 	
     // Populates palette and gives focus to the main view.
     page_controller->addComponentsFromScore();
@@ -146,6 +180,9 @@ void SymbolistHandler::symbolistAPI_closeWindow()
 	setView(NULL);
 	palette_controller->setView(NULL);
 	page_controller->setView(NULL);
+	mouse_mode_controller->setView(NULL);
+	inspector_controller->setView(NULL);
+	time_display_controller->setView(NULL);
 	
 }
 
@@ -154,9 +191,7 @@ void SymbolistHandler::symbolistAPI_windowToFront()
     const MessageManagerLock mml;
 
     if ( getView() != NULL)
-    {
         getView()->getTopLevelComponent()->toFront(true);
-    }
 
 }
 
@@ -225,8 +260,11 @@ void SymbolistHandler::symbolistAPI_setOneSymbol(const OdotBundle_s& bundle)
     Symbol* symbol = page_controller->setOneSymbol(bundle);
     
     if (getView() != nullptr)
-        // Calls internally the executeUpdateCallback.
-        page_controller->makeComponentFromSymbol(symbol, true);
+    {
+		// Calls internally the executeUpdateCallback.
+        BaseComponent* newComponent = page_controller->makeComponentFromSymbol(symbol, true);
+        page_controller->getView()->addSubcomponent(newComponent);
+	}
     else
     {
         executeUpdateCallback( -1 );
@@ -344,7 +382,8 @@ void SymbolistHandler::executeTransportCallback(int arg)
 //=================================
 Symbol* SymbolistHandler::createSymbolFromTemplate()
 {
-    return page_controller->getModel()->addSymbolToScore( getSelectedSymbolInPalette() );
+    return page_controller->getModel()
+    					  ->addSymbolToScore( palette_controller->getSelectedSymbolInPalette() );
 }
 
 Symbol* SymbolistHandler::createSymbol()
@@ -356,25 +395,17 @@ StaffComponent* SymbolistHandler::getStaveAtTime(float time)
 {
     return page_controller->getStaveAtTime(time);
 }
-//=================================
-// PALETTE
-//=================================
-
-Symbol* SymbolistHandler::getSelectedSymbolInPalette()
-{
-    return palette_controller->getSelectedSymbolInPalette();
-}
 
 //=================================
 // MODIFY VIEW FROM DATA
 //=================================
 
 // Component factory
-BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_the_symbol)
+BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* symbol, bool attachTheSymbol)
 {
     DEBUG_FULL("Creating component from Symbol: ");
     
-    string typeofSymbol = s->getMessage("/type").getString();
+    string typeofSymbol = symbol->getMessage("/type").getString();
     if (typeofSymbol.size() == 0)
     {
 		DEBUG_INLINE("Could not find '/type' message in OSC Bundle.. " << endl);
@@ -408,15 +439,14 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* s, bool attach_
         if (newComponent != NULL)
         {
             // reads base component symbol values, and sets component bounds for display
-            newComponent->importFromSymbol(s) ;
-            
-            // initializes object specific messages if not present
-            newComponent->addSymbolMessages(s);
-            
-            if (attach_the_symbol)
+            newComponent->importFromSymbol(symbol) ;
+			
+            if (attachTheSymbol)
             {
-                newComponent->setScoreSymbolPointer(s);
-                getModel()->getScore()->addStaff( s ); // << /type checked internally and added if staff
+            	// initializes object specific messages if not present
+            	newComponent->addSymbolMessages(symbol);
+                newComponent->setScoreSymbolPointer(symbol);
+                getModel()->getScore()->addStaff(symbol); // << /type checked internally and added if staff
             }
         }
         
@@ -437,7 +467,7 @@ void SymbolistHandler::removeSymbolFromScore(BaseComponent* component)
     
     log_score_change();
 
-    //symbol->print();
+    // symbol->print();
 
     if (getView())
         getView()->clearInspector();
@@ -461,48 +491,41 @@ void SymbolistHandler::removeSymbolFromScore(BaseComponent* component)
 /*
  *  the component has changed, and so we need to update it's symbol bundle
  */
-void SymbolistHandler::modifySymbolInScore( BaseComponent* c )
+void SymbolistHandler::modifySymbolInScore( BaseComponent* component )
 {
     
     log_score_change();
     
     // get pointer to symbol attached to component
-    Symbol* s = c->getScoreSymbolPointer();
-    assert (s != NULL) ;
+    Symbol* symbol = component->getScoreSymbolPointer();
+    assert (symbol != NULL) ;
     
     // DEBUG_FULL(c << " ---> modifySymbolInScore " << s->getID() << endl);
     // printRect(c->getBounds(), "component");
 
     
-    // remove current time point for symbol, or if stave remove all symbol timepoints on stave
-    getModel()->getScore()->removeSymbolTimePoints(s);
-    
-    // clear the bundle attached to the component (since the component has been updated)
-    // don't have to clear, because the symbol is updated not in add symbol
-    // also we want to keep user data if any
-    // s->clear();
+    // Remove current time point for symbol, or if stave remove all symbol timepoints on stave
+    getModel()->getScore()->removeSymbolTimePoints(symbol);
+	
     
     // update the symbol with the component's current state
-    c->addSymbolMessages( s );
+    component->addSymbolMessages( symbol );
     
-    if ( s->getType() == "staff" )
+    if ( symbol->getType() == "staff" )
     {
         DEBUG_FULL("type staff ");
-        // if the type is "staff" resort the stave order and update time point array
+        // If the type is "staff" resort the stave order and update time point array
         getModel()->getScore()->updateStavesAndTimepoints();
     }
     else
-    {
-        // if the type is not a staff, add the time points for the symbol
-        getModel()->getScore()->addSymbolTimePoints( s );
-    }
+        // If the type is not a staff, add the time points for the symbol
+        getModel()->getScore()->addSymbolTimePoints( symbol );
     
-    executeUpdateCallback( getModel()->getScore()->getSymbolPosition( s ) );
+    executeUpdateCallback( getModel()->getScore()->getSymbolPosition( symbol ) );
     
-    c->repaint();
+    component->repaint();
     
 }
-
 
 /***
  * called when something is changed, added, deleted (not but not undo)
@@ -514,7 +537,6 @@ void SymbolistHandler::log_score_change()
     
     //symbolistAPI_exportSVG( nullptr );
 }
-
 
 void SymbolistHandler::push_undo_stack()
 {
@@ -585,54 +607,31 @@ void SymbolistHandler::redo()
 void SymbolistHandler::addToInspector( BaseComponent *c )
 {
     // only selected and called if the main component is there...
-    getView()->setInspectorObject(c);
+    inspector_controller->addToInspector(c);
 }
 
 void SymbolistHandler::clearInspector()
 {
-    getView()->clearInspector();
+    inspector_controller->clearInspector();
 }
 
-void SymbolistHandler::updateSymbolFromInspector( BaseComponent *c)
+void SymbolistHandler::updateSymbolFromComponent(BaseComponent* component)
 {
-    c->importFromSymbol( *c->getScoreSymbolPointer() );
-    modifySymbolInScore( c );
-    //repaint is called in modify symbol
-}
-
-void SymbolistHandler::convertSelectedToStaff()
-{
-    getView()->getPageComponent()->createStaffFromSelected();
-}
-
-void SymbolistHandler::copySelectedToClipBoard()
-{
-    clipboard.clear();
-    
-    for( auto c : getView()->getPageComponent()->getSelectedItems() )
-    {
-        clipboard.add(new Symbol( *(dynamic_cast<BaseComponent*>(c))->getScoreSymbolPointer()) );
-    }
-}
-
-void SymbolistHandler::newFromClipBoard()
-{
-
-    auto scoreView = page_controller->getView();
+    component->importFromSymbol( *component->getScoreSymbolPointer() );
+    modifySymbolInScore( component ); // repaint is called in modify symbol
 	
-	scoreView->unselectAllComponents();
-	
-    for( auto s : clipboard )
-    {
-        Symbol* new_sym = getModel()->getScore()->addDuplicateSymbol(s);
-        BaseComponent *c = makeComponentFromSymbol(new_sym, true);
-        
-        if ( c != NULL)
-        {
-            scoreView->addSubcomponent( c );
-            c->toFront(true);
-            scoreView->addToSelection( c );
-        }
+}
 
-    }
+string SymbolistHandler::createIdFromName(string& name)
+{
+	string id;
+	int count = symbolNameCount( name );
+	
+	id = name + "/" + to_string(count);
+
+	// Check to see if there are others with this id and then increment 1.
+	while(!uniqueIDCheck(id))
+		id = name + "/" + to_string(count++);
+	
+	return id;
 }

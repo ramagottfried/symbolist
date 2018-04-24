@@ -23,7 +23,7 @@ BaseComponent* PaletteController::makeComponentFromSymbol(Symbol* s, bool attach
 
 void PaletteController::setSelectedItem(int indexOfSelectedItem)
 {
-    getModel()->getPalette()->setSelectedItem(indexOfSelectedItem);
+    getModel()->getPalette()->setSelectedItemIndex(indexOfSelectedItem);
 }
 
 int PaletteController::getNumPaletteSymbols()
@@ -60,20 +60,19 @@ void PaletteController::setPaletteSymbols(const OdotBundle_s& bundle_array)
 
 Symbol* PaletteController::getSelectedSymbolInPalette()
 {
-    Palette* palette = getModel()->getPalette();
-    int num_def_symbols = palette->getPaletteNumDefaultItems();
-    int sel = palette->getSelectedItem();
-    
-    if (sel < num_def_symbols)
-        return palette->getPaletteDefaultItem(sel);
-    else
-        return palette->getPaletteUserItem(sel - num_def_symbols);
-
+    return getModel()->getPalette()->getSelectedSymbol();
 }
 
 void PaletteController::addSymbolFromComponent(BaseComponent* component)
 {
     Symbol newPaletteSymbol = Symbol();
     component->addSymbolMessages(&newPaletteSymbol);
+	
+	/* Resets the symbol id and the ids of its nested symbols
+	 * before adding it to the palette.
+	 * Palette symbols have no id.
+	 */
+    newPaletteSymbol.resetAllIds();
+	
     getModel()->addSymbolToPalette(newPaletteSymbol);
 }

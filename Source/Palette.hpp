@@ -34,9 +34,18 @@ public:
     inline int getPaletteNumDefaultItems() { return static_cast<int>(default_items.size()); }
     inline int getPaletteNumUserItems() { return static_cast<int>(user_items.size()); }
 	
-    inline int getSelectedItem() { return selected_item; }
-    inline void setSelectedItem(int n) { selected_item = n; }
-    
+    inline int getSelectedItemIndex() { return selected_item; }
+    inline void setSelectedItemIndex(int n) { selected_item = n; }
+	
+    /**
+     * Returns the currently selected item in the palette.
+     * It can be either user-defined or a default item.
+     *
+     * @return a pointer to the currently selected symbol
+     *         in the palette.
+     */
+	Symbol* getSelectedSymbol();
+	
     //==============================================================================
     JUCE_LEAK_DETECTOR (Palette)
 };

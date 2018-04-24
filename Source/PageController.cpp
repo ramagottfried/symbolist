@@ -83,6 +83,37 @@ void PageController::clearAllSubcomponents()
 	getView()->clearAllSubcomponents();
 }
 
+void PageController::copySelectedToClipBoard()
+{
+    clipboard.clear();
+	
+    for ( auto c : getView()->getSelectedItems() )
+    {
+        clipboard.add(new Symbol( *(dynamic_cast<BaseComponent*>(c))->getScoreSymbolPointer()) );
+    }
+}
+
+void PageController::newFromClipBoard()
+{
+    auto scoreView = getView();
+	
+	scoreView->unselectAllComponents();
+	
+    for( auto s : clipboard )
+    {
+        Symbol* newSymbol = getModel()->getScore()->addDuplicateSymbol(s);
+        BaseComponent *newComponent = makeComponentFromSymbol(newSymbol, true);
+		
+        if ( newComponent != NULL)
+        {
+            scoreView->addSubcomponent( newComponent );
+            newComponent->toFront(true);
+            scoreView->addToSelection( newComponent );
+        }
+
+    }
+}
+
 StaffComponent* PageController::getStaveAtTime(float time)
 {
     Symbol* staveSymbol = getModel()->getScore()->getStaveAtTime(time);
@@ -115,6 +146,7 @@ OdotBundle_s PageController::getScoreBundle()
 {
     return getModel()->getScore()->getScoreBundle_s();
 }
+
 void PageController::removeAllSymbols()
 {
     getModel()->removeAllSymbolsFromScore();

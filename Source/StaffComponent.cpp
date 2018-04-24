@@ -139,26 +139,16 @@ void StaffComponent::mouseDown( const MouseEvent& event )
 
 void StaffComponent::mouseDrag( const MouseEvent& event )
 {
-    auto page = getPageComponent();
+    auto scoreView = getPageComponent();
 
-    if( is_selected )
-    {
-        
-//        cout << "StaffComponent::mouseDrag teste " << event.getDistanceFromDragStart() << endl;
-
+    if ( is_selected )
         for( BaseComponent *c : symbols_on_staff )
-        {
-            page->addToSelection( c );
-        }
-        
-    }
+            scoreView->addToSelection( c );
     
     BaseComponent::mouseDrag( event );
     
-    page->updateTimeCursor();
+    scoreView->updateTimeCursor();
 }
-
-
 
 void StaffComponent::paint(Graphics& g)
 {
@@ -166,17 +156,24 @@ void StaffComponent::paint(Graphics& g)
  
     if( draw_timepoints )
     {
-        auto& timePointArray = getSymbolistHandler()->getTimePointArray().getConstSymbolTimePoints();
-        
-        float start_t = getScoreSymbolPointer()->getTime();
-        float end_t = start_t + getScoreSymbolPointer()->getDuration();
-        
-        for (int i = 0; i < timePointArray.size(); i++)
-        {
-            auto& t = timePointArray[i];
-            if( t->time >= start_t && t->time <= end_t )
-                g.fillEllipse( (t->time - start_t) * 100.0f, getHeight() / 2, 2, 2);
-        }
+    	if (getPageComponent() != NULL)
+    	{
+			auto& timePointArray = getPageComponent()
+										->getModel()
+										->getScore()
+										->getTimePointArray().getConstSymbolTimePoints();
+			
+			float startTime = getScoreSymbolPointer()->getTime();
+			float endTime = startTime + getScoreSymbolPointer()->getDuration();
+			
+			for (int i = 0; i < timePointArray.size(); i++)
+			{
+				auto& t = timePointArray[i];
+				if( t->time >= startTime && t->time <= endTime )
+					g.fillEllipse( (t->time - startTime) * 100.0f, getHeight() / 2, 2, 2);
+			}
+		}
+		
     }
     
     if( in_staff_selection_mode )

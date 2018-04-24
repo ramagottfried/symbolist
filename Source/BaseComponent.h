@@ -127,7 +127,7 @@ public:
     {
         staff_name = c->getScoreSymbolPointer()->getID();
         staff = c;
-        cout << "/t/t ------------------------- \n" << this << " attched to staff " << staff_name << " " << staff << endl;
+        DEBUG_INLINE("/t/t ------------------------- \n" << this << " attached to staff " << staff_name << " " << staff << endl);
     }
     
     inline  BaseComponent* getStaff()

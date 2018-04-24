@@ -4,8 +4,10 @@
 
 using namespace std;
 
-class SymbolistMenu : public Component, public MenuBarModel, public ChangeBroadcaster
-{
+class SymbolistMenu : public Component,
+					  public MenuBarModel,
+					  public ChangeBroadcaster {
+
 public:
     SymbolistMenu();    
     ~SymbolistMenu();

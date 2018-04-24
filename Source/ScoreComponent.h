@@ -49,11 +49,8 @@ public:
     
     virtual void groupSelectedSymbols();
     void ungroupSelectedSymbols();
-    
-    void createStaffFromSelected();
-    
+        
     void flipSelectedSymbols( int axis );
-    
     void nudgeSelected( int direction );
         
     void mouseDown ( const MouseEvent& event ) override;
@@ -73,7 +70,7 @@ protected:
     void dragLassoSelection(Point<int> position);
     void endLassoSelection();
 	
-    ScopedPointer<EditSelectionBox> sel_resize_box;
+    ScopedPointer<EditSelectionBox > sel_resize_box;
 
 };
 

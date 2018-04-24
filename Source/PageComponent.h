@@ -33,6 +33,23 @@ public:
     
     virtual void groupSelectedSymbols() override;
     
+    /**
+	 * Wrapper method around the PageController::copySelectedToClipBoard()
+	 * method.
+	 *
+	 * @see PageController#copySelectedToClipBoard()
+	 *      PageController::copySelectedToClipBoard
+	 */
+    void copySelectedToClipBoard();
+    
+    /**
+	 * Wrapper method around the PageController::newFromClipBoard()
+	 * method.
+	 *
+	 * @see PageController#newFromClipBoard() PageController::newFromClipBoard
+	 */
+    void newFromClipBoard();
+    
     // single_component edit mode
     void enterEditMode( BaseComponent* c );
     void exitEditMode();
@@ -40,6 +57,16 @@ public:
     
     void enterStaffSelMode();
     void exitStaffSelMode();
+    
+    /**
+     * Creates a staff symbol in the score and a staff component
+     * in the score view from the selected components.
+     *
+     * This method is only accessible in the PageComponent class,
+     * meaning that staves cannot be created within staff, but
+     * only at a top level in the score.
+     */
+    void createStaffFromSelected();
     
     // Juce Callbacks
     void resized () override;

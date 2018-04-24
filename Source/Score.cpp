@@ -159,11 +159,11 @@ Symbol* Score::addDuplicateSymbol(Symbol* symbol)
     }
     
     size_t count = ids.size();
-    string nextID = name+"/"+to_string(count++);
+    string nextID = name + "/" + to_string(count++);
     
     while( find( ids.begin(), ids.end(), nextID ) != ids.end() )
     {
-        nextID = name+"/"+to_string(count++);
+        nextID = name + "/" + to_string(count++);
     }
     
     symbol->addMessage("/id", nextID );

@@ -22,19 +22,15 @@ bool BaseComponent::isTopLevelComponent()
     if ( getParentComponent() != NULL && getParentComponent() == getPageComponent() )
     {
         if ( score_symbol != NULL )
-        {
             return true;
-        }
         else
         {
-            std::cout << "Warning: BaseComponent is TopLevel but has no attached score symbol!" << std::endl ;
+            DEBUG_FULL("Warning: BaseComponent is TopLevel but has no attached score symbol!" << endl);
             return false;
         }
     }
     else
-    {
         return false;
-    }
     
 }
 
@@ -243,7 +239,6 @@ void BaseComponent::parentHierarchyChanged()
     setIdFromSymbol();
     attachToStaff();
 }
-
 
 void BaseComponent::setBoundsFromSymbol( float x, float y , float w , float h)
 {
@@ -464,11 +459,20 @@ void BaseComponent::altDragCopy( const MouseEvent& event  )
     
     if ( ! componentSelected() )
         parent->addToSelection(this);
-    
-    getSymbolistHandler()->copySelectedToClipBoard();
-    
-    parent->unselectAllComponents();
-    getSymbolistHandler()->newFromClipBoard();
+	
+	PageComponent* scoreView = getPageComponent();
+	
+	/*
+	 * If the component is attached to the score view,
+	 * then makes a copy.
+	 */
+	if (scoreView != NULL)
+	{
+		scoreView->copySelectedToClipBoard();
+		
+    	parent->unselectAllComponents();
+    	scoreView->newFromClipBoard();
+	}
     
 }
 

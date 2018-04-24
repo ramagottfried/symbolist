@@ -89,11 +89,11 @@ public:
     void setPaletteSymbols(const OdotBundle_s& bundle_array);
     
     /**
-     * Returns the currently selected item in the palette.
-     * It can be either user-defined or a default item.
+     * Wrapper method around the Palette::getSelectedSymbol
+     * method.
      *
-     * @return a pointer to the currently selected symbol
-     *         in the palette.
+     * @see Palette#getSelectedSymbol()
+     *		Palette::getSelectedSymbol
      */
     Symbol* getSelectedSymbolInPalette();
     

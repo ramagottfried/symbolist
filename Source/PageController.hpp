@@ -100,8 +100,7 @@ public:
      * @see               Score#importSymbols(const OdotBundle_s&)
      */
     void importSymbols( const OdotBundle_s& bundle );
-    
-    
+	
     /**
      * Creates a graphic component for each symbol in the score
      * and adds it to the view.
@@ -112,7 +111,22 @@ public:
      * Erases all graphic components from the view.
      */
     void clearAllSubcomponents();
-    
+
+	/**
+	 * Puts the symbols attached to the selected components
+	 * in the score view into the clipboard.
+	 *
+	 * Works only when the selected components are not nested
+	 * into a symbol.
+	 */
+	void copySelectedToClipBoard();
+
+	/**
+	 * Creates new components in the score view according
+	 * to the clipboard's content.
+	 */
+	void newFromClipBoard();
+
     /**
      * Gets the staff component (if exists) placed at the specified time
      * in the score.
@@ -213,6 +227,10 @@ public:
 	
     /* Overrides the update method inherited from the Observer class. */
     virtual inline void update() override {}
+
+private:
+	OwnedArray<Symbol> clipboard;
+
 };
 
 #endif /* PageController_hpp */

@@ -3,6 +3,8 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PaletteController.hpp"
 #include "PageController.hpp"
+#include "MouseModeController.hpp"
+#include "InspectorController.hpp"
 #include "SymbolistModel.hpp"
 #include <iostream>
 #include <memory>
@@ -29,12 +31,6 @@ public:
     SymbolistHandler();
 	
     /**
-     * SymbolistHandler's constructor with model
-     * and view passed as parameters.
-     */
-    SymbolistHandler(SymbolistModel* model, SymbolistMainComponent* view);
-	
-    /**
      * SymbolistHandler's default destructor.
      */
     virtual ~SymbolistHandler() override;
@@ -51,9 +47,28 @@ public:
 	/**
      * @return The PageController instance owned by this SymbolistHandler.
      */
-    inline PageController*    getPageController() { return page_controller.get(); }
+    inline PageController* getPageController() { return page_controller.get(); }
+	
+	/**
+     * @return The MouseModeController instance owned by this SymbolistHandler.
+     */
+    inline MouseModeController* getMouseModeController() { return mouse_mode_controller.get(); }
+	
+	/**
+     * @return The InspectorController instance owned by this SymbolistHandler.
+     */
+    inline InspectorController* getInspectorController() { return inspector_controller.get(); }
+	
+	/**
+	 * @return The current playtime in milliseconds.
+	 */
     inline float getCurrentTime() { return current_time; }
-    
+	
+	void inStandalone(){ in_standalone = true; };
+    bool isStandalone(){ return in_standalone; };
+	const StringArray getStaves() { return getModel()->getScore()->getStaves(); }
+    StaffComponent* getStaveAtTime( float time );
+	
     /**************************************************************
      *       FACTORY METHODS FOR CHILD CONTROLLERS' CREATION      *
      **************************************************************/
@@ -69,7 +84,19 @@ public:
      * for this instance of SymbolistHandler.
      */
     void createPageController();
-    
+	
+	/**
+     * Creates and sets up the MouseModeController
+     * for this instance of SymbolistHandler.
+     */
+    void createMouseModeController();
+	
+	/**
+     * Creates and sets up the InspectorController
+     * for this instance of SymbolistHandler.
+     */
+    void createInspectorController();
+	
     /********************************************************
      ********************************************************
      *             METHODS CALLED FROM THE API              *
@@ -105,7 +132,11 @@ public:
     Symbol*      symbolistAPI_getSymbol(int n);
     void         symbolistAPI_setOneSymbol( const OdotBundle_s& bundle );
     void         symbolistAPI_setSymbols( const OdotBundle_s& bundle );
-    
+    OdotBundle_s symbolistAPI_getSymbolsAtTime(float t);
+    OdotBundle_s symbolistAPI_getScoreBundle();
+    OdotBundle_s symbolistAPI_getdurationBundle();
+	void 		 symbolistAPI_clearScore();
+	
     /* File IO controller's methods. */
     int         symbolistAPI_importSVG( const char * filename );
     int         symbolistAPI_exportSVG( const char * filename );
@@ -120,40 +151,22 @@ public:
     void symbolistAPI_setTime(float time_ms);
     void symbolistAPI_toggleTimeCusor();
     
-    OdotBundle_s symbolistAPI_getSymbolsAtTime(float t);
-    OdotBundle_s symbolistAPI_getScoreBundle();
-
-    OdotBundle_s symbolistAPI_getdurationBundle();
-    
-    void symbolistAPI_clearScore();
-    
     /*********************************************
-     *   CONTROLLER METHODS CALLED FROM THE GUI  *
+     *   CALLBACK METHODS CALLED FROM THE GUI  *
      *********************************************/
     void executeUpdateCallback(int arg);
     void executeCloseCallback();
     void executeTransportCallback(int arg);
-    
-    // functions modifying the parent Windows's score
-    void removeSymbolFromScore(BaseComponent* c);
-    void modifySymbolInScore(BaseComponent* c);
-    
+	
     /*********************************************
      *               INSPECTOR IO                *
      *********************************************/
-    void addToInspector( BaseComponent *c);
+    void addToInspector(BaseComponent *c);
     void clearInspector();
-    
-    void updateSymbolFromInspector( BaseComponent *c );
-    const StringArray getStaves() { return getModel()->getScore()->getStaves(); }
-    
-    void convertSelectedToStaff();
-    StaffComponent* getStaveAtTime( float time );
 
-    /*********************************************
-     *       PALETTE AND SYMBOL CONSTRUCTOR      *
-     *********************************************/
-    
+    /*******************************************************
+     *       SYMBOL CREATION AND MODIFICATION METHODS      *
+     *******************************************************/
     /**
      * Creates a new symbol in the score copied from
      * the selected template in the palette.
@@ -169,9 +182,7 @@ public:
      *         in the score.
      */
     Symbol* createSymbol();
-    
-    Symbol* getSelectedSymbolInPalette();
-	
+    	
     /**
      *
      * Creates a new graphic component from the symbol in parameter.
@@ -193,15 +204,20 @@ public:
      */
     BaseComponent* makeComponentFromSymbol(Symbol* symbol, bool attachTheSymbol);
     
-    void inStandalone(){ in_standalone = true; };
-    bool isStandalone(){ return in_standalone; };
-
-    TimePointArray const& getTimePointArray() { return getModel()->getScore()->getTimePointArray(); }
-    void removeTimePointsForSymbol(Symbol* s){ getModel()->getScore()->removeSymbolTimePoints( s ); }
-    
-    void copySelectedToClipBoard();
-    void newFromClipBoard();
-
+    void removeSymbolFromScore(BaseComponent* c);
+    void modifySymbolInScore(BaseComponent* c);
+	
+    /**
+	 * Passes on the changes applied to the BaseComponent
+	 * in paremeter to its attached symbol in the score.
+	 *
+	 * @param component the modified graphic component.
+	 */
+    void updateSymbolFromComponent(BaseComponent *component);
+	
+	/*********************************************
+     *           UNDO/REDO COMMAND METHODS       *
+     *********************************************/
     void log_score_change();
     void push_undo_stack();
     void push_redo_stack();
@@ -209,6 +225,9 @@ public:
     void undo();
     void redo();
 
+	/*********************************************
+     *           ID GENERATION METHODS           *
+     *********************************************/
     int symbolNameCount( string& name )
     {
 		return getModel()->getScore()->getNameCount( name );
@@ -240,14 +259,24 @@ public:
 private:
 	
     /**
-     * A Controller to handle palette-connected actions.
+     * A Controller to handle palette-related actions.
      */
-    std::unique_ptr<PaletteController> palette_controller;
+    unique_ptr<PaletteController > palette_controller;
 	
     /**
-     * A Controller to handle score-connected actions.
+     * A Controller to handle score-related actions.
      */
-    std::unique_ptr<PageController> page_controller;
+    unique_ptr<PageController > page_controller;
+	
+	/**
+     * A Controller to handle mouse mode messages.
+     */
+    unique_ptr<MouseModeController > mouse_mode_controller;
+	
+	/**
+     * A Controller to handle inspector-related actions.
+     */
+    unique_ptr<InspectorController > inspector_controller;
 	
     /**
      * The main graphic window of the application.
@@ -281,7 +310,6 @@ private:
      */
     symbolistTransportCallback my_transport_callback = NULL;
 	
-    OwnedArray<Symbol> clipboard;
     OwnedArray<Score> undo_stack;
     OwnedArray<Score> redo_stack;
     bool in_standalone = false;

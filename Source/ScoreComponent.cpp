@@ -200,69 +200,6 @@ void ScoreComponent::deleteSelectedComponents()
 	
 }
 
-void ScoreComponent::createStaffFromSelected()
-{
-    auto scoreView = getPageComponent();
-
-    bool creating_a_top_level_group = ( this == scoreView );
-    
-    if( !creating_a_top_level_group )
-    {
-        cout << "must be top level to create staff " << endl;
-        return;
-    }
-    
-    
-    auto selectedItems = scoreView->getSelectedItems();
-    if( selectedItems.size() > 1 )
-    {
-        scoreView->groupSelectedSymbols();
-    }
-    
-    auto staff_ref_comp = dynamic_cast<BaseComponent*>(scoreView->getSelectedItems().getFirst());
-    
-    // Checks downcast result.
-    if( staff_ref_comp != NULL )
-    {
-        if( staff_ref_comp->getSymbolTypeStr() == "staff" )
-            return;
-        
-        Symbol ref_sym = *(staff_ref_comp->getScoreSymbolPointer());
-        
-        auto sh = getSymbolistHandler();
-        
-        // Calls controller to create new symbol in score.
-        Symbol* staff_sym = sh->createSymbol();
-        staff_sym->setTypeXYWH("staff", staff_ref_comp->getX(), staff_ref_comp->getY(), staff_ref_comp->getWidth(), staff_ref_comp->getHeight() );
-        
-        // create the new component and attach the new symbol pointer to it
-        StaffComponent *staff_comp = (StaffComponent *)sh->makeComponentFromSymbol(staff_sym, true);
-
-        // remove from parent (which also sets the ref_sym to null)
-        // the parent is not necessarily 'this' (selected_items can be indirect children...)
-        ScoreComponent* parentOfStaffRefComponent = dynamic_cast<ScoreComponent*>(staff_ref_comp->getParentComponent());
-        
-        // Checks downcast result.
-        if (parentOfStaffRefComponent != NULL)
-            parentOfStaffRefComponent->removeSubcomponent( staff_ref_comp );
-        
-        // sets the position now relative to the group
-        staff_ref_comp->setBounds( 0, 0, staff_ref_comp->getWidth(), staff_ref_comp->getHeight() );
-        
-        // add subcomponent to the parent staff component
-        staff_comp->addSubcomponent( staff_ref_comp );
-        
-        // once the subcomponent is in place, the attached staff symbol can be updated
-        // note: add symbol messages does not attache the symbol, it just adds the messages
-        staff_comp->addSymbolMessages( staff_sym );
-        
-        addSubcomponent(staff_comp);
-        addToSelection(staff_comp);
-        
-    }
-    
-}
-
 void ScoreComponent::groupSelectedSymbols()
 {
 	if ( selected_components.size() > 1 )

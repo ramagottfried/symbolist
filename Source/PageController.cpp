@@ -89,7 +89,9 @@ void PageController::copySelectedToClipBoard()
 	
     for ( auto c : getView()->getSelectedItems() )
     {
-        clipboard.add(new Symbol( *(dynamic_cast<BaseComponent*>(c))->getScoreSymbolPointer()) );
+        auto bc = dynamic_cast<BaseComponent*>(c);
+        if( bc ) // skip if non-basecomponent type
+            clipboard.add(new Symbol( *(bc)->getScoreSymbolPointer()) );
     }
 }
 

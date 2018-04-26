@@ -101,7 +101,6 @@ void ScoreComponent::selectedToBack()
     }
 }
 
-
 /*****************
  * Custom lasso tool
  *****************/
@@ -206,30 +205,6 @@ void ScoreComponent::groupSelectedSymbols()
 	if ( selected_components.size() > 1 )
     {
     	bool creating_a_top_level_group = ( this == getPageComponent() );
-    
-  /*
-        scoreView->groupSelectedSymbols();
-    }
-    
-    auto staff_ref_comp = dynamic_cast<BaseComponent*>(scoreView->getSelectedItems().getFirst());
-    
-    // Checks downcast result.
-    if( staff_ref_comp != NULL )
-    {
-        if( staff_ref_comp->getSymbolType() == STAFF )
-            return;
-        
-        Symbol ref_sym = *(staff_ref_comp->getScoreSymbolPointer());
-        
-        auto sh = getSymbolistHandler();
-        
-        // Calls controller to create new symbol in score.
-        Symbol* staff_sym = sh->createSymbol();
-        staff_sym->setTypeXYWH("staff", staff_ref_comp->getX(), staff_ref_comp->getY(), staff_ref_comp->getWidth(), staff_ref_comp->getHeight() );
-        
-        // create the new component and attach the new symbol pointer to it
-        StaffComponent *staff_comp = (StaffComponent *)sh->makeComponentFromSymbol(staff_sym, true);
- */
 
     	DEBUG_FULL("Creating a group (top level? " << creating_a_top_level_group << "), from "
 												   << selected_components.size()
@@ -416,11 +391,7 @@ void ScoreComponent::mouseAddClick(const MouseEvent& event)
 
 void ScoreComponent::mouseDown ( const MouseEvent& event )
 {
-    //getPageComponent()->getEditedComponent()->unselectAllComponents();
-    //getPageComponent()->exitEditMode() ;
-    
     UI_EditType ed = getMainMouseMode();
-
     if( ed == SELECTION )
     {
         beginLassoSelection( event.getPosition() );

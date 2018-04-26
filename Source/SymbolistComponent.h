@@ -27,7 +27,8 @@ void printPoint(Point<T> point, const String &name = "point" )
 class SymbolistComponent : public Component {
 
 public:
-    
+    virtual string getSymbolTypeStr() const { return string(" ??? "); } ; // every component defines its type
+
     virtual PageComponent* getPageComponent();
     virtual SymbolistHandler* getSymbolistHandler();
     SymbolistMainComponent* getMainComponent();

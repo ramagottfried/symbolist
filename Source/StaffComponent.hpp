@@ -26,6 +26,8 @@ public:
     StaffComponent() = default;
     ~StaffComponent() = default;
     
+    virtual string getSymbolTypeStr() const override { return "staff"; }
+    
     void importFromSymbol( const Symbol &s ) override;
     void addSymbolMessages(Symbol* s ) override;
     

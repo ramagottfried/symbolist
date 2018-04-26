@@ -75,7 +75,7 @@ void BaseComponent::createAndAttachSymbol()
 void BaseComponent::addSymbolMessages(Symbol* s)
 {
     s->addMessage("/name", name);
-    s->addMessage("/type", Symbol::stringFromSymType( type ));
+    s->addMessage("/type", getSymbolTypeStr());
     s->addMessage("/id", getComponentID().getCharPointer());
     s->addMessage("/staff", staff_name);
    
@@ -87,54 +87,35 @@ void BaseComponent::addSymbolMessages(Symbol* s)
     s->addMessage("/h", b.getHeight());
     s->addMessage("/color", sym_color.getFloatRed(), sym_color.getFloatGreen(), sym_color.getFloatBlue(), sym_color.getFloatAlpha());
 
-    /*
-    addr = "/time/start";
-    if( s->getOSCMessagePos(addr) == -1 )
-    {
-        s->addOSCMessage( addr,         s->pixelsToTime( b.getX() ) );
-        messages_added++;
-    }
-
-    addr = "/time/duration";
-    if( s->getOSCMessagePos(addr) == -1 )
-    {
-        s->addOSCMessage( addr,   s->pixelsToTime( b.getWidth() ) );
-        messages_added++;
-    }
-    */
-    
-    /* // not sure how to best do this yet
-    addr = "/lambda";
-    if( s->getOSCMessagePos(addr) == -1 )
-    {
-        s->addOSCMessage( addr,         lambda );
-        messages_added++;
-    }
-     */
-    
-//    cout << "*********** START BASE ADD DATA ************ " << endl;
-//    s->printBundle();
-
 }
-
 
 Symbol BaseComponent::exportSymbol()
 {
     Symbol s;
-    addSymbolMessages(&s);
+    s.addMessage("/name", name );
+    s.addMessage("/type", getSymbolTypeStr() );
+    s.addMessage("/id", getComponentID().getCharPointer() );
+    s.addMessage("/staff", staff_name );
+    
+    auto b = symbol_export_bounds();
+    
+    s.addMessage("/x", b.getX() );
+    s.addMessage("/y", b.getY() );
+    s.addMessage("/w", b.getWidth() );
+    s.addMessage("/h", b.getHeight() );
+    s.addMessage("/color", sym_color.getFloatRed(), sym_color.getFloatGreen(), sym_color.getFloatBlue(), sym_color.getFloatAlpha() );
+    
     return s;
+    
 }
-
 /******************
  * Imports components' data from the symbol's OSC bundle (can be overriden by sub-class)
  *****************/
 
 void BaseComponent::importFromSymbol(const Symbol &s)
 {
-    
-    type = Symbol::symTypeFromString( s.getMessage( "/type" ).getString() );
-    
-    if ( type == UNKNOWN )
+    string typeOfSymbol = s.getMessage( "/type" ).getString();
+    if (typeOfSymbol.size() == 0)
     {
         cout << "BaseComponent import: Could not find '/type' message in OSC Bundle.. (size=" << "insert bundle size here" << ")" << endl;
         return;
@@ -177,7 +158,8 @@ void BaseComponent::importFromSymbol(const Symbol &s)
     }
     
     name = s.getMessage("/name").getString();
-    if (name.size() == 0) name = Symbol::stringFromSymType( type );
+    if (name.size() == 0)
+        name = typeOfSymbol;
         
     // Set /id via component ID
     string id = s.getMessage("/id").getString();
@@ -192,9 +174,11 @@ void BaseComponent::importFromSymbol(const Symbol &s)
 		setIdFromSymbol();
 	else
 		setComponentID(typeOfSymbol + "/palette");
-  
+	
     staff_name = s.getMessage("/staff").getString();
-    if(staff_name == "<none>") staff_name = "";
+    if(staff_name == "<none>")
+        staff_name = "";
+        
     attachToStaff();
 	
 }
@@ -214,8 +198,8 @@ void BaseComponent::setIdFromSymbol()
 		 */
         if (s)
         {
-          String typeOfSymbol = Symbol::stringFromSymType( s->getType() );
-			    id = s->getMessage("/id").getString();
+            String typeOfSymbol = s->getType();
+			id = s->getMessage("/id").getString();
             
             if( id.isEmpty() || id == (typeOfSymbol + "/palette")  || id == (name + "/palette") || !id.contains(String(name)))
                 id = pc->getController()->createIdFromName(name);
@@ -321,12 +305,17 @@ Rectangle<int> BaseComponent::getMinimalBounds()
     return Rectangle<int>(minx, miny, maxx-minx, maxy-miny);
 }
 
-void BaseComponent::setMinimalBounds ()
-{
-    
-    Rectangle<int> r = getMinimalBounds();
-    setBounds(r.getX(), r.getY(), r.getWidth(), r.getHeight());
-
+void BaseComponent::setMinimalBounds () {
+    int minx = getWidth(), maxx = 0, miny = getHeight(), maxy = 0;
+    for( int i = 0; i < getNumSubcomponents(); i++)
+    {
+        Rectangle<int> compBounds = getSubcomponent(i)->getBounds();
+        minx =  min( minx, compBounds.getX() );
+        miny =  min( miny, compBounds.getY() );
+        maxx =  max( maxx, compBounds.getRight() );
+        maxy =  max( maxy, compBounds.getBottom() );
+    }
+    setBounds(minx, miny, maxx-minx, maxy-miny);
     for( int i = 0; i < getNumSubcomponents(); i++)
     {
         SymbolistComponent* subcomp = getSubcomponent(i);
@@ -381,6 +370,7 @@ void BaseComponent::resizeToFit(int x, int y, int w, int h)
  ***/
 void BaseComponent::scaleScoreComponent(float scale_w, float scale_h)
 {
+    cout << "BaseComponent::scaleScoreComponent " << getSymbolTypeStr() << " " << this << " " << scale_w << " " << scale_h << endl;
     for ( int i = 0; i < getNumSubcomponents(); i++ )
     {
         BaseComponent* c = (BaseComponent*) getSubcomponent(i);
@@ -395,6 +385,7 @@ void BaseComponent::scaleScoreComponent(float scale_w, float scale_h)
  ***/
 void BaseComponent::setScoreComponentSize(int w, int h)
 {
+    cout << "BaseComponent::setScoreComponentSize " << getSymbolTypeStr() << " " << this << " " << w << " " << h << endl;
     float this_w = (float)getWidth();
     float this_h = (float)getHeight();
     
@@ -407,6 +398,8 @@ void BaseComponent::setScoreComponentSize(int w, int h)
     }
     
     setSize(w, h);
+    
+    cout << "<<< end BaseComponent::setScoreComponentSize \n" << endl;
 }
 
 

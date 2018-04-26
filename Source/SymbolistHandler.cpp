@@ -4,6 +4,7 @@
 
 #include "StaffComponent.hpp"
 #include "SymbolGroupComponent.h"
+#include "BasicShapePathComponents.h"
 #include "PathBaseComponent.h"
 #include "TextGlyphComponent.h"
 
@@ -405,7 +406,6 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* symbol, bool at
     DEBUG_FULL("Creating component from Symbol: ");
     
     string typeofSymbol = symbol->getMessage("/type").getString();
-
     if (typeofSymbol.size() == 0)
     {
 		DEBUG_INLINE("Could not find '/type' message in OSC Bundle.. " << endl);
@@ -418,11 +418,11 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* symbol, bool at
         
         // allocates component based on type, all are derived from the BaseComponent
         if ( typeofSymbol == "circle" ) {
-            newComponent = new PathBaseComponent();
+            newComponent = new CirclePathComponent();
         } else if ( typeofSymbol == "rectangle" ) {
-            newComponent = new PathBaseComponent();
+            newComponent = new RectanglePathComponent();
         } else if ( typeofSymbol =="triangle" ) {
-            newComponent = new PathBaseComponent();
+            newComponent = new TrianglePathComponent();
         } else if ( typeofSymbol == "path" ) {
             newComponent = new PathBaseComponent();
         } else if ( typeofSymbol == "text" ) {
@@ -511,7 +511,7 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* component )
     // update the symbol with the component's current state
     component->addSymbolMessages( symbol );
     
-    if ( symbol->getType() == STAFF )
+    if ( symbol->getType() == "staff" )
     {
         DEBUG_FULL("type staff ");
         // If the type is "staff" resort the stave order and update time point array

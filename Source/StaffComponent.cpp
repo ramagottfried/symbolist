@@ -122,7 +122,7 @@ void StaffComponent::mouseDown( const MouseEvent& event )
             // Checks downcast result.
             if( c != NULL )
             {
-                if( c->getSymbolType() != STAFF )
+                if( c->getSymbolTypeStr() != "staff" )
                 {
                     addOjbectToStave(c);
                     c->setStaff(this);

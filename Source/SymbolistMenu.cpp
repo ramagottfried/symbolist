@@ -198,7 +198,6 @@ void SymbolistMenu::getCommandInfo(CommandID commandID, ApplicationCommandInfo& 
      */
 }
 
-
 bool SymbolistMenu::perform(const juce::ApplicationCommandTarget::InvocationInfo& info)
 {
     SymbolistMainComponent* main = dynamic_cast<SymbolistMainComponent*>(getParentComponent());

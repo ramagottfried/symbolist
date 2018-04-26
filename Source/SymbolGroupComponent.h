@@ -9,6 +9,7 @@ public:
     SymbolGroupComponent() = default;
     ~SymbolGroupComponent() = default;
     
+    virtual string getSymbolTypeStr() const override { return string("group"); }
     void addSymbolMessages(Symbol* s ) override ;
     void importFromSymbol( const Symbol &s ) override;
 

@@ -91,7 +91,7 @@ bool Symbol::idExists(string& searchedId)
 	/* If the current symbol's id doesn't match searchedId
 	 * then, if it's a group, looks for the id in its inner symbols.
 	 */
-	if (!idFound && getType() == "group")
+	if (!idFound && getType() == GROUP)
 	{
 		/* Returns the list of OdotMessage in this Symbol instance
 		 * which address matches "/subsymbol"

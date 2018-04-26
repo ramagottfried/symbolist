@@ -86,12 +86,21 @@ void PageController::clearAllSubcomponents()
 void PageController::copySelectedToClipBoard()
 {
     clipboard.clear();
-	
+    Symbol* symbol;    
+
     for ( auto c : getView()->getSelectedItems() )
     {
-    	Symbol* symbol = new Symbol( *(dynamic_cast<BaseComponent*>(c))->getScoreSymbol());
-		symbol->resetAllIds();
-        clipboard.add(symbol);
+        auto bc = dynamic_cast<BaseComponent*>(c);
+        if ( bc ) // skip if non-basecomponent type
+	{
+	    symbol = new Symbol(*(bc)->getScoreSymbol()); 
+	    
+	    /* The stored symbol should not have the same
+	     * id as the base component from which it is copied.
+	     */
+	    symbol->resetAllIds();
+            clipboard.add(symbol);
+	}
     }
 }
 

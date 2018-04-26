@@ -105,7 +105,7 @@ void symbolist_getSymbols_at_time( t_symbolist *x, double time )
 
 void symbolist_getDuration( t_symbolist *x )
 {
-    t_osc_bndl_s *bndl = symbolistGetDurationBundle( x->symbolist_handler);
+	t_osc_bndl_s *bndl = symbolistGetDurationBundle(x->symbolist_handler);
     if( bndl )
         symbolist_outletOSC( x->player_outlet, osc_bundle_s_getLen(bndl), osc_bundle_s_getPtr(bndl)  );
     

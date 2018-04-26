@@ -1133,7 +1133,7 @@ void PathBaseComponent::paint ( Graphics& g )
         g.setColour( getCurrentColor() );
         for ( int np = 0; np < m_path_array.size(); np++)
         {
-            DEBUG_FULL("DRAW " << getComponentID() << " -- " << np << endl)
+            // DEBUG_FULL("DRAW " << getComponentID() << " -- " << np << endl)
             g.strokePath(*m_path_array[np], stroke_type);
             if ( m_fill )
                 g.fillPath(*m_path_array[np]);

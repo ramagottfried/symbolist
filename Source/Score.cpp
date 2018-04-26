@@ -274,7 +274,7 @@ void Score::addSymbolTimePoints( Symbol* s )
 OdotBundle_s Score::getDurationBundle()
 {
     auto lastTimePoint = time_points.getLastTimePoint();
-    if( !lastTimePoint )
+    if( lastTimePoint == NULL )
         return NULL;
     
     OdotBundle bndl;

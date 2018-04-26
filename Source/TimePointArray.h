@@ -84,10 +84,18 @@ public:
     {
         return symbolTimePoints;
     }
-    
-    SymbolTimePoint* getLastTimePoint()
+	
+	/**
+	 * Gets the last time point for this instance of TimePointArray.
+	 *
+	 * @return a pointer to the last element of the symbolTimePoints vector,
+	 *         or <code>NULL</code> if symbolTimePoints is empty.
+	 */
+    inline SymbolTimePoint* getLastTimePoint()
     {
-        return symbolTimePoints[symbolTimePoints.size()-1].get();
+    	if (!symbolTimePoints.empty())
+        	return symbolTimePoints.back().get();
+		else return NULL;
     }
     
     void printTimePoints();

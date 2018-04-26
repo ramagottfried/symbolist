@@ -117,7 +117,6 @@ t_osc_bndl_s* symbolistGetDurationBundle(void* symbolist_handler)
     return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getdurationBundle().release();
 }
 
-
 t_osc_bndl_s* symbolistGetSymbolsAtTime(void* symbolist_handler, float t)
 {
     return static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_getSymbolsAtTime( t ).release();

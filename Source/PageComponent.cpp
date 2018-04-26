@@ -24,7 +24,7 @@ void PageComponent::addSubcomponent(SymbolistComponent *c)
 
 void PageComponent::removeSubcomponent( SymbolistComponent *c )
 {
-	BaseComponent* componentToRemove = dynamic_cast<BaseComponent*>(c);
+	BaseComponent* componentToRemove = dynamic_cast<BaseComponent* >(c);
 	
 	if (componentToRemove != NULL)
 	{
@@ -41,7 +41,7 @@ void PageComponent::groupSelectedSymbols()
 	if ( selected_components.size() > 1 )
     {
     	DEBUG_FULL("Creating a top level group from " << selected_components.size()
-												      << " selected components." << endl);
+												      << " selected components." << endl)
 		if (getController() != NULL)
 		{
 			Symbol* symbolGroup = getController()->createTopLevelSymbolGroup(selected_components);
@@ -125,36 +125,26 @@ void PageComponent::createStaffFromSelected()
 {
     auto selectedItems = getSelectedItems();
     if( selectedItems.size() > 1 )
-    {
         groupSelectedSymbols();
-    }
 	
     auto staffRefComponent = dynamic_cast<BaseComponent* >(getSelectedItems().getFirst());
 	
     // Checks downcast result.
     if( staffRefComponent != NULL )
     {
+    	// Embedding staff in staff is forbidden.
         if( staffRefComponent->getSymbolTypeStr() == "staff" )
             return;
+			
+        Symbol* staffSymbol = getController()->createStaff(staffRefComponent);
 		
-        Symbol staffRefSymbol = *(staffRefComponent->getScoreSymbolPointer());
-		
-        // Calls controller to create new symbol in score.
-        Symbol* staffSymbol = getSymbolistHandler()->createSymbol();
-		
-        staffSymbol->setTypeXYWH("staff",
-        						 staffRefComponent->getX(),
-        						 staffRefComponent->getY(),
-        						 staffRefComponent->getWidth(),
-        						 staffRefComponent->getHeight() );
-		
-        // create the new component and attach the new symbol pointer to it
+        // Creates the new component and attach the new symbol pointer to it.
         StaffComponent *staffComponent = dynamic_cast<StaffComponent* >(getController()->makeComponentFromSymbol(staffSymbol, true));
 
         /* Removes from parent (which also sets the refSymbol to NULL)
          * the parent is not necessarily 'this' (selected_items can be indirect children...)
          */
-        ScoreComponent* parentOfStaffRefComponent = dynamic_cast<ScoreComponent*>(staffRefComponent->getParentComponent());
+        ScoreComponent* parentOfStaffRefComponent = dynamic_cast<ScoreComponent* >(staffRefComponent->getParentComponent());
 		
         // Checks downcast result.
         if (parentOfStaffRefComponent != NULL)
@@ -189,7 +179,7 @@ vector<BaseComponent*> PageComponent::getSubcomponentsByStaff( String& staff_nam
         BaseComponent *c = dynamic_cast<BaseComponent*>(subcomponents[i]);
         if( c )
         {
-            s = c->getScoreSymbolPointer();
+            s = c->getScoreSymbol();
             
             if( s->getSaff() == staff_name )
                 objects.emplace_back( c );

@@ -20,11 +20,11 @@
  *   There is at least one subcomponent in the group: the staff
  *
  */
-class StaffComponent : public SymbolGroupComponent
-{
+class StaffComponent : public SymbolGroupComponent {
+
 public:
     StaffComponent() = default;
-    ~StaffComponent() = default;
+    ~StaffComponent();
     
     virtual string getSymbolTypeStr() const override { return "staff"; }
     
@@ -34,29 +34,26 @@ public:
     void parentHierarchyChanged() override;
 
     void paint ( Graphics& g ) override;
-
-    void selectComponent() override;
-    void deselectComponent() override;
     
-    inline void addOjbectToStave( BaseComponent *c)
+    inline void addObjectToStave( BaseComponent *c)
     {
-        symbols_on_staff.emplace_back(c);
+        components_on_staff.emplace_back(c);
     }
     
-    inline void removeStaffOjbect( BaseComponent *c)
+    inline void removeStaffObject( BaseComponent *c)
     {
-        symbols_on_staff.erase( remove( symbols_on_staff.begin(), symbols_on_staff.end(), c ), symbols_on_staff.end() );
+        components_on_staff.erase( remove(components_on_staff.begin(), components_on_staff.end(), c),
+								   components_on_staff.end() );
     }
     
     void mouseDown( const MouseEvent& event ) override;
     void mouseDrag( const MouseEvent& event ) override;
     
     bool hitTest (int x, int y) override;
-    
-    
+	
 private:
     
-    vector<BaseComponent* > symbols_on_staff;
+    vector<BaseComponent* > components_on_staff;
     bool draw_timepoints = false;
     
     //==============================================================================

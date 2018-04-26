@@ -55,7 +55,7 @@ bool Symbol::symbol_parse_error( int p, const string& address ) const
 {
     if( p == -1 )
     {
-        DEBUG_FULL("Failed to parse symbol of address " << address << endl);
+        DEBUG_FULL("Failed to parse symbol of address " << address << endl)
         return true; // there is an error
     }
     return false;
@@ -70,7 +70,7 @@ void Symbol::setPosition( const Point<float> pos )
 void Symbol::setTimeAndDurationFromRelPix( const float start_x, const float dur_x )
 {
 
-    DEBUG_FULL("Setting " << pixelsToTime(start_x) << " " << pixelsToTime(dur_x) << endl);
+    DEBUG_FULL("Setting " << pixelsToTime(start_x) << " " << pixelsToTime(dur_x) << endl)
     
     addMessage("/time/start",    pixelsToTime(start_x) );
     addMessage("/time/duration", pixelsToTime(dur_x) );
@@ -128,7 +128,7 @@ void Symbol::resetAllIds()
 	/* If the current symbol is a group,
 	 * resets its inner symbols' id.
 	 */
-	if (getType() == "group")
+	if (getType() == "group" || getType() == "staff")
 	{
 		/* Returns the list of OdotMessage in this Symbol instance
 		 * matching the address "/subsymbol"

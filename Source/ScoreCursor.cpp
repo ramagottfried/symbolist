@@ -1,6 +1,4 @@
-
 #include "ScoreCursor.h"
-
 
 void ScoreCursor::paint( Graphics& g )
 {
@@ -34,7 +32,7 @@ void ScoreCursor::mouseDrag( const MouseEvent& event )
         
         // add output callback
         // sh->symbolistAPI_getSymbolsAtTime( m_playpoint );
-        auto sym = staff->getScoreSymbolPointer();
+        auto sym = staff->getScoreSymbol();
         float play_t = m_playpoint - sym->getTime();
         auto staff_b = staff->getBoundsInParent();
         float play_x = staff_b.getX() + sym->timeToPixels( play_t );
@@ -83,7 +81,7 @@ void ScoreCursor::setPlayPoint( float t )
     {
         setVisible(true);
         
-        Symbol* sym = staff->getScoreSymbolPointer();
+        Symbol* sym = staff->getScoreSymbol();
         
         float play_t = t - sym->getTime();
         auto staff_b = staff->getBoundsInParent();

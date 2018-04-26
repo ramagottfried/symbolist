@@ -11,7 +11,7 @@
 SymbolistHandler::SymbolistHandler()
 {
     MessageManager::getInstance(); // this wasn't necessary before, I think there might be some JUCE code starting too soon now?
-	DEBUG_FULL("Instance address: " << this << endl);
+	DEBUG_FULL("Instance address: " << this << endl)
 	
     // Instantiates the model.
     SymbolistModel* model = new SymbolistModel();
@@ -62,7 +62,7 @@ SymbolistHandler::SymbolistHandler()
 SymbolistHandler::~SymbolistHandler()
 {
     DEBUG_FULL("Deleting symbolist handler, main component pointer: "
-    			<< getView() <<  " window " << main_window.get() << endl);
+    			<< getView() <<  " window " << main_window.get() << endl)
     
     if (getView() != NULL)
         symbolistAPI_closeWindow();
@@ -128,7 +128,7 @@ void SymbolistHandler::createTimeDisplayController()
 // Returns the new SymbolistHandler (this is a static method).
 SymbolistHandler* SymbolistHandler::symbolistAPI_newSymbolist()
 {
-    DEBUG_TRACE();
+    DEBUG_TRACE()
     return new SymbolistHandler();
 }
 
@@ -139,8 +139,8 @@ void SymbolistHandler::symbolistAPI_freeSymbolist()
 
 void SymbolistHandler::symbolistAPI_openWindow()
 {
-    DEBUG_FULL("Current thread address: " << Thread::getCurrentThread() << endl);
-    DEBUG_FULL("Current MessageManeger address: " << MessageManager::getInstance() << endl);
+    DEBUG_FULL("Current thread address: " << Thread::getCurrentThread() << endl)
+    DEBUG_FULL("Current MessageManeger address: " << MessageManager::getInstance() << endl)
     
     const MessageManagerLock mml;
     
@@ -167,7 +167,7 @@ void SymbolistHandler::symbolistAPI_openWindow()
 
 void SymbolistHandler::symbolistAPI_closeWindow()
 {
-	DEBUG_TRACE();
+	DEBUG_TRACE()
     MessageManagerLock mml;
 	
   	/* Calls the destructor of SymbolistMainWindow
@@ -268,7 +268,7 @@ void SymbolistHandler::symbolistAPI_setOneSymbol(const OdotBundle_s& bundle)
     else
     {
         executeUpdateCallback( -1 );
-        DEBUG_FULL(" Main component is NULL.");
+        DEBUG_FULL(" Main component is NULL.")
     }
 }
 
@@ -368,7 +368,7 @@ void SymbolistHandler::executeCloseCallback()
 
 void SymbolistHandler::executeUpdateCallback(int arg)
 {
-    // DEBUG_FULL("executeUpdateCallback" << endl);
+    // DEBUG_FULL("executeUpdateCallback" << endl)
     if (my_update_callback) { my_update_callback( this, arg ); }
 }
 
@@ -403,18 +403,18 @@ StaffComponent* SymbolistHandler::getStaveAtTime(float time)
 // Component factory
 BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* symbol, bool attachTheSymbol)
 {
-    DEBUG_FULL("Creating component from Symbol: ");
+    DEBUG_FULL("Creating component from Symbol: ")
     
     string typeofSymbol = symbol->getMessage("/type").getString();
     if (typeofSymbol.size() == 0)
     {
-		DEBUG_INLINE("Could not find '/type' message in OSC Bundle.. " << endl);
+		DEBUG_INLINE("Could not find '/type' message in OSC Bundle.. " << endl)
         return NULL;
         
     } else {
         
-        DEBUG_INLINE(typeofSymbol << endl);
-        BaseComponent *newComponent;
+        DEBUG_INLINE(typeofSymbol << endl)
+        BaseComponent* newComponent;
         
         // allocates component based on type, all are derived from the BaseComponent
         if ( typeofSymbol == "circle" ) {
@@ -432,20 +432,20 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* symbol, bool at
         } else if ( typeofSymbol == "staff" ) {
             newComponent = new StaffComponent();
         } else {
-		  	DEBUG_FULL("Unknown symbol type : " << typeofSymbol << endl);
+		  	DEBUG_FULL("Unknown symbol type : " << typeofSymbol << endl)
             newComponent = NULL;
         }
         
         if (newComponent != NULL)
         {
             // reads base component symbol values, and sets component bounds for display
-            newComponent->importFromSymbol(symbol) ;
+            newComponent->importFromSymbol(symbol);
 			
             if (attachTheSymbol)
             {
             	// initializes object specific messages if not present
-            	newComponent->addSymbolMessages(symbol);
-                newComponent->setScoreSymbolPointer(symbol);
+				newComponent->addSymbolMessages(symbol);
+                newComponent->setScoreSymbol(symbol);
                 getModel()->getScore()->addStaff(symbol); // << /type checked internally and added if staff
             }
         }
@@ -460,9 +460,9 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* symbol, bool at
  ********************************/
 void SymbolistHandler::removeSymbolFromScore(BaseComponent* component)
 {
-    assert ( component->getScoreSymbolPointer() != NULL ) ;
+    assert ( component->getScoreSymbol() != NULL ) ;
     
-    Symbol* symbol = component->getScoreSymbolPointer();
+    Symbol* symbol = component->getScoreSymbol();
     assert (symbol != NULL ); // that's not normal
     
     log_score_change();
@@ -483,7 +483,7 @@ void SymbolistHandler::removeSymbolFromScore(BaseComponent* component)
         cout << e.what() << endl;
     }
     
-    component->setScoreSymbolPointer(NULL);
+    component->setScoreSymbol(NULL);
     executeUpdateCallback(-1);
     
 }
@@ -493,14 +493,13 @@ void SymbolistHandler::removeSymbolFromScore(BaseComponent* component)
  */
 void SymbolistHandler::modifySymbolInScore( BaseComponent* component )
 {
-    
     log_score_change();
     
     // get pointer to symbol attached to component
-    Symbol* symbol = component->getScoreSymbolPointer();
+    Symbol* symbol = component->getScoreSymbol();
     assert (symbol != NULL) ;
     
-    // DEBUG_FULL(c << " ---> modifySymbolInScore " << s->getID() << endl);
+    // DEBUG_FULL(c << " ---> modifySymbolInScore " << s->getID() << endl)
     // printRect(c->getBounds(), "component");
 
     
@@ -513,7 +512,7 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* component )
     
     if ( symbol->getType() == "staff" )
     {
-        DEBUG_FULL("type staff ");
+        DEBUG_FULL("Type staff " << endl)
         // If the type is "staff" resort the stave order and update time point array
         getModel()->getScore()->updateStavesAndTimepoints();
     }
@@ -540,7 +539,7 @@ void SymbolistHandler::log_score_change()
 
 void SymbolistHandler::push_undo_stack()
 {
-    // DEBUG_FULL("Previous score :" << endl);
+    // DEBUG_FULL("Previous score :" << endl)
     // getModel()->getScore()->print();
     
     undo_stack.add( new Score( *getModel()->getScore() ) );
@@ -617,7 +616,7 @@ void SymbolistHandler::clearInspector()
 
 void SymbolistHandler::updateSymbolFromComponent(BaseComponent* component)
 {
-    component->importFromSymbol( *component->getScoreSymbolPointer() );
+    component->importFromSymbol( *component->getScoreSymbol() );
     modifySymbolInScore( component ); // repaint is called in modify symbol
 	
 }

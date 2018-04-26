@@ -14,13 +14,13 @@ class PageComponent; // forward declaration of subclass
 template <typename T>
 void printRect( const Rectangle<T> &rect, const String &name = "rect" )
 {
-	DEBUG_INLINE(name << " " << rect.getX() << " " << rect.getY() << " " << rect.getWidth() << " " << rect.getHeight() << std::endl);
+	DEBUG_INLINE(name << " " << rect.getX() << " " << rect.getY() << " " << rect.getWidth() << " " << rect.getHeight() << std::endl)
 }
 
 template <typename T>
 void printPoint(Point<T> point, const String &name = "point" )
 {
-    DEBUG_INLINE(name << " " << point.getX() << " " << point.getY() << "\n");
+    DEBUG_INLINE(name << " " << point.getX() << " " << point.getY() << "\n")
 }
 
 
@@ -38,9 +38,10 @@ public:
     virtual void selectComponent();
     virtual void deselectComponent();
     bool componentSelected();
-    
-    const size_t    getNumSubcomponents();
-    SymbolistComponent* getSubcomponent(int i);
+	
+    inline Array<SymbolistComponent* >* getSubcomponents() { return &subcomponents; }
+    const size_t getNumSubcomponents();
+    SymbolistComponent* getSubcomponentByIndex(int i);
     SymbolistComponent* getSubcomponentByID(const string& id);
 
     virtual void    addSubcomponent( SymbolistComponent *c );

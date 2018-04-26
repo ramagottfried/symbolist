@@ -296,7 +296,7 @@ bool SymbolistMenu::perform(const juce::ApplicationCommandTarget::InvocationInfo
                 break;
                 
             case cmd_toggleCursor:
-                main->getController()->symbolistAPI_toggleTimeCusor();
+                main->toggleTimeAndCursorDisplay();
                 break;
                 
             case cmd_undo:

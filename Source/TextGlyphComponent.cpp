@@ -99,7 +99,7 @@ TextGlphComponent::TextGlphComponent()
     
 TextGlphComponent::~TextGlphComponent()
 {	
-    DEBUG_FULL("Deleting text " << this << endl);
+    DEBUG_FULL("Deleting text " << this << endl)
 };
 
 void TextGlphComponent::setBoundsFromSymbol( float x, float y , float w , float h)

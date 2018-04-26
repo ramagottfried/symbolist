@@ -9,7 +9,7 @@ void SymbolGroupComponent::groupSelectedSymbols()
 	if ( selected_components.size() > 1 )
     {
     	DEBUG_FULL("Creating a group from " << selected_components.size()
-										    << " selected components." << endl);
+										    << " selected components." << endl)
 		
         PageController* controller = getPageComponent()->getController();
 		Symbol symbolGroup = controller->createNestedSymbolGroup(selected_components, this);
@@ -24,8 +24,8 @@ void SymbolGroupComponent::groupSelectedSymbols()
 		/* Adds a new /subsymbol entry in the symbol bundle
 		 * attached to this SymbolGroupComponent.
 		 */
-		if (getScoreSymbolPointer() != NULL)
-			getScoreSymbolPointer()->addMessage("/subsymbol/" + to_string(getNumSubcomponents() + 1), symbolGroup);
+		if (getScoreSymbol() != NULL)
+			getScoreSymbol()->addMessage("/subsymbol/" + to_string(getNumSubcomponents() + 1), symbolGroup);
 		
         addToSelection(groupComponent);
     }
@@ -34,7 +34,7 @@ void SymbolGroupComponent::groupSelectedSymbols()
 
 void SymbolGroupComponent::deleteSelectedComponents()
 {
-	DEBUG_TRACE();
+	DEBUG_TRACE()
 	ScoreComponent::deleteSelectedComponents();
 	
 }
@@ -49,7 +49,7 @@ bool SymbolGroupComponent::hitTest (int x, int y)
     
     for (int i = 0; i < getNumSubcomponents(); i++ )
     {
-        if( getSubcomponent(i)->hitTest ( x - getSubcomponent(i)->getX() , y - getSubcomponent(i)->getY() ) )
+        if( getSubcomponentByIndex(i)->hitTest ( x - getSubcomponentByIndex(i)->getX() , y - getSubcomponentByIndex(i)->getY() ) )
         {
             return true;
         }
@@ -62,7 +62,7 @@ void SymbolGroupComponent::setSymbolComponentColor( Colour c )
     sym_color = c;
     for( int i = 0; i < getNumSubcomponents(); i++ )
     {
-        SymbolistComponent *sub = getSubcomponent( i );
+        SymbolistComponent *sub = getSubcomponentByIndex( i );
         sub->setSymbolComponentColor( c );
     }
 }
@@ -82,7 +82,7 @@ void SymbolGroupComponent::selectComponent()
         BaseComponent::selectComponent();
         for (int i = 0; i < getNumSubcomponents(); i++ )
         {
-            getSubcomponent(i)->selectComponent();
+            getSubcomponentByIndex(i)->selectComponent();
         }
     }
 }
@@ -92,7 +92,7 @@ void SymbolGroupComponent::deselectComponent()
     BaseComponent::deselectComponent();
     for (int i = 0; i < getNumSubcomponents(); i++ )
     {
-        getSubcomponent(i)->deselectComponent();
+        getSubcomponentByIndex(i)->deselectComponent();
     }
 }
 
@@ -125,7 +125,7 @@ bool SymbolGroupComponent::intersectRect( Rectangle<int> rect)
 {
     for (int i = 0; i < getNumSubcomponents(); i++ )
     {
-        if ( getSubcomponent(i)->intersectRect( rect.translated( -getX(), -getY()) ) ) return true ;
+        if ( getSubcomponentByIndex(i)->intersectRect( rect.translated( -getX(), -getY()) ) ) return true ;
     }
     return false;
 }
@@ -134,7 +134,7 @@ void SymbolGroupComponent::h_flip(float ax, float ay)
 {
     for (int i = 0; i < getNumSubcomponents(); i++ )
     {
-        auto b = dynamic_cast<BaseComponent*>(getSubcomponent(i));
+        auto b = dynamic_cast<BaseComponent*>(getSubcomponentByIndex(i));
         
         // Checks the downcast result.
         if (b != NULL)
@@ -146,7 +146,7 @@ void SymbolGroupComponent::v_flip(float ax, float ay)
 {
     for (int i = 0; i < getNumSubcomponents(); i++ )
     {
-        auto b = dynamic_cast<BaseComponent*>(getSubcomponent(i));
+        auto b = dynamic_cast<BaseComponent*>(getSubcomponentByIndex(i));
         
         // Checks the downcast result.
         if (b != NULL)
@@ -163,7 +163,7 @@ void SymbolGroupComponent::rotateScoreComponent(float theta, float ax, float ay)
 
     for (int i = 0; i < getNumSubcomponents(); i++ )
     {
-        auto b = dynamic_cast<BaseComponent*>(getSubcomponent(i));
+        auto b = dynamic_cast<BaseComponent*>(getSubcomponentByIndex(i));
         
         // Checks the downcast result.
         if (b != NULL)
@@ -183,7 +183,7 @@ void SymbolGroupComponent::rotateScoreComponent(float theta, float ax, float ay)
 
     for (int i = 0; i < getNumSubcomponents(); i++ )
     {
-        auto sub = getSubcomponent(i);
+        auto sub = getSubcomponentByIndex(i);
         sub->setTopLeftPosition(sub->getX() - offsetX, sub->getY() - offsetY );
     }
 
@@ -226,7 +226,7 @@ void SymbolGroupComponent::addSymbolMessages(Symbol* s )
      */
     for (int i = 0; i < getNumSubcomponents(); i++)
     {
-        subComponent = dynamic_cast<BaseComponent*>(getSubcomponent(i));
+        subComponent = dynamic_cast<BaseComponent*>(getSubcomponentByIndex(i));
         if (subComponent != NULL)
         {
 			subComponent->addSymbolMessages(&subSymbol);
@@ -235,24 +235,8 @@ void SymbolGroupComponent::addSymbolMessages(Symbol* s )
 			String componentId = subComponent->getComponentID();
 			string typeOfSymbol = s->getType();
 			
-			/* If the component has a default or empty id then calculate a new one
-			 * and modify the subsymbol bundle.
-			 */
-//			if( componentId.isEmpty() ||
-//				componentId == (typeOfSymbol + "/palette")  ||
-//				componentId == (name + "/palette") ||
-//				!componentId.contains(String(name)))
-//			{
-//				componentId = getSymbolistHandler()->createIdFromName(name);
-//				subSymbol.addMessage("/id", componentId.toStdString());
-//				s->addMessage( "/subsymbol/" + to_string(i), subSymbol);
-//
-//			}
-			
-			
         }
 		
-        DEBUG_FULL("Sub component ID : " << subComponent->getComponentID() << endl);
     }
 	
 }
@@ -274,7 +258,7 @@ void SymbolGroupComponent::importFromSymbol( const Symbol &symbol )
     	 */
         if( subsymbolMessage[0].isBundle() )
         {
-            DEBUG_FULL("IMPORT FROM: " << subsymbolMessage.getAddress() << endl);
+            DEBUG_FULL("IMPORT FROM: " << subsymbolMessage.getAddress() << endl)
             Symbol subSymbol = Symbol(subsymbolMessage.getBundle().get_o_ptr());
 			
 			BaseComponent* c = getSymbolistHandler()->makeComponentFromSymbol(&subSymbol, false);
@@ -285,11 +269,11 @@ void SymbolGroupComponent::importFromSymbol( const Symbol &symbol )
 				count++;
 			}
 			else
-				DEBUG_FULL("Error importing subsymbol #" << count << endl);
+				DEBUG_FULL("Error importing subsymbol #" << count << endl)
 			
         }
     }
     
-    DEBUG_FULL("Imported Group of " << count << " symbols..." << endl);
+    DEBUG_FULL("Imported Group of " << count << " symbols..." << endl)
 }
 

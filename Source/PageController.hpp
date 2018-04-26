@@ -225,6 +225,26 @@ public:
 	 */
 	Symbol createNestedSymbolGroup(Array<SymbolistComponent* > selectedComponents, SymbolGroupComponent* container);
 	
+	/**
+	 * Creates a staff symbol in the score.
+	 *
+	 * The symbol associated to the staffReferenceComponent is embedded
+	 * as a /subsymbol entry in the newly created staff symbol.
+	 *
+	 * @param staffReferenceComponent the graphic component chosen as the
+	 *								  staff reference; it's means that
+	 *								  the staff duration is based on the
+	 *								  length of this component.
+	 *
+	 * @return 					   	  a reference to the newly created staff
+	 *							      in the score.
+	 *
+	 * @throws logic_error		      If this PageController instance has no parent
+	 *							      controller, or at least not of type
+	 *							      SymbolitsHandler.
+	 */
+	Symbol* createStaff(BaseComponent* staffReferenceComponent);
+	
     /* Overrides the update method inherited from the Observer class. */
     virtual inline void update() override {}
 

@@ -41,7 +41,7 @@ void ScoreComponent::selectAllComponents()
 {
     for (int i = 0 ; i < getNumSubcomponents(); i++ )
     {
-        addToSelection(getSubcomponent(i));
+        addToSelection(getSubcomponentByIndex(i));
     }
 }
 
@@ -49,7 +49,7 @@ void ScoreComponent::unselectAllComponents()
 {
     for (int i = 0 ; i < getNumSubcomponents(); i++ )
     {
-        SymbolistComponent *c = getSubcomponent(i);
+        SymbolistComponent *c = getSubcomponentByIndex(i);
         
         c->deselectComponent();
         selected_components.removeAllInstancesOf(c);
@@ -121,7 +121,7 @@ void ScoreComponent::dragLassoSelection(Point<int> position)
     
     for (int i = 0; i < getNumSubcomponents(); ++i)
     {
-        SymbolistComponent* cc = getSubcomponent(i);
+        SymbolistComponent* cc = getSubcomponentByIndex(i);
         
         if (!cc->componentSelected() && cc->intersectRect(s_lasso.getBounds()))
             addToSelection(cc);
@@ -186,7 +186,7 @@ void ScoreComponent::deleteSelectedComponents()
     
     for ( SymbolistComponent *c : selected_components ) // there's probably a better way to copy a vector's contents :)
     {
-        DEBUG_FULL(c << endl);
+        DEBUG_FULL(c << endl)
         items.push_back(c);
     }
     
@@ -208,7 +208,7 @@ void ScoreComponent::groupSelectedSymbols()
 
     	DEBUG_FULL("Creating a group (top level? " << creating_a_top_level_group << "), from "
 												   << selected_components.size()
-												   << " selected components." << endl);
+												   << " selected components." << endl)
 
         // get the position an bounds of the group
         int minx = getWidth(), maxx = 0, miny = getHeight(), maxy = 0;
@@ -235,7 +235,7 @@ void ScoreComponent::groupSelectedSymbols()
             // Checks downcast result.
             if (selectedComponent != NULL)
             {
-                auto associatedSymbol = selectedComponent->getScoreSymbolPointer();
+                auto associatedSymbol = selectedComponent->getScoreSymbol();
                 if (associatedSymbol->size() > 0)  // this fails within groups because subcomponents do not have score symbols...
                 {
                     // copies bundles from subcomponent symbols and join into new group symbol
@@ -262,10 +262,10 @@ void ScoreComponent::groupSelectedSymbols()
 
 void ScoreComponent::ungroupSelectedSymbols()
 {
-    vector<SymbolistComponent*> items;
-    for( SymbolistComponent *c : selected_components ) {
+    vector<SymbolistComponent* > items;
+    for( SymbolistComponent *c : selected_components )
         items.push_back(c);
-    }
+	
     unselectAllComponents();
     
     for ( int i = 0; i < items.size(); i++ )
@@ -277,8 +277,8 @@ void ScoreComponent::ungroupSelectedSymbols()
         {
             int n = ((int)c->getNumSubcomponents());
             
-            vector< SymbolistComponent *> subitems;
-            for ( int ii = 0 ; ii < n ; ii++ ) { subitems.push_back(c->getSubcomponent(ii)); }
+            vector<SymbolistComponent* > subitems;
+            for ( int ii = 0 ; ii < n ; ii++ ) subitems.push_back(c->getSubcomponentByIndex(ii));
             
             for ( int ii = 0; ii < n ; ii++ )
             {
@@ -288,7 +288,7 @@ void ScoreComponent::ungroupSelectedSymbols()
                 if (sc != NULL)
                 {
                     c->removeSubcomponent(sc);
-                    if ( c->isTopLevelComponent() ) sc->createAndAttachSymbol() ;
+                    if ( c->isTopLevelComponent() ) sc->createAndAttachSymbol();
                     addSubcomponent(sc);
                     sc->setTopLeftPosition(sc->getPosition().translated(c->getPosition().getX(), c->getPosition().getY()));
                 }

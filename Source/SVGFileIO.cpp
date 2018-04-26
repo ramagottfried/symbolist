@@ -19,9 +19,9 @@ vector<unique_ptr<Symbol> > SVGFileIO::read( const char * filename )
     }
     else
     {
-        DEBUG_FULL("XML [" << filename << "] parsed with errors, attr value: [" << m_doc.child("node").attribute("attr").value() << "]\n");
-        DEBUG_FULL("Error description: " << result.description() << "\n");
-        DEBUG_FULL("Error offset: " << result.offset << " (error at [..." << (filename + result.offset) << "]\n\n");
+        DEBUG_FULL("XML [" << filename << "] parsed with errors, attr value: [" << m_doc.child("node").attribute("attr").value() << "]\n")
+        DEBUG_FULL("Error description: " << result.description() << "\n")
+        DEBUG_FULL("Error offset: " << result.offset << " (error at [..." << (filename + result.offset) << "]\n\n")
     }
     
     return vector<unique_ptr<Symbol> >();

@@ -19,25 +19,25 @@ using namespace std;
  * Prints the debug message specifying the current file name
  * line number, and scope function.
  */
-#define DEBUG_FULL(debugMessage) (cout << "** " << __FILENAME__ << " line " << __LINE__ << " [" << __func__ << "]" \
-									   << ": " << debugMessage)
+#define DEBUG_FULL(debugMessage) cout << "** " << __FILENAME__ << " line " << __LINE__ << " [" << __func__ << "]" \
+									  << ": " << debugMessage;
 
 /**
  * Prints the debugMessage without file name, line number
  * and scope function infos.
  */
-#define DEBUG_INLINE(debugMessage) (cout << debugMessage)
+#define DEBUG_INLINE(debugMessage) cout << debugMessage;
 
 /**
  * Prints the current file name, line number, and scope function.
  */
-#define DEBUG_TRACE() (cout << "** " << __FILENAME__ << " line " << __LINE__ << " [" << __func__ << "]" << endl)
-
+#define DEBUG_TRACE() cout << "** " << __FILENAME__ << " line " << __LINE__ << " [" << __func__ << "]" << endl;
 
 #else
 
 #define DEBUG_FULL(debugMessage)
 #define DEBUG_INLINE(debugMessage)
+#define DEBUG_TRACE()
 
 #endif
 

@@ -3,7 +3,7 @@
 
 SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
 {
-    DEBUG_FULL("Instance address: " << this << endl);
+    DEBUG_FULL("Instance address: " << this << endl)
     setComponentID("MainComponent");
 	
     /* Sets the corresponding controllers for this
@@ -70,11 +70,11 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
 SymbolistMainComponent::~SymbolistMainComponent()
 {
     assert(getController() != NULL);
-    setLookAndFeel(nullptr);
-    
+	setLookAndFeel(nullptr);
+	
     palette_view.deleteAllChildren();
     inspector->removeAllChildren();
-    
+	
     /* Removes SymbolistMainComponent and its child views
      * from the SymbolistModel's observers list.
      */
@@ -84,6 +84,7 @@ SymbolistMainComponent::~SymbolistMainComponent()
 	getModel()->detach(&palette_view);
     getModel()->detach(&score_view);
     getModel()->detach(this);
+	
 }
 
 /***********************************

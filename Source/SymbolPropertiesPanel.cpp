@@ -20,7 +20,7 @@ SymbolPropertiesPanel::SymbolPropertiesPanel(SymbolistHandler *sh )
 
 void SymbolPropertiesPanel::change_callback( const OdotMessage& msg)
 {
-    Symbol* s = symbol_component->getScoreSymbolPointer();
+    Symbol* s = symbol_component->getScoreSymbol();
 	
     if (s != NULL)
     {
@@ -29,7 +29,7 @@ void SymbolPropertiesPanel::change_callback( const OdotMessage& msg)
 		
     	inspectorView->updateSymbolFromComponent( symbol_component );
     }
-    // DEBUG_INLINE("******************** updated bundle from inspector ********** " << endl);
+    // DEBUG_INLINE("******************** updated bundle from inspector ********** " << endl)
     
 }
 
@@ -39,8 +39,8 @@ void SymbolPropertiesPanel::createOSCview ()
 
     if( symbol_component )
     {
-        Symbol* s = symbol_component->getScoreSymbolPointer();
-        // DEBUG_FULL("Retrieving pointer from component" << endl);
+        Symbol* s = symbol_component->getScoreSymbol();
+        // DEBUG_FULL("Retrieving pointer from component" << endl)
         // s->print();
         
         if( !s )

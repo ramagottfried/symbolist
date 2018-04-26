@@ -4,27 +4,36 @@
 #include "PageComponent.h"
 #include "ScoreComponent.h"
 
+StaffComponent::~StaffComponent()
+{
+
+	for (BaseComponent* component : components_on_staff)
+		removeStaffObject(component);
+}
 
 void StaffComponent::importFromSymbol( const Symbol &s )
 {
     clearAllSubcomponents();
-    
     BaseComponent::importFromSymbol(s);
+	
+    // there can be only one staff subsymbol, must be grouped if multiple
+    Symbol subsymbol = Symbol(s.getMessage( "/subsymbol" ).getBundle().get_o_ptr());
     
-    auto subsym = new Symbol(s.getMessage( "/subsymbol" ).getBundle().get_o_ptr()); // there can be only one staff subsymbol, must be grouped if multiple
-    
-    if (subsym->size() == 0)
+    if (subsymbol.size() == 0)
     {
-        cout << "no staff subsymbol found" << endl;
+        DEBUG_FULL("No staff subsymbol found" << endl)
         return;
     }
-    
-    BaseComponent* c = getSymbolistHandler()->makeComponentFromSymbol(subsym, false );
+	
+    BaseComponent* c = getSymbolistHandler()->makeComponentFromSymbol(&subsymbol, false);
     
     if (c != NULL)
-        addSubcomponent(c);
+    {
+    	DEBUG_FULL("Adding " << c->getComponentID() << " to " << getComponentID() << endl)
+		addSubcomponent(c);
+	}
     else
-        cout << "Error importing staffSymbol " << endl;
+        DEBUG_FULL("Error importing staffSymbol " << endl)
         
 }
 
@@ -32,26 +41,24 @@ void StaffComponent::addSymbolMessages(Symbol* s)
 {
     BaseComponent::addSymbolMessages(s);
 
-    if ( getNumSubcomponents() )
+    if ( getNumSubcomponents() > 0 )
     {
-        auto firstSubComponent = getSubcomponent(0);
-        if ( firstSubComponent )
+        auto soleSubComponent = getSubcomponentByIndex(0);
+        if ( soleSubComponent )
         {
-            BaseComponent* castedFirstSubComponent = dynamic_cast<BaseComponent*>(firstSubComponent);
+            BaseComponent* staffSubComponent = dynamic_cast<BaseComponent*>(soleSubComponent);
             
-            // Checks downcast result.
-            if (castedFirstSubComponent != NULL)
-	    {
-               Symbol sub_sym;
-               castedFirstSubComponent->addSymbolMessages(&sub_sym);
-               s->addMessage("/subsymbol", sub_sym);
-
-	    }
+            // Checks downcast result and if component is attached to a score symbol.
+            if (staffSubComponent != NULL)
+            {
+				Symbol staffSubSymbol = Symbol();
+				staffSubComponent->addSymbolMessages(&staffSubSymbol);
+		   		s->addMessage("/subsymbol", staffSubSymbol);
+			}
+			
         }
         else
-        {
-            cout << "no subcomponent found" << endl;
-        }
+            DEBUG_FULL("No subcomponent found" << endl)
     }
     
 }
@@ -60,43 +67,24 @@ void StaffComponent::parentHierarchyChanged()
 {
     BaseComponent::parentHierarchyChanged();
     
-    PageComponent *pc = getPageComponent();
-    if (pc)
+    PageComponent* scoreView = getPageComponent();
+    if (scoreView)
     {
-        Symbol* s = getScoreSymbolPointer();
-        if (s != NULL)
+        Symbol* staffSymbol = getScoreSymbol();
+        if (staffSymbol != NULL)
         {
-            String id = s->getID();
+            String id = staffSymbol->getID();
         
-            auto objects = pc->getSubcomponentsByStaff( id );
-            for( auto o : objects )
-            {
-                addOjbectToStave( o );
-            }
+            auto subComponents = scoreView->getSubcomponentsByStaff( id );
+            for( auto subComponent : subComponents )
+                addObjectToStave( subComponent );
             
-            objects.clear();
+            subComponents.clear();
         }
     }
+    
     // repaint();
 }
-
-void StaffComponent::selectComponent()
-{
-    SymbolGroupComponent::selectComponent();
-    /*
-    auto page = getPageComponent();
-    for( BaseComponent *c : symbols_on_staff )
-    {
-        page->addToSelection( c );
-    }
-    */
-}
-
-void StaffComponent::deselectComponent()
-{
-    SymbolGroupComponent::deselectComponent();
-}
-
 
 bool StaffComponent::hitTest (int x, int y)
 {
@@ -108,7 +96,6 @@ bool StaffComponent::hitTest (int x, int y)
     return SymbolGroupComponent::hitTest ( x, y );
     
 }
-
 
 void StaffComponent::mouseDown( const MouseEvent& event )
 {
@@ -124,7 +111,7 @@ void StaffComponent::mouseDown( const MouseEvent& event )
             {
                 if( c->getSymbolTypeStr() != "staff" )
                 {
-                    addOjbectToStave(c);
+                    addObjectToStave(c);
                     c->setStaff(this);
                     getSymbolistHandler()->modifySymbolInScore(c);
                 }
@@ -142,7 +129,7 @@ void StaffComponent::mouseDrag( const MouseEvent& event )
     auto scoreView = getPageComponent();
 
     if ( is_selected )
-        for( BaseComponent *c : symbols_on_staff )
+        for( BaseComponent *c : components_on_staff )
             scoreView->addToSelection( c );
     
     BaseComponent::mouseDrag( event );
@@ -163,8 +150,8 @@ void StaffComponent::paint(Graphics& g)
 										->getScore()
 										->getTimePointArray().getConstSymbolTimePoints();
 			
-			float startTime = getScoreSymbolPointer()->getTime();
-			float endTime = startTime + getScoreSymbolPointer()->getDuration();
+			float startTime = getScoreSymbol()->getTime();
+			float endTime = startTime + getScoreSymbol()->getDuration();
 			
 			for (int i = 0; i < timePointArray.size(); i++)
 			{
@@ -176,7 +163,7 @@ void StaffComponent::paint(Graphics& g)
 		
     }
     
-    if( in_staff_selection_mode )
+    if ( in_staff_selection_mode )
     {
         g.setColour( Colours::lightblue );
         g.fillRect( getLocalBounds() );
@@ -187,6 +174,6 @@ void StaffComponent::paint(Graphics& g)
         g.setFont( f );
         
         g.setColour( Colours::black );
-        g.drawText( getScoreSymbolPointer()->getID(), getLocalBounds().reduced(10), Justification::centredLeft );
+        g.drawText( getScoreSymbol()->getID(), getLocalBounds().reduced(10), Justification::centredLeft );
     }
 }

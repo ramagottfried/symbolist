@@ -7,8 +7,7 @@
  * Describes a graphic component using a center point as its reference.
  * Additionally, depending on their type, and rotation the w and h could be different...
  */
-class BasicShapePathComponent : public PathBaseComponent
-{
+class BasicShapePathComponent : public PathBaseComponent {
     
 public:
     
@@ -24,7 +23,7 @@ public:
         
         // rotate backwards and to get size values
         p.applyTransform( AffineTransform().rotation( -m_rotation, pbounds.getCentreX(), pbounds.getCentreY()  ) );
-        auto pb = pbounds.getRealPathBounds( p ).expanded( strokeType.getStrokeThickness() );
+        auto pb = pbounds.getRealPathBounds( p ).expanded( stroke_type.getStrokeThickness() );
         
         return Rectangle<float>( b.getX(), b.getCentreY(), pb.getWidth(), pb.getHeight() );
     }
@@ -38,7 +37,7 @@ public:
         m_w = w;
         m_h = h;
         
-        auto bounds = drawAndRotateShape(x, y, w, h).expanded( strokeType.getStrokeThickness() );
+        auto bounds = drawAndRotateShape(x, y, w, h).expanded( stroke_type.getStrokeThickness() );
         setBounds( x , y - (h * 0.5), bounds.getWidth() , bounds.getHeight() );
     }
     
@@ -66,7 +65,7 @@ public:
 
             
             s->addMessage ( "/fill" ,               m_fill   );
-            s->addMessage ( "/stroke/thickness" ,   strokeType.getStrokeThickness()   );
+            s->addMessage ( "/stroke/thickness" ,   stroke_type.getStrokeThickness()   );
             s->addMessage ( "/rotation" ,           m_rotation   );
 
         }
@@ -82,10 +81,10 @@ public:
             
             m_fill = s.getMessage("/fill").getInt();
             
-            strokeWeight = s.getMessage("/stroke/thickness").getInt();
-            strokeWeight = (strokeWeight == 0) ? 2 : strokeWeight;
+            stroke_weight = s.getMessage("/stroke/thickness").getInt();
+            stroke_weight = (stroke_weight == 0) ? 2 : stroke_weight;
 
-            strokeType.setStrokeThickness( strokeWeight );
+            stroke_type.setStrokeThickness( stroke_weight );
             
             m_rotation = s.getMessage("/rotation").getFloat();
             
@@ -123,7 +122,7 @@ public:
     
     Rectangle<float> drawAndRotateShape(float cx, float cy, float w, float h) override
     {
-        auto area = Rectangle<float>(0,0,w,h).reduced( strokeWeight );
+        auto area = Rectangle<float>(0,0,w,h).reduced( stroke_weight );
         cleanupPathArray();
         m_path_array.add(new Path());
         m_path_array.getLast()->addEllipse(area);
@@ -156,7 +155,7 @@ public:
 
     Rectangle<float> drawAndRotateShape(float cx, float cy, float w, float h) override
     {
-        auto area = Rectangle<float>(0,0,w,h).reduced( strokeWeight );
+        auto area = Rectangle<float>(0,0,w,h).reduced( stroke_weight );
         cleanupPathArray();
         m_path_array.add(new Path());
         m_path_array.getLast()->addRectangle(area);
@@ -195,7 +194,7 @@ public:
 
     Rectangle<float> drawAndRotateShape(float cx, float cy, float w, float h) override
     {
-        auto area = Rectangle<float>(0,0,w,h).reduced( strokeWeight );
+        auto area = Rectangle<float>(0,0,w,h).reduced( stroke_weight );
         cleanupPathArray();
         m_path_array.add(new Path());
         m_path_array.getLast()->addTriangle( area.getBottomLeft(), Point<float>(area.getCentreX(), area.getY()), area.getBottomRight());

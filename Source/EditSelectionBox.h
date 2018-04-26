@@ -3,14 +3,14 @@
 #ifndef EditSelectionBox_h
 #define EditSelectionBox_h
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "SymbolistComponent.h"
 #include "PathHandleComponent.h"
 #include "Symbol.h"
 
 // adapted from JUCE ResizableBoarderComponent
-class EditSelectionBox  : public Component
-{
+class EditSelectionBox  : public Component {
+
 public:
     //==============================================================================
     /** Creates a resizer.
@@ -32,10 +32,8 @@ public:
      */
     EditSelectionBox (Array<SymbolistComponent*>* const selected_component_array );
 
-    
     ~EditSelectionBox();
-    
-    
+	
     void setBorderThickness (const BorderSize<int>& newBorderSize);
     
     BorderSize<int> getBorderThickness() const;
@@ -115,7 +113,6 @@ public:
 
     void flipSelectedSymbols( int axis );
 
-    
 protected:
     void paint (Graphics&) override;
     void mouseEnter (const MouseEvent&) override;
@@ -150,9 +147,8 @@ private:
     };
     
     OwnedArray<PreviewComp> preview_components;
-    Array<SymbolistComponent*> non_preview_components;
-    
-    
+    Array<SymbolistComponent* > non_preview_components;
+	
     BorderSize<int> borderSize;
 
     Zone mouseZone;

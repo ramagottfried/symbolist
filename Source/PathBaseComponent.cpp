@@ -196,7 +196,7 @@ void PathBaseComponent::addSymbolMessages(Symbol* s )
         
         s->addMessage ( "/fill" ,               m_fill   );
 
-        s->addMessage ( "/stroke/thickness" ,   strokeWeight  );
+        s->addMessage ( "/stroke/thickness" ,   stroke_weight  );
         
     }
     
@@ -212,22 +212,22 @@ void PathBaseComponent::importFromSymbol(const Symbol &s)
 
     cleanupPathArray();
     
-    int n_subpaths = s.getMessage("/num_sub_paths").getInt();
-    
-    for ( int np = 0; np < n_subpaths ; np++ )
+    int subPathsCount = s.getMessage("/num_sub_paths").getInt();
+		
+    for ( int np = 0; np < subPathsCount ; np++ )
     {
         Path* subp = new Path();
         string path_str = s.getMessage("/path/" + to_string(np) + "/str").getString();
         subp->restoreFromString( path_str.c_str() );
-//        Drawable::parseSVGPath( ... ) << change to this
+//      Drawable::parseSVGPath( ... ) << change to this
 
         m_path_array.add(subp);
     }
     
     m_fill = s.getMessage("/fill").getInt();
-    strokeWeight = s.getMessage("/stroke/thickness").getInt();
-    strokeWeight = (strokeWeight == 0) ? 2 : strokeWeight;
-    strokeType.setStrokeThickness( strokeWeight );
+    stroke_weight = s.getMessage("/stroke/thickness").getInt();
+    stroke_weight = (stroke_weight == 0) ? 2 : stroke_weight;
+    stroke_type.setStrokeThickness( stroke_weight );
 
     updatePathBounds();
 }
@@ -267,7 +267,7 @@ void PathBaseComponent::setMinimalBounds ()
     
     m_path_bounds.getRealPathBounds(m_path);
     
-    Rectangle<float> symbol_bounds = m_path_bounds.expanded( strokeType.getStrokeThickness() );
+    Rectangle<float> symbol_bounds = m_path_bounds.expanded( stroke_type.getStrokeThickness() );
     m_path.applyTransform(AffineTransform::translation(- symbol_bounds.getX(), - symbol_bounds.getY() ));
     
     makePathArrayFromPath(m_path);
@@ -911,7 +911,7 @@ void PathBaseComponent::h_flip(float ax, float ay)
     m_path.applyTransform( AffineTransform().verticalFlip( round(ay - getY()) * 2.0 ) );
     m_path.applyTransform( AffineTransform().rotation( float_Pi, round(ax - getX()), round(ay - getY())) );
     
-    auto newrect = m_path_bounds.getRealPathBounds( m_path ).toNearestInt().expanded( strokeType.getStrokeThickness() );
+    auto newrect = m_path_bounds.getRealPathBounds( m_path ).toNearestInt().expanded( stroke_type.getStrokeThickness() );
 
     m_path.applyTransform( AffineTransform().translated( -newrect.getPosition() ) );
 
@@ -941,7 +941,7 @@ void PathBaseComponent::v_flip(float ax, float ay)
     
     m_path.applyTransform( AffineTransform().verticalFlip( round(ay - getY()) * 2.0 ) );
     
-    auto newrect = m_path_bounds.getRealPathBounds( m_path ).toNearestInt().expanded( strokeType.getStrokeThickness() );
+    auto newrect = m_path_bounds.getRealPathBounds( m_path ).toNearestInt().expanded( stroke_type.getStrokeThickness() );
     
     m_path.applyTransform( AffineTransform().translated( -newrect.getPosition() ) );
     
@@ -1010,7 +1010,7 @@ void PathBaseComponent::rotateScoreComponent( float theta, float ax, float ay )
     
     //printRect(m_path_bounds, "m_path_bounds 2");
     
-    Rectangle<int> symbol_bounds = m_path_bounds.expanded( strokeType.getStrokeThickness() ).toNearestInt();
+    Rectangle<int> symbol_bounds = m_path_bounds.expanded( stroke_type.getStrokeThickness() ).toNearestInt();
     m_path.applyTransform(AffineTransform::translation(-symbol_bounds.getX(), -symbol_bounds.getY() ));
     makePathArrayFromPath(m_path);
     updatePathBounds();
@@ -1036,7 +1036,7 @@ void PathBaseComponent::scaleScoreComponent(float scale_w, float scale_h)
         cout << "scale_w " << scale_w << " scale_h " << scale_h << endl;
         cout << "target w " << scale_w * getWidth() << " target h " << scale_h * getHeight() << endl;
         
-        float sw = 2.0 * strokeType.getStrokeThickness();
+        float sw = 2.0 * stroke_type.getStrokeThickness();
         
         // cout << "target w- " << scale_w * getWidth() - sw << " target h- " << scale_h * getHeight() - sw << endl;
 
@@ -1065,7 +1065,7 @@ void PathBaseComponent::scaleScoreComponent(float scale_w, float scale_h)
         
         printRect(m_path_bounds, "2 m_path_bounds");
 
-        Rectangle<float> symbol_bounds = m_path_bounds.expanded( strokeType.getStrokeThickness() );
+        Rectangle<float> symbol_bounds = m_path_bounds.expanded( stroke_type.getStrokeThickness() );
         m_path.applyTransform( AffineTransform::translation( -symbol_bounds.getPosition() ) );
         
         makePathArrayFromPath(m_path);
@@ -1091,9 +1091,8 @@ void PathBaseComponent::scaleScoreComponent(float scale_w, float scale_h)
 
 void PathBaseComponent::paint ( Graphics& g )
 {
-    
     BaseComponent::paint(g);
-    
+	
     /*
     int cur_t,local_t = 0;
     float strok = strokeType.getStrokeThickness();
@@ -1106,7 +1105,7 @@ void PathBaseComponent::paint ( Graphics& g )
         
         if (local_t >= 0 && local_t <= getScoreSymbolPointer()->getDuration())
         {
-            strok = strokeWeight * (1 + local_t) * 0.003;
+            strok = stroke_weight * (1 + local_t) * 0.003;
             g.setColour( Colours::indianred );
         }
     }
@@ -1117,14 +1116,14 @@ void PathBaseComponent::paint ( Graphics& g )
     //strokeType.createDashedStroke(p, p, dashes, 2 );
   
     g.setColour( getCurrentColor() );
-    strokeType.setStrokeThickness( strokeWeight );
+    stroke_type.setStrokeThickness( stroke_weight );
 
     // workaround since we don't know which context we're in, draw and return if in palette
     if( getPageComponent() == NULL )
     {
         for ( int np = 0; np < m_path_array.size(); np++)
         {
-            g.strokePath(*m_path_array[np], strokeType );
+            g.strokePath(*m_path_array[np], stroke_type );
             if( m_fill )
                 g.fillPath(*m_path_array[np]);
         }
@@ -1134,9 +1133,9 @@ void PathBaseComponent::paint ( Graphics& g )
         g.setColour( getCurrentColor() );
         for ( int np = 0; np < m_path_array.size(); np++)
         {
-            //std::cout << "DRAW " << getComponentID() << " -- " << np << std::endl;
-            g.strokePath(*m_path_array[np], strokeType );
-            if( m_fill )
+            DEBUG_FULL("DRAW " << getComponentID() << " -- " << np << endl)
+            g.strokePath(*m_path_array[np], stroke_type);
+            if ( m_fill )
                 g.fillPath(*m_path_array[np]);
         }
         

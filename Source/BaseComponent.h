@@ -24,9 +24,9 @@ public:
     void paint( Graphics& g ) override;
 	
     // it shouldn't be possible to set the symbol without updating the whole component
-    void setScoreSymbolPointer(Symbol* s) { score_symbol = s; }
+    void setScoreSymbol(Symbol* s) { score_symbol = s; }
     
-    Symbol* getScoreSymbolPointer () { return score_symbol; }
+    Symbol* getScoreSymbol () { return score_symbol; }
     void createAndAttachSymbol();
 	
     bool isTopLevelComponent();
@@ -63,7 +63,7 @@ public:
     }
     
     // not very happy with therm "Symbol" here
-    virtual inline void setSymbolComponentStrokeWeight( float s ){ strokeWeight = s; }
+    virtual inline void setSymbolComponentStrokeWeight( float s ){ stroke_weight = s; }
 	
     // helper functions
     inline void symbol_debug_function(const char* func)
@@ -124,23 +124,9 @@ public:
      
 */
     
-    inline void setStaffSelectionMode( bool state )
-    {
-        in_staff_selection_mode = state;
-    }
-
-    inline void setStaff( BaseComponent* c)
-    {
-        staff_name = c->getScoreSymbolPointer()->getID();
-        staff = c;
-        DEBUG_INLINE("/t/t ------------------------- \n" << this << " attached to staff " << staff_name << " " << staff << endl);
-    }
-    
-    inline  BaseComponent* getStaff()
-    {
-        return staff;
-    }
-    
+    inline void setStaffSelectionMode( bool state ) { in_staff_selection_mode = state; }
+    void setStaff(StaffComponent* staffComponent);
+    inline StaffComponent* getStaff() { return staff; }
     void attachToStaff();
 	
 protected:
@@ -151,21 +137,21 @@ protected:
      */
     Symbol* score_symbol = NULL;
 	
-    string          name;
-    string          staff_name;
-    string          lambda;
+    string  name;
+    string  staff_id;
+    string  lambda;
 	
     /**
      * Pointer to the graphic component which acts as a staff
      * for this BaseComponent.
      */
-    BaseComponent   *staff = nullptr; // place holder ...
+    StaffComponent* staff = nullptr; // place holder ...
 	
     // when loaded, if staff exists attach it
     // when staff is loaded, scan score and try to find symbols with matching staff names and attach them
 	
     // parameters
-    float           strokeWeight = 2;
+    float           stroke_weight = 2;
 	
     // interaction
     Point<float>    m_down;
@@ -178,7 +164,7 @@ protected:
     int             resize_mode = 0;
     float           m_min_size = 5;
 	
-    bool            showBoundingBox = false;
+    bool            show_bounding_box = false;
     float           bb_strokeWeight = 1;
     Colour          bb_color = Colours::cornflowerblue;
     Colour          sel_color = Colours::cornflowerblue;

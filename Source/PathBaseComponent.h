@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "BaseComponent.h"
@@ -8,8 +7,8 @@
 /**
  * Describes a graphic component composed of one or multiple paths.
  */
-class PathBaseComponent : public BaseComponent 
-{
+class PathBaseComponent : public BaseComponent {
+
 public:
     
     PathBaseComponent() = default;
@@ -33,7 +32,6 @@ public:
     
     void subtractHandle( int i );
 
-    
     void addHandlesTo( Point<float> p, PathHandle* last );
     void insertHandleBefore( PathHandle* target );
     void makeHandlesFromPath();
@@ -85,15 +83,14 @@ public:
 
     string exportSVG();
 
-    
 protected:
     
     /**
      * An array containing the Path objects composing this PathBaseComponent.
      */
-    Array<Path*>            m_path_array;
+    Array<Path* >           m_path_array;
     
-    PathStrokeType          strokeType = PathStrokeType(2.0) ;
+    PathStrokeType          stroke_type = PathStrokeType(2.0) ;
     bool                    m_fill = false;
     Colour                  m_fill_color;
     Colour                  m_stroke_color;
@@ -110,7 +107,7 @@ protected:
      * An array containing PathHandle objects used to manipulate the paths
      * composing this PathBaseComponent.
      */
-    Array<PathHandle*>      path_handles;
+    Array<PathHandle* >     path_handles;
     
     /**
      * A pointer to the PathHandle object controlling

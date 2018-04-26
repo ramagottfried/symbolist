@@ -46,7 +46,7 @@ SymbolistComponent* SymbolistComponent::getSubcomponentByID( const string& id )
     return nullptr;
 }
 
-SymbolistComponent* SymbolistComponent::getSubcomponent( int i )
+SymbolistComponent* SymbolistComponent::getSubcomponentByIndex( int i )
 {
     return subcomponents[i] ;
 }

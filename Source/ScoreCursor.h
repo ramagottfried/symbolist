@@ -10,7 +10,7 @@ class ScoreCursor : public SymbolistComponent
 public:
     
     ScoreCursor(){}
-    ~ScoreCursor(){}
+    ~ScoreCursor() = default;
     
     void paint( Graphics& g ) override;
     void mouseDrag( const MouseEvent& event ) override;

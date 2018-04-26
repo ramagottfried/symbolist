@@ -950,12 +950,12 @@
 		11D123561F44712800A5EA5B /* tool-ui-components */ = {
 			isa = PBXGroup;
 			children = (
+				111A26201F40CBAD00D3713C /* time-components */,
+				11B71DE11F0AD8EA00CDE209 /* property-panel */,
 				113DEE0A1FA1D7C600A45220 /* EditSelectionBox.cpp */,
 				113DEE0B1FA1D7C600A45220 /* EditSelectionBox.h */,
 				751E31512069410400C3318F /* PaletteButton.cpp */,
 				751E31522069410400C3318F /* PaletteButton.hpp */,
-				111A26201F40CBAD00D3713C /* time-components */,
-				11B71DE11F0AD8EA00CDE209 /* property-panel */,
 				11AEF23F207A94D000B1398D /* CodeboxComponent.cpp */,
 				11AEF240207A94D000B1398D /* CodeboxComponent.hpp */,
 			);

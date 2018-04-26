@@ -58,13 +58,13 @@ void PageController::addComponentsFromScore()
 {
     // Creates components from score symbols.
     Score* score = getModel()->getScore();
-    DEBUG_FULL("ADDING " << score->getSize() << " SYMBOLS" << endl);
+    DEBUG_FULL("ADDING " << score->getSize() << " SYMBOLS" << endl)
     
     for (int i = 0; i < score->getSize(); i++)
     {
         try
         {
-            BaseComponent* newComponent = makeComponentFromSymbol(score->getSymbol(i), false);
+            BaseComponent* newComponent = makeComponentFromSymbol(score->getSymbol(i), true);
             getView()->addSubcomponent(newComponent);
         }
         catch(length_error& error)
@@ -89,26 +89,26 @@ void PageController::copySelectedToClipBoard()
 	
     for ( auto c : getView()->getSelectedItems() )
     {
-        clipboard.add(new Symbol( *(dynamic_cast<BaseComponent*>(c))->getScoreSymbolPointer()) );
+    	Symbol* symbol = new Symbol( *(dynamic_cast<BaseComponent*>(c))->getScoreSymbol());
+		symbol->resetAllIds();
+        clipboard.add(symbol);
     }
 }
 
 void PageController::newFromClipBoard()
 {
-    auto scoreView = getView();
-	
-	scoreView->unselectAllComponents();
+	getView()->unselectAllComponents();
 	
     for( auto s : clipboard )
     {
         Symbol* newSymbol = getModel()->getScore()->addDuplicateSymbol(s);
-        BaseComponent *newComponent = makeComponentFromSymbol(newSymbol, true);
+        BaseComponent* newComponent = makeComponentFromSymbol(newSymbol, true);
 		
         if ( newComponent != NULL)
         {
-            scoreView->addSubcomponent( newComponent );
+            getView()->addSubcomponent( newComponent );
             newComponent->toFront(true);
-            scoreView->addToSelection( newComponent );
+            getView()->addToSelection( newComponent );
         }
 
     }
@@ -195,7 +195,7 @@ Symbol *PageController::createTopLevelSymbolGroup(Array<SymbolistComponent *> se
             // Checks downcast result.
             if (selectedComponent != NULL)
             {
-                auto associatedSymbol = selectedComponent->getScoreSymbolPointer();
+                auto associatedSymbol = selectedComponent->getScoreSymbol();
                 if (associatedSymbol->size() > 0)
                 {
                 	// copies bundles from subcomponent symbols and join into new group symbol
@@ -270,6 +270,27 @@ Symbol PageController::createNestedSymbolGroup(Array<SymbolistComponent* > selec
 	}
 	
 	return symbolGroup;
+	
+}
+
+Symbol* PageController::createStaff(BaseComponent* staffReferenceComponent)
+{
+	SymbolistHandler* parentController = dynamic_cast<SymbolistHandler* >(
+											getParentController()
+										 );
+	if (parentController == NULL)
+		throw logic_error("PageController has no parent controller.");
+	
+	// Calls the parent controller to create new symbol in score.
+	Symbol* staffSymbol = parentController->createSymbol();
+	
+	staffSymbol->setTypeXYWH("staff",
+							 staffReferenceComponent->getX(),
+							 staffReferenceComponent->getY(),
+							 staffReferenceComponent->getWidth(),
+							 staffReferenceComponent->getHeight() );
+
+	return staffSymbol;
 	
 }
 

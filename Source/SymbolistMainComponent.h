@@ -252,6 +252,14 @@ public:
 
 private:
 	
+	/*
+	 * The LookAndFeel should be declared before the components
+	 * using it, so it will be destroy after them, therefore
+	 * avoiding the crash concerning the destruction of the LookAndFeel
+	 * when it is still used by some components.
+	 */
+	SymbolistLookAndFeel look_and_feel;
+	
     /****************************************************
      *                   CHILD VIEWS                    *
      ****************************************************/
@@ -306,7 +314,7 @@ private:
 	/***************************************************
      *             MISC GRAPHIC PROPERTIES             *
      ***************************************************/
-    SymbolistLookAndFeel look_and_feel;
+    
      
     int palette_w = 50;
     int menu_h; // set internally

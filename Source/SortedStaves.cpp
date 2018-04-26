@@ -59,13 +59,13 @@ void SortedStaves::resetTimes()
         
         staff->addMessage( "/time/start", time );
         
-        DEBUG_FULL("Staff's start time = " << time);
+        DEBUG_FULL("Staff's start time = " << time)
         
         time += staff->pixelsToTime(w) ;
         
         staff->addMessage( "/time/duration", time );
         
-        DEBUG_INLINE(", end time = " << time << endl);
+        DEBUG_INLINE(", end time = " << time << endl)
         
     }
     
@@ -74,23 +74,23 @@ void SortedStaves::resetTimes()
 bool SortedStaves::addStaff(Symbol* s)
 {
     if( s->getMessage("/type").getString() != "staff" )
-        return 0;
+        return false;
     
     removeStaff(s);
     
-    DEBUG_FULL("Adding staff " << endl);
+    DEBUG_FULL("Adding staff " << endl)
     staves.emplace_back(s);
     
     resetTimes();
     
     // probably not the right place to deal with names.. maybe duplicates should be allowed?
     
-    DEBUG_FULL("Setting staff name -- staff size: " << staves.size() << endl);
+    DEBUG_FULL("Setting staff name -- staff size: " << staves.size() << endl)
     string name = s->getMessage("/name").getString();
     if( name.empty() ) // for now allow  name == s->getID()
         s->addMessage( "/name", "staff_" + to_string(staves.size() ) );
     
-    return 1;
+    return true;
     
 }
 

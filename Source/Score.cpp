@@ -6,7 +6,7 @@
 
 Score::Score()
 {
-    DEBUG_FULL("Score instance address: " << this << ", score size: " << score_symbols.size() << endl);
+    DEBUG_FULL("Score instance address: " << this << ", score size: " << score_symbols.size() << endl)
 	score_symbols = vector<unique_ptr<Symbol> >();
 	
     // Sets the score_ptr reference for time_points instance variable.
@@ -27,7 +27,7 @@ Score::Score(Score& src)
     updateStavesAndTimepoints();
     
     DEBUG_FULL("Copying score of address " << this << " and size " << score_symbols.size()
-    			<< ", owning " << staves.size() << " staves " << endl);
+    			<< ", owning " << staves.size() << " staves " << endl)
 }
 
 Score::Score( const OdotBundle_s& s_bundle  )
@@ -45,7 +45,7 @@ void Score::print() const
     int count = 1;
     for (auto it = score_symbols.begin(); it != score_symbols.end(); it++)
     {
-        DEBUG_INLINE("Symbol n° " << count << endl);
+        DEBUG_INLINE("Symbol n° " << count << endl)
         (*it)->print();
         count++;
     }
@@ -74,7 +74,7 @@ Symbol* Score::createSymbol()
  ***********************************/
 Symbol* Score::addSymbol(Symbol* symbol)
 {
-    DEBUG_FULL(symbol << endl );
+    DEBUG_FULL(symbol << endl )
 
     // Calls symbol's empty constructor if reference is NULL.
     if (symbol == NULL)
@@ -87,10 +87,10 @@ Symbol* Score::addSymbol(Symbol* symbol)
      * and return the symbol reference.
      */
     string id = symbol->getID();
-    DEBUG_FULL("checking for " << id << endl );
+    DEBUG_FULL("checking for " << id << endl )
 
     if( id == "" )
-        DEBUG_FULL("possible error: this symbol has no id text " << endl );
+        DEBUG_FULL("possible error: this symbol has no id text " << endl )
     
     auto iteratorToSymbol = find_if(score_symbols.begin(),
                                     score_symbols.end(),
@@ -102,7 +102,7 @@ Symbol* Score::addSymbol(Symbol* symbol)
     if (iteratorToSymbol != score_symbols.end())
     {
         (*iteratorToSymbol)->unionWith( symbol, true );
-        DEBUG_FULL("iteratorToSymbol " << endl );
+        DEBUG_FULL("iteratorToSymbol " << endl )
         return (*iteratorToSymbol).get();
     }
     
@@ -114,7 +114,7 @@ Symbol* Score::addSymbol(Symbol* symbol)
      * before sorting the score
      */
     Symbol* lastInsertedSymbol = score_symbols.back().get();
-    DEBUG_FULL("lastInsertedSymbol" << lastInsertedSymbol << endl );
+    DEBUG_FULL("lastInsertedSymbol" << lastInsertedSymbol << endl )
 
     // Calls the sort function to properly insert the new symbol.
     sort(score_symbols.begin(), score_symbols.end(), score_sorter);
@@ -122,7 +122,7 @@ Symbol* Score::addSymbol(Symbol* symbol)
     /* lastInsertedSymbol is added to staves
      * only if it is of type staff.
      */
-    DEBUG_FULL("attempt to add staff " << lastInsertedSymbol << endl );
+    DEBUG_FULL("attempt to add staff " << lastInsertedSymbol << endl )
     bool newstaff = staves.addStaff(lastInsertedSymbol);
     
     /* if lastInsertedSymbol is linked to a staff
@@ -167,7 +167,7 @@ Symbol* Score::addDuplicateSymbol(Symbol* symbol)
     }
     
     symbol->addMessage("/id", nextID );
-    //DEBUG_FULL(nextID << endl);
+    //DEBUG_FULL(nextID << endl)
     return addSymbol(symbol);
 }
 
@@ -345,7 +345,7 @@ void Score::importSymbols( const OdotBundle_s& s_bundle )
 {
     OdotBundle bundle( s_bundle ); // Deserializes the bundle
     
-    DEBUG_FULL("===ITERATE OSC (" << bundle.size() << " messages)" << endl);
+    DEBUG_FULL("===ITERATE OSC (" << bundle.size() << " messages)" << endl)
     for ( auto msg : bundle.getMessageArray() )
     {
         if( msg.getAddress().find("/symbol") == 0 && msg[0].getType() == OdotAtom::O_ATOM_BUNDLE )
@@ -354,7 +354,7 @@ void Score::importSymbols( const OdotBundle_s& s_bundle )
             addSymbol( s );
         }
     }
-    DEBUG_FULL("===ITERATE DONE" << endl);
+    DEBUG_FULL("===ITERATE DONE" << endl)
 }
 
 /***********************************

@@ -186,7 +186,6 @@ void EditSelectionBox::flipSelectedSymbols( int axis )
     
 }
 
-
 Rectangle<int> EditSelectionBox::getSelectionBounds()
 {
     // get the position an bounds of the group
@@ -201,7 +200,6 @@ Rectangle<int> EditSelectionBox::getSelectionBounds()
     }
     return Rectangle<int>(minx, miny, maxx-minx, maxy-miny);
 }
-
 
 Rectangle<int> EditSelectionBox::getPreviewBounds()
 {
@@ -417,7 +415,7 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
 
                 /* TEMPORARILY DISABLING PREVIEW SCALING FOR GROUPS AND STAFFS */
                 
-                if( c->getScoreSymbolPointer()->getType() == "group" || c->getScoreSymbolPointer()->getType() == "staff" )
+                if( c->getScoreSymbol()->getType() == "group" || c->getScoreSymbol()->getType() == "staff" )
                     continue;
                 
                 cout << "rel width " << (float)c->getWidth() / original_bounds.getWidth() << endl;;

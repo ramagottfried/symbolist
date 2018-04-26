@@ -13,8 +13,8 @@ template <typename T> void printPoint(Point<T> point, String name = "point" )
 
 BaseComponent::~BaseComponent()
 {
-    if ( staff )
-        ((StaffComponent*)staff)->removeStaffOjbect(this);
+    if ( staff != NULL)
+        staff->removeStaffObject(this);
 }
 
 bool BaseComponent::isTopLevelComponent()
@@ -25,7 +25,7 @@ bool BaseComponent::isTopLevelComponent()
             return true;
         else
         {
-            DEBUG_FULL("Warning: BaseComponent is TopLevel but has no attached score symbol!" << endl);
+            DEBUG_FULL("Warning: BaseComponent is TopLevel but has no attached score symbol!" << endl)
             return false;
         }
     }
@@ -66,9 +66,9 @@ void BaseComponent::reportModification()
 
 void BaseComponent::createAndAttachSymbol()
 {
-    Symbol* s = new Symbol();
+    Symbol* s = getSymbolistHandler()->createSymbol();
     addSymbolMessages(s);
-    setScoreSymbolPointer(s);
+    setScoreSymbol(s);
 }
 
 // addSymbolMessages outputs the component's values into the symbol
@@ -77,7 +77,7 @@ void BaseComponent::addSymbolMessages(Symbol* s)
     s->addMessage("/name", name);
     s->addMessage("/type", getSymbolTypeStr());
     s->addMessage("/id", getComponentID().getCharPointer());
-    s->addMessage("/staff", staff_name);
+	s->addMessage("/staff", staff_id);
    
     auto b = symbol_export_bounds();
     
@@ -95,7 +95,7 @@ Symbol BaseComponent::exportSymbol()
     s.addMessage("/name", name );
     s.addMessage("/type", getSymbolTypeStr() );
     s.addMessage("/id", getComponentID().getCharPointer() );
-    s.addMessage("/staff", staff_name );
+	s.addMessage("/staff", staff_id );
     
     auto b = symbol_export_bounds();
     
@@ -117,7 +117,7 @@ void BaseComponent::importFromSymbol(const Symbol &s)
     string typeOfSymbol = s.getMessage( "/type" ).getString();
     if (typeOfSymbol.size() == 0)
     {
-        cout << "BaseComponent import: Could not find '/type' message in OSC Bundle.. (size=" << "insert bundle size here" << ")" << endl;
+        DEBUG_FULL("BaseComponent import: Could not find '/type' message in OSC Bundle.. (size=" << "insert bundle size here" << ")" << endl)
         return;
     }
     
@@ -130,7 +130,7 @@ void BaseComponent::importFromSymbol(const Symbol &s)
     if (w == 0 || h == 0)
     {
         // Allow for the case where the score is specified in terms of time and staff type name...
-        cout << "***** couldn't find x y w or h values " << endl;
+        DEBUG_FULL("***** couldn't find x y w or h values " << endl)
     }
     
     auto color_atoms = s.getMessage("/color").getAtoms();
@@ -175,9 +175,9 @@ void BaseComponent::importFromSymbol(const Symbol &s)
 	else
 		setComponentID(typeOfSymbol + "/palette");
 	
-    staff_name = s.getMessage("/staff").getString();
-    if(staff_name == "<none>")
-        staff_name = "";
+    staff_id = s.getMessage("/staff").getString();
+    if(staff_id == "<none>")
+        staff_id = "";
         
     attachToStaff();
 	
@@ -189,7 +189,7 @@ void BaseComponent::setIdFromSymbol()
 	
     if (pc)
     {
-        Symbol* s = getScoreSymbolPointer();
+        Symbol* s = getScoreSymbol();
 		String id;
 		
 		/* If the component is attached to a score symbol
@@ -205,32 +205,41 @@ void BaseComponent::setIdFromSymbol()
                 id = pc->getController()->createIdFromName(name);
 			
             s->addMessage( "/id", id.toStdString() );
+			
+            setComponentID( id );
+			
         }
 		
-		setComponentID( id );
     }
 
 }
 
 void BaseComponent::attachToStaff()
 {
-    PageComponent *pc = getPageComponent();
-    if (pc)
+    PageComponent* scoreView = getPageComponent();
+    if (scoreView)
     {
-        if (staff_name.size() != 0)
+        if (staff_id.size() != 0)
         {
-            auto c = pc->getSubcomponentByID(staff_name);
-            StaffComponent* staff_component = dynamic_cast<StaffComponent*>(c);
+            auto c = scoreView->getSubcomponentByID(staff_id);
+            StaffComponent* staffComponent = dynamic_cast<StaffComponent*>(c);
             
             // Checks the downcast result.
-            if (staff_component != NULL)
+            if (staffComponent != NULL)
             {
-                staff_component->addOjbectToStave(this);
-                staff = staff_component;
+                staffComponent->addObjectToStave(this);
+                staff = staffComponent;
             }
         }
         
     }
+}
+
+void BaseComponent::setStaff(StaffComponent* c)
+{
+	staff_id = c->getScoreSymbol()->getID();
+	staff = c;
+	DEBUG_INLINE("/t/t ------------------------- \n" << this << " attached to staff " << staff_id << " " << staff << endl)
 }
 
 // a component can't access the score until it's been added and made visible, so we wait to process the naming
@@ -296,7 +305,7 @@ Rectangle<int> BaseComponent::getMinimalBounds()
     int minx = getWidth(), maxx = 0, miny = getHeight(), maxy = 0;
     for( int i = 0; i < getNumSubcomponents(); i++)
     {
-        Rectangle<int> compBounds = getSubcomponent(i)->getBounds();
+        Rectangle<int> compBounds = getSubcomponentByIndex(i)->getBounds();
         minx =  min( minx, compBounds.getX() );
         miny =  min( miny, compBounds.getY() );
         maxx =  max( maxx, compBounds.getRight() );
@@ -309,7 +318,7 @@ void BaseComponent::setMinimalBounds () {
     int minx = getWidth(), maxx = 0, miny = getHeight(), maxy = 0;
     for( int i = 0; i < getNumSubcomponents(); i++)
     {
-        Rectangle<int> compBounds = getSubcomponent(i)->getBounds();
+        Rectangle<int> compBounds = getSubcomponentByIndex(i)->getBounds();
         minx =  min( minx, compBounds.getX() );
         miny =  min( miny, compBounds.getY() );
         maxx =  max( maxx, compBounds.getRight() );
@@ -318,7 +327,7 @@ void BaseComponent::setMinimalBounds () {
     setBounds(minx, miny, maxx-minx, maxy-miny);
     for( int i = 0; i < getNumSubcomponents(); i++)
     {
-        SymbolistComponent* subcomp = getSubcomponent(i);
+        SymbolistComponent* subcomp = getSubcomponentByIndex(i);
         subcomp->setTopLeftPosition( subcomp->getX()-getX(), subcomp->getY()-getY() );
     }
 }
@@ -328,7 +337,7 @@ void BaseComponent::setMaximalBounds ()
 {
     for ( int i  = 0; i < getNumSubcomponents(); i++ )
     {
-        SymbolistComponent* subcomp = getSubcomponent(i);
+        SymbolistComponent* subcomp = getSubcomponentByIndex(i);
         subcomp->setTopLeftPosition( getX()+subcomp->getX(), getY()+subcomp->getY() );
     }
     setBounds( 0, 0, getParentComponent()->getWidth(), getParentComponent()->getHeight());
@@ -373,7 +382,7 @@ void BaseComponent::scaleScoreComponent(float scale_w, float scale_h)
     cout << "BaseComponent::scaleScoreComponent " << getSymbolTypeStr() << " " << this << " " << scale_w << " " << scale_h << endl;
     for ( int i = 0; i < getNumSubcomponents(); i++ )
     {
-        BaseComponent* c = (BaseComponent*) getSubcomponent(i);
+        BaseComponent* c = (BaseComponent*) getSubcomponentByIndex(i);
         c->setTopLeftPosition(c->getX() * scale_w, c->getY() * scale_h);
         c->scaleScoreComponent(scale_w, scale_h);
     }
@@ -391,7 +400,7 @@ void BaseComponent::setScoreComponentSize(int w, int h)
     
     for ( int i = 0; i < getNumSubcomponents(); i++ )
     {
-        BaseComponent* c = (BaseComponent*) getSubcomponent(i);
+        BaseComponent* c = (BaseComponent*) getSubcomponentByIndex(i);
         float scale_w = (float)c->getWidth() / this_w;
         float scale_h = (float)c->getHeight() / this_h;
         c->setSize(w * scale_w, h * scale_h);
@@ -574,7 +583,7 @@ void BaseComponent::mouseDoubleClick(const MouseEvent& event)
 
 void BaseComponent::paint ( Graphics& g )
 {
-    if( in_edit_mode )
+    if ( in_edit_mode )
     {
         g.setColour( Colour::fromFloatRGBA(1.0f, 1.0f, 1.0f, 0.9f)  );
         g.fillRect( getLocalBounds() );

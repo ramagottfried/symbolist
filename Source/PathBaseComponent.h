@@ -13,6 +13,7 @@ class PathBaseComponent : public BaseComponent
 public:
     
     PathBaseComponent() = default;
+    PathBaseComponent( t_sym_type sType ) : BaseComponent( sType ) {} ;
     ~PathBaseComponent() ;
     
     // utility
@@ -23,10 +24,19 @@ public:
     bool intersectRect( Rectangle<int> rect) override;
 
     virtual void addSymbolMessages(Symbol* s) override;
+    
+    
     virtual void importFromSymbol(const Symbol &s) override;
 
-    virtual void setBoundsFromSymbol( float x, float y , float w , float h) override;
+    // Set component attributes from Symbol
+    // x, y , w  h are given but could be retrieved from Symbol s
+    virtual void setComponentFromSymbol(const Symbol &s, float x, float y , float w , float h) override;
+
+    // Get the Symbol's stored "symbolic" position given components coordinates
     virtual Point<float> computeSymbolPosition( float x, float y, float w, float h ) override;
+    
+    // Get the Component's graphic position according to the Symbols pos and size
+    virtual Point<float> computePositionFromSymbolValues(float x, float y, float w, float h) override;
 
     Rectangle<float> drawAndRotateShape(float cx, float cy, float w, float h);
 
@@ -96,6 +106,7 @@ protected:
     Colour                  m_stroke_color;
     bool                    m_fill = false;
     Colour                  m_fill_color;
+    float                   m_rotation = 0;
     
     /**
      * The 'symbolic' center of the component, as specified in the Symbol
@@ -124,7 +135,7 @@ protected:
      * the rotation of this PathBaseComponent.
      */
     PathHandle*             rotation_handle = NULL;
-    float m_rotation = 0; // get rifd of this ?
+
     
     /**
      * The centroid point of this PathBaseComponent.

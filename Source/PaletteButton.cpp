@@ -43,16 +43,19 @@ void PaletteButton::setSelected(bool sel)
 
 void PaletteButton::resized()
 {
-    graphic_comp->setBounds( getLocalBounds() );
-    graphic_comp->resizeToFit( 5 , 5 , getWidth() -10, getHeight() -10  );
+    if ( graphic_comp != NULL ) {
+        setBounds( getLocalBounds() );
+        graphic_comp->resizeToFit( 5 , 5 , getWidth() -10, getHeight() -10  );
+    }
 }
 
 void PaletteButton::paint (Graphics& g)
 {
     Colour button_color = selected ? Colours::black : Colour::fromFloatRGBA(0, 0, 0, 0.2);
     
-    graphic_comp->setSymbolComponentColor( button_color );
-    
+     if ( graphic_comp != NULL ) {
+         graphic_comp->setSymbolComponentColor( button_color );
+     }
     g.setColour( button_color );
     g.drawRect( getLocalBounds() );
     

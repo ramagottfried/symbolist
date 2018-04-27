@@ -91,25 +91,28 @@ void EditableTextObj::mouseUp( const MouseEvent& event )
 
 TextGlphComponent::TextGlphComponent()
 {
+    type = TEXT ;
     textobj = new EditableTextObj(this);
     textobj->setText (m_text, sendNotificationSync );
     textobj->setColour( Label::textColourId, getCurrentColor() );
+    setBounds(0,0,40,20);
     addAndMakeVisible(textobj);
 }
     
 TextGlphComponent::~TextGlphComponent()
 {	
     DEBUG_FULL("Deleting text " << this << endl);
-};
+}
 
-void TextGlphComponent::setBoundsFromSymbol( float x, float y , float w , float h)
+void TextGlphComponent::setComponentFromSymbol(const Symbol &s, float x, float y , float w , float h)
 {
-    //setBounds( x, y - (h * 0.5), w , h);
     m_font.setHeight( h );
     textobj->setFont( m_font );
     setBounds( x, y - (h * 0.5), m_font.getStringWidth(m_text) + m_width_offset, h );
     textobj->setBounds( getLocalBounds().translated(m_x_offset, 0) );
 }
+
+
 
 Rectangle<float> TextGlphComponent::symbol_export_bounds()
 {
@@ -119,7 +122,6 @@ Rectangle<float> TextGlphComponent::symbol_export_bounds()
 
 void TextGlphComponent::importFromSymbol( const Symbol& s )
 {
-    BaseComponent::importFromSymbol(s);
     
     if( s.addressExists("/text") )
         m_text = s.getMessage("/text").getString();
@@ -137,9 +139,12 @@ void TextGlphComponent::importFromSymbol( const Symbol& s )
     m_font = m_font.withExtraKerningFactor( m_extrakerning ).withHorizontalScale( m_horz_scale );
     textobj->setFont( m_font );
     textobj->setText( m_text, sendNotificationSync );
-    setBounds(getX(), getY(), m_font.getStringWidth(m_text) + m_width_offset, m_font.getHeight() );
-    textobj->setBounds( getLocalBounds().translated(m_x_offset, 0) );
-
+    // setBounds(getX(), getY(), m_font.getStringWidth(m_text) + m_width_offset, m_font.getHeight() );
+    // textobj->setBounds( getLocalBounds().translated(m_x_offset, 0) );
+    
+    BaseComponent::importFromSymbol(s);
+    
+    
 }
 
 void TextGlphComponent::addSymbolMessages(Symbol* s)

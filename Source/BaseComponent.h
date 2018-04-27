@@ -12,6 +12,7 @@ class BaseComponent : public ScoreComponent {
 	
 public:
     BaseComponent() = default;
+    BaseComponent( t_sym_type type );
     ~BaseComponent();
     
     virtual void addSymbolMessages( Symbol* s );
@@ -75,12 +76,15 @@ public:
     
     // set graphical component's bounds from the symbol attributes
     // (can be different for special types of components)
-    virtual void setBoundsFromSymbol( float x, float y , float w , float h);
+    virtual void setComponentFromSymbol(const Symbol &s, float x, float y , float w , float h);
     
     // returns the symbol position from grapical component position and size
     // (can be different for special types of components)
     virtual Point<float> computeSymbolPosition( float x, float y, float w, float h );
-    
+
+    // Get the Component's graphic position according to the Symbols pos and size
+    virtual Point<float> computePositionFromSymbolValues(float x, float y, float w, float h);
+
     virtual void setMinimalBounds ();
     Rectangle<int> getMinimalBounds();
 

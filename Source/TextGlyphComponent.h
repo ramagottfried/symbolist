@@ -61,10 +61,11 @@ private:
 class TextGlphComponent : public BaseComponent {
 
 public:
+    
     TextGlphComponent();
     ~TextGlphComponent();
     
-    void setBoundsFromSymbol( float x, float y , float w , float h) override final;
+    void setComponentFromSymbol(const Symbol &s, float x, float y , float w , float h) override final;
     
     Rectangle<float> symbol_export_bounds() override;
     

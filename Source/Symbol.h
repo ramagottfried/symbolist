@@ -13,6 +13,7 @@ typedef enum {
     CIRCLE,
     TRIANGLE,
     RECTANGLE,
+    TEXT,
     STAFF,
     GROUP,
     UNKNOWN

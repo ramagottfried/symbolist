@@ -23,7 +23,7 @@
 class StaffComponent : public SymbolGroupComponent
 {
 public:
-    StaffComponent() = default;
+    StaffComponent() { type = STAFF; };
     ~StaffComponent() = default;
     
     void importFromSymbol( const Symbol &s ) override;

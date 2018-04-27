@@ -64,7 +64,7 @@ void PathBaseComponent::printPath( Path p, const char* name )
 void PathBaseComponent::paint ( Graphics& g )
 {
     
-    printPath( m_path ) ;
+    // printPath( m_path ) ;
     
     BaseComponent::paint(g);
     
@@ -92,19 +92,14 @@ void PathBaseComponent::paint ( Graphics& g )
     
     g.setColour( getCurrentColor() );
     
-    // workaround since we don't know which context we're in, draw and return if in palette
-    if( getPageComponent() == NULL )
-    {
-        g.strokePath( m_path , m_stroke_type );
-        if( m_fill ) g.fillPath( m_path );
-    }
-    else
-    {
-        g.setColour( getCurrentColor() );
-        g.strokePath( m_path, m_stroke_type );
-        if( m_fill ) g.fillPath( m_path );
-    }
+    float penSize = m_stroke_type.getStrokeThickness() ;
+    Path tmp_path = m_path;
+    tmp_path.applyTransform( AffineTransform().translation( penSize, penSize ) );
+    g.strokePath( tmp_path , m_stroke_type );
+    if( m_fill ) g.fillPath( tmp_path );
     
+    
+    // EDIT PREVIEW
     if( !m_preview_path.isEmpty() )
     {
         g.setColour( preview_stroke_color );
@@ -119,8 +114,10 @@ void PathBaseComponent::paint ( Graphics& g )
     /*
      auto c = getLocalBounds().getCentre();
      g.drawEllipse(c.getX()-2, c.getY()-2, 4, 4, 1);
-     g.drawRect( getLocalBounds() );
      */
+    g.setColour( Colour::greyLevel(0.5) );
+    g.drawRect( getLocalBounds() );
+    
 }
 
 
@@ -157,43 +154,80 @@ void PathBaseComponent::importFromSymbol(const Symbol &s)
 {
     cout << "IMPORTING PATH FROM SYMBOL " << Symbol::stringFromSymType( type ) << " " << this << endl ;
     
-    BaseComponent::importFromSymbol(s);
+    // rotation and stroke thickness need to be imported first to correctly compute the bounds etc.
+    m_rotation = s.getMessage("/rotation").getFloat();
+    float tmpSW = s.getMessage("/stroke/thickness").getInt();
+    m_stroke_type.setStrokeThickness( (tmpSW == 0) ? 2 : tmpSW );
     
+    // import other path-specific attributes while we're at it
+    m_fill = s.getMessage("/fill").getInt();
+    
+    BaseComponent::importFromSymbol(s);
+}
+
+
+// This will be called by BaseComponent::importFromSymbol(s);
+// in the case of BasicShapes, w & h are the *pre-rotated values*
+void PathBaseComponent::setComponentFromSymbol(const Symbol &s, float x, float y , float w , float h)
+{
     switch ( type ) {
             
         case PATH:
+            
             m_path.restoreFromString( s.getMessage("/str").getString().c_str() );
+            // Drawable::parseSVGPath( ... ) << change to this
+            
             break;
             
         case CIRCLE:
-            m_path.addEllipse( getX(), getY(), getWidth(), getHeight());
-            m_component_center = Point<float>( 0.0 , getHeight()*0.5 );
+            
+            //m_path.addEllipse( x , y - (h * 0.5), w, h);
+            m_path.addEllipse( 0 , 0,  w, h);
+            m_component_center = Point<float>( 0.0 , h * 0.5 );
             break;
             
         case RECTANGLE:
-            m_path.addRectangle(getX(), getY(), getWidth(), getHeight());
-            m_component_center = Point<float>( 0.0 , getHeight()*0.5 );
+            
+            m_path.addRectangle(0 , 0, w, h);
+            m_component_center = Point<float>( 0.0 , h * 0.5 );
             break;
             
         case TRIANGLE:
-            m_path.addTriangle(getX() + getWidth()*0.5, getY(), getX(), getBottom(), getRight(), getBottom());
-            m_component_center = Point<float>( 0.0 , getHeight()*0.5 );
+            
+            m_path.addTriangle( w * 0.5 , 0 , 0 , h , w , h);
+            m_component_center = Point<float>( 0.0 , h * 0.5 );
             break;
             
         default: break;
     }
     
-    // Drawable::parseSVGPath( ... ) << change to this
     
-    m_fill = s.getMessage("/fill").getInt();
+    // APPLY THE ROTATION
+    m_path.applyTransform( AffineTransform().rotation( m_rotation, m_component_center.getX(), m_component_center.getY()) );
     
-    float tmpSW = s.getMessage("/stroke/thickness").getInt();
-    m_stroke_type.setStrokeThickness( (tmpSW == 0) ? 2 : tmpSW );
+    //m_path.applyTransform( AffineTransform().translation( m_stroke_type.getStrokeThickness(), m_stroke_type.getStrokeThickness() ) );
     
-    m_rotation = s.getMessage("/rotation").getFloat();
+    float penSize = m_stroke_type.getStrokeThickness();
     
-    updatePathBounds();
+    // SET BOUNDS: THE BOUNDS ARE EXTENDED ACCORDING TO PENSIZE.
+    // THE PATH COORDINATES ARE NOT AFFECTED
+    Point<float> compPos = computePositionFromSymbolValues(x,y,w,h);
+    setBounds( m_path.getBounds().translated( compPos.getX() - penSize, compPos.getY()  - penSize ).expanded( penSize ).toNearestInt() );
 }
+
+
+Point<float> PathBaseComponent::computePositionFromSymbolValues(float x, float y, float w, float h)
+{
+    return Point<float>( x - m_component_center.getX() , y - m_component_center.getY() );
+}
+
+
+Point<float> PathBaseComponent::computeSymbolPosition(float x, float y, float w, float h)
+{
+    return Point<float>( x + m_component_center.getX() , y + m_component_center.getY() );
+}
+
+
 
 
 
@@ -221,24 +255,16 @@ Rectangle<float> PathBaseComponent::symbol_export_bounds()
 
 
 
-// in the case of BasicShapes, w & h are the *pre-rotated values*
-void PathBaseComponent::setBoundsFromSymbol( float x, float y , float w , float h)
-{
-    auto bounds = drawAndRotateShape(x, y, w, h).expanded( m_stroke_type.getStrokeThickness() );
-    setBounds( x - m_component_center.getX() , y - m_component_center.getY() , bounds.getWidth() , bounds.getHeight() );
-}
 
 
-Point<float> PathBaseComponent::computeSymbolPosition(float x, float y, float w, float h)
-{
-    return Point<float>( x + m_component_center.getX() , y + m_component_center.getY() );
-}
+
+
 
 
 void PathBaseComponent::updatePathBounds ()
 {
     m_path_bounds.getRealPathBounds( m_path );
-    m_path_centroid = m_path_bounds.getCentre();
+    //m_path_centroid = m_path_bounds.getCentre();
 }
 
 Rectangle<float> PathBaseComponent::drawAndRotateShape(float cx, float cy, float w, float h)
@@ -1028,8 +1054,11 @@ void PathBaseComponent::scaleScoreComponent(float scale_w, float scale_h)
         if( new_path_w < 1 ) new_path_w = 1;
         if( new_path_h < 1 ) new_path_h = 1;
         
-        float adj_scale_w = (new_path_w / (m_path_bounds.getWidth()  == 0 ? 1 : m_path_bounds.getWidth() ) );
-        float adj_scale_h = (new_path_h / (m_path_bounds.getHeight() == 0 ? 1 : m_path_bounds.getHeight()) );
+        //float adj_scale_w = (new_path_w / (m_path_bounds.getWidth()  == 0 ? 1 : m_path_bounds.getWidth() ) );
+        //float adj_scale_h = (new_path_h / (m_path_bounds.getHeight() == 0 ? 1 : m_path_bounds.getHeight()) );
+        
+        float adj_scale_w = ( new_path_w / m_path.getBounds().getWidth() );
+        float adj_scale_h = ( new_path_h / m_path.getBounds().getHeight() );
         
         printRect(m_path_bounds, "1 m_path_bounds");
         
@@ -1037,21 +1066,23 @@ void PathBaseComponent::scaleScoreComponent(float scale_w, float scale_h)
         cout << "adj scale " << adj_scale_w << " " << adj_scale_h << endl;
         
         m_path.applyTransform( AffineTransform().scale(adj_scale_w, adj_scale_h) );
-        updatePathBounds();
+        
+        // updatePathBounds();
         
         printRect(m_path_bounds, "2 m_path_bounds");
         
-        Rectangle<float> symbol_bounds = m_path_bounds.expanded( m_stroke_type.getStrokeThickness() );
+        //Rectangle<float> symbol_bounds = m_path_bounds.expanded( m_stroke_type.getStrokeThickness() );
+        Rectangle<float> symbol_bounds = m_path.getBounds().expanded( m_stroke_type.getStrokeThickness() );
         m_path.applyTransform( AffineTransform::translation( -symbol_bounds.getPosition() ) );
         
         updateHandlePositions();
-        updatePathBounds();
+        //updatePathBounds();
         
         printRect(m_path_bounds, "3 m_path_bounds");
         
         cout << "new size " << new_w << " " << new_h << endl;
         auto temp = in_edit_mode;
-        in_edit_mode = true;
+        in_edit_mode = true;  // :s
         setSize(new_w, new_h );
         // printRect(symbol_bounds.toNearestInt() + getPosition(), "new symb bounds");
         in_edit_mode = temp;

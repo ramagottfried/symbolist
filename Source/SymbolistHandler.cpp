@@ -21,10 +21,11 @@ SymbolistHandler::SymbolistHandler()
 	
     Palette* palette = model->getPalette();
 	
+
     Symbol s1 = Symbol();
     s1.setTypeXYWH("text", symbolPos, symbolPos, 20 , 20);
     palette->addDefaultItem(s1);
-	
+
     Symbol s2 = Symbol();
     s2.setTypeXYWH("circle", symbolPos, symbolPos, symbolSize, symbolSize);
     palette->addDefaultItem(s2);
@@ -36,7 +37,7 @@ SymbolistHandler::SymbolistHandler()
     Symbol s4 = Symbol();
     s4.setTypeXYWH("triangle", symbolPos, symbolPos, symbolSize, symbolSize);
     palette->addDefaultItem(s4);
-	
+
     setModel(model);
 	
     // Creates the child controllers.
@@ -404,35 +405,32 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* symbol, bool at
 {
     DEBUG_FULL("Creating component from Symbol: ");
     
-    string typeofSymbol = symbol->getMessage("/type").getString();
-
-    if (typeofSymbol.size() == 0)
+    t_sym_type sType;
+    string readType = symbol->getMessage("/type").getString();
+    
+    if (readType.size() == 0)
     {
 		DEBUG_INLINE("Could not find '/type' message in OSC Bundle.. " << endl);
         return NULL;
         
     } else {
         
-        DEBUG_INLINE(typeofSymbol << endl);
+        sType = Symbol::symTypeFromString( readType );
+        
+        DEBUG_INLINE(readType << endl);
         BaseComponent *newComponent;
         
         // allocates component based on type, all are derived from the BaseComponent
-        if ( typeofSymbol == "circle" ) {
-            newComponent = new PathBaseComponent();
-        } else if ( typeofSymbol == "rectangle" ) {
-            newComponent = new PathBaseComponent();
-        } else if ( typeofSymbol =="triangle" ) {
-            newComponent = new PathBaseComponent();
-        } else if ( typeofSymbol == "path" ) {
-            newComponent = new PathBaseComponent();
-        } else if ( typeofSymbol == "text" ) {
+        if ( sType == CIRCLE || sType == RECTANGLE || sType == TRIANGLE || sType == PATH ) {
+            newComponent = new PathBaseComponent( sType );
+        } else if ( sType == TEXT ) {
             newComponent = new TextGlphComponent();
-        } else if ( typeofSymbol == "group" ) {
+        } else if ( sType == GROUP ) {
             newComponent = new SymbolGroupComponent();
-        } else if ( typeofSymbol == "staff" ) {
+        } else if ( sType == STAFF ) {
             newComponent = new StaffComponent();
         } else {
-		  	DEBUG_FULL("Unknown symbol type : " << typeofSymbol << endl);
+		  	DEBUG_FULL("Unknown symbol type : " << readType << endl);
             newComponent = NULL;
         }
         
@@ -443,7 +441,7 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* symbol, bool at
 			
             if (attachTheSymbol)
             {
-            	// initializes object specific messages if not present
+            	// initializes object specific messages if not present => WHY ?
             	newComponent->addSymbolMessages(symbol);
                 newComponent->setScoreSymbolPointer(symbol);
                 getModel()->getScore()->addStaff(symbol); // << /type checked internally and added if staff

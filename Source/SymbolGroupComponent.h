@@ -6,7 +6,7 @@ class SymbolGroupComponent : public BaseComponent {
     
 public:
     
-    SymbolGroupComponent() = default;
+    SymbolGroupComponent() : BaseComponent( GROUP ) {};
     ~SymbolGroupComponent() = default;
     
     void addSymbolMessages(Symbol* s ) override ;

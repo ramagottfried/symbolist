@@ -11,6 +11,10 @@ template <typename T> void printPoint(Point<T> point, String name = "point" )
     std::cout << name << " " << point.getX() << " " << point.getY() << "\n";
 }
 
+
+BaseComponent::BaseComponent( t_sym_type symType ) : type(symType) {};
+
+
 BaseComponent::~BaseComponent()
 {
     if ( staff )
@@ -145,7 +149,8 @@ void BaseComponent::importFromSymbol(const Symbol &s)
     float y = s.getMessage("/y").getFloat();
     float w = s.getMessage("/w").getFloat();
     float h = s.getMessage("/h").getFloat();
-    setBoundsFromSymbol(x, y, w, h);
+    
+    setComponentFromSymbol(s, x, y, w, h);
     
     if (w == 0 || h == 0)
     {
@@ -199,6 +204,27 @@ void BaseComponent::importFromSymbol(const Symbol &s)
     attachToStaff();
 	
 }
+
+
+
+void BaseComponent::setComponentFromSymbol(const Symbol &s, float x, float y , float w , float h)
+{
+    Point<float> compPos = computePositionFromSymbolValues(x,y,w,h);
+    setBounds(compPos.getX(), compPos.getY(), w, h);
+}
+
+Point<float> BaseComponent::computeSymbolPosition(float x, float y, float w, float h)
+{
+    return Point<float>(x,y);
+}
+
+Point<float> BaseComponent::computePositionFromSymbolValues(float x, float y, float w, float h)
+{
+    return Point<float>( x , y );
+}
+
+
+
 
 void BaseComponent::setIdFromSymbol()
 {
@@ -257,15 +283,7 @@ void BaseComponent::parentHierarchyChanged()
     attachToStaff();
 }
 
-void BaseComponent::setBoundsFromSymbol( float x, float y , float w , float h)
-{
-    setBounds(x, y, w, h);
-}
 
-Point<float> BaseComponent::computeSymbolPosition(float x, float y, float w, float h)
-{
-    return Point<float>(x,y);
-}
 
 /******************
  * Called by selection mechanism
@@ -391,6 +409,7 @@ void BaseComponent::scaleScoreComponent(float scale_w, float scale_h)
 
 }
 
+
 /***
  *      sets size without scaling
  ***/
@@ -410,6 +429,10 @@ void BaseComponent::setScoreComponentSize(int w, int h)
     setSize(w, h);
 }
 
+
+/************************
+ * CALLBACKS
+ ************************/
 
 void BaseComponent::resized ()
 {

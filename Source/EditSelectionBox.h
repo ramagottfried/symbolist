@@ -123,7 +123,7 @@ protected:
     bool hitTest (int x, int y) override;
     
 private:
-    Array<SymbolistComponent*>  *component_set;
+    Array<SymbolistComponent* >  *component_set;
     
     OwnedArray<Symbol> original_symbols;
     
@@ -146,7 +146,7 @@ private:
 
     };
     
-    OwnedArray<PreviewComp> preview_components;
+    OwnedArray<PreviewComp > preview_components;
     Array<SymbolistComponent* > non_preview_components;
 	
     BorderSize<int> borderSize;

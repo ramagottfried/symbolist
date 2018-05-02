@@ -40,7 +40,6 @@ void EditableTextObjListener::editorHidden (Label* l, TextEditor& t)
 
 }
 
-
 EditableTextObj::EditableTextObj(BaseComponent *c) : Label( String(), String() ), owner(c)
 {
     setEditable (false, true, false);
@@ -183,6 +182,7 @@ void TextGlphComponent::setWidthInPixels(float w)
     }
     
 }
+
 /*
 void TextGlphComponent::resizeToFit(int x, int y, int w, int h)
 {
@@ -227,7 +227,6 @@ void TextGlphComponent::scaleScoreComponent(float scale_w, float scale_h)
     printRect(textobj->getBounds(), getSymbolTypeStr() + " inner");
      */
 }
-
 
 void TextGlphComponent::updateText( String str)
 {

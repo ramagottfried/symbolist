@@ -270,6 +270,7 @@
 		751E31572069410400C3318F /* PaletteButton.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 751E31522069410400C3318F /* PaletteButton.hpp */; };
 		751E31582069410400C3318F /* PaletteButton.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 751E31522069410400C3318F /* PaletteButton.hpp */; };
 		751E315C2069493F00C3318F /* PaletteController.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 751E314A2069378600C3318F /* PaletteController.hpp */; };
+		75521BFF2093370300BA5B63 /* libsymbolist-libo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 116A7E412046CF62004B545D /* libsymbolist-libo.a */; };
 		7571E6F42084EA240092A3E0 /* pugixml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 112630AD207F4AC20086653D /* pugixml.cpp */; };
 		7571E6F52084EA3F0092A3E0 /* SVGFileIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11263093207F3D520086653D /* SVGFileIO.cpp */; };
 		7571E6F62084EA3F0092A3E0 /* SVGParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11E8082C207FCAC000E0342F /* SVGParser.cpp */; };
@@ -715,6 +716,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75521BFF2093370300BA5B63 /* libsymbolist-libo.a in Frameworks */,
 				6547753639FBD52E4D188A43 /* Carbon.framework in Frameworks */,
 				99140AD09D86B21587B6829C /* Cocoa.framework in Frameworks */,
 				DCFD31ACD1189A6182E230EB /* IOKit.framework in Frameworks */,
@@ -2022,7 +2024,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				COMBINE_HIDPI_IMAGES = YES;
-				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				DEAD_CODE_STRIPPING = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_OPTIMIZATION_LEVEL = 3;
@@ -2048,6 +2050,7 @@
 					/juce_audio_plugin_client,
 					"$(inherited)",
 				);
+				LIBRARY_SEARCH_PATHS = ../../../libo/;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.symbolist;
@@ -2169,7 +2172,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				COMBINE_HIDPI_IMAGES = YES;
-				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2194,6 +2197,7 @@
 					/juce_audio_plugin_client,
 					"$(inherited)",
 				);
+				LIBRARY_SEARCH_PATHS = ../../../libo/;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.symbolist;

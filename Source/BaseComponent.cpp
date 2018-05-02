@@ -66,9 +66,14 @@ void BaseComponent::reportModification()
 
 void BaseComponent::createAndAttachSymbol()
 {
-    Symbol* s = getSymbolistHandler()->createSymbol();
-    addSymbolMessages(s);
-    setScoreSymbol(s);
+	if (getSymbolistHandler() != NULL)
+	{
+		Symbol* s = getSymbolistHandler()->createSymbol();
+    	addSymbolMessages(s);
+    	setScoreSymbol(s);
+	}
+	else throw logic_error("BaseComponent has no access to the SymbolistHandler instance.");
+	
 }
 
 // addSymbolMessages outputs the component's values into the symbol

@@ -177,7 +177,7 @@ void symbolist_qelem_open_window( t_symbolist *x )
     if ( !x->window_is_open )
     {
         symbolistOpenWindow( x->symbolist_handler );
-         x->window_is_open = true;
+		x->window_is_open = true;
     }
     else
         symbolistWindowToFront( x->symbolist_handler );

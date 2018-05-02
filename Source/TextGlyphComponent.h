@@ -71,17 +71,18 @@ public:
     void importFromSymbol( const Symbol& s ) override;
     void addSymbolMessages(Symbol* s) override;
 
-//    void resized() override;
-    
-//    void resizeToFit(int x, int y, int w, int h) override;
+	// void resized() override;
+	// void resizeToFit(int x, int y, int w, int h) override;
+	
     virtual void scaleScoreComponent(float scale_w, float scale_h) override;
-//    virtual void rotateScoreComponent(float theta, float ax, float ay) override;
+	
+	// virtual void rotateScoreComponent(float theta, float ax, float ay) override;
     
     void setWidthInPixels(float w);
     
     string getSymbolTypeStr() const override { return "text"; }
     
-    void updateText( String str);
+    void updateText(String str);
 
     void setFont( Font f ){ m_font = f; }
     
@@ -90,17 +91,16 @@ public:
     
 protected:
     
-    juce::String      m_text = "T";
-    Font        m_font = Font( "Times", 20.0f, Font::plain );
+    String      m_text = "T";
+    Font        m_font = Font("Opus Std", 20.0f, Font::plain);
     
     float       m_extrakerning = 0.0;
     float       m_horz_scale = 1.0;
-    
-    
+	
     float       m_width_offset = 12;
     float       m_x_offset = m_width_offset / 2;
     
-    ScopedPointer<EditableTextObj>    textobj;
+    ScopedPointer<EditableTextObj >    textobj;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TextGlphComponent)

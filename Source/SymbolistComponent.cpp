@@ -61,9 +61,7 @@ void SymbolistComponent::removeSubcomponent( SymbolistComponent *c )
 {
     removeChildComponent(c);
     for ( int i = 0; i < subcomponents.size(); i++ )
-    {
         if ( subcomponents[i] == c ) subcomponents.remove( i );
-    }
 }
 
 void SymbolistComponent::clearAllSubcomponents()

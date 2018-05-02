@@ -282,14 +282,19 @@ void ScoreComponent::ungroupSelectedSymbols()
             
             for ( int ii = 0; ii < n ; ii++ )
             {
-                BaseComponent* sc = dynamic_cast<BaseComponent*>(subitems[ii]);
+                BaseComponent* sc = dynamic_cast<BaseComponent* >(subitems[ii]);
                 
                 // Checks downcast result.
                 if (sc != NULL)
                 {
-                    c->removeSubcomponent(sc);
+                	/* If sc is removed from c's childs list then sc has no parent component
+					 * and cannot call the SymbolistHandler to create and attach a new symbol.
+                	 */
                     if ( c->isTopLevelComponent() ) sc->createAndAttachSymbol();
+					
+                    c->removeSubcomponent(sc);
                     addSubcomponent(sc);
+					
                     sc->setTopLeftPosition(sc->getPosition().translated(c->getPosition().getX(), c->getPosition().getY()));
                 }
         

@@ -12,8 +12,8 @@ using namespace std;
 
 class OdotBundle;
 
-class OdotMessage
-{
+class OdotMessage {
+
 public:
     
     /*  ======= construct, copy, move, destruct =======  */
@@ -46,7 +46,6 @@ public:
     ~OdotMessage(){}
     
     /* ======= get values from message ======= */
-    
     string getAddress() const { return string( osc_message_u_getAddress( ptr.get() ) ); }
     
     OdotAtom operator[](int i) const;

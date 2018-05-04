@@ -13,31 +13,10 @@ SymbolistHandler::SymbolistHandler()
     MessageManager::getInstance(); // this wasn't necessary before, I think there might be some JUCE code starting too soon now?
 	DEBUG_FULL("Instance address: " << this << endl)
 	
-    // Instantiates the model.
+    // Instantiates the model and the palette default items.
     SymbolistModel* model = new SymbolistModel();
-	
-    // Adds four default items to the model.
-    float symbolSize = 30.0;
-    float symbolPos = 0.0;
-	
-    Palette* palette = model->getPalette();
-	
-    Symbol s1 = Symbol();
-    s1.setTypeXYWH("text", symbolPos, symbolPos, 20 , 20);
-    palette->addDefaultItem(s1);
-	
-    Symbol s2 = Symbol();
-    s2.setTypeXYWH("circle", symbolPos, symbolPos, symbolSize, symbolSize);
-    palette->addDefaultItem(s2);
-	
-    Symbol s3 = Symbol();
-    s3.setTypeXYWH("rectangle", symbolPos, symbolPos, symbolSize, symbolSize);
-    palette->addDefaultItem(s3);
-	
-    Symbol s4 = Symbol();
-    s4.setTypeXYWH("triangle", symbolPos, symbolPos, symbolSize, symbolSize);
-    palette->addDefaultItem(s4);
-	
+    model->getPalette()->createDefaultItems();
+		
     setModel(model);
 	
     // Creates the child controllers.

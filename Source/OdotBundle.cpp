@@ -1,4 +1,5 @@
 #include "OdotBundle.hpp"
+#include "osc_parser.h"
 #include "osc_bundle_iterator_u.h"
 #include "osc_bundle_iterator_s.h"
 #include "osc_strfmt.h"
@@ -357,6 +358,39 @@ vector<OdotMessage> OdotBundle::getMessageArray() const
     return ar;
 }
 
+OdotBundle* OdotBundle::createOdotBundleFromString(string textToParse)
+{
+	/* Converts the string into char* to pass it
+	 * to the osc_parser_parseString function.
+	 */
+	t_osc_bndl_u* bundle = NULL;
+	char textToParseChar [textToParse.length() + 1];
+	strcpy(textToParseChar, textToParse.c_str());
+	
+	/* Creates the OSC bundle from the parsed text */
+	t_osc_err error = osc_parser_parseString(strlen(textToParseChar), textToParseChar, &bundle);
+	if (error == OSC_ERR_PARSER)
+		throw invalid_argument("The string being parsed is not a well-formed odot bundle.");
+	
+	return new OdotBundle(bundle);
+}
+
+OdotBundle* OdotBundle::createOdotBundleFromFile(string oscFilePath)
+{
+	/* Creates a file input stream to read the content
+	 * of the osc file which path is in parameter.
+	 */
+	ifstream oscFile(oscFilePath);
+	
+	if(!oscFile)
+		throw invalid_argument("Invalid path to osc file.");
+	
+	/* Stores the file content into a string buffer */
+	stringstream fileContentBuffer;
+	fileContentBuffer << oscFile.rdbuf();
+	
+	return createOdotBundleFromString(fileContentBuffer.str());
+}
 
 /*
 // unfinished set of functions that was going to merge the bundle keeping the msg pointers in the same mem locations

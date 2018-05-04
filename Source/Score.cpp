@@ -137,7 +137,7 @@ Symbol* Score::addSymbol(Symbol* symbol)
              * Although then I guess the types of clef could change?
              * Leaving as id for now, but this is unintuitive to set from outside the editor.
              */
-            if ((*it)->getSaff() == lastInsertedSymbol->getID())
+            if ((*it)->getStaff() == lastInsertedSymbol->getID())
                 time_points.addSymbolTimePoints((*it).get());
     
     return lastInsertedSymbol;
@@ -404,7 +404,7 @@ void Score::updateStaves(Symbol* moved_stave)
     String staff_id = moved_stave->getID();
     for(auto it = score_symbols.begin(); it != score_symbols.end(); it++)
     {
-        if ((*it)->getSaff() == staff_id)
+        if ((*it)->getStaff() == staff_id)
         {
             time_points.addSymbolTimePoints((*it).get());
         }

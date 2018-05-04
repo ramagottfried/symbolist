@@ -181,7 +181,7 @@ vector<BaseComponent*> PageComponent::getSubcomponentsByStaff( String& staff_nam
         {
             s = c->getScoreSymbol();
             
-            if( s->getSaff() == staff_name )
+            if( s->getStaff() == staff_name )
                 objects.emplace_back( c );
         }
     }

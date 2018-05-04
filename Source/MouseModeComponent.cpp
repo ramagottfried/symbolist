@@ -21,7 +21,10 @@ void MouseModeComponent::drawString()
     else if ( m_draw_type == UI_DrawType::FROM_TEMPLATE )
     {
         m_str = " draw " ;
-        m_str += getModel()->getPalette()->getSelectedSymbol()->getType();
+		
+		if (getModel()->getPalette()->getSelectedSymbol() != NULL)
+        	m_str += getModel()->getPalette()->getSelectedSymbol()->getType();
+		else m_str += "unknown ";
     }
     else
     {

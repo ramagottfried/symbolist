@@ -29,7 +29,7 @@ public:
     float getEndTime() const;
     string getName() const;
     string getID();
-    string getSaff();
+    string getStaff();
     string getType();
     
     void setPosition( const Point<float> pos );

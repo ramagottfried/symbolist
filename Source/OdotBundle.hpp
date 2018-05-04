@@ -1,5 +1,10 @@
 #pragma once
+
+#include <stdio.h>
 #include <iostream>
+#include <string>
+#include <fstream>
+#include <sstream>
 #include "osc_bundle_u.h"
 #include "OdotPointers.h"
 #include "OdotMessage.hpp"
@@ -9,8 +14,8 @@
 
 using namespace std;
 
-class OdotBundle
-{
+class OdotBundle {
+
 public:
     OdotBundle();
     OdotBundle( const OdotBundle& src );
@@ -19,7 +24,7 @@ public:
     OdotBundle( const OdotBundle_s& src );
     OdotBundle( const t_osc_bndl_s *src );
     OdotBundle( const OdotMessage& msg );
-    OdotBundle( vector<OdotMessage> msg_vec );
+    OdotBundle( vector<OdotMessage > msg_vec );
     
     template <typename... Ts>
     OdotBundle(const char * address, Ts&&... args)
@@ -48,7 +53,7 @@ public:
     inline void addMessage (const string& address, Ts&&... args) {
         addMessage( address.c_str(), args... );
     }
-    void addMessage( vector<OdotMessage> msg_vec );
+    void addMessage( vector<OdotMessage > msg_vec );
 
     OdotMessage getMessage( const char * address ) const;
     OdotMessage getMessage( const string& address ) const { return getMessage( address.c_str() ); }
@@ -62,7 +67,7 @@ public:
     void clear();
     void print( int level = 0 ) const;
     void getPrintString(string &str, int level = 0 );
-    void getPrintStringArray(vector<string>& str, int level = 0 );
+    void getPrintStringArray(vector<string >& str, int level = 0 );
 
     bool addressExists( const char * address ) const;
     bool addressExists( const string& address ) const;
@@ -81,7 +86,43 @@ public:
      * @param passive   if set to true, union will give precedence to the other bundle
      */
     void unionWith( const OdotBundle& other, bool passive = false );
-    
+	
+	/**
+	 * Creates an OdotBundle from the text passed in parameter
+	 * which represents an OSC bundle formatted in JSON.
+	 * 
+	 * @param textToParse the string representing the OSC bundle
+	 *					  formatted in JSON.
+	 *
+	 * @return            a pointer to the OdotBundle created from
+	 *					  the string in parameter.
+	 *
+	 * @throws invalid_argument If the string in parameter is not a
+	 *							well-formed OSC bundle. Meaning it is
+	 *							not formatted as intended in the o.compose
+	 *                          from the o. library.
+	 */
+	static OdotBundle* createOdotBundleFromString(string textToParse);
+	
+	/**
+	 * Creates an OdotBundle from the text contained in a file.
+	 *
+	 * @param oscFilePath the path to the file containing an OSC
+	 *                    bundle as text data.
+	 *
+	 * @return            an pointer to an OdotBundle object
+	 *					  created from the text contained in the file.
+	 *
+	 * @throws invalid_argument If the string in parameter is not a
+	 *							well-formed OSC bundle. Meaning it is
+	 *							not formatted as intended in the o.compose
+	 *                          from the o. library.
+	 *							If the file path in parameter is an invalid
+	 *							one.
+	 *
+	 */
+	static OdotBundle* createOdotBundleFromFile(string oscFilePath);
+	
     void applyExpr( const OdotExpr& expr );
     inline void applyExpr( const string& expr ) { applyExpr( OdotExpr(expr) ); }
     inline void applyExpr( const char * expr ) { applyExpr( OdotExpr(expr) ); }

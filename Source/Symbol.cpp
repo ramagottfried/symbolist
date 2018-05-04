@@ -26,7 +26,7 @@ string Symbol::getName() const
     return getMessage("/name").getString();
 }
 
-string Symbol::getSaff()
+string Symbol::getStaff()
 {
     return getMessage("/staff").getString();
 }

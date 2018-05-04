@@ -92,7 +92,7 @@ public:
 protected:
     
     String      m_text = "T";
-    Font        m_font = Font("Opus Std", 20.0f, Font::plain);
+    Font        m_font = Font("Times", 20.0f, Font::plain);
     
     float       m_extrakerning = 0.0;
     float       m_horz_scale = 1.0;

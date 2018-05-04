@@ -1,0 +1,25 @@
+/default-items : [{
+	/type : "text",
+	/x : 0.0,
+	/y : 0.0,
+	/w : 20,
+	/h : 20 			
+}, {	
+	/type : "circle",
+	/x : 0.0,
+	/y : 0.0,
+	/w : 30,
+	/h : 30
+}, {
+	/type : "rectangle",
+	/x : 0.0,
+	/y : 0.0,
+	/w : 30,
+	/h : 30
+}, {
+	/type : "triangle",
+	/x : 0.0,
+	/y : 0.0,
+	/w : 30,
+	/h : 30
+}]

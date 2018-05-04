@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include "osc_expr.h"
+#include "osc_expr_u.h"
+
 #include "OdotPointers.h"
 
 using namespace std;

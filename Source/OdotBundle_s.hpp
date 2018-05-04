@@ -4,6 +4,8 @@
 #include "OdotPointers.h"
 #include "OdotMessage.hpp"
 #include "OdotAtom.hpp"
+#include "OdotExpr.hpp"
+
 
 using namespace std;
 
@@ -31,6 +33,7 @@ public:
     inline t_osc_bndl_s * release(){ return ptr.release(); }
     
     OdotBundle deserialize() const;
+    void applyExpr( const OdotExpr& expr );
     
 private:
     

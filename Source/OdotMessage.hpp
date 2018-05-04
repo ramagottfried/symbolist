@@ -10,6 +10,7 @@
 
 using namespace std;
 
+class OdotBundleRef;
 class OdotBundle;
 
 class OdotMessage
@@ -22,6 +23,8 @@ public:
     OdotMessage( const char *name );
     OdotMessage( const string& address );
     OdotMessage( const OdotMessage& src );
+    OdotMessage( OdotMessage& src );
+
     OdotMessage( const t_osc_msg_u * src );
     
     template <typename... Ts>
@@ -56,7 +59,7 @@ public:
     inline string getString(int argIndex = 0){ return ((*this)[argIndex]).getString(); }
     inline float getFloat(int argIndex = 0){ return  osc_atom_u_getFloat( osc_message_u_getArg( ptr.get(), argIndex ) ); }
     inline int getInt(int argIndex = 0){ return  osc_atom_u_getInt( osc_message_u_getArg( ptr.get(), argIndex ) ); }
-    OdotBundle getBundle(int argIndex = 0);
+    OdotBundleRef getBundle(int argIndex = 0);
 
     
     /* ======= set message values ======= */
@@ -64,17 +67,25 @@ public:
     inline void rename( const string& name ) { osc_message_u_setAddress( ptr.get(), name.c_str() ); }
     
     void appendValue( const t_osc_atom_u *atom );
+    
     void appendValue( OdotBundle& bndl );
+    void appendValue( const OdotBundle& bndl );
 
+    void appendValue( OdotBundleRef& bndl );
+    void appendValue( const OdotBundleRef& bndl );
+
+    
     void appendValue( OdotMessage& msg );
     inline void appendValue( OdotAtom& atom ){ appendValue( atom.get_o_ptr() ); }
-    void appendValue( const OdotBundle& bndl );
     
-    void appendValue( const t_osc_bndl_u * bndl );
+    void appendValue( t_osc_bndl_u * bndl );
     
     inline void appendValue( double val ){   osc_message_u_appendDouble( ptr.get(), val );           }
     inline void appendValue( float val ){    osc_message_u_appendFloat(  ptr.get(), val );           }
-    inline void appendValue( int val ){      osc_message_u_appendInt32(  ptr.get(), val );           }
+    inline void appendValue( int val )
+    {
+        osc_message_u_appendInt32(  ptr.get(), val );
+    }
     inline void appendValue( string& val ){  osc_message_u_appendString( ptr.get(), val.c_str() );   }
     inline void appendValue( const string& val ){  osc_message_u_appendString( ptr.get(), val.c_str() );   }
     inline void appendValue( const char * val ){   osc_message_u_appendString( ptr.get(), val );     }

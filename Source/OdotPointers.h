@@ -35,6 +35,7 @@ namespace odot
         }
         void operator()(t_osc_bndl_u* ptr)
         {
+            cout << "freeing " << ptr << endl;
             if (ptr)
                 osc_bundle_u_free(ptr);
         }

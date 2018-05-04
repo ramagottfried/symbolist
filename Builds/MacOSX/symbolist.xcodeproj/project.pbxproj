@@ -31,6 +31,14 @@
 		111A261C1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */; };
 		111A261D1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */; };
 		111A261E1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */; };
+		11225735209C5043003CEC90 /* OdotBundleRef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11225733209C5043003CEC90 /* OdotBundleRef.cpp */; };
+		11225736209C5043003CEC90 /* OdotBundleRef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11225733209C5043003CEC90 /* OdotBundleRef.cpp */; };
+		11225737209C5043003CEC90 /* OdotBundleRef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11225733209C5043003CEC90 /* OdotBundleRef.cpp */; };
+		11225738209C5043003CEC90 /* OdotBundleRef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11225733209C5043003CEC90 /* OdotBundleRef.cpp */; };
+		11225739209C5043003CEC90 /* OdotBundleRef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11225734209C5043003CEC90 /* OdotBundleRef.hpp */; };
+		1122573C209C511C003CEC90 /* osc_expr_u.c in Sources */ = {isa = PBXBuildFile; fileRef = 1122573A209C511B003CEC90 /* osc_expr_u.c */; };
+		1122573D209C511C003CEC90 /* osc_expr_u.h in Headers */ = {isa = PBXBuildFile; fileRef = 1122573B209C511B003CEC90 /* osc_expr_u.h */; };
+		1122573F209C51AD003CEC90 /* osc_expr_u_privatedecls.h in Headers */ = {isa = PBXBuildFile; fileRef = 1122573E209C51AC003CEC90 /* osc_expr_u_privatedecls.h */; };
 		11263095207F3D520086653D /* SVGFileIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11263093207F3D520086653D /* SVGFileIO.cpp */; };
 		11263096207F3D520086653D /* SVGFileIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11263093207F3D520086653D /* SVGFileIO.cpp */; };
 		11263097207F3D520086653D /* SVGFileIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11263093207F3D520086653D /* SVGFileIO.cpp */; };
@@ -432,6 +440,11 @@
 		1107B3EF1EF7D53100E2DFA9 /* libsymbolist.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsymbolist.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MouseModeComponent.cpp; path = ../../Source/MouseModeComponent.cpp; sourceTree = "<group>"; };
 		111A261B1F40B0C200D3713C /* MouseModeComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = MouseModeComponent.hpp; path = ../../Source/MouseModeComponent.hpp; sourceTree = "<group>"; };
+		11225733209C5043003CEC90 /* OdotBundleRef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OdotBundleRef.cpp; path = ../../Source/OdotBundleRef.cpp; sourceTree = "<group>"; };
+		11225734209C5043003CEC90 /* OdotBundleRef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = OdotBundleRef.hpp; path = ../../Source/OdotBundleRef.hpp; sourceTree = "<group>"; };
+		1122573A209C511B003CEC90 /* osc_expr_u.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_expr_u.c; path = ../../../libo/osc_expr_u.c; sourceTree = "<group>"; };
+		1122573B209C511B003CEC90 /* osc_expr_u.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_expr_u.h; path = ../../../libo/osc_expr_u.h; sourceTree = "<group>"; };
+		1122573E209C51AC003CEC90 /* osc_expr_u_privatedecls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_expr_u_privatedecls.h; path = ../../../libo/osc_expr_u_privatedecls.h; sourceTree = "<group>"; };
 		11263093207F3D520086653D /* SVGFileIO.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SVGFileIO.cpp; path = ../../Source/SVGFileIO.cpp; sourceTree = "<group>"; };
 		11263094207F3D520086653D /* SVGFileIO.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = SVGFileIO.hpp; path = ../../Source/SVGFileIO.hpp; sourceTree = "<group>"; };
 		112630AC207F4AC20086653D /* pugiconfig.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = pugiconfig.hpp; path = ../../../Source/plugixml/pugiconfig.hpp; sourceTree = "<group>"; };
@@ -834,6 +847,9 @@
 				116A7EC12046CFCD004B545D /* osc_util.h */,
 				116A7EC22046CFCD004B545D /* osc_vtable.h */,
 				116A7EC32046CFCD004B545D /* osc.h */,
+				1122573E209C51AC003CEC90 /* osc_expr_u_privatedecls.h */,
+				1122573B209C511B003CEC90 /* osc_expr_u.h */,
+				1122573A209C511B003CEC90 /* osc_expr_u.c */,
 				116A7E562046CFB6004B545D /* osc_array.c */,
 				116A7E572046CFB6004B545D /* osc_atom_array_s.c */,
 				116A7E582046CFB6004B545D /* osc_atom_array_u.c */,
@@ -880,6 +896,8 @@
 				113980B2206449EA002A2408 /* OdotExpr.hpp */,
 				116A7EED2046DCAE004B545D /* OdotBundle.cpp */,
 				116A7EEE2046DCAE004B545D /* OdotBundle.hpp */,
+				11225733209C5043003CEC90 /* OdotBundleRef.cpp */,
+				11225734209C5043003CEC90 /* OdotBundleRef.hpp */,
 				11A3939A20528799002C8916 /* OdotBundle_s.cpp */,
 				11A3939B20528799002C8916 /* OdotBundle_s.hpp */,
 				116A7EF42047E99D004B545D /* OdotMessage.cpp */,
@@ -1212,6 +1230,7 @@
 				11A3939F20528799002C8916 /* OdotBundle_s.hpp in Headers */,
 				751E315C2069493F00C3318F /* PaletteController.hpp in Headers */,
 				116A7EF92047E99D004B545D /* OdotMessage.hpp in Headers */,
+				11225739209C5043003CEC90 /* OdotBundleRef.hpp in Headers */,
 				75FB5EFF207F51760083A1C0 /* OdotPointers.h in Headers */,
 				7571E70E208E41C60092A3E0 /* MouseModeController.hpp in Headers */,
 				751E31572069410400C3318F /* PaletteButton.hpp in Headers */,
@@ -1238,7 +1257,9 @@
 				116A7ED32046CFCD004B545D /* osc_expr_rec.h in Headers */,
 				116A7ED12046CFCD004B545D /* osc_expr_parser.h in Headers */,
 				116A7EE32046CFCD004B545D /* osc_rset.h in Headers */,
+				1122573D209C511C003CEC90 /* osc_expr_u.h in Headers */,
 				116A7EC42046CFCD004B545D /* osc_array.h in Headers */,
+				1122573F209C51AD003CEC90 /* osc_expr_u_privatedecls.h in Headers */,
 				116A7EE22046CFCD004B545D /* osc_query.h in Headers */,
 				116A7EC82046CFCD004B545D /* osc_atom_u.h in Headers */,
 				116A7EDD2046CFCD004B545D /* osc_message_iterator_u.h in Headers */,
@@ -1464,6 +1485,7 @@
 				1107B3FD1EF7D55D00E2DFA9 /* SymbolGroupComponent.cpp in Sources */,
 				1186486D1EF7E68B00904672 /* include_juce_data_structures.mm in Sources */,
 				75774FA6206296C50069A89D /* Palette.cpp in Sources */,
+				11225737209C5043003CEC90 /* OdotBundleRef.cpp in Sources */,
 				11A3939E20528799002C8916 /* OdotBundle_s.cpp in Sources */,
 				11B71DD31F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */,
 				1107B3F61EF7D55D00E2DFA9 /* Score.cpp in Sources */,
@@ -1519,6 +1541,7 @@
 				116A7E912046CFB6004B545D /* osc_message_u.c in Sources */,
 				116A7E7E2046CFB6004B545D /* osc_bundle_iterator_s.c in Sources */,
 				116A7E952046CFB6004B545D /* osc_scanner.c in Sources */,
+				1122573C209C511C003CEC90 /* osc_expr_u.c in Sources */,
 				116A7E7D2046CFB6004B545D /* osc_atom_u.c in Sources */,
 				116A7E8A2046CFB6004B545D /* osc_legacy_scanner.c in Sources */,
 				7571E70C208E41C60092A3E0 /* MouseModeController.cpp in Sources */,
@@ -1594,6 +1617,7 @@
 				757E1B43206A83C5002E472E /* View.cpp in Sources */,
 				11AEF242207A94D000B1398D /* CodeboxComponent.cpp in Sources */,
 				11D1235D1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */,
+				11225736209C5043003CEC90 /* OdotBundleRef.cpp in Sources */,
 				75774FA5206296C50069A89D /* Palette.cpp in Sources */,
 				444CD9041EDDAF1B001AC03A /* SymbolistComponent.cpp in Sources */,
 				75FB5F0D207F8C3A0083A1C0 /* Controller.cpp in Sources */,
@@ -1651,6 +1675,7 @@
 				116A7EFC2047ECB8004B545D /* OdotAtom.cpp in Sources */,
 				114027CA1F4B185E00A9B8C4 /* StaffComponent.cpp in Sources */,
 				8D57C4E2ADEA2935AAB91AAC /* include_juce_graphics.mm in Sources */,
+				11225735209C5043003CEC90 /* OdotBundleRef.cpp in Sources */,
 				1186489C1EFAC44100904672 /* ScoreCursor.cpp in Sources */,
 				112630B0207F4AC20086653D /* pugixml.cpp in Sources */,
 				111A261C1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */,
@@ -1725,6 +1750,7 @@
 				758F6F54207BCB00006EDD53 /* PathInfo.cpp in Sources */,
 				758F6F55207BCB00006EDD53 /* BaseComponent.cpp in Sources */,
 				758F6F56207BCB00006EDD53 /* PathBaseComponent.cpp in Sources */,
+				11225738209C5043003CEC90 /* OdotBundleRef.cpp in Sources */,
 				758F6F57207BCB00006EDD53 /* TextGlyphComponent.cpp in Sources */,
 				758F6F58207BCB00006EDD53 /* SymbolGroupComponent.cpp in Sources */,
 				758F6F59207BCB00006EDD53 /* StaffComponent.cpp in Sources */,

@@ -25,11 +25,16 @@ OdotMessage::OdotMessage( const string& address )
 
 OdotMessage::OdotMessage( const OdotMessage& src )
 {
-//    D_(cout << __func__ << " copy from object \n";)
+    //D_(cout << __func__ << " copy from object \n";)
     t_osc_msg_u *m = osc_message_u_alloc();
     osc_message_u_deepCopy(&m, src.ptr.get() );
-    
     ptr = odot::newOdotMessagePtr( m );
+}
+
+OdotMessage::OdotMessage( OdotMessage& src )
+{
+    D_(cout << __func__ << " releasing object \n";)
+    ptr = odot::newOdotMessagePtr( src.ptr.release() );
 }
 
 OdotMessage::OdotMessage( const t_osc_msg_u * src )
@@ -71,8 +76,9 @@ void OdotMessage::print()
 {
     char buf[256];
     char *buf_ptr = buf;
-    
-    cout << "==== ODOT MESSAGE ====" << endl;
+    string indent = "";
+    int level = 0;
+    cout << "**** ODOT MESSAGE ****" << endl;
     cout << "   ( " << ptr.get() << " )" << endl;
     
     cout << osc_message_u_getAddress( ptr.get() );
@@ -80,11 +86,21 @@ void OdotMessage::print()
     int argcount = osc_message_u_getArgCount( ptr.get() );
     for( int i = 0; i < argcount; i++ )
     {
-        osc_atom_u_getString( osc_message_u_getArg( ptr.get() , i), 256, &buf_ptr );
-        cout << "\t" << buf_ptr;
+        t_osc_atom_u *a = osc_message_u_getArg(get_o_ptr(), i);
+        if( osc_atom_u_getTypetag(a) == OSC_BUNDLE_TYPETAG )
+        {
+            cout << "\t{ \n";
+            OdotBundleRef( osc_atom_u_getBndl(a) ).print( level+1 );
+            cout << " } ";
+        }
+        else
+        {
+            osc_atom_u_getString( a, 256, &buf_ptr );
+            cout << "\t" << buf_ptr;
+        }
     }
     cout << endl;
-    cout << "====-===-======-====" << endl;
+    cout << "********************" << endl;
 }
 
 string OdotMessage::getJSON()
@@ -137,6 +153,8 @@ string OdotMessage::getJSON()
 
 void OdotMessage::appendValue( const t_osc_atom_u *atom )
 {
+    cout << "appending atom with copy" << endl;
+
     // note osc_message_u_append functions allocate a new atom internally
     switch ( osc_atom_u_getTypetag( (t_osc_atom_u *)atom ) )
     {
@@ -160,25 +178,54 @@ void OdotMessage::appendValue( const t_osc_atom_u *atom )
     }
 }
 
-void OdotMessage::appendValue( const t_osc_bndl_u * bndl )
+void OdotMessage::appendValue( t_osc_bndl_u * bndl )
 {
     osc_message_u_appendBndl_u( ptr.get(), (t_osc_bndl_u *)bndl );
 }
 
 void OdotMessage::appendValue( OdotBundle& bndl )
 {
-    osc_message_u_appendBndl_u( ptr.get(), OdotBundle( bndl ).release() );
+    if( bndl.ownsBundle() )
+    {
+        osc_message_u_appendBndl_u( ptr.get(), bndl.release() );
+    }
+    else
+    {
+        if( !bndl.get_o_ptr() ) throw std::runtime_error("error: adding messages to null bundle!");
+
+        osc_message_u_appendBndl_u( ptr.get(), OdotBundle( bndl.get_o_ptr() ).release() );
+        
+    }
+}
+
+// careful here, const version copies, non-const releases!
+// check if this is the right thing to do or not
+void OdotMessage::appendValue( const OdotBundle& bndl )
+{
+    t_osc_bndl_u *copy;
+    osc_bundle_u_copy( &copy, bndl.get_o_ptr() );
+    osc_message_u_appendBndl_u( ptr.get(), copy );
+}
+
+void OdotMessage::appendValue( OdotBundleRef& bndl )
+{
+    t_osc_bndl_u *copy;
+    osc_bundle_u_copy( &copy, bndl.get_o_ptr() );
+    osc_message_u_appendBndl_u( ptr.get(), copy );
+}
+
+void OdotMessage::appendValue( const OdotBundleRef& bndl )
+{
+    t_osc_bndl_u *copy;
+    osc_bundle_u_copy( &copy, bndl.get_o_ptr() );
+    osc_message_u_appendBndl_u( ptr.get(), copy );
+    
 }
 
 void OdotMessage::appendValue( OdotMessage& msg )
 {
     OdotBundle bndl( msg ); // adding a message to a message adds as subbundle
     appendValue( bndl.release() ); // the allocated atom now holds the memory
-}
-
-void OdotMessage::appendValue( const OdotBundle& bndl )
-{
-    osc_message_u_appendBndl_u( ptr.get(), (t_osc_bndl_u *)OdotBundle( bndl ).release() );
 }
 
 vector<OdotAtom> OdotMessage::getAtoms()
@@ -191,7 +238,7 @@ vector<OdotAtom> OdotMessage::getAtoms()
     return atom_array;
 }
 
-OdotBundle OdotMessage::getBundle( int argIndex )
+OdotBundleRef OdotMessage::getBundle( int argIndex )
 {
-    return OdotBundle( osc_atom_u_getBndl( osc_message_u_getArg( ptr.get(), argIndex ) ) );
+    return OdotBundleRef( osc_atom_u_getBndl( osc_message_u_getArg( ptr.get(), argIndex ) ) );
 }

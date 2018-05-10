@@ -1,6 +1,6 @@
-
 #include "EditSelectionBox.h"
 #include "SymbolistMainComponent.h"
+#include "ScoreComponent.h"
 
 EditSelectionBox::Zone::Zone() noexcept
 : zone (0)
@@ -98,7 +98,7 @@ Rectangle<ValueType> EditSelectionBox::Zone::resizeRectangleBy (Rectangle<ValueT
 
 
 //==============================================================================
-EditSelectionBox::EditSelectionBox ( Array<SymbolistComponent*>* const selected_component_array ) :
+EditSelectionBox::EditSelectionBox ( Array<ScoreComponent*>* const selected_component_array ) :
 borderSize (5), mouseZone (0)
 {
     component_set = selected_component_array;
@@ -223,30 +223,26 @@ void EditSelectionBox::mouseDown (const MouseEvent& e)
     // and better deal with path handles etc.
     
     if ( component_set->size() == 0 )
-    {
         return;
-    }
     
     SymbolistComponent* first = (*component_set)[0];
     
     bool in_edit_mode = 0;
     if( first )
-    {
-        in_edit_mode = first->getPageComponent()->getDisplayMode() == PageComponent::DisplayMode::EDIT;
-    }
+        in_edit_mode = (first->getPageComponent()->getDisplayMode() == PageComponent::DisplayMode::EDIT);
     
     updateMouseZone (e);
     prev_pos = e.getPosition();
     
     original_bounds = getBounds();
 
-    SymbolistHandler *sh = (*component_set)[0]->getSymbolistHandler();
+    SymbolistHandler* mainController = (*component_set)[0]->getSymbolistHandler();
     
     // make preview components
     for( int i = 0; i < component_set->size(); i++ )
     {
         
-        SymbolistComponent* c = (*component_set)[i];
+        ScoreComponent* c = (*component_set)[i];
         BaseComponent* b = dynamic_cast<BaseComponent*>( c );
                                                         
         if( b == NULL )
@@ -262,17 +258,21 @@ void EditSelectionBox::mouseDown (const MouseEvent& e)
             b->addSymbolMessages(s);
             original_symbols.set(i, s);
             
-            BaseComponent *newB = sh->makeComponentFromSymbol(s, false);
-            newB->setTopLeftPosition( b->getPosition() - getPosition() );
-            newB->setSize( b->getWidth(), b->getHeight() );
-            newB->setSymbolComponentColor(Colours::red);
-            
-            preview_components.set(i, new PreviewComp(newB, b));
-            addAndMakeVisible( newB );
+            BaseComponent* newComponent = mainController->makeComponentFromSymbol(s, false);
+			
+            if (newComponent != NULL)
+            {
+				newComponent->setTopLeftPosition( b->getPosition() - getPosition() );
+				newComponent->setSize( b->getWidth(), b->getHeight() );
+				newComponent->setSymbolComponentColor(Colours::red);
+				
+				preview_components.set(i, new PreviewComp(newComponent, b));
+				addAndMakeVisible( newComponent );
+			}
+			
         }
         
     }
-    
     
     /*
     if( e.mods.isAltDown() )
@@ -360,7 +360,7 @@ void EditSelectionBox::mouseDrag (const MouseEvent& e)
 
         for( int i = 0; i < preview_components.size(); i++ )
         {
-            SymbolistComponent *b = preview_components[i]->copy;
+            BaseComponent *b = preview_components[i]->copy;
             b->rotateScoreComponent( delta_rad, centre_offset.getX(), centre_offset.getY() );
 
          /* this was experimental version where I returned the unapplied bounds of the rotated path for the preview, the tranform is faster than actually rotating, but it's more complicated, and has some ugly side effects when scaling

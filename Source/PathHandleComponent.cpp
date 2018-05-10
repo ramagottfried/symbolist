@@ -1,8 +1,7 @@
-
 #include "PathHandleComponent.h"
 #include "PathBaseComponent.h"
 #include "SymbolistMainComponent.h"
-
+#include "ScoreComponent.h"
 
 PathHandle::PathHandle( handleType type, float x, float y)
 {

@@ -271,6 +271,13 @@
 		751E31582069410400C3318F /* PaletteButton.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 751E31522069410400C3318F /* PaletteButton.hpp */; };
 		751E315C2069493F00C3318F /* PaletteController.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 751E314A2069378600C3318F /* PaletteController.hpp */; };
 		75521BFF2093370300BA5B63 /* libsymbolist-libo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 116A7E412046CF62004B545D /* libsymbolist-libo.a */; };
+		7558B82F209C9F2400BCA92C /* NoteComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7558B82D209C9F2400BCA92C /* NoteComponent.cpp */; };
+		7558B830209C9F2400BCA92C /* NoteComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7558B82D209C9F2400BCA92C /* NoteComponent.cpp */; };
+		7558B831209C9F2400BCA92C /* NoteComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7558B82D209C9F2400BCA92C /* NoteComponent.cpp */; };
+		7558B832209C9F2400BCA92C /* NoteComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7558B82D209C9F2400BCA92C /* NoteComponent.cpp */; };
+		7558B833209C9F2400BCA92C /* NoteComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7558B82D209C9F2400BCA92C /* NoteComponent.cpp */; };
+		7558B834209C9F2400BCA92C /* NoteComponent.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7558B82E209C9F2400BCA92C /* NoteComponent.hpp */; };
+		7558B835209C9F2400BCA92C /* NoteComponent.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7558B82E209C9F2400BCA92C /* NoteComponent.hpp */; };
 		7571E6F42084EA240092A3E0 /* pugixml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 112630AD207F4AC20086653D /* pugixml.cpp */; };
 		7571E6F52084EA3F0092A3E0 /* SVGFileIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11263093207F3D520086653D /* SVGFileIO.cpp */; };
 		7571E6F62084EA3F0092A3E0 /* SVGParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11E8082C207FCAC000E0342F /* SVGParser.cpp */; };
@@ -622,6 +629,8 @@
 		751E314A2069378600C3318F /* PaletteController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = PaletteController.hpp; path = ../../Source/PaletteController.hpp; sourceTree = "<group>"; };
 		751E31512069410400C3318F /* PaletteButton.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PaletteButton.cpp; path = ../../Source/PaletteButton.cpp; sourceTree = "<group>"; };
 		751E31522069410400C3318F /* PaletteButton.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = PaletteButton.hpp; path = ../../Source/PaletteButton.hpp; sourceTree = "<group>"; };
+		7558B82D209C9F2400BCA92C /* NoteComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = NoteComponent.cpp; path = ../../Source/NoteComponent.cpp; sourceTree = "<group>"; };
+		7558B82E209C9F2400BCA92C /* NoteComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = NoteComponent.hpp; path = ../../Source/NoteComponent.hpp; sourceTree = "<group>"; };
 		7571E6F92085FEE80092A3E0 /* symbolist-utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "symbolist-utils.cpp"; sourceTree = "<group>"; };
 		7571E6FA2085FEE80092A3E0 /* symbolist-utils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "symbolist-utils.hpp"; sourceTree = "<group>"; };
 		7571E7022089DAFF0092A3E0 /* SymbolTestsFixture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SymbolTestsFixture.cpp; sourceTree = "<group>"; };
@@ -937,6 +946,8 @@
 				444C43A31EE4A748000C6F69 /* SymbolGroupComponent.cpp */,
 				114027C91F4B185E00A9B8C4 /* StaffComponent.hpp */,
 				114027C81F4B185E00A9B8C4 /* StaffComponent.cpp */,
+				7558B82D209C9F2400BCA92C /* NoteComponent.cpp */,
+				7558B82E209C9F2400BCA92C /* NoteComponent.hpp */,
 			);
 			name = "score-components";
 			sourceTree = "<group>";
@@ -1197,6 +1208,7 @@
 				75FB5F10207F8C4C0083A1C0 /* Observer.hpp in Headers */,
 				75FB5F11207F8C500083A1C0 /* View.hpp in Headers */,
 				113980B6206449EA002A2408 /* OdotExpr.hpp in Headers */,
+				7558B834209C9F2400BCA92C /* NoteComponent.hpp in Headers */,
 				116A7EFF2047ECB8004B545D /* OdotAtom.hpp in Headers */,
 				75FB5F00207F51940083A1C0 /* Symbol.h in Headers */,
 				11C442D31F585C1B00F2E9B6 /* TimeDisplayComponent.hpp in Headers */,
@@ -1239,6 +1251,7 @@
 				116A7ED12046CFCD004B545D /* osc_expr_parser.h in Headers */,
 				116A7EE32046CFCD004B545D /* osc_rset.h in Headers */,
 				116A7EC42046CFCD004B545D /* osc_array.h in Headers */,
+				7558B835209C9F2400BCA92C /* NoteComponent.hpp in Headers */,
 				116A7EE22046CFCD004B545D /* osc_query.h in Headers */,
 				116A7EC82046CFCD004B545D /* osc_atom_u.h in Headers */,
 				116A7EDD2046CFCD004B545D /* osc_message_iterator_u.h in Headers */,
@@ -1456,6 +1469,7 @@
 				11263097207F3D520086653D /* SVGFileIO.cpp in Sources */,
 				11E8083D2080A12F00E0342F /* StringTools.cpp in Sources */,
 				1107B3FB1EF7D55D00E2DFA9 /* PathBaseComponent.cpp in Sources */,
+				7558B831209C9F2400BCA92C /* NoteComponent.cpp in Sources */,
 				757E1B46206A83CD002E472E /* View.cpp in Sources */,
 				751E31552069410400C3318F /* PaletteButton.cpp in Sources */,
 				118648701EF7E68B00904672 /* include_juce_gui_basics.mm in Sources */,
@@ -1514,6 +1528,7 @@
 				116A7E922046CFB6004B545D /* osc_parser.c in Sources */,
 				116A7E962046CFB6004B545D /* osc_serial.c in Sources */,
 				116A7E812046CFB6004B545D /* osc_bundle_u.c in Sources */,
+				7558B832209C9F2400BCA92C /* NoteComponent.cpp in Sources */,
 				116A7E872046CFB6004B545D /* osc_expr.c in Sources */,
 				116A7E7C2046CFB6004B545D /* osc_atom_s.c in Sources */,
 				116A7E912046CFB6004B545D /* osc_message_u.c in Sources */,
@@ -1577,6 +1592,7 @@
 				444C43A21EE4A2E4000C6F69 /* PageComponent.cpp in Sources */,
 				111A261D1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */,
 				7571E71C208F59B90092A3E0 /* TimeDisplayController.cpp in Sources */,
+				7558B830209C9F2400BCA92C /* NoteComponent.cpp in Sources */,
 				44CFE03A1EC3789C009135F8 /* include_juce_core.mm in Sources */,
 				44CFE03F1EC3789C009135F8 /* include_juce_gui_extra.mm in Sources */,
 				118C38E41EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */,
@@ -1643,6 +1659,7 @@
 				11E8083B2080A12F00E0342F /* StringTools.cpp in Sources */,
 				4425D3051EF8599300B8BF1C /* SymbolistHandler.cpp in Sources */,
 				444C43A11EE4A2E4000C6F69 /* PageComponent.cpp in Sources */,
+				7558B82F209C9F2400BCA92C /* NoteComponent.cpp in Sources */,
 				ECAB07494F266A96C75A7E47 /* include_juce_events.mm in Sources */,
 				446388D51EC34DC90038CFCB /* SymbolistMainWindow.cpp in Sources */,
 				11A3939C20528799002C8916 /* OdotBundle_s.cpp in Sources */,
@@ -1723,6 +1740,7 @@
 				758F6F53207BCB00006EDD53 /* PathHandleComponent.cpp in Sources */,
 				7571E70D208E41C60092A3E0 /* MouseModeController.cpp in Sources */,
 				758F6F54207BCB00006EDD53 /* PathInfo.cpp in Sources */,
+				7558B833209C9F2400BCA92C /* NoteComponent.cpp in Sources */,
 				758F6F55207BCB00006EDD53 /* BaseComponent.cpp in Sources */,
 				758F6F56207BCB00006EDD53 /* PathBaseComponent.cpp in Sources */,
 				758F6F57207BCB00006EDD53 /* TextGlyphComponent.cpp in Sources */,

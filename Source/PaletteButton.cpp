@@ -14,7 +14,7 @@ PaletteButton::PaletteButton(int i, Symbol* s)
     /* Normally the PaletteButton being created is not
      * associated with a parent component yet.
      */
-    PaletteComponent* paletteComponent = dynamic_cast<PaletteComponent*>(getParentComponent());
+    PaletteComponent* paletteComponent = dynamic_cast<PaletteComponent* >(getParentComponent());
     if (paletteComponent != NULL)
         try
         {
@@ -44,7 +44,7 @@ void PaletteButton::setSelected(bool sel)
 void PaletteButton::resized()
 {
     graphic_comp->setBounds( getLocalBounds() );
-    graphic_comp->resizeToFit( 5 , 5 , getWidth() -10, getHeight() -10  );
+    graphic_comp->resizeToFit( 5 , 5 , getWidth() - 10, getHeight() - 10  );
 }
 
 void PaletteButton::paint (Graphics& g)
@@ -60,7 +60,7 @@ void PaletteButton::paint (Graphics& g)
 
 void PaletteButton::mouseDown(const MouseEvent& event)
 {
-    PaletteComponent* parentComponent = dynamic_cast<PaletteComponent*>(getParentComponent());
+    PaletteComponent* parentComponent = dynamic_cast<PaletteComponent* >(getParentComponent());
     
     // Checks the downcast result.
     if (parentComponent != NULL) {

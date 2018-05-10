@@ -1,12 +1,12 @@
 #ifndef ScoreComponent_h
 #define ScoreComponent_h
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "SymbolistComponent.h"
-#include "EditSelectionBox.h"
 
-class SymbolistLasso : public Component
-{
+class EditSelectionBox;
+
+class SymbolistLasso : public Component {
     
 public:
     
@@ -20,32 +20,57 @@ private:
     float start_x, start_y;
 };
 
-/*********************
- * Superclass for score-editable containers : PageComponent or BaseComponent (when in_edit_mode)
- *********************/
+/**
+ * Superclass for score-editable components.
+ * The score-editable components are either of type PageComponent, representing the score view, or
+ * of type BaseComponent, representing the symbols in the score.
+ *
+ * For now, all ScoreComponent instances hold a list of sub-components.
+ * In the future, only composite instances of ScoreComponent will possess
+ * such a list.
+ */
 class ScoreComponent : public SymbolistComponent {
 	
 public:
     
     ScoreComponent();
     ~ScoreComponent();
-    
-    void addToSelection(SymbolistComponent* c);
-    void removeFromSelection(SymbolistComponent* c);
+	
+	/************************************
+	 *          GETTERS & SETTERS       *
+	 ************************************/
+	inline bool isSelected() { return is_selected; }
+	inline Array<ScoreComponent* >& getSelectedItems() { return selected_components; }
+	inline Array<ScoreComponent* >* getSubcomponents() { return &subcomponents; }
+	
+	/****************************************
+	 *          SUBCOMPONENTS METHODS       *
+	 ****************************************/
+	const size_t getNumSubcomponents();
+	ScoreComponent* getSubcomponentByIndex(int i);
+    ScoreComponent* getSubcomponentByID(const string& id);
+	
+	virtual void addSubcomponent( ScoreComponent *c );
+	virtual void removeSubcomponent( ScoreComponent *c );
+    void clearAllSubcomponents();
+	
+	/***********************************************
+	 *          SELECTED COMPONENTS METHODS        *
+	 ***********************************************/
+	virtual void selectComponent();
+	virtual void deselectComponent();
+
+    void addToSelection(ScoreComponent* c);
+    void removeFromSelection(ScoreComponent* c);
+	
     void selectAllComponents();
     virtual void unselectAllComponents();
-    Array<SymbolistComponent* >& getSelectedItems(){ return selected_components; }
+	virtual void deleteSelectedComponents();
+	void translateSelectedComponents( Point<int> delta_xy );
+	void reportModificationForSelectedSymbols();
+	
     void selectedToFront();
     void selectedToBack();
-    
-    void removeSubcomponent( SymbolistComponent *c ) override;
-    void clearAllSubcomponents( ) override;
-    
-    void reportModificationForSelectedSymbols();
-    
-    virtual void deleteSelectedComponents();
-
-    void translateSelectedComponents( Point<int> delta_xy );
 	
     /* Method about grouping and ungrouping
 	 * shouldn't be here because simple components
@@ -57,27 +82,55 @@ public:
         
     void flipSelectedSymbols( int axis );
     void nudgeSelected( int direction );
-        
-    void mouseDown ( const MouseEvent& event ) override;
-    void mouseDrag ( const MouseEvent& event ) override;
-    void mouseUp ( const MouseEvent& event ) override;
+	
+	/*********************************************
+	 *          GRAPHIC RENDERING METHODS        *
+	 *********************************************/
+	virtual inline void h_flip(float ax, float ay) {}
+    virtual inline void v_flip(float ax, float ay) {}
+	
+    /**
+     * Scales this instance of ScoreComponent in width and height
+     * according to the two given ratios.
+     *
+     * @param scaledWidthRatio the ratio by which multiplying the current component width
+     *				           to obtain the scaled width.
+     *
+     * @param scaledHeightRatio the ratio by which multiplying the current component height
+     *				           to obtain the scaled height.
+     */
+	virtual inline void scaleScoreComponent(float scaledWidthRatio, float scaledHeightRatio) {}
+    virtual inline void rotateScoreComponent(float theta, float ax, float ay) {}
+	virtual inline void setScoreComponentSize(int w, int h) {}
+	virtual inline void updateRelativeAttributes() {}
+	
+	Point<int> positionRelativeTo(ScoreComponent* to);
+	virtual bool intersectRect(Rectangle<int> rect);
+	Rectangle<int> getSelectionBounds();
+	
+	/****************************************
+	 *          MOUSE EVENTS METHODS        *
+	 ****************************************/
+	void mouseDownSelection(const MouseEvent& event);
+    virtual void mouseDown ( const MouseEvent& event ) override;
+    virtual void mouseDrag ( const MouseEvent& event ) override;
+    virtual void mouseUp ( const MouseEvent& event ) override;
     
     virtual void mouseAddClick ( const MouseEvent& event );
-    
-    Rectangle<int> getSelectionBounds();
 	
 protected:
 	
-    Array<SymbolistComponent* > selected_components;
-    SymbolistLasso s_lasso;
+	bool                             is_selected = false;
+	Array<ScoreComponent* >          subcomponents;
+    Array<ScoreComponent* >          selected_components;
+	
+	ScopedPointer<EditSelectionBox > sel_resize_box;
+	SymbolistLasso                   s_lasso;
 	
     void beginLassoSelection(Point<int> position);
     void dragLassoSelection(Point<int> position);
     void endLassoSelection();
 	
-    ScopedPointer<EditSelectionBox > sel_resize_box;
-
 };
-
 
 #endif

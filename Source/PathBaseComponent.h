@@ -22,7 +22,7 @@ public:
 
     string getSymbolTypeStr() const override { return "path"; }
     
-    Rectangle<float> symbol_export_bounds() override
+    Rectangle<float> symbolExportBounds() override
     {
         return getBounds().toFloat();
     }
@@ -40,7 +40,7 @@ public:
     virtual void updatePathPoints();
     void drawHandlesLines( Graphics& g);
 
-    void removeSubcomponent(SymbolistComponent* c) override;
+    void removeSubcomponent(ScoreComponent* c) override;
     void unselectAllComponents() override;
     
     void paint ( Graphics& g ) override;
@@ -71,7 +71,7 @@ public:
     void v_flip(float ax, float ay) override;
 
     virtual void rotateScoreComponent(float theta, float ax, float ay) override;
-    virtual void scaleScoreComponent(float scale_w, float scale_h) override;
+    virtual void scaleScoreComponent(float scaledWidthRatio, float scaledHeightRatio) override;
     
     // void resizeToFit(int x, int y, int w, int h) override;
     

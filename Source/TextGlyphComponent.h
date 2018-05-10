@@ -66,7 +66,7 @@ public:
     
     void setBoundsFromSymbol( float x, float y , float w , float h) override final;
     
-    Rectangle<float> symbol_export_bounds() override;
+    Rectangle<float> symbolExportBounds() override;
     
     void importFromSymbol( const Symbol& s ) override;
     void addSymbolMessages(Symbol* s) override;
@@ -74,7 +74,7 @@ public:
 	// void resized() override;
 	// void resizeToFit(int x, int y, int w, int h) override;
 	
-    virtual void scaleScoreComponent(float scale_w, float scale_h) override;
+    virtual void scaleScoreComponent(float scaledWidthRatio, float scaledHeightRatio) override;
 	
 	// virtual void rotateScoreComponent(float theta, float ax, float ay) override;
     

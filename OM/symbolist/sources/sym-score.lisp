@@ -23,7 +23,7 @@
                                          
                                          
 (defclass! symbolist (data-stream named-object schedulable-object object-with-action)
-  ((symbols :accessor symbols :initarg :symbols :initform '() :documentation "a list of symbols in teh score (OSC bundles)")
+  ((symbols :accessor symbols :initarg :symbols :initform '() :documentation "a list of symbols in the score (OSC bundles)")
    (palette-symbols :accessor palette-symbols :initform '() :documentation "a list of template symbols for the editing palette (OSC bundles)")
    (refresh-rate :accessor refresh-rate :initform 100 :documentation "a refresh-rate for time in the symbolist editor (ms)"))
   (:default-initargs :default-frame-type 'osc-bundle))

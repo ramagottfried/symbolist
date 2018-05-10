@@ -198,14 +198,14 @@ void SymbolGroupComponent::rotateScoreComponent(float theta, float ax, float ay)
 
 }
 
-void SymbolGroupComponent::scaleScoreComponent(float scale_w, float scale_h)
+void SymbolGroupComponent::scaleScoreComponent(float scaledWidthRatio, float scaledHeightRatio)
 {
     
-    cout << "SymbolGroupComponent::scaleScoreComponent " << scale_w << " " << scale_h << endl;
+    cout << "SymbolGroupComponent::scaleScoreComponent " << scaledWidthRatio << " " << scaledHeightRatio << endl;
     
-    BaseComponent::scaleScoreComponent(scale_w, scale_h); // base component only scales subcomponents
+    BaseComponent::scaleScoreComponent(scaledWidthRatio, scaledHeightRatio); // base component only scales subcomponents
     
-    setSize(getWidth() * scale_w, getHeight() * scale_h);
+    setSize(getWidth() * scaledWidthRatio, getHeight() * scaledHeightRatio);
 }
 
 /*============================*

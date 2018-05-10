@@ -1,6 +1,7 @@
 #ifndef symbolist_utils_hpp
 #define symbolist_utils_hpp
 
+#include "JuceHeader.h"
 #include <stdio.h>
 #include <string>
 #include <iostream>
@@ -41,4 +42,19 @@ using namespace std;
 
 #endif
 
+template <typename T>
+void printRect( const Rectangle<T> &rect, const String &rectangleName = "rect" )
+{
+	DEBUG_INLINE(rectangleName << " " << rect.getX() << " " << rect.getY() << " " << rect.getWidth() << " " << rect.getHeight() << std::endl)
+}
+
+template <typename T>
+void printPoint(Point<T> point, const String &name = "point" )
+{
+    DEBUG_INLINE(name << " " << point.getX() << " " << point.getY() << "\n")
+}
+
 #endif
+
+
+

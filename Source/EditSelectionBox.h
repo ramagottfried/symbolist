@@ -4,7 +4,6 @@
 #define EditSelectionBox_h
 
 #include "JuceHeader.h"
-#include "SymbolistComponent.h"
 #include "PathHandleComponent.h"
 #include "Symbol.h"
 
@@ -30,7 +29,7 @@ public:
      
      @see ComponentBoundsConstrainer
      */
-    EditSelectionBox (Array<SymbolistComponent*>* const selected_component_array );
+    EditSelectionBox (Array<ScoreComponent*>* const selected_component_array );
 
     ~EditSelectionBox();
 	
@@ -123,9 +122,9 @@ protected:
     bool hitTest (int x, int y) override;
     
 private:
-    Array<SymbolistComponent* >  *component_set;
+    Array<ScoreComponent* >  *component_set;
     
-    OwnedArray<Symbol> original_symbols;
+    OwnedArray<Symbol > original_symbols;
     
     class PreviewComp {
     
@@ -147,7 +146,7 @@ private:
     };
     
     OwnedArray<PreviewComp > preview_components;
-    Array<SymbolistComponent* > non_preview_components;
+    Array<ScoreComponent* > non_preview_components;
 	
     BorderSize<int> borderSize;
 

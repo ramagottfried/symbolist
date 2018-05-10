@@ -25,7 +25,6 @@ public:
 	
     // it shouldn't be possible to set the symbol without updating the whole component
     void setScoreSymbol(Symbol* s) { score_symbol = s; }
-    
     Symbol* getScoreSymbol () { return score_symbol; }
     void createAndAttachSymbol();
 	
@@ -53,23 +52,10 @@ public:
     
     bool respondsToMouseEvents();
     
-    virtual Rectangle<float>
-    symbol_export_bounds(){ return getBounds().toFloat(); }
-    
-    const string symbol_export_name()
-    {
-        cout << "name " << getComponentID() <<  " " << getSymbolTypeStr() << endl;
-        return ( name.size() == 0 ? name : string( getComponentID().getCharPointer() ) );
-    }
-    
+    virtual Rectangle<float> symbolExportBounds() { return getBounds().toFloat(); }
+
     // not very happy with therm "Symbol" here
     virtual inline void setSymbolComponentStrokeWeight( float s ){ stroke_weight = s; }
-	
-    // helper functions
-    inline void symbol_debug_function(const char* func)
-    {
-        std::cout << juce::Time::currentTimeMillis() << " " << getSymbolTypeStr() << " " << this << " " << func << std::endl;
-    }
     
     inline void setBoundsFloatRect( Rectangle<float> r )
     {

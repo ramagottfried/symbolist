@@ -28,8 +28,8 @@ public:
     inline PageComponent* getPageComponent() override { return this; };
     
     // Redefine from ScoreComponents for special actions (update the score)
-    void addSubcomponent(SymbolistComponent *c) override ;
-    void removeSubcomponent(SymbolistComponent *c) override ;
+    void addSubcomponent(ScoreComponent *c) override;
+    void removeSubcomponent(ScoreComponent *c) override;
     
     virtual void groupSelectedSymbols() override;
     

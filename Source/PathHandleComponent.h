@@ -1,11 +1,11 @@
 
 #pragma once
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include "SymbolistComponent.h"
+#include "JuceHeader.h"
+#include "ScoreComponent.h"
 
-class PathHandle : public SymbolistComponent
-{
+class PathHandle : public ScoreComponent {
+
 public:
     
     enum handleType {

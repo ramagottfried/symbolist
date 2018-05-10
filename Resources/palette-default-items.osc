@@ -22,4 +22,31 @@
 	/y : 0.0,
 	/w : 30,
 	/h : 30
+}, {
+	/type : "note",
+	/x : 0.0,
+	/y : 0.0,
+	/w : 30,
+	/h : 30
+}, {
+	/type : "note",
+	/x : 0.0,
+	/y : 0.0,
+	/w : 30,
+	/h : 30,
+	/unicode-glyph : "\\uE1D3"
+}, {
+	/type : "note",
+	/x : 0.0,
+	/y : 0.0,
+	/w : 30,
+	/h : 30,
+	/unicode-glyph : "\\uE1D5"
+}, {
+	/type : "note",
+	/x : 0.0,
+	/y : 0.0,
+	/w : 30,
+	/h : 30,
+	/unicode-glyph : "\\uE1D7"
 }]

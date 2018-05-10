@@ -1,6 +1,7 @@
 #include "PageController.hpp"
 #include "PageComponent.h"
 #include "StaffComponent.hpp"
+#include "symbolist-utils.hpp"
 
 PageController::PageController()
 {
@@ -173,7 +174,7 @@ void PageController::removeAttachedSymbolFromScore(BaseComponent* component)
 	
 }
 
-Symbol *PageController::createTopLevelSymbolGroup(Array<SymbolistComponent *> selectedComponents)
+Symbol *PageController::createTopLevelSymbolGroup(Array<ScoreComponent *> selectedComponents)
 {
 		// Gets the position and bounds of the group.
         int minx = getView()->getWidth(), maxx = 0, miny = getView()->getHeight(), maxy = 0;
@@ -225,7 +226,7 @@ Symbol *PageController::createTopLevelSymbolGroup(Array<SymbolistComponent *> se
         return symbolGroup;
 }
 
-Symbol PageController::createNestedSymbolGroup(Array<SymbolistComponent* > selectedComponents, SymbolGroupComponent* container)
+Symbol PageController::createNestedSymbolGroup(Array<ScoreComponent* > selectedComponents, SymbolGroupComponent* container)
 {
 	// Gets the position and bounds of the group.
 	int minx = container->getWidth(), maxx = 0, miny = container->getHeight(), maxy = 0;

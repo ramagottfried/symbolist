@@ -84,7 +84,7 @@ void BaseComponent::addSymbolMessages(Symbol* s)
     s->addMessage("/id", getComponentID().getCharPointer());
 	s->addMessage("/staff", staff_id);
    
-    auto b = symbol_export_bounds();
+    auto b = symbolExportBounds();
     
     s->addMessage("/x", b.getX());
     s->addMessage("/y", b.getY());
@@ -102,7 +102,7 @@ Symbol BaseComponent::exportSymbol()
     s.addMessage("/id", getComponentID().getCharPointer() );
 	s.addMessage("/staff", staff_id );
     
-    auto b = symbol_export_bounds();
+    auto b = symbolExportBounds();
     
     s.addMessage("/x", b.getX() );
     s.addMessage("/y", b.getY() );
@@ -270,7 +270,7 @@ Point<float> BaseComponent::computeSymbolPosition(float x, float y, float w, flo
 
 void BaseComponent::selectComponent()
 {
-    SymbolistComponent::selectComponent();
+    ScoreComponent::selectComponent();
     
     if( isTopLevelComponent() )
         getSymbolistHandler()->addToInspector( this );
@@ -278,7 +278,7 @@ void BaseComponent::selectComponent()
 
 void BaseComponent::deselectComponent()
 {
-    SymbolistComponent::deselectComponent();
+    ScoreComponent::deselectComponent();
 }
 
 
@@ -382,14 +382,14 @@ void BaseComponent::resizeToFit(int x, int y, int w, int h)
  *      repositions and sends scaling info to sub components
  *      each sub class needs to have it's own handling of how to scale, and adjust its size
  ***/
-void BaseComponent::scaleScoreComponent(float scale_w, float scale_h)
+void BaseComponent::scaleScoreComponent(float scaledWidthRatio, float scaledHeightRatio)
 {
-    cout << "BaseComponent::scaleScoreComponent " << getSymbolTypeStr() << " " << this << " " << scale_w << " " << scale_h << endl;
+    DEBUG_FULL(getSymbolTypeStr() << " " << this << " " << scaledWidthRatio << " " << scaledHeightRatio << endl);
     for ( int i = 0; i < getNumSubcomponents(); i++ )
     {
         BaseComponent* c = (BaseComponent*) getSubcomponentByIndex(i);
-        c->setTopLeftPosition(c->getX() * scale_w, c->getY() * scale_h);
-        c->scaleScoreComponent(scale_w, scale_h);
+        c->setTopLeftPosition(c->getX() * scaledWidthRatio, c->getY() * scaledHeightRatio);
+        c->scaleScoreComponent(scaledWidthRatio, scaledHeightRatio);
     }
 
 }
@@ -444,14 +444,14 @@ bool BaseComponent::respondsToMouseEvents()
 
 void BaseComponent::mouseMove( const MouseEvent& event )
 {
-    //std::cout << "BaseComponent::mouseMove" << std::endl;
+    // std::cout << "BaseComponent::mouseMove" << std::endl;
 }
 
 void BaseComponent::mouseDown( const MouseEvent& event )
 {
     m_down = event.position;
 
-    if ( in_edit_mode || ( isTopLevelComponent() && getMainMouseMode() == UI_EditType::DRAW) )
+    if ( in_edit_mode || (isTopLevelComponent() && getMainMouseMode() == UI_EditType::DRAW) )
     {
         ScoreComponent::mouseDown( event );
     }
@@ -475,7 +475,7 @@ void BaseComponent::altDragCopy( const MouseEvent& event  )
     is_alt_copying = true;
     ScoreComponent* parent = (ScoreComponent*) getParentComponent();
     
-    if ( ! componentSelected() )
+    if ( ! isSelected() )
         parent->addToSelection(this);
 	
 	PageComponent* scoreView = getPageComponent();

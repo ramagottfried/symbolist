@@ -14,7 +14,7 @@ public:
     BasicShapePathComponent() = default;
     ~BasicShapePathComponent() = default;
 
-    Rectangle<float> symbol_export_bounds() override
+    Rectangle<float> symbolExportBounds() override
     {
         auto b = getBounds().toFloat();
         Path p = mergePathArray();

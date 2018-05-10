@@ -33,7 +33,7 @@ public:
      * @param components the array of components from which
      *                   the symbols will be extracted.
      */
-    void addSymbolsToPalette(Array<SymbolistComponent* > components);
+    void addSymbolsToPalette(Array<ScoreComponent* > components);
     
     void paint(Graphics& g) override;
     

@@ -78,7 +78,7 @@ void PaletteComponent::buildFromPalette()
     
 }
 
-void PaletteComponent::addSymbolsToPalette(Array<SymbolistComponent* > components)
+void PaletteComponent::addSymbolsToPalette(Array<ScoreComponent* > components)
 {
     for (int i = 0; i < components.size(); i++)
     {
@@ -111,16 +111,16 @@ void PaletteComponent::selectPaletteButton(int indexOfSelectedButton)
     if (indexOfSelectedButton >= 0)
         getController()->setSelectedItem(indexOfSelectedButton);
     
-    SymbolistMainComponent* smc = dynamic_cast<SymbolistMainComponent*>(getParentComponent());
+    SymbolistMainComponent* mainView = dynamic_cast<SymbolistMainComponent* >(getParentComponent());
     
     // Checks the downcast result.
-    if (smc != NULL)
+    if (mainView != NULL)
     {
         if (indexOfSelectedButton >= 0)
-            smc->setDrawMode(UI_DrawType::FROM_TEMPLATE);
+            mainView->setDrawMode(UI_DrawType::FROM_TEMPLATE);
         // specialModes
         else
-            smc->setDrawMode(UI_DrawType::FREE_DRAW);
+            mainView->setDrawMode(UI_DrawType::FREE_DRAW);
     }
     
     repaint();

@@ -7,6 +7,7 @@
 #include "BasicShapePathComponents.h"
 #include "PathBaseComponent.h"
 #include "TextGlyphComponent.h"
+#include "NoteComponent.hpp"
 
 SymbolistHandler::SymbolistHandler()
 {
@@ -410,6 +411,8 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* symbol, bool at
             newComponent = new SymbolGroupComponent();
         } else if ( typeofSymbol == "staff" ) {
             newComponent = new StaffComponent();
+		} else if ( typeofSymbol == "note" ) {
+			newComponent = new NoteComponent();
         } else {
 		  	DEBUG_FULL("Unknown symbol type : " << typeofSymbol << endl)
             newComponent = NULL;

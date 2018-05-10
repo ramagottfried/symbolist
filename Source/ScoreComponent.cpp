@@ -1,4 +1,5 @@
 #include "ScoreComponent.h"
+#include "EditSelectionBox.h"
 #include "SymbolistMainComponent.h"
 #include "SymbolGroupComponent.h"
 #include "StaffComponent.hpp"
@@ -17,11 +18,51 @@ ScoreComponent::~ScoreComponent()
     clearAllSubcomponents();
 }
 
+
+void ScoreComponent::selectComponent()
+{
+    is_selected = true;
+    repaint();
+}
+
+void ScoreComponent::deselectComponent()
+{
+    is_selected = false;
+    repaint();
+}
+
+const size_t ScoreComponent::getNumSubcomponents()
+{
+    return subcomponents.size() ;
+}
+
+ScoreComponent* ScoreComponent::getSubcomponentByIndex( int i )
+{
+    return subcomponents[i] ;
+}
+
+ScoreComponent* ScoreComponent::getSubcomponentByID( const string& id )
+{
+    for( int i = 0; i < subcomponents.size(); i++ )
+    {
+        if( subcomponents[i]->getComponentID() == id )
+            return subcomponents[i];
+    }
+	
+    return nullptr;
+}
+
+void ScoreComponent::addSubcomponent( ScoreComponent *c )
+{
+    subcomponents.add(c);
+    addAndMakeVisible(c);
+}
+
 /**************/
 /* Selection  */
 /**************/
 
-void ScoreComponent::addToSelection(SymbolistComponent *c)
+void ScoreComponent::addToSelection(ScoreComponent *c)
 {
     if( selected_components.addIfNotAlreadyThere(c) )
     {
@@ -30,7 +71,7 @@ void ScoreComponent::addToSelection(SymbolistComponent *c)
     }
 }
 
-void ScoreComponent::removeFromSelection(SymbolistComponent *c)
+void ScoreComponent::removeFromSelection(ScoreComponent *c)
 {
     c->deselectComponent();
     selected_components.removeAllInstancesOf(c);
@@ -49,7 +90,7 @@ void ScoreComponent::unselectAllComponents()
 {
     for (int i = 0 ; i < getNumSubcomponents(); i++ )
     {
-        SymbolistComponent *c = getSubcomponentByIndex(i);
+        ScoreComponent *c = getSubcomponentByIndex(i);
         
         c->deselectComponent();
         selected_components.removeAllInstancesOf(c);
@@ -58,16 +99,71 @@ void ScoreComponent::unselectAllComponents()
 }
 
 // redefinitions from SymbolComponents
-void ScoreComponent::removeSubcomponent( SymbolistComponent *c )
+void ScoreComponent::removeSubcomponent( ScoreComponent *c )
 {
     removeFromSelection(c);
-    SymbolistComponent::removeSubcomponent( c );
+    removeChildComponent(c);
+    for ( int i = 0; i < subcomponents.size(); i++ )
+        if ( subcomponents[i] == c ) subcomponents.remove( i );
 }
 
 void ScoreComponent::clearAllSubcomponents()
 {
-    SymbolistComponent::clearAllSubcomponents();
+    for ( int i = 0; i < subcomponents.size(); i++ )
+    {
+        subcomponents[i]->clearAllSubcomponents();
+        removeChildComponent( subcomponents[i] );
+        delete subcomponents[i];
+    }
+	
+    subcomponents.clear();
     selected_components.clear();
+}
+
+Point<int> ScoreComponent::positionRelativeTo(ScoreComponent* to)
+{
+    ScoreComponent* parentComponent = dynamic_cast<ScoreComponent*>(getParentComponent());
+    if (to == getParentComponent())
+        return getPosition();
+	
+    // Checks downcast result.
+    else if(parentComponent != NULL)
+        return getPosition() + parentComponent->positionRelativeTo(to);
+	
+    return Point<int>(0, 0);
+}
+
+// basic selection mechanism
+void ScoreComponent::mouseDownSelection(const MouseEvent& event)
+{
+    ScoreComponent* parent = dynamic_cast<ScoreComponent* >(getParentComponent());
+	
+    // Checks downcast exception.
+    if (parent != NULL)
+    {
+        if (event.mods.isShiftDown())
+        {
+            if (isSelected())
+                parent->removeFromSelection(this);
+            else
+                parent->addToSelection(this);
+			
+        }
+        else
+        {
+            if (!isSelected())
+            {
+                parent->unselectAllComponents();
+                parent->addToSelection(this);
+            }
+        }
+    }
+	
+}
+
+bool ScoreComponent::intersectRect( Rectangle<int> rect)
+{
+    return getBounds().intersects(rect);
 }
 
 void ScoreComponent::reportModificationForSelectedSymbols()
@@ -87,7 +183,7 @@ void ScoreComponent::reportModificationForSelectedSymbols()
 
 void ScoreComponent::selectedToFront()
 {
-    for( SymbolistComponent *c : selected_components )
+    for( ScoreComponent *c : selected_components )
     {
         c->toFront(true);
     }
@@ -95,7 +191,7 @@ void ScoreComponent::selectedToFront()
 
 void ScoreComponent::selectedToBack()
 {
-    for( SymbolistComponent *c : selected_components )
+    for( ScoreComponent *c : selected_components )
     {
         c->toBack();
     }
@@ -121,9 +217,9 @@ void ScoreComponent::dragLassoSelection(Point<int> position)
     
     for (int i = 0; i < getNumSubcomponents(); ++i)
     {
-        SymbolistComponent* cc = getSubcomponentByIndex(i);
+        ScoreComponent* cc = getSubcomponentByIndex(i);
         
-        if (!cc->componentSelected() && cc->intersectRect(s_lasso.getBounds()))
+        if (!cc->isSelected() && cc->intersectRect(s_lasso.getBounds()))
             addToSelection(cc);
     }
 }
@@ -182,9 +278,9 @@ void SymbolistLasso::paint ( Graphics &g)
 
 void ScoreComponent::deleteSelectedComponents()
 {
-    vector<SymbolistComponent *> items;
+    vector<ScoreComponent *> items;
     
-    for ( SymbolistComponent *c : selected_components ) // there's probably a better way to copy a vector's contents :)
+    for ( ScoreComponent *c : selected_components ) // there's probably a better way to copy a vector's contents :)
     {
         DEBUG_FULL(c << endl)
         items.push_back(c);
@@ -192,7 +288,7 @@ void ScoreComponent::deleteSelectedComponents()
     
     unselectAllComponents();
     
-    for ( SymbolistComponent *c : items )
+    for ( ScoreComponent *c : items )
     {
         removeSubcomponent( c );
         delete c;

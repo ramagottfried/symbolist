@@ -526,7 +526,7 @@ void PathBaseComponent::subtractHandle( int i )
 }
 
 
-void PathBaseComponent::removeSubcomponent(SymbolistComponent* h)
+void PathBaseComponent::removeSubcomponent(ScoreComponent* h)
 {
     // note: paths do not have subcomponents, only groups or staves
     
@@ -553,7 +553,7 @@ void PathBaseComponent::removeSubcomponent(SymbolistComponent* h)
 
 void PathBaseComponent::removeHandles()
 {
-    SymbolistComponent::clearAllSubcomponents();
+    ScoreComponent::clearAllSubcomponents();
     path_handles.clear();
     
     if ( getMainComponent() != NULL && rotation_handle != NULL )
@@ -684,7 +684,7 @@ void PathBaseComponent::updatePathPoints()
                 
                 else // probably a cubic: remove this handle
                 {
-                    SymbolistComponent::removeSubcomponent(current_handle);
+                    ScoreComponent::removeSubcomponent(current_handle);
                     delete current_handle;
                 }
             }
@@ -709,7 +709,7 @@ void PathBaseComponent::updatePathPoints()
     
     for ( int rh = 0; rh < remove.size() ; rh++ )
     {
-        SymbolistComponent::removeSubcomponent(remove[rh]);
+        ScoreComponent::removeSubcomponent(remove[rh]);
         delete remove[rh];
     }
 
@@ -1023,26 +1023,26 @@ void PathBaseComponent::rotateScoreComponent( float theta, float ax, float ay )
     
 }
 
-void PathBaseComponent::scaleScoreComponent(float scale_w, float scale_h)
+void PathBaseComponent::scaleScoreComponent(float scaledWidthRatio, float scaledHeightRatio)
 {
     // resize is for the total bounds including the stroke offset
     
-    if( scale_w > 0 && scale_h > 0 && getWidth() && getHeight() )
+    if( scaledWidthRatio > 0 && scaledHeightRatio > 0 && getWidth() && getHeight() )
     {
         
         //BaseComponent::scaleScoreComponent(scale_w, scale_h); // << prb
         cout << "PathBaseComponent::scaleScoreComponent " << this << endl;
         printRect(getBounds(), "compo bounds");
-        cout << "scale_w " << scale_w << " scale_h " << scale_h << endl;
-        cout << "target w " << scale_w * getWidth() << " target h " << scale_h * getHeight() << endl;
+        cout << "scale_w " << scaledWidthRatio << " scale_h " << scaledHeightRatio << endl;
+        cout << "target w " << scaledWidthRatio * getWidth() << " target h " << scaledHeightRatio * getHeight() << endl;
         
         float sw = 2.0 * stroke_type.getStrokeThickness();
         
         // cout << "target w- " << scale_w * getWidth() - sw << " target h- " << scale_h * getHeight() - sw << endl;
 
         
-        float new_w = round( scale_w * getWidth() );
-        float new_h = round( scale_h * getHeight() );
+        float new_w = round( scaledWidthRatio * getWidth() );
+        float new_h = round( scaledHeightRatio * getHeight() );
         float new_path_w = round(new_w - sw);
         float new_path_h = round(new_h - sw);
         

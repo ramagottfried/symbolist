@@ -16,13 +16,13 @@ PageComponent::~PageComponent() {}
 /* will update the data (score) and notify to host environment */
 /***************************************************/
 
-void PageComponent::addSubcomponent(SymbolistComponent *c)
+void PageComponent::addSubcomponent(ScoreComponent *c)
 {
     ScoreComponent::addSubcomponent(c);
     getSymbolistHandler()->executeUpdateCallback(-1);
 }
 
-void PageComponent::removeSubcomponent( SymbolistComponent *c )
+void PageComponent::removeSubcomponent( ScoreComponent *c )
 {
 	BaseComponent* componentToRemove = dynamic_cast<BaseComponent* >(c);
 	
@@ -89,7 +89,7 @@ void PageComponent::enterStaffSelMode()
         BaseComponent* b = dynamic_cast<BaseComponent*>(subComponent);
         if ( b )
         {
-            if( b->getSymbolTypeStr() == "staff" || b->componentSelected() )
+            if( b->getSymbolTypeStr() == "staff" || b->isSelected() )
                 b->setStaffSelectionMode( true );
 			else
 			{

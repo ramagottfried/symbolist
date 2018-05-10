@@ -136,7 +136,7 @@ void SymbolistMainComponent::flipSelectedSymbolsHorizontally()
 
 void SymbolistMainComponent::flipSelectedSymbolsVertically()
 {
-	score_view.flipSelectedSymbols(1);
+	score_view.flipSelectedSymbols(0);
 }
 
 void SymbolistMainComponent::nudgeSelectedLeft()

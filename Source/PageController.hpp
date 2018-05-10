@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include "Controller.hpp"
 #include "SymbolistModel.hpp"
-#include "symbolist-utils.hpp"
 
+class ScoreComponent;
 class PageComponent;
 class BaseComponent;
 class StaffComponent;
@@ -206,7 +206,7 @@ public:
 	 * @throws logic_error       If this PageController has no parent controller,
      *                           or if it is not a SymbolistHandler instance.
 	 */
-	Symbol* createTopLevelSymbolGroup(Array<SymbolistComponent* > selectedComponents);
+	Symbol* createTopLevelSymbolGroup(Array<ScoreComponent* > selectedComponents);
 	
 	/**
 	 * Creates a symbol group from the symbols attached to the selected components.
@@ -223,7 +223,7 @@ public:
 	 * @return                   a copy of the symbol group created from
 	 *                           the selected components.
 	 */
-	Symbol createNestedSymbolGroup(Array<SymbolistComponent* > selectedComponents, SymbolGroupComponent* container);
+	Symbol createNestedSymbolGroup(Array<ScoreComponent* > selectedComponents, SymbolGroupComponent* container);
 	
 	/**
 	 * Creates a staff symbol in the score.
@@ -232,7 +232,7 @@ public:
 	 * as a /subsymbol entry in the newly created staff symbol.
 	 *
 	 * @param staffReferenceComponent the graphic component chosen as the
-	 *								  staff reference; it's means that
+	 *								  staff reference; it means that
 	 *								  the staff duration is based on the
 	 *								  length of this component.
 	 *

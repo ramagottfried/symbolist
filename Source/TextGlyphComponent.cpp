@@ -7,7 +7,6 @@ void TextEditorObjListener::textEditorTextChanged (TextEditor& t)
     owner->updateText( t.getText() );
 }
 
-
 void EditableTextObjListener::labelTextChanged (Label* l)
 {
     owner->updateText( l->getText() );
@@ -23,14 +22,14 @@ void EditableTextObjListener::editorShown (Label* l, TextEditor& t)
     t.setColour( TextEditor::shadowColourId, Colours::transparentWhite );
     t.setColour( TextEditor::focusedOutlineColourId, Colours::transparentWhite );
     t.setIndents(0, 4);
-    //t.setMultiLine(true);
+    // t.setMultiLine(true);
     // maybe use subtracted from...
     // const Rectangle<int> centreArea (border.subtractedFrom (fullSize));
 
-//    f.getStringWidth( l->getText() );
+	// f.getStringWidth( l->getText() );
     
     // t.setBounds( owner->getLocalBounds().translated(1, 0) );
-    //owner->setBounds( owner->getBounds().expanded(2) );
+    // owner->setBounds( owner->getBounds().expanded(2) );
 }
 
 void EditableTextObjListener::editorHidden (Label* l, TextEditor& t)
@@ -103,14 +102,14 @@ TextGlphComponent::~TextGlphComponent()
 
 void TextGlphComponent::setBoundsFromSymbol( float x, float y , float w , float h)
 {
-    //setBounds( x, y - (h * 0.5), w , h);
+    // setBounds( x, y - (h * 0.5), w , h);
     m_font.setHeight( h );
     textobj->setFont( m_font );
     setBounds( x, y - (h * 0.5), m_font.getStringWidth(m_text) + m_width_offset, h );
     textobj->setBounds( getLocalBounds().translated(m_x_offset, 0) );
 }
 
-Rectangle<float> TextGlphComponent::symbol_export_bounds()
+Rectangle<float> TextGlphComponent::symbolExportBounds()
 {
     auto b = getBounds().toFloat();
     return Rectangle<float>( b.getX(), b.getY() + b.getHeight()/2.0f, b.getWidth(), b.getHeight() );
@@ -198,19 +197,19 @@ void TextGlphComponent::resizeToFit(int x, int y, int w, int h)
 }
 */
 
-void TextGlphComponent::scaleScoreComponent(float scale_w, float scale_h)
+void TextGlphComponent::scaleScoreComponent(float scaledWidthRatio, float scaledHeightRatio)
 {
     //printRect(getBounds(), getSymbolTypeStr() + " pre");
 
-    float newHeight = scale_h * getHeight();
-    float newWidth = scale_w * getWidth();
+    float newHeight = scaledHeightRatio * getHeight();
+    float newWidth = scaledWidthRatio * getWidth();
 
     m_font.setHeightWithoutChangingWidth( newHeight );
     
     float current_w = m_font.getStringWidthFloat(m_text);
     
     float current_scale = m_font.getHorizontalScale();
-    float targetWidth = scale_w * getWidth() - 1;
+    float targetWidth = scaledWidthRatio * getWidth() - 1;
     float fontscale = targetWidth / current_w;
     
 //    cout << "h scale 1 " << current_scale << " text width " << current_w << endl;

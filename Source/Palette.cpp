@@ -22,12 +22,12 @@ void Palette::createDefaultItems()
 		 */
 		throw invalid_argument("Bypassing palette-default-items.osc file reading.");
 		
-		OdotBundle* defaultItemsArray = OdotBundle::createOdotBundleFromFile(PATH_TO_PALETTE_DEFAULT_ITEMS);
+//		OdotBundle* defaultItemsArray = OdotBundle::createOdotBundleFromFile(PATH_TO_PALETTE_DEFAULT_ITEMS);
+//
+//		for (OdotAtom defaultItem : defaultItemsArray->getMessage("/default-items").getAtoms())
+//			if (defaultItem.isBundle())
+//				addDefaultItem(Symbol(new OdotBundle(defaultItem.getBundle())));
 		
-		for (OdotAtom defaultItem : defaultItemsArray->getMessage("/default-items").getAtoms())
-			if (defaultItem.isBundle())
-				addDefaultItem(Symbol(new OdotBundle(defaultItem.getBundle())));
-				
 	}
 	catch(invalid_argument& error)
 	{
@@ -55,28 +55,39 @@ void Palette::createDefaultItems()
 		addDefaultItem(s4);
 		
 		Symbol s5 = Symbol();
-		s5.setTypeXYWH("note", symbolPos, symbolPos, symbolSize, symbolSize);
-		s5.addMessage("/unicode-glyph", String::fromUTF8("\uE1D2").toStdString());
+		s5.setTypeXYWH("smufl", symbolPos, symbolPos, symbolSize, symbolSize);
+		s5.addMessage("/glyph-code", String::fromUTF8("\uE008").toStdString());
+		s5.addMessage("/glyph-name", "systemDividerLong");
 		addDefaultItem(s5);
 		
 		Symbol s6 = Symbol();
-		s6.setTypeXYWH("note", symbolPos, symbolPos, symbolSize, symbolSize);
-		s6.addMessage("/unicode-glyph", String::fromUTF8("\uE1D3").toStdString());
+		s6.setTypeXYWH("smufl", symbolPos, symbolPos, symbolSize, symbolSize);
+		s6.addMessage("/glyph-code", String::fromUTF8("\uE1D3").toStdString());
+		s6.addMessage("/glyph-name", "noteHalfUp");
 		addDefaultItem(s6);
 		
 		Symbol s7 = Symbol();
-		s7.setTypeXYWH("note", symbolPos, symbolPos, symbolSize, symbolSize);
-		s7.addMessage("/unicode-glyph", String::fromUTF8("\uE1D5").toStdString());
+		s7.setTypeXYWH("smufl", symbolPos, symbolPos, symbolSize, symbolSize);
+		s7.addMessage("/glyph-code", String::fromUTF8("\uE1D5").toStdString());
+		s7.addMessage("/glyph-name", "noteQuarterUp");
 		addDefaultItem(s7);
 		
 		Symbol s8 = Symbol();
-		s8.setTypeXYWH("note", symbolPos, symbolPos, symbolSize, symbolSize);
-		s8.addMessage("/unicode-glyph", String::fromUTF8("\uE1D7").toStdString());
+		s8.setTypeXYWH("smufl", symbolPos, symbolPos, symbolSize, symbolSize);
+		s8.addMessage("/glyph-code", String::fromUTF8("\uE1D7").toStdString());
+		s8.addMessage("/glyph-name", "note8thUp");
 		addDefaultItem(s8);
 		
 		Symbol s9 = Symbol();
-		s9.setTypeXYWH("note", symbolPos, symbolPos, symbolSize, symbolSize);
-		s9.addMessage("/unicode-glyph", String::fromUTF8("\uE1D9").toStdString());
+		s9.setTypeXYWH("smufl", symbolPos, symbolPos, symbolSize, symbolSize);
+		s9.addMessage("/glyph-code", String::fromUTF8("\uE1D9").toStdString());
+		s9.addMessage("/glyph-name", "note16thUp");
 		addDefaultItem(s9);
+		
+		Symbol s10 = Symbol();
+		s10.setTypeXYWH("smufl", symbolPos, symbolPos, symbolSize, symbolSize);
+		s10.addMessage("/glyph-code", String::fromUTF8("\uE904").toStdString());
+		s10.addMessage("/glyph-name", "mensuralFclefPetrucci");
+		addDefaultItem(s10);
 	}
 }

@@ -153,7 +153,6 @@ public:
     int         symbolistAPI_importSVG( const char * filename );
     int         symbolistAPI_exportSVG( const char * filename );
 
-    
     /* Palette controller's methods. */
     int     symbolistAPI_getNumPaletteSymbols();
     Symbol* symbolistAPI_getPaletteSymbol(int n);

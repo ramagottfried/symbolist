@@ -100,7 +100,7 @@ protected:
     float       m_width_offset = 12;
     float       m_x_offset = m_width_offset / 2;
     
-    ScopedPointer<EditableTextObj >    textobj;
+    ScopedPointer<EditableTextObj > textobj;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TextGlphComponent)

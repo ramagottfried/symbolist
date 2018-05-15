@@ -44,7 +44,9 @@ void PaletteButton::setSelected(bool sel)
 void PaletteButton::resized()
 {
     graphic_comp->setBounds( getLocalBounds() );
-    graphic_comp->resizeToFit( 5 , 5 , getWidth() - 10, getHeight() - 10  );
+    if (graphic_comp->getSymbolTypeStr() == "smufl")
+    	graphic_comp->resizeToFit(0, 0, getWidth(), getHeight());
+	else graphic_comp->resizeToFit(5, 5, getWidth() - 10, getHeight() - 10);
 }
 
 void PaletteButton::paint (Graphics& g)

@@ -8,25 +8,19 @@
 #include "View.hpp"
 
 class InspectorComponent : public virtual TabbedComponent,
-						  public virtual View<SymbolistModel, InspectorController > {
+						   public virtual View<SymbolistModel, InspectorController > {
 	
 public:
     /**************************************************
      *                CONSTRUCTORS                    *
      **************************************************/
-    InspectorComponent( SymbolistHandler* mainController );
-    
-    void resized() override
-    {
-        TabbedComponent::resized();
-        if( symbol_panel_bundleviewer )
-            symbol_panel_bundleviewer->resized();
-    }
+    InspectorComponent();
     
     /**************************************************
      *                GETTERS AND SETTERS             *
      **************************************************/
-    inline ScopedPointer<SymbolPropertiesPanel > getSymbolPanelTab() { return symbol_panel_tab; }
+    inline SymbolPropertiesPanel* getSymbolPanelTab() { return symbol_panel_tab.get(); }
+    float getPreferedHeight();
     
     inline void setInspectorObject( BaseComponent *c ) { symbol_panel_tab->setInspectorObject(c); }
     inline void createOSCview () { symbol_panel_tab->createOSCview(); }

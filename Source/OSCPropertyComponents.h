@@ -10,7 +10,7 @@ class OSCFloatValueSlider : public SliderPropertyComponent
 {
 public:
     OSCFloatValueSlider ( const string& _addr, OdotMessage& msg, osc_callback_t change_fn )
-    : SliderPropertyComponent (_addr, -1000.0, 1000.0, 0.0001), osc_msg(msg)
+    	: SliderPropertyComponent (_addr, -1000.0, 1000.0, 0.0001), osc_msg(msg)
     {
         change_callback = change_fn;
         slider.setColour(Slider::textBoxTextColourId, Colours::black );
@@ -34,7 +34,7 @@ public:
     
     
 private:
-    OdotMessage      osc_msg;
+    OdotMessage     osc_msg;
     osc_callback_t  change_callback;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OSCFloatValueSlider)
@@ -144,7 +144,7 @@ public:
     }
     
 private:
-    OdotMessage      osc_msg;
+    OdotMessage     osc_msg;
     osc_callback_t  change_callback;
 
     TextButton      button;
@@ -196,7 +196,7 @@ public:
     
     
 private:
-    OdotMessage      osc_msg;
+    OdotMessage     osc_msg;
     osc_callback_t  change_callback;
     
     int             selected_index = 0;
@@ -205,8 +205,8 @@ private:
 
 };
 
-class OSCTextProperty : public TextPropertyComponent
-{
+class OSCTextProperty : public TextPropertyComponent {
+
 public:
     OSCTextProperty(    const string& _addr,
                         OdotMessage& msg,
@@ -247,7 +247,6 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OSCTextProperty)
     
 };
-
 
 class OSCOnOffButton : public BooleanPropertyComponent
 {
@@ -295,7 +294,6 @@ private:
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OSCOnOffButton)
 };
-
 
 class StaffSelectionButton : public ButtonPropertyComponent
 {
@@ -353,8 +351,6 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StaffSelectionButton)
     
 };
-
-
 
 // menu with font name, size and style options
 class OSCFontMenu : public ChoicePropertyComponent
@@ -455,10 +451,7 @@ public:
         refresh();
     }
     
-    ~OSCValueDisplay()
-    {
-//        DEBUG_FULL("deleting value display")
-    }
+    inline ~OSCValueDisplay() = default;
     
     void refresh() override {}
     

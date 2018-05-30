@@ -56,8 +56,8 @@ void Palette::createDefaultItems()
 		
 		Symbol s5 = Symbol();
 		s5.setTypeXYWH("smufl", symbolPos, symbolPos, symbolSize, symbolSize);
-		s5.addMessage("/glyph-code", String::fromUTF8("\uE008").toStdString());
-		s5.addMessage("/glyph-name", "systemDividerLong");
+		s5.addMessage("/glyph-code", String::fromUTF8("\uE1D2").toStdString());
+		s5.addMessage("/glyph-name", "noteWhole");
 		addDefaultItem(s5);
 		
 		Symbol s6 = Symbol();

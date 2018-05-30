@@ -12,10 +12,10 @@
  we could subclass the TreeViewItem class, like the OSCProperty classes and then have a tree view of editable properties.
  
  */
-class ScoreBundleViewer : public Component
-{
+class ScoreBundleViewer : public Component {
+
 public:
-    ScoreBundleViewer(SymbolistHandler *sh) : symbolist_handler(sh) //bundle_comp(sh)
+    ScoreBundleViewer()
     {
         addAndMakeVisible (resultsTree);
         resultsTree.setColour (TreeView::backgroundColourId, Colours::white);
@@ -23,15 +23,15 @@ public:
         
         rebuildTree();
         setSize (400, 600);
-
     }
     
     ~ScoreBundleViewer()
     {
         resultsTree.setRootItem (nullptr);
     }
-    
-    
+	
+	inline float getPreferedHeight() { return rootItem->getItemHeight(); } 
+	
     void rebuildTree()
     {
         ScopedPointer<XmlElement> openness;
@@ -56,21 +56,8 @@ public:
     
     /** Parses the editors contects as JSON. */
     
-    TreeViewItem* rebuildJson()
-    {
-        var parsedJson;
-        //cout << symbolist_handler->getModel()->getScore()->getJSON() << endl;
-        Result result = JSON::parse ( symbolist_handler->getModel()->getScore()->getJSON() , parsedJson);
-        
-        if (! result.wasOk())
-        {
-            cout << "Error parsing JSON: " + result.getErrorMessage() << endl;
-            return nullptr;
-        }
-        
-        return new JsonTreeItem (Identifier(), parsedJson);
-    }
-
+    TreeViewItem* rebuildJson();
+    
     void resized() override
     {
         
@@ -80,8 +67,6 @@ public:
     }
     
 private:
-    SymbolistHandler*                   symbolist_handler;
-
     ScopedPointer<TreeViewItem>         rootItem;
     TreeView                            resultsTree;
 

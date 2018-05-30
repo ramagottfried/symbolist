@@ -20,3 +20,19 @@ void InspectorController::updateSymbolFromComponent(BaseComponent* component)
 		parentController->updateSymbolFromComponent(component);
 	else throw logic_error("InspectorController has no parent controller");
 }
+
+void InspectorController::addMessageToInspectedSymbol(Symbol* theInspectedSymbol, String messageAddress, String messageType)
+{
+	if (theInspectedSymbol == NULL)
+		return;
+	
+	if (!messageAddress.startsWith("/"))
+		return;
+	
+	// Adds arbitrary values depending on the chosen type of message.
+  	if (messageType == "int")
+    	theInspectedSymbol->addMessage(messageAddress.toStdString(), 0);
+	else if (messageType == "float")
+		theInspectedSymbol->addMessage(messageAddress.toStdString(), 0.0f);
+	else theInspectedSymbol->addMessage(messageAddress.toStdString(), "text");
+}

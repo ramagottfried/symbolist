@@ -3,8 +3,6 @@
 
 #include "JuceHeader.h"
 #include <stdio.h>
-#include <locale>
-#include <codecvt>
 
 #include "BaseComponent.h"
 

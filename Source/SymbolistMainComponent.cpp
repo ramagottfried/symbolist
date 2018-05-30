@@ -15,9 +15,7 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
     score_view.setController(getController()->getPageController());
 	mouse_mode_view.setController(getController()->getMouseModeController());
 	time_display_view.setController(getController()->getTimeDisplayController());
-	
-	inspector = new InspectorComponent(mainController);
-	inspector->setController(getController()->getInspectorController());
+	inspector_view.setController(getController()->getInspectorController());
 	
     /*
      * Sets model for this SymbolistMainComponent instance
@@ -28,7 +26,7 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
     score_view.setModel(getModel());
     mouse_mode_view.setModel(getModel());
 	time_display_view.setModel(getModel());
-    inspector->setModel(getModel());
+    inspector_view.setModel(getModel());
 	
     /* Adds this SymbolistMainComponent instance and
      * its child components as observers of the model.
@@ -38,7 +36,7 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
     getModel()->attach(&score_view);
     getModel()->attach(&mouse_mode_view);
     getModel()->attach(&time_display_view);
-    getModel()->attach(inspector);
+    getModel()->attach(&inspector_view);
     
     // Sets UI look and creates the palette buttons.
     setLookAndFeel(&look_and_feel);
@@ -73,12 +71,12 @@ SymbolistMainComponent::~SymbolistMainComponent()
 	setLookAndFeel(nullptr);
 	
     palette_view.deleteAllChildren();
-    inspector->removeAllChildren();
+    inspector_view.removeAllChildren();
 	
     /* Removes SymbolistMainComponent and its child views
      * from the SymbolistModel's observers list.
      */
-    getModel()->detach(inspector);
+    getModel()->detach(&inspector_view);
     getModel()->detach(&time_display_view);
     getModel()->detach(&mouse_mode_view);
 	getModel()->detach(&palette_view);
@@ -188,22 +186,25 @@ void SymbolistMainComponent::escapeScoreViewMode()
 
 void SymbolistMainComponent::toggleInspector()
 {
-    if( !inspector->isVisible() )
+    if( !inspector_view.isVisible() )
     {
         auto selectedItems = score_view.getSelectedItems();
-        inspector->setInspectorObject( dynamic_cast<BaseComponent*>(selectedItems.getLast()) );
-        
-        addAndMakeVisible( inspector );
+        inspector_view.setInspectorObject( dynamic_cast<BaseComponent*>(selectedItems.getLast()) );
+		
+		if (inspector_view.getSymbolPanelTab() != nullptr && inspector_view.getPreferedHeight() > getHeight())
+				setSize(getWidth(), inspector_view.getPreferedHeight() + menu_h);
+		
+        addAndMakeVisible( inspector_view );
         
         auto menuH = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
-        inspector->setSize(400, getHeight() - score_viewport.getScrollBarThickness() - menuH);
-        inspector->setTopRightPosition( getWidth() - score_viewport.getScrollBarThickness(), menuH );
-        inspector->resized();
+        inspector_view.setSize(getWidth() * 0.33, getHeight() - score_viewport.getScrollBarThickness() - menuH);
+        inspector_view.setTopRightPosition( getWidth() - score_viewport.getScrollBarThickness(), menuH );
+        inspector_view.resized();
     }
     else
     {
-        removeChildComponent(inspector);
-        inspector->setVisible(false);
+        removeChildComponent(&inspector_view);
+        inspector_view.setVisible(false);
     }
 }
 
@@ -214,20 +215,18 @@ void SymbolistMainComponent::resized()
 	
     menu_h = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
 	
+	if ( inspector_view.isVisible() )
+    {
+        inspector_view.setSize(w * 0.33, h - score_viewport.getScrollBarThickness() - menu_h);
+        inspector_view.setTopRightPosition( w - score_viewport.getScrollBarThickness(), menu_h );
+    }
+	
     palette_view.setBounds( 0, 0, palette_w, h );
     score_viewport.setBounds( palette_w, menu_h, w-palette_w, h );
     mouse_mode_view.setBounds( palette_w, h-25, w-palette_w, 25 );
     menu.setBounds(palette_w, 0, w-palette_w, menu_h );
     time_display_view.setBounds(palette_w, menu_h+2, 12, 13);
 	
-    if( inspector->isVisible() )
-    {
-        inspector->setSize(400, h - score_viewport.getScrollBarThickness() - menu_h);
-        inspector->setTopRightPosition( w - score_viewport.getScrollBarThickness(), menu_h );
-    }
-	
-//    score_cursor.setBounds( score_cursor.getPlayPoint() * 100, menu_h, 50, getHeight()-menu_h );
-//    time_pointGUI.setBounds(palette_w, getBottom() - 50, getWidth()-palette_w, 50);
 }
 
 void SymbolistMainComponent::zoom( float delta )

@@ -2,13 +2,16 @@
 #include "OSCPropertyComponents.h"
 #include "InspectorComponent.h"
 
-SymbolPropertiesPanel::SymbolPropertiesPanel(SymbolistHandler *sh )
+SymbolPropertiesPanel::SymbolPropertiesPanel()
 {
     setOpaque (false);
     addAndMakeVisible (symbol_inspector);
-    setSize (200, 600);
-    
-    symbolist_handler = sh;
+	
+	addAndMakeVisible(add_property_button);
+	add_property_button.setButtonText("+");
+	add_property_button.addListener(this);
+	
+	
     change_callback_fn = std::bind( &SymbolPropertiesPanel::change_callback, this, std::placeholders::_1);
     
     getLookAndFeel().setColour( PropertyComponent::backgroundColourId, Colours::transparentWhite );
@@ -18,7 +21,17 @@ SymbolPropertiesPanel::SymbolPropertiesPanel(SymbolistHandler *sh )
     getLookAndFeel().setColour(Label::backgroundWhenEditingColourId, Colours::transparentWhite  );
 }
 
-void SymbolPropertiesPanel::change_callback( const OdotMessage& msg)
+SymbolPropertiesPanel::~SymbolPropertiesPanel()
+{
+	add_property_button.removeListener(this);
+}
+
+float SymbolPropertiesPanel::getPreferedHeight()
+{
+	return title_offset + symbol_inspector.getTotalContentHeight() + add_property_button.getHeight() + add_property_button_top_margin;
+}
+
+void SymbolPropertiesPanel::change_callback(const OdotMessage& msg)
 {
     Symbol* s = symbol_component->getScoreSymbol();
 	
@@ -33,28 +46,38 @@ void SymbolPropertiesPanel::change_callback( const OdotMessage& msg)
     
 }
 
+void SymbolPropertiesPanel::buttonClicked(Button* button)
+{
+	if (add_property_form.isVisible())
+		add_property_form.setVisible(false);
+	else
+		addAndMakeVisible(add_property_form);
+	
+	resized();
+	
+	DEBUG_FULL("Add property button clicked." << endl)
+}
+
 void SymbolPropertiesPanel::createOSCview ()
 {
     properties.clear();
 
-    if( symbol_component )
+    if ( symbol_component )
     {
-        Symbol* s = symbol_component->getScoreSymbol();
+        Symbol* symbol = symbol_component->getScoreSymbol();
         // DEBUG_FULL("Retrieving pointer from component" << endl)
         // s->print();
         
-        if( !s )
+        if( !symbol )
             return;
         
-        if ( !s->size() )  return;
+        if ( !symbol->size() )  return;
 
-        
-        for ( auto msg : s->getMessageArray() )
+        for ( auto msg : symbol->getMessageArray() )
         {
             const string& addr = msg.getAddress();
             
             // skipping subbundles for now! need to fix this
-            
             
             if( addr == "/color" )  // should have separate selection for stroke color and the other stroke parameters
             {
@@ -66,12 +89,17 @@ void SymbolPropertiesPanel::createOSCview ()
             }
             else if( addr == "/staff" )
             {
-                if( s->getMessage("/type").getString() != "staff" )
+                if( symbol->getMessage("/type").getString() != "staff" )
                 {
-                    StringArray staves = symbolist_handler->getStaves();
-                    staves.insert(0, String("<none>") );
-                    
-                    properties.add( new OSCOptionMenu ( addr, msg, change_callback_fn, staves ) );
+                	InspectorComponent* inspectorComponent = dynamic_cast<InspectorComponent*>(getParentComponent());
+                	if (inspectorComponent != NULL)
+                	{
+						StringArray staves = inspectorComponent->getModel()->getScore()->getStaves();
+                    	staves.insert(0, String("<none>") );
+						
+                    	properties.add( new OSCOptionMenu ( addr, msg, change_callback_fn, staves ) );
+					}
+			
                 }
             }
             else if( addr == "/fill" )
@@ -113,8 +141,33 @@ void SymbolPropertiesPanel::createOSCview ()
         }
     
     }
+    
     symbol_inspector.addProperties( properties );
-//    symbol_inspector.addSection("OSC", properties);
+	resized();
+}
+
+void SymbolPropertiesPanel::addMessageToInspectedSymbol(String messageAddress, String messageType)
+{
+	InspectorComponent* parentView = dynamic_cast<InspectorComponent* >(getParentComponent());
+	if (parentView != NULL)
+	{
+		InspectorController* parentViewController = parentView->getController();
+		if (parentViewController != NULL)
+		{
+			Symbol* inspectedSymbol = symbol_component->getScoreSymbol();
+			if (inspectedSymbol != NULL)
+			{
+				parentViewController->addMessageToInspectedSymbol(inspectedSymbol, messageAddress, messageType);
+				add_property_form.setVisible(false);
+				
+				symbol_inspector.clear();
+				createOSCview();
+			}
+			else throw logic_error("The inspected component is not associated with any symbol.");
+		}
+		else throw logic_error("InspectorComponent has no associated controller");
+	}
+	else throw logic_error("SymbolPropertiesPanel has no parent of type InspectorComponent");
 }
 
 void SymbolPropertiesPanel::setInspectorObject( BaseComponent *c )
@@ -150,13 +203,28 @@ void SymbolPropertiesPanel::paint (Graphics& g)
     auto f = g.getCurrentFont();
     f.setItalic(true);
     g.setFont( f );
-    g.drawText("object inspector", 4, 0, getWidth()-8, title_offset, Justification::left);
+    g.drawText("object inspector", 4, 0, getWidth() - 8, title_offset, Justification::left);
+	
 }
 
 void SymbolPropertiesPanel::resized() 
 {
-    auto local = getLocalBounds().reduced(4);
-    symbol_inspector.setSize(local.getWidth(), local.getHeight() - title_offset);
-    symbol_inspector.setTopLeftPosition(local.getX(), local.getY() + title_offset);
+    auto local = getLocalBounds();
+    local.removeFromTop(title_offset); // deduces the title height
+	
+	int symbolInspectorHeight = symbol_inspector.getTotalContentHeight() + 10;
+    int symbolInspectorMargin = 4;
+	int buttonHeight = 30;
+	int buttonMargin = 4;
+	
+    symbol_inspector.setBounds(local.removeFromTop(symbolInspectorHeight).reduced(symbolInspectorMargin));
+	
+	if (add_property_form.isVisible())
+	{
+		add_property_form.setBounds(local.removeFromTop(buttonHeight).reduced(buttonMargin));
+	}
+	
+	add_property_button.setBounds(local.removeFromTop(buttonHeight).reduced(buttonMargin));
+
 }
 

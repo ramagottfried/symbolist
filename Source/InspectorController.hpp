@@ -34,6 +34,18 @@ public:
 	 */
 	void updateSymbolFromComponent(BaseComponent* component);
 	
+	/**
+	 * Adds a new odot message in theInspectedSymbol's odot bundle.
+	 * The new message is of address messageAddress, and of type messageType.
+	 *
+	 * @param theInspectedSymbol the symbol associated with the graphic component being inspected.
+	 *
+	 * @param messageAddress	 the address of the odot message.
+	 *
+	 * @param messageType		 the type of the odot message value.
+	 */
+	void addMessageToInspectedSymbol(Symbol* theInspectedSymbol, String messageAddress, String messageType);
+	
 	/* Overrides the update method inherited from the Observer class. */
     virtual inline void update() override {}
 	

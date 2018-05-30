@@ -260,6 +260,13 @@
 		44EE9BBE1EC37D3E0021C5A8 /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE00511EC328DE00E4F624 /* Main.cpp */; };
 		52B193FE560B5C8022529FF5 /* include_juce_data_structures.mm in Sources */ = {isa = PBXBuildFile; fileRef = B5F75CE38D2D3A7CD56C4F40 /* include_juce_data_structures.mm */; };
 		6547753639FBD52E4D188A43 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87F9A8E8F628CFBD00805519 /* Carbon.framework */; };
+		7501AC5120BD4A9B002E0573 /* NewPropertyFormComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7501AC4F20BD4A9B002E0573 /* NewPropertyFormComponent.cpp */; };
+		7501AC5220BD4A9B002E0573 /* NewPropertyFormComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7501AC4F20BD4A9B002E0573 /* NewPropertyFormComponent.cpp */; };
+		7501AC5320BD4A9B002E0573 /* NewPropertyFormComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7501AC4F20BD4A9B002E0573 /* NewPropertyFormComponent.cpp */; };
+		7501AC5420BD4A9B002E0573 /* NewPropertyFormComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7501AC4F20BD4A9B002E0573 /* NewPropertyFormComponent.cpp */; };
+		7501AC5520BD4A9B002E0573 /* NewPropertyFormComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7501AC4F20BD4A9B002E0573 /* NewPropertyFormComponent.cpp */; };
+		7501AC5620BD4A9B002E0573 /* NewPropertyFormComponent.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7501AC5020BD4A9B002E0573 /* NewPropertyFormComponent.hpp */; };
+		7501AC5720BD4A9B002E0573 /* NewPropertyFormComponent.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7501AC5020BD4A9B002E0573 /* NewPropertyFormComponent.hpp */; };
 		751E314B2069378600C3318F /* PaletteController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 751E31492069378600C3318F /* PaletteController.cpp */; };
 		751E314C2069378600C3318F /* PaletteController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 751E31492069378600C3318F /* PaletteController.cpp */; };
 		751E314D2069378600C3318F /* PaletteController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 751E31492069378600C3318F /* PaletteController.cpp */; };
@@ -625,6 +632,8 @@
 		4A18855981466E65AB497B9D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		5B4BF2AC43CE9859FE07665E /* RecentFilesMenuTemplate.nib */ = {isa = PBXFileReference; lastKnownFileType = file.nib; path = RecentFilesMenuTemplate.nib; sourceTree = SOURCE_ROOT; };
 		74EEE4D78BE87E05FED2C51C /* juce_gui_extra */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_gui_extra; path = ../../../JUCE/modules/juce_gui_extra; sourceTree = SOURCE_ROOT; };
+		7501AC4F20BD4A9B002E0573 /* NewPropertyFormComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = NewPropertyFormComponent.cpp; path = ../../Source/NewPropertyFormComponent.cpp; sourceTree = "<group>"; };
+		7501AC5020BD4A9B002E0573 /* NewPropertyFormComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = NewPropertyFormComponent.hpp; path = ../../Source/NewPropertyFormComponent.hpp; sourceTree = "<group>"; };
 		751E31492069378600C3318F /* PaletteController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PaletteController.cpp; path = ../../Source/PaletteController.cpp; sourceTree = "<group>"; };
 		751E314A2069378600C3318F /* PaletteController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = PaletteController.hpp; path = ../../Source/PaletteController.hpp; sourceTree = "<group>"; };
 		751E31512069410400C3318F /* PaletteButton.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PaletteButton.cpp; path = ../../Source/PaletteButton.cpp; sourceTree = "<group>"; };
@@ -926,6 +935,8 @@
 				116F87731F9D04B90062EE91 /* ScoreBundleViewer.h */,
 				11AEF237207A943800B1398D /* JsonTreeItem.cpp */,
 				11AEF238207A943800B1398D /* JsonTreeItem.hpp */,
+				7501AC4F20BD4A9B002E0573 /* NewPropertyFormComponent.cpp */,
+				7501AC5020BD4A9B002E0573 /* NewPropertyFormComponent.hpp */,
 			);
 			name = "property-panel";
 			sourceTree = "<group>";
@@ -1204,6 +1215,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				116A7EF22046DCAE004B545D /* OdotBundle.hpp in Headers */,
+				7501AC5620BD4A9B002E0573 /* NewPropertyFormComponent.hpp in Headers */,
 				11AEF245207A94D000B1398D /* CodeboxComponent.hpp in Headers */,
 				75FB5F10207F8C4C0083A1C0 /* Observer.hpp in Headers */,
 				75FB5F11207F8C500083A1C0 /* View.hpp in Headers */,
@@ -1260,6 +1272,7 @@
 				116A7ECA2046CFCD004B545D /* osc_bundle_iterator_u.h in Headers */,
 				116A7ECB2046CFCD004B545D /* osc_bundle_s.h in Headers */,
 				116A7ED22046CFCD004B545D /* osc_expr_privatedecls.h in Headers */,
+				7501AC5720BD4A9B002E0573 /* NewPropertyFormComponent.hpp in Headers */,
 				116A7ED62046CFCD004B545D /* osc_hashtab.h in Headers */,
 				116A7EE42046CFCD004B545D /* osc_scanner.h in Headers */,
 				116A7EDF2046CFCD004B545D /* osc_message_u.h in Headers */,
@@ -1505,6 +1518,7 @@
 				118648981EFA811800904672 /* TimePointArray.cpp in Sources */,
 				7571E6FD2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */,
 				11B71DD91F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
+				7501AC5320BD4A9B002E0573 /* NewPropertyFormComponent.cpp in Sources */,
 				116A7EF82047E99D004B545D /* OdotMessage.cpp in Sources */,
 				118648711EF7E68B00904672 /* include_juce_gui_extra.mm in Sources */,
 				757E1B45206A83CA002E472E /* Observer.cpp in Sources */,
@@ -1538,6 +1552,7 @@
 				116A7E8A2046CFB6004B545D /* osc_legacy_scanner.c in Sources */,
 				7571E70C208E41C60092A3E0 /* MouseModeController.cpp in Sources */,
 				116A7E9B2046CFB6004B545D /* osc_vtable.c in Sources */,
+				7501AC5420BD4A9B002E0573 /* NewPropertyFormComponent.cpp in Sources */,
 				116A7E7B2046CFB6004B545D /* osc_atom_array_u.c in Sources */,
 				116A7E7A2046CFB6004B545D /* osc_atom_array_s.c in Sources */,
 				116A7E792046CFB6004B545D /* osc_array.c in Sources */,
@@ -1620,6 +1635,7 @@
 				116A7EF02046DCAE004B545D /* OdotBundle.cpp in Sources */,
 				116F87751F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */,
 				116F877B1F9D04FC0062EE91 /* InspectorComponent.cpp in Sources */,
+				7501AC5220BD4A9B002E0573 /* NewPropertyFormComponent.cpp in Sources */,
 				751E314C2069378600C3318F /* PaletteController.cpp in Sources */,
 				118648971EFA811800904672 /* TimePointArray.cpp in Sources */,
 				1107B3DE1EF1751900E2DFA9 /* TextGlyphComponent.cpp in Sources */,
@@ -1695,6 +1711,7 @@
 				116A7EF62047E99D004B545D /* OdotMessage.cpp in Sources */,
 				7571E6FB2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */,
 				11B71DD71F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
+				7501AC5120BD4A9B002E0573 /* NewPropertyFormComponent.cpp in Sources */,
 				116A7EEF2046DCAE004B545D /* OdotBundle.cpp in Sources */,
 				751E31532069410400C3318F /* PaletteButton.cpp in Sources */,
 				11E8082E207FCAC000E0342F /* SVGParser.cpp in Sources */,
@@ -1756,6 +1773,7 @@
 				758F6F60207BCB00006EDD53 /* MouseModeComponent.cpp in Sources */,
 				758F6F61207BCB00006EDD53 /* TimeDisplayComponent.cpp in Sources */,
 				758F6F62207BCB00006EDD53 /* ScoreCursor.cpp in Sources */,
+				7501AC5520BD4A9B002E0573 /* NewPropertyFormComponent.cpp in Sources */,
 				758F6F65207BCB00006EDD53 /* SymbolistMenu.cpp in Sources */,
 				758F6F66207BCB00006EDD53 /* SymbolPropertiesPanel.cpp in Sources */,
 				758F6F67207BCB00006EDD53 /* OSCPropertyComponents.cpp in Sources */,

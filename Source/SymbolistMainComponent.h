@@ -40,7 +40,7 @@ public:
     inline PaletteComponent*     getPaletteView() { return &palette_view; }
     inline PageComponent*        getScoreView() { return &score_view; }
 	inline MouseModeComponent*   getMouseModeView() { return &mouse_mode_view; }
-	inline InspectorComponent*   getInspectorView() { return inspector; }
+	inline InspectorComponent*   getInspectorView() { return &inspector_view; }
 	inline TimeDisplayComponent* getTimeDisplayView() { return &time_display_view; }
 	
 	void setMouseMode(UI_EditType m);
@@ -54,7 +54,14 @@ public:
     
     inline Viewport*     getViewer() { return &score_viewport; }
 	inline ModifierKeys* getCurrentMods(){ return &current_mods; }
-
+	
+	/***************************************
+     *        INSPECTOR VIEW METHODS       *
+     ***************************************/
+    void toggleInspector();
+    inline void clearInspector(){ inspector_view.clearInspector(); }
+    inline void setInspectorObject( BaseComponent *c ){ inspector_view.setInspectorObject( c ); }
+    
     /**************************************
      *        PALETTE VIEW METHODS        *
      **************************************/
@@ -214,12 +221,7 @@ public:
 	Rectangle<float> getViewRect();
     Rectangle<float> getZoomedRect();
     
-	/***************************************
-     *        INSPECTOR VIEW METHODS       *
-     ***************************************/
-    void toggleInspector();
-    inline void clearInspector(){ inspector->clearInspector(); }
-    inline void setInspectorObject( BaseComponent *c ){ inspector->setInspectorObject( c ); }
+	
     
     // Redefinition of methods from Juce::Component
     void resized() override;
@@ -294,7 +296,7 @@ private:
      * The inspector can be toggle at the right side of
      * the application window by hitting the 'i' key.
      */
-    ScopedPointer<InspectorComponent> inspector;
+    InspectorComponent 				 inspector_view;
     
     /**
      * A view where all messages related to the current
@@ -314,8 +316,6 @@ private:
 	/***************************************************
      *             MISC GRAPHIC PROPERTIES             *
      ***************************************************/
-    
-     
     int palette_w = 50;
     int menu_h; // set internally
 	

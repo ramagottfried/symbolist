@@ -252,6 +252,8 @@ public:
 
 private:
 	
+    SymbolistLookAndFeel look_and_feel;
+                                   
     /****************************************************
      *                   CHILD VIEWS                    *
      ****************************************************/
@@ -306,7 +308,6 @@ private:
 	/***************************************************
      *             MISC GRAPHIC PROPERTIES             *
      ***************************************************/
-    SymbolistLookAndFeel look_and_feel;
      
     int palette_w = 50;
     int menu_h; // set internally

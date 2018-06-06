@@ -5,10 +5,10 @@
 
 ScoreComponent::ScoreComponent()
 {
-    addChildComponent( sel_resize_box = new EditSelectionBox(&selected_components) );
-    sel_resize_box->setBorderThickness( BorderSize<int>(6) );
-    sel_resize_box->setAlwaysOnTop(true);
-    sel_resize_box->setVisible(false);
+    // addChildComponent( sel_resize_box = new EditSelectionBox(&selected_components) );
+    // sel_resize_box->setBorderThickness( BorderSize<int>(6) );
+    // sel_resize_box->setAlwaysOnTop(true);
+    // sel_resize_box->setVisible(false);
 }
 
 ScoreComponent::~ScoreComponent()
@@ -26,7 +26,7 @@ void ScoreComponent::addToSelection(SymbolistComponent *c)
     if( selected_components.addIfNotAlreadyThere(c) )
     {
         c->selectComponent();
-        sel_resize_box->updateEditSelBox();
+        // sel_resize_box->updateEditSelBox();
     }
 }
 
@@ -34,7 +34,7 @@ void ScoreComponent::removeFromSelection(SymbolistComponent *c)
 {
     c->deselectComponent();
     selected_components.removeAllInstancesOf(c);
-    sel_resize_box->updateEditSelBox();
+    // sel_resize_box->updateEditSelBox();
 }
 
 void ScoreComponent::selectAllComponents()
@@ -54,7 +54,7 @@ void ScoreComponent::unselectAllComponents()
         c->deselectComponent();
         selected_components.removeAllInstancesOf(c);
     }
-    sel_resize_box->updateEditSelBox();
+    // sel_resize_box->updateEditSelBox();
 }
 
 // redefinitions from SymbolComponents
@@ -332,17 +332,18 @@ void ScoreComponent::translateSelectedComponents( Point<int> delta_xy )
     {
         c->setTopLeftPosition( c->getPosition() + delta_xy );
     }
-    sel_resize_box->updateEditSelBox();
+    // sel_resize_box->updateEditSelBox();
 }
 
 Rectangle<int> ScoreComponent::getSelectionBounds()
 {
-    return sel_resize_box->getSelectionBounds();
+    // return sel_resize_box->getSelectionBounds();
+    return Rectangle<int>(0, 0, 10, 10);
 }
 
 void ScoreComponent::flipSelectedSymbols( int axis )
 {
-    sel_resize_box->flipSelectedSymbols( axis );
+    // sel_resize_box->flipSelectedSymbols( axis );
 }
 
 void ScoreComponent::nudgeSelected(int direction)

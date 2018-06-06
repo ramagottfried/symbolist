@@ -12,7 +12,7 @@ class PathBaseComponent : public BaseComponent
 {
 public:
     
-    PathBaseComponent() = default;
+    PathBaseComponent() ;
     PathBaseComponent( t_sym_type sType ) : BaseComponent( sType ) {} ;
     ~PathBaseComponent() ;
     
@@ -123,18 +123,17 @@ protected:
     Colour                  preview_stroke_color = Colours::cornflowerblue ;
     
     /**
-     * An array containing PathHandle objects used to manipulate the paths
-     * composing this PathBaseComponent.
+     * An array containing PathHandle objects used to manipulate the path
      */
-    Array<PathHandle*>      path_handles;
+    Array<unique_ptr<PathHandle>>      path_handles;
     // note: path_handles are also stored as subcomponents in the main score
     // to use the selection system... maybe not both necessary...
 
     /**
-     * A pointer to the PathHandle object controlling
+     * A PathHandle object controlling
      * the rotation of this PathBaseComponent.
      */
-    PathHandle*             rotation_handle = NULL;
+    unique_ptr<PathHandle> rotation_handle = unique_ptr<PathHandle>( new PathHandle( PathHandle::rotate, 0.0, 0.0) ) ;
 
     
     /**

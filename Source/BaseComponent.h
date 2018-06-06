@@ -83,7 +83,7 @@ public:
     virtual Point<float> computeSymbolPosition( float x, float y, float w, float h );
 
     // Get the Component's graphic position according to the Symbols pos and size
-    virtual Point<float> computePositionFromSymbolValues(float x, float y, float w, float h);
+    virtual Point<float> computePositionFromSymbolValues(float x, float y, float w, float h) ;
 
     virtual void setMinimalBounds ();
     Rectangle<int> getMinimalBounds();

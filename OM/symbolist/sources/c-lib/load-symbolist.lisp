@@ -10,7 +10,7 @@
 (defun load-symbolist-lib ()
   (let ((libpath (merge-pathnames 
                   "lib/mac/symbolist.dylib" 
-                  (om::mypathname (om::find-om-library "symbolist")))))
+                  (om::mypathname (om::find-library "symbolist")))))
     (when (om-fi::om-load-foreign-library
            "symbolist"
            `((:macosx ,libpath)

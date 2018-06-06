@@ -15,13 +15,15 @@ PathBaseComponent::~PathBaseComponent()
 void PathBaseComponent::removeHandles()
 {
     SymbolistComponent::clearAllSubcomponents();
-    path_handles.clear(); // are they deleted ?
+    path_handles.clear();
     
-    if ( getMainComponent() != NULL && rotation_handle != NULL )
+    /*
+     if ( getMainComponent() != NULL && rotation_handle != NULL )
     {
         delete rotation_handle;
         rotation_handle = NULL;
     }
+     */
 }
 
 
@@ -380,26 +382,27 @@ void PathBaseComponent::unselectAllComponents()
 {
     ScoreComponent::unselectAllComponents();
     if ( rotation_handle != NULL )
-        removeFromSelection(rotation_handle);
+        removeFromSelection( rotation_handle.get() );
 }
 
 void PathBaseComponent::addHandle( PathHandle::handleType type, float x, float y )
 {
-    PathHandle *h = new PathHandle( type, x + getX(), y + getY() );
-    addSubcomponent(h);
+    unique_ptr<PathHandle> h = unique_ptr<PathHandle>( new PathHandle( type, x + getX(), y + getY() ));
+    addSubcomponent(h.get());
     path_handles.add( h );
 }
 
 void PathBaseComponent::addHandlesTo( Point<float> p, PathHandle* last )
 {
-    PathHandle* h2 = new PathHandle( PathHandle::anchor, p.x , p.y );
+    unique_ptr<PathHandle> h2 = unique_ptr<PathHandle>( new PathHandle( PathHandle::anchor, p.x , p.y ));
     float minx = min(p.x,(float)last->getCenter().x);
     float maxx = max(p.x,(float)last->getCenter().x);
     float miny = min(p.y,(float)last->getCenter().y);
     float maxy = max(p.y,(float)last->getCenter().y);
-    PathHandle* h1 = new PathHandle( PathHandle::quadratic_control, (minx+((maxx-minx)*0.5)) , (miny+((maxy-miny)*0.5)) );
-    addSubcomponent(h1);
-    addSubcomponent(h2);
+    unique_ptr<PathHandle> h1 = unique_ptr<PathHandle>( new PathHandle( PathHandle::quadratic_control,
+                                                                        (minx+((maxx-minx)*0.5)) , (miny+((maxy-miny)*0.5)) ));
+    addSubcomponent(h1.get());
+    addSubcomponent(h2.get());
     path_handles.add(h1);
     path_handles.add(h2);
 }
@@ -656,6 +659,9 @@ void PathBaseComponent::updatePathPoints()
 {
     
     std::vector<PathHandle*> remove;
+    
+    type = PATH; // if this was a specific shape: not anymore
+    m_path.clear();
     
     for( int h = 0 ; h < path_handles.size() ; h++ )
     {
@@ -980,7 +986,7 @@ void PathBaseComponent::v_flip(float ax, float ay)
 
 void PathBaseComponent::rotatePath ( float theta, float ax, float ay )
 {
-    accumTheta(theta);
+    // accumTheta(theta);
     m_path.applyTransform( AffineTransform().rotation( theta, ax, ay ) );
     updateHandlePositions();
     updatePathBounds();
@@ -990,8 +996,7 @@ void PathBaseComponent::rotatePath ( float theta, float ax, float ay )
 
 void PathBaseComponent::rotatePath ( float theta, bool accum )
 {
-    if( accum )
-        accumTheta(theta);
+    if( accum ) accumTheta(theta);
     
     m_path.applyTransform( AffineTransform().rotation( theta, m_path_centroid.getX(), m_path_centroid.getY()  ) );
     updateHandlePositions();

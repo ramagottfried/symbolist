@@ -22,6 +22,9 @@ public:
     inline SymbolPropertiesPanel* getSymbolPanelTab() { return symbol_panel_tab.get(); }
     float getPreferedHeight();
     
+	/**************************************************
+     *        SYMBOL PROPERTIES PANEL METHODS         *
+     **************************************************/
     inline void setInspectorObject( BaseComponent *c ) { symbol_panel_tab->setInspectorObject(c); }
     inline void createOSCview () { symbol_panel_tab->createOSCview(); }
     inline void updateBundle() { symbol_panel_tab->updateBundle(); }

@@ -29,9 +29,9 @@ NewPropertyFormComponent::NewPropertyFormComponent()
 void NewPropertyFormComponent::resized()
 {
 	auto area = getLocalBounds();
-	property_name_label.setBounds(area.removeFromLeft(getWidth() * 0.45));
-	property_types_box .setBounds(area.removeFromLeft(getWidth() * 0.35));
-	submit_button	   .setBounds(area.removeFromLeft(getWidth() * 0.2));
+	property_name_label.setBounds(area.removeFromLeft(getWidth() * 0.45).reduced(2));
+	property_types_box .setBounds(area.removeFromLeft(getWidth() * 0.35).reduced(2));
+	submit_button	   .setBounds(area.removeFromLeft(getWidth() * 0.2).reduced(2));
 }
 
 void NewPropertyFormComponent::buttonClicked(Button* button)

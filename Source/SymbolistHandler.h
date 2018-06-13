@@ -16,6 +16,15 @@ class BaseComponent;
 class StaffComponent;
 class SymbolPropertiesPanel;
 
+
+/**
+ * Describes the main controller class of the symbolist application.
+ * The SymbolistHandler class is also the entry point to read/write
+ * the symbolist score from the outside.
+ *
+ * All methods prefixed by symbolistAPI in the SymbolistHandler class
+ * are called by methods of the symbolist C API.
+ */
 class SymbolistHandler : public virtual Controller<SymbolistModel, SymbolistMainComponent> {
         
 public:

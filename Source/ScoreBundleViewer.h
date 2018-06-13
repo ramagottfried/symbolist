@@ -57,11 +57,14 @@ public:
     /** Parses the editors contects as JSON. */
     
     TreeViewItem* rebuildJson();
-    
+	
+	void paint(Graphics& g) override
+	{
+		createNewRootNode();
+	}
+	
     void resized() override
     {
-        
-        createNewRootNode();
         Rectangle<int> area (getLocalBounds());
         resultsTree.setBounds (area.reduced (8));
     }

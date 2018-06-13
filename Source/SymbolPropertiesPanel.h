@@ -62,6 +62,7 @@ private:
 	BaseComponent*              symbol_component;
     PropertyPanel               symbol_inspector;
     Array<PropertyComponent* >  properties;
+	osc_callback_t              change_callback_fn;
 	
     /************************************
 	 *        ADD PROPERTY FEATURE      *
@@ -69,8 +70,14 @@ private:
 	TextButton 					add_property_button;
 	NewPropertyFormComponent    add_property_form;
 	
-    osc_callback_t              change_callback_fn;
+	/***************************************
+	 *        EVALUATE BUNDLE FEATURE      *
+	 ***************************************/
+	TextButton evaluate_bundle_button;
 	
+	/*********************************
+	 *        LAYOUT PROPERTIES      *
+	 *********************************/
     int title_offset = 25;
 	int add_property_button_top_margin = 10;
 	

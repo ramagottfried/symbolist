@@ -15,7 +15,6 @@ InspectorComponent::InspectorComponent() : TabbedComponent(TabbedButtonBar::Orie
 float InspectorComponent::getPreferedHeight()
 {
 	int overallMargin = 20;
-	
 	return getTabBarDepth() + symbol_panel_tab->getPreferedHeight() + overallMargin;
 
 }

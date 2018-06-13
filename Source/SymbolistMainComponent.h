@@ -222,7 +222,6 @@ public:
     Rectangle<float> getZoomedRect();
     
 	
-    
     // Redefinition of methods from Juce::Component
     void resized() override;
     void zoom( float delta );

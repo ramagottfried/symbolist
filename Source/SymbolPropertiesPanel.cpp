@@ -7,10 +7,13 @@ SymbolPropertiesPanel::SymbolPropertiesPanel()
     setOpaque (false);
     addAndMakeVisible (symbol_inspector);
 	
-	addAndMakeVisible(add_property_button);
-	add_property_button.setButtonText("+");
+	add_property_button.setButtonText("Add property");
 	add_property_button.addListener(this);
+	addAndMakeVisible(add_property_button);
 	
+	evaluate_bundle_button.setButtonText("Evaluate bundle");
+	evaluate_bundle_button.addListener(this);
+	addAndMakeVisible(evaluate_bundle_button);
 	
     change_callback_fn = std::bind( &SymbolPropertiesPanel::change_callback, this, std::placeholders::_1);
     
@@ -28,7 +31,8 @@ SymbolPropertiesPanel::~SymbolPropertiesPanel()
 
 float SymbolPropertiesPanel::getPreferedHeight()
 {
-	return title_offset + symbol_inspector.getTotalContentHeight() + add_property_button.getHeight() + add_property_button_top_margin;
+	int buttonAndFormTotalHeight = 60;
+	return title_offset + symbol_inspector.getTotalContentHeight() + buttonAndFormTotalHeight;
 }
 
 void SymbolPropertiesPanel::change_callback(const OdotMessage& msg)
@@ -48,12 +52,35 @@ void SymbolPropertiesPanel::change_callback(const OdotMessage& msg)
 
 void SymbolPropertiesPanel::buttonClicked(Button* button)
 {
-	if (add_property_form.isVisible())
-		add_property_form.setVisible(false);
-	else
-		addAndMakeVisible(add_property_form);
+	if (button == &add_property_button)
+	{
+		if (add_property_form.isVisible())
+			add_property_form.setVisible(false);
+		else
+			addAndMakeVisible(add_property_form);
 	
-	resized();
+		resized();
+	}
+	else if (button == &evaluate_bundle_button)
+	{
+		Symbol* inspectedSymbol = symbol_component->getScoreSymbol();
+		
+		if (inspectedSymbol != NULL)
+		{
+			for (OdotMessage symbolMessage : inspectedSymbol->getMessageArray())
+			{
+				if (symbolMessage.getString().find("=") != string::npos)
+					inspectedSymbol->applyExpr(symbolMessage.getString());
+				
+			}
+			
+		}
+		
+		symbol_inspector.clear();
+		createOSCview();
+		
+	}
+	else throw logic_error("Click on an unknown button.");
 	
 	DEBUG_FULL("Add property button clicked." << endl)
 }
@@ -76,7 +103,8 @@ void SymbolPropertiesPanel::createOSCview ()
         for ( auto msg : symbol->getMessageArray() )
         {
             const string& addr = msg.getAddress();
-            
+			
+			
             // skipping subbundles for now! need to fix this
             
             if( addr == "/color" )  // should have separate selection for stroke color and the other stroke parameters
@@ -138,6 +166,11 @@ void SymbolPropertiesPanel::createOSCview ()
             {
                 properties.add( new OSCIntValueSlider( addr, msg, change_callback_fn ) );
             }
+            // By default, add property of unknown type as a OSCTextProperty
+            else
+            {
+				properties.add( new OSCTextProperty( addr, msg, change_callback_fn) );
+			}
         }
     
     }
@@ -175,6 +208,18 @@ void SymbolPropertiesPanel::setInspectorObject( BaseComponent *c )
     symbol_component = c;
     symbol_inspector.clear();
     createOSCview();
+	
+    if (c == NULL)
+    {
+    	add_property_form.setVisible(false);
+    	add_property_button.setVisible(false);
+    	evaluate_bundle_button.setVisible(false);
+	}
+	else
+	{
+		add_property_button.setVisible(true);
+		evaluate_bundle_button.setVisible(true);
+	}
 }
 
 void SymbolPropertiesPanel::clearInspector()
@@ -183,6 +228,7 @@ void SymbolPropertiesPanel::clearInspector()
         symbol_inspector.clear();
     
     symbol_component = nullptr;
+    
 }
 
 void SymbolPropertiesPanel::paint (Graphics& g)
@@ -224,7 +270,7 @@ void SymbolPropertiesPanel::resized()
 		add_property_form.setBounds(local.removeFromTop(buttonHeight).reduced(buttonMargin));
 	}
 	
-	add_property_button.setBounds(local.removeFromTop(buttonHeight).reduced(buttonMargin));
-
+	add_property_button.setBounds(local.removeFromLeft(getWidth() * 0.5).removeFromTop(buttonHeight).reduced(buttonMargin));
+	evaluate_bundle_button.setBounds(local.removeFromLeft(getWidth() * 0.5).removeFromTop(buttonHeight).reduced(buttonMargin));
 }
 

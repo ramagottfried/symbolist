@@ -24,8 +24,7 @@ public:
     {
         //resultsTree.setRootItem (nullptr);
     }
-    
-
+	
     void loadBundle()
     {
         
@@ -52,7 +51,6 @@ public:
         bundle_editor->loadContent( content );
     }
 
-    
     void resized() override
     {
         // cout << "osc viewport " << endl;

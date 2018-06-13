@@ -5,8 +5,8 @@
 /////
 /////   - Download the Bravura font at https://www.smufl.org/fonts/
 /////   - Install the Bravura font in your system.
-/////   - Create the /Library/Fonts/bravura folder and copy the bravura_metadata.json
-/////     in it (the file is to be found in the downloaded bravura zip file).
+/////   - Create the /Library/Fonts/bravura folder (where first slash is the system root)
+/////     and copy the bravura_metadata.json in it (the file is in the downloaded bravura zip file).
 
 String SmuflComponent::SMUFL_METADATA_FILEPATH = "/Library/Fonts/bravura/bravura_metadata.json";
 
@@ -17,11 +17,10 @@ SmuflComponent::SmuflComponent()
 {
 	BaseComponent::BaseComponent();
 	
-	addAndMakeVisible(smufl_glyph);
-	
 	smufl_glyph.setFont(Font("Bravura", 100.0f, Font::plain), true);
 	smufl_glyph.setJustification(Justification::centred);
 	smufl_glyph.setColour(getCurrentColor());
+	addAndMakeVisible(smufl_glyph);
 
 	try {
 	
@@ -62,12 +61,12 @@ void SmuflComponent::paint(Graphics& g)
 		setSize(glyphWidth, glyphHeight);
 	else setSize(glyphWidth + 10, glyphHeight);
 	
-	smufl_glyph.setBoundingBox(RelativeParallelogram(Rectangle<float> (0, 0, getWidth(), getHeight())));
 }
 
 void SmuflComponent::resized()
 {
 	BaseComponent::resized();
+	smufl_glyph.setBoundingBox(RelativeParallelogram(Rectangle<float> (0, 0, getWidth(), getHeight())));
 }
 
 void SmuflComponent::addSymbolMessages(Symbol* symbol)
@@ -109,14 +108,15 @@ void SmuflComponent::scaleScoreComponent(float scaledWidthRatio, float scaledHei
 	 * and adds the new font to smufl_glyph.
 	 */
 	Font noteFont = smufl_glyph.getFont();
-	noteFont.setHeight(newHeight);
-    smufl_glyph.setFont(noteFont, true);
 	
+	// Multiply three times the height to obtain a good size in the palette button
+	noteFont.setHeight(newHeight * 3);
+    smufl_glyph.setFont(noteFont, true);
+
 	// Retrieves the glyph width with the new font height.
 	float glyphWidth = smufl_glyph.getFont().getStringWidth(glyph_code);
 	
 	setSize(glyphWidth, newHeight);
-	smufl_glyph.setBoundingBox(RelativeParallelogram(Rectangle<float> (0, 0, getWidth(), getHeight())));
 	
 	/* Moves the SmuflComponent position to place the glyph in the center
 	 * of the palette button.
@@ -124,8 +124,11 @@ void SmuflComponent::scaleScoreComponent(float scaledWidthRatio, float scaledHei
 	PaletteButton* parent = dynamic_cast<PaletteButton* >(getParentComponent());
 	if (parent != NULL)
 	{
-		float xCenter = (parent->getWidth() - getWidth()) / 2;
-		setTopLeftPosition(xCenter, 0);
+		float xCenter = (abs(parent->getWidth() - getWidth())) / 2;
+		float yCenter = -17; // Offset to center the glyphs in palette buttons
+		setTopLeftPosition(xCenter, yCenter);
+		
+		
 	}
 	
 }
@@ -151,15 +154,15 @@ Rectangle<float> SmuflComponent::getBoundingBoxForGlyph(String glyphName)
 	var glyphBBoxes = smufl_metadata_json.getProperty("glyphBBoxes", var::undefined());
 	if (!glyphBBoxes.isUndefined())
 	{
-		var noteQuarterUp = glyphBBoxes.getProperty(glyphName, var::undefined());
-		if (!noteQuarterUp.isUndefined())
+		var targetGlyph = glyphBBoxes.getProperty(glyphName, var::undefined());
+		if (!targetGlyph.isUndefined())
 		{
-			var nECoordinates = noteQuarterUp.getProperty("bBoxNE", var::undefined());
-			var sWCoordinates = noteQuarterUp.getProperty("bBoxSW", var::undefined());
+			var nECoordinates = targetGlyph.getProperty("bBoxNE", var::undefined());
+			var sWCoordinates = targetGlyph.getProperty("bBoxSW", var::undefined());
 			
 			if (nECoordinates.isUndefined() || sWCoordinates.isUndefined())
 			{
-				
+				// Throws something. NYI.
 			}
 			else
 			{

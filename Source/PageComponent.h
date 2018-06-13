@@ -8,8 +8,7 @@
 #include "PageController.hpp"
 
 /**
- * Represents the page where all the graphic symbols
- * of the score are drawn.
+ * Represents the page where all the graphic symbols of the score are drawn.
  * PageComponent is a graphic component.
  */
 class PageComponent : public virtual ScoreComponent,

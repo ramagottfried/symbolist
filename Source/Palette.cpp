@@ -86,8 +86,21 @@ void Palette::createDefaultItems()
 		
 		Symbol s10 = Symbol();
 		s10.setTypeXYWH("smufl", symbolPos, symbolPos, symbolSize, symbolSize);
-		s10.addMessage("/glyph-code", String::fromUTF8("\uE904").toStdString());
-		s10.addMessage("/glyph-name", "mensuralFclefPetrucci");
+		s10.addMessage("/glyph-code", String::fromUTF8("\uE050").toStdString());
+		s10.addMessage("/glyph-name", "gClef");
 		addDefaultItem(s10);
+		
+		Symbol s11 = Symbol();
+		s11.setTypeXYWH("smufl", symbolPos, symbolPos, symbolSize, symbolSize);
+		s11.addMessage("/glyph-code", String::fromUTF8("\uE062").toStdString());
+		s11.addMessage("/glyph-name", "fClef");
+		addDefaultItem(s11);
+		
+		Symbol s12 = Symbol();
+		s12.setTypeXYWH("smufl", symbolPos, symbolPos, symbolSize, symbolSize);
+		s12.addMessage("/glyph-code", String::fromUTF8("\uE014").toStdString());
+		s12.addMessage("/glyph-name", "staff5Lines");
+		addDefaultItem(s12);
+		
 	}
 }

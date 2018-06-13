@@ -464,12 +464,13 @@ void ScoreComponent::mouseAddClick(const MouseEvent& event)
         
         // Sets default position before creating the graphic component.
         s->setPosition(event.position);
-        
+		
         // Creates a new component of the current selected symbol type.
         c = sh->makeComponentFromSymbol(s, top_level);
         
         // Adds component in the view.
         addSubcomponent(c);
+		
     }
     else
     {
@@ -515,11 +516,11 @@ void ScoreComponent::mouseUp ( const MouseEvent& event )
 {
     UI_EditType ed = getMainMouseMode();
     
-    if( ed == SELECTION )
+    if ( ed == SELECTION )
     {
         endLassoSelection();
     }
-    else if( ed == DRAW )
+    else if ( ed == DRAW )
     {
         // when the mousedown on this triggered an entry to edit mode, we might want to pass the mouse up there, too
         ScoreComponent* sc = getPageComponent()->getEditedComponent();

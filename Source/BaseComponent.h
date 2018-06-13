@@ -54,7 +54,7 @@ public:
     
     virtual Rectangle<float> symbolExportBounds() { return getBounds().toFloat(); }
 
-    // not very happy with therm "Symbol" here
+    // not very happy with term "Symbol" here
     virtual inline void setSymbolComponentStrokeWeight( float s ){ stroke_weight = s; }
     
     inline void setBoundsFloatRect( Rectangle<float> r )

@@ -191,14 +191,22 @@ void SymbolistMainComponent::toggleInspector()
         auto selectedItems = score_view.getSelectedItems();
         inspector_view.setInspectorObject( dynamic_cast<BaseComponent*>(selectedItems.getLast()) );
 		
+		auto menuH = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
+		
+		/* If the height of the inspector view is superior to the main window's height
+		 * then increase the window's height.
+		 */
 		if (inspector_view.getSymbolPanelTab() != nullptr && inspector_view.getPreferedHeight() > getHeight())
 				setSize(getWidth(), inspector_view.getPreferedHeight() + menu_h);
 		
+		auto area = getLocalBounds();
+		area.removeFromTop(menuH);
+		area.removeFromRight(score_viewport.getScrollBarThickness());
+		inspector_view.setBounds(area.removeFromRight(getWidth() * 0.33));
         addAndMakeVisible( inspector_view );
-        
-        auto menuH = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
-        inspector_view.setSize(getWidth() * 0.33, getHeight() - score_viewport.getScrollBarThickness() - menuH);
-        inspector_view.setTopRightPosition( getWidth() - score_viewport.getScrollBarThickness(), menuH );
+		
+//        inspector_view.setSize(getWidth() * 0.33, getHeight() - score_viewport.getScrollBarThickness() - menuH);
+//        inspector_view.setTopRightPosition( getWidth() - score_viewport.getScrollBarThickness(), menuH );
         inspector_view.resized();
     }
     else

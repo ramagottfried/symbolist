@@ -546,85 +546,86 @@ OdotBundle_s TimePointArray::timePointStreamToOSC(const SymbolTimePoint* tpoint 
 
     if( tpoint != nullptr )
     {
-        const vector<Symbol*> vec = tpoint->symbols_at_time;
+        const vector<Symbol* > symbolsAtTPoint = tpoint->symbols_at_time;
         
         int count = 0;
-        for (auto s : vec )
+        for (auto symbol : symbolsAtTPoint )
         {
 
             const Symbol* staff = tpoint->staff_ref;
-            string staff_name = staff->getName();
+            string staffName = staff->getName();
 
-            string toplevel_name = s->getMessage( "/name" ).getString();
+            string toplevelName = symbol->getMessage( "/name" ).getString();
             
-            if( current_time > s->getEndTime() )
+            if( current_time > symbol->getEndTime() )
             {
-                pair<size_t, int> voice_num_state = setNoteOff( s );
-                if( voice_num_state.first != -1 ) // voice number is set to -1 if not found
+                pair<size_t, int> voiceNumState = setNoteOff( symbol );
+                if( voiceNumState.first != -1 ) // voice number is set to -1 if not found
                 {
-                    string s_prefix = "/staff/" + staff->getName() + "/voice/" + to_string(voice_num_state.first) + "/" + toplevel_name;
-                    bndl.addMessage( s_prefix + "/state", -1 );
+                    string symbolPrefix = "/staff/" + staff->getName() + "/voice/" + to_string(voiceNumState.first) + "/" + toplevelName;
+                    bndl.addMessage( symbolPrefix + "/state", -1 );
                 }
             }
             else
             {
-                pair<size_t, int> voice_num_state = getVoiceNumberState( s, tpoint );
-                string s_prefix = "/staff/" + staff->getName() + "/voice/" + to_string(voice_num_state.first) + "/" + toplevel_name;
+                pair<size_t, int> voiceNumState = getVoiceNumberState( symbol, tpoint );
+                string symbolPrefix = "/staff/" + staff->getName() + "/voice/" + to_string(voiceNumState.first) + "/" + toplevelName;
                 
-                bndl.addMessage( s_prefix + "/state", voice_num_state.second ) ;
+                bndl.addMessage( symbolPrefix + "/state", voiceNumState.second ) ;
                 // staff is already stored in timepoint so we could probably removed the staff check here...
                 
                 //String staff_name = "default";
                 //String staff_id;
-                float staff_x = 0, staff_y = 0;
-                staff_x = staff->getMessage("/x").getFloat();
-                staff_y = staff->getMessage("/y").getFloat();
+                float staffXCoordinate = 0, staffYCoordinate = 0;
+                staffXCoordinate = staff->getMessage("/x").getFloat();
+                staffYCoordinate = staff->getMessage("/y").getFloat();
 
-                float time_ratio = (current_time - s->getTime()) / s->getDuration() ;
-                bndl.addMessage( s_prefix + "/time/ratio", time_ratio );
+                float timeRatio = (current_time - symbol->getTime()) / symbol->getDuration() ;
+                bndl.addMessage( symbolPrefix + "/time/ratio", timeRatio );
                 
-                if( s->getType() == "path" )
+                if( symbol->getType() == "path" )
                 {
-                    int npaths = s->getMessage( "/num_sub_paths" ).getInt();
+                    int npaths = symbol->getMessage( "/num_sub_paths" ).getInt();
 
                     for( int i = 0; i < npaths; i++)
                     {
                         auto path_addr = "/path/" + to_string(i);
-                        auto xy = lookupPathPoint(s, path_addr, time_ratio );
-                        bndl.addMessage( s_prefix + "/path/" + to_string(i) + "/lookup/xy", xy.x, xy.y );
+                        auto xy = lookupPathPoint(symbol, path_addr, timeRatio );
+                        bndl.addMessage( symbolPrefix + "/path/" + to_string(i) + "/lookup/xy", xy.x, xy.y );
 
                     }
 
                 }
-                else if( s->getType() == "group" )
+                else if( symbol->getType() == "group" )
                 {
-                    string group_prefix = "/staff/" + staff->getName() + "/voice/" + to_string(voice_num_state.first);
-                    groupLookup(s, group_prefix, staff_x, staff_y, time_ratio, bndl );
+                    string group_prefix = "/staff/" + staff->getName() + "/voice/" + to_string(voiceNumState.first);
+                    groupLookup(symbol, group_prefix, staffXCoordinate, staffYCoordinate, timeRatio, bndl );
                 }
                 else
                 {
                 
-                    auto s_bndl_msgs = s->getMessageArray();
+                    auto symbolBundleMessages = symbol->getMessageArray();
 
-                    for ( auto msg : s_bndl_msgs )
+                    for ( auto msg : symbolBundleMessages )
                     {
                         
-                        string msg_addr = msg.getAddress();
-                        string newaddr = s_prefix + msg_addr;
-                        
-                        if( msg_addr == "/x" )
+                        string msgAddress = msg.getAddress();
+                        string newaddr = symbolPrefix + msgAddress;
+						
+                        if( msgAddress == "/x" )
                         {
-                            bndl.addMessage( newaddr, msg[0].getFloat() - staff_x ) ;
+                            bndl.addMessage( newaddr, msg[0].getFloat() - staffXCoordinate ) ;
                         }
-                        else if( msg_addr == "/y" )
+                        else if( msgAddress == "/y" )
                         {
-                            bndl.addMessage( newaddr, msg[0].getFloat() - staff_y ) ;
+                            bndl.addMessage( newaddr, msg[0].getFloat() - staffYCoordinate ) ;
                         }
                         else
                         {
                             msg.rename(newaddr);
                             bndl.addMessage(msg);
                         }
+						
                     }
                 }
                 

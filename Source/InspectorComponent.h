@@ -20,6 +20,14 @@ public:
      *                GETTERS AND SETTERS             *
      **************************************************/
     inline SymbolPropertiesPanel* getSymbolPanelTab() { return symbol_panel_tab.get(); }
+    
+    /**
+     * Gets the minimum height value for this InspectorComponent
+     * for which all its content is displayed.
+     *
+     * @returns The minimum height to show all the elements contained
+     *			in this InspectorComponent.
+     */
     float getPreferedHeight();
     
 	/**************************************************
@@ -41,6 +49,8 @@ public:
 	 *		InspectorController::updateSymbolFromComponent
 	 */
 	void updateSymbolFromComponent(BaseComponent* component);
+	
+	void toggleCodeBox();
 	
 	/* Overrides the update method inherited from the Observer class. */
     virtual inline void update() override {}

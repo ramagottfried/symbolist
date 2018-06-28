@@ -7,7 +7,7 @@
 #include "symbolist-utils.hpp"
 
 /**
- * Describes the form displayed when the '+' button in the inspector is clicked.
+ * Describes the form displayed when the 'Add property' button in the inspector is clicked.
  * When the form is submitted, a new odot message is added to the inspected symbol.
  *
  */
@@ -16,7 +16,6 @@ class NewPropertyFormComponent : public virtual Component, public virtual Button
 public:
 	NewPropertyFormComponent();
 	void resized() override;
-	
 	
 	void buttonClicked(Button* button) override;
 	

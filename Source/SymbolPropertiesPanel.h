@@ -57,7 +57,17 @@ public:
 	 *		  InspectorController::addMessageToInspectedSymbol(Symbol*, String, String)
 	 */
 	void addMessageToInspectedSymbol(String messageAddress, String messageValue);
-
+	
+	/**
+	 * Wrapper method around the InspectorComponent::toggleCodeBox method.
+	 *
+	 * @throws logic_error If this SymbolPropertiesPanel has no parent of
+	 *					   type InspectorComponent.
+	 *
+	 * @see    InspectorComponent#toggleCodeBox() InspectorComponent::toggleCodeBox()
+	 */
+	void toggleCodeBox();
+	
 private:
 	BaseComponent*              symbol_component;
     PropertyPanel               symbol_inspector;

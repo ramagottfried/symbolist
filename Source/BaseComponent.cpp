@@ -273,7 +273,11 @@ void BaseComponent::selectComponent()
     ScoreComponent::selectComponent();
     
     if( isTopLevelComponent() )
-        getSymbolistHandler()->addToInspector( this );
+    {
+    	getMainComponent()->getInspectorView()->setInspectorObject(this);
+		getMainComponent()->getCodeBoxView()->setSymbolComponent(this);
+	}
+	
 }
 
 void BaseComponent::deselectComponent()

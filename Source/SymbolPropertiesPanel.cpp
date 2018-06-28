@@ -1,6 +1,7 @@
 #include "SymbolPropertiesPanel.h"
 #include "OSCPropertyComponents.h"
 #include "InspectorComponent.h"
+#include "CallbackButtonPropertyComponent.hpp"
 
 SymbolPropertiesPanel::SymbolPropertiesPanel()
 {
@@ -52,6 +53,7 @@ void SymbolPropertiesPanel::change_callback(const OdotMessage& msg)
 
 void SymbolPropertiesPanel::buttonClicked(Button* button)
 {
+	// Shows and hides the add_property form.
 	if (button == &add_property_button)
 	{
 		if (add_property_form.isVisible())
@@ -65,16 +67,11 @@ void SymbolPropertiesPanel::buttonClicked(Button* button)
 	{
 		Symbol* inspectedSymbol = symbol_component->getScoreSymbol();
 		
-		if (inspectedSymbol != NULL)
-		{
-			for (OdotMessage symbolMessage : inspectedSymbol->getMessageArray())
-			{
-				if (symbolMessage.getString().find("=") != string::npos)
-					inspectedSymbol->applyExpr(symbolMessage.getString());
-				
-			}
-			
-		}
+		/* Looks for an /expr OSC message in the inspected symbol
+		 * and apply the odot expression contained in /expr to the inspected symbol.
+		 */
+		if (inspectedSymbol != NULL && inspectedSymbol->addressExists("/expr"))
+				inspectedSymbol->applyExpr(inspectedSymbol->getMessage("/expr").getString());
 		
 		symbol_inspector.clear();
 		createOSCview();
@@ -150,6 +147,12 @@ void SymbolPropertiesPanel::createOSCview ()
             {
                 properties.add( new OSCValueDisplay( addr, msg) );
             }
+			else if( addr == "/expr" )
+            {
+                properties.add( new CallbackButtonPropertyComponent(addr, true, [this](){
+                	this->toggleCodeBox();
+				}) );
+            }
            /* else if( addr == "lambda" )
             {
                 properties.add( new OSCTextProperty( addr, msg, change_callback_fn, true ) );
@@ -166,10 +169,10 @@ void SymbolPropertiesPanel::createOSCview ()
             {
                 properties.add( new OSCIntValueSlider( addr, msg, change_callback_fn ) );
             }
-            // By default, add property of unknown type as a OSCTextProperty
+            // By default, add property of unknown type as a OSCFloatValueSlider
             else
             {
-				properties.add( new OSCTextProperty( addr, msg, change_callback_fn) );
+				properties.add( new OSCFloatValueSlider( addr, msg, change_callback_fn) );
 			}
         }
     
@@ -228,7 +231,19 @@ void SymbolPropertiesPanel::clearInspector()
         symbol_inspector.clear();
     
     symbol_component = nullptr;
+    add_property_form.setVisible(false);
+	add_property_button.setVisible(false);
+	evaluate_bundle_button.setVisible(false);
     
+}
+
+void SymbolPropertiesPanel::toggleCodeBox()
+{
+	InspectorComponent* parentComponent = dynamic_cast<InspectorComponent*>(getParentComponent());
+	if (parentComponent != NULL)
+		parentComponent->toggleCodeBox();
+	else throw logic_error("SymbolistPropertiesPanel has no parent of type InspectorComponent.");
+	
 }
 
 void SymbolPropertiesPanel::paint (Graphics& g)

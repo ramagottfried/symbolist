@@ -3,23 +3,23 @@
 #ifndef SymbolistMainComponent_h
 #define SymbolistMainComponent_h
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 
 #include "SymbolistHandler.h"
-#include "PageComponent.h"
-#include "PaletteComponent.h"
+#include "View.hpp"
 #include "BaseComponent.h"
 
+#include "PageComponent.h"
+#include "PaletteComponent.h"
 #include "InspectorComponent.h"
 #include "MouseModeComponent.hpp"
 #include "TimeDisplayComponent.hpp"
-
 #include "SymbolistMenu.hpp"
 #include "SymbolistLookAndFeel.hpp"
-#include "View.hpp"
+#include "CodeBoxComponent.hpp"
 
 /**
- * SymbolistMainComponent is the main graphic component of the application.
+ * SymbolistMainComponent is the main graphic component of the symbolist application.
  *
  */
 class SymbolistMainComponent : public virtual SymbolistComponent,
@@ -42,6 +42,7 @@ public:
 	inline MouseModeComponent*   getMouseModeView() { return &mouse_mode_view; }
 	inline InspectorComponent*   getInspectorView() { return &inspector_view; }
 	inline TimeDisplayComponent* getTimeDisplayView() { return &time_display_view; }
+	inline CodeBoxComponent*	 getCodeBoxView() { return  & code_box_view; }
 	
 	void setMouseMode(UI_EditType m);
     UI_EditType getMouseMode();
@@ -54,6 +55,11 @@ public:
     
     inline Viewport*     getViewer() { return &score_viewport; }
 	inline ModifierKeys* getCurrentMods(){ return &current_mods; }
+	
+	/*****************************************
+     *        CODE BOX VIEW METHODS       *
+     *****************************************/
+	void toggleCodeBox();
 	
 	/***************************************
      *        INSPECTOR VIEW METHODS       *
@@ -249,7 +255,7 @@ public:
     bool perform(const InvocationInfo& info) override;
     
     /* Overrides the update method inherited from the Observer class. */
-    inline void update() override { repaint(); }
+    inline void update() override { }
 
 private:
 	
@@ -312,11 +318,22 @@ private:
      */
     TimeDisplayComponent             time_display_view;
 	
+	/**
+	 * A view representing a code editor at the bottom
+	 * of the application window.
+	 * The code box view contains all odot expressions
+	 * associated to a symbol.
+	 */
+	CodeBoxComponent				 code_box_view;
+	
 	/***************************************************
      *             MISC GRAPHIC PROPERTIES             *
      ***************************************************/
-    int palette_w = 50;
-    int menu_h; // set internally
+    int inspector_width   = 300;
+    int palette_width     = 50;
+    int code_box_height   = 300;
+    int mouse_mode_height = 30;
+    int menu_height; // set internally
 	
     float            m_zoom = 1.0f;
     ModifierKeys     current_mods;

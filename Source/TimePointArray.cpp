@@ -12,7 +12,10 @@ void TimePointArray::printTimePoints()
         int symcount = 0;
         for( auto sym : t->symbols_at_time )
         {
-            DEBUG_INLINE("\tSymbol n°" << symcount++ << ", address = " << sym << ", size (number of messages) = " << sym->size() << endl)
+            DEBUG_INLINE("\tSymbol n°" << symcount++
+                                       << ", address = " << sym
+                                       << ", size (number of messages) = "
+                                       << (sym != NULL ? String(sym->size()) : "") << endl)
         }
     }
 }
@@ -551,7 +554,12 @@ OdotBundle_s TimePointArray::timePointStreamToOSC(const SymbolTimePoint* tpoint 
         int count = 0;
         for (auto symbol : symbolsAtTPoint )
         {
-
+			/* If the current symbol posseses a /expr odot message
+		     * then apply the content (normally odot expressions) on it.
+			 */
+			if (symbol->addressExists("/expr"))
+					symbol->applyExpr(symbol->getMessage("/expr").getString());
+			
             const Symbol* staff = tpoint->staff_ref;
             string staffName = staff->getName();
 
@@ -614,11 +622,14 @@ OdotBundle_s TimePointArray::timePointStreamToOSC(const SymbolTimePoint* tpoint 
 						
                         if( msgAddress == "/x" )
                         {
+                        	// COMMENT THIS FOR NOW, FOR MASTER ORAL PRESENTATION.
                             bndl.addMessage( newaddr, msg[0].getFloat() - staffXCoordinate ) ;
                         }
                         else if( msgAddress == "/y" )
                         {
-                            bndl.addMessage( newaddr, msg[0].getFloat() - staffYCoordinate ) ;
+                        	// COMMENT THIS FOR NOW, FOR MASTER ORAL PRESENTATION.
+                        	// Symbols which are above the staff have positive /y values.
+                            bndl.addMessage( newaddr, staffYCoordinate - msg[0].getFloat());
                         }
                         else
                         {
@@ -628,14 +639,9 @@ OdotBundle_s TimePointArray::timePointStreamToOSC(const SymbolTimePoint* tpoint 
 						
                     }
                 }
-                
+				
                 count++;
             }
-           // else
-            //{
-    //            ;
-    //             cout << "skipped sym " << s << " endpt: " << s->getEndTime() << endl;
-            //}
         }
     }
     

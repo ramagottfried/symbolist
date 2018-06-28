@@ -2,31 +2,230 @@
 
 <JUCERPROJECT id="fABNre" name="symbolist" displaySplashScreen="1" reportAppUsage="1"
               splashScreenColour="Dark" projectType="dll" version="1.0.0" bundleIdentifier="rama.jean.symbolist"
-              includeBinaryInAppConfig="1" jucerVersion="5.0.1">
+              includeBinaryInAppConfig="1" jucerVersion="5.2.0" cppLanguageStandard="11"
+              companyCopyright="">
   <MAINGROUP id="pdlQg6" name="symbolist">
-    <GROUP id="{728672E2-ED9C-7932-7CB1-C5262BF70CDE}" name="Source">
-      <GROUP id="{B9D663E2-6242-11E5-C283-15107E9AE566}" name="gui-window">
-        <FILE id="I0QwDL" name="MainComponent.hpp" compile="0" resource="0"
-              file="Source/MainComponent.hpp"/>
-        <FILE id="hrEhfY" name="MainWindow.hpp" compile="0" resource="0" file="Source/MainWindow.hpp"/>
-        <FILE id="jHL1YT" name="ShapeComponents.hpp" compile="0" resource="0"
-              file="Source/ShapeComponents.hpp"/>
-        <FILE id="dYLGqs" name="MainComponent.cpp" compile="1" resource="0"
-              file="Source/MainComponent.cpp"/>
-        <FILE id="GQ7OG9" name="MainWindow.cpp" compile="1" resource="0" file="Source/MainWindow.cpp"/>
-      </GROUP>
-      <GROUP id="{7451AA22-B70F-241D-826E-675E2B940080}" name="test-app">
-        <FILE id="oaLPAt" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
-      </GROUP>
+    <GROUP id="{15BDF452-DC2F-2F6A-6782-33365AAEDB2C}" name="Source">
+      <FILE id="EjKp2k" name="symbolist-utils.cpp" compile="1" resource="0"
+            file="Source/symbolist-utils.cpp"/>
+      <FILE id="U5r9k8" name="symbolist-utils.hpp" compile="0" resource="0"
+            file="Source/symbolist-utils.hpp"/>
       <FILE id="m5kicP" name="symbolist.cpp" compile="1" resource="0" file="Source/symbolist.cpp"/>
       <FILE id="J3gW8l" name="symbolist.hpp" compile="0" resource="0" file="Source/symbolist.hpp"/>
+      <FILE id="oaLPAt" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <GROUP id="{0138D826-C870-CC2A-98BB-C602B2753116}" name="plugixml">
+        <FILE id="LD1bla" name="pugiconfig.hpp" compile="0" resource="0" file="Source/plugixml/pugiconfig.hpp"/>
+        <FILE id="Av6D9I" name="pugixml.cpp" compile="1" resource="0" file="Source/plugixml/pugixml.cpp"/>
+        <FILE id="mzRtsg" name="pugixml.hpp" compile="0" resource="0" file="Source/plugixml/pugixml.hpp"/>
+      </GROUP>
+      <FILE id="fQdBil" name="BaseComponent.cpp" compile="1" resource="0"
+            file="Source/BaseComponent.cpp"/>
+      <FILE id="VDhYDk" name="BaseComponent.h" compile="0" resource="0" file="Source/BaseComponent.h"/>
+      <FILE id="WBxiAV" name="BasicShapePathComponents.h" compile="0" resource="0"
+            file="Source/BasicShapePathComponents.h"/>
+      <FILE id="uPbwDt" name="CircleComponent.cpp" compile="1" resource="0"
+            file="Source/CircleComponent.cpp"/>
+      <FILE id="yu4ds9" name="CircleComponent.h" compile="0" resource="0"
+            file="Source/CircleComponent.h"/>
+      <FILE id="DxBbBP" name="CodeBoxButtonPropertyComponent.cpp" compile="1"
+            resource="0" file="Source/CodeBoxButtonPropertyComponent.cpp"/>
+      <FILE id="B5WLWi" name="CodeBoxButtonPropertyComponent.hpp" compile="0"
+            resource="0" file="Source/CodeBoxButtonPropertyComponent.hpp"/>
+      <FILE id="NiklG5" name="CodeBoxComponent.cpp" compile="1" resource="0"
+            file="Source/CodeBoxComponent.cpp"/>
+      <FILE id="NSdxQJ" name="CodeBoxComponent.hpp" compile="0" resource="0"
+            file="Source/CodeBoxComponent.hpp"/>
+      <FILE id="JaWQ0a" name="Controller.cpp" compile="1" resource="0" file="Source/Controller.cpp"/>
+      <FILE id="pm0NYj" name="Controller.hpp" compile="0" resource="0" file="Source/Controller.hpp"/>
+      <FILE id="UcUhuG" name="EditSelectionBox.cpp" compile="1" resource="0"
+            file="Source/EditSelectionBox.cpp"/>
+      <FILE id="g6tHPt" name="EditSelectionBox.h" compile="0" resource="0"
+            file="Source/EditSelectionBox.h"/>
+      <FILE id="GFar3w" name="InspectorComponent.cpp" compile="1" resource="0"
+            file="Source/InspectorComponent.cpp"/>
+      <FILE id="zSeQNX" name="InspectorComponent.h" compile="0" resource="0"
+            file="Source/InspectorComponent.h"/>
+      <FILE id="uA2Vuh" name="InspectorController.cpp" compile="1" resource="0"
+            file="Source/InspectorController.cpp"/>
+      <FILE id="BYhPmy" name="InspectorController.hpp" compile="0" resource="0"
+            file="Source/InspectorController.hpp"/>
+      <FILE id="qIay3j" name="JsonTreeItem.cpp" compile="1" resource="0"
+            file="Source/JsonTreeItem.cpp"/>
+      <FILE id="jH84KB" name="JsonTreeItem.hpp" compile="0" resource="0"
+            file="Source/JsonTreeItem.hpp"/>
+      <FILE id="RAzAQN" name="MouseModeComponent.cpp" compile="1" resource="0"
+            file="Source/MouseModeComponent.cpp"/>
+      <FILE id="Thx2Tl" name="MouseModeComponent.hpp" compile="0" resource="0"
+            file="Source/MouseModeComponent.hpp"/>
+      <FILE id="ajmPBt" name="MouseModeController.cpp" compile="1" resource="0"
+            file="Source/MouseModeController.cpp"/>
+      <FILE id="gFnLVH" name="MouseModeController.hpp" compile="0" resource="0"
+            file="Source/MouseModeController.hpp"/>
+      <FILE id="HhDDI2" name="NewPropertyFormComponent.cpp" compile="1" resource="0"
+            file="Source/NewPropertyFormComponent.cpp"/>
+      <FILE id="ejxGdt" name="NewPropertyFormComponent.hpp" compile="0" resource="0"
+            file="Source/NewPropertyFormComponent.hpp"/>
+      <FILE id="bwMJae" name="Observable.cpp" compile="1" resource="0" file="Source/Observable.cpp"/>
+      <FILE id="jsefC4" name="Observable.hpp" compile="0" resource="0" file="Source/Observable.hpp"/>
+      <FILE id="D3q0CK" name="Observer.cpp" compile="1" resource="0" file="Source/Observer.cpp"/>
+      <FILE id="ujgwa6" name="Observer.hpp" compile="0" resource="0" file="Source/Observer.hpp"/>
+      <FILE id="FpNVIf" name="OdotAtom.cpp" compile="1" resource="0" file="Source/OdotAtom.cpp"/>
+      <FILE id="Rc5dAZ" name="OdotAtom.hpp" compile="0" resource="0" file="Source/OdotAtom.hpp"/>
+      <FILE id="HxGdAI" name="OdotBundle.cpp" compile="1" resource="0" file="Source/OdotBundle.cpp"/>
+      <FILE id="w55jxg" name="OdotBundle.hpp" compile="0" resource="0" file="Source/OdotBundle.hpp"/>
+      <FILE id="J2FqkF" name="OdotBundle_s.cpp" compile="1" resource="0"
+            file="Source/OdotBundle_s.cpp"/>
+      <FILE id="JHh8TX" name="OdotBundle_s.hpp" compile="0" resource="0"
+            file="Source/OdotBundle_s.hpp"/>
+      <FILE id="Y5MXPi" name="OdotExpr.cpp" compile="1" resource="0" file="Source/OdotExpr.cpp"/>
+      <FILE id="CLIoNs" name="OdotExpr.hpp" compile="0" resource="0" file="Source/OdotExpr.hpp"/>
+      <FILE id="Eeecep" name="OdotMessage.cpp" compile="1" resource="0" file="Source/OdotMessage.cpp"/>
+      <FILE id="dL6gWt" name="OdotMessage.hpp" compile="0" resource="0" file="Source/OdotMessage.hpp"/>
+      <FILE id="n31A3G" name="OdotPointers.h" compile="0" resource="0" file="Source/OdotPointers.h"/>
+      <FILE id="xhxgGG" name="OSCIO.cpp" compile="1" resource="0" file="Source/OSCIO.cpp"/>
+      <FILE id="q1hhtA" name="OSCIO.h" compile="0" resource="0" file="Source/OSCIO.h"/>
+      <FILE id="RVMkfn" name="OSCPropertyComponents.cpp" compile="1" resource="0"
+            file="Source/OSCPropertyComponents.cpp"/>
+      <FILE id="POntKz" name="OSCPropertyComponents.h" compile="0" resource="0"
+            file="Source/OSCPropertyComponents.h"/>
+      <FILE id="IDTN18" name="OutputViewer.cpp" compile="1" resource="0"
+            file="Source/OutputViewer.cpp"/>
+      <FILE id="ScShaX" name="OutputViewer.hpp" compile="0" resource="0"
+            file="Source/OutputViewer.hpp"/>
+      <FILE id="K5c7QY" name="PageComponent.cpp" compile="1" resource="0"
+            file="Source/PageComponent.cpp"/>
+      <FILE id="eCXZyH" name="PageComponent.h" compile="0" resource="0" file="Source/PageComponent.h"/>
+      <FILE id="ruiiUY" name="PageController.cpp" compile="1" resource="0"
+            file="Source/PageController.cpp"/>
+      <FILE id="rAqYta" name="PageController.hpp" compile="0" resource="0"
+            file="Source/PageController.hpp"/>
+      <FILE id="Pwuydf" name="Palette.cpp" compile="1" resource="0" file="Source/Palette.cpp"/>
+      <FILE id="HPQv0P" name="Palette.hpp" compile="0" resource="0" file="Source/Palette.hpp"/>
+      <FILE id="Nz9aBp" name="PaletteButton.cpp" compile="1" resource="0"
+            file="Source/PaletteButton.cpp"/>
+      <FILE id="l3gmvL" name="PaletteButton.hpp" compile="0" resource="0"
+            file="Source/PaletteButton.hpp"/>
+      <FILE id="OQ91Re" name="PaletteComponent.cpp" compile="1" resource="0"
+            file="Source/PaletteComponent.cpp"/>
+      <FILE id="R0VPS5" name="PaletteComponent.h" compile="0" resource="0"
+            file="Source/PaletteComponent.h"/>
+      <FILE id="MRLSd7" name="PaletteController.cpp" compile="1" resource="0"
+            file="Source/PaletteController.cpp"/>
+      <FILE id="CYh3Wb" name="PaletteController.hpp" compile="0" resource="0"
+            file="Source/PaletteController.hpp"/>
+      <FILE id="oOEyPT" name="PathBaseComponent.cpp" compile="1" resource="0"
+            file="Source/PathBaseComponent.cpp"/>
+      <FILE id="Hqhzqa" name="PathBaseComponent.h" compile="0" resource="0"
+            file="Source/PathBaseComponent.h"/>
+      <FILE id="m19gdn" name="PathComponent.cpp" compile="1" resource="0"
+            file="Source/PathComponent.cpp"/>
+      <FILE id="LnapSa" name="PathComponent.h" compile="0" resource="0" file="Source/PathComponent.h"/>
+      <FILE id="LYFY0t" name="PathHandleComponent.cpp" compile="1" resource="0"
+            file="Source/PathHandleComponent.cpp"/>
+      <FILE id="cdhsrZ" name="PathHandleComponent.h" compile="0" resource="0"
+            file="Source/PathHandleComponent.h"/>
+      <FILE id="pZt4jK" name="PathInfo.cpp" compile="1" resource="0" file="Source/PathInfo.cpp"/>
+      <FILE id="jzXqCJ" name="PathInfo.h" compile="0" resource="0" file="Source/PathInfo.h"/>
+      <FILE id="eIbunS" name="Score.cpp" compile="1" resource="0" file="Source/Score.cpp"/>
+      <FILE id="PBkjUS" name="Score.h" compile="0" resource="0" file="Source/Score.h"/>
+      <FILE id="d26kHg" name="ScoreBundleViewer.cpp" compile="1" resource="0"
+            file="Source/ScoreBundleViewer.cpp"/>
+      <FILE id="q59pBY" name="ScoreBundleViewer.h" compile="0" resource="0"
+            file="Source/ScoreBundleViewer.h"/>
+      <FILE id="GAUtuM" name="ScoreComponent.cpp" compile="1" resource="0"
+            file="Source/ScoreComponent.cpp"/>
+      <FILE id="TS7G1R" name="ScoreComponent.h" compile="0" resource="0"
+            file="Source/ScoreComponent.h"/>
+      <FILE id="xdfd5r" name="ScoreCursor.cpp" compile="1" resource="0" file="Source/ScoreCursor.cpp"/>
+      <FILE id="O3hGsP" name="ScoreCursor.h" compile="0" resource="0" file="Source/ScoreCursor.h"/>
+      <FILE id="ecB0NL" name="SmuflComponent.cpp" compile="1" resource="0"
+            file="Source/SmuflComponent.cpp"/>
+      <FILE id="AdriMq" name="SmuflComponent.hpp" compile="0" resource="0"
+            file="Source/SmuflComponent.hpp"/>
+      <FILE id="ODoUHq" name="SortedStaves.cpp" compile="1" resource="0"
+            file="Source/SortedStaves.cpp"/>
+      <FILE id="wuspbh" name="SortedStaves.hpp" compile="0" resource="0"
+            file="Source/SortedStaves.hpp"/>
+      <FILE id="Ru3fus" name="StaffComponent.cpp" compile="1" resource="0"
+            file="Source/StaffComponent.cpp"/>
+      <FILE id="p23mdg" name="StaffComponent.hpp" compile="0" resource="0"
+            file="Source/StaffComponent.hpp"/>
+      <FILE id="rkyhX4" name="StringTools.cpp" compile="1" resource="0" file="Source/StringTools.cpp"/>
+      <FILE id="sEo3kn" name="StringTools.hpp" compile="0" resource="0" file="Source/StringTools.hpp"/>
+      <FILE id="dPofHc" name="SVGEncoder.cpp" compile="1" resource="0" file="Source/SVGEncoder.cpp"/>
+      <FILE id="hK8K9Z" name="SVGEncoder.hpp" compile="0" resource="0" file="Source/SVGEncoder.hpp"/>
+      <FILE id="RXjjYd" name="SVGFileIO.cpp" compile="1" resource="0" file="Source/SVGFileIO.cpp"/>
+      <FILE id="BcHF60" name="SVGFileIO.hpp" compile="0" resource="0" file="Source/SVGFileIO.hpp"/>
+      <FILE id="GalQ8T" name="SVGParser.cpp" compile="1" resource="0" file="Source/SVGParser.cpp"/>
+      <FILE id="lQeBtJ" name="SVGParser.hpp" compile="0" resource="0" file="Source/SVGParser.hpp"/>
+      <FILE id="rhZEhL" name="Symbol.cpp" compile="1" resource="0" file="Source/Symbol.cpp"/>
+      <FILE id="HZgOIM" name="Symbol.h" compile="0" resource="0" file="Source/Symbol.h"/>
+      <FILE id="Omoxcy" name="SymbolGroupComponent.cpp" compile="1" resource="0"
+            file="Source/SymbolGroupComponent.cpp"/>
+      <FILE id="t4VdUc" name="SymbolGroupComponent.h" compile="0" resource="0"
+            file="Source/SymbolGroupComponent.h"/>
+      <FILE id="SpfF3k" name="SymbolistComponent.cpp" compile="1" resource="0"
+            file="Source/SymbolistComponent.cpp"/>
+      <FILE id="pWFzNm" name="SymbolistComponent.h" compile="0" resource="0"
+            file="Source/SymbolistComponent.h"/>
+      <FILE id="vd9ZG4" name="SymbolistHandler.cpp" compile="1" resource="0"
+            file="Source/SymbolistHandler.cpp"/>
+      <FILE id="vxQIlb" name="SymbolistHandler.h" compile="0" resource="0"
+            file="Source/SymbolistHandler.h"/>
+      <FILE id="bVMI8w" name="SymbolistLookAndFeel.cpp" compile="1" resource="0"
+            file="Source/SymbolistLookAndFeel.cpp"/>
+      <FILE id="Wx0Hqw" name="SymbolistLookAndFeel.hpp" compile="0" resource="0"
+            file="Source/SymbolistLookAndFeel.hpp"/>
+      <FILE id="lRYTvx" name="SymbolistMainComponent.cpp" compile="1" resource="0"
+            file="Source/SymbolistMainComponent.cpp"/>
+      <FILE id="AUwQel" name="SymbolistMainComponent.h" compile="0" resource="0"
+            file="Source/SymbolistMainComponent.h"/>
+      <FILE id="bb3UNS" name="SymbolistMainWindow.cpp" compile="1" resource="0"
+            file="Source/SymbolistMainWindow.cpp"/>
+      <FILE id="jZOl5O" name="SymbolistMainWindow.h" compile="0" resource="0"
+            file="Source/SymbolistMainWindow.h"/>
+      <FILE id="PLAUeB" name="SymbolistMenu.cpp" compile="1" resource="0"
+            file="Source/SymbolistMenu.cpp"/>
+      <FILE id="k1xdSR" name="SymbolistMenu.hpp" compile="0" resource="0"
+            file="Source/SymbolistMenu.hpp"/>
+      <FILE id="mBfXmB" name="SymbolistModel.cpp" compile="1" resource="0"
+            file="Source/SymbolistModel.cpp"/>
+      <FILE id="WvIqiU" name="SymbolistModel.hpp" compile="0" resource="0"
+            file="Source/SymbolistModel.hpp"/>
+      <FILE id="mVuQYA" name="SymbolPropertiesPanel.cpp" compile="1" resource="0"
+            file="Source/SymbolPropertiesPanel.cpp"/>
+      <FILE id="XQGRWT" name="SymbolPropertiesPanel.h" compile="0" resource="0"
+            file="Source/SymbolPropertiesPanel.h"/>
+      <FILE id="i5jnPZ" name="TextGlyphComponent.cpp" compile="1" resource="0"
+            file="Source/TextGlyphComponent.cpp"/>
+      <FILE id="C7pEaC" name="TextGlyphComponent.h" compile="0" resource="0"
+            file="Source/TextGlyphComponent.h"/>
+      <FILE id="E8R2kO" name="TimeDisplayComponent.cpp" compile="1" resource="0"
+            file="Source/TimeDisplayComponent.cpp"/>
+      <FILE id="VzP1HS" name="TimeDisplayComponent.hpp" compile="0" resource="0"
+            file="Source/TimeDisplayComponent.hpp"/>
+      <FILE id="Px3YMJ" name="TimeDisplayController.cpp" compile="1" resource="0"
+            file="Source/TimeDisplayController.cpp"/>
+      <FILE id="gXcXoB" name="TimeDisplayController.hpp" compile="0" resource="0"
+            file="Source/TimeDisplayController.hpp"/>
+      <FILE id="DLeL0K" name="TimePointArray.cpp" compile="1" resource="0"
+            file="Source/TimePointArray.cpp"/>
+      <FILE id="r8gqwt" name="TimePointArray.h" compile="0" resource="0"
+            file="Source/TimePointArray.h"/>
+      <FILE id="mK0V0j" name="ToolBarComp.cpp" compile="1" resource="0" file="Source/ToolBarComp.cpp"/>
+      <FILE id="lmSZ3S" name="ToolBarComp.hpp" compile="0" resource="0" file="Source/ToolBarComp.hpp"/>
+      <FILE id="Y3LeGI" name="types.h" compile="0" resource="0" file="Source/types.h"/>
+      <FILE id="NQRvFm" name="View.cpp" compile="1" resource="0" file="Source/View.cpp"/>
+      <FILE id="i0igXr" name="View.hpp" compile="0" resource="0" file="Source/View.hpp"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds_LOCAL/MacOSX">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="symbolist"/>
-        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="symbolist"/>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="symbolist"
+                       enablePluginBinaryCopyStep="1"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="symbolist"
+                       enablePluginBinaryCopyStep="1"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../JUCE/modules"/>
@@ -38,12 +237,14 @@
         <MODULEPATH id="juce_osc" path="../JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
-    <VS2015 targetFolder="Builds_LOCAL/VisualStudio2015">
+    <VS2015 targetFolder="Builds_LOCAL/VisualStudio2015" windowsTargetPlatformVersion="10">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
-                       isDebug="1" optimisation="1" targetName="symbolist"/>
+                       isDebug="1" optimisation="1" targetName="symbolist" debugInformationFormat="ProgramDatabase"
+                       enablePluginBinaryCopyStep="0"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
-                       isDebug="0" optimisation="3" targetName="symbolist"/>
+                       isDebug="0" optimisation="3" targetName="symbolist" debugInformationFormat="ProgramDatabase"
+                       enablePluginBinaryCopyStep="0" linkTimeOptimisation="1"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../JUCE/modules"/>

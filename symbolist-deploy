@@ -1,0 +1,140 @@
+#!/bin/bash
+
+#
+# In order to make symbolist-deploy work properly, add the folder containing symbolist-deploy to your PATH :
+#
+# export PATH=$PATH:<path-to-symbolist-deploy>
+#
+# and set the following variables :
+#
+# - SYMBOLIST_REPO : Path to your symbolist repository. 
+# - MAX_LIBRARY : Path to the Library folder containing your Max externals.
+# 
+# Add the following lines to your .bash_profile to set these variables permanently:
+# 
+# export SYMBOLIST_REPO="<path-to-symbolist-repository>"
+# export MAX_LIBRARY="<path-to-max-library-folder>"
+#
+# An example of configuration:
+#
+# export SYMBOLIST_REPO="/Users/iampietro/Documents/symbolist"
+# export MAX_LIBRARY="/Users/iampietro/Documents/Max\ 7"
+#
+
+DEPLOYMENT_CONFIG="DEBUG" # config is debug by default.
+
+#
+# Prints the help message to use this script.
+#
+function printHelp() {
+	echo "Usage: "
+	echo "  symbolist-deploy <mode> [-d|-r]"
+	echo "  symbolist-deploy -h|--help (print this message)"
+	echo "    - <mode> - one of 'max' or 'om'"
+	echo "      - 'max' - deploy symbolist for max"
+	echo "      - 'om' - deploy symbolist for om"
+	echo "    -d - deploy in debug configuration (default if no option specified)"
+	echo "    -r - deploy in release configuration"
+	echo
+	echo "For example to deploy symbolist as an om object in debug configuration:"
+	echo
+	echo "	symbolist-deploy om -d"
+	echo
+}
+
+#
+# Copies the right symbolist.xmo file into the specified Max's Library folder. 
+#
+function copyToMaxLibrary() {
+	
+	pathToMxofile=$SYMBOLIST_REPO/max/max-symbolist/Build/Products
+	
+	# Sets the right path to symbolist.mxo file, according to the deployment configuration.
+	if [ "$DEPLOYMENT_CONFIG" = "DEBUG" ]; then
+		pathToMxofile=$pathToMxofile/Debug/symbolist.mxo
+	else
+		pathToMxofile=$pathToMxofile/Release/symbolist.mxo
+	fi	
+
+	echo "Copying ${pathToMxofile} into ${MAX_LIBRARY}"
+	
+	# Tests if thesymbolist.mxo file exists, and copies it to target if so.
+	if [ -e $pathToMxofile ]; then
+		cp -r $pathToMxofile "$MAX_LIBRARY"
+	else
+		echo "error: ${pathToMxofile} doesn't exist."
+	fi
+
+}
+
+#
+# Copies the right symbolist.dylib file into the OM/symbolist/lib/mac,
+# for the creation of the OM version of symbolist. 
+#
+function copyToOMLibrary() {
+
+	pathToDylibFile=$SYMBOLIST_REPO/Builds/MacOSX/build/Products
+	pathToOMLib=$SYMBOLIST_REPO/OM/symbolist/lib/mac
+	
+	# Sets the right path to symbolist.dylib file, according to the deployment configuration.
+	if [ "$DEPLOYMENT_CONFIG" = "DEBUG" ]; then
+		pathToDylibFile=$pathToDylibFile/Debug/symbolist.dylib
+	else
+		pathToDylibFile=$pathToDylibFile/Release/symbolist.dylib
+	fi	
+
+	echo "Copying ${pathToDylibFile} into ${pathToOMLib}"
+
+	# Tests if thesymbolist.mxo file exists, and copies it to target if so.
+	if [ -e $pathToDylibFile ]; then
+		cp "$pathToDylibFile" "$pathToOMLib"
+	else
+		echo "error: ${pathToDylibFile} doesn't exist."
+	fi
+}
+
+###########################################################################
+#                    COMMAND LINE OPTIONS PARSING                         #
+###########################################################################
+
+# Parses help argument. 
+while getopts ":h?" opt; do
+	case "$opt" in
+		h|\?)
+			printHelp
+			exit 0
+			;;
+	esac
+done
+
+# Retrieves first argument and discards it.
+DEPLOYMENT_TARGET=$1; shift 
+
+# Parses commandline options. 
+while getopts "?dr" opt; do
+	case "$opt" in
+		d)
+			DEPLOYMENT_CONFIG="DEBUG" 
+			;;
+		r)
+			DEPLOYMENT_CONFIG="RELEASE"
+			;;
+		\?)
+			printHelp
+			exit 1
+			;;
+	esac
+done
+
+###########################################################################
+#                            COMMAND EXECUTION                            #
+###########################################################################
+if [ "$DEPLOYMENT_TARGET" = "max" ]; then
+	copyToMaxLibrary
+elif [ "$DEPLOYMENT_TARGET" = "om" ]; then
+	copyToOMLibrary
+else 
+	printHelp
+	exit 0
+fi
+

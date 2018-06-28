@@ -16,6 +16,7 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
 	mouse_mode_view.setController(getController()->getMouseModeController());
 	time_display_view.setController(getController()->getTimeDisplayController());
 	inspector_view.setController(getController()->getInspectorController());
+	code_box_view.setController(getController()->getCodeBoxController());
 	
     /*
      * Sets model for this SymbolistMainComponent instance
@@ -27,6 +28,7 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
     mouse_mode_view.setModel(getModel());
 	time_display_view.setModel(getModel());
     inspector_view.setModel(getModel());
+    code_box_view.setModel(getModel());
 	
     /* Adds this SymbolistMainComponent instance and
      * its child components as observers of the model.
@@ -37,6 +39,7 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
     getModel()->attach(&mouse_mode_view);
     getModel()->attach(&time_display_view);
     getModel()->attach(&inspector_view);
+    getModel()->attach(&code_box_view);
     
     // Sets UI look and creates the palette buttons.
     setLookAndFeel(&look_and_feel);
@@ -54,13 +57,13 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
      * button on the palette.
      */
     palette_view.selectPaletteButton(-1);
-    
+		
     // Makes all the other views visible.
     addAndMakeVisible(palette_view);
     addAndMakeVisible(mouse_mode_view);
     addChildComponent(time_display_view);
     addAndMakeVisible(menu);
-    menu_h = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
+    menu_height = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
 	
     setSize(600, 400);
 }
@@ -104,17 +107,20 @@ void SymbolistMainComponent::addSelectedSymbolsToPalette()
  ***********************************/
 void SymbolistMainComponent::groupSelectedSymbols()
 {
-	score_view.getEditedComponent()->groupSelectedSymbols();
+	if (score_view.getEditedComponent() != NULL)
+		score_view.getEditedComponent()->groupSelectedSymbols();
 }
 
 void SymbolistMainComponent::ungroupSelectedSymbols()
 {
-	score_view.getEditedComponent()->ungroupSelectedSymbols();
+	if (score_view.getEditedComponent() != NULL)
+		score_view.getEditedComponent()->ungroupSelectedSymbols();
 }
 
 void SymbolistMainComponent::deleteSelectedComponents()
 {
-	score_view.getEditedComponent()->deleteSelectedComponents();
+	if (score_view.getEditedComponent() != NULL)
+		score_view.getEditedComponent()->deleteSelectedComponents();
 }
 
 void SymbolistMainComponent::copySelectedToClipBoard()
@@ -188,52 +194,108 @@ void SymbolistMainComponent::toggleInspector()
 {
     if( !inspector_view.isVisible() )
     {
+    	inspector_view.setVisible(true);
+		
         auto selectedItems = score_view.getSelectedItems();
         inspector_view.setInspectorObject( dynamic_cast<BaseComponent*>(selectedItems.getLast()) );
 		
-		auto menuH = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
+		/* Increases the main component's width by the inspector base width,
+		 * to make room for the inspector.
+		 */
+		float newMainComponentWidth = getWidth() + inspector_width;
+		float newMainComponentHeight = getHeight();
 		
 		/* If the height of the inspector view is superior to the main window's height
 		 * then increase the window's height.
 		 */
 		if (inspector_view.getSymbolPanelTab() != nullptr && inspector_view.getPreferedHeight() > getHeight())
-				setSize(getWidth(), inspector_view.getPreferedHeight() + menu_h);
+			newMainComponentHeight = inspector_view.getPreferedHeight() + menu_height;
 		
-		auto area = getLocalBounds();
-		area.removeFromTop(menuH);
-		area.removeFromRight(score_viewport.getScrollBarThickness());
-		inspector_view.setBounds(area.removeFromRight(getWidth() * 0.33));
+		/* Triggers the sizing of the inspector view. */
+		setSize(newMainComponentWidth, newMainComponentHeight);
+		
         addAndMakeVisible( inspector_view );
-		
-//        inspector_view.setSize(getWidth() * 0.33, getHeight() - score_viewport.getScrollBarThickness() - menuH);
-//        inspector_view.setTopRightPosition( getWidth() - score_viewport.getScrollBarThickness(), menuH );
         inspector_view.resized();
     }
     else
     {
+    	float newMainComponentWidth = getWidth() - inspector_view.getWidth();
         removeChildComponent(&inspector_view);
-        inspector_view.setVisible(false);
+		
+		inspector_view.setVisible(false);
+		
+		setSize(newMainComponentWidth, getHeight());
+		
     }
 }
 
+/*************************************
+ *       CODE BOX VIEW METHODS       *
+ *************************************/
+void SymbolistMainComponent::toggleCodeBox()
+{
+	if (!code_box_view.isVisible())
+	{
+		code_box_view.setVisible(true);
+		
+		/* Enables writing in the code box editor if the
+		 * attached symbol posseses a /expr odot message.
+		 */
+		if (code_box_view.hasExpr()) {
+			code_box_view.getCodeEditor()->setColour(CodeEditorComponent::backgroundColourId, Colours::black);
+			code_box_view.getCodeEditor()->setReadOnly(false);
+			code_box_view.getCodeEditor()->getDocument().applyChanges(code_box_view.getExpr());
+		}
+		
+		setSize(getWidth(), getHeight() + code_box_height);
+		addAndMakeVisible(code_box_view);
+	}
+	else
+	{
+		float newMainComponentHeight = getHeight() - code_box_view.getHeight();
+		removeChildComponent(&code_box_view);
+		
+		code_box_view.setVisible(false);
+		
+		setSize(getWidth(), newMainComponentHeight);
+	}
+	
+}
+
+/*************************************
+ *               RESIZED             *
+ *************************************/
 void SymbolistMainComponent::resized()
 {
-    auto w = getWidth();
-    auto h = getHeight();
+    menu_height = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
 	
-    menu_h = LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
+	auto area = getLocalBounds();
 	
+	// Sets palette then menu sizes.
+	palette_view.setBounds(area.removeFromLeft(palette_width));
+	menu.setBounds(area.removeFromTop(menu_height));
+	
+	// Sets inspector view size if visible.
 	if ( inspector_view.isVisible() )
-    {
-        inspector_view.setSize(w * 0.33, h - score_viewport.getScrollBarThickness() - menu_h);
-        inspector_view.setTopRightPosition( w - score_viewport.getScrollBarThickness(), menu_h );
-    }
+		inspector_view.setBounds(area.removeFromRight(inspector_width));
 	
-    palette_view.setBounds( 0, 0, palette_w, h );
-    score_viewport.setBounds( palette_w, menu_h, w-palette_w, h );
-    mouse_mode_view.setBounds( palette_w, h-25, w-palette_w, 25 );
-    menu.setBounds(palette_w, 0, w-palette_w, menu_h );
-    time_display_view.setBounds(palette_w, menu_h+2, 12, 13);
+	// Sets mouse mode view size
+	mouse_mode_view.setBounds(area.removeFromBottom(mouse_mode_height));
+	
+	// Sets code box view size if visible.
+	if ( code_box_view.isVisible() )
+		code_box_view.setBounds(area.removeFromBottom(code_box_height));
+	
+	// Sets score view size.
+	score_viewport.setBounds(area);
+	
+	/* Creates the time display view after the score view,
+	 * so the score viewis not truncated at the top.
+	 */
+	area = getLocalBounds();
+	area.removeFromLeft(palette_width + 12);
+	area.removeFromTop(menu_height + 13);
+	time_display_view.setBounds(area.removeFromTop(menu_height + 12));
 	
 }
 

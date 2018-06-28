@@ -8,6 +8,7 @@
 #include "PathBaseComponent.h"
 #include "TextGlyphComponent.h"
 #include "SmuflComponent.hpp"
+#include "CodeBoxController.hpp"
 
 SymbolistHandler::SymbolistHandler()
 {
@@ -26,6 +27,7 @@ SymbolistHandler::SymbolistHandler()
     createMouseModeController();
     createInspectorController();
     createTimeDisplayController();
+    createCodeBoxController();
 	
     /* Adds the SymbolistHandler instance and
      * all its child controllers as observers of the model.
@@ -36,6 +38,7 @@ SymbolistHandler::SymbolistHandler()
     getModel()->attach(mouse_mode_controller.get());
 	getModel()->attach(inspector_controller.get());
 	getModel()->attach(time_display_controller.get());
+	getModel()->attach(code_box_controller.get());
 	
 }
 
@@ -99,6 +102,16 @@ void SymbolistHandler::createTimeDisplayController()
     time_display_controller = unique_ptr<TimeDisplayController >(new TimeDisplayController());
     time_display_controller->setParentController(this);
     time_display_controller->setModel(getModel());
+}
+
+void SymbolistHandler::createCodeBoxController()
+{
+	/* Creates the code_box_controller and sets its model
+     * and parent controller.
+     */
+	code_box_controller = unique_ptr<CodeBoxController >(new CodeBoxController());
+	code_box_controller->setParentController(this);
+	code_box_controller->setModel(getModel());
 }
 
 /*********************************************

@@ -344,16 +344,39 @@ const Symbol* Score::getStaveByID( const string& id )
 void Score::importSymbols( const OdotBundle_s& s_bundle )
 {
     OdotBundle bundle( s_bundle ); // Deserializes the bundle
-    
+	Symbol* newSymbol;
+	
     DEBUG_FULL("===ITERATE OSC (" << bundle.size() << " messages)" << endl)
     for ( auto msg : bundle.getMessageArray() )
     {
+    	/* If the message contains a bundle then creates a new symbol from this bundle
+		 *
+    	 */
         if( msg.getAddress().find("/symbol") == 0 && msg[0].getType() == OdotAtom::O_ATOM_BUNDLE )
         {
-            Symbol* s = new Symbol( msg.getBundle().get_o_ptr() );
-            addSymbol( s );
+			DEBUG_FULL("Message type is bundle." << endl)
+			newSymbol = new Symbol( msg.getBundle().get_o_ptr() );
+			addSymbol( newSymbol );
         }
-    }
+        /* If the message contains a string then tries to create a symbol from this string.
+		 * invalid_argument exception is caught if the string, which normally describes a OSC bundle, is not
+		 * well-formed.
+         */
+		else if ( msg.getAddress().find("/symbol") == 0 && msg[0].getType() == OdotAtom::O_ATOM_STRING )
+		{
+			DEBUG_FULL("Message type is string." << endl)
+			try {
+  				newSymbol = new Symbol(OdotBundle::createOdotBundleFromString(msg[0].getString()));
+				addSymbol( newSymbol );
+			} catch (invalid_argument& error) {
+  				cout << error.what() << endl;
+			}
+	
+		}
+		else DEBUG_FULL("Message type is neither bundle nor string." << endl)
+	
+	}
+	
     DEBUG_FULL("===ITERATE DONE" << endl)
 }
 

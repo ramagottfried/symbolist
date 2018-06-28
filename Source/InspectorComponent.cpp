@@ -1,4 +1,5 @@
 #include "InspectorComponent.h"
+#include "SymbolistMainComponent.h"
 
 InspectorComponent::InspectorComponent() : TabbedComponent(TabbedButtonBar::Orientation::TabsAtTop)
 {
@@ -24,4 +25,13 @@ void InspectorComponent::updateSymbolFromComponent(BaseComponent* component)
 	if (getController() != NULL)
 		getController()->updateSymbolFromComponent(component);
 	else throw logic_error("InspectorComponent has no attached controller.");
+}
+
+
+void InspectorComponent::toggleCodeBox()
+{
+	SymbolistMainComponent* mainView = dynamic_cast<SymbolistMainComponent*>(getParentComponent());
+	if (mainView != NULL)
+		mainView->toggleCodeBox();
+	else throw logic_error("InspectorComponent has no parent of type SymbolistMainComponent");
 }

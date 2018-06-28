@@ -127,6 +127,17 @@ public:
     void removeAllSymbols();
 		
     void importReplaceScore( const OdotBundle_s& s_bundle );
+	
+    /**
+     * Iterates over all OSC messages contained in s_bundle, and creates
+     * a new symbol in the score for each OSC bundle found in a message.
+     * More precisely, an OSC bundle can be stored as a full bundle structure
+     * or as a string in the messages of s_bundle.
+     *
+     * @param s_bundle a serialized OSC bundle containing other OSC bundles
+     *				   in its messages.
+     *
+     */
     void importSymbols( const OdotBundle_s& s_bundle );
 
     

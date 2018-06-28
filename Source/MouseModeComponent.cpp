@@ -8,7 +8,7 @@ void MouseModeComponent::paint( Graphics &g )
     
     g.setFont (Font (16.0f));
     g.setColour (Colours::grey);
-    g.drawText (m_str, getLocalBounds() , Justification::topLeft, false);
+    g.drawText (m_str, getLocalBounds() , Justification::centredLeft, false);
     
 }
 

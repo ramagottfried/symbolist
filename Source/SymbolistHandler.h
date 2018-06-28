@@ -15,7 +15,7 @@ class SymbolistMainWindow;
 class BaseComponent;
 class StaffComponent;
 class SymbolPropertiesPanel;
-
+class CodeBoxController;
 
 /**
  * Describes the main controller class of the symbolist application.
@@ -23,7 +23,8 @@ class SymbolPropertiesPanel;
  * the symbolist score from the outside.
  *
  * All methods prefixed by symbolistAPI in the SymbolistHandler class
- * are called by methods of the symbolist C API.
+ * are called by methods of the symbolist C API used in the Max and OpenMusic version
+ * of the application.
  */
 class SymbolistHandler : public virtual Controller<SymbolistModel, SymbolistMainComponent> {
         
@@ -75,6 +76,11 @@ public:
     inline TimeDisplayController* getTimeDisplayController() { return time_display_controller.get(); }
 	
 	/**
+     * @return The CodeBoxController instance owned by this SymbolistHandler.
+     */
+    inline CodeBoxController*	  getCodeBoxController() { return code_box_controller.get(); }
+	
+	/**
 	 * @return The current playtime in milliseconds.
 	 */
     inline float getCurrentTime() { return current_time; }
@@ -117,6 +123,12 @@ public:
      * for this instance of SymbolistHandler.
      */
     void createTimeDisplayController();
+	
+	/**
+     * Creates and sets up the CodeBoxController
+     * for this instance of SymbolistHandler.
+     */
+    void createCodeBoxController();
 	
     /********************************************************
      ********************************************************
@@ -281,27 +293,33 @@ private:
     /**
      * A Controller to handle palette-related actions.
      */
-    unique_ptr<PaletteController >   palette_controller;
+    unique_ptr<PaletteController >     palette_controller;
 	
     /**
      * A Controller to handle score-related actions.
      */
-    unique_ptr<PageController >      page_controller;
+    unique_ptr<PageController >        page_controller;
 	
 	/**
      * A Controller to handle mouse mode messages.
      */
-    unique_ptr<MouseModeController > mouse_mode_controller;
+    unique_ptr<MouseModeController >   mouse_mode_controller;
 	
 	/**
      * A Controller to handle inspector-related actions.
      */
-    unique_ptr<InspectorController > inspector_controller;
+    unique_ptr<InspectorController >   inspector_controller;
 	
 	/**
      * A Controller to handle time display messages.
      */
     unique_ptr<TimeDisplayController > time_display_controller;
+	
+    /**
+     * A Controller to handle actions related to the odot expressions
+     * code editor.
+     */
+     unique_ptr<CodeBoxController>     code_box_controller;
 	
     /**
      * The main graphic window of the application.

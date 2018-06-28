@@ -188,12 +188,12 @@
 		11AEF23C207A943800B1398D /* JsonTreeItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF237207A943800B1398D /* JsonTreeItem.cpp */; };
 		11AEF23D207A943800B1398D /* JsonTreeItem.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11AEF238207A943800B1398D /* JsonTreeItem.hpp */; };
 		11AEF23E207A943800B1398D /* JsonTreeItem.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11AEF238207A943800B1398D /* JsonTreeItem.hpp */; };
-		11AEF241207A94D000B1398D /* CodeboxComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF23F207A94D000B1398D /* CodeboxComponent.cpp */; };
-		11AEF242207A94D000B1398D /* CodeboxComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF23F207A94D000B1398D /* CodeboxComponent.cpp */; };
-		11AEF243207A94D000B1398D /* CodeboxComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF23F207A94D000B1398D /* CodeboxComponent.cpp */; };
-		11AEF244207A94D000B1398D /* CodeboxComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF23F207A94D000B1398D /* CodeboxComponent.cpp */; };
-		11AEF245207A94D000B1398D /* CodeboxComponent.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11AEF240207A94D000B1398D /* CodeboxComponent.hpp */; };
-		11AEF246207A94D000B1398D /* CodeboxComponent.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11AEF240207A94D000B1398D /* CodeboxComponent.hpp */; };
+		11AEF241207A94D000B1398D /* CodeBoxComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF23F207A94D000B1398D /* CodeBoxComponent.cpp */; };
+		11AEF242207A94D000B1398D /* CodeBoxComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF23F207A94D000B1398D /* CodeBoxComponent.cpp */; };
+		11AEF243207A94D000B1398D /* CodeBoxComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF23F207A94D000B1398D /* CodeBoxComponent.cpp */; };
+		11AEF244207A94D000B1398D /* CodeBoxComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF23F207A94D000B1398D /* CodeBoxComponent.cpp */; };
+		11AEF245207A94D000B1398D /* CodeBoxComponent.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11AEF240207A94D000B1398D /* CodeBoxComponent.hpp */; };
+		11AEF246207A94D000B1398D /* CodeBoxComponent.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11AEF240207A94D000B1398D /* CodeBoxComponent.hpp */; };
 		11B71DCE1F09844300CDE209 /* symbolist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */; };
 		11B71DD11F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DCF1F098F1400CDE209 /* SymbolPropertiesPanel.cpp */; };
 		11B71DD21F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11B71DCF1F098F1400CDE209 /* SymbolPropertiesPanel.cpp */; };
@@ -290,13 +290,13 @@
 		7571E6F62084EA3F0092A3E0 /* SVGParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11E8082C207FCAC000E0342F /* SVGParser.cpp */; };
 		7571E6F72084EA3F0092A3E0 /* SVGEncoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11E80833208082CB00E0342F /* SVGEncoder.cpp */; };
 		7571E6F82084EA3F0092A3E0 /* StringTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11E808392080A12F00E0342F /* StringTools.cpp */; };
-		7571E6FB2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E6F92085FEE80092A3E0 /* symbolist-utils.cpp */; };
-		7571E6FC2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E6F92085FEE80092A3E0 /* symbolist-utils.cpp */; };
-		7571E6FD2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E6F92085FEE80092A3E0 /* symbolist-utils.cpp */; };
-		7571E6FE2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E6F92085FEE80092A3E0 /* symbolist-utils.cpp */; };
-		7571E6FF2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E6F92085FEE80092A3E0 /* symbolist-utils.cpp */; };
-		7571E7002085FEE80092A3E0 /* symbolist-utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7571E6FA2085FEE80092A3E0 /* symbolist-utils.hpp */; };
-		7571E7012085FEE80092A3E0 /* symbolist-utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7571E6FA2085FEE80092A3E0 /* symbolist-utils.hpp */; };
+		7571E6FB2085FEE80092A3E0 /* symbolist-utils.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E6F92085FEE80092A3E0 /* symbolist-utils.hpp */; };
+		7571E6FC2085FEE80092A3E0 /* symbolist-utils.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E6F92085FEE80092A3E0 /* symbolist-utils.hpp */; };
+		7571E6FD2085FEE80092A3E0 /* symbolist-utils.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E6F92085FEE80092A3E0 /* symbolist-utils.hpp */; };
+		7571E6FE2085FEE80092A3E0 /* symbolist-utils.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E6F92085FEE80092A3E0 /* symbolist-utils.hpp */; };
+		7571E6FF2085FEE80092A3E0 /* symbolist-utils.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E6F92085FEE80092A3E0 /* symbolist-utils.hpp */; };
+		7571E7002085FEE80092A3E0 /* symbolist-utils.cpp in Headers */ = {isa = PBXBuildFile; fileRef = 7571E6FA2085FEE80092A3E0 /* symbolist-utils.cpp */; };
+		7571E7012085FEE80092A3E0 /* symbolist-utils.cpp in Headers */ = {isa = PBXBuildFile; fileRef = 7571E6FA2085FEE80092A3E0 /* symbolist-utils.cpp */; };
 		7571E7052089EA9E0092A3E0 /* SymbolTestsFixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E7022089DAFF0092A3E0 /* SymbolTestsFixture.cpp */; };
 		7571E709208E41C60092A3E0 /* MouseModeController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E707208E41C60092A3E0 /* MouseModeController.cpp */; };
 		7571E70A208E41C60092A3E0 /* MouseModeController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7571E707208E41C60092A3E0 /* MouseModeController.cpp */; };
@@ -380,7 +380,7 @@
 		758F6F68207BCB00006EDD53 /* ScoreBundleViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */; };
 		758F6F69207BCB00006EDD53 /* InspectorComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116F87781F9D04FC0062EE91 /* InspectorComponent.cpp */; };
 		758F6F6A207BCB00006EDD53 /* JsonTreeItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF237207A943800B1398D /* JsonTreeItem.cpp */; };
-		758F6F6B207BCB00006EDD53 /* CodeboxComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF23F207A94D000B1398D /* CodeboxComponent.cpp */; };
+		758F6F6B207BCB00006EDD53 /* CodeBoxComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AEF23F207A94D000B1398D /* CodeBoxComponent.cpp */; };
 		758F6F6C207BCB00006EDD53 /* Controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F90206176780069A89D /* Controller.cpp */; };
 		758F6F6D207BCB00006EDD53 /* Observable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F91206176780069A89D /* Observable.cpp */; };
 		758F6F6E207BCB00006EDD53 /* Observer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75774F93206176780069A89D /* Observer.cpp */; };
@@ -396,6 +396,20 @@
 		758F6F78207BCB00006EDD53 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 758F6EF1207BBFC7006EDD53 /* main.cpp */; };
 		758F6F79207BCB00006EDD53 /* SymbolistModelTestsFixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 758F6EF7207BC2C1006EDD53 /* SymbolistModelTestsFixture.cpp */; };
 		758F6F7A207BCB19006EDD53 /* libsymbolist-libo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 116A7E412046CF62004B545D /* libsymbolist-libo.a */; };
+		75987CEE20D81A0500EDE4F9 /* CallbackButtonPropertyComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75987CEC20D81A0500EDE4F9 /* CallbackButtonPropertyComponent.cpp */; };
+		75987CEF20D81A0500EDE4F9 /* CallbackButtonPropertyComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75987CEC20D81A0500EDE4F9 /* CallbackButtonPropertyComponent.cpp */; };
+		75987CF020D81A0500EDE4F9 /* CallbackButtonPropertyComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75987CEC20D81A0500EDE4F9 /* CallbackButtonPropertyComponent.cpp */; };
+		75987CF120D81A0500EDE4F9 /* CallbackButtonPropertyComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75987CEC20D81A0500EDE4F9 /* CallbackButtonPropertyComponent.cpp */; };
+		75987CF220D81A0500EDE4F9 /* CallbackButtonPropertyComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75987CEC20D81A0500EDE4F9 /* CallbackButtonPropertyComponent.cpp */; };
+		75987CF320D81A0500EDE4F9 /* CallbackButtonPropertyComponent.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 75987CED20D81A0500EDE4F9 /* CallbackButtonPropertyComponent.hpp */; };
+		75987CF420D81A0500EDE4F9 /* CallbackButtonPropertyComponent.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 75987CED20D81A0500EDE4F9 /* CallbackButtonPropertyComponent.hpp */; };
+		75B86ECB20E24D8C0080DB3D /* CodeBoxController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75B86EC920E24D8C0080DB3D /* CodeBoxController.cpp */; };
+		75B86ECC20E24D8C0080DB3D /* CodeBoxController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75B86EC920E24D8C0080DB3D /* CodeBoxController.cpp */; };
+		75B86ECD20E24D8C0080DB3D /* CodeBoxController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75B86EC920E24D8C0080DB3D /* CodeBoxController.cpp */; };
+		75B86ECE20E24D8C0080DB3D /* CodeBoxController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75B86EC920E24D8C0080DB3D /* CodeBoxController.cpp */; };
+		75B86ECF20E24D8C0080DB3D /* CodeBoxController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75B86EC920E24D8C0080DB3D /* CodeBoxController.cpp */; };
+		75B86ED020E24D8C0080DB3D /* CodeBoxController.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 75B86ECA20E24D8C0080DB3D /* CodeBoxController.hpp */; };
+		75B86ED120E24D8C0080DB3D /* CodeBoxController.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 75B86ECA20E24D8C0080DB3D /* CodeBoxController.hpp */; };
 		75FB5EF3207CAD7E0083A1C0 /* ScoreTestsFixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75FB5EF1207CAD7E0083A1C0 /* ScoreTestsFixture.cpp */; };
 		75FB5EFE207F51490083A1C0 /* SymbolistHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 4425D3031EF858C700B8BF1C /* SymbolistHandler.h */; };
 		75FB5EFF207F51760083A1C0 /* OdotPointers.h in Headers */ = {isa = PBXBuildFile; fileRef = 116A7F35204C4F20004B545D /* OdotPointers.h */; };
@@ -578,8 +592,8 @@
 		11A3939B20528799002C8916 /* OdotBundle_s.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = OdotBundle_s.hpp; path = ../../Source/OdotBundle_s.hpp; sourceTree = "<group>"; };
 		11AEF237207A943800B1398D /* JsonTreeItem.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = JsonTreeItem.cpp; path = ../../Source/JsonTreeItem.cpp; sourceTree = "<group>"; };
 		11AEF238207A943800B1398D /* JsonTreeItem.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = JsonTreeItem.hpp; path = ../../Source/JsonTreeItem.hpp; sourceTree = "<group>"; };
-		11AEF23F207A94D000B1398D /* CodeboxComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CodeboxComponent.cpp; path = ../../Source/CodeboxComponent.cpp; sourceTree = "<group>"; };
-		11AEF240207A94D000B1398D /* CodeboxComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = CodeboxComponent.hpp; path = ../../Source/CodeboxComponent.hpp; sourceTree = "<group>"; };
+		11AEF23F207A94D000B1398D /* CodeBoxComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CodeBoxComponent.cpp; path = ../../Source/CodeBoxComponent.cpp; sourceTree = "<group>"; };
+		11AEF240207A94D000B1398D /* CodeBoxComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = CodeBoxComponent.hpp; path = ../../Source/CodeBoxComponent.hpp; sourceTree = "<group>"; };
 		11B71DCF1F098F1400CDE209 /* SymbolPropertiesPanel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolPropertiesPanel.cpp; path = ../../Source/SymbolPropertiesPanel.cpp; sourceTree = "<group>"; };
 		11B71DD01F098F1400CDE209 /* SymbolPropertiesPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SymbolPropertiesPanel.h; path = ../../Source/SymbolPropertiesPanel.h; sourceTree = "<group>"; };
 		11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OSCPropertyComponents.cpp; path = ../../Source/OSCPropertyComponents.cpp; sourceTree = "<group>"; };
@@ -640,8 +654,8 @@
 		751E31522069410400C3318F /* PaletteButton.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = PaletteButton.hpp; path = ../../Source/PaletteButton.hpp; sourceTree = "<group>"; };
 		7558B82D209C9F2400BCA92C /* SmuflComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SmuflComponent.cpp; path = ../../Source/SmuflComponent.cpp; sourceTree = "<group>"; };
 		7558B82E209C9F2400BCA92C /* SmuflComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = SmuflComponent.hpp; path = ../../Source/SmuflComponent.hpp; sourceTree = "<group>"; };
-		7571E6F92085FEE80092A3E0 /* symbolist-utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "symbolist-utils.cpp"; sourceTree = "<group>"; };
-		7571E6FA2085FEE80092A3E0 /* symbolist-utils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "symbolist-utils.hpp"; sourceTree = "<group>"; };
+		7571E6F92085FEE80092A3E0 /* symbolist-utils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = "symbolist-utils.hpp"; path = "../../Source/symbolist-utils.hpp"; sourceTree = "<group>"; };
+		7571E6FA2085FEE80092A3E0 /* symbolist-utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "symbolist-utils.cpp"; path = "../../Source/symbolist-utils.cpp"; sourceTree = "<group>"; };
 		7571E7022089DAFF0092A3E0 /* SymbolTestsFixture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SymbolTestsFixture.cpp; sourceTree = "<group>"; };
 		7571E7032089DAFF0092A3E0 /* SymbolTestsFixture.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SymbolTestsFixture.hpp; sourceTree = "<group>"; };
 		7571E707208E41C60092A3E0 /* MouseModeController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = MouseModeController.cpp; path = ../../Source/MouseModeController.cpp; sourceTree = "<group>"; };
@@ -667,6 +681,10 @@
 		758F6EF6207BC161006EDD53 /* catch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch.hpp; sourceTree = "<group>"; };
 		758F6EF7207BC2C1006EDD53 /* SymbolistModelTestsFixture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SymbolistModelTestsFixture.cpp; sourceTree = "<group>"; };
 		758F6EF8207BC2C1006EDD53 /* SymbolistModelTestsFixture.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SymbolistModelTestsFixture.hpp; sourceTree = "<group>"; };
+		75987CEC20D81A0500EDE4F9 /* CallbackButtonPropertyComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CallbackButtonPropertyComponent.cpp; path = ../../Source/CallbackButtonPropertyComponent.cpp; sourceTree = "<group>"; };
+		75987CED20D81A0500EDE4F9 /* CallbackButtonPropertyComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = CallbackButtonPropertyComponent.hpp; path = ../../Source/CallbackButtonPropertyComponent.hpp; sourceTree = "<group>"; };
+		75B86EC920E24D8C0080DB3D /* CodeBoxController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CodeBoxController.cpp; path = ../../Source/CodeBoxController.cpp; sourceTree = "<group>"; };
+		75B86ECA20E24D8C0080DB3D /* CodeBoxController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = CodeBoxController.hpp; path = ../../Source/CodeBoxController.hpp; sourceTree = "<group>"; };
 		75FB5EED207CA5850083A1C0 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		75FB5EF1207CAD7E0083A1C0 /* ScoreTestsFixture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ScoreTestsFixture.cpp; sourceTree = "<group>"; };
 		75FB5EF2207CAD7E0083A1C0 /* ScoreTestsFixture.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ScoreTestsFixture.hpp; sourceTree = "<group>"; };
@@ -771,15 +789,6 @@
 				114027C31F49C21E00A9B8C4 /* SortedStaves.hpp */,
 			);
 			name = "staff-time";
-			sourceTree = "<group>";
-		};
-		111A26201F40CBAD00D3713C /* time-components */ = {
-			isa = PBXGroup;
-			children = (
-				1186489A1EFAC44100904672 /* ScoreCursor.cpp */,
-				1186489B1EFAC44100904672 /* ScoreCursor.h */,
-			);
-			name = "time-components";
 			sourceTree = "<group>";
 		};
 		1126308A207F3B6A0086653D /* pugixml */ = {
@@ -924,23 +933,6 @@
 			name = score;
 			sourceTree = "<group>";
 		};
-		11B71DE11F0AD8EA00CDE209 /* property-panel */ = {
-			isa = PBXGroup;
-			children = (
-				11B71DCF1F098F1400CDE209 /* SymbolPropertiesPanel.cpp */,
-				11B71DD01F098F1400CDE209 /* SymbolPropertiesPanel.h */,
-				11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */,
-				11B71DD61F0AA83A00CDE209 /* OSCPropertyComponents.h */,
-				116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */,
-				116F87731F9D04B90062EE91 /* ScoreBundleViewer.h */,
-				11AEF237207A943800B1398D /* JsonTreeItem.cpp */,
-				11AEF238207A943800B1398D /* JsonTreeItem.hpp */,
-				7501AC4F20BD4A9B002E0573 /* NewPropertyFormComponent.cpp */,
-				7501AC5020BD4A9B002E0573 /* NewPropertyFormComponent.hpp */,
-			);
-			name = "property-panel";
-			sourceTree = "<group>";
-		};
 		11CE00151EC3231E00E4F624 /* score-components */ = {
 			isa = PBXGroup;
 			children = (
@@ -951,14 +943,18 @@
 				11D86B8A1EEAEF7900681F6D /* PathBaseComponent.h */,
 				11D86B891EEAEF7900681F6D /* PathBaseComponent.cpp */,
 				11D86B8F1EEAF9FD00681F6D /* BasicShapePathComponents.h */,
+				1107B3E01EF2D2BA00E2DFA9 /* PathHandleComponent.h */,
+				1107B3DF1EF2D2BA00E2DFA9 /* PathHandleComponent.cpp */,
+				1107B3E71EF5388500E2DFA9 /* PathInfo.cpp */,
+				1107B3E81EF5388500E2DFA9 /* PathInfo.h */,
 				1107B3DC1EF1751900E2DFA9 /* TextGlyphComponent.h */,
 				1107B3DB1EF1751900E2DFA9 /* TextGlyphComponent.cpp */,
+				7558B82D209C9F2400BCA92C /* SmuflComponent.cpp */,
+				7558B82E209C9F2400BCA92C /* SmuflComponent.hpp */,
 				444C43A41EE4A748000C6F69 /* SymbolGroupComponent.h */,
 				444C43A31EE4A748000C6F69 /* SymbolGroupComponent.cpp */,
 				114027C91F4B185E00A9B8C4 /* StaffComponent.hpp */,
 				114027C81F4B185E00A9B8C4 /* StaffComponent.cpp */,
-				7558B82D209C9F2400BCA92C /* SmuflComponent.cpp */,
-				7558B82E209C9F2400BCA92C /* SmuflComponent.hpp */,
 			);
 			name = "score-components";
 			sourceTree = "<group>";
@@ -969,21 +965,6 @@
 				11CE00511EC328DE00E4F624 /* Main.cpp */,
 			);
 			name = application;
-			sourceTree = "<group>";
-		};
-		11D123561F44712800A5EA5B /* tool-ui-components */ = {
-			isa = PBXGroup;
-			children = (
-				111A26201F40CBAD00D3713C /* time-components */,
-				11B71DE11F0AD8EA00CDE209 /* property-panel */,
-				113DEE0A1FA1D7C600A45220 /* EditSelectionBox.cpp */,
-				113DEE0B1FA1D7C600A45220 /* EditSelectionBox.h */,
-				751E31512069410400C3318F /* PaletteButton.cpp */,
-				751E31522069410400C3318F /* PaletteButton.hpp */,
-				11AEF23F207A94D000B1398D /* CodeboxComponent.cpp */,
-				11AEF240207A94D000B1398D /* CodeboxComponent.hpp */,
-			);
-			name = "tool-ui-components";
 			sourceTree = "<group>";
 		};
 		11E8082B207FCA8C00E0342F /* svg-io */ = {
@@ -999,17 +980,6 @@
 				11E8083A2080A12F00E0342F /* StringTools.hpp */,
 			);
 			name = "svg-io";
-			sourceTree = "<group>";
-		};
-		444572681EFA67BE00A7DECD /* path-tools */ = {
-			isa = PBXGroup;
-			children = (
-				1107B3E01EF2D2BA00E2DFA9 /* PathHandleComponent.h */,
-				1107B3DF1EF2D2BA00E2DFA9 /* PathHandleComponent.cpp */,
-				1107B3E71EF5388500E2DFA9 /* PathInfo.cpp */,
-				1107B3E81EF5388500E2DFA9 /* PathInfo.h */,
-			);
-			name = "path-tools";
 			sourceTree = "<group>";
 		};
 		5BA2DB05C7718E6A683CC674 /* symbolist */ = {
@@ -1039,18 +1009,17 @@
 		7571E706208DECEC0092A3E0 /* child-views */ = {
 			isa = PBXGroup;
 			children = (
-				444C43A01EE4A2E4000C6F69 /* PageComponent.h */,
-				444C439F1EE4A2E4000C6F69 /* PageComponent.cpp */,
-				118C38EE1EC61404006FF4A1 /* PaletteComponent.h */,
-				118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */,
+				75B86EC820E2467F0080DB3D /* inspector-view */,
+				75B86EC720E246160080DB3D /* score-view */,
+				75B86EC620E245CD0080DB3D /* palette-view */,
 				111A261A1F40B0C200D3713C /* MouseModeComponent.cpp */,
 				111A261B1F40B0C200D3713C /* MouseModeComponent.hpp */,
 				11D1235A1F44796800A5EA5B /* SymbolistMenu.cpp */,
 				11D1235B1F44796800A5EA5B /* SymbolistMenu.hpp */,
-				116F87781F9D04FC0062EE91 /* InspectorComponent.cpp */,
-				116F87791F9D04FC0062EE91 /* InspectorComponent.h */,
 				11C442CE1F585C1B00F2E9B6 /* TimeDisplayComponent.cpp */,
 				11C442CF1F585C1B00F2E9B6 /* TimeDisplayComponent.hpp */,
+				11AEF23F207A94D000B1398D /* CodeBoxComponent.cpp */,
+				11AEF240207A94D000B1398D /* CodeBoxComponent.hpp */,
 			);
 			name = "child-views";
 			sourceTree = "<group>";
@@ -1067,9 +1036,7 @@
 				118353441F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp */,
 				118353451F26AD0600DB1DF5 /* SymbolistLookAndFeel.hpp */,
 				7571E706208DECEC0092A3E0 /* child-views */,
-				444572681EFA67BE00A7DECD /* path-tools */,
 				11CE00151EC3231E00E4F624 /* score-components */,
-				11D123561F44712800A5EA5B /* tool-ui-components */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -1100,6 +1067,8 @@
 				7571E711208F2F1A0092A3E0 /* InspectorController.hpp */,
 				7571E719208F59B90092A3E0 /* TimeDisplayController.cpp */,
 				7571E71A208F59B90092A3E0 /* TimeDisplayController.hpp */,
+				75B86EC920E24D8C0080DB3D /* CodeBoxController.cpp */,
+				75B86ECA20E24D8C0080DB3D /* CodeBoxController.hpp */,
 			);
 			name = controller;
 			sourceTree = "<group>";
@@ -1110,8 +1079,8 @@
 				44A3C1ED1EC317BE00C4AD14 /* symbolist.hpp */,
 				44A3C1EC1EC317BE00C4AD14 /* symbolist.cpp */,
 				446363961EC8EF9C0054CB6D /* types.h */,
-				7571E6F92085FEE80092A3E0 /* symbolist-utils.cpp */,
-				7571E6FA2085FEE80092A3E0 /* symbolist-utils.hpp */,
+				7571E6F92085FEE80092A3E0 /* symbolist-utils.hpp */,
+				7571E6FA2085FEE80092A3E0 /* symbolist-utils.cpp */,
 			);
 			name = "symbolist-api";
 			sourceTree = "<group>";
@@ -1145,6 +1114,51 @@
 			);
 			name = SymbolistTests;
 			path = ../../SymbolistTests;
+			sourceTree = "<group>";
+		};
+		75B86EC620E245CD0080DB3D /* palette-view */ = {
+			isa = PBXGroup;
+			children = (
+				118C38EE1EC61404006FF4A1 /* PaletteComponent.h */,
+				118C38ED1EC61404006FF4A1 /* PaletteComponent.cpp */,
+				751E31512069410400C3318F /* PaletteButton.cpp */,
+				751E31522069410400C3318F /* PaletteButton.hpp */,
+			);
+			name = "palette-view";
+			sourceTree = "<group>";
+		};
+		75B86EC720E246160080DB3D /* score-view */ = {
+			isa = PBXGroup;
+			children = (
+				444C43A01EE4A2E4000C6F69 /* PageComponent.h */,
+				444C439F1EE4A2E4000C6F69 /* PageComponent.cpp */,
+				113DEE0A1FA1D7C600A45220 /* EditSelectionBox.cpp */,
+				113DEE0B1FA1D7C600A45220 /* EditSelectionBox.h */,
+				1186489A1EFAC44100904672 /* ScoreCursor.cpp */,
+				1186489B1EFAC44100904672 /* ScoreCursor.h */,
+			);
+			name = "score-view";
+			sourceTree = "<group>";
+		};
+		75B86EC820E2467F0080DB3D /* inspector-view */ = {
+			isa = PBXGroup;
+			children = (
+				116F87781F9D04FC0062EE91 /* InspectorComponent.cpp */,
+				116F87791F9D04FC0062EE91 /* InspectorComponent.h */,
+				11B71DCF1F098F1400CDE209 /* SymbolPropertiesPanel.cpp */,
+				11B71DD01F098F1400CDE209 /* SymbolPropertiesPanel.h */,
+				11B71DD51F0AA83A00CDE209 /* OSCPropertyComponents.cpp */,
+				11B71DD61F0AA83A00CDE209 /* OSCPropertyComponents.h */,
+				116F87721F9D04B90062EE91 /* ScoreBundleViewer.cpp */,
+				116F87731F9D04B90062EE91 /* ScoreBundleViewer.h */,
+				11AEF237207A943800B1398D /* JsonTreeItem.cpp */,
+				11AEF238207A943800B1398D /* JsonTreeItem.hpp */,
+				7501AC4F20BD4A9B002E0573 /* NewPropertyFormComponent.cpp */,
+				7501AC5020BD4A9B002E0573 /* NewPropertyFormComponent.hpp */,
+				75987CEC20D81A0500EDE4F9 /* CallbackButtonPropertyComponent.cpp */,
+				75987CED20D81A0500EDE4F9 /* CallbackButtonPropertyComponent.hpp */,
+			);
+			name = "inspector-view";
 			sourceTree = "<group>";
 		};
 		7D07A1619BB37DE0267F74A0 /* Resources */ = {
@@ -1216,7 +1230,8 @@
 			files = (
 				116A7EF22046DCAE004B545D /* OdotBundle.hpp in Headers */,
 				7501AC5620BD4A9B002E0573 /* NewPropertyFormComponent.hpp in Headers */,
-				11AEF245207A94D000B1398D /* CodeboxComponent.hpp in Headers */,
+				11AEF245207A94D000B1398D /* CodeBoxComponent.hpp in Headers */,
+				75B86ED020E24D8C0080DB3D /* CodeBoxController.hpp in Headers */,
 				75FB5F10207F8C4C0083A1C0 /* Observer.hpp in Headers */,
 				75FB5F11207F8C500083A1C0 /* View.hpp in Headers */,
 				113980B6206449EA002A2408 /* OdotExpr.hpp in Headers */,
@@ -1241,6 +1256,7 @@
 				751E31572069410400C3318F /* PaletteButton.hpp in Headers */,
 				75FB5F02207F51AA0083A1C0 /* TimePointArray.h in Headers */,
 				75FB5F0F207F8C460083A1C0 /* Observable.hpp in Headers */,
+				75987CF320D81A0500EDE4F9 /* CallbackButtonPropertyComponent.hpp in Headers */,
 				113DEE0F1FA1D7C600A45220 /* EditSelectionBox.h in Headers */,
 				11AEF23D207A943800B1398D /* JsonTreeItem.hpp in Headers */,
 				75FB5F01207F519A0083A1C0 /* Score.h in Headers */,
@@ -1251,7 +1267,7 @@
 				11263098207F3D520086653D /* SVGFileIO.hpp in Headers */,
 				75774FA12062960C0069A89D /* SymbolistModel.hpp in Headers */,
 				75FB5F0A207F54C80083A1C0 /* PageController.hpp in Headers */,
-				7571E7002085FEE80092A3E0 /* symbolist-utils.hpp in Headers */,
+				7571E7002085FEE80092A3E0 /* symbolist-utils.cpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1271,8 +1287,10 @@
 				116A7EC72046CFCD004B545D /* osc_atom_s.h in Headers */,
 				116A7ECA2046CFCD004B545D /* osc_bundle_iterator_u.h in Headers */,
 				116A7ECB2046CFCD004B545D /* osc_bundle_s.h in Headers */,
+				75987CF420D81A0500EDE4F9 /* CallbackButtonPropertyComponent.hpp in Headers */,
 				116A7ED22046CFCD004B545D /* osc_expr_privatedecls.h in Headers */,
 				7501AC5720BD4A9B002E0573 /* NewPropertyFormComponent.hpp in Headers */,
+				75B86ED120E24D8C0080DB3D /* CodeBoxController.hpp in Headers */,
 				116A7ED62046CFCD004B545D /* osc_hashtab.h in Headers */,
 				116A7EE42046CFCD004B545D /* osc_scanner.h in Headers */,
 				116A7EDF2046CFCD004B545D /* osc_message_u.h in Headers */,
@@ -1291,11 +1309,11 @@
 				7571E70F208E41C60092A3E0 /* MouseModeController.hpp in Headers */,
 				116A7EEB2046CFCD004B545D /* osc.h in Headers */,
 				116A7EE12046CFCD004B545D /* osc_profile.h in Headers */,
-				7571E7012085FEE80092A3E0 /* symbolist-utils.hpp in Headers */,
+				7571E7012085FEE80092A3E0 /* symbolist-utils.cpp in Headers */,
 				116A7EDC2046CFCD004B545D /* osc_message_iterator_s.h in Headers */,
 				116A7ED02046CFCD004B545D /* osc_expr_func.h in Headers */,
 				116A7EC62046CFCD004B545D /* osc_atom_array_u.h in Headers */,
-				11AEF246207A94D000B1398D /* CodeboxComponent.hpp in Headers */,
+				11AEF246207A94D000B1398D /* CodeBoxComponent.hpp in Headers */,
 				116A7ED42046CFCD004B545D /* osc_expr_scanner.h in Headers */,
 				116A7EDA2046CFCD004B545D /* osc_match.h in Headers */,
 				116A7ECF2046CFCD004B545D /* osc_error.h in Headers */,
@@ -1390,6 +1408,7 @@
 				F5AB22AD3C1CEF67BFA074FF /* Resources */,
 				2A617DA9763C5E7BBA728C1F /* Sources */,
 				DBAF9677E34AF377F9B64BC0 /* Frameworks */,
+				759BD75620E40343006F58BF /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1464,6 +1483,23 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		759BD75620E40343006F58BF /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Checks if symbolist.dylib exists in the OM folder (under the symbolist repo)\nif [ -e ../../OM/symbolist/lib/mac/symbolist.dylib ]; then\n\n    rm ../../OM/symbolist/lib/mac/symbolist.dylib\n\n    if [ \"$CONFIGURATION\" = \"Debug\" ]; then\n        cp ./build/Products/Debug/symbolist.dylib ../../OM/symbolist/lib/mac/\n    else\n        cp ./build/Products/Release/symbolist.dylib ../../OM/symbolist/lib/mac/\n    fi\n\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1107B3EB1EF7D53100E2DFA9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -1481,11 +1517,13 @@
 				1107B3F31EF7D54800E2DFA9 /* symbolist.cpp in Sources */,
 				11263097207F3D520086653D /* SVGFileIO.cpp in Sources */,
 				11E8083D2080A12F00E0342F /* StringTools.cpp in Sources */,
+				75987CF020D81A0500EDE4F9 /* CallbackButtonPropertyComponent.cpp in Sources */,
 				1107B3FB1EF7D55D00E2DFA9 /* PathBaseComponent.cpp in Sources */,
 				7558B831209C9F2400BCA92C /* SmuflComponent.cpp in Sources */,
 				757E1B46206A83CD002E472E /* View.cpp in Sources */,
 				751E31552069410400C3318F /* PaletteButton.cpp in Sources */,
 				118648701EF7E68B00904672 /* include_juce_gui_basics.mm in Sources */,
+				75B86ECD20E24D8C0080DB3D /* CodeBoxController.cpp in Sources */,
 				757E1B47206A83D5002E472E /* Observable.cpp in Sources */,
 				4425D3071EF8599300B8BF1C /* SymbolistHandler.cpp in Sources */,
 				1107B3FD1EF7D55D00E2DFA9 /* SymbolGroupComponent.cpp in Sources */,
@@ -1500,7 +1538,7 @@
 				1107B4011EF7D55D00E2DFA9 /* SymbolistComponent.cpp in Sources */,
 				112630B2207F4AC20086653D /* pugixml.cpp in Sources */,
 				111A261E1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */,
-				11AEF243207A94D000B1398D /* CodeboxComponent.cpp in Sources */,
+				11AEF243207A94D000B1398D /* CodeBoxComponent.cpp in Sources */,
 				7571E714208F2F1A0092A3E0 /* InspectorController.cpp in Sources */,
 				751E314D2069378600C3318F /* PaletteController.cpp in Sources */,
 				7571E70B208E41C60092A3E0 /* MouseModeController.cpp in Sources */,
@@ -1516,7 +1554,7 @@
 				1107B3F71EF7D55D00E2DFA9 /* TextGlyphComponent.cpp in Sources */,
 				75FB5F0E207F8C3B0083A1C0 /* Controller.cpp in Sources */,
 				118648981EFA811800904672 /* TimePointArray.cpp in Sources */,
-				7571E6FD2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */,
+				7571E6FD2085FEE80092A3E0 /* symbolist-utils.hpp in Sources */,
 				11B71DD91F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
 				7501AC5320BD4A9B002E0573 /* NewPropertyFormComponent.cpp in Sources */,
 				116A7EF82047E99D004B545D /* OdotMessage.cpp in Sources */,
@@ -1540,6 +1578,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				116A7E922046CFB6004B545D /* osc_parser.c in Sources */,
+				75B86ECE20E24D8C0080DB3D /* CodeBoxController.cpp in Sources */,
 				116A7E962046CFB6004B545D /* osc_serial.c in Sources */,
 				116A7E812046CFB6004B545D /* osc_bundle_u.c in Sources */,
 				7558B832209C9F2400BCA92C /* SmuflComponent.cpp in Sources */,
@@ -1549,6 +1588,7 @@
 				116A7E7E2046CFB6004B545D /* osc_bundle_iterator_s.c in Sources */,
 				116A7E952046CFB6004B545D /* osc_scanner.c in Sources */,
 				116A7E7D2046CFB6004B545D /* osc_atom_u.c in Sources */,
+				75987CF120D81A0500EDE4F9 /* CallbackButtonPropertyComponent.cpp in Sources */,
 				116A7E8A2046CFB6004B545D /* osc_legacy_scanner.c in Sources */,
 				7571E70C208E41C60092A3E0 /* MouseModeController.cpp in Sources */,
 				116A7E9B2046CFB6004B545D /* osc_vtable.c in Sources */,
@@ -1561,12 +1601,12 @@
 				116A7E8C2046CFB6004B545D /* osc_match.c in Sources */,
 				116A7E832046CFB6004B545D /* osc_error.c in Sources */,
 				116A7E7F2046CFB6004B545D /* osc_bundle_iterator_u.c in Sources */,
-				11AEF244207A94D000B1398D /* CodeboxComponent.cpp in Sources */,
+				11AEF244207A94D000B1398D /* CodeBoxComponent.cpp in Sources */,
 				116A7E842046CFB6004B545D /* osc_expr_parser.c in Sources */,
 				116A7E852046CFB6004B545D /* osc_expr_rec.c in Sources */,
 				116A7E9A2046CFB6004B545D /* osc_util.c in Sources */,
 				751E31562069410400C3318F /* PaletteButton.cpp in Sources */,
-				7571E6FE2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */,
+				7571E6FE2085FEE80092A3E0 /* symbolist-utils.hpp in Sources */,
 				116A7E862046CFB6004B545D /* osc_expr_scanner.c in Sources */,
 				116A7E8E2046CFB6004B545D /* osc_message_iterator_s.c in Sources */,
 				116A7E892046CFB6004B545D /* osc_legacy_parser.c in Sources */,
@@ -1609,6 +1649,7 @@
 				7571E71C208F59B90092A3E0 /* TimeDisplayController.cpp in Sources */,
 				7558B830209C9F2400BCA92C /* SmuflComponent.cpp in Sources */,
 				44CFE03A1EC3789C009135F8 /* include_juce_core.mm in Sources */,
+				75B86ECC20E24D8C0080DB3D /* CodeBoxController.cpp in Sources */,
 				44CFE03F1EC3789C009135F8 /* include_juce_gui_extra.mm in Sources */,
 				118C38E41EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */,
 				118353471F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp in Sources */,
@@ -1623,7 +1664,7 @@
 				116A7EFD2047ECB8004B545D /* OdotAtom.cpp in Sources */,
 				75FB5F06207F54C80083A1C0 /* PageController.cpp in Sources */,
 				757E1B43206A83C5002E472E /* View.cpp in Sources */,
-				11AEF242207A94D000B1398D /* CodeboxComponent.cpp in Sources */,
+				11AEF242207A94D000B1398D /* CodeBoxComponent.cpp in Sources */,
 				11D1235D1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */,
 				75774FA5206296C50069A89D /* Palette.cpp in Sources */,
 				444CD9041EDDAF1B001AC03A /* SymbolistComponent.cpp in Sources */,
@@ -1652,8 +1693,9 @@
 				11B71DCE1F09844300CDE209 /* symbolist.cpp in Sources */,
 				11E8083C2080A12F00E0342F /* StringTools.cpp in Sources */,
 				751E31542069410400C3318F /* PaletteButton.cpp in Sources */,
-				7571E6FC2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */,
+				7571E6FC2085FEE80092A3E0 /* symbolist-utils.hpp in Sources */,
 				113980B4206449EA002A2408 /* OdotExpr.cpp in Sources */,
+				75987CEF20D81A0500EDE4F9 /* CallbackButtonPropertyComponent.cpp in Sources */,
 				118C38F01EC61404006FF4A1 /* PaletteComponent.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1674,11 +1716,13 @@
 				44B718B11EDD9D010039884E /* Symbol.cpp in Sources */,
 				11E8083B2080A12F00E0342F /* StringTools.cpp in Sources */,
 				4425D3051EF8599300B8BF1C /* SymbolistHandler.cpp in Sources */,
+				75987CEE20D81A0500EDE4F9 /* CallbackButtonPropertyComponent.cpp in Sources */,
 				444C43A11EE4A2E4000C6F69 /* PageComponent.cpp in Sources */,
 				7558B82F209C9F2400BCA92C /* SmuflComponent.cpp in Sources */,
 				ECAB07494F266A96C75A7E47 /* include_juce_events.mm in Sources */,
 				446388D51EC34DC90038CFCB /* SymbolistMainWindow.cpp in Sources */,
 				11A3939C20528799002C8916 /* OdotBundle_s.cpp in Sources */,
+				75B86ECB20E24D8C0080DB3D /* CodeBoxController.cpp in Sources */,
 				11B71DD11F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */,
 				118C38E31EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */,
 				116A7EFC2047ECB8004B545D /* OdotAtom.cpp in Sources */,
@@ -1697,7 +1741,7 @@
 				7571E712208F2F1A0092A3E0 /* InspectorController.cpp in Sources */,
 				11C442D01F585C1B00F2E9B6 /* TimeDisplayComponent.cpp in Sources */,
 				7571E709208E41C60092A3E0 /* MouseModeController.cpp in Sources */,
-				11AEF241207A94D000B1398D /* CodeboxComponent.cpp in Sources */,
+				11AEF241207A94D000B1398D /* CodeBoxComponent.cpp in Sources */,
 				41C3942D9A94933B560F98F2 /* include_juce_gui_basics.mm in Sources */,
 				1107B3E91EF5388500E2DFA9 /* PathInfo.cpp in Sources */,
 				11D86B8B1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */,
@@ -1709,7 +1753,7 @@
 				118648961EFA811800904672 /* TimePointArray.cpp in Sources */,
 				75774FA4206296C50069A89D /* Palette.cpp in Sources */,
 				116A7EF62047E99D004B545D /* OdotMessage.cpp in Sources */,
-				7571E6FB2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */,
+				7571E6FB2085FEE80092A3E0 /* symbolist-utils.hpp in Sources */,
 				11B71DD71F0AA83A00CDE209 /* OSCPropertyComponents.cpp in Sources */,
 				7501AC5120BD4A9B002E0573 /* NewPropertyFormComponent.cpp in Sources */,
 				116A7EEF2046DCAE004B545D /* OdotBundle.cpp in Sources */,
@@ -1764,6 +1808,8 @@
 				758F6F58207BCB00006EDD53 /* SymbolGroupComponent.cpp in Sources */,
 				758F6F59207BCB00006EDD53 /* StaffComponent.cpp in Sources */,
 				758F6F5A207BCB00006EDD53 /* EditSelectionBox.cpp in Sources */,
+				75987CF220D81A0500EDE4F9 /* CallbackButtonPropertyComponent.cpp in Sources */,
+				75B86ECF20E24D8C0080DB3D /* CodeBoxController.cpp in Sources */,
 				758F6F5B207BCB00006EDD53 /* SymbolistComponent.cpp in Sources */,
 				758F6F5C207BCB00006EDD53 /* ScoreComponent.cpp in Sources */,
 				758F6F5D207BCB00006EDD53 /* PageComponent.cpp in Sources */,
@@ -1780,7 +1826,7 @@
 				758F6F68207BCB00006EDD53 /* ScoreBundleViewer.cpp in Sources */,
 				758F6F69207BCB00006EDD53 /* InspectorComponent.cpp in Sources */,
 				758F6F6A207BCB00006EDD53 /* JsonTreeItem.cpp in Sources */,
-				758F6F6B207BCB00006EDD53 /* CodeboxComponent.cpp in Sources */,
+				758F6F6B207BCB00006EDD53 /* CodeBoxComponent.cpp in Sources */,
 				758F6F6C207BCB00006EDD53 /* Controller.cpp in Sources */,
 				758F6F6D207BCB00006EDD53 /* Observable.cpp in Sources */,
 				758F6F6E207BCB00006EDD53 /* Observer.cpp in Sources */,
@@ -1795,7 +1841,7 @@
 				758F6F74207BCB00006EDD53 /* include_juce_events.mm in Sources */,
 				758F6F75207BCB00006EDD53 /* include_juce_graphics.mm in Sources */,
 				758F6F76207BCB00006EDD53 /* include_juce_gui_basics.mm in Sources */,
-				7571E6FF2085FEE80092A3E0 /* symbolist-utils.cpp in Sources */,
+				7571E6FF2085FEE80092A3E0 /* symbolist-utils.hpp in Sources */,
 				758F6F77207BCB00006EDD53 /* include_juce_gui_extra.mm in Sources */,
 				758F6F78207BCB00006EDD53 /* main.cpp in Sources */,
 				758F6F79207BCB00006EDD53 /* SymbolistModelTestsFixture.cpp in Sources */,

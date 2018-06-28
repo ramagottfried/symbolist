@@ -462,9 +462,9 @@
 		111A261B1F40B0C200D3713C /* MouseModeComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = MouseModeComponent.hpp; path = ../../Source/MouseModeComponent.hpp; sourceTree = "<group>"; };
 		11263093207F3D520086653D /* SVGFileIO.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SVGFileIO.cpp; path = ../../Source/SVGFileIO.cpp; sourceTree = "<group>"; };
 		11263094207F3D520086653D /* SVGFileIO.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = SVGFileIO.hpp; path = ../../Source/SVGFileIO.hpp; sourceTree = "<group>"; };
-		112630AC207F4AC20086653D /* pugiconfig.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = pugiconfig.hpp; path = ../../../Source/plugixml/pugiconfig.hpp; sourceTree = "<group>"; };
-		112630AD207F4AC20086653D /* pugixml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pugixml.cpp; path = ../../../Source/plugixml/pugixml.cpp; sourceTree = "<group>"; };
-		112630AE207F4AC20086653D /* pugixml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = pugixml.hpp; path = ../../../Source/plugixml/pugixml.hpp; sourceTree = "<group>"; };
+		112630AC207F4AC20086653D /* pugiconfig.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pugiconfig.hpp; sourceTree = "<group>"; };
+		112630AD207F4AC20086653D /* pugixml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pugixml.cpp; sourceTree = "<group>"; };
+		112630AE207F4AC20086653D /* pugixml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pugixml.hpp; sourceTree = "<group>"; };
 		113980B1206449EA002A2408 /* OdotExpr.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = OdotExpr.cpp; path = ../../Source/OdotExpr.cpp; sourceTree = "<group>"; };
 		113980B2206449EA002A2408 /* OdotExpr.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = OdotExpr.hpp; path = ../../Source/OdotExpr.hpp; sourceTree = "<group>"; };
 		113DEE0A1FA1D7C600A45220 /* EditSelectionBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EditSelectionBox.cpp; path = ../../Source/EditSelectionBox.cpp; sourceTree = "<group>"; };
@@ -798,7 +798,8 @@
 				112630AD207F4AC20086653D /* pugixml.cpp */,
 				112630AE207F4AC20086653D /* pugixml.hpp */,
 			);
-			path = pugixml;
+			name = pugixml;
+			path = ../../Source/plugixml;
 			sourceTree = "<group>";
 		};
 		116A7E3C2046CF3F004B545D /* libo */ = {

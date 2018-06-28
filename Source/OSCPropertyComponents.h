@@ -77,7 +77,7 @@ private:
 };
 
 
-class OSCColourSelectorButton  : public PropertyComponent, public ChangeListener, private ButtonListener
+class OSCColourSelectorButton  : public PropertyComponent, public ChangeListener, private Button::Listener
 {
 public:
     OSCColourSelectorButton ( const string& _addr, OdotMessage& msg, osc_callback_t change_fn ) : PropertyComponent (_addr), osc_msg(msg)
@@ -266,6 +266,12 @@ public:
     void setState( bool newState ) override
     {
         state = newState;
+		
+        osc_msg.clear();
+        osc_msg.appendValue( (int)getState() );
+		
+        change_callback( osc_msg );
+		
         refresh();
 
     }
@@ -273,16 +279,6 @@ public:
     bool getState() const override
     {
         return state;
-    }
-    
-    void buttonClicked (Button* b) override
-    {
-        setState ( !state );
-        
-        osc_msg.clear();
-        osc_msg.appendValue( (int)getState() );
-        
-        change_callback( osc_msg );
     }
     
 private:

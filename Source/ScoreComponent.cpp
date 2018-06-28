@@ -45,7 +45,7 @@ ScoreComponent* ScoreComponent::getSubcomponentByID( const string& id )
 {
     for( int i = 0; i < subcomponents.size(); i++ )
     {
-        if( subcomponents[i]->getComponentID() == id )
+        if( subcomponents[i]->getComponentID() == String(id) )
             return subcomponents[i];
     }
 	

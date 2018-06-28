@@ -66,7 +66,7 @@ void SmuflComponent::paint(Graphics& g)
 void SmuflComponent::resized()
 {
 	BaseComponent::resized();
-	smufl_glyph.setBoundingBox(RelativeParallelogram(Rectangle<float> (0, 0, getWidth(), getHeight())));
+	smufl_glyph.setBoundingBox(Parallelogram<float>(Rectangle<float> (0, 0, getWidth(), getHeight())));
 }
 
 void SmuflComponent::addSymbolMessages(Symbol* symbol)

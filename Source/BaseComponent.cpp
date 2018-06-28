@@ -206,7 +206,7 @@ void BaseComponent::setIdFromSymbol()
             String typeOfSymbol = s->getType();
 			id = s->getMessage("/id").getString();
             
-            if( id.isEmpty() || id == (typeOfSymbol + "/palette")  || id == (name + "/palette") || !id.contains(String(name)))
+            if( id.isEmpty() || id == (typeOfSymbol + "/palette")  || id == String(name + "/palette") || !id.contains(String(name)))
                 id = pc->getController()->createIdFromName(name);
 			
             s->addMessage( "/id", id.toStdString() );

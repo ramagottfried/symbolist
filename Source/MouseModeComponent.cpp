@@ -23,7 +23,7 @@ void MouseModeComponent::drawString()
         m_str = " draw " ;
 		
 		if (getModel()->getPalette()->getSelectedSymbol() != NULL)
-        	m_str += getModel()->getPalette()->getSelectedSymbol()->getType();
+        	m_str += String(getModel()->getPalette()->getSelectedSymbol()->getType());
 		else m_str += "unknown ";
     }
     else

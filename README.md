@@ -3,7 +3,7 @@ SYMBOLIST is a graphic notation environment for music and multimedia. SYMBOLIST 
 
 ## Pre-requisites
 * **Warning!** For now, symbolist have been compiled, tested and executed only under the macOS platform (starting with version 10.10 Yosemite). Thus, all instructions and informations published here and in the [SYMBOLIST Wiki](https://github.com/ramagottfried/symbolist/wiki) are worth only for this paltform.  
-* **Bravura font**. symbolist uses the Bravura font to integrate traditional music notation symbols in its palette. Therefore, the Bravura font must be installed in your computer if you want to use these symbols. You can download the Bravura font at https://www.smufl.org/fonts/. When the download is completed, 
+* **Bravura font**. symbolist uses the Bravura font to integrate traditional music notation symbols in its palette. Therefore, the Bravura font must be installed in your computer if you want to use these symbols. You can download the Bravura font at https://www.smufl.org/fonts/. To complete the installation of the Bravura font, copy the bravura_metadata.json file (you'll find it in the Bravura font zip file) into your /Library/Fonts/bravura folder (create this folder if it doesn't exist).
 
 ## Project's architecture
 Here is described the architecture of the symbolist project.

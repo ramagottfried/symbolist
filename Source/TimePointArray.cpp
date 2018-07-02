@@ -132,9 +132,9 @@ void TimePointArray::resetTimes()
             float start_x = s->getMessage("/x").getFloat() - staff_x;
             float dur_x = s->getMessage("/w").getFloat();
             
-            sym_start_t = staff_start_t + s->pixelsToTime(start_x);
+            sym_start_t = staff_start_t + Symbol::pixelsToTime(start_x);
             
-            s->setTimeAndDuration(sym_start_t, s->pixelsToTime(dur_x) );
+            s->setTimeAndDuration(sym_start_t, Symbol::pixelsToTime(dur_x) );
         }
         
     }
@@ -166,10 +166,10 @@ void TimePointArray::addSymbolTimePoints( Symbol* s )
     
     float staff_start = staff->getMessage("/time/start").getFloat();
     
-    float start_t = staff_start + s->pixelsToTime(start_x);
-    float end_t = staff_start + s->pixelsToTime(end_x);
+    float start_t = staff_start + Symbol::pixelsToTime(start_x);
+    float end_t = staff_start + Symbol::pixelsToTime(end_x);
     
-    s->setTimeAndDuration(start_t, s->pixelsToTime(dur_x) );
+    s->setTimeAndDuration(start_t, Symbol::pixelsToTime(dur_x) );
     
     DEBUG_FULL("Adding timepoints starting at time " << start_t << ", on " << staff_name
     			<< " (own starting value = " << staff_start << ")"  << endl)

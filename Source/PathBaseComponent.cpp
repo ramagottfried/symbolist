@@ -191,8 +191,8 @@ void PathBaseComponent::addSymbolMessages(Symbol* s )
 
         /* time is set by staff now */
 //        auto sub_bounds = Sym_PathBounds( *p );
-//        s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/time/start",    s->pixelsToTime( sub_bounds.getX() ) ) );
-//        s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/time/duration", s->pixelsToTime( sub_bounds.getWidth() ) ) );
+//        s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/time/start",    Symbol::pixelsToTime( sub_bounds.getX() ) ) );
+//        s->addOSCMessage( OSCMessage( String(base_address) + String("/path/") + String(np) + "/time/duration", Symbol::pixelsToTime( sub_bounds.getWidth() ) ) );
         
         s->addMessage ( "/fill" ,               m_fill   );
 

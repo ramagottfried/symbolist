@@ -1,55 +1,60 @@
 #pragma once
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "types.h"
 #include "OdotBundle.hpp"
 #include "symbolist-utils.hpp"
 
 using namespace std;
 
-//============================
-// SYMBOL
-//============================
-
+/**
+ * Describes the structure of all symbolist's symbols.
+ * This class inherits from the OdotBundle class, meaning that all symbols
+ * are represented by an underlying OSC (Open Sound Control) bundle (Odot being an implementation of
+ * the OSC format, more information about the OSC at http://opensoundcontrol.org/introduction-osc ).
+ * Even if each symbol of symbolist is an OSC bundle and therefore can contain any type
+ * of OSC messages, there are some messages which are recurrent in the symbol structure, like
+ * "/id", "/name" or "/type". Thus, the Symbol class proposes a set of getters ans setters methods
+ * to handle these messages.
+ */
 class Symbol : public OdotBundle
 {
 public:
     
     using OdotBundle::OdotBundle;
-    
-    void setTypeXYWH(const string & type, float x, float y, float w, float h);
-
-    bool symbol_parse_error( int p, const string& address ) const;
-
-    OdotBundle_s exportToOSC();
-    void         importFromOSC( OdotBundle_s& s_bundle );
-    
-    float getTime() const;
+	
+	 OdotBundle_s exportToOSC();
+     void         importFromOSC( OdotBundle_s& s_bundle );
+	
+	/************************************
+	 *         GETTERS & SETTERS        *
+	 ************************************/
+	float getTime() const;
     float getDuration() const;
     float getEndTime() const;
     string getName() const;
     string getID();
     string getStaff();
     string getType();
-    
-    void setPosition( const Point<float> pos );
+	
+    void setTypeXYWH(const string & type, float x, float y, float w, float h);
+	void setPosition( const Point<float> pos );
 
     void setTimeAndDurationFromRelPix( const float start_x, const float dur_x );
     void setTimeAndDuration( const float start_t, const float dur_t );
 
-    inline float pixelsToTime( const float f ) const
+	/**************************************
+	 *           TIME CONVERSION          *
+	 **************************************/
+	
+    static inline float pixelsToTime( const float f )
     {
-        return f * m_pixels_to_time;
+        return f * Symbol::m_pixels_to_time;
     }
     
-    inline float timeToPixels( const float t ) const
+    static inline float timeToPixels( const float t )
     {
-        return t * m_time_to_pixels;
-    }
-    
-    inline float calcTime() // << this should be dynamically settable somehow
-    {
-        return pixelsToTime( getMessage("/x").getFloat() );
+        return t * Symbol::m_time_to_pixels;
     }
     
     inline bool hitTestTime( float t )
@@ -57,6 +62,10 @@ public:
         float start = getTime();
         return t >= start && t <= ( start + getDuration() );
     }
+	
+	/************************************
+	 *           ID GENERATION          *
+	 ************************************/
 	
 	/**
 	 * Says whether the id in parameter is the current symbol's id
@@ -75,11 +84,11 @@ public:
 	 * and all its nested symbols if it's a group.
 	 */
 	void resetAllIds();
-	
+		
 private:
     
-    float       m_pixels_to_time = 0.01f;
-    float       m_time_to_pixels = 100.0f;
+    static float m_pixels_to_time;
+    static float m_time_to_pixels;
 
 };
 

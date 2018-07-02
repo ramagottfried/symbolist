@@ -61,7 +61,7 @@ void SortedStaves::resetTimes()
         
         DEBUG_FULL("Staff's start time = " << time)
         
-        time += staff->pixelsToTime(w) ;
+        time += Symbol::pixelsToTime(w) ;
         
         staff->addMessage( "/time/duration", time );
         

@@ -35,7 +35,7 @@ void ScoreCursor::mouseDrag( const MouseEvent& event )
         auto sym = staff->getScoreSymbol();
         float play_t = m_playpoint - sym->getTime();
         auto staff_b = staff->getBoundsInParent();
-        float play_x = staff_b.getX() + sym->timeToPixels( play_t );
+        float play_x = staff_b.getX() + Symbol::timeToPixels( play_t );
         
         float y = staff_b.getY()-5;
         float h = staff_b.getHeight()+5;
@@ -85,7 +85,7 @@ void ScoreCursor::setPlayPoint( float t )
         
         float play_t = t - sym->getTime();
         auto staff_b = staff->getBoundsInParent();
-        float play_x = staff_b.getX() + sym->timeToPixels( play_t );
+        float play_x = staff_b.getX() + Symbol::timeToPixels( play_t );
         
         float y = staff_b.getY()-5;
         float h = staff_b.getHeight()+5;

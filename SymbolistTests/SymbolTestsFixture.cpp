@@ -53,14 +53,14 @@ TEST_CASE_METHOD(SymbolTestsFixture, "idExists looks for the searched id at all 
 	
 }
 
-TEST_CASE_METHOD(SymbolTestsFixture, "evaluating expression in a symbol", "[model][symbol]")
+TEST_CASE_METHOD(SymbolTestsFixture, "Odot expressions are well evaluated in a symbol.", "[model][symbol]")
 {
 	
 	symbol->addMessage("/x", 12);
 	symbol->addMessage("/y", 12);
-	symbol->addMessage("/pitch", "/pitch = /x + /y");
+	symbol->addMessage("/expr", "/pitch = /x + /y");
 
-	symbol->applyExpr("eval(/pitch)");
+	symbol->applyExpr(symbol->getMessage("/expr").getString());
 	
 	CHECK(symbol->getMessage("/pitch").getInt() == 24);
 }

@@ -1104,8 +1104,18 @@
 		758F6EF0207BBFC7006EDD53 /* SymbolistTests */ = {
 			isa = PBXGroup;
 			children = (
+				75AEFC9E20EA6D5800728E1A /* integration-tests */,
+				75AEFC9D20EA68E100728E1A /* unit-tests */,
 				758F6EF6207BC161006EDD53 /* catch.hpp */,
 				758F6EF1207BBFC7006EDD53 /* main.cpp */,
+			);
+			name = SymbolistTests;
+			path = ../../SymbolistTests;
+			sourceTree = "<group>";
+		};
+		75AEFC9D20EA68E100728E1A /* unit-tests */ = {
+			isa = PBXGroup;
+			children = (
 				758F6EF7207BC2C1006EDD53 /* SymbolistModelTestsFixture.cpp */,
 				758F6EF8207BC2C1006EDD53 /* SymbolistModelTestsFixture.hpp */,
 				75FB5EF1207CAD7E0083A1C0 /* ScoreTestsFixture.cpp */,
@@ -1113,8 +1123,14 @@
 				7571E7022089DAFF0092A3E0 /* SymbolTestsFixture.cpp */,
 				7571E7032089DAFF0092A3E0 /* SymbolTestsFixture.hpp */,
 			);
-			name = SymbolistTests;
-			path = ../../SymbolistTests;
+			path = "unit-tests";
+			sourceTree = "<group>";
+		};
+		75AEFC9E20EA6D5800728E1A /* integration-tests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "integration-tests";
 			sourceTree = "<group>";
 		};
 		75B86EC620E245CD0080DB3D /* palette-view */ = {

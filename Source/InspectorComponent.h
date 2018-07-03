@@ -7,6 +7,12 @@
 #include "InspectorController.hpp"
 #include "View.hpp"
 
+/**
+ * Describes the inspector view of the symbolist application.
+ * An InspectorComponent instance is composed of to tabs:
+ * 	- the inspector tab, where each OSC messages contained in the currently selected symbol are shown.
+ * 	- the score bundle tab, presenting all symbols of the score in a JSON format.
+ */
 class InspectorComponent : public virtual TabbedComponent,
 						   public virtual View<SymbolistModel, InspectorController > {
 	
@@ -23,7 +29,7 @@ public:
     
     /**
      * Gets the minimum height value for this InspectorComponent
-     * for which all its content is displayed.
+     * permitting to display all of its content.
      *
      * @returns The minimum height to show all the elements contained
      *			in this InspectorComponent.
@@ -35,7 +41,6 @@ public:
      **************************************************/
     inline void setInspectorObject( BaseComponent *c ) { symbol_panel_tab->setInspectorObject(c); }
     inline void createOSCview () { symbol_panel_tab->createOSCview(); }
-    inline void updateBundle() { symbol_panel_tab->updateBundle(); }
     inline void clearInspector() { symbol_panel_tab->clearInspector(); }
 	
 	/**
@@ -50,6 +55,16 @@ public:
 	 */
 	void updateSymbolFromComponent(BaseComponent* component);
 	
+	/**
+	 * Wrapper method around the SymbolistMainComponent::toggleCodeBox
+	 * method.
+	 *
+	 * @throws logic_error If this instance of InspectorComponent has no
+	 *                     parent of type SymbolistMainComponent.
+	 *
+	 * @see SymbolistMainComponent#toggleCodeBox()
+	 *		SymbolistMainComponent::toggleCodeBox
+	 */
 	void toggleCodeBox();
 	
 	/* Overrides the update method inherited from the Observer class. */

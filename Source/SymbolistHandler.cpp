@@ -375,8 +375,7 @@ void SymbolistHandler::executeTransportCallback(int arg)
 //=================================
 Symbol* SymbolistHandler::createSymbolFromTemplate()
 {
-    return page_controller->getModel()
-    					  ->addSymbolToScore( palette_controller->getSelectedSymbolInPalette() );
+    return getModel()->addSymbolToScore( palette_controller->getSelectedSymbolInPalette() );
 }
 
 Symbol* SymbolistHandler::createSymbol()

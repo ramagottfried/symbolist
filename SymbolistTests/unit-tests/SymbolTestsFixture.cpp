@@ -1,14 +1,7 @@
-//
-//  SymbolTestsFixture.cpp
-//  symbolist - Dynamic Library
-//
-//  Created by Vincent Iampietro on 20/04/2018.
-//
-
 #include "SymbolTestsFixture.hpp"
 #include "catch.hpp"
 
-TEST_CASE_METHOD(SymbolTestsFixture, "idExists looks for the searched id at all nested levels in a symbol.", "[model][symbol]")
+TEST_CASE_METHOD(SymbolTestsFixture, "idExists looks for the searched id at all nested levels in a symbol.", "[unit][model][symbol]")
 {
 	symbol->addMessage("/id", "group/1");
 	symbol->addMessage("/type", "group");
@@ -53,14 +46,36 @@ TEST_CASE_METHOD(SymbolTestsFixture, "idExists looks for the searched id at all 
 	
 }
 
-TEST_CASE_METHOD(SymbolTestsFixture, "Odot expressions are well evaluated in a symbol.", "[model][symbol]")
+TEST_CASE_METHOD(SymbolTestsFixture, "Odot expressions are well evaluated in a symbol.", "[unit][model][symbol]")
 {
 	
-	symbol->addMessage("/x", 12);
-	symbol->addMessage("/y", 12);
-	symbol->addMessage("/expr", "/pitch = /x + /y");
+	SECTION("Single expressions are well evaluated.")
+	{
+		symbol->addMessage("/x", 12);
+		symbol->addMessage("/y", 12);
+		symbol->addMessage("/expr", "/pitch = /x + /y");
 
-	symbol->applyExpr(symbol->getMessage("/expr").getString());
+		symbol->applyExpr(symbol->getMessage("/expr").getString());
 	
-	CHECK(symbol->getMessage("/pitch").getInt() == 24);
+		CHECK(symbol->getMessage("/pitch").getInt() == 24);
+	}
+	
+	SECTION("Multiple expressions are well evaluated.")
+	{
+		symbol->addMessage("/expr", "/x = 30.0, /y = 40.0");
+		
+		symbol->applyExpr(symbol->getMessage("/expr").getString());
+		
+		CHECK(symbol->getMessage("/x").getFloat() == 30.0);
+		CHECK(symbol->getMessage("/y").getFloat() == 40.0);
+		
+		// Line breaks in multiple expressions result in an error.
+		symbol->addMessage("/expr", "/x = 10.0, /y = 15.0");
+		
+		symbol->applyExpr(symbol->getMessage("/expr").getString());
+		
+		CHECK(symbol->getMessage("/x").getFloat() == 10.0);
+		CHECK(symbol->getMessage("/y").getFloat() == 15.0);
+	}
+	
 }

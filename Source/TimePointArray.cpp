@@ -228,27 +228,27 @@ int TimePointArray::addSymbol_atTime(Symbol* s, float time, Symbol* staff)
 
 void TimePointArray::printBundle(OSCBundle bndl)
 {
-    DEBUG_INLINE("\t==== TIMEPOINT OSC BUNDLE ====" << endl)
+    cout << "\t==== TIMEPOINT OSC BUNDLE ====" << endl;
     for (auto osc : bndl )
     {
         OSCMessage msg = osc.getMessage();
-        DEBUG_INLINE("\t" << msg.getAddressPattern().toString())
+        cout << "\t" << msg.getAddressPattern().toString() << endl;
         
         for (auto arg : msg )
         {
             if( arg.isString() )
-                DEBUG_INLINE(" " << arg.getString())
+				cout << " " << arg.getString() << endl;
             else if( arg.isFloat32() )
-                DEBUG_INLINE(" " << (String)arg.getFloat32())
+                cout << " " << (String)arg.getFloat32() << endl;
             else if( arg.isInt32() )
-                DEBUG_INLINE(" " << (String)arg.getInt32())
+                cout << " " << (String)arg.getInt32() << endl;
             else if( arg.isBlob() )
-                DEBUG_INLINE(" " << "blob")
+                cout << " " << "blob" << endl;
         }
         
-        DEBUG_INLINE(endl)
+        cout << endl;
     }
-    DEBUG_INLINE("\t====-===-======-====" << endl)
+    cout << "\t====-===-======-====" << endl;
     
 }
 

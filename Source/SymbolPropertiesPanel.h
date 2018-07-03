@@ -12,6 +12,10 @@
 class InspectorComponent;
 typedef std::function<void(const OdotMessage&)> osc_callback_t;
 
+/**
+ * Describes the content of the inspector tab, one of the tab of the inspector view.
+ *
+ */
 class SymbolPropertiesPanel : public Component, public Button::Listener {
 
 public:
@@ -26,17 +30,16 @@ public:
 	 ************************************/
 	inline PropertyPanel* getSymbolInspector() { return &symbol_inspector; }
 	float getPreferedHeight();
-	
-    void paint (Graphics& g) override;
-    void resized() override;
+	inline BaseComponent* getInspectorObject() { return symbol_component; }
+	void setInspectorObject( BaseComponent *c );
 	
     void clearInspector();
-    
-    void setInspectorObject( BaseComponent *c );
     void createOSCview();
-    void updateBundle();
 
-    void change_callback(const OdotMessage& msg);
+	/************************************************
+	 *         BUTTON AND PROPERTY CALLBACKS        *
+	 ************************************************/
+    void propertyChanged(const OdotMessage& msg);
 	void buttonClicked(Button* button) override;
 	
 	/**
@@ -67,6 +70,12 @@ public:
 	 * @see    InspectorComponent#toggleCodeBox() InspectorComponent::toggleCodeBox()
 	 */
 	void toggleCodeBox();
+	
+	/*******************
+	 *      LAYOUT     *
+	 *******************/
+	void paint (Graphics& g) override;
+    void resized() override;
 	
 private:
 	BaseComponent*              symbol_component;

@@ -99,14 +99,14 @@ void OdotBundle::applyExpr( const OdotExpr& expr )
         
         int error = 0;
         t_osc_expr *f = expr.get_o_ptr();
-        while(f) {
+        while (f) {
             t_osc_atom_ar_u *av = NULL;
             error = osc_expr_eval( f, &copylen, &copy, &av, this );
 			
             if (av)
 				osc_atom_array_u_free(av);
 		
-            if(error)
+            if (error)
                 break;
 			
             f = osc_expr_next(f);

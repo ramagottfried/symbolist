@@ -448,10 +448,10 @@ void ScoreComponent::mouseAddClick(const MouseEvent& event)
 {
     unselectAllComponents();
 
-    BaseComponent *c;
+    BaseComponent *newComponent;
     
-    bool top_level = (this == getPageComponent());
-    auto sh = getSymbolistHandler();
+    bool topLevel = (this == getPageComponent());
+    auto mainController = getSymbolistHandler();
 
     if (getMainDrawMode() == UI_DrawType::FROM_TEMPLATE)
     {
@@ -460,32 +460,32 @@ void ScoreComponent::mouseAddClick(const MouseEvent& event)
          * Template symbols all have a default type of "path" and bounds of 0,0,30,30
          * the generic symbol has the same OSC data as the BaseComponent.
          */
-        Symbol* s = sh->createSymbolFromTemplate();
+        Symbol* newSymbol = mainController->createSymbolFromTemplate();
         
         // Sets default position before creating the graphic component.
-        s->setPosition(event.position);
+        newSymbol->setPosition(event.position);
 		
         // Creates a new component of the current selected symbol type.
-        c = sh->makeComponentFromSymbol(s, top_level);
+        newComponent = mainController->makeComponentFromSymbol(newSymbol, topLevel);
         
         // Adds component in the view.
-        addSubcomponent(c);
+        addSubcomponent(newComponent);
 		
     }
     else
     {
-        Symbol* s = sh->createSymbol();
-        s->setTypeXYWH("path", event.position.x, event.position.y, 40.0, 40.0) ;
+        Symbol* newSymbol = mainController->createSymbol();
+        newSymbol->setTypeXYWH("path", event.position.x, event.position.y, 40.0, 40.0) ;
         
-        c = sh->makeComponentFromSymbol(s, top_level);
-        addSubcomponent(c);
+        newComponent = mainController->makeComponentFromSymbol(newSymbol, topLevel);
+        addSubcomponent(newComponent);
         
-        getPageComponent()->enterEditMode(c);
-        c->mouseAddClick(event.getEventRelativeTo(c));
+        getPageComponent()->enterEditMode(newComponent);
+        newComponent->mouseAddClick(event.getEventRelativeTo(newComponent));
     }
 
-    if (!top_level)
-        c->reportModification();
+    if (!topLevel)
+        newComponent->reportModification();
     
     // deselect other items and select this one
     //addToSelection( c );

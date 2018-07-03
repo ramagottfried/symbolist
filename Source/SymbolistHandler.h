@@ -49,11 +49,16 @@ public:
     /*********************************************
      *             GETTERS & SETTERS             *
      *********************************************/
-    
+	
+	/**
+     * @return A reference to the application main window.
+     */
+	inline SymbolistMainWindow* getSymbolistMainWindow() { return main_window.get(); }
+	
     /**
      * @return The PaletteController instance owned by this SymbolistHandler.
      */
-    inline PaletteController* getPaletteController() { return palette_controller.get(); };
+    inline PaletteController* getPaletteController() { return palette_controller.get(); }
 	
 	/**
      * @return The PageController instance owned by this SymbolistHandler.

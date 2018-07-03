@@ -11,6 +11,7 @@
  */
 class CodeBoxComponent : public virtual Component,
 						 public virtual CodeDocument::Listener,
+						 public virtual Button::Listener,
 						 public virtual View<SymbolistModel, CodeBoxController>
 {
 
@@ -19,21 +20,8 @@ public:
 	/*****************************
 	 *       CONSTRUCTORS		 *
      *****************************/
-    CodeBoxComponent()
-    {
-        addAndMakeVisible( code_editor = new CodeEditorComponent (code_document, nullptr) );
-        code_editor->setLineNumbersShown( true );
-        Font newFont(code_editor->getFont());
-        newFont.setHeight(14.0f);
-		
-        code_editor->setFont(newFont);
-        code_document.addListener(this);
-    }
-    
-    ~CodeBoxComponent()
-    {
-    	code_document.removeListener(this);
-    }
+    CodeBoxComponent();
+    ~CodeBoxComponent();
 	
     /*********************************
 	 *       GETTERS & SETTERS		 *
@@ -41,6 +29,7 @@ public:
 	inline CodeEditorComponent* getCodeEditor() { return code_editor.get(); }
 	inline CodeDocument*		getCodeDocument() { return &code_document; }
 	const  string               getExpr();
+	inline bool					isContentSaved() { return content_saved; }
 	
 	/**
 	 * Checks if the attached symbol component posseses an /expr odot message.
@@ -63,18 +52,17 @@ public:
 	 **/
     void setSymbolComponent(BaseComponent* symbolComponent);
 	
-	/*************************************************
-	 *       CODE DOCUMENT LISTENER CALLBACKS		 *
-     *************************************************/
-     void codeDocumentTextInserted(const String &newText, int insertIndex) override;
-	 void codeDocumentTextDeleted(int startIndex, int endIndex) override;
+	/*********************************
+	 *       LISTENER CALLBACKS		 *
+     *********************************/
+	void codeDocumentTextInserted(const String &newText, int insertIndex) override;
+	void codeDocumentTextDeleted(int startIndex, int endIndex) override;
+	void buttonClicked(Button* button) override;
 	
-	
-	inline void resized() override
-    {
-        Rectangle<int> r (getLocalBounds().reduced (8));
-        code_editor->setBounds(r.withTrimmedTop (8));
-    }
+	/**********************
+	 *       LAYOUT       *
+	 **********************/
+	void resized() override;
 	
 	/* Overrides the update method inherited from the Observer class. */
     inline void update() override { }
@@ -82,8 +70,18 @@ public:
 private:
     CodeDocument                        code_document;
     ScopedPointer<CodeEditorComponent>  code_editor;
+	
+    TextButton							save_button;
+	bool 								content_saved = false;
+	
+    TextButton							hide_button;
     BaseComponent* 						symbol_component = NULL;
-    
+	
+    /*********************************
+	 *        LAYOUT PROPERTIES      *
+	 *********************************/
+	int button_height = 30;
+	
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CodeBoxComponent)
 };
 

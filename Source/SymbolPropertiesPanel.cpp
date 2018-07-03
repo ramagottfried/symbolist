@@ -2,6 +2,7 @@
 #include "OSCPropertyComponents.h"
 #include "InspectorComponent.h"
 #include "CallbackButtonPropertyComponent.hpp"
+#include "SymbolistMainComponent.h"
 
 SymbolPropertiesPanel::SymbolPropertiesPanel()
 {
@@ -16,7 +17,7 @@ SymbolPropertiesPanel::SymbolPropertiesPanel()
 	evaluate_bundle_button.addListener(this);
 	addAndMakeVisible(evaluate_bundle_button);
 	
-    change_callback_fn = std::bind( &SymbolPropertiesPanel::change_callback, this, std::placeholders::_1);
+    change_callback_fn = std::bind( &SymbolPropertiesPanel::propertyChanged, this, std::placeholders::_1);
     
     getLookAndFeel().setColour( PropertyComponent::backgroundColourId, Colours::transparentWhite );
     getLookAndFeel().setColour( PropertyComponent::labelTextColourId, Colours::black );
@@ -36,7 +37,7 @@ float SymbolPropertiesPanel::getPreferedHeight()
 	return title_offset + symbol_inspector.getTotalContentHeight() + buttonAndFormTotalHeight;
 }
 
-void SymbolPropertiesPanel::change_callback(const OdotMessage& msg)
+void SymbolPropertiesPanel::propertyChanged(const OdotMessage& msg)
 {
     Symbol* s = symbol_component->getScoreSymbol();
 	
@@ -79,7 +80,6 @@ void SymbolPropertiesPanel::buttonClicked(Button* button)
 	}
 	else throw logic_error("Click on an unknown button.");
 	
-	DEBUG_FULL("Add property button clicked." << endl)
 }
 
 void SymbolPropertiesPanel::createOSCview ()
@@ -89,8 +89,6 @@ void SymbolPropertiesPanel::createOSCview ()
     if ( symbol_component )
     {
         Symbol* symbol = symbol_component->getScoreSymbol();
-        // DEBUG_FULL("Retrieving pointer from component" << endl)
-        // s->print();
         
         if( !symbol )
             return;
@@ -100,7 +98,6 @@ void SymbolPropertiesPanel::createOSCview ()
         for ( auto msg : symbol->getMessageArray() )
         {
             const string& addr = msg.getAddress();
-			
 			
             // skipping subbundles for now! need to fix this
             
@@ -152,6 +149,20 @@ void SymbolPropertiesPanel::createOSCview ()
                 properties.add( new CallbackButtonPropertyComponent(addr, true, [this](){
                 	this->toggleCodeBox();
 				}) );
+				
+				/* If the code box is currently showing then associates
+				 * the inspected symbol component to the code box view (enables the code box editor).
+				 */
+				InspectorComponent* inspectorView = dynamic_cast<InspectorComponent*>(getParentComponent());
+				if (inspectorView != NULL)
+				{
+					SymbolistMainComponent* mainView = dynamic_cast<SymbolistMainComponent*>(inspectorView->getParentComponent());
+					if (mainView != NULL && mainView->getCodeBoxView() != NULL && mainView->getCodeBoxView()->isVisible())
+					{
+						mainView->getCodeBoxView()->setSymbolComponent(symbol_component);
+					}
+				}
+				
             }
            /* else if( addr == "lambda" )
             {

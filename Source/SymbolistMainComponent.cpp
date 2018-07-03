@@ -252,6 +252,7 @@ void SymbolistMainComponent::toggleCodeBox()
 	}
 	else
 	{
+	
 		float newMainComponentHeight = getHeight() - code_box_view.getHeight();
 		removeChildComponent(&code_box_view);
 		

@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string>
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -52,6 +53,17 @@ template <typename T>
 void printPoint(Point<T> point, const String &name = "point" )
 {
     DEBUG_INLINE(name << " " << point.getX() << " " << point.getY() << "\n")
+}
+
+template <typename T>
+string pointerToString(T* pointer)
+{
+	const void * address = static_cast<const void*>(pointer);
+	
+	stringstream ss;
+	ss << address;
+	
+	return ss.str();
 }
 
 #endif

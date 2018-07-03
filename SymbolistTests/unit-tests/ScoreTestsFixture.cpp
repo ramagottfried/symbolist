@@ -1,14 +1,14 @@
 #include "ScoreTestsFixture.hpp"
 #include "catch.hpp"
 
-TEST_CASE_METHOD(ScoreTestsFixture, "After creation, score_symbols, time_points and staves are of size zero.", "[model][score]")
+TEST_CASE_METHOD(ScoreTestsFixture, "After creation, score_symbols, time_points and staves are of size zero.", "[unit][model][score]")
 {
     REQUIRE(score->getSize() == 0);
     REQUIRE(score->getStaves().size() == 0);
     REQUIRE(score->getTimePoints()->getSymbolTimePoints().size() == 0);
 }
 
-TEST_CASE_METHOD(ScoreTestsFixture, "Symbols are well sorted in the score.", "[model][score]")
+TEST_CASE_METHOD(ScoreTestsFixture, "Symbols are well sorted in the score.", "[unit][model][score]")
 {
     Symbol* firstSymbol = score->createSymbol();
     Symbol* secondSymbol = score->createSymbol();
@@ -49,7 +49,7 @@ TEST_CASE_METHOD(ScoreTestsFixture, "Symbols are well sorted in the score.", "[m
     
 }
 
-TEST_CASE_METHOD(ScoreTestsFixture, "Symbols are well copied to the score.", "[model][score]")
+TEST_CASE_METHOD(ScoreTestsFixture, "Symbols are well copied to the score.", "[unit][model][score]")
 {
     // Creates a new symbol and adds messages to it.
     Symbol* symbol = new Symbol();
@@ -72,7 +72,7 @@ TEST_CASE_METHOD(ScoreTestsFixture, "Symbols are well copied to the score.", "[m
     
 }
 
-TEST_CASE_METHOD(ScoreTestsFixture, "Timepoints are well created when staff-linked symbol is added.", "[model][score]")
+TEST_CASE_METHOD(ScoreTestsFixture, "Timepoints are well created when staff-linked symbol is added.", "[unit][model][score]")
 {
     Symbol* staffSymbol = new Symbol();
     staffSymbol->setTypeXYWH("staff", 10.0, 10.0, 200.0, 200.0);
@@ -106,7 +106,7 @@ TEST_CASE_METHOD(ScoreTestsFixture, "Timepoints are well created when staff-link
     
 }
 
-TEST_CASE_METHOD(ScoreTestsFixture, "Symbols are well removed from the score.", "[model][score]")
+TEST_CASE_METHOD(ScoreTestsFixture, "Symbols are well removed from the score.", "[unit][model][score]")
 {
     SECTION("Score size decreases after symbol removal.")
     {

@@ -90,7 +90,7 @@ Symbol* Score::addSymbol(Symbol* symbol)
     DEBUG_FULL("checking for " << id << endl )
 
     if( id == "" )
-        DEBUG_FULL("possible error: this symbol has no id text " << endl )
+        DEBUG_FULL("The symbol " << symbol << " has no id text." << endl);
     
     auto iteratorToSymbol = find_if(score_symbols.begin(),
                                     score_symbols.end(),
@@ -373,7 +373,7 @@ void Score::importSymbols( const OdotBundle_s& s_bundle )
 			}
 	
 		}
-		else DEBUG_FULL("Message type is neither bundle nor string." << endl)
+		else DEBUG_FULL("Message type is neither bundle nor string." << endl);
 	
 	}
 	

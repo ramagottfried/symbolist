@@ -269,7 +269,8 @@ void SymbolGroupComponent::importFromSymbol( const Symbol &symbol )
 				count++;
 			}
 			else
-				DEBUG_FULL("Error importing subsymbol #" << count << endl)
+				DEBUG_FULL("Error importing subsymbol #" << to_string(count) << " of symbol group " << pointerToString(this) << "." << endl);
+			
 			
         }
     }

@@ -33,7 +33,7 @@ void StaffComponent::importFromSymbol( const Symbol &s )
 		addSubcomponent(c);
 	}
     else
-        DEBUG_FULL("Error importing staffSymbol " << endl)
+        DEBUG_FULL("Error importing staffSymbol " << endl);
         
 }
 
@@ -58,7 +58,7 @@ void StaffComponent::addSymbolMessages(Symbol* s)
 			
         }
         else
-            DEBUG_FULL("No subcomponent found" << endl)
+            DEBUG_FULL("No subcomponent found." << endl);
     }
     
 }

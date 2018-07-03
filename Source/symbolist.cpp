@@ -21,11 +21,11 @@ void* symbolistNew()
 
 void symbolistFree(void* symbolist_handler)
 {
-    std::cout << "Freeing and nulling void pointer " << symbolist_handler << std::endl;
+    DEBUG_FULL("Freeing and nulling void pointer " << symbolist_handler << endl);
     static_cast<SymbolistHandler*>(symbolist_handler)->symbolistAPI_freeSymbolist();
     
     symbolist_handler = nullptr;
-    std::cout << "void* now " << symbolist_handler << std::endl;
+    DEBUG_FULL("void* now " << symbolist_handler << endl);
 }
 
 void symbolistOpenWindow(void* symbolist_handler)

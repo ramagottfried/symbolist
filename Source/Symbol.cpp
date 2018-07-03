@@ -1,6 +1,5 @@
 #include "Symbol.h"
 
-
 float Symbol::m_pixels_to_time = 0.01f;
 float Symbol::m_time_to_pixels = 100.0f;
 

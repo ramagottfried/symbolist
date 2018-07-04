@@ -1,11 +1,9 @@
 #pragma once
 
 #include "SymbolistComponent.h"
-#include "MouseModeController.hpp"
 #include "View.hpp"
 
-class MouseModeComponent : public View<SymbolistModel, MouseModeController>,
-						   public SymbolistComponent {
+class MouseModeComponent : public SymbolistComponent {
 
 public:
     MouseModeComponent(){}
@@ -19,9 +17,6 @@ public:
     void drawString();
     
     bool hitTest (int x, int y) override { return false; }
-    
-    /* Overrides the update method inherited from the Observer class. */
-    virtual inline void update() override {}
     
 private:
     

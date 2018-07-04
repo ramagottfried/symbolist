@@ -2,10 +2,10 @@
 
 #include "TextGlyphComponent.h"
 #include "View.hpp"
-#include "TimeDisplayController.hpp"
 
-class TimeDisplayComponent : public virtual TextGlphComponent,
-							 public virtual View<SymbolistModel, TimeDisplayController > {
+
+class TimeDisplayComponent : public virtual TextGlphComponent
+{
 	
 public:
     TimeDisplayComponent()
@@ -15,12 +15,7 @@ public:
     
     inline ~TimeDisplayComponent() {}
     
-    inline void setTime( float t )
-    {
-        m_time = t;
-        m_time_str = "t = " + (String)getSymbolistHandler()->getCurrentTime();
-        updateText( m_time_str );
-    }
+    void setTime( float t );
     
     inline void toggleView()
     {
@@ -30,9 +25,6 @@ public:
     }
     
     inline bool hitTest (int x, int y) override { return false; }
-	
-	/* Overrides the update method inherited from the Observer class. */
-    virtual inline void update() override {}
 	
 private:
 	String m_time_str = "t = 0";

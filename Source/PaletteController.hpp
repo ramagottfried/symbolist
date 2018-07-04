@@ -21,16 +21,9 @@ public:
     PaletteController();
     
     /**
-     * PaletteController's with model and view passed as arguments.
-     */
-    PaletteController(SymbolistModel* model, PaletteComponent* view);
-    
-    /**
      * PaletteController's default destructor.
      */
-    virtual inline ~PaletteController() override
-    {
-    };
+    virtual inline ~PaletteController() override {};
     
     /**
      * Calls the makeComponentFromSymbol method of the parent controller,

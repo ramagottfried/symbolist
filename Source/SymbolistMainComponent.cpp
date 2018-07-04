@@ -13,8 +13,6 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
     setController(mainController);
     palette_view.setController(getController()->getPaletteController());
     score_view.setController(getController()->getPageController());
-	mouse_mode_view.setController(getController()->getMouseModeController());
-	time_display_view.setController(getController()->getTimeDisplayController());
 	inspector_view.setController(getController()->getInspectorController());
 	code_box_view.setController(getController()->getCodeBoxController());
 	
@@ -25,8 +23,6 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
     setModel(getController()->getModel());
     palette_view.setModel(getModel());
     score_view.setModel(getModel());
-    mouse_mode_view.setModel(getModel());
-	time_display_view.setModel(getModel());
     inspector_view.setModel(getModel());
     code_box_view.setModel(getModel());
 	
@@ -36,8 +32,6 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
     getModel()->attach(this);
     getModel()->attach(&palette_view);
     getModel()->attach(&score_view);
-    getModel()->attach(&mouse_mode_view);
-    getModel()->attach(&time_display_view);
     getModel()->attach(&inspector_view);
     getModel()->attach(&code_box_view);
     
@@ -80,8 +74,6 @@ SymbolistMainComponent::~SymbolistMainComponent()
      * from the SymbolistModel's observers list.
      */
     getModel()->detach(&inspector_view);
-    getModel()->detach(&time_display_view);
-    getModel()->detach(&mouse_mode_view);
 	getModel()->detach(&palette_view);
     getModel()->detach(&score_view);
     getModel()->detach(this);
@@ -252,7 +244,6 @@ void SymbolistMainComponent::toggleCodeBox()
 	}
 	else
 	{
-	
 		float newMainComponentHeight = getHeight() - code_box_view.getHeight();
 		removeChildComponent(&code_box_view);
 		

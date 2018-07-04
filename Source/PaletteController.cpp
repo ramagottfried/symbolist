@@ -7,12 +7,6 @@ PaletteController::PaletteController()
     
 }
 
-PaletteController::PaletteController(SymbolistModel* model, PaletteComponent* view)
-{
-    setModel(model);
-    setView(view);
-}
-
 BaseComponent* PaletteController::makeComponentFromSymbol(Symbol* s, bool attach_the_symbol)
 {
     SymbolistHandler* parentController = dynamic_cast<SymbolistHandler*>(getParentController());

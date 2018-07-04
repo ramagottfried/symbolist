@@ -14,7 +14,8 @@
  * 	- the score bundle tab, presenting all symbols of the score in a JSON format.
  */
 class InspectorComponent : public virtual TabbedComponent,
-						   public virtual View<SymbolistModel, InspectorController > {
+						   public virtual View<SymbolistModel, InspectorController >
+{
 	
 public:
     /**************************************************

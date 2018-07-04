@@ -3,7 +3,6 @@
 #include "JuceHeader.h"
 #include "PaletteController.hpp"
 #include "PageController.hpp"
-#include "MouseModeController.hpp"
 #include "InspectorController.hpp"
 #include "TimeDisplayController.hpp"
 #include "SymbolistModel.hpp"
@@ -58,7 +57,7 @@ public:
     /**
      * @return The PaletteController instance owned by this SymbolistHandler.
      */
-    inline PaletteController* getPaletteController() { return palette_controller.get(); }
+    inline PaletteController* getPaletteController() { return palette_controller.get(); };
 	
 	/**
      * @return The PageController instance owned by this SymbolistHandler.
@@ -66,19 +65,9 @@ public:
     inline PageController* getPageController() { return page_controller.get(); }
 	
 	/**
-     * @return The MouseModeController instance owned by this SymbolistHandler.
-     */
-    inline MouseModeController* getMouseModeController() { return mouse_mode_controller.get(); }
-	
-	/**
      * @return The InspectorController instance owned by this SymbolistHandler.
      */
     inline InspectorController* getInspectorController() { return inspector_controller.get(); }
-	
-    /**
-     * @return The TimeDisplayController instance owned by this SymbolistHandler.
-     */
-    inline TimeDisplayController* getTimeDisplayController() { return time_display_controller.get(); }
 	
 	/**
      * @return The CodeBoxController instance owned by this SymbolistHandler.
@@ -112,22 +101,10 @@ public:
     void createPageController();
 	
 	/**
-     * Creates and sets up the MouseModeController
-     * for this instance of SymbolistHandler.
-     */
-    void createMouseModeController();
-	
-	/**
      * Creates and sets up the InspectorController
      * for this instance of SymbolistHandler.
      */
     void createInspectorController();
-	
-    /**
-     * Creates and sets up the TimeDisplayController
-     * for this instance of SymbolistHandler.
-     */
-    void createTimeDisplayController();
 	
 	/**
      * Creates and sets up the CodeBoxController
@@ -304,21 +281,11 @@ private:
      * A Controller to handle score-related actions.
      */
     unique_ptr<PageController >        page_controller;
-	
-	/**
-     * A Controller to handle mouse mode messages.
-     */
-    unique_ptr<MouseModeController >   mouse_mode_controller;
-	
+
 	/**
      * A Controller to handle inspector-related actions.
      */
     unique_ptr<InspectorController >   inspector_controller;
-	
-	/**
-     * A Controller to handle time display messages.
-     */
-    unique_ptr<TimeDisplayController > time_display_controller;
 	
     /**
      * A Controller to handle actions related to the odot expressions

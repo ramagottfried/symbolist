@@ -22,8 +22,14 @@ void MouseModeComponent::drawString()
     {
         m_str = " draw " ;
 		
-		if (getModel()->getPalette()->getSelectedSymbol() != NULL)
-        	m_str += String(getModel()->getPalette()->getSelectedSymbol()->getType());
+		SymbolistMainComponent* mainView = dynamic_cast<SymbolistMainComponent*>(getParentComponent());
+		Symbol* selectedSymbol = NULL;
+		
+		if (mainView != NULL)
+			selectedSymbol = mainView->getModel()->getPalette()->getSelectedSymbol();
+		
+		if (selectedSymbol != NULL)
+        	m_str += String(selectedSymbol->getType());
 		else m_str += "unknown ";
     }
     else

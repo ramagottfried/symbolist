@@ -24,9 +24,7 @@ SymbolistHandler::SymbolistHandler()
     // Creates the child controllers.
 	createPaletteController();
     createPageController();
-    createMouseModeController();
     createInspectorController();
-    createTimeDisplayController();
     createCodeBoxController();
 	
     /* Adds the SymbolistHandler instance and
@@ -35,9 +33,7 @@ SymbolistHandler::SymbolistHandler()
     getModel()->attach(this);
     getModel()->attach(palette_controller.get());
     getModel()->attach(page_controller.get());
-    getModel()->attach(mouse_mode_controller.get());
 	getModel()->attach(inspector_controller.get());
-	getModel()->attach(time_display_controller.get());
 	getModel()->attach(code_box_controller.get());
 	
 }
@@ -74,16 +70,6 @@ void SymbolistHandler::createPageController()
     page_controller->setModel(getModel());
 }
 
-void SymbolistHandler::createMouseModeController()
-{
-    /* Creates the mouse_mode_controller and sets its model
-     * and parent controller.
-     */
-    mouse_mode_controller = unique_ptr<MouseModeController>(new MouseModeController());
-    mouse_mode_controller->setParentController(this);
-    mouse_mode_controller->setModel(getModel());
-}
-
 void SymbolistHandler::createInspectorController()
 {
 	/* Creates the mouse_mode_controller and sets its model
@@ -92,16 +78,6 @@ void SymbolistHandler::createInspectorController()
     inspector_controller = unique_ptr<InspectorController >(new InspectorController());
     inspector_controller->setParentController(this);
     inspector_controller->setModel(getModel());
-}
-
-void SymbolistHandler::createTimeDisplayController()
-{
-	/* Creates the time_display_controller and sets its model
-     * and parent controller.
-     */
-    time_display_controller = unique_ptr<TimeDisplayController >(new TimeDisplayController());
-    time_display_controller->setParentController(this);
-    time_display_controller->setModel(getModel());
 }
 
 void SymbolistHandler::createCodeBoxController()
@@ -148,9 +124,7 @@ void SymbolistHandler::symbolistAPI_openWindow()
     setView(main_window->getMainComponent());
     palette_controller->setView(getView()->getPaletteView());
     page_controller->setView(getView()->getScoreView());
-	mouse_mode_controller->setView(getView()->getMouseModeView());
 	inspector_controller->setView(getView()->getInspectorView());
-	time_display_controller->setView(getView()->getTimeDisplayView());
 	
     // Populates palette and gives focus to the main view.
     page_controller->addComponentsFromScore();
@@ -173,9 +147,7 @@ void SymbolistHandler::symbolistAPI_closeWindow()
 	setView(NULL);
 	palette_controller->setView(NULL);
 	page_controller->setView(NULL);
-	mouse_mode_controller->setView(NULL);
 	inspector_controller->setView(NULL);
-	time_display_controller->setView(NULL);
 	
 }
 

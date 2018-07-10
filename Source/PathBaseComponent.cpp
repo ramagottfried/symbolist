@@ -1036,25 +1036,25 @@ void PathBaseComponent::scaleScoreComponent(float scaledWidthRatio, float scaled
         cout << "scale_w " << scaledWidthRatio << " scale_h " << scaledHeightRatio << endl;
         cout << "target w " << scaledWidthRatio * getWidth() << " target h " << scaledHeightRatio * getHeight() << endl;
         
-        float sw = 2.0 * stroke_type.getStrokeThickness();
+        float strokeWidth = 2.0 * stroke_type.getStrokeThickness();
         
         // cout << "target w- " << scale_w * getWidth() - sw << " target h- " << scale_h * getHeight() - sw << endl;
 
         
-        float new_w = round( scaledWidthRatio * getWidth() );
-        float new_h = round( scaledHeightRatio * getHeight() );
-        float new_path_w = round(new_w - sw);
-        float new_path_h = round(new_h - sw);
+        float newWidth = round( scaledWidthRatio * getWidth() );
+        float newHeight = round( scaledHeightRatio * getHeight() );
+        float newPathWidth = round(newWidth - strokeWidth);
+        float newPathHeight = round(newHeight - strokeWidth);
         
-        if( new_path_w < 1 ) new_path_w = 1;
-        if( new_path_h < 1 ) new_path_h = 1;
+        if( newPathWidth < 1 ) newPathWidth = 1;
+        if( newPathHeight < 1 ) newPathHeight = 1;
         
-        float adj_scale_w = (new_path_w / (m_path_bounds.getWidth()  == 0 ? 1 : m_path_bounds.getWidth() ) );
-        float adj_scale_h = (new_path_h / (m_path_bounds.getHeight() == 0 ? 1 : m_path_bounds.getHeight()) );
+        float adj_scale_w = (newPathWidth / (m_path_bounds.getWidth()  == 0 ? 1 : m_path_bounds.getWidth() ) );
+        float adj_scale_h = (newPathHeight / (m_path_bounds.getHeight() == 0 ? 1 : m_path_bounds.getHeight()) );
         
         printRect(m_path_bounds, "1 m_path_bounds");
 
-        cout << "new_path wh " << new_path_w << " " << new_path_h << " sw " << sw << endl;
+        cout << "new_path wh " << newPathWidth << " " << newPathHeight << " sw " << strokeWidth << endl;
         cout << "adj scale " << adj_scale_w << " " << adj_scale_h << endl;
         
         Path m_path = mergePathArray();
@@ -1074,10 +1074,10 @@ void PathBaseComponent::scaleScoreComponent(float scaledWidthRatio, float scaled
         
         printRect(m_path_bounds, "3 m_path_bounds");
 
-        cout << "new size " << new_w << " " << new_h << endl;
+        cout << "new size " << newWidth << " " << newHeight << endl;
         auto temp = in_edit_mode;
         in_edit_mode = true;
-        setSize(new_w, new_h );
+        setSize(newWidth, newHeight);
         // printRect(symbol_bounds.toNearestInt() + getPosition(), "new symb bounds");
         in_edit_mode = temp;
 

@@ -34,6 +34,7 @@ class ScoreComponent : public SymbolistComponent {
 public:
     
     ScoreComponent();
+    ScoreComponent(ScoreComponent* componentToCopy);
     ~ScoreComponent();
 	
 	/************************************
@@ -42,6 +43,7 @@ public:
 	inline bool isSelected() { return is_selected; }
 	inline Array<ScoreComponent* >& getSelectedItems() { return selected_components; }
 	inline Array<ScoreComponent* >* getSubcomponents() { return &subcomponents; }
+	inline EditSelectionBox* getEditSelectionBox() { return selection_box.get(); }
 	
 	/****************************************
 	 *          SUBCOMPONENTS METHODS       *
@@ -120,12 +122,12 @@ public:
 	
 protected:
 	
+	ScopedPointer<EditSelectionBox > selection_box;
+	SymbolistLasso                   s_lasso;
+	
 	bool                             is_selected = false;
 	Array<ScoreComponent* >          subcomponents;
     Array<ScoreComponent* >          selected_components;
-	
-	ScopedPointer<EditSelectionBox > sel_resize_box;
-	SymbolistLasso                   s_lasso;
 	
     void beginLassoSelection(Point<int> position);
     void dragLassoSelection(Point<int> position);

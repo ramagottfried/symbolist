@@ -12,11 +12,14 @@ class PageComponent; // forward declaration of subclass
 class SymbolistComponent : public Component {
 
 public:
+
+	SymbolistComponent() = default;
+	SymbolistComponent(SymbolistComponent* componentToCopy);
     virtual string getSymbolTypeStr() const { return string(" ??? "); } ; // every component defines its type
 
-    virtual PageComponent* getPageComponent();
+    virtual PageComponent*    getPageComponent();
     virtual SymbolistHandler* getSymbolistHandler();
-    SymbolistMainComponent* getMainComponent();
+    SymbolistMainComponent*   getMainComponent();
     
     UI_EditType getMainMouseMode();
     UI_DrawType getMainDrawMode();
@@ -24,11 +27,10 @@ public:
     virtual void setEditMode(bool val) {}
     virtual bool isInEditMode() { return false; }
 	
-    virtual inline void setSymbolComponentColor(Colour c) { sym_color = c; }
+    virtual inline void setSymbolComponentColor(Colour c) { symbol_color = c; }
 	
 protected :
-    
-    Colour sym_color = Colours::black;
+    Colour symbol_color = Colours::black;
 	
 };
 

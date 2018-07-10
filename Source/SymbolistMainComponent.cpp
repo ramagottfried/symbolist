@@ -6,7 +6,8 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
     DEBUG_FULL("Instance address: " << this << endl)
     setComponentID("MainComponent");
 	
-    /* Sets the corresponding controllers for this
+    /*
+     * Sets the corresponding controllers for this
      * instance of SymbolistMainComponent and all
      * its child views.
      */
@@ -26,7 +27,8 @@ SymbolistMainComponent::SymbolistMainComponent(SymbolistHandler* mainController)
     inspector_view.setModel(getModel());
     code_box_view.setModel(getModel());
 	
-    /* Adds this SymbolistMainComponent instance and
+    /*
+     * Adds this SymbolistMainComponent instance and
      * its child components as observers of the model.
      */
     getModel()->attach(this);
@@ -212,9 +214,9 @@ void SymbolistMainComponent::toggleInspector()
     else
     {
     	float newMainComponentWidth = getWidth() - inspector_view.getWidth();
-        removeChildComponent(&inspector_view);
 		
-		inspector_view.setVisible(false);
+    	inspector_view.setVisible(false);
+        removeChildComponent(&inspector_view);
 		
 		setSize(newMainComponentWidth, getHeight());
 		

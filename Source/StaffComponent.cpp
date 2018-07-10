@@ -148,7 +148,7 @@ void StaffComponent::paint(Graphics& g)
 			auto& timePointArray = getPageComponent()
 										->getModel()
 										->getScore()
-										->getTimePointArray().getConstSymbolTimePoints();
+										->getTimePoints()->getConstSymbolTimePoints();
 			
 			float startTime = getScoreSymbol()->getTime();
 			float endTime = startTime + getScoreSymbol()->getDuration();

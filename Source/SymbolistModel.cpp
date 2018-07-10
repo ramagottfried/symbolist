@@ -34,4 +34,12 @@ void SymbolistModel::addSymbolToPalette(Symbol symbol)
     notify();
 }
 
+void SymbolistModel::updateExprInSymbol(Symbol* symbol, string newExpression)
+{
+	if (symbol != NULL && symbol->get_o_ptr() != NULL)
+	{
+		symbol->addMessage("/expr", newExpression);
+		notify();
+	}
+}
 

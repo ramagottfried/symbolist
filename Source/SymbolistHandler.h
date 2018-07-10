@@ -4,7 +4,6 @@
 #include "PaletteController.hpp"
 #include "PageController.hpp"
 #include "InspectorController.hpp"
-#include "TimeDisplayController.hpp"
 #include "SymbolistModel.hpp"
 #include <iostream>
 #include <memory>
@@ -72,7 +71,7 @@ public:
 	/**
      * @return The CodeBoxController instance owned by this SymbolistHandler.
      */
-    inline CodeBoxController*	  getCodeBoxController() { return code_box_controller.get(); }
+    inline CodeBoxController* getCodeBoxController() { return code_box_controller.get(); }
 	
 	/**
 	 * @return The current playtime in milliseconds.
@@ -232,7 +231,7 @@ public:
 	/*********************************************
      *           UNDO/REDO COMMAND METHODS       *
      *********************************************/
-    void log_score_change();
+    void scoreChanged();
     void push_undo_stack();
     void push_redo_stack();
     
@@ -327,6 +326,7 @@ private:
 	
     OwnedArray<Score> undo_stack;
     OwnedArray<Score> redo_stack;
+	
     bool in_standalone = false;
 	
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolistHandler)

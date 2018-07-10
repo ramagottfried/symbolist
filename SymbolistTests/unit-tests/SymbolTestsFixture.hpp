@@ -1,10 +1,3 @@
-//
-//  SymbolTestsFixture.hpp
-//  symbolist - Dynamic Library
-//
-//  Created by Vincent Iampietro on 20/04/2018.
-//
-
 #ifndef SymbolTestsFixture_hpp
 #define SymbolTestsFixture_hpp
 

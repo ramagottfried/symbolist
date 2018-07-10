@@ -6,164 +6,128 @@
 #include "JuceHeader.h"
 #include "PathHandleComponent.h"
 #include "Symbol.h"
+#include "Zone.hpp"
 
-// adapted from JUCE ResizableBoarderComponent
+/**
+ * Creates a resizer.
+ *
+ * Adapted from JUCE ResizableBoarderComponent.
+ *
+ * Pass in the target component which you want to be resized when this one is
+ * dragged.
+ *
+ * The target component will usually be a parent of the resizer component, but this
+ * isn't mandatory.
+ *
+ * Remember that when the target component is resized, it'll need to move and
+ * resize this component to keep it in place, as this won't happen automatically.
+ *
+ * If the constrainer parameter is not a nullptr, then this object will be used to
+ * enforce limits on the size and position that the component can be stretched to.
+ * Make sure that the constrainer isn't deleted while still in use by this object.
+ *
+ * @see ComponentBoundsConstrainer
+ */
 class EditSelectionBox  : public Component {
 
 public:
-    //==============================================================================
-    /** Creates a resizer.
-     
-     Pass in the target component which you want to be resized when this one is
-     dragged.
-     
-     The target component will usually be a parent of the resizer component, but this
-     isn't mandatory.
-     
-     Remember that when the target component is resized, it'll need to move and
-     resize this component to keep it in place, as this won't happen automatically.
-     
-     If the constrainer parameter is not a nullptr, then this object will be used to
-     enforce limits on the size and position that the component can be stretched to.
-     Make sure that the constrainer isn't deleted while still in use by this object.
-     
-     @see ComponentBoundsConstrainer
-     */
-    EditSelectionBox (Array<ScoreComponent*>* const selected_component_array );
-
-    ~EditSelectionBox();
 	
-    void setBorderThickness (const BorderSize<int>& newBorderSize);
-    
+    EditSelectionBox (Array<ScoreComponent*>* const selected_component_array );
+    ~EditSelectionBox();
+
+	/*******************************
+	 *       GETTERS & SETTERS     *
+	 *******************************/
+	inline Array<ScoreComponent* >* getComponentSet() { return component_set; }
+	
+    void setBorderThickness (const BorderSize<int>& newborder_size);
     BorderSize<int> getBorderThickness() const;
     
-    
-    //==============================================================================
-    /** Represents the different sections of a resizable border, which allow it to
-     resized in different ways.
-     */
-    class Zone
-    {
-    public:
-        //==============================================================================
-        enum Zones
-        {
-            centre  = 0,
-            left    = 1,
-            top     = 2,
-            right   = 4,
-            bottom  = 8
-        };
-        
-        //==============================================================================
-        /** Creates a Zone from a combination of the flags in \enum Zones. */
-        explicit Zone (int zoneFlags) noexcept;
-        
-        Zone() noexcept;
-        Zone (const Zone&) noexcept;
-        Zone& operator= (const Zone&) noexcept;
-        
-        bool operator== (const Zone&) const noexcept;
-        bool operator!= (const Zone&) const noexcept;
-        
-        //==============================================================================
-        /** Given a point within a rectangle with a resizable border, this returns the
-         zone that the point lies within.
-         */
-        static Zone fromPositionOnBorder (const Rectangle<int>& totalSize,
-                                          const BorderSize<int>& border,
-                                          Point<int> position);
-        
-        /** Returns an appropriate mouse-cursor for this resize zone. */
-        MouseCursor getMouseCursor() const noexcept;
-        
-        /** Returns true if dragging this zone will move the enire object without resizing it. */
-        bool isDraggingWholeObject() const noexcept     { return zone == centre; }
-        /** Returns true if dragging this zone will move the object's left edge. */
-        bool isDraggingLeftEdge() const noexcept        { return (zone & left) != 0; }
-        /** Returns true if dragging this zone will move the object's right edge. */
-        bool isDraggingRightEdge() const noexcept       { return (zone & right) != 0; }
-        /** Returns true if dragging this zone will move the object's top edge. */
-        bool isDraggingTopEdge() const noexcept         { return (zone & top) != 0; }
-        /** Returns true if dragging this zone will move the object's bottom edge. */
-        bool isDraggingBottomEdge() const noexcept      { return (zone & bottom) != 0; }
-        
-        /** Resizes this rectangle by the given amount, moving just the edges that this zone
-         applies to.
-         */
-        template <typename ValueType>
-        Rectangle<ValueType> resizeRectangleBy (Rectangle<ValueType> original,
-                                                const Point<ValueType>& distance) const noexcept;
-                
-        /** Returns the raw flags for this zone. */
-        int getZoneFlags() const noexcept               { return zone; }
-        
-    private:
-        //==============================================================================
-        int zone;
-    };
-    
     /** Returns the zone in which the mouse was last seen. */
-    Zone getCurrentZone() const noexcept                 { return mouseZone; }
+    Zone getCurrentZone() const noexcept                 { return mouse_zone; }
     
     void updateEditSelBox();
     Rectangle<int> getSelectionBounds();
     Rectangle<int> getPreviewBounds();
 
-    void flipSelectedSymbols( int axis );
-
+	/*************************************
+	 *       ROTATE & RESIZE METHODS     *
+	 *************************************/
+    void createPreviewComponents( const MouseEvent& e );
+    void rotatePreviewComponents( Point<int> mousePosition );
+    void resizePreviewComponents( Point<int> mouseDelta );
+	
+	void rotateComponentSet();
+	void resizeComponentSet();
+	
+	void flipSelectedSymbols( int axis );
+	
 protected:
-    void paint (Graphics&) override;
+	/*****************************
+	 *       MOUSE CALLBACKS     *
+	 *****************************/
     void mouseEnter (const MouseEvent&) override;
     void mouseMove (const MouseEvent&) override;
     void mouseDown (const MouseEvent&) override;
     void mouseDrag (const MouseEvent&) override;
     void mouseUp (const MouseEvent&) override;
+    
     bool hitTest (int x, int y) override;
-    
+    void paint (Graphics&) override;
+	
 private:
-    Array<ScoreComponent* >  *component_set;
-    
-    OwnedArray<Symbol > original_symbols;
-    
-    class PreviewComp {
+	
+	/**
+	 * Stores an original and a copy version of a BaseComponent.
+	 */
+    class PreviewComponent {
     
     public:
-        PreviewComp(BaseComponent* newc, BaseComponent* src )
+        PreviewComponent(BaseComponent* newc, BaseComponent* src )
         {
             copy = newc;
-            org = src;
+            original = src;
         }
         
-        ~PreviewComp(){}
+        ~PreviewComponent(){}
         
         BaseComponent* copy;
-        BaseComponent* org;
+        BaseComponent* original;
         
     private:
-        JUCE_LEAK_DETECTOR( PreviewComp )
+        JUCE_LEAK_DETECTOR( PreviewComponent )
 
     };
-    
-    OwnedArray<PreviewComp > preview_components;
-    Array<ScoreComponent* > non_preview_components;
 	
-    BorderSize<int> borderSize;
-
-    Zone mouseZone;
-    Point<int> prev_pos;
-    float m_prev_theta = -111;
-    float m_accum_theta = 0;
-    
-    Rectangle<int> original_bounds;
-    
+	/** Components selected by this EditSelectionBox instance. */
+    Array<ScoreComponent* >*      component_set = NULL;
+	
+    /** Symbols used to create preview components. */
+    OwnedArray<Symbol >           original_symbols;
+	
+    /** Components used to preview the changes applied to the selected components. */
+    OwnedArray<PreviewComponent > preview_components;
+	
+    /** Elements of component_set which are not of type BaseComponent. */
+    Array<ScoreComponent* >       non_preview_components;
+	
+	/*******************************
+	 *       LAYOUT  VARIABLES     *
+	 *******************************/
+    BorderSize<int> border_size;
+	Rectangle<int>  original_bounds;
+    Point<int>      previous_position;
+    float           previous_theta = -111;
+    float           accumulation_theta = 0;
+    Zone       		mouse_zone;
+	
     void updateMouseZone (const MouseEvent&);
 
-    int m_minw = 2;
-    int m_minh = 2;
+    int min_width = 2;
+    int min_height = 2;
     
-    float m_scale_w = 1.0;
-    float m_scale_h = 1.0;
+    float scale_width = 1.0;
+    float scale_height = 1.0;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EditSelectionBox)
 };

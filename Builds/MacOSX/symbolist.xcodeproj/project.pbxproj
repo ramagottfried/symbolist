@@ -389,6 +389,35 @@
 		75987CF220D81A0500EDE4F9 /* CallbackButtonPropertyComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75987CEC20D81A0500EDE4F9 /* CallbackButtonPropertyComponent.cpp */; };
 		75987CF320D81A0500EDE4F9 /* CallbackButtonPropertyComponent.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 75987CED20D81A0500EDE4F9 /* CallbackButtonPropertyComponent.hpp */; };
 		75987CF420D81A0500EDE4F9 /* CallbackButtonPropertyComponent.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 75987CED20D81A0500EDE4F9 /* CallbackButtonPropertyComponent.hpp */; };
+		75A83DF620F4BEE000A2963F /* ScoreComponentTestsFixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75A83DF020F4BEE000A2963F /* ScoreComponentTestsFixture.cpp */; };
+		75AEFCAB20EF7F0F00728E1A /* Invoker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75AEFCA920EF7F0F00728E1A /* Invoker.cpp */; };
+		75AEFCAC20EF7F0F00728E1A /* Invoker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75AEFCA920EF7F0F00728E1A /* Invoker.cpp */; };
+		75AEFCAD20EF7F0F00728E1A /* Invoker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75AEFCA920EF7F0F00728E1A /* Invoker.cpp */; };
+		75AEFCAE20EF7F0F00728E1A /* Invoker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75AEFCA920EF7F0F00728E1A /* Invoker.cpp */; };
+		75AEFCAF20EF7F0F00728E1A /* Invoker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75AEFCA920EF7F0F00728E1A /* Invoker.cpp */; };
+		75AEFCB020EF7F0F00728E1A /* Invoker.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 75AEFCAA20EF7F0F00728E1A /* Invoker.hpp */; };
+		75AEFCB120EF7F0F00728E1A /* Invoker.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 75AEFCAA20EF7F0F00728E1A /* Invoker.hpp */; };
+		75AEFCB420EF998900728E1A /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75AEFCB220EF998900728E1A /* Command.cpp */; };
+		75AEFCB520EF998900728E1A /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75AEFCB220EF998900728E1A /* Command.cpp */; };
+		75AEFCB620EF998900728E1A /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75AEFCB220EF998900728E1A /* Command.cpp */; };
+		75AEFCB720EF998900728E1A /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75AEFCB220EF998900728E1A /* Command.cpp */; };
+		75AEFCB820EF998900728E1A /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75AEFCB220EF998900728E1A /* Command.cpp */; };
+		75AEFCB920EF998900728E1A /* Command.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 75AEFCB320EF998900728E1A /* Command.hpp */; };
+		75AEFCBA20EF998900728E1A /* Command.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 75AEFCB320EF998900728E1A /* Command.hpp */; };
+		75AEFCBD20EF9D3500728E1A /* CreateSymbolCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75AEFCBB20EF9D3500728E1A /* CreateSymbolCommand.cpp */; };
+		75AEFCBE20EF9D3500728E1A /* CreateSymbolCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75AEFCBB20EF9D3500728E1A /* CreateSymbolCommand.cpp */; };
+		75AEFCBF20EF9D3500728E1A /* CreateSymbolCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75AEFCBB20EF9D3500728E1A /* CreateSymbolCommand.cpp */; };
+		75AEFCC020EF9D3500728E1A /* CreateSymbolCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75AEFCBB20EF9D3500728E1A /* CreateSymbolCommand.cpp */; };
+		75AEFCC120EF9D3500728E1A /* CreateSymbolCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75AEFCBB20EF9D3500728E1A /* CreateSymbolCommand.cpp */; };
+		75AEFCC220EF9D3500728E1A /* CreateSymbolCommand.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 75AEFCBC20EF9D3500728E1A /* CreateSymbolCommand.hpp */; };
+		75AEFCC320EF9D3500728E1A /* CreateSymbolCommand.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 75AEFCBC20EF9D3500728E1A /* CreateSymbolCommand.hpp */; };
+		75AEFCC620F3B5A900728E1A /* Zone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75AEFCC420F3B5A900728E1A /* Zone.cpp */; };
+		75AEFCC720F3B5A900728E1A /* Zone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75AEFCC420F3B5A900728E1A /* Zone.cpp */; };
+		75AEFCC820F3B5A900728E1A /* Zone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75AEFCC420F3B5A900728E1A /* Zone.cpp */; };
+		75AEFCC920F3B5A900728E1A /* Zone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75AEFCC420F3B5A900728E1A /* Zone.cpp */; };
+		75AEFCCA20F3B5A900728E1A /* Zone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75AEFCC420F3B5A900728E1A /* Zone.cpp */; };
+		75AEFCCB20F3B5A900728E1A /* Zone.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 75AEFCC520F3B5A900728E1A /* Zone.hpp */; };
+		75AEFCCC20F3B5A900728E1A /* Zone.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 75AEFCC520F3B5A900728E1A /* Zone.hpp */; };
 		75B86ECB20E24D8C0080DB3D /* CodeBoxController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75B86EC920E24D8C0080DB3D /* CodeBoxController.cpp */; };
 		75B86ECC20E24D8C0080DB3D /* CodeBoxController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75B86EC920E24D8C0080DB3D /* CodeBoxController.cpp */; };
 		75B86ECD20E24D8C0080DB3D /* CodeBoxController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75B86EC920E24D8C0080DB3D /* CodeBoxController.cpp */; };
@@ -665,6 +694,16 @@
 		758F6EF8207BC2C1006EDD53 /* SymbolistModelTestsFixture.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SymbolistModelTestsFixture.hpp; sourceTree = "<group>"; };
 		75987CEC20D81A0500EDE4F9 /* CallbackButtonPropertyComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CallbackButtonPropertyComponent.cpp; path = ../../Source/CallbackButtonPropertyComponent.cpp; sourceTree = "<group>"; };
 		75987CED20D81A0500EDE4F9 /* CallbackButtonPropertyComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = CallbackButtonPropertyComponent.hpp; path = ../../Source/CallbackButtonPropertyComponent.hpp; sourceTree = "<group>"; };
+		75A83DF020F4BEE000A2963F /* ScoreComponentTestsFixture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreComponentTestsFixture.cpp; path = ../../Source/ScoreComponentTestsFixture.cpp; sourceTree = "<group>"; };
+		75A83DF120F4BEE000A2963F /* ScoreComponentTestsFixture.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = ScoreComponentTestsFixture.hpp; path = ../../Source/ScoreComponentTestsFixture.hpp; sourceTree = "<group>"; };
+		75AEFCA920EF7F0F00728E1A /* Invoker.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Invoker.cpp; path = ../../Source/Invoker.cpp; sourceTree = "<group>"; };
+		75AEFCAA20EF7F0F00728E1A /* Invoker.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = Invoker.hpp; path = ../../Source/Invoker.hpp; sourceTree = "<group>"; };
+		75AEFCB220EF998900728E1A /* Command.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Command.cpp; path = ../../Source/Command.cpp; sourceTree = "<group>"; };
+		75AEFCB320EF998900728E1A /* Command.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = Command.hpp; path = ../../Source/Command.hpp; sourceTree = "<group>"; };
+		75AEFCBB20EF9D3500728E1A /* CreateSymbolCommand.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CreateSymbolCommand.cpp; path = ../../Source/CreateSymbolCommand.cpp; sourceTree = "<group>"; };
+		75AEFCBC20EF9D3500728E1A /* CreateSymbolCommand.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = CreateSymbolCommand.hpp; path = ../../Source/CreateSymbolCommand.hpp; sourceTree = "<group>"; };
+		75AEFCC420F3B5A900728E1A /* Zone.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Zone.cpp; path = ../../Source/Zone.cpp; sourceTree = "<group>"; };
+		75AEFCC520F3B5A900728E1A /* Zone.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = Zone.hpp; path = ../../Source/Zone.hpp; sourceTree = "<group>"; };
 		75B86EC920E24D8C0080DB3D /* CodeBoxController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CodeBoxController.cpp; path = ../../Source/CodeBoxController.cpp; sourceTree = "<group>"; };
 		75B86ECA20E24D8C0080DB3D /* CodeBoxController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = CodeBoxController.hpp; path = ../../Source/CodeBoxController.hpp; sourceTree = "<group>"; };
 		75FB5EED207CA5850083A1C0 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
@@ -1020,6 +1059,7 @@
 				118353451F26AD0600DB1DF5 /* SymbolistLookAndFeel.hpp */,
 				7571E706208DECEC0092A3E0 /* child-views */,
 				11CE00151EC3231E00E4F624 /* score-components */,
+				75AEFCA820EF7ED700728E1A /* command-pattern */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -1100,6 +1140,8 @@
 				75FB5EF2207CAD7E0083A1C0 /* ScoreTestsFixture.hpp */,
 				7571E7022089DAFF0092A3E0 /* SymbolTestsFixture.cpp */,
 				7571E7032089DAFF0092A3E0 /* SymbolTestsFixture.hpp */,
+				75A83DF020F4BEE000A2963F /* ScoreComponentTestsFixture.cpp */,
+				75A83DF120F4BEE000A2963F /* ScoreComponentTestsFixture.hpp */,
 			);
 			path = "unit-tests";
 			sourceTree = "<group>";
@@ -1109,6 +1151,19 @@
 			children = (
 			);
 			path = "integration-tests";
+			sourceTree = "<group>";
+		};
+		75AEFCA820EF7ED700728E1A /* command-pattern */ = {
+			isa = PBXGroup;
+			children = (
+				75AEFCA920EF7F0F00728E1A /* Invoker.cpp */,
+				75AEFCAA20EF7F0F00728E1A /* Invoker.hpp */,
+				75AEFCB220EF998900728E1A /* Command.cpp */,
+				75AEFCB320EF998900728E1A /* Command.hpp */,
+				75AEFCBB20EF9D3500728E1A /* CreateSymbolCommand.cpp */,
+				75AEFCBC20EF9D3500728E1A /* CreateSymbolCommand.hpp */,
+			);
+			name = "command-pattern";
 			sourceTree = "<group>";
 		};
 		75B86EC620E245CD0080DB3D /* palette-view */ = {
@@ -1129,6 +1184,8 @@
 				444C439F1EE4A2E4000C6F69 /* PageComponent.cpp */,
 				113DEE0A1FA1D7C600A45220 /* EditSelectionBox.cpp */,
 				113DEE0B1FA1D7C600A45220 /* EditSelectionBox.h */,
+				75AEFCC420F3B5A900728E1A /* Zone.cpp */,
+				75AEFCC520F3B5A900728E1A /* Zone.hpp */,
 				1186489A1EFAC44100904672 /* ScoreCursor.cpp */,
 				1186489B1EFAC44100904672 /* ScoreCursor.h */,
 			);
@@ -1231,7 +1288,9 @@
 				75FB5F11207F8C500083A1C0 /* View.hpp in Headers */,
 				113980B6206449EA002A2408 /* OdotExpr.hpp in Headers */,
 				7558B834209C9F2400BCA92C /* SmuflComponent.hpp in Headers */,
+				75AEFCC220EF9D3500728E1A /* CreateSymbolCommand.hpp in Headers */,
 				116A7EFF2047ECB8004B545D /* OdotAtom.hpp in Headers */,
+				75AEFCB020EF7F0F00728E1A /* Invoker.hpp in Headers */,
 				75FB5F00207F51940083A1C0 /* Symbol.h in Headers */,
 				11C442D31F585C1B00F2E9B6 /* TimeDisplayComponent.hpp in Headers */,
 				11E80831207FCAC000E0342F /* SVGParser.hpp in Headers */,
@@ -1243,9 +1302,11 @@
 				112630AF207F4AC20086653D /* pugiconfig.hpp in Headers */,
 				116F87771F9D04B90062EE91 /* ScoreBundleViewer.h in Headers */,
 				75FB5EFE207F51490083A1C0 /* SymbolistHandler.h in Headers */,
+				75AEFCCB20F3B5A900728E1A /* Zone.hpp in Headers */,
 				11A3939F20528799002C8916 /* OdotBundle_s.hpp in Headers */,
 				751E315C2069493F00C3318F /* PaletteController.hpp in Headers */,
 				116A7EF92047E99D004B545D /* OdotMessage.hpp in Headers */,
+				75AEFCB920EF998900728E1A /* Command.hpp in Headers */,
 				75FB5EFF207F51760083A1C0 /* OdotPointers.h in Headers */,
 				751E31572069410400C3318F /* PaletteButton.hpp in Headers */,
 				75FB5F02207F51AA0083A1C0 /* TimePointArray.h in Headers */,
@@ -1272,6 +1333,7 @@
 				116A7ED12046CFCD004B545D /* osc_expr_parser.h in Headers */,
 				116A7EE32046CFCD004B545D /* osc_rset.h in Headers */,
 				116A7EC42046CFCD004B545D /* osc_array.h in Headers */,
+				75AEFCCC20F3B5A900728E1A /* Zone.hpp in Headers */,
 				7558B835209C9F2400BCA92C /* SmuflComponent.hpp in Headers */,
 				116A7EE22046CFCD004B545D /* osc_query.h in Headers */,
 				116A7EC82046CFCD004B545D /* osc_atom_u.h in Headers */,
@@ -1286,10 +1348,13 @@
 				75B86ED120E24D8C0080DB3D /* CodeBoxController.hpp in Headers */,
 				116A7ED62046CFCD004B545D /* osc_hashtab.h in Headers */,
 				116A7EE42046CFCD004B545D /* osc_scanner.h in Headers */,
+				75AEFCB120EF7F0F00728E1A /* Invoker.hpp in Headers */,
 				116A7EDF2046CFCD004B545D /* osc_message_u.h in Headers */,
+				75AEFCBA20EF998900728E1A /* Command.hpp in Headers */,
 				11AEF23E207A943800B1398D /* JsonTreeItem.hpp in Headers */,
 				116A7EE92046CFCD004B545D /* osc_util.h in Headers */,
 				116A7EE02046CFCD004B545D /* osc_parser.h in Headers */,
+				75AEFCC320EF9D3500728E1A /* CreateSymbolCommand.hpp in Headers */,
 				116A7ED92046CFCD004B545D /* osc_linkedlist.h in Headers */,
 				116A7EE52046CFCD004B545D /* osc_serial.h in Headers */,
 				116A7EE82046CFCD004B545D /* osc_typetag.h in Headers */,
@@ -1520,8 +1585,11 @@
 				1186486D1EF7E68B00904672 /* include_juce_data_structures.mm in Sources */,
 				75774FA6206296C50069A89D /* Palette.cpp in Sources */,
 				11A3939E20528799002C8916 /* OdotBundle_s.cpp in Sources */,
+				75AEFCB620EF998900728E1A /* Command.cpp in Sources */,
+				75AEFCBF20EF9D3500728E1A /* CreateSymbolCommand.cpp in Sources */,
 				11B71DD31F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */,
 				1107B3F61EF7D55D00E2DFA9 /* Score.cpp in Sources */,
+				75AEFCAD20EF7F0F00728E1A /* Invoker.cpp in Sources */,
 				116A7EFE2047ECB8004B545D /* OdotAtom.cpp in Sources */,
 				114027CC1F4B185E00A9B8C4 /* StaffComponent.cpp in Sources */,
 				1186489E1EFAC44100904672 /* ScoreCursor.cpp in Sources */,
@@ -1540,6 +1608,7 @@
 				1107B4001EF7D55D00E2DFA9 /* ScoreComponent.cpp in Sources */,
 				114027C61F49C21E00A9B8C4 /* SortedStaves.cpp in Sources */,
 				113DEE0E1FA1D7C600A45220 /* EditSelectionBox.cpp in Sources */,
+				75AEFCC820F3B5A900728E1A /* Zone.cpp in Sources */,
 				1107B3F71EF7D55D00E2DFA9 /* TextGlyphComponent.cpp in Sources */,
 				75FB5F0E207F8C3B0083A1C0 /* Controller.cpp in Sources */,
 				118648981EFA811800904672 /* TimePointArray.cpp in Sources */,
@@ -1567,10 +1636,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				116A7E922046CFB6004B545D /* osc_parser.c in Sources */,
+				75AEFCC020EF9D3500728E1A /* CreateSymbolCommand.cpp in Sources */,
 				75B86ECE20E24D8C0080DB3D /* CodeBoxController.cpp in Sources */,
 				116A7E962046CFB6004B545D /* osc_serial.c in Sources */,
 				116A7E812046CFB6004B545D /* osc_bundle_u.c in Sources */,
 				7558B832209C9F2400BCA92C /* SmuflComponent.cpp in Sources */,
+				75AEFCC920F3B5A900728E1A /* Zone.cpp in Sources */,
 				116A7E872046CFB6004B545D /* osc_expr.c in Sources */,
 				116A7E7C2046CFB6004B545D /* osc_atom_s.c in Sources */,
 				116A7E912046CFB6004B545D /* osc_message_u.c in Sources */,
@@ -1590,6 +1661,7 @@
 				116A7E832046CFB6004B545D /* osc_error.c in Sources */,
 				116A7E7F2046CFB6004B545D /* osc_bundle_iterator_u.c in Sources */,
 				11AEF244207A94D000B1398D /* CodeBoxComponent.cpp in Sources */,
+				75AEFCAE20EF7F0F00728E1A /* Invoker.cpp in Sources */,
 				116A7E842046CFB6004B545D /* osc_expr_parser.c in Sources */,
 				116A7E852046CFB6004B545D /* osc_expr_rec.c in Sources */,
 				116A7E9A2046CFB6004B545D /* osc_util.c in Sources */,
@@ -1598,6 +1670,7 @@
 				116A7E862046CFB6004B545D /* osc_expr_scanner.c in Sources */,
 				116A7E8E2046CFB6004B545D /* osc_message_iterator_s.c in Sources */,
 				116A7E892046CFB6004B545D /* osc_legacy_parser.c in Sources */,
+				75AEFCB720EF998900728E1A /* Command.cpp in Sources */,
 				116A7E8D2046CFB6004B545D /* osc_mem.c in Sources */,
 				116A7E882046CFB6004B545D /* osc_hashtab.c in Sources */,
 				116A7E942046CFB6004B545D /* osc_rset.c in Sources */,
@@ -1643,9 +1716,11 @@
 				114027CB1F4B185E00A9B8C4 /* StaffComponent.cpp in Sources */,
 				11AEF23A207A943800B1398D /* JsonTreeItem.cpp in Sources */,
 				44CFE03C1EC3789C009135F8 /* include_juce_events.mm in Sources */,
+				75AEFCB520EF998900728E1A /* Command.cpp in Sources */,
 				11B71DD21F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */,
 				1186489D1EFAC44100904672 /* ScoreCursor.cpp in Sources */,
 				118C38DF1EC5BC4F006FF4A1 /* Score.cpp in Sources */,
+				75AEFCC720F3B5A900728E1A /* Zone.cpp in Sources */,
 				11E80836208082CB00E0342F /* SVGEncoder.cpp in Sources */,
 				116A7EFD2047ECB8004B545D /* OdotAtom.cpp in Sources */,
 				75FB5F06207F54C80083A1C0 /* PageController.cpp in Sources */,
@@ -1657,6 +1732,7 @@
 				75FB5F0D207F8C3A0083A1C0 /* Controller.cpp in Sources */,
 				44CFE03E1EC3789C009135F8 /* include_juce_gui_basics.mm in Sources */,
 				1107B3EA1EF5388500E2DFA9 /* PathInfo.cpp in Sources */,
+				75AEFCAC20EF7F0F00728E1A /* Invoker.cpp in Sources */,
 				11D86B8C1EEAEF7900681F6D /* PathBaseComponent.cpp in Sources */,
 				44C0729F1EC4AF8C0028D5F8 /* include_juce_osc.cpp in Sources */,
 				116A7EF02046DCAE004B545D /* OdotBundle.cpp in Sources */,
@@ -1676,6 +1752,7 @@
 				44CFE0391EC377EA009135F8 /* SymbolistMainWindow.cpp in Sources */,
 				444C43A61EE4A748000C6F69 /* SymbolGroupComponent.cpp in Sources */,
 				11B71DCE1F09844300CDE209 /* symbolist.cpp in Sources */,
+				75AEFCBE20EF9D3500728E1A /* CreateSymbolCommand.cpp in Sources */,
 				11E8083C2080A12F00E0342F /* StringTools.cpp in Sources */,
 				751E31542069410400C3318F /* PaletteButton.cpp in Sources */,
 				7571E6FC2085FEE80092A3E0 /* symbolist-utils.hpp in Sources */,
@@ -1713,8 +1790,11 @@
 				114027CA1F4B185E00A9B8C4 /* StaffComponent.cpp in Sources */,
 				8D57C4E2ADEA2935AAB91AAC /* include_juce_graphics.mm in Sources */,
 				1186489C1EFAC44100904672 /* ScoreCursor.cpp in Sources */,
+				75AEFCB420EF998900728E1A /* Command.cpp in Sources */,
+				75AEFCBD20EF9D3500728E1A /* CreateSymbolCommand.cpp in Sources */,
 				112630B0207F4AC20086653D /* pugixml.cpp in Sources */,
 				111A261C1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */,
+				75AEFCAB20EF7F0F00728E1A /* Invoker.cpp in Sources */,
 				11AEF239207A943800B1398D /* JsonTreeItem.cpp in Sources */,
 				11D1235C1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */,
 				75774F9A206176790069A89D /* Observer.cpp in Sources */,
@@ -1733,6 +1813,7 @@
 				114027C41F49C21E00A9B8C4 /* SortedStaves.cpp in Sources */,
 				75774F99206176790069A89D /* Observable.cpp in Sources */,
 				44C0729E1EC4AF870028D5F8 /* include_juce_osc.cpp in Sources */,
+				75AEFCC620F3B5A900728E1A /* Zone.cpp in Sources */,
 				118648961EFA811800904672 /* TimePointArray.cpp in Sources */,
 				75774FA4206296C50069A89D /* Palette.cpp in Sources */,
 				116A7EF62047E99D004B545D /* OdotMessage.cpp in Sources */,
@@ -1759,6 +1840,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75A83DF620F4BEE000A2963F /* ScoreComponentTestsFixture.cpp in Sources */,
 				7571E6F42084EA240092A3E0 /* pugixml.cpp in Sources */,
 				758F6F42207BCB00006EDD53 /* PaletteController.cpp in Sources */,
 				758F6F43207BCB00006EDD53 /* SymbolistHandler.cpp in Sources */,
@@ -1800,9 +1882,12 @@
 				758F6F60207BCB00006EDD53 /* MouseModeComponent.cpp in Sources */,
 				758F6F61207BCB00006EDD53 /* TimeDisplayComponent.cpp in Sources */,
 				758F6F62207BCB00006EDD53 /* ScoreCursor.cpp in Sources */,
+				75AEFCCA20F3B5A900728E1A /* Zone.cpp in Sources */,
 				7501AC5520BD4A9B002E0573 /* NewPropertyFormComponent.cpp in Sources */,
+				75AEFCAF20EF7F0F00728E1A /* Invoker.cpp in Sources */,
 				758F6F65207BCB00006EDD53 /* SymbolistMenu.cpp in Sources */,
 				758F6F66207BCB00006EDD53 /* SymbolPropertiesPanel.cpp in Sources */,
+				75AEFCC120EF9D3500728E1A /* CreateSymbolCommand.cpp in Sources */,
 				758F6F67207BCB00006EDD53 /* OSCPropertyComponents.cpp in Sources */,
 				758F6F68207BCB00006EDD53 /* ScoreBundleViewer.cpp in Sources */,
 				758F6F69207BCB00006EDD53 /* InspectorComponent.cpp in Sources */,
@@ -1810,6 +1895,7 @@
 				758F6F6B207BCB00006EDD53 /* CodeBoxComponent.cpp in Sources */,
 				758F6F6C207BCB00006EDD53 /* Controller.cpp in Sources */,
 				758F6F6D207BCB00006EDD53 /* Observable.cpp in Sources */,
+				75AEFCB820EF998900728E1A /* Command.cpp in Sources */,
 				758F6F6E207BCB00006EDD53 /* Observer.cpp in Sources */,
 				7571E716208F2F1A0092A3E0 /* InspectorController.cpp in Sources */,
 				758F6F6F207BCB00006EDD53 /* View.cpp in Sources */,

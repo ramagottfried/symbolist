@@ -106,7 +106,17 @@ public:
      * @see          Palette#addUserItem(Symbol) Palette::addUserItem
      */
     void addSymbolToPalette(Symbol symbol);
-    
+	
+	/**
+	 * Updates (or creates) the /expr message contained in symbol
+	 * with the newExpression value.
+	 *
+	 * @param symbol        a reference to the symbol which will be updated.
+	 *
+	 * @param newExpression the new value assigned to /expr in symbol.
+	 *
+	 */
+    void updateExprInSymbol(Symbol* symbol, string newExpression);
     
     //==============================================================================
     JUCE_LEAK_DETECTOR (SymbolistModel)

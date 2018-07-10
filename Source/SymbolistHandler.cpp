@@ -227,7 +227,7 @@ void SymbolistHandler::symbolistAPI_setOneSymbol(const OdotBundle_s& bundle)
     if (getView() != nullptr)
     {
 		// Calls internally the executeUpdateCallback.
-        BaseComponent* newComponent = page_controller->makeComponentFromSymbol(symbol, true);
+        BaseComponent* newComponent = makeComponentFromSymbol(symbol, true);
         page_controller->getView()->addSubcomponent(newComponent);
 	}
     else
@@ -333,7 +333,6 @@ void SymbolistHandler::executeCloseCallback()
 
 void SymbolistHandler::executeUpdateCallback(int arg)
 {
-    // DEBUG_FULL("executeUpdateCallback" << endl)
     if (my_update_callback) { my_update_callback( this, arg ); }
 }
 
@@ -380,7 +379,7 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* symbol, bool at
         DEBUG_INLINE(typeofSymbol << endl)
         BaseComponent* newComponent;
         
-        // allocates component based on type, all are derived from the BaseComponent
+        // Allocates component based on type, all are derived from the BaseComponent.
         if ( typeofSymbol == "circle" ) {
             newComponent = new CirclePathComponent();
         } else if ( typeofSymbol == "rectangle" ) {
@@ -431,7 +430,7 @@ void SymbolistHandler::removeSymbolFromScore(BaseComponent* component)
     Symbol* symbol = component->getScoreSymbol();
     assert (symbol != NULL ); // that's not normal
     
-    log_score_change();
+    scoreChanged();
 
     // symbol->print();
 
@@ -459,7 +458,7 @@ void SymbolistHandler::removeSymbolFromScore(BaseComponent* component)
  */
 void SymbolistHandler::modifySymbolInScore( BaseComponent* component )
 {
-    log_score_change();
+    scoreChanged();
     
     // get pointer to symbol attached to component
     Symbol* symbol = component->getScoreSymbol();
@@ -478,15 +477,16 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* component )
     
     if ( symbol->getType() == "staff" )
     {
-        DEBUG_FULL("Type staff " << endl)
         // If the type is "staff" resort the stave order and update time point array
         getModel()->getScore()->updateStavesAndTimepoints();
     }
     else
         // If the type is not a staff, add the time points for the symbol
         getModel()->getScore()->addSymbolTimePoints( symbol );
-    
-    executeUpdateCallback( getModel()->getScore()->getSymbolPosition( symbol ) );
+	
+    int symbolPosition = getModel()->getScore()->getSymbolPosition( symbol );
+    if (symbolPosition > -1)
+    	executeUpdateCallback( symbolPosition );
     
     component->repaint();
     
@@ -495,7 +495,7 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* component )
 /***
  * called when something is changed, added, deleted (not but not undo)
  ***/
-void SymbolistHandler::log_score_change()
+void SymbolistHandler::scoreChanged()
 {
     redo_stack.clear();
     push_undo_stack();

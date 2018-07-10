@@ -270,7 +270,6 @@ void Score::addSymbolTimePoints( Symbol* s )
     time_points.addSymbolTimePoints( s );
 }
 
-
 OdotBundle_s Score::getDurationBundle()
 {
     auto lastTimePoint = time_points.getLastTimePoint();
@@ -306,14 +305,17 @@ size_t Score::getSize()
 /***********************************
  * Returns the position of a Symbol in the Score
  ***********************************/
-int Score::getSymbolPosition(Symbol* s)
+int Score::getSymbolPosition(Symbol* symbol)
 {
     auto iteratorToSymbol = find_if(score_symbols.begin(),
                                     score_symbols.end(),
-                                    [s](unique_ptr<Symbol>& symbolFromScore) {
-                                        return symbolFromScore.get() == s;
+                                    [symbol](unique_ptr<Symbol>& symbolFromScore) {
+                                        return symbolFromScore.get() == symbol;
                                     });
-    return static_cast<int>(distance(score_symbols.begin(), iteratorToSymbol));
+	
+	int symbolPosition = static_cast<int>(distance(score_symbols.begin(), iteratorToSymbol));
+	
+    return (symbolPosition < score_symbols.size()) ? symbolPosition : -1;
 }
 
 const Array<Symbol* > Score::getSymbolsByValue(const string& address, const string& value)
@@ -459,10 +461,19 @@ Symbol* Score::getStaveAtTime( float time )
     return staves.getStaveAtTime(time);
 }
 
-
 const StringArray Score::getStaves()
 {
     return staves.getStaveNames();
+}
+
+int Score::getNameCount( string& name )
+{
+	int count = 0;
+	for(auto iteratorToSymbol = score_symbols.begin(); iteratorToSymbol != score_symbols.end(); iteratorToSymbol++)
+		if( (*iteratorToSymbol)->getName() == name )
+			count++;
+	
+	return count;
 }
 
 bool Score::idExists( string& searchedId )

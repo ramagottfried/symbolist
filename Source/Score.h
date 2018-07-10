@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../JuceLibraryCode/JuceHeader.h"
 #include <vector>
+#include "JuceHeader.h"
 #include "types.h"
 #include "Symbol.h"
 #include "TimePointArray.h"
@@ -15,6 +15,9 @@ using namespace std;
 // SCORE
 //============================
 
+/**
+ * A sorter for the symbols in the score, based on time value comparison.
+ */
 struct ScoreSorter
 {
     bool operator() (const std::unique_ptr<Symbol>& a, const std::unique_ptr<Symbol>& b)
@@ -40,14 +43,7 @@ public:
     /**********************************************
      *             GETTERS AND SETTERS            *
      **********************************************/
-    
-    // why do we need two methods to get the time_points?
     inline TimePointArray* getTimePoints() { return &time_points; };
-    
-    inline const TimePointArray& getTimePointArray() const
-    {
-        return time_points;
-    }
     
     /**
      * Gets the count of symbols contained in the score.
@@ -68,8 +64,16 @@ public:
      *                      index n in the score.
      */
     Symbol* getSymbol(int n);
-    
-    int getSymbolPosition(Symbol* s);
+	
+    /**
+     * Gets the position of a symbol in the score.
+	 *
+	 * @param symbol a reference to the targeted symbol.
+	 *
+	 * @returns      the index the symbol in parameter in the score's vector
+	 *               of symbols, or -1 if the symbol is not in the score.
+	 */
+    int getSymbolPosition(Symbol* symbol);
     
     /**
      * Creates a new symbol in the score.
@@ -124,8 +128,21 @@ public:
      *                          is empty (there are no symbols to remove).
      */
     void removeSymbol(Symbol* symbol);
+	
+	/**
+	 * Clears all symbols for this Score instance.
+	 *
+	 * Removes all elements from the vector of symbols, the array
+	 * of time points, and the list of sorted staves.
+	 */
     void removeAllSymbols();
-		
+	
+	/**
+	 * Clears all symbols for this Score instance, then re-populates it.
+	 *
+	 * @param s_bundle a serialized odot bundle containing symbols to
+	 *                 re-populate the score.
+	 */
     void importReplaceScore( const OdotBundle_s& s_bundle );
 	
     /**
@@ -140,9 +157,6 @@ public:
      */
     void importSymbols( const OdotBundle_s& s_bundle );
 
-    
-    void print() const;
-    
     void addSymbolTimePoints( Symbol* s );
     void removeSymbolTimePoints( Symbol* s );
     
@@ -165,7 +179,7 @@ public:
      *
      * @throws logic_error      (nothing yet)
      */
-    int importSVG( const char * filename )
+    inline int importSVG( const char * filename )
     {
         SVGFileIO svg;
         svg.read( filename );
@@ -183,7 +197,7 @@ public:
      *
      * @throws logic_error      (nothing yet)
      */
-    int exportSVG( const char * filename )
+    inline int exportSVG( const char * filename )
     {
         SVGFileIO svg;
         svg.write( score_symbols, filename );
@@ -203,17 +217,11 @@ public:
 
     OdotBundle_s getDurationBundle();
     
-    int getNameCount( string& name )
-    {
-        int count = 0;
-        for(auto iteratorToSymbol = score_symbols.begin(); iteratorToSymbol != score_symbols.end(); iteratorToSymbol++)
-            if( (*iteratorToSymbol)->getName() == name )
-                count++;
-    
-        return count;
-    }
+    int getNameCount( string& name );
     
     bool idExists( string& searchedId );
+	
+	void print() const;
 	
 private:
 

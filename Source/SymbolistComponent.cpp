@@ -2,6 +2,11 @@
 #include "SymbolistMainComponent.h"
 #include "symbolist-utils.hpp"
 
+SymbolistComponent::SymbolistComponent(SymbolistComponent* componentToCopy)
+{
+	symbol_color = componentToCopy->symbol_color;
+}
+
 // recursive methods for easy access to the top-level score and main component
 // from anywhere in the GUI
 // redefined in PageComponent and MAincomponent
@@ -39,7 +44,7 @@ UI_EditType SymbolistComponent::getMainMouseMode()
     }
     else
     {
-        std::cout << "Warning: trying to get the Main Edit Mode => MainComponent not found.." << std::endl;
+        DEBUG_FULL("Warning: trying to get the Main Edit Mode => MainComponent not found.." << endl);
         return UI_EditType::SELECTION;
     }
 }
@@ -52,7 +57,7 @@ UI_DrawType SymbolistComponent::getMainDrawMode()
     }
     else
     {
-        std::cout << "Warning: trying to get the Main Draw Mode => MainComponent not found.." << std::endl;
+        DEBUG_FULL("Warning: trying to get the Main Draw Mode => MainComponent not found.." << endl);
         return UI_DrawType::FREE_DRAW ;
     }
 }

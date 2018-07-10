@@ -59,7 +59,7 @@ bool SymbolGroupComponent::hitTest (int x, int y)
 
 void SymbolGroupComponent::setSymbolComponentColor( Colour c )
 {
-    sym_color = c;
+    symbol_color = c;
     for( int i = 0; i < getNumSubcomponents(); i++ )
     {
         SymbolistComponent *sub = getSubcomponentByIndex( i );

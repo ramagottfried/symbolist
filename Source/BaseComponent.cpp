@@ -90,7 +90,7 @@ void BaseComponent::addSymbolMessages(Symbol* s)
     s->addMessage("/y", b.getY());
     s->addMessage("/w", b.getWidth());
     s->addMessage("/h", b.getHeight());
-    s->addMessage("/color", sym_color.getFloatRed(), sym_color.getFloatGreen(), sym_color.getFloatBlue(), sym_color.getFloatAlpha());
+    s->addMessage("/color", symbol_color.getFloatRed(), symbol_color.getFloatGreen(), symbol_color.getFloatBlue(), symbol_color.getFloatAlpha());
 
 }
 
@@ -108,7 +108,7 @@ Symbol BaseComponent::exportSymbol()
     s.addMessage("/y", b.getY() );
     s.addMessage("/w", b.getWidth() );
     s.addMessage("/h", b.getHeight() );
-    s.addMessage("/color", sym_color.getFloatRed(), sym_color.getFloatGreen(), sym_color.getFloatBlue(), sym_color.getFloatAlpha() );
+    s.addMessage("/color", symbol_color.getFloatRed(), symbol_color.getFloatGreen(), symbol_color.getFloatBlue(), symbol_color.getFloatAlpha() );
     
     return s;
     
@@ -143,7 +143,7 @@ void BaseComponent::importFromSymbol(const Symbol &s)
     {
         if (color_atoms[0].getType() == OdotAtom::OdotAtomType::O_ATOM_STRING)
         {
-            sym_color = Colour::fromString(color_atoms[0].getString().c_str());
+            symbol_color = Colour::fromString(color_atoms[0].getString().c_str());
         }
         else if (color_atoms.size() == 4)
         {
@@ -151,14 +151,14 @@ void BaseComponent::importFromSymbol(const Symbol &s)
             float g = color_atoms[1].getFloat();
             float b = color_atoms[2].getFloat();
             float a = color_atoms[3].getFloat();
-            sym_color = Colour::fromFloatRGBA(r, g, b, a);
+            symbol_color = Colour::fromFloatRGBA(r, g, b, a);
         }
         else if (color_atoms.size() == 3)
         {
             float r = color_atoms[0].getFloat();
             float g = color_atoms[1].getFloat();
             float b = color_atoms[2].getFloat();
-            sym_color = Colour::fromFloatRGBA(r, g, b, 1.0);
+            symbol_color = Colour::fromFloatRGBA(r, g, b, 1.0);
         }
     }
     
@@ -302,7 +302,7 @@ bool BaseComponent::isInEditMode()
 const Colour BaseComponent::getCurrentColor()
 {
     if ( is_selected ) return sel_color;
-    else return sym_color;
+    else return symbol_color;
 }
 
 /************************/

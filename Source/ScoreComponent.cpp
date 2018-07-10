@@ -6,10 +6,29 @@
 
 ScoreComponent::ScoreComponent()
 {
-    addChildComponent( sel_resize_box = new EditSelectionBox(&selected_components) );
-    sel_resize_box->setBorderThickness( BorderSize<int>(6) );
-    sel_resize_box->setAlwaysOnTop(true);
-    sel_resize_box->setVisible(false);
+    addChildComponent( selection_box = new EditSelectionBox(&selected_components) );
+    selection_box->setBorderThickness( BorderSize<int>(6) );
+    selection_box->setAlwaysOnTop(true);
+    selection_box->setVisible(false);
+}
+
+ScoreComponent::ScoreComponent(ScoreComponent* componentToCopy) : SymbolistComponent(componentToCopy)
+{
+	
+	is_selected = componentToCopy->isSelected();
+	
+	for (ScoreComponent* subComponent : *(componentToCopy->getSubcomponents()))
+	{
+		subcomponents.add(new ScoreComponent(subComponent));
+		
+		if (componentToCopy->getSelectedItems().contains(subComponent))
+			selected_components.add(subcomponents.getLast());
+	}
+	
+	addChildComponent( selection_box = new EditSelectionBox(&selected_components) );
+    selection_box->setBorderThickness( BorderSize<int>(6) );
+    selection_box->setAlwaysOnTop(true);
+    selection_box->setVisible(false);
 }
 
 ScoreComponent::~ScoreComponent()
@@ -67,7 +86,7 @@ void ScoreComponent::addToSelection(ScoreComponent *c)
     if( selected_components.addIfNotAlreadyThere(c) )
     {
         c->selectComponent();
-        sel_resize_box->updateEditSelBox();
+        selection_box->updateEditSelBox();
     }
 }
 
@@ -75,7 +94,7 @@ void ScoreComponent::removeFromSelection(ScoreComponent *c)
 {
     c->deselectComponent();
     selected_components.removeAllInstancesOf(c);
-    sel_resize_box->updateEditSelBox();
+    selection_box->updateEditSelBox();
 }
 
 void ScoreComponent::selectAllComponents()
@@ -95,7 +114,7 @@ void ScoreComponent::unselectAllComponents()
         c->deselectComponent();
         selected_components.removeAllInstancesOf(c);
     }
-    sel_resize_box->updateEditSelBox();
+    selection_box->updateEditSelBox();
 }
 
 // redefinitions from SymbolComponents
@@ -211,9 +230,6 @@ void ScoreComponent::beginLassoSelection(Point<int> position)
 void ScoreComponent::dragLassoSelection(Point<int> position)
 {
     s_lasso.update(position.getX(), position.getY());
-
-    // this slows things down noticably where there are a lot of objects selected
-    unselectAllComponents();
     
     for (int i = 0; i < getNumSubcomponents(); ++i)
     {
@@ -221,6 +237,15 @@ void ScoreComponent::dragLassoSelection(Point<int> position)
         
         if (!cc->isSelected() && cc->intersectRect(s_lasso.getBounds()))
             addToSelection(cc);
+		else if (cc->isSelected() && !cc->intersectRect(s_lasso.getBounds()))
+		{
+			cc->unselectAllComponents();
+			
+			cc->deselectComponent();
+			selected_components.removeAllInstancesOf(cc);
+			selection_box->updateEditSelBox();
+		}
+		
     }
 }
 
@@ -300,9 +325,9 @@ void ScoreComponent::groupSelectedSymbols()
 {
 	if ( selected_components.size() > 1 )
     {
-    	bool creating_a_top_level_group = ( this == getPageComponent() );
+    	bool isTopLevelGroup = ( this == getPageComponent() );
 
-    	DEBUG_FULL("Creating a group (top level? " << creating_a_top_level_group << "), from "
+    	DEBUG_FULL("Creating a group (top level? " << isTopLevelGroup << "), from "
 												   << selected_components.size()
 												   << " selected components." << endl)
 
@@ -346,7 +371,7 @@ void ScoreComponent::groupSelectedSymbols()
         }
 
         SymbolGroupComponent *group = dynamic_cast<SymbolGroupComponent*>(
-									  	symbolistHandler->makeComponentFromSymbol(groupSymbol, creating_a_top_level_group)
+									  	symbolistHandler->makeComponentFromSymbol(groupSymbol, isTopLevelGroup)
 									  );
         addSubcomponent(group);
 
@@ -408,17 +433,17 @@ void ScoreComponent::translateSelectedComponents( Point<int> delta_xy )
     {
         c->setTopLeftPosition( c->getPosition() + delta_xy );
     }
-    sel_resize_box->updateEditSelBox();
+    selection_box->updateEditSelBox();
 }
 
 Rectangle<int> ScoreComponent::getSelectionBounds()
 {
-    return sel_resize_box->getSelectionBounds();
+    return selection_box->getSelectionBounds();
 }
 
 void ScoreComponent::flipSelectedSymbols( int axis )
 {
-    sel_resize_box->flipSelectedSymbols( axis );
+    selection_box->flipSelectedSymbols( axis );
 }
 
 void ScoreComponent::nudgeSelected(int direction)

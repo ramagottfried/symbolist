@@ -1,6 +1,9 @@
 #include "CodeBoxController.hpp"
+#include "CodeBoxComponent.hpp"
 
 void CodeBoxController::updateExprInSymbol(Symbol* symbol, string newExpression)
 {
-		symbol->addMessage("/expr", newExpression);
+	if (getModel() != NULL)
+		getModel()->updateExprInSymbol(symbol, newExpression);
+	
 }

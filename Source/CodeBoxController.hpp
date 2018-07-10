@@ -12,6 +12,13 @@ class CodeBoxController : public virtual Controller<SymbolistModel, CodeBoxCompo
 {
 
 public:
+
+	/**
+	 * Wrapper method around the SymbolistModel::updateExprInSymbol method.
+	 *
+	 * @see SymbolistModel#updateExprInSymbol(Symbol*, string)
+	 *		SymbolistModel::updateExprInSymbol(Symbol*, string)
+	 */
 	void updateExprInSymbol(Symbol* symbol, string newExpression);
 	
 	/* Overrides the update method inherited from the Observer class. */

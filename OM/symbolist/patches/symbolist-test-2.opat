@@ -1,0 +1,2899 @@
+
+(:patch
+ (:om-version 0.0102)
+ (:name "symbolist-test-2")
+ (:doc "")
+ (:info
+  (:created "2018/06/06 12:31:59")
+  (:modified "2018/06/08 17:14:57"))
+ (:window (:size (931 579)) (:position (-1107 93)))
+ (:grid nil)
+ (:lock t)
+ (:boxes
+  (:box
+   (:reference
+    (:patch
+     (:om-version 0.0102)
+     (:name "make-bundle")
+     (:doc "")
+     (:info (:created nil) (:modified nil))
+     (:window (:size (733 431)) (:position (-974 420)))
+     (:grid nil)
+     (:lock nil)
+     (:boxes
+      (:box
+       (:reference (:in (:type omin) (:index 1) (:name "x") (:doc "")))
+       (:type :io)
+       (:group-id nil)
+       (:name "x")
+       (:x 183)
+       (:y 33)
+       (:w 40)
+       (:h 42)
+       (:color
+        (:color-or-nil
+         (:color (:color 1.0 1.0 1.0 0.0))
+         (:t-or-nil t)))
+       (:border 0)
+       (:roundness 0)
+       (:text-font nil)
+       (:align :center)
+       (:icon :top)
+       (:inputs)
+       (:outputs (:output (:name "out") (:reactive nil)))
+       (:id 0))
+      (:box
+       (:reference (:in (:type omin) (:index 2) (:name "y") (:doc "")))
+       (:type :io)
+       (:group-id nil)
+       (:name "y")
+       (:x 324)
+       (:y 33)
+       (:w 40)
+       (:h 42)
+       (:color
+        (:color-or-nil
+         (:color (:color 1.0 1.0 1.0 0.0))
+         (:t-or-nil t)))
+       (:border 0)
+       (:roundness 0)
+       (:text-font nil)
+       (:align :center)
+       (:icon :top)
+       (:inputs)
+       (:outputs (:output (:name "out") (:reactive nil)))
+       (:id 1))
+      (:box
+       (:reference
+        (:out (:type omout) (:name "out") (:index 1) (:doc "")))
+       (:type :io)
+       (:group-id nil)
+       (:name "out")
+       (:x 179)
+       (:y 325)
+       (:w 40)
+       (:h 42)
+       (:color
+        (:color-or-nil
+         (:color (:color 1.0 1.0 1.0 0.0))
+         (:t-or-nil t)))
+       (:border 0)
+       (:roundness 0)
+       (:text-font nil)
+       (:align :center)
+       (:icon :top)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "out-value")
+         (:value nil)
+         (:reactive nil)))
+       (:outputs)
+       (:id 2))
+      (:box
+       (:reference osc-bundle)
+       (:type :object)
+       (:group-id nil)
+       (:name nil)
+       (:x 155)
+       (:y 249)
+       (:w 242)
+       (:h 62)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font
+        (:font (:face "Calibri") (:size 12) (:style :italic)))
+       (:name nil)
+       (:display :hidden)
+       (:showname nil)
+       (:group-id nil)
+       (:lock nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "SELF")
+         (:value nil)
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "DATE")
+         (:value 0)
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "MESSAGES")
+         (:value nil)
+         (:reactive nil)))
+       (:outputs
+        (:output (:name "SELF") (:reactive nil))
+        (:output (:name "DATE") (:reactive nil))
+        (:output (:name "MESSAGES") (:reactive nil)))
+       (:window (:size (nil nil)) (:position (nil nil)))
+       (:edition-params)
+       (:value
+        (:object
+         (:class osc-bundle)
+         (:slots
+          ((:item-time nil)
+           (:item-internal-time nil)
+           (:item-type nil)
+           (:date 0)
+           (:attributes nil)
+           (:messages nil)))))
+       (:id 3))
+      (:box
+       (:reference osc-msg)
+       (:type :function)
+       (:group-id nil)
+       (:name "osc-msg")
+       (:x 203)
+       (:y 150)
+       (:w 87)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "ADDRESS")
+         (:value nil)
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "DATA")
+         (:value nil)
+         (:reactive nil)))
+       (:outputs (:output (:name "out") (:reactive nil)))
+       (:id 4))
+      (:box
+       (:reference simple-base-string)
+       (:type :value)
+       (:group-id nil)
+       (:name "value box")
+       (:x 208)
+       (:y 106)
+       (:w 38)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:inputs)
+       (:outputs (:output (:name "value") (:reactive nil)))
+       (:value "/x")
+       (:id 5))
+      (:box
+       (:reference list)
+       (:type :function)
+       (:group-id nil)
+       (:name "list")
+       (:x 108)
+       (:y 206)
+       (:w 500)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :optional)
+         (:name "x")
+         (:value nil)
+         (:reactive nil))
+        (:input
+         (:type :optional)
+         (:name "x")
+         (:value nil)
+         (:reactive nil))
+        (:input
+         (:type :optional)
+         (:name "x")
+         (:value nil)
+         (:reactive nil))
+        (:input
+         (:type :optional)
+         (:name "x")
+         (:value nil)
+         (:reactive nil))
+        (:input
+         (:type :optional)
+         (:name "x")
+         (:value nil)
+         (:reactive nil))
+        (:input
+         (:type :optional)
+         (:name "x")
+         (:value nil)
+         (:reactive nil)))
+       (:outputs (:output (:name "out") (:reactive nil)))
+       (:id 6))
+      (:box
+       (:reference osc-msg)
+       (:type :function)
+       (:group-id nil)
+       (:name "osc-msg")
+       (:x 297)
+       (:y 149)
+       (:w 80)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "ADDRESS")
+         (:value nil)
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "DATA")
+         (:value nil)
+         (:reactive nil)))
+       (:outputs (:output (:name "out") (:reactive nil)))
+       (:id 7))
+      (:box
+       (:reference simple-base-string)
+       (:type :value)
+       (:group-id nil)
+       (:name "value box")
+       (:x 300)
+       (:y 114)
+       (:w 38)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:inputs)
+       (:outputs (:output (:name "value") (:reactive nil)))
+       (:value "/y")
+       (:id 8))
+      (:box
+       (:reference osc-msg)
+       (:type :function)
+       (:group-id nil)
+       (:name "osc-msg")
+       (:x 386)
+       (:y 149)
+       (:w 80)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "ADDRESS")
+         (:value "/w")
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "DATA")
+         (:value nil)
+         (:reactive nil)))
+       (:outputs (:output (:name "out") (:reactive nil)))
+       (:id 9))
+      (:box
+       (:reference simple-base-string)
+       (:type :value)
+       (:group-id nil)
+       (:name "value box")
+       (:x 388)
+       (:y 114)
+       (:w 40)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:inputs)
+       (:outputs (:output (:name "value") (:reactive nil)))
+       (:value "/w")
+       (:id 10))
+      (:box
+       (:reference osc-msg)
+       (:type :function)
+       (:group-id nil)
+       (:name "osc-msg")
+       (:x 473)
+       (:y 149)
+       (:w 80)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "ADDRESS")
+         (:value "/w")
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "DATA")
+         (:value nil)
+         (:reactive nil)))
+       (:outputs (:output (:name "out") (:reactive nil)))
+       (:id 11))
+      (:box
+       (:reference simple-base-string)
+       (:type :value)
+       (:group-id nil)
+       (:name "value box")
+       (:x 475)
+       (:y 114)
+       (:w 40)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:inputs)
+       (:outputs (:output (:name "value") (:reactive nil)))
+       (:value "/h")
+       (:id 12))
+      (:box
+       (:reference simple-base-string)
+       (:type :value)
+       (:group-id nil)
+       (:name "value box")
+       (:x 558)
+       (:y 114)
+       (:w 43)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:inputs)
+       (:outputs (:output (:name "value") (:reactive nil)))
+       (:value "/fill")
+       (:id 13))
+      (:box
+       (:reference osc-msg)
+       (:type :function)
+       (:group-id nil)
+       (:name "osc-msg")
+       (:x 558)
+       (:y 149)
+       (:w 80)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "ADDRESS")
+         (:value "/w")
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "DATA")
+         (:value nil)
+         (:reactive nil)))
+       (:outputs (:output (:name "out") (:reactive nil)))
+       (:id 14))
+      (:box
+       (:reference simple-base-string)
+       (:type :value)
+       (:group-id nil)
+       (:name "value box")
+       (:x 108)
+       (:y 106)
+       (:w 54)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:inputs)
+       (:outputs (:output (:name "value") (:reactive nil)))
+       (:value "/type")
+       (:id 15))
+      (:box
+       (:reference simple-base-string)
+       (:type :value)
+       (:group-id nil)
+       (:name "value box")
+       (:x 145)
+       (:y 92)
+       (:w 53)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:inputs)
+       (:outputs (:output (:name "value") (:reactive nil)))
+       (:value "circle")
+       (:id 16))
+      (:box
+       (:reference osc-msg)
+       (:type :function)
+       (:group-id nil)
+       (:name "osc-msg")
+       (:x 113)
+       (:y 150)
+       (:w 80)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "ADDRESS")
+         (:value "/w")
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "DATA")
+         (:value nil)
+         (:reactive nil)))
+       (:outputs (:output (:name "out") (:reactive nil)))
+       (:id 17))
+      (:box
+       (:reference om+)
+       (:type :function)
+       (:group-id nil)
+       (:name "om+")
+       (:x 475)
+       (:y 36)
+       (:w 62)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "ARG1")
+         (:value 0)
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "ARG2")
+         (:value 0)
+         (:reactive nil)))
+       (:outputs (:output (:name "out") (:reactive nil)))
+       (:id 18))
+      (:box
+       (:reference fixnum)
+       (:type :value)
+       (:group-id nil)
+       (:name "value box")
+       (:x 513)
+       (:y 1)
+       (:w 37)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:inputs)
+       (:outputs (:output (:name "value") (:reactive nil)))
+       (:value 200)
+       (:id 19))
+      (:box
+       (:reference om*)
+       (:type :function)
+       (:group-id nil)
+       (:name "om*")
+       (:x 236)
+       (:y 67)
+       (:w 60)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "ARG1")
+         (:value 0)
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "ARG2")
+         (:value 0)
+         (:reactive nil)))
+       (:outputs (:output (:name "out") (:reactive nil)))
+       (:id 20))
+      (:box
+       (:reference fixnum)
+       (:type :value)
+       (:group-id nil)
+       (:name "value box")
+       (:x 260)
+       (:y 32)
+       (:w 37)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:inputs)
+       (:outputs (:output (:name "value") (:reactive nil)))
+       (:value 50)
+       (:id 21))
+      (:box
+       (:reference om*)
+       (:type :function)
+       (:group-id nil)
+       (:name "om*")
+       (:x 383)
+       (:y 57)
+       (:w 60)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "ARG1")
+         (:value 0)
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "ARG2")
+         (:value 0)
+         (:reactive nil)))
+       (:outputs (:output (:name "out") (:reactive nil)))
+       (:id 22))
+      (:box
+       (:reference fixnum)
+       (:type :value)
+       (:group-id nil)
+       (:name "value box")
+       (:x 407)
+       (:y 22)
+       (:w 37)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:inputs)
+       (:outputs (:output (:name "value") (:reactive nil)))
+       (:value 50)
+       (:id 23))
+      (:box
+       (:reference om-random)
+       (:type :function)
+       (:group-id nil)
+       (:name "om-random")
+       (:x 568)
+       (:y 83)
+       (:w 97)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "LOW")
+         (:value 0)
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "HIGH")
+         (:value 1)
+         (:reactive nil)))
+       (:outputs (:output (:name "out") (:reactive nil)))
+       (:id 24))
+      (:box
+       (:reference fixnum)
+       (:type :value)
+       (:group-id nil)
+       (:name "value box")
+       (:x 515)
+       (:y 79)
+       (:w 32)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:inputs)
+       (:outputs (:output (:name "value") (:reactive nil)))
+       (:value 12)
+       (:id 25))
+      (:box
+       (:reference sec->ms)
+       (:type :function)
+       (:group-id nil)
+       (:name "sec->ms")
+       (:x 28)
+       (:y 62)
+       (:w 82)
+       (:h 28)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "N")
+         (:value 0)
+         (:reactive nil)))
+       (:outputs (:output (:name "out") (:reactive nil)))
+       (:id 26)))
+     (:connections
+      (:connection
+       (:from (:box 0 :out 0))
+       (:to (:box 20 :in 0))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 0 :out 0))
+       (:to (:box 26 :in 0))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 1 :out 0))
+       (:to (:box 22 :in 0))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 3 :out 0))
+       (:to (:box 2 :in 0))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 4 :out 0))
+       (:to (:box 6 :in 1))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 5 :out 0))
+       (:to (:box 4 :in 0))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 6 :out 0))
+       (:to (:box 3 :in 2))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 7 :out 0))
+       (:to (:box 6 :in 2))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 8 :out 0))
+       (:to (:box 7 :in 0))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 9 :out 0))
+       (:to (:box 6 :in 3))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 10 :out 0))
+       (:to (:box 9 :in 0))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 11 :out 0))
+       (:to (:box 6 :in 4))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 12 :out 0))
+       (:to (:box 11 :in 0))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 13 :out 0))
+       (:to (:box 14 :in 0))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 14 :out 0))
+       (:to (:box 6 :in 5))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 15 :out 0))
+       (:to (:box 17 :in 0))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 16 :out 0))
+       (:to (:box 17 :in 1))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 17 :out 0))
+       (:to (:box 6 :in 0))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 18 :out 0))
+       (:to (:box 7 :in 1))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 19 :out 0))
+       (:to (:box 18 :in 1))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 20 :out 0))
+       (:to (:box 4 :in 1))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 21 :out 0))
+       (:to (:box 20 :in 1))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 22 :out 0))
+       (:to (:box 18 :in 0))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 23 :out 0))
+       (:to (:box 22 :in 1))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 24 :out 0))
+       (:to (:box 14 :in 1))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 25 :out 0))
+       (:to (:box 11 :in 1))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 25 :out 0))
+       (:to (:box 9 :in 1))
+       (:attributes (:color nil :style nil :modif (0 -15/52))))
+      (:connection
+       (:from (:box 26 :out 0))
+       (:to (:box 3 :in 1))
+       (:attributes (:color nil :style nil :modif nil))))))
+   (:type :patch)
+   (:group-id nil)
+   (:name "make-bundle")
+   (:x 61)
+   (:y 145)
+   (:w 104)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align :center)
+   (:display :hidden)
+   (:group-id nil)
+   (:lock nil)
+   (:lambda :lambda)
+   (:pre-delay 0)
+   (:inputs
+    (:input (:type :standard) (:name "x") (:value nil) (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "y")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 0))
+  (:box
+   (:reference arithm-ser)
+   (:type :function)
+   (:group-id nil)
+   (:name "arithm-ser")
+   (:x 222)
+   (:y 72)
+   (:w 91)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "BEGIN")
+     (:value 0)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "END")
+     (:value 10)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "STEP")
+     (:value 0.1)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 1))
+  (:box
+   (:reference mapcar)
+   (:type :function)
+   (:group-id nil)
+   (:name "mapcar")
+   (:x 216)
+   (:y 140)
+   (:w 75)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "FUNCTION")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "LIST")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 2))
+  (:box
+   (:reference sin)
+   (:type :function)
+   (:group-id nil)
+   (:name "sin")
+   (:x 184)
+   (:y 107)
+   (:w 52)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda :lambda)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "A")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 3))
+  (:box
+   (:reference mapcar)
+   (:type :function)
+   (:group-id nil)
+   (:name "mapcar")
+   (:x 150)
+   (:y 201)
+   (:w 75)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "FUNCTION")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "LIST")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :optional)
+     (:name "more-lists")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 4))
+  (:box
+   (:reference fixnum)
+   (:type :value)
+   (:group-id nil)
+   (:name "value box")
+   (:x 223)
+   (:y 37)
+   (:w 32)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:inputs)
+   (:outputs (:output (:name "value") (:reactive nil)))
+   (:value 0)
+   (:id 5))
+  (:box
+   (:reference fixnum)
+   (:type :value)
+   (:group-id nil)
+   (:name "value box")
+   (:x 258)
+   (:y 37)
+   (:w 50)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:inputs)
+   (:outputs (:output (:name "value") (:reactive nil)))
+   (:value 20)
+   (:id 6))
+  (:box
+   (:reference single-float)
+   (:type :value)
+   (:group-id nil)
+   (:name "value box")
+   (:x 314)
+   (:y 37)
+   (:w 34)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:inputs)
+   (:outputs (:output (:name "value") (:reactive nil)))
+   (:value 0.4)
+   (:id 7))
+  (:box
+   (:library "symbolist")
+   (:reference symbolist)
+   (:type :object)
+   (:group-id nil)
+   (:name nil)
+   (:x 96)
+   (:y 300)
+   (:w 128)
+   (:h 40)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font (:font (:face "Calibri") (:size 12) (:style :italic)))
+   (:name nil)
+   (:display :hidden)
+   (:showname nil)
+   (:show-markers t)
+   (:group-id nil)
+   (:lock nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "SELF")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "SYMBOLS")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs
+    (:output (:name "SELF") (:reactive nil))
+    (:output (:name "SYMBOLS") (:reactive nil)))
+   (:window (:size (nil nil)) (:position (nil nil)))
+   (:edition-params)
+   (:value
+    (:object
+     (:class symbolist)
+     (:slots
+      ((:action nil)
+       (:onset 0)
+       (:duration 20000)
+       (:interpol (:number-or-nil (:number 50) (:t-or-nil nil)))
+       (:default-frame-type osc-bundle)
+       (:frames
+        (:list
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 0)
+            (:item-type :master)
+            (:date 0)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 0)
+              (:list "/y" 200.0)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 400)
+            (:item-type 400)
+            (:date 400)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 20.0)
+              (:list "/y" 219.47092)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 800)
+            (:item-type 800)
+            (:date 800)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 40.0)
+              (:list "/y" 235.8678)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 1200)
+            (:item-type 1200)
+            (:date 1200)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 60.000004)
+              (:list "/y" 246.60196)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 1600)
+            (:item-type 1600)
+            (:date 1600)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 80.0)
+              (:list "/y" 249.97869)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 2000)
+            (:item-type 2000)
+            (:date 2000)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 100.0)
+              (:list "/y" 245.46488)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 2400)
+            (:item-type 2400)
+            (:date 2400)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 120.00001)
+              (:list "/y" 233.77317)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 2800)
+            (:item-type 2800)
+            (:date 2800)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 140.00002)
+              (:list "/y" 216.7494)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 3200)
+            (:item-type 3200)
+            (:date 3200)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 160.00002)
+              (:list "/y" 197.08129)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 3600)
+            (:item-type 3600)
+            (:date 3600)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 180.00002)
+              (:list "/y" 177.87397)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 4000)
+            (:item-type 4000)
+            (:date 4000)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 200.00003)
+              (:list "/y" 162.15985)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 4400)
+            (:item-type 4400)
+            (:date 4400)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 220.00003)
+              (:list "/y" 152.41989)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 4800)
+            (:item-type 4800)
+            (:date 4800)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 240.00003)
+              (:list "/y" 150.19178)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 5200)
+            (:item-type 5200)
+            (:date 5200)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 260.00003)
+              (:list "/y" 155.82729)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 5600)
+            (:item-type 5600)
+            (:date 5600)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 280.00003)
+              (:list "/y" 168.4367)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 6000)
+            (:item-type 6000)
+            (:date 6000)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 300.00006)
+              (:list "/y" 186.02927)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 6400)
+            (:item-type 6400)
+            (:date 6400)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 320.00006)
+              (:list "/y" 205.82752)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 6800)
+            (:item-type 6800)
+            (:date 6800)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 340.00006)
+              (:list "/y" 224.70572)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 7200)
+            (:item-type 7200)
+            (:date 7200)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 360.00006)
+              (:list "/y" 239.68343)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 7600)
+            (:item-type 7600)
+            (:date 7600)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 380.00006)
+              (:list "/y" 248.396)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 8000)
+            (:item-type 8000)
+            (:date 8000)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 400.00006)
+              (:list "/y" 249.46791)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 8400)
+            (:item-type 8400)
+            (:date 8400)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 420.00003)
+              (:list "/y" 242.72994)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 8800)
+            (:item-type 8800)
+            (:date 8800)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 440.0)
+              (:list "/y" 229.24585)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 9200)
+            (:item-type 9200)
+            (:date 9200)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 460.0)
+              (:list "/y" 211.1445)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 9600)
+            (:item-type 9600)
+            (:date 9600)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 479.99997)
+              (:list "/y" 191.28369)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 10000)
+            (:item-type 10000)
+            (:date 10000)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 499.99994)
+              (:list "/y" 172.79898)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 10400)
+            (:item-type 10400)
+            (:date 10400)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 519.99994)
+              (:list "/y" 158.60872)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 10800)
+            (:item-type 10800)
+            (:date 10800)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 539.99994)
+              (:list "/y" 150.9532)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 11200)
+            (:item-type 11200)
+            (:date 11200)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 559.9999)
+              (:list "/y" 151.04109)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 11600)
+            (:item-type 11600)
+            (:date 11600)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 579.9999)
+              (:list "/y" 158.85849)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 12000)
+            (:item-type 12000)
+            (:date 12000)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 599.9999)
+              (:list "/y" 173.17124)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 12400)
+            (:item-type 12400)
+            (:date 12400)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 619.9998)
+              (:list "/y" 191.71964)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 12800)
+            (:item-type 12800)
+            (:date 12800)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 639.9998)
+              (:list "/y" 211.57532)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 13200)
+            (:item-type 13200)
+            (:date 13200)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 659.9998)
+              (:list "/y" 229.60352)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 13600)
+            (:item-type 13600)
+            (:date 13600)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 679.99976)
+              (:list "/y" 242.95798)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 14000)
+            (:item-type 14000)
+            (:date 14000)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 699.99976)
+              (:list "/y" 249.53034)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 14400)
+            (:item-type 14400)
+            (:date 14400)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 719.99976)
+              (:list "/y" 248.28296)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 14800)
+            (:item-type 14800)
+            (:date 14800)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 739.9997)
+              (:list "/y" 239.41278)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 15200)
+            (:item-type 15200)
+            (:date 15200)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 759.9997)
+              (:list "/y" 224.32019)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 15600)
+            (:item-type 15600)
+            (:date 15600)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 779.9997)
+              (:list "/y" 205.388)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 16000)
+            (:item-type 16000)
+            (:date 16000)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 799.9997)
+              (:list "/y" 185.60515)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 16400)
+            (:item-type 16400)
+            (:date 16400)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 819.9997)
+              (:list "/y" 168.0949)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 16800)
+            (:item-type 16800)
+            (:date 16800)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 839.9997)
+              (:list "/y" 155.6218)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 17200)
+            (:item-type 17200)
+            (:date 17200)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 859.99964)
+              (:list "/y" 150.15503)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 17600)
+            (:item-type 17600)
+            (:date 17600)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 879.99964)
+              (:list "/y" 152.55767)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 18000)
+            (:item-type 18000)
+            (:date 18000)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 899.99964)
+              (:list "/y" 162.45038)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 18400)
+            (:item-type 18400)
+            (:date 18400)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 919.9996)
+              (:list "/y" 178.27136)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 18800)
+            (:item-type 18800)
+            (:date 18800)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 939.9996)
+              (:list "/y" 197.5228)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 19200)
+            (:item-type 19200)
+            (:date 19200)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 959.9996)
+              (:list "/y" 217.16533)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 19600)
+            (:item-type 19600)
+            (:date 19600)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 979.9995)
+              (:list "/y" 234.09784)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 20000)
+            (:item-type :master)
+            (:date 20000)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 999.9995)
+              (:list "/y" 245.64707)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))))
+       (:symbols
+        (:list
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 0)
+            (:item-type :master)
+            (:date 0)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 0)
+              (:list "/y" 200.0)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 400)
+            (:item-type 400)
+            (:date 400)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 20.0)
+              (:list "/y" 219.47092)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 800)
+            (:item-type 800)
+            (:date 800)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 40.0)
+              (:list "/y" 235.8678)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 1200)
+            (:item-type 1200)
+            (:date 1200)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 60.000004)
+              (:list "/y" 246.60196)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 1600)
+            (:item-type 1600)
+            (:date 1600)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 80.0)
+              (:list "/y" 249.97869)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 2000)
+            (:item-type 2000)
+            (:date 2000)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 100.0)
+              (:list "/y" 245.46488)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 2400)
+            (:item-type 2400)
+            (:date 2400)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 120.00001)
+              (:list "/y" 233.77317)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 2800)
+            (:item-type 2800)
+            (:date 2800)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 140.00002)
+              (:list "/y" 216.7494)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 3200)
+            (:item-type 3200)
+            (:date 3200)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 160.00002)
+              (:list "/y" 197.08129)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 3600)
+            (:item-type 3600)
+            (:date 3600)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 180.00002)
+              (:list "/y" 177.87397)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 4000)
+            (:item-type 4000)
+            (:date 4000)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 200.00003)
+              (:list "/y" 162.15985)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 4400)
+            (:item-type 4400)
+            (:date 4400)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 220.00003)
+              (:list "/y" 152.41989)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 4800)
+            (:item-type 4800)
+            (:date 4800)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 240.00003)
+              (:list "/y" 150.19178)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 5200)
+            (:item-type 5200)
+            (:date 5200)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 260.00003)
+              (:list "/y" 155.82729)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 5600)
+            (:item-type 5600)
+            (:date 5600)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 280.00003)
+              (:list "/y" 168.4367)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 6000)
+            (:item-type 6000)
+            (:date 6000)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 300.00006)
+              (:list "/y" 186.02927)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 6400)
+            (:item-type 6400)
+            (:date 6400)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 320.00006)
+              (:list "/y" 205.82752)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 6800)
+            (:item-type 6800)
+            (:date 6800)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 340.00006)
+              (:list "/y" 224.70572)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 7200)
+            (:item-type 7200)
+            (:date 7200)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 360.00006)
+              (:list "/y" 239.68343)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 7600)
+            (:item-type 7600)
+            (:date 7600)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 380.00006)
+              (:list "/y" 248.396)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 8000)
+            (:item-type 8000)
+            (:date 8000)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 400.00006)
+              (:list "/y" 249.46791)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 8400)
+            (:item-type 8400)
+            (:date 8400)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 420.00003)
+              (:list "/y" 242.72994)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 8800)
+            (:item-type 8800)
+            (:date 8800)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 440.0)
+              (:list "/y" 229.24585)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 9200)
+            (:item-type 9200)
+            (:date 9200)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 460.0)
+              (:list "/y" 211.1445)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 9600)
+            (:item-type 9600)
+            (:date 9600)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 479.99997)
+              (:list "/y" 191.28369)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 10000)
+            (:item-type 10000)
+            (:date 10000)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 499.99994)
+              (:list "/y" 172.79898)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 10400)
+            (:item-type 10400)
+            (:date 10400)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 519.99994)
+              (:list "/y" 158.60872)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 10800)
+            (:item-type 10800)
+            (:date 10800)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 539.99994)
+              (:list "/y" 150.9532)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 11200)
+            (:item-type 11200)
+            (:date 11200)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 559.9999)
+              (:list "/y" 151.04109)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 11600)
+            (:item-type 11600)
+            (:date 11600)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 579.9999)
+              (:list "/y" 158.85849)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 12000)
+            (:item-type 12000)
+            (:date 12000)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 599.9999)
+              (:list "/y" 173.17124)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 12400)
+            (:item-type 12400)
+            (:date 12400)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 619.9998)
+              (:list "/y" 191.71964)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 12800)
+            (:item-type 12800)
+            (:date 12800)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 639.9998)
+              (:list "/y" 211.57532)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 13200)
+            (:item-type 13200)
+            (:date 13200)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 659.9998)
+              (:list "/y" 229.60352)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 13600)
+            (:item-type 13600)
+            (:date 13600)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 679.99976)
+              (:list "/y" 242.95798)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 14000)
+            (:item-type 14000)
+            (:date 14000)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 699.99976)
+              (:list "/y" 249.53034)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 14400)
+            (:item-type 14400)
+            (:date 14400)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 719.99976)
+              (:list "/y" 248.28296)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 14800)
+            (:item-type 14800)
+            (:date 14800)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 739.9997)
+              (:list "/y" 239.41278)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 15200)
+            (:item-type 15200)
+            (:date 15200)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 759.9997)
+              (:list "/y" 224.32019)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 15600)
+            (:item-type 15600)
+            (:date 15600)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 779.9997)
+              (:list "/y" 205.388)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 16000)
+            (:item-type 16000)
+            (:date 16000)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 799.9997)
+              (:list "/y" 185.60515)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 16400)
+            (:item-type 16400)
+            (:date 16400)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 819.9997)
+              (:list "/y" 168.0949)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 16800)
+            (:item-type 16800)
+            (:date 16800)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 839.9997)
+              (:list "/y" 155.6218)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 17200)
+            (:item-type 17200)
+            (:date 17200)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 859.99964)
+              (:list "/y" 150.15503)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 17600)
+            (:item-type 17600)
+            (:date 17600)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 879.99964)
+              (:list "/y" 152.55767)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 18000)
+            (:item-type 18000)
+            (:date 18000)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 899.99964)
+              (:list "/y" 162.45038)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 18400)
+            (:item-type 18400)
+            (:date 18400)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 919.9996)
+              (:list "/y" 178.27136)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 18800)
+            (:item-type 18800)
+            (:date 18800)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 939.9996)
+              (:list "/y" 197.5228)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 19200)
+            (:item-type 19200)
+            (:date 19200)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 959.9996)
+              (:list "/y" 217.16533)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 19600)
+            (:item-type 19600)
+            (:date 19600)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 979.9995)
+              (:list "/y" 234.09784)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 1))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 20000)
+            (:item-type :master)
+            (:date 20000)
+            (:attributes nil)
+            (:messages
+             (:list
+              (:list "/type" "circle")
+              (:list "/x" 999.9995)
+              (:list "/y" 245.64707)
+              (:list "/w" 12)
+              (:list "/h" 12)
+              (:list "/fill" 0))))))))))
+     (:add-slots ((:palette-symbols nil) (:refresh-rate 100)))))
+   (:id 8))
+  (:box
+   (:reference nth)
+   (:type :function)
+   (:group-id nil)
+   (:name "nth")
+   (:x 294)
+   (:y 313)
+   (:w 55)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "ORIG-N")
+     (:value 1)
+     (:reactive t))
+    (:input
+     (:type :standard)
+     (:name "ORIG-LIST")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive t)))
+   (:id 9))
+  (:box
+   (:reference osc-bundle)
+   (:type :object)
+   (:group-id nil)
+   (:name nil)
+   (:x 294)
+   (:y 362)
+   (:w 151)
+   (:h 110)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font (:font (:face "Calibri") (:size 12) (:style :italic)))
+   (:name nil)
+   (:display :mini-view)
+   (:showname nil)
+   (:group-id nil)
+   (:lock nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "SELF")
+     (:value nil)
+     (:reactive t))
+    (:input
+     (:type :standard)
+     (:name "DATE")
+     (:value 0)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "MESSAGES")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs
+    (:output (:name "SELF") (:reactive nil))
+    (:output (:name "DATE") (:reactive nil))
+    (:output (:name "MESSAGES") (:reactive nil)))
+   (:window (:size nil) (:position nil))
+   (:edition-params)
+   (:value
+    (:object
+     (:class osc-bundle)
+     (:slots
+      ((:item-time nil)
+       (:item-internal-time 4400)
+       (:item-type 4400)
+       (:date 4400)
+       (:attributes nil)
+       (:messages
+        (:list
+         (:list "/type" "circle")
+         (:list "/x" 220.00003)
+         (:list "/y" 152.41989)
+         (:list "/w" 12)
+         (:list "/h" 12)
+         (:list "/fill" 1)))))))
+   (:id 10))
+  (:box
+   (:reference slider)
+   (:type :interface)
+   (:group-id nil)
+   (:name "slider")
+   (:x 341)
+   (:y 258)
+   (:w 242)
+   (:h 34)
+   (:color (:color 0.9 0.9 0.9 1.0))
+   (:border 1.5)
+   (:roundness nil)
+   (:min-value 0)
+   (:max-value 39)
+   (:increment 1)
+   (:orientation :horizontal)
+   (:inputs)
+   (:outputs (:output (:name "value") (:reactive t)))
+   (:id 11))
+  (:box
+   (:reference (:out (:type omout) (:name "out") (:index 1) (:doc "")))
+   (:type :io)
+   (:group-id nil)
+   (:name "out")
+   (:x 302)
+   (:y 494)
+   (:w 40)
+   (:h 42)
+   (:color
+    (:color-or-nil (:color (:color 1.0 1.0 1.0 0.0)) (:t-or-nil t)))
+   (:border 0)
+   (:roundness 0)
+   (:text-font nil)
+   (:align :center)
+   (:icon :top)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "out-value")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs)
+   (:id 12)))
+ (:connections
+  (:connection
+   (:from (:box 0 :out 0))
+   (:to (:box 4 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 1 :out 0))
+   (:to (:box 2 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 1 :out 0))
+   (:to (:box 4 :in 1))
+   (:attributes (:color nil :style nil :modif (0 43/111))))
+  (:connection
+   (:from (:box 2 :out 0))
+   (:to (:box 4 :in 2))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 3 :out 0))
+   (:to (:box 2 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 4 :out 0))
+   (:to (:box 8 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 5 :out 0))
+   (:to (:box 1 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 6 :out 0))
+   (:to (:box 1 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 7 :out 0))
+   (:to (:box 1 :in 2))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 8 :out 1))
+   (:to (:box 9 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 9 :out 0))
+   (:to (:box 10 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 10 :out 0))
+   (:to (:box 12 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 11 :out 0))
+   (:to (:box 9 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))))

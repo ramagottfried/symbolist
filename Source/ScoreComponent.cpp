@@ -83,6 +83,9 @@ void ScoreComponent::addSubcomponent( ScoreComponent *c )
 
 void ScoreComponent::addToSelection(ScoreComponent *c)
 {
+	if (c == NULL)
+		return;
+	
     if( selected_components.addIfNotAlreadyThere(c) )
     {
         c->selectComponent();

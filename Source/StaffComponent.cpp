@@ -129,8 +129,12 @@ void StaffComponent::mouseDrag( const MouseEvent& event )
     auto scoreView = getPageComponent();
 
     if ( is_selected )
-        for( BaseComponent *c : components_on_staff )
-            scoreView->addToSelection( c );
+        for( auto it = components_on_staff.begin(); it != components_on_staff.end(); it++ )
+        {
+        	if (*it != NULL)
+				scoreView->addToSelection( *it );
+		}
+	
     
     BaseComponent::mouseDrag( event );
     

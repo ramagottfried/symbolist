@@ -39,7 +39,9 @@ public:
 	void resized() override;
 	
 	void scaleScoreComponent(float scaledWidthRatio, float scaledHeightRatio) override;
-	
+    void setBoundsFromSymbol( float x, float y , float w , float h) override;
+	void mouseAddClick(const MouseEvent& event) override;
+
 	/********************************************
 	 *           SMUFL METADATA METHODS         *
 	 ********************************************/
@@ -95,6 +97,8 @@ private:
 	
 	/** A graphic component used as a container to display the glyph */
 	DrawableText smufl_glyph;
+	
+	float font_height = 100.0f;
 	
 	//==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SmuflComponent)

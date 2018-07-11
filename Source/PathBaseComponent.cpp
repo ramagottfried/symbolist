@@ -785,7 +785,6 @@ void PathBaseComponent::mouseAddClick ( const MouseEvent& event )
     
     if( in_edit_mode )
     {
-        
         auto pt =  path_handles.size() > 0 ? PathBaseComponent::shiftConstrainMouseAngle( path_handles.getLast(), event ) : event.getPosition().toFloat();
 
         if ( !drawing ) // we were NOT already in a draw process
@@ -809,8 +808,10 @@ void PathBaseComponent::mouseAddClick ( const MouseEvent& event )
     }
     else if( getMainMouseMode() == UI_EditType::DRAW )
     {
-        // pass event to page/score if there should be a new path added
-        getPageComponent()->mouseAddClick( event );
+        // Passes event to score view if there should be a new path added.
+        PageComponent* scoreView = getPageComponent();
+        if (scoreView != NULL)
+        	scoreView->mouseAddClick( event );
     }
 }
 

@@ -1,5 +1,6 @@
 #include "SmuflComponent.hpp"
 #include "PaletteButton.hpp"
+#include "PageComponent.h"
 
 /////   WARNING : STEPS TO USE THE SMUFLCOMPONENT
 /////
@@ -17,9 +18,10 @@ SmuflComponent::SmuflComponent()
 {
 	BaseComponent::BaseComponent();
 	
-	smufl_glyph.setFont(Font("Bravura", 100.0f, Font::plain), true);
+	smufl_glyph.setFont(Font("Bravura", font_height, Font::plain), true);
 	smufl_glyph.setJustification(Justification::centred);
 	smufl_glyph.setColour(getCurrentColor());
+	
 	addAndMakeVisible(smufl_glyph);
 
 	try {
@@ -53,14 +55,6 @@ void SmuflComponent::paint(Graphics& g)
 	g.setColour(getCurrentColor());
 	smufl_glyph.setColour(getCurrentColor());
 	
-	float glyphWidth = smufl_glyph.getFont().getStringWidth(glyph_code);
-	float glyphHeight = smufl_glyph.getFont().getHeight();
-	
-	// if SmuflComponent is being rendered in a palette button, don't apply offset.
-	if (dynamic_cast<PaletteButton* >(getParentComponent()) != NULL)
-		setSize(glyphWidth, glyphHeight);
-	else setSize(glyphWidth + 10, glyphHeight);
-	
 }
 
 void SmuflComponent::resized()
@@ -73,63 +67,114 @@ void SmuflComponent::addSymbolMessages(Symbol* symbol)
 {
 	BaseComponent::addSymbolMessages(symbol);
 	
-	// Adds the glyph-code and glyph-name messages to the symbol.
-	symbol->addMessage("/glyph-code", glyph_code.toStdString());
-	symbol->addMessage("/glyph-name", glyph_name.toStdString());
+	// Adds the glyph-code, glyph-name and font-height messages to the symbol.
+	symbol->addMessage("/glyph/code", glyph_code.toStdString());
+	symbol->addMessage("/glyph/name", glyph_name.toStdString());
+	symbol->addMessage("/font/height", font_height);
 }
 
 void SmuflComponent::importFromSymbol(const Symbol &symbol)
 {
-	BaseComponent::importFromSymbol(symbol);
-	
 	// Extracts the glyph-code and the glyph-name from the symbol
-	if (symbol.addressExists("/glyph-code"))
+	if (symbol.addressExists("/glyph/code"))
 	{
-		glyph_code = symbol.getMessage("/glyph-code").getString();
+		glyph_code = symbol.getMessage("/glyph/code").getString();
 		smufl_glyph.setText(glyph_code);
 	}
 	
-	if (symbol.addressExists("/glyph-name"))
-		glyph_name = symbol.getMessage("/glyph-name").getString();
+	if (symbol.addressExists("/glyph/name"))
+		glyph_name = symbol.getMessage("/glyph/name").getString();
+	
+	// Updates the font height of smufl_glyph.
+	if (symbol.addressExists("/font/height"))
+	{
+		font_height = symbol.getMessage("/font/height").getFloat();
+		Font newFont = smufl_glyph.getFont();
+		newFont.setHeight(font_height);
+		
+		smufl_glyph.setFont(newFont, true);
+	}
+	
+	BaseComponent::importFromSymbol(symbol);
 	
 }
 
 void SmuflComponent::scaleScoreComponent(float scaledWidthRatio, float scaledHeightRatio)
 {
-	/*
-	 * Calculates and sets the new height
-	 * based on the scaledHeightRatio and the
-	 * current height of the SmuflComponent.
-	 */
- 	float newHeight = scaledHeightRatio * getHeight();
-	
-	/*
-	 * Sets font height for the note glyph
-	 * and adds the new font to smufl_glyph.
-	 */
-	Font noteFont = smufl_glyph.getFont();
-	
-	// Multiply three times the height to obtain a good size in the palette button
-	noteFont.setHeight(newHeight * 3);
-    smufl_glyph.setFont(noteFont, true);
 
-	// Retrieves the glyph width with the new font height.
-	float glyphWidth = smufl_glyph.getFont().getStringWidth(glyph_code);
-	
-	setSize(glyphWidth, newHeight);
-	
+
 	/* Moves the SmuflComponent position to place the glyph in the center
 	 * of the palette button.
 	 */
 	PaletteButton* parent = dynamic_cast<PaletteButton* >(getParentComponent());
 	if (parent != NULL)
 	{
-		float xCenter = (abs(parent->getWidth() - getWidth())) / 2;
-		float yCenter = -17; // Offset to center the glyphs in palette buttons
-		setTopLeftPosition(xCenter, yCenter);
+		float paletteButtonHeight = 50.0f;
 		
+		/*
+		 * Sets font height for the note glyph
+		 * and adds the new font to smufl_glyph.
+		 */
+		Font noteFont = smufl_glyph.getFont();
+		noteFont.setHeight(paletteButtonHeight);
+		
+		// Retrieves the glyph width with the new font height.
+		float glyphWidth = noteFont.getStringWidth(glyph_code);
+		
+		setSize(glyphWidth, paletteButtonHeight);
+		
+		float xCenter = (abs(parent->getWidth() - getWidth())) / 2;
+		float yCenter = -10; // -17, Offset to center the glyphs in palette buttons
+		setTopLeftPosition(xCenter, yCenter);
+	}
+	else
+	{
+		/*
+		 * Calculates and sets the new height based on the scaledHeightRatio and the
+		 * current height of the SmuflComponent.
+		 */
+		float newHeight = scaledHeightRatio * getHeight();
+		font_height = newHeight; // Stores the new value of font_height
+		
+		/*
+		 * Sets font height for the note glyph
+		 * and adds the new font to smufl_glyph.
+		 */
+		Font noteFont = smufl_glyph.getFont();
+		
+		// Multiply three times the height to obtain a good size in the palette button
+		noteFont.setHeight(newHeight);
+		smufl_glyph.setFont(noteFont, true);
+		
+		// Retrieves the glyph width with the new font height.
+		float glyphMargin = 8.0;
+		float glyphWidth = smufl_glyph.getFont().getStringWidth(glyph_code) + glyphMargin;
+		
+		setSize(glyphWidth, newHeight);
 		
 	}
+	
+}
+
+void SmuflComponent::setBoundsFromSymbol( float x, float y, float w, float h )
+{
+	float glyphWidth = smufl_glyph.getFont().getStringWidth(glyph_code);
+	float glyphHeight = smufl_glyph.getFont().getHeight();
+
+	DEBUG_FULL("Glyph width = "  << glyphWidth << ", glyph height = " << glyphHeight << endl)
+
+	// if SmuflComponent is being rendered in a palette button, don't apply offset.
+	if (dynamic_cast<PaletteButton* >(getParentComponent()) != NULL)
+			setBounds(x, y, glyphWidth, glyphHeight);
+	else setBounds(x, y, glyphWidth + 8, glyphHeight);
+}
+
+void SmuflComponent::mouseAddClick(const MouseEvent& event)
+{
+	// Delegates the call to page component on click.
+	ScoreComponent* parentComponent = dynamic_cast<ScoreComponent* >(getParentComponent());
+	if (parentComponent != NULL)
+		parentComponent->mouseAddClick(event);
 	
 }
 

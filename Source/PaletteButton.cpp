@@ -19,21 +19,21 @@ PaletteButton::PaletteButton(int i, Symbol* s)
         try
         {
             // May throw logic_error if PaletteController has no parent controller.
-            graphic_comp = paletteComponent->getController()->makeComponentFromSymbol(s, false);
+            displayed_component = paletteComponent->getController()->makeComponentFromSymbol(s, false);
         }
         catch(logic_error& error)
         {
             cout << error.what() << endl;
             
             // Retrieves the SymbolistHandler instance to create component.
-            graphic_comp = getSymbolistHandler()->makeComponentFromSymbol(s, false);
+            displayed_component = getSymbolistHandler()->makeComponentFromSymbol(s, false);
         }
     
     /* If no parent component then gets the SymbolistHandler instance directly. */
-    else graphic_comp = getSymbolistHandler()->makeComponentFromSymbol(s, false);
+    else displayed_component = getSymbolistHandler()->makeComponentFromSymbol(s, false);
     
     setComponentID("PaletteButton");
-    addAndMakeVisible(graphic_comp);
+    addAndMakeVisible(displayed_component);
 }
 
 void PaletteButton::setSelected(bool sel)
@@ -43,17 +43,18 @@ void PaletteButton::setSelected(bool sel)
 
 void PaletteButton::resized()
 {
-    graphic_comp->setBounds( getLocalBounds() );
-    if (graphic_comp->getSymbolTypeStr() == "smufl")
-    	graphic_comp->resizeToFit(0, 0, getWidth(), getHeight());
-	else graphic_comp->resizeToFit(5, 5, getWidth() - 10, getHeight() - 10);
+    displayed_component->setBounds( getLocalBounds() );
+	
+    if (displayed_component->getSymbolTypeStr() == "smufl")
+    	displayed_component->resizeToFit(0, 0, getWidth(), getHeight());
+	else displayed_component->resizeToFit(5, 5, getWidth() - 10, getHeight() - 10);
 }
 
 void PaletteButton::paint (Graphics& g)
 {
     Colour button_color = selected ? Colours::black : Colour::fromFloatRGBA(0, 0, 0, 0.2);
     
-    graphic_comp->setSymbolComponentColor( button_color );
+    displayed_component->setSymbolComponentColor( button_color );
     
     g.setColour( button_color );
     g.drawRect( getLocalBounds() );

@@ -56,50 +56,50 @@ void Palette::createDefaultItems()
 		
 		Symbol s5 = Symbol();
 		s5.setTypeXYWH("smufl", symbolPos, symbolPos, symbolSize, symbolSize);
-		s5.addMessage("/glyph-code", String::fromUTF8("\uE1D2").toStdString());
-		s5.addMessage("/glyph-name", "noteWhole");
+		s5.addMessage("/glyph/code", String::fromUTF8("\uE1D2").toStdString());
+		s5.addMessage("/glyph/name", "noteWhole");
 		addDefaultItem(s5);
 		
 		Symbol s6 = Symbol();
 		s6.setTypeXYWH("smufl", symbolPos, symbolPos, symbolSize, symbolSize);
-		s6.addMessage("/glyph-code", String::fromUTF8("\uE1D3").toStdString());
-		s6.addMessage("/glyph-name", "noteHalfUp");
+		s6.addMessage("/glyph/code", String::fromUTF8("\uE1D3").toStdString());
+		s6.addMessage("/glyph/name", "noteHalfUp");
 		addDefaultItem(s6);
 		
 		Symbol s7 = Symbol();
 		s7.setTypeXYWH("smufl", symbolPos, symbolPos, symbolSize, symbolSize);
-		s7.addMessage("/glyph-code", String::fromUTF8("\uE1D5").toStdString());
-		s7.addMessage("/glyph-name", "noteQuarterUp");
+		s7.addMessage("/glyph/code", String::fromUTF8("\uE1D5").toStdString());
+		s7.addMessage("/glyph/name", "noteQuarterUp");
 		addDefaultItem(s7);
 		
 		Symbol s8 = Symbol();
 		s8.setTypeXYWH("smufl", symbolPos, symbolPos, symbolSize, symbolSize);
-		s8.addMessage("/glyph-code", String::fromUTF8("\uE1D7").toStdString());
-		s8.addMessage("/glyph-name", "note8thUp");
+		s8.addMessage("/glyph/code", String::fromUTF8("\uE1D7").toStdString());
+		s8.addMessage("/glyph/name", "note8thUp");
 		addDefaultItem(s8);
 		
 		Symbol s9 = Symbol();
 		s9.setTypeXYWH("smufl", symbolPos, symbolPos, symbolSize, symbolSize);
-		s9.addMessage("/glyph-code", String::fromUTF8("\uE1D9").toStdString());
-		s9.addMessage("/glyph-name", "note16thUp");
+		s9.addMessage("/glyph/code", String::fromUTF8("\uE1D9").toStdString());
+		s9.addMessage("/glyph/name", "note16thUp");
 		addDefaultItem(s9);
 		
 		Symbol s10 = Symbol();
 		s10.setTypeXYWH("smufl", symbolPos, symbolPos, symbolSize, symbolSize);
-		s10.addMessage("/glyph-code", String::fromUTF8("\uE050").toStdString());
-		s10.addMessage("/glyph-name", "gClef");
+		s10.addMessage("/glyph/code", String::fromUTF8("\uE050").toStdString());
+		s10.addMessage("/glyph/name", "gClef");
 		addDefaultItem(s10);
 		
 		Symbol s11 = Symbol();
 		s11.setTypeXYWH("smufl", symbolPos, symbolPos, symbolSize, symbolSize);
-		s11.addMessage("/glyph-code", String::fromUTF8("\uE062").toStdString());
-		s11.addMessage("/glyph-name", "fClef");
+		s11.addMessage("/glyph/code", String::fromUTF8("\uE062").toStdString());
+		s11.addMessage("/glyph/name", "fClef");
 		addDefaultItem(s11);
 		
 		Symbol s12 = Symbol();
 		s12.setTypeXYWH("smufl", symbolPos, symbolPos, symbolSize, symbolSize);
-		s12.addMessage("/glyph-code", String::fromUTF8("\uE014").toStdString());
-		s12.addMessage("/glyph-name", "staff5Lines");
+		s12.addMessage("/glyph/code", String::fromUTF8("\uE014").toStdString());
+		s12.addMessage("/glyph/name", "staff5Lines");
 		addDefaultItem(s12);
 		
 	}

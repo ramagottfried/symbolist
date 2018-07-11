@@ -59,7 +59,7 @@ void PaletteComponent::buildFromPalette()
     {
         PaletteButton *pb = new PaletteButton(i, getModel()->getPalette()->getPaletteDefaultItem(i));
 
-        pb->setSize(bw , bh);
+        pb->setSize(bw, bh);
         pb->setCentrePosition(b_cX, b_cY);
         addAndMakeVisible(pb);
         b_cY += b_y_spacing;

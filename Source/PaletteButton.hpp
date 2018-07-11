@@ -27,7 +27,7 @@ public:
     int getID() { return button_id; }
 	
 private:
-	ScopedPointer<BaseComponent > graphic_comp;
+	ScopedPointer<BaseComponent > displayed_component;
     int button_id;
     bool selected;
 };

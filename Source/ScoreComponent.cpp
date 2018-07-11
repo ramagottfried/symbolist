@@ -234,9 +234,12 @@ void ScoreComponent::dragLassoSelection(Point<int> position)
     for (int i = 0; i < getNumSubcomponents(); ++i)
     {
         ScoreComponent* cc = getSubcomponentByIndex(i);
-        
+		
+        // Selects component if it intersects with the lasso.
         if (!cc->isSelected() && cc->intersectRect(s_lasso.getBounds()))
             addToSelection(cc);
+		
+		// Unselects if already selected but doesn't intersect.
 		else if (cc->isSelected() && !cc->intersectRect(s_lasso.getBounds()))
 		{
 			cc->unselectAllComponents();

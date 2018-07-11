@@ -403,12 +403,12 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* symbol, bool at
         
         if (newComponent != NULL)
         {
-            // reads base component symbol values, and sets component bounds for display
+            // Reads base component symbol values, and sets component bounds for display.
             newComponent->importFromSymbol(symbol);
 			
             if (attachTheSymbol)
             {
-            	// initializes object specific messages if not present
+            	// Initializes object specific messages if not present.
 				newComponent->addSymbolMessages(symbol);
                 newComponent->setScoreSymbol(symbol);
                 getModel()->getScore()->addStaff(symbol); // << /type checked internally and added if staff

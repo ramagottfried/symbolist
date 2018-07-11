@@ -45,7 +45,7 @@ public:
     void mouseUp( const MouseEvent& event ) override;
     void mouseDoubleClick( const MouseEvent& event ) override;
     
-    void altDragCopy( const MouseEvent& event  );
+    virtual void altDragCopy( const MouseEvent& event  );
     
     void recursiveMaximizeBounds();
     void recursiveShrinkBounds();

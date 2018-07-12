@@ -26,7 +26,7 @@ void TimePointArray::removeStaffAndSymbolTimePoints( Symbol* symbol )
     {
         for(auto it = symbolTimePoints.begin(); it != symbolTimePoints.end(); it++)
         {
-            if( (*it) != NULL && (*it)->staff_ref != NULL && (*it)->staff_ref == symbol )
+            if( (*it)->staff_ref == symbol )
                 symbolTimePoints.erase(it);
         }
     }

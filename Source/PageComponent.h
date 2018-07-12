@@ -89,7 +89,7 @@ public:
     inline StaffComponent *getStaffByName( String& name )
     {
         
-        cout << "num child comps " << getNumChildComponents() << endl;
+        DEBUG_FULL("Number of child components: " << getNumChildComponents() << endl)
         return nullptr;
         
         auto c = findChildWithID(name);

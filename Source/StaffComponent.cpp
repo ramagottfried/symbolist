@@ -83,7 +83,6 @@ void StaffComponent::parentHierarchyChanged()
         }
     }
     
-    // repaint();
 }
 
 bool StaffComponent::hitTest (int x, int y)
@@ -104,17 +103,14 @@ void StaffComponent::mouseDown( const MouseEvent& event )
     {
         for( auto s : getPageComponent()->getSelectedItems() )
         {
-            BaseComponent *c = dynamic_cast<BaseComponent*>(s);
+            BaseComponent *c = dynamic_cast<BaseComponent* >(s);
             
             // Checks downcast result.
-            if( c != NULL )
+            if( c != NULL && c->getSymbolTypeStr() != "staff" )
             {
-                if( c->getSymbolTypeStr() != "staff" )
-                {
-                    addObjectToStave(c);
-                    c->setStaff(this);
-                    getSymbolistHandler()->modifySymbolInScore(c);
-                }
+				addObjectToStave(c);
+				c->setStaff(this);
+				getSymbolistHandler()->modifySymbolInScore(c);
             }
         }
     }
@@ -126,16 +122,15 @@ void StaffComponent::mouseDown( const MouseEvent& event )
 
 void StaffComponent::mouseDrag( const MouseEvent& event )
 {
-    auto scoreView = getPageComponent();
+    PageComponent* scoreView = getPageComponent();
 
+	if (scoreView == NULL)
+		return;
+	
     if ( is_selected )
         for( auto it = components_on_staff.begin(); it != components_on_staff.end(); it++ )
-        {
-        	if (*it != NULL)
-				scoreView->addToSelection( *it );
-		}
+			scoreView->addToSelection( *it );
 	
-    
     BaseComponent::mouseDrag( event );
     
     scoreView->updateTimeCursor();

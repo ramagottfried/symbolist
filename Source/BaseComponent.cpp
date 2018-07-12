@@ -240,10 +240,10 @@ void BaseComponent::attachToStaff()
     }
 }
 
-void BaseComponent::setStaff(StaffComponent* c)
+void BaseComponent::setStaff(StaffComponent* staffComponent)
 {
-	staff_id = c->getScoreSymbol()->getID();
-	staff = c;
+	staff_id = staffComponent->getScoreSymbol()->getID();
+	staff = staffComponent;
 	DEBUG_INLINE("/t/t ------------------------- \n" << this << " attached to staff " << staff_id << " " << staff << endl)
 }
 
@@ -506,8 +506,10 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
     else
     {
         
-        ScoreComponent* parent = (ScoreComponent*)getParentComponent();
-        
+        ScoreComponent* parent = dynamic_cast<ScoreComponent* >(getParentComponent());
+        if (parent == NULL)
+        	return;
+		
         if ( respondsToMouseEvents() )
         {
             if( is_selected && (getMainMouseMode() == SELECTION ) )

@@ -467,11 +467,9 @@ void SymbolistHandler::modifySymbolInScore( BaseComponent* component )
     // DEBUG_FULL(c << " ---> modifySymbolInScore " << s->getID() << endl)
     // printRect(c->getBounds(), "component");
 
-    
     // Remove current time point for symbol, or if stave remove all symbol timepoints on stave
     getModel()->getScore()->removeSymbolTimePoints(symbol);
 	
-    
     // update the symbol with the component's current state
     component->addSymbolMessages( symbol );
     

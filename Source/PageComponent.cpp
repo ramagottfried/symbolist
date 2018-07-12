@@ -86,7 +86,7 @@ void PageComponent::enterStaffSelMode()
     for( auto subComponent : subcomponents )
     {
     	// If it's a staff the dynamic_cast prob isn't necessary
-        BaseComponent* b = dynamic_cast<BaseComponent*>(subComponent);
+        BaseComponent* b = dynamic_cast<BaseComponent* >(subComponent);
         if ( b )
         {
             if( b->getSymbolTypeStr() == "staff" || b->isSelected() )
@@ -209,7 +209,8 @@ void PageComponent::exitEditMode( )
     {
         edited_component->recursiveShrinkBounds();
         edited_component->reportModification();
-        // reportModificaiton must be before setting Edit mode to handle case of repositioned sub symbols
+		
+        // reportModificaiton must be before setting Edit mode to handle case of repositioned sub symbols.
         edited_component->setEditMode(false);
         edited_component = NULL;
     }

@@ -53,7 +53,7 @@ struct SymbolTimePoint
     
     double           time;
     vector<Symbol* > symbols_at_time;
-    Symbol*          staff_ref; // << add reference to staff for timepoint (a timepoint can only be on one staff)
+    Symbol*          staff_ref = NULL; // << add reference to staff for timepoint (a timepoint can only be on one staff)
 
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolTimePoint)

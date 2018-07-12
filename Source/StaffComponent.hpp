@@ -35,7 +35,7 @@ public:
 
     void paint ( Graphics& g ) override;
     
-    inline void addObjectToStave( BaseComponent *c)
+    inline void addObjectToStave(BaseComponent *c)
     {
         components_on_staff.emplace_back(c);
     }

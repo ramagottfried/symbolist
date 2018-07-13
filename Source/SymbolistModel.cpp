@@ -1,9 +1,7 @@
 #include "SymbolistModel.hpp"
 
 SymbolistModel::SymbolistModel()
-{
-    Observable::Observable();
-    
+{    
     this->score = unique_ptr<Score>( new Score() );
     this->palette = unique_ptr<Palette>(new Palette());
 }
@@ -42,4 +40,18 @@ void SymbolistModel::updateExprInSymbol(Symbol* symbol, string newExpression)
 		notify();
 	}
 }
+
+void SymbolistModel::addStaff(Symbol* newStaff)
+{
+	getScore()->addStaff(newStaff);
+	notify();
+}
+
+void SymbolistModel::removeSymbolFromScore( Symbol* s )
+{
+	getScore()->removeSymbolTimePoints(s);
+	getScore()->removeSymbol(s);
+	notify();
+}
+
 

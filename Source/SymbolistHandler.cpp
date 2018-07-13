@@ -411,7 +411,7 @@ BaseComponent* SymbolistHandler::makeComponentFromSymbol(Symbol* symbol, bool at
             	// Initializes object specific messages if not present.
 				newComponent->addSymbolMessages(symbol);
                 newComponent->setScoreSymbol(symbol);
-                getModel()->getScore()->addStaff(symbol); // << /type checked internally and added if staff
+                getModel()->addStaff(symbol); // << /type checked internally and added if staff
             }
         }
         
@@ -432,16 +432,13 @@ void SymbolistHandler::removeSymbolFromScore(BaseComponent* component)
     
     scoreChanged();
 
-    // symbol->print();
-
     if (getView())
         getView()->clearInspector();
     
     // Throws exceptions if symbol is NULL or score is empty
     try
     {
-        getModel()->getScore()->removeSymbolTimePoints(symbol);
-        getModel()->getScore()->removeSymbol(symbol);
+        getModel()->removeSymbolFromScore(symbol);
     }
     catch(exception& e)
     {

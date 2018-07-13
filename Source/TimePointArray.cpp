@@ -4,9 +4,9 @@
 void TimePointArray::printTimePoints()
 {
     DEBUG_INLINE("-------- timepoint list ----------" << endl)
-    for (int i = 0; i < symbolTimePoints.size(); i++)
+    for (int i = 0; i < symbol_time_points.size(); i++)
     {
-        auto t = symbolTimePoints[i].get();
+        auto t = symbol_time_points[i].get();
         DEBUG_INLINE("Timepoint n°" << i << ", time = " << t->time << ", nsyms = " << t->symbols_at_time.size() << endl)
         
         int symcount = 0;
@@ -24,10 +24,11 @@ void TimePointArray::removeStaffAndSymbolTimePoints( Symbol* symbol )
 {
     if( symbol->getType() == "staff" )
     {
-        for(auto it = symbolTimePoints.begin(); it != symbolTimePoints.end(); it++)
+    	// Removes every time point for which symbol is the staff reference.
+        for(auto it = symbol_time_points.begin(); it != symbol_time_points.end(); it++)
         {
             if( (*it)->staff_ref == symbol )
-                symbolTimePoints.erase(it);
+                symbol_time_points.erase(it);
         }
     }
     else
@@ -37,72 +38,74 @@ void TimePointArray::removeStaffAndSymbolTimePoints( Symbol* symbol )
 void TimePointArray::removeSymbolTimePoints(Symbol* symbol)
 {
 
-    float start_t = symbol->getTime();
+    float startTime = symbol->getTime();
     
-    if( start_t == -1 )
-    {
+    if( startTime == -1 )
         return;
-    }
     
     bool match = false;
-    int insertIndex = getTimePointInsertIndex(start_t, match);
+    int insertIndex = getTimePointInsertIndex(startTime, match);
     
     if( !match )
     {
-		DEBUG_FULL(" Could not find existing timepoint at time " << start_t << endl)
+		DEBUG_FULL(" Could not find existing timepoint at time " << startTime << endl)
 		printTimePoints();
         return;
     }
     
-    float t = start_t;
-    float end_t = symbol->getEndTime();
+    float timeAtCurrentIndex = startTime;
+    float endTime = symbol->getEndTime();
     
-    vector<SymbolTimePoint* > points_to_remove;
+    vector<SymbolTimePoint* > pointsToRemove;
     
-    while (insertIndex < symbolTimePoints.size())
+    while (insertIndex < symbol_time_points.size())
     {
-        t = symbolTimePoints[insertIndex]->time;
+        timeAtCurrentIndex = symbol_time_points[insertIndex]->time;
         
-        if( t > end_t && !f_almost_equal( t, end_t ) )
-        {
+        if( timeAtCurrentIndex > endTime && !f_almost_equal( timeAtCurrentIndex, endTime ) )
             break;
-        }
         
-        vector<Symbol* >& vec = symbolTimePoints[insertIndex]->symbols_at_time;
+        vector<Symbol* >& symbolsAtCurrentTimePoint = symbol_time_points[insertIndex]->symbols_at_time;
 
-        // remove this symbol
-        vec.erase( std::remove(vec.begin(), vec.end(), symbol), vec.end() );
+        // Remove this symbol from the symbols at current time point.
+        symbolsAtCurrentTimePoint.erase( std::remove(symbolsAtCurrentTimePoint.begin(), symbolsAtCurrentTimePoint.end(), symbol),
+										 symbolsAtCurrentTimePoint.end() );
 
-        // if no other symbol at this time point start or end here, we should fully delete it
-        int other_start_or_end = 0;
-        if( f_almost_equal( t, start_t ) || f_almost_equal( t, end_t ) )
+        /* If no other symbol at this time point start
+         * or end here, we should fully delete this time point.
+         */
+        int otherStartOrEnd = 0;
+        if( f_almost_equal( timeAtCurrentIndex, startTime ) || f_almost_equal( timeAtCurrentIndex, endTime ) )
         {
-            for (auto it = vec.begin(); it != vec.end(); it++ )
+            for (auto it = symbolsAtCurrentTimePoint.begin(); it != symbolsAtCurrentTimePoint.end(); it++ )
             {
-                if( f_almost_equal( (*it)->getTime(), t ) || f_almost_equal( (*it)->getEndTime(), t ) )
-                    other_start_or_end = 1;
+                if( f_almost_equal( (*it)->getTime(), timeAtCurrentIndex ) || f_almost_equal( (*it)->getEndTime(), timeAtCurrentIndex ) )
+                {
+				    otherStartOrEnd = 1;
+				}
+				
             }
-            if (!other_start_or_end)
-                points_to_remove.emplace_back( symbolTimePoints[insertIndex].get() );
+            if (!otherStartOrEnd)
+                pointsToRemove.emplace_back( symbol_time_points[insertIndex].get() );
 
         }
         
-        if( vec.size() == 0 )
-            points_to_remove.emplace_back( symbolTimePoints[insertIndex].get() );
+        if( symbolsAtCurrentTimePoint.size() == 0 )
+            pointsToRemove.emplace_back( symbol_time_points[insertIndex].get() );
         
         insertIndex++;
     }
     
-    for (SymbolTimePoint* pointToRemove : points_to_remove)
+    for (SymbolTimePoint* pointToRemove : pointsToRemove)
     {
         
-        auto iteratorOnTargetTimePoint = find_if(symbolTimePoints.begin(),
-                                              symbolTimePoints.end(),
+        auto iteratorOnTargetTimePoint = find_if(symbol_time_points.begin(),
+                                              symbol_time_points.end(),
                                                  [&pointToRemove](unique_ptr<SymbolTimePoint>& tmpt){
                                                      return pointToRemove == tmpt.get();
                                                  });
-        if( iteratorOnTargetTimePoint != symbolTimePoints.end() )
-            symbolTimePoints.erase( iteratorOnTargetTimePoint );
+        if( iteratorOnTargetTimePoint != symbol_time_points.end() )
+            symbol_time_points.erase( iteratorOnTargetTimePoint );
         
     }
     
@@ -112,9 +115,9 @@ void TimePointArray::removeSymbolTimePoints(Symbol* symbol)
 void TimePointArray::resetTimes()
 {
 
-    for( int i = 0; i < symbolTimePoints.size(); i++ )
+    for( int i = 0; i < symbol_time_points.size(); i++ )
     {
-        auto t = symbolTimePoints[i].get();
+        auto t = symbol_time_points[i].get();
         
         Symbol* staff = t->staff_ref;
         
@@ -130,9 +133,9 @@ void TimePointArray::resetTimes()
             float start_x = s->getMessage("/x").getFloat() - staff_x;
             float dur_x = s->getMessage("/w").getFloat();
             
-            sym_start_t = staff_start_t + Symbol::pixelsToTime(start_x);
+            sym_start_t = staff_start_t + s->pixelsToTime(start_x);
             
-            s->setTimeAndDuration(sym_start_t, Symbol::pixelsToTime(dur_x) );
+            s->setTimeAndDuration(sym_start_t, s->pixelsToTime(dur_x) );
         }
         
     }
@@ -143,45 +146,43 @@ void TimePointArray::resetTimes()
 
 void TimePointArray::addSymbolTimePoints( Symbol* s )
 {
-    // 0) check if the symbol has a staff reference, if not ignore it
+    // 0) Checks if the symbol has a staff reference, if not ignore it.
     string staff_name = s->getMessage( "/staff" ).getString();
 
     if( staff_name.size() == 0 )
         return;
     
-    auto found_staves = score_ptr->getSymbolsByValue("/id", staff_name);
-    if( found_staves.isEmpty() )
+    auto foundStaves = score_ptr->getSymbolsByValue("/id", staff_name);
+    if( foundStaves.isEmpty() )
         return;
     
-    // 1) if attached to a staff, calculate start & end times based on staff ( for now: start = x, end = x+w )
-    Symbol* staff = found_staves.getFirst();
+    // 1) If attached to a staff, calculate start & end times based on staff ( for now: start = x, end = x+w )
+    Symbol* staff = foundStaves.getFirst();
     
-    float staff_x = staff->getMessage("/x").getFloat();
+    float staffX = staff->getMessage("/x").getFloat();
     
-    float start_x = s->getMessage("/x").getFloat() - staff_x;
-    float dur_x = s->getMessage("/w").getFloat();
-    float end_x = start_x + dur_x;
+    float startX = s->getMessage("/x").getFloat() - staffX;
+    float durationX = s->getMessage("/w").getFloat();
+    float endX = startX + durationX;
     
-    float staff_start = staff->getMessage("/time/start").getFloat();
+    float staffStart = staff->getMessage("/time/start").getFloat();
     
-    float start_t = staff_start + Symbol::pixelsToTime(start_x);
-    float end_t = staff_start + Symbol::pixelsToTime(end_x);
+    float startTime = staffStart + s->pixelsToTime(startX);
+    float endTime = staffStart + s->pixelsToTime(endX);
     
-    s->setTimeAndDuration(start_t, Symbol::pixelsToTime(dur_x) );
+    s->setTimeAndDuration(startTime, s->pixelsToTime(durationX) );
     
-    DEBUG_FULL("Adding timepoints starting at time " << start_t << ", on " << staff_name
-    			<< " (own starting value = " << staff_start << ")"  << endl)
+    DEBUG_FULL("Adding timepoints starting at time " << startTime << ", on " << staff_name
+    			<< " (own starting value = " << staffStart << ")"  << endl)
     
-    // 2) add start and end points to array
-    // 3) check previous start-1 and end-1 points for continuing symbols to add to new start/end points
-    int start_idx = addSymbol_atTime( s, start_t, staff );
-    int end_idx = addSymbol_atTime( s, end_t, staff );
+    // 2) Adds start and end points to time points array.
+    // 3) Checks previous start-1 and end-1 points for continuing symbols to add to new start/end points.
+    int startIndex = addSymbol_atTime( s, startTime, staff );
+    int endIndex = addSymbol_atTime( s, endTime, staff );
     
-    // 4) iterate forward from start to end point and add this symbol to all preexisting time points
-    for( int i = (start_idx + 1); i < end_idx; i++ )
-    {
-        symbolTimePoints[i]->addSymbol(s);
-    }
+    // 4) Iterate forward from start to end point and add this symbol to all preexisting time points
+    for( int i = (startIndex + 1); i < endIndex; i++ )
+        symbol_time_points[i]->addSymbol(s);
     
     current_point = 0;
     voice_staff_vector.clear();
@@ -192,35 +193,41 @@ int TimePointArray::addSymbol_atTime(Symbol* s, float time, Symbol* staff)
 {
     
     bool match;
-    int idx = getTimePointInsertIndex(time, match);
+    int insertIndex = getTimePointInsertIndex(time, match);
     
     if (match)
-        // if it's an exact match we don't need to check the previous point
-        symbolTimePoints[idx]->addSymbol(s);
+        // If it's an exact match we don't need to check the previous point.
+        symbol_time_points[insertIndex]->addSymbol(s);
     else
     {
-        // otherwise, create new point and check previous for continuing points
-        auto newTimePoint = symbolTimePoints.insert(symbolTimePoints.begin() + idx, unique_ptr<SymbolTimePoint>(new SymbolTimePoint(s, time, staff) ) );
+        // Otherwise, create new point and check previous for continuing points
+        auto newTimePoint = symbol_time_points.insert(symbol_time_points.begin() + insertIndex,
+													  unique_ptr<SymbolTimePoint>(new SymbolTimePoint(s, time, staff)));
 
-        if( idx - 1 >= 0 )
+        if( insertIndex - 1 >= 0 )
         {
-            auto prevTimePoint = symbolTimePoints[idx-1].get();
+            auto prevTimePoint = symbol_time_points[insertIndex-1].get();
 
             auto vec = prevTimePoint->symbols_at_time;
-            
-            for (auto prev_s = vec.begin(); prev_s != vec.end(); prev_s++)
+			
+            /* Adds to the new time point all symbols beginning before and ending
+             * after the specified time.
+             */
+            for (auto symbolAtPreviousTime = vec.begin(); symbolAtPreviousTime != vec.end(); symbolAtPreviousTime++)
             {
-                if (s == *prev_s) continue;
-                
-                if ((*prev_s)->hitTestTime( time ))
-                {
-                    (*newTimePoint)->addSymbol(*prev_s);
-                }
+                if (s == *symbolAtPreviousTime) continue;
+				
+                /* Checks if time is between the start and end time
+				 * of the symbol at time point n-1
+                 */
+                if ((*symbolAtPreviousTime)->hitTestTime( time ))
+                    (*newTimePoint)->addSymbol(*symbolAtPreviousTime);
             }
     
         }
     }
-    return idx;
+	
+    return insertIndex;
     
 }
 
@@ -333,20 +340,18 @@ vector<const Symbol* > TimePointArray::getNoteOffs( const SymbolTimePoint* prev_
     return off_vec;
 }
 
-bool TimePointArray::isNewSym( const Symbol* s , const SymbolTimePoint* prev_tpoint   )
+bool TimePointArray::isSymbolInTimePoint( const Symbol* symbol , const SymbolTimePoint* timePoint )
 {
-    if( prev_tpoint )
+    if( timePoint )
     {
-        
-        for (size_t i = 0; i < prev_tpoint->symbols_at_time.size(); i++ )
+        for (size_t i = 0; i < timePoint->symbols_at_time.size(); i++ )
         {
-            auto prv = prev_tpoint->symbols_at_time[i];
-            if( s == prv )
-                return false;
+            if( symbol == timePoint->symbols_at_time[i] )
+                return true;
         }
     }
     
-    return true;
+    return false;
 }
 
 pair<size_t, int> TimePointArray::setNoteOff(const Symbol* s)
@@ -541,7 +546,7 @@ OdotBundle_s TimePointArray::timePointStreamToOSC(const SymbolTimePoint* tpoint 
 {
     OdotBundle bndl;
     bndl.addMessage("/time/lookup", current_time ) ;
-    bndl.addMessage("/time/end", symbolTimePoints.back()->time ) ;
+    bndl.addMessage("/time/end", symbol_time_points.back()->time ) ;
     
     string prefix = "/symbolsAtTime/";
 
@@ -664,9 +669,9 @@ int TimePointArray::lookupTimePoint( float t )
     {
         // maybe check one step before doing the loop?
         
-        for ( ; idx < symbolTimePoints.size(); idx++ ) // step forward
+        for ( ; idx < symbol_time_points.size(); idx++ ) // step forward
         {
-            p_time = symbolTimePoints[idx]->time;
+            p_time = symbol_time_points[idx]->time;
             
             if (p_time > t) // if point time is >, we want the previous one
             {
@@ -676,8 +681,8 @@ int TimePointArray::lookupTimePoint( float t )
             }
         }
         
-        if( idx >= symbolTimePoints.size() )
-            current_point = static_cast<int>(symbolTimePoints.size() - 1);
+        if( idx >= symbol_time_points.size() )
+            current_point = static_cast<int>(symbol_time_points.size() - 1);
         else
             DEBUG_FULL("Shouldn't happen " << current_point << endl)
         
@@ -689,7 +694,7 @@ int TimePointArray::lookupTimePoint( float t )
     {
         for ( ; idx >= 0; idx-- ) // step backward
         {
-            p_time = symbolTimePoints[idx]->time;
+            p_time = symbol_time_points[idx]->time;
             
             if (p_time < t) // if point time is <, we want this one
             {
@@ -713,7 +718,7 @@ int TimePointArray::lookupTimePoint( float t )
 
 OdotBundle_s TimePointArray::getSymbolsAtTime( float t )
 {
-    if (symbolTimePoints.size() == 0 )
+    if (symbol_time_points.size() == 0 )
         return nullptr;
     
     int idx = lookupTimePoint( t ); //<< also sets current time
@@ -721,7 +726,7 @@ OdotBundle_s TimePointArray::getSymbolsAtTime( float t )
     
     if( idx >= 0 )
     {
-        SymbolTimePoint* tpoint = symbolTimePoints[idx].get();
+        SymbolTimePoint* tpoint = symbol_time_points[idx].get();
         
         return timePointStreamToOSC( tpoint );
     }
@@ -729,31 +734,35 @@ OdotBundle_s TimePointArray::getSymbolsAtTime( float t )
     return timePointStreamToOSC( nullptr );
 }
 
-int TimePointArray::getTimePointInsertIndex( float t, bool& match )
+int TimePointArray::getTimePointInsertIndex( float timeToMatch, bool& match )
 {
     match = false;
     
-    int firstElement = 0, lastElement = static_cast<int>(symbolTimePoints.size());
+    int firstElement = 0, lastElement = static_cast<int>(symbol_time_points.size());
     while (firstElement < lastElement)
     {
-        if (compareTimes(symbolTimePoints[firstElement]->time, t) == 0)
+        if (compareTimes(symbol_time_points[firstElement]->time, timeToMatch) == 0)
         {
             match = true;
             break;
         }
         else
         {
+        	// Equivalent to "(firstElement + lastElement) / 2"
             const int halfway = (firstElement + lastElement) >> 1;
-            
+			
+            /* If true no match is found, but firstElement carries the index of
+             * the time point the nearest from timeToMatch.
+             */
             if (halfway == firstElement)
             {
-                if (compareTimes(symbolTimePoints[halfway]->time, t) >= 0)
+                if (compareTimes(symbol_time_points[halfway]->time, timeToMatch) >= 0)
                 {
                     ++firstElement;
                 }
                 break;
             }
-            else if (compareTimes(symbolTimePoints[halfway]->time, t) >= 0)
+            else if (compareTimes(symbol_time_points[halfway]->time, timeToMatch) >= 0)
             {
                 firstElement = halfway;
             }

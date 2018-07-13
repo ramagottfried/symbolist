@@ -16,7 +16,7 @@ void StaffComponent::importFromSymbol( const Symbol &s )
     clearAllSubcomponents();
     BaseComponent::importFromSymbol(s);
 	
-    // there can be only one staff subsymbol, must be grouped if multiple
+    // There can be only one staff subsymbol, must be grouped if multiple.
     Symbol subsymbol = Symbol(s.getMessage( "/subsymbol" ).getBundle().get_o_ptr());
     
     if (subsymbol.size() == 0)
@@ -46,9 +46,9 @@ void StaffComponent::addSymbolMessages(Symbol* s)
         auto soleSubComponent = getSubcomponentByIndex(0);
         if ( soleSubComponent )
         {
-            BaseComponent* staffSubComponent = dynamic_cast<BaseComponent*>(soleSubComponent);
+            BaseComponent* staffSubComponent = dynamic_cast<BaseComponent* >(soleSubComponent);
             
-            // Checks downcast result and if component is attached to a score symbol.
+            // Checks downcast result.
             if (staffSubComponent != NULL)
             {
 				Symbol staffSubSymbol = Symbol();
@@ -106,11 +106,15 @@ void StaffComponent::mouseDown( const MouseEvent& event )
             BaseComponent *c = dynamic_cast<BaseComponent* >(s);
             
             // Checks downcast result.
-            if( c != NULL && c->getSymbolTypeStr() != "staff" )
+            if( c != NULL )
             {
-				addObjectToStave(c);
-				c->setStaff(this);
-				getSymbolistHandler()->modifySymbolInScore(c);
+            	if (c->getSymbolTypeStr() != "staff")
+            	{
+					addObjectToStave(c);
+					c->setStaff(this);
+					getSymbolistHandler()->modifySymbolInScore(c);
+				}
+				
             }
         }
     }
@@ -122,17 +126,13 @@ void StaffComponent::mouseDown( const MouseEvent& event )
 
 void StaffComponent::mouseDrag( const MouseEvent& event )
 {
-    PageComponent* scoreView = getPageComponent();
-
-	if (scoreView == NULL)
-		return;
+    auto scoreView = getPageComponent();
 	
     if ( is_selected )
-        for( auto it = components_on_staff.begin(); it != components_on_staff.end(); it++ )
-			scoreView->addToSelection( *it );
+        for( BaseComponent* componentOnStaff : components_on_staff )
+			scoreView->addToSelection( componentOnStaff );
 	
     BaseComponent::mouseDrag( event );
-    
     scoreView->updateTimeCursor();
 }
 
@@ -147,7 +147,7 @@ void StaffComponent::paint(Graphics& g)
 			auto& timePointArray = getPageComponent()
 										->getModel()
 										->getScore()
-										->getTimePoints()->getConstSymbolTimePoints();
+										->getTimePoints()->getSymbolTimePoints();
 			
 			float startTime = getScoreSymbol()->getTime();
 			float endTime = startTime + getScoreSymbol()->getDuration();

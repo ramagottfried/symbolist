@@ -16,8 +16,6 @@ var SmuflComponent::smufl_metadata_json = var::undefined();
 
 SmuflComponent::SmuflComponent()
 {
-	BaseComponent::BaseComponent();
-	
 	smufl_glyph.setFont(Font("Bravura", font_height, Font::plain), true);
 	smufl_glyph.setJustification(Justification::centred);
 	smufl_glyph.setColour(getCurrentColor());

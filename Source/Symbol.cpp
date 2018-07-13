@@ -1,8 +1,5 @@
 #include "Symbol.h"
 
-float Symbol::m_pixels_to_time = 0.01f;
-float Symbol::m_time_to_pixels = 100.0f;
-
 void Symbol::setTypeXYWH(const string & type, float x, float y, float w, float h)
 {
     addMessage( "/type", type );

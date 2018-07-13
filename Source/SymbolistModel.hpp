@@ -25,8 +25,8 @@ using namespace std;
  */
 class SymbolistModel : public virtual Observable {
     
-    unique_ptr<Score>   score;
-    unique_ptr<Palette> palette;
+    unique_ptr<Score >   score;
+    unique_ptr<Palette > palette;
     
 public:
     
@@ -117,7 +117,28 @@ public:
 	 *
 	 */
     void updateExprInSymbol(Symbol* symbol, string newExpression);
-    
+	
+	
+	/**
+	 * Wrapper method around Score::addSatff(Symbol).
+	 *
+	 * Adds a new staff to the score, and resets all staves time duration
+	 * and time start.
+	 *
+	 * @param newStaff the new staff symbol to add to the score.
+	 *
+	 * @see Score#addSatff(Symbol) Score::addSatff(Symbol)
+	 */
+	void addStaff(Symbol* newStaff);
+	
+	/**
+	 * Removes a symbol from the score and from the time point
+	 * array associated with the score.
+	 *
+	 * @param s the symbol to remove from the score.
+	 */
+	void removeSymbolFromScore( Symbol* s );
+	
     //==============================================================================
     JUCE_LEAK_DETECTOR (SymbolistModel)
 };

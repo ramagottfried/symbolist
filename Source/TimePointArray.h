@@ -16,21 +16,14 @@ class Score;
 struct SymbolTimePoint
 {
     inline SymbolTimePoint() {}
-    SymbolTimePoint(Symbol* s, double t, Symbol* staff)
+    inline SymbolTimePoint(Symbol* s, double t, Symbol* staff)
     {
         addSymbol(s);
         time = t;
         staff_ref = staff;
     }
-    /*
-    SymbolTimePoint(SymbolTimePoint& src) // same as = default?
-    {
-        time = src.time;
-        staff_ref = src.staff_ref;
-        symbols_at_time = src.symbols_at_time;
-    }
-    */
-    ~SymbolTimePoint()
+	
+    inline ~SymbolTimePoint()
     {
 		DEBUG_FULL("Time point value = " << time << endl)
         staff_ref = NULL;
@@ -38,7 +31,7 @@ struct SymbolTimePoint
             symbol = NULL;
     }
     
-    void removeSymbol(Symbol* s)
+    inline void removeSymbol(Symbol* s)
     {
         symbols_at_time.erase( remove(symbols_at_time.begin(), symbols_at_time.end(), s ), symbols_at_time.end() );
         
@@ -46,14 +39,14 @@ struct SymbolTimePoint
             delete this;
     }
     
-    void addSymbol(Symbol* s)
+    inline void addSymbol(Symbol* s)
     {
         symbols_at_time.emplace_back(s);
     }
     
     double           time;
     vector<Symbol* > symbols_at_time;
-    Symbol*          staff_ref = NULL; // << add reference to staff for timepoint (a timepoint can only be on one staff)
+    Symbol*          staff_ref; // << add reference to staff for timepoint (a timepoint can only be on one staff)
 
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolTimePoint)
@@ -64,8 +57,8 @@ class TimePointArray
 {
 public:
     
-    TimePointArray(){}
-    ~TimePointArray(){}
+    inline TimePointArray(){}
+    inline ~TimePointArray(){}
     
     /**
      * Sets the score_ptr of this TimePointArray instance.
@@ -74,34 +67,42 @@ public:
     {
         this->score_ptr = pointerToScore;
     }
-    
-    // do we really need both of these?
-    inline const vector< unique_ptr<SymbolTimePoint> >& getConstSymbolTimePoints() const
-    {
-        return symbolTimePoints;
-    }
+	
     inline vector< unique_ptr<SymbolTimePoint> >& getSymbolTimePoints()
     {
-        return symbolTimePoints;
+        return symbol_time_points;
     }
 	
 	/**
-	 * Gets the last time point for this instance of TimePointArray.
+	 * Gets the last time point in this instance of TimePointArray.
 	 *
-	 * @return a pointer to the last element of the symbolTimePoints vector,
-	 *         or <code>NULL</code> if symbolTimePoints is empty.
+	 * @return a pointer to the last element of the symbol_time_points vector,
+	 *         or <code>NULL</code> if symbol_time_points is empty.
 	 */
     inline SymbolTimePoint* getLastTimePoint()
     {
-    	if (!symbolTimePoints.empty())
-        	return symbolTimePoints.back().get();
+    	if (!symbol_time_points.empty())
+        	return symbol_time_points.back().get();
 		else return NULL;
     }
     
     void printTimePoints();
     void printBundle(OSCBundle bndl);
-    
-    int getTimePointInsertIndex(float t, bool& match);
+	
+    /**
+     * Retrieves the time point index matching the time timeToMatch.
+     *
+     * Runs a dichotomic search to find a time point matching the time
+     * timeToMatch in this TimePointArray instance.
+     *
+     * @param timeToMatch the time to match.
+     *
+     * @param match       indicates if a time point has matched the time t.
+     *
+     * @return            the index to insert a new time point, matching the time timeToMatch,
+     * 		              in this TimePointArray instance.
+     */
+    int getTimePointInsertIndex(float timeToMatch, bool& match);
     
     void addSymbolTimePoints(Symbol* s);
     void removeSymbolTimePoints(Symbol* s);
@@ -154,7 +155,18 @@ public:
                      OdotBundle& bndl);
     
     vector<const Symbol* > getNoteOffs(const SymbolTimePoint* prev_tpoint , const SymbolTimePoint* tpoint);
-    bool isNewSym(const Symbol* s , const SymbolTimePoint* prev_tpoint);
+	
+    /**
+     * Says if a symbol is referenced in a time point.
+     *
+     * @param symbol    the symbol to search in the time point.
+     *
+     * @param timePoint the time point in which to look for the symbol.
+     *
+     * @return          <code>true</code> if symbol is referenced in
+     *					timePoint, <code>false</code> otherwise.
+     */
+    bool isSymbolInTimePoint(const Symbol* symbol, const SymbolTimePoint* timePoint);
     
     pair<size_t, int> getVoiceNumberState(const Symbol* s, const SymbolTimePoint* tpoint);
     pair<size_t, int> setNoteOff(const Symbol* s);
@@ -164,17 +176,17 @@ public:
 
     inline void reset()
     {
-        symbolTimePoints.clear();
+        symbol_time_points.clear();
         prev_timepoint = nullptr;
     }
     
 private:
-    vector< unique_ptr<SymbolTimePoint> >    symbolTimePoints;
+    vector<unique_ptr<SymbolTimePoint> > symbol_time_points;
     
     Score*                       score_ptr = nullptr;
     const SymbolTimePoint*       prev_timepoint = nullptr;
     
-    vector< pair<const Symbol*, const Symbol*> > voice_staff_vector;
+    vector<pair<const Symbol*, const Symbol*> > voice_staff_vector;
     
     int                          current_point = 0;
     float                        current_time = 0;

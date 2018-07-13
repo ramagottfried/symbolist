@@ -31,18 +31,15 @@ void SortedStaves::removeStaff( Symbol* s)
 
 bool SortedStaves::compareStaves ( Symbol* a, Symbol* b )
 {
-    auto a_x = a->getMessage("/x").getFloat() ;
-    auto a_y = a->getMessage("/y").getFloat() ;
+    auto a_x = a->getMessage("/x").getFloat();
+    auto a_y = a->getMessage("/y").getFloat();
     auto a_x2 = a_x + a->getMessage("/w").getFloat();
     
     
     auto b_x = b->getMessage("/x").getFloat() ;
     auto b_y = b->getMessage("/y").getFloat() ;
     
-    if( a_y < b_y && b_x < a_x2 )
-        return true;
-    
-    return false;
+    return a_y < b_y && b_x < a_x2;
     
 }
 
@@ -56,15 +53,12 @@ void SortedStaves::resetTimes()
         Symbol* staff = *it;
                 
         float w = staff->getMessage("/w").getFloat();
-        
         staff->addMessage( "/time/start", time );
         
         DEBUG_FULL("Staff's start time = " << time)
-        
-        time += Symbol::pixelsToTime(w) ;
+        time += staff->pixelsToTime(w) ;
         
         staff->addMessage( "/time/duration", time );
-        
         DEBUG_INLINE(", end time = " << time << endl)
         
     }
@@ -83,12 +77,11 @@ bool SortedStaves::addStaff(Symbol* s)
     
     resetTimes();
     
-    // probably not the right place to deal with names.. maybe duplicates should be allowed?
-    
+    // Probably not the right place to deal with names.. maybe duplicates should be allowed?
     DEBUG_FULL("Setting staff name -- staff size: " << staves.size() << endl)
     string name = s->getMessage("/name").getString();
-    if( name.empty() ) // for now allow  name == s->getID()
-        s->addMessage( "/name", "staff_" + to_string(staves.size() ) );
+    if( name.empty() ) // For now allow  name == s->getID()
+        s->addMessage( "/name", "staff_" + to_string(staves.size()) );
     
     return true;
     

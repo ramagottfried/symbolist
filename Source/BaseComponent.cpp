@@ -506,9 +506,7 @@ void BaseComponent::mouseDrag( const MouseEvent& event )
     else
     {
         
-        ScoreComponent* parent = dynamic_cast<ScoreComponent* >(getParentComponent());
-        if (parent == NULL)
-        	return;
+        ScoreComponent* parent = (ScoreComponent*) getParentComponent();
 		
         if ( respondsToMouseEvents() )
         {

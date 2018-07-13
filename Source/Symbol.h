@@ -47,14 +47,14 @@ public:
 	 *           TIME CONVERSION          *
 	 **************************************/
 	
-    static inline float pixelsToTime( const float f )
+    inline float pixelsToTime( const float f )
     {
-        return f * Symbol::m_pixels_to_time;
+        return f * m_pixels_to_time;
     }
     
-    static inline float timeToPixels( const float t )
+    inline float timeToPixels( const float t )
     {
-        return t * Symbol::m_time_to_pixels;
+        return t * m_time_to_pixels;
     }
     
     inline bool hitTestTime( float t )
@@ -87,8 +87,8 @@ public:
 		
 private:
     
-    static float m_pixels_to_time;
-    static float m_time_to_pixels;
+    float m_pixels_to_time = 0.01f;
+    float m_time_to_pixels = 100.0f;
 
 };
 

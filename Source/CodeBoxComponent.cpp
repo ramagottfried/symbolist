@@ -11,7 +11,8 @@ CodeBoxComponent::CodeBoxComponent()
 	
 	code_editor->setFont(newFont);
 	code_document.addListener(this);
-	
+    code_document.setNewLineCharacters("\n");
+    
 	addAndMakeVisible(save_button);
 	save_button.setColour(TextButton::buttonColourId, Colours::grey);
 	save_button.setButtonText("Save");

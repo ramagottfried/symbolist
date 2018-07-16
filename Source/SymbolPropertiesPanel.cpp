@@ -74,6 +74,12 @@ void SymbolPropertiesPanel::buttonClicked(Button* button)
 		if (inspectedSymbol != NULL && inspectedSymbol->addressExists("/expr"))
 				inspectedSymbol->applyExpr(inspectedSymbol->getMessage("/expr").getString());
 		
+        /* update the component drawing from the updated symbol
+         * rama: why is this done with the updateSymbolFromComponent function? I would think it should be "updateComponentFromSymbol" ...
+         */
+        InspectorComponent* inspectorView = dynamic_cast<InspectorComponent* >(getParentComponent());
+        inspectorView->updateSymbolFromComponent( symbol_component );
+        
 		symbol_inspector.clear();
 		createOSCview();
 		

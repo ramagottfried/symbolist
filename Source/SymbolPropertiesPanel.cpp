@@ -76,6 +76,7 @@ void SymbolPropertiesPanel::buttonClicked(Button* button)
 		
         /* update the component drawing from the updated symbol
          * rama: why is this done with the updateSymbolFromComponent function? I would think it should be "updateComponentFromSymbol" ...
+         *      I guess it makes a little sense since we're updating the symbol from the component's (symbol) editor
          */
         InspectorComponent* inspectorView = dynamic_cast<InspectorComponent* >(getParentComponent());
         inspectorView->updateSymbolFromComponent( symbol_component );

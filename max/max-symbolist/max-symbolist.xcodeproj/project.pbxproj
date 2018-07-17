@@ -90,7 +90,6 @@
 				1186485B1EF7D84300904672 /* Sources */,
 				1186485C1EF7D84300904672 /* Frameworks */,
 				1186485D1EF7D84300904672 /* Resources */,
-				75B86ED220E39B830080DB3D /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -141,24 +140,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		75B86ED220E39B830080DB3D /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
-			files = (
-			);
-			inputPaths = (
-				"",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "rm -r \"$MAX_LIBRARY/symbolist.mxo\"\n\nif [ \"$CONFIGURATION\" = \"Debug\" ]; then\n    cp -r ./Build/Products/Debug/symbolist.mxo \"$MAX_LIBRARY\"\nelse\n    cp -r ./Build/Products/Release/symbolist.mxo \"$MAX_LIBRARY\"\nfi";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1186485B1EF7D84300904672 /* Sources */ = {

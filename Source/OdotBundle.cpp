@@ -6,6 +6,9 @@
 #include "osc_match.h"
 #include "osc_mem.h"
 
+#include <fstream>
+#include <sstream>
+
 OdotBundle::OdotBundle()
 {
     ptr = odot::newOdotBundlePtr();

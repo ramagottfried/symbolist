@@ -17,6 +17,7 @@ void OdotBundleHash::rehash()
 
 void OdotBundleHash::recursiveAddSubs( const t_osc_bndl_u *bndl )
 {
+
     t_osc_bndl_it_u *it = osc_bndl_it_u_get( (t_osc_bndl_u *)bndl );
     while( osc_bndl_it_u_hasNext(it) )
     {
@@ -28,7 +29,6 @@ void OdotBundleHash::recursiveAddSubs( const t_osc_bndl_u *bndl )
         if( osc_atom_u_getTypetag(at) == OSC_BUNDLE_TYPETAG )
         {
             t_osc_bndl_u *sub = osc_atom_u_getBndl(at);
-            
             add( osc_message_u_getAddress(msg), sub );
             
             recursiveAddSubs( sub );

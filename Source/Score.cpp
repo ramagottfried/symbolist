@@ -13,20 +13,21 @@ Score::Score()
     time_points.setScore(this);
 }
 
-Score::Score(Score& src)
+Score::Score(const Score& src)
 {
+    // copy score
+    m_score = src.m_score;
+    
     // Sets the score_ptr reference for time_points instance variable.
     time_points.setScore(this);
     
-    score_bundle = src.score_bundle;
-    
-    
+
     for(auto it = src.score_symbols.begin(); it != src.score_symbols.end(); it++)
     {
         score_symbols.push_back(std::unique_ptr<Symbol>(new Symbol( it->get() ) ) );
         addStaff( score_symbols.back().get() );
     }
-    
+
     updateStavesAndTimepoints();
     
     DEBUG_FULL("Copying score of address " << this << " and size " << score_symbols.size()
@@ -45,13 +46,15 @@ Score::~Score()
 
 void Score::print() const
 {
+    m_score.print();
+    /*
     int count = 1;
     for (auto it = score_symbols.begin(); it != score_symbols.end(); it++)
     {
         DEBUG_INLINE("Symbol n° " << count << endl)
         (*it)->print();
         count++;
-    }
+    }*/
 }
 
 /***********************************
@@ -59,7 +62,8 @@ void Score::print() const
  ***********************************/
 void Score::removeAllSymbols()
 {
-    score_symbols.clear();
+    m_score.clear();
+    // score_symbols.clear();
     time_points.getSymbolTimePoints().clear();
     staves.clear();
 }
@@ -455,7 +459,7 @@ void Score::updateStavesAndTimepoints()
     // add the symbols
     
     for( auto it = score_symbols.begin(); it != score_symbols.end(); it++)
-        time_points.addSymbolTimePoints((*it).get());
+        time_points.addSymbolTimePoints( (*it).get() );
     
 }
 

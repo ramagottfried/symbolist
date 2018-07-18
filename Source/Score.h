@@ -36,7 +36,7 @@ public:
      *             CONSTRUCTORS            *
      ***************************************/
     Score();
-    Score(Score& src);
+    Score(const Score& src);
     Score(const OdotBundle_s& s_bundle) ;
     ~Score();
     
@@ -225,7 +225,7 @@ public:
 	
 private:
 
-    OdotBundle                  score_bundle;
+    OdotBundle                  m_score;
     
 	vector< unique_ptr<Symbol> > score_symbols;
     TimePointArray              time_points;

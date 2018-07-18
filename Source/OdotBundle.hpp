@@ -137,6 +137,8 @@ public:
     /* ======= Debug ======= */
 
     void print( int level = 0 ) const;
+    void print_imp( t_osc_bndl_u * bndl, int level = 0 ) const;
+    
     void getPrintString(string &str, int level = 0 );
     void getPrintStringArray(vector<string >& str, int level = 0 );
 

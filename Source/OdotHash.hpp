@@ -30,7 +30,16 @@ public:
      */
     OdotBundle get( const string& addr )
     {
-        return OdotBundle( m_map[ addr.c_str() ] );
+        return OdotBundle( m_map[ addr ] );
+    }
+    
+    void print()
+    {
+        cout << "hash map:" << endl;
+        for( auto e : m_map )
+        {
+            cout << e.first << " " << e.second << endl;
+        }
     }
     
 private:
@@ -39,11 +48,11 @@ private:
     
     void add( const char * addr, t_osc_bndl_u * bndl )
     {
-        m_map.emplace( addr, bndl );
+        m_map.emplace( string(addr), bndl );
     }
     
     // add prefix selector?
     string                                          m_selector;
     OdotBundle&                                     m_bndl;
-    unordered_map< const char *, t_osc_bndl_u * >   m_map;
+    unordered_map< string, t_osc_bndl_u * >   m_map;
 };

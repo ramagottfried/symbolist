@@ -154,20 +154,25 @@ void OdotBundle::clear()
 
 void OdotBundle::print( int level ) const
 {
+    print_imp( ptr.get() );
+}
+
+void OdotBundle::print_imp( t_osc_bndl_u * bndl, int level ) const
+{
     string indent = "";
     for( int i = 0; i < level; i++ )
         indent += ".\t";
     
     cout << indent << "==== ODOT BUNDLE ====" << endl;
-    cout << indent << "   ( " << ptr.get() << " )" << endl;
-
-    t_osc_bndl_it_u *it = osc_bndl_it_u_get( ptr.get() );
+    cout << indent << "   ( " << bndl << " )" << endl;
+    
+    t_osc_bndl_it_u *it = osc_bndl_it_u_get( bndl );
     while( osc_bndl_it_u_hasNext(it) )
     {
         t_osc_msg_u *msg = osc_bndl_it_u_next(it);
-
+        
         cout << indent << osc_message_u_getAddress(msg);
-
+        
         char buf[256];
         char *buf_ptr = buf;
         int argcount = osc_message_u_getArgCount(msg);
@@ -177,7 +182,7 @@ void OdotBundle::print( int level ) const
             if( osc_atom_u_getTypetag(a) == OSC_BUNDLE_TYPETAG )
             {
                 cout << indent << "\t{ \n";
-                OdotBundle( osc_atom_u_getBndl(a) ).print( level+1 );
+                print_imp( osc_atom_u_getBndl(a), level+1 );
                 cout << indent << " } ";
             }
             else
@@ -191,8 +196,8 @@ void OdotBundle::print( int level ) const
     osc_bndl_it_u_destroy(it);
     
     cout << indent << "====-===-======-====" << endl;
-
 }
+
 
 void OdotBundle::getPrintString( string &str, int level )
 {

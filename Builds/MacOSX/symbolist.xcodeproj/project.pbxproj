@@ -182,6 +182,14 @@
 		1196B40F20FF8CFC002F4391 /* OdotHash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1196B40C20FF8CFC002F4391 /* OdotHash.cpp */; };
 		1196B41020FF8CFC002F4391 /* OdotHash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1196B40C20FF8CFC002F4391 /* OdotHash.cpp */; };
 		1196B41120FF8CFC002F4391 /* OdotHash.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1196B40D20FF8CFC002F4391 /* OdotHash.hpp */; };
+		1196B41920FFBA83002F4391 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1196B41820FFBA83002F4391 /* main.cpp */; };
+		1196B41D20FFBAF7002F4391 /* libsymbolist-libo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 116A7E412046CF62004B545D /* libsymbolist-libo.a */; };
+		1196B41E20FFBBC1002F4391 /* OdotExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 113980B1206449EA002A2408 /* OdotExpr.cpp */; };
+		1196B41F20FFBBC1002F4391 /* OdotBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116A7EED2046DCAE004B545D /* OdotBundle.cpp */; };
+		1196B42020FFBBC1002F4391 /* OdotBundle_s.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A3939A20528799002C8916 /* OdotBundle_s.cpp */; };
+		1196B42120FFBBC1002F4391 /* OdotMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116A7EF42047E99D004B545D /* OdotMessage.cpp */; };
+		1196B42220FFBBC1002F4391 /* OdotAtom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116A7EFA2047ECB8004B545D /* OdotAtom.cpp */; };
+		1196B42320FFBBC1002F4391 /* OdotHash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1196B40C20FF8CFC002F4391 /* OdotHash.cpp */; };
 		11A3939C20528799002C8916 /* OdotBundle_s.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A3939A20528799002C8916 /* OdotBundle_s.cpp */; };
 		11A3939D20528799002C8916 /* OdotBundle_s.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A3939A20528799002C8916 /* OdotBundle_s.cpp */; };
 		11A3939E20528799002C8916 /* OdotBundle_s.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A3939A20528799002C8916 /* OdotBundle_s.cpp */; };
@@ -458,6 +466,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		1196B41420FFBA83002F4391 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		758F6EED207BBFC7006EDD53 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -609,6 +626,8 @@
 		118C38EE1EC61404006FF4A1 /* PaletteComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PaletteComponent.h; path = ../../Source/PaletteComponent.h; sourceTree = "<group>"; };
 		1196B40C20FF8CFC002F4391 /* OdotHash.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = OdotHash.cpp; path = ../../Source/OdotHash.cpp; sourceTree = "<group>"; };
 		1196B40D20FF8CFC002F4391 /* OdotHash.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = OdotHash.hpp; path = ../../Source/OdotHash.hpp; sourceTree = "<group>"; };
+		1196B41620FFBA83002F4391 /* symbolist-dev-test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "symbolist-dev-test"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1196B41820FFBA83002F4391 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		11A3939A20528799002C8916 /* OdotBundle_s.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OdotBundle_s.cpp; path = ../../Source/OdotBundle_s.cpp; sourceTree = "<group>"; };
 		11A3939B20528799002C8916 /* OdotBundle_s.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = OdotBundle_s.hpp; path = ../../Source/OdotBundle_s.hpp; sourceTree = "<group>"; };
 		11AEF237207A943800B1398D /* JsonTreeItem.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = JsonTreeItem.cpp; path = ../../Source/JsonTreeItem.cpp; sourceTree = "<group>"; };
@@ -746,6 +765,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1196B41320FFBA83002F4391 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1196B41D20FFBAF7002F4391 /* libsymbolist-libo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -963,6 +990,14 @@
 			name = score;
 			sourceTree = "<group>";
 		};
+		1196B41720FFBA83002F4391 /* symbolist-dev-test */ = {
+			isa = PBXGroup;
+			children = (
+				1196B41820FFBA83002F4391 /* main.cpp */,
+			);
+			path = "symbolist-dev-test";
+			sourceTree = "<group>";
+		};
 		11CE00151EC3231E00E4F624 /* score-components */ = {
 			isa = PBXGroup;
 			children = (
@@ -1025,6 +1060,7 @@
 			children = (
 				5BA2DB05C7718E6A683CC674 /* symbolist */,
 				758F6EF0207BBFC7006EDD53 /* SymbolistTests */,
+				1196B41720FFBA83002F4391 /* symbolist-dev-test */,
 				116A7E3C2046CF3F004B545D /* libo */,
 				1126308A207F3B6A0086653D /* pugixml */,
 				94B8138ECA97E6DE808F6129 /* Juce Modules */,
@@ -1277,6 +1313,7 @@
 				1107B3EF1EF7D53100E2DFA9 /* libsymbolist.a */,
 				116A7E412046CF62004B545D /* libsymbolist-libo.a */,
 				758F6EEF207BBFC7006EDD53 /* SymbolistTests */,
+				1196B41620FFBA83002F4391 /* symbolist-dev-test */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1432,6 +1469,23 @@
 			productReference = 116A7E412046CF62004B545D /* libsymbolist-libo.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		1196B41520FFBA83002F4391 /* symbolist-dev-test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1196B41C20FFBA83002F4391 /* Build configuration list for PBXNativeTarget "symbolist-dev-test" */;
+			buildPhases = (
+				1196B41220FFBA83002F4391 /* Sources */,
+				1196B41320FFBA83002F4391 /* Frameworks */,
+				1196B41420FFBA83002F4391 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "symbolist-dev-test";
+			productName = "symbolist-dev-test";
+			productReference = 1196B41620FFBA83002F4391 /* symbolist-dev-test */;
+			productType = "com.apple.product-type.tool";
+		};
 		11CE001F1EC3271700E4F624 /* symbolist */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 11CE003D1EC3271700E4F624 /* Build configuration list for PBXNativeTarget "symbolist" */;
@@ -1499,6 +1553,10 @@
 						CreatedOnToolsVersion = 8.3.3;
 						ProvisioningStyle = Automatic;
 					};
+					1196B41520FFBA83002F4391 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
 					11CE001F1EC3271700E4F624 = {
 						CreatedOnToolsVersion = 6.3.1;
 					};
@@ -1525,6 +1583,7 @@
 				1107B3EE1EF7D53100E2DFA9 /* symbolist - Static Library */,
 				116A7E402046CF62004B545D /* symbolist-libo */,
 				758F6EEE207BBFC7006EDD53 /* SymbolistTests */,
+				1196B41520FFBA83002F4391 /* symbolist-dev-test */,
 			);
 		};
 /* End PBXProject section */
@@ -1694,6 +1753,20 @@
 				116A7E822046CFB6004B545D /* osc_dispatch.c in Sources */,
 				116A7E972046CFB6004B545D /* osc_strfmt.c in Sources */,
 				116A7E8F2046CFB6004B545D /* osc_message_iterator_u.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1196B41220FFBA83002F4391 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1196B41E20FFBBC1002F4391 /* OdotExpr.cpp in Sources */,
+				1196B41920FFBA83002F4391 /* main.cpp in Sources */,
+				1196B42320FFBBC1002F4391 /* OdotHash.cpp in Sources */,
+				1196B42220FFBBC1002F4391 /* OdotAtom.cpp in Sources */,
+				1196B41F20FFBBC1002F4391 /* OdotBundle.cpp in Sources */,
+				1196B42020FFBBC1002F4391 /* OdotBundle_s.cpp in Sources */,
+				1196B42120FFBBC1002F4391 /* OdotMessage.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2082,6 +2155,66 @@
 			};
 			name = Release;
 		};
+		1196B41A20FFBA83002F4391 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		1196B41B20FFBA83002F4391 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		11CE003E1EC3271700E4F624 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2433,6 +2566,15 @@
 			buildConfigurations = (
 				116A7E432046CF62004B545D /* Debug */,
 				116A7E442046CF62004B545D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		1196B41C20FFBA83002F4391 /* Build configuration list for PBXNativeTarget "symbolist-dev-test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1196B41A20FFBA83002F4391 /* Debug */,
+				1196B41B20FFBA83002F4391 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

@@ -225,7 +225,7 @@ public:
 	
 private:
 
-	vector<unique_ptr<Symbol> > score_symbols;
+	vector< unique_ptr<Symbol> > score_symbols;
     TimePointArray              time_points;
     SortedStaves                staves;
     ScoreSorter                 score_sorter;

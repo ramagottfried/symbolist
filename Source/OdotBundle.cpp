@@ -74,6 +74,11 @@ OdotBundle::OdotBundle( vector<OdotMessage> msg_vec )
     addMessage( msg_vec );
 }
 
+OdotBundle::OdotBundle( const string& str )
+{
+    setFromString( str );
+}
+
 void OdotBundle::unionWith( const OdotBundle& other, bool passive )
 {
     t_osc_bndl_u *unioned = osc_bundle_u_alloc();
@@ -130,7 +135,13 @@ void OdotBundle::addMessage( const OdotMessage& msg )
     // makes a copy which will be owned by the bundle,
     // this way the incoming msg is still available to be used by the caller if needed
     OdotMessage msg_cpy( msg );
-    osc_bundle_u_addMsgWithoutDups( ptr.get(), msg_cpy.release() );
+    osc_bundle_u_replaceMessage( ptr.get(), msg_cpy.release() );
+}
+
+void OdotBundle::addMessage( t_osc_msg_u * msg )
+{
+    //  cout << "replace " << endl;
+    osc_bundle_u_replaceMessage( ptr.get(), msg );
 }
 
 void OdotBundle::clear()
@@ -278,6 +289,30 @@ string OdotBundle::getJSON()
     return JSON;
 }
 
+bool OdotBundle::operator==( const OdotBundle& src )
+{
+    if( get_o_ptr() == src.get_o_ptr() )
+        return true;
+    
+    if( size() != src.size() )
+        return false;
+    
+    t_osc_bndl_it_u *it = osc_bndl_it_u_get( ptr.get() );
+    while( osc_bndl_it_u_hasNext(it) )
+    {
+        t_osc_msg_u *msg = osc_bndl_it_u_next(it);
+        if( !src.addressExists( osc_message_u_getAddress(msg) ) )
+        {
+            osc_bndl_it_u_destroy(it);
+            return false;
+        }
+        
+    }
+    osc_bndl_it_u_destroy(it);
+    return true;
+}
+
+
 bool OdotBundle::addressExists( const string& address ) const
 {
     return addressExists(address.c_str());
@@ -356,39 +391,73 @@ vector<OdotMessage> OdotBundle::getMessageArray() const
     return ar;
 }
 
+void OdotBundle::setFromString( const string& str )
+{
+    t_osc_bndl_u * bndl = nullptr;
+    t_osc_err error = osc_parser_parseString( (long)str.size(), (char *)str.c_str(), &bndl );
+    if (error == OSC_ERR_PARSER)
+        throw invalid_argument("The string being parsed is not a well-formed odot bundle.");
+ 
+    ptr = odot::newOdotBundlePtr( bndl );
+}
+
+void OdotBundle::setFromFile( const string& oscFilePath ) 
+{
+    /* Creates a file input stream to read the content
+     * of the osc file which path is in parameter.
+     */
+    ifstream oscFile(oscFilePath);
+    
+    if(!oscFile)
+        throw invalid_argument("Invalid path to osc file.");
+    
+    /* Stores the file content into a string buffer */
+    stringstream fileContentBuffer;
+    fileContentBuffer << oscFile.rdbuf();
+    
+    setFromString(fileContentBuffer.str());
+}
+
+/* Converts the string into char* to pass it
+ * to the osc_parser_parseString function.
+ */
+/*
 OdotBundle* OdotBundle::createOdotBundleFromString(string textToParse)
 {
-	/* Converts the string into char* to pass it
-	 * to the osc_parser_parseString function.
-	 */
+
 	t_osc_bndl_u* bundle = NULL;
 	char textToParseChar [textToParse.length() + 1];
 	strcpy(textToParseChar, textToParse.c_str());
 	
-	/* Creates the OSC bundle from the parsed text */
+	// Creates the OSC bundle from the parsed text
 	t_osc_err error = osc_parser_parseString(strlen(textToParseChar), textToParseChar, &bundle);
 	if (error == OSC_ERR_PARSER)
 		throw invalid_argument("The string being parsed is not a well-formed odot bundle.");
 	
 	return new OdotBundle(bundle);
 }
+*/
 
+
+/* Creates a file input stream to read the content
+ * of the osc file which path is in parameter.
+ */
+/*
 OdotBundle* OdotBundle::createOdotBundleFromFile(string oscFilePath)
 {
-	/* Creates a file input stream to read the content
-	 * of the osc file which path is in parameter.
-	 */
+	
 	ifstream oscFile(oscFilePath);
 	
 	if(!oscFile)
 		throw invalid_argument("Invalid path to osc file.");
 	
-	/* Stores the file content into a string buffer */
+	// Stores the file content into a string buffer
 	stringstream fileContentBuffer;
 	fileContentBuffer << oscFile.rdbuf();
 	
 	return createOdotBundleFromString(fileContentBuffer.str());
 }
+*/
 
 /*
 // unfinished set of functions that was going to merge the bundle keeping the msg pointers in the same mem locations

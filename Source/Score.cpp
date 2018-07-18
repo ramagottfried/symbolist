@@ -357,7 +357,7 @@ void Score::importSymbols( const OdotBundle_s& s_bundle )
         if( msg.getAddress().find("/symbol") == 0 && msg[0].getType() == OdotAtom::O_ATOM_BUNDLE )
         {
 			DEBUG_FULL("Message type is bundle." << endl)
-			newSymbol = new Symbol( msg.getBundle().get_o_ptr() );
+			newSymbol = new Symbol( msg.getBundle().get_o_ptr() ); // ideally don't use new here
 			addSymbol( newSymbol );
         }
         /* If the message contains a string then tries to create a symbol from this string.
@@ -368,7 +368,7 @@ void Score::importSymbols( const OdotBundle_s& s_bundle )
 		{
 			DEBUG_FULL("Message type is string." << endl)
 			try {
-  				newSymbol = new Symbol(OdotBundle::createOdotBundleFromString(msg[0].getString()));
+  				newSymbol = new Symbol( msg[0].getString() ); // ideally don't use new here
 				addSymbol( newSymbol );
 			} catch (invalid_argument& error) {
   				cout << error.what() << endl;

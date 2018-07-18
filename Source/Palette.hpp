@@ -60,8 +60,8 @@ public:
 	void createDefaultItems();
 	
 private:
-	vector<Symbol > default_items;
-    vector<Symbol > user_items;
+	vector< Symbol > default_items;
+    vector< Symbol > user_items;
 	
     int selected_item = 0;
 	

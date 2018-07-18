@@ -18,10 +18,13 @@ Score::Score(Score& src)
     // Sets the score_ptr reference for time_points instance variable.
     time_points.setScore(this);
     
+    score_bundle = src.score_bundle;
+    
+    
     for(auto it = src.score_symbols.begin(); it != src.score_symbols.end(); it++)
     {
         score_symbols.push_back(std::unique_ptr<Symbol>(new Symbol( it->get() ) ) );
-        addStaff(score_symbols.back().get());
+        addStaff( score_symbols.back().get() );
     }
     
     updateStavesAndTimepoints();

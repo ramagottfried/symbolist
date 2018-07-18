@@ -225,6 +225,8 @@ public:
 	
 private:
 
+    OdotBundle                  score_bundle;
+    
 	vector< unique_ptr<Symbol> > score_symbols;
     TimePointArray              time_points;
     SortedStaves                staves;

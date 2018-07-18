@@ -124,6 +124,7 @@ Symbol* Score::addSymbol(Symbol* symbol)
     DEBUG_FULL("lastInsertedSymbol" << lastInsertedSymbol << endl )
 
     // Calls the sort function to properly insert the new symbol.
+    // ... thinking: this means that the score is sorted in time, but actually the time aspect should be separate from the score symbol order, the symbol order should be the drawing order (the same as the component children order)
     sort(score_symbols.begin(), score_symbols.end(), score_sorter);
     
     /* lastInsertedSymbol is added to staves

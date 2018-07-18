@@ -1,0 +1,22 @@
+when a new symbol/component is created:
+1. copy the default bundle prototype from the palette
+2. update the prototype based on the mouse interaction details (position etc.)
+3. set z-order id for the symbol as unique id connection for component->symbol lookup
+4. add symbol to score /symbol list with /number as id
+
+when a component is altered in the GUI:
+1. use the id in the component to lookup the symbol-bundle in the score, which returns a copy of the previous value
+2. update (union or replace?) the symbol with the component's new location, rotation, color etc.
+3. add symbol back into score, replacing previous version
+
+if the z-order of a component changes:
+1. reorder the addresses of the bundle to match the order of the component stack
+    (how to do that exactly I'm not sure yet)
+
+
+Timepoint Array
+after moving to a single OSC bundle the symbol locations will be slightly harder to find.
+option 1: copy the symbol values into the timepoints themselves
+option 2: store the names of the symbols and use a hashtable to look up the symbol bundle every time you need it
+option 3: store the t_osc_bndl_u pointer instead of the Symbol (since the Symbol is always a copy),
+option 4: use the SymbolRef that I made before...

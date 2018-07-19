@@ -21,6 +21,12 @@ public:
     OdotAtom& operator=( OdotAtom&& src ) = default;
     ~OdotAtom(){}
     
+    bool operator==( const OdotAtom& src ) const;
+    bool operator!=( const OdotAtom& src ) const;
+    
+    bool operator>( const OdotAtom& src ) const;
+    bool operator<( const OdotAtom& src ) const;
+    
     inline void setValue( float v ){        osc_atom_u_setFloat( ptr.get(), v ); }
     inline void setValue( double v ){       osc_atom_u_setDouble( ptr.get(), v ); }
     inline void setValue( int v ){          osc_atom_u_setInt32( ptr.get(), v ); }
@@ -33,15 +39,15 @@ public:
         setValue( std::forward<T>(value) );
     }
     
-    inline float getFloat(){    return osc_atom_u_getFloat( ptr.get() ); }
-    inline double getDouble(){  return osc_atom_u_getDouble( ptr.get() ); }
-    inline int getInt(){        return osc_atom_u_getInt( ptr.get() ); }
+    inline float getFloat() const {    return osc_atom_u_getFloat( ptr.get() ); }
+    inline double getDouble() const {  return osc_atom_u_getDouble( ptr.get() ); }
+    inline int getInt() const {        return osc_atom_u_getInt( ptr.get() ); }
     
     string getString() const;
     
     // inline const char * getCharPtr(){  return osc_atom_u_getStringPtr( ptr.get() ); }
     
-    OdotBundle getBundle();
+    OdotBundle getBundle() const;
     t_osc_bndl_u * getBundlePtr();
 
     enum OdotAtomType {

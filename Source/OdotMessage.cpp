@@ -56,6 +56,29 @@ OdotMessage& OdotMessage::operator=( const OdotMessage& src )
     return *this;
 }
 
+bool OdotMessage::operator!=( const OdotMessage& src ) const
+{
+    return !((*this) == src);
+}
+
+bool OdotMessage::operator==( const OdotMessage& src ) const
+{
+    if( ptr.get() == src.ptr.get() )
+        return true;
+    
+    if( size() != src.size() )
+        return false;
+    
+    for( int i = 0; i < size(); i++ )
+    {
+        if( (*this)[i] != src[i] )
+            return false;
+    }
+    
+    return true;
+    
+}
+
 OdotAtom OdotMessage::operator[](int i) const
 {
     t_osc_atom_u *a = osc_message_u_getArg( ptr.get(), i );
@@ -67,7 +90,7 @@ OdotAtom OdotMessage::operator[](int i) const
     
 }
 
-void OdotMessage::print()
+void OdotMessage::print() const
 {
     char buf[256];
     char *buf_ptr = buf;
@@ -191,7 +214,7 @@ vector<OdotAtom> OdotMessage::getAtoms()
     return atom_array;
 }
 
-OdotBundle OdotMessage::getBundle( int argIndex )
+OdotBundle OdotMessage::getBundle( int argIndex ) const
 {
     return OdotBundle( osc_atom_u_getBndl( osc_message_u_getArg( ptr.get(), argIndex ) ) );
 }

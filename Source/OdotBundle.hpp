@@ -123,7 +123,6 @@ public:
      *  @returns            Bundle containing first matching message
      */
     OdotBundle getBundleContainingMessage( const char * address ) const;
-    OdotBundle getBundleContainingMessageValue( const char * address, OdotAtom& val ) const;
     
     /**
      *  Recursively search all subbundles for address/value pair and return containing subbundle
@@ -133,7 +132,8 @@ public:
      *  @returns        Bundle containing first matching message
      */
     OdotBundle getBundleContainingMessage( OdotMessage& msg ) const;
-    
+    //OdotBundle getBundleContainingMessageValue( const char * address, OdotAtom& val ) const;
+
     vector<OdotMessage> getMessageArray() const;
 
     vector<OdotMessage> matchAddress( const char * address, int fullmatch = 1) const;

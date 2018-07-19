@@ -52,10 +52,10 @@ public:
     
     vector<OdotAtom> getAtoms();
     
-    inline string getString(int argIndex = 0){ return ((*this)[argIndex]).getString(); }
-    inline float getFloat(int argIndex = 0){ return  osc_atom_u_getFloat( osc_message_u_getArg( ptr.get(), argIndex ) ); }
-    inline int getInt(int argIndex = 0){ return  osc_atom_u_getInt( osc_message_u_getArg( ptr.get(), argIndex ) ); }
-    OdotBundle getBundle(int argIndex = 0);
+    inline string getString(int argIndex = 0) const { return ((*this)[argIndex]).getString(); }
+    inline float getFloat(int argIndex = 0) const { return  osc_atom_u_getFloat( osc_message_u_getArg( ptr.get(), argIndex ) ); }
+    inline int getInt(int argIndex = 0) const { return  osc_atom_u_getInt( osc_message_u_getArg( ptr.get(), argIndex ) ); }
+    OdotBundle getBundle(int argIndex = 0) const;
 
     
     /* ======= set message values ======= */
@@ -92,10 +92,12 @@ public:
     inline void clear(){ osc_message_u_clearArgs( ptr.get() ); }
     
     /* ======= query ======= */
+    bool operator!=( const OdotMessage& src ) const;
+    bool operator==( const OdotMessage& src ) const;
     
-    inline int size(){ return osc_message_u_getArgCount( ptr.get() ); }
-    inline bool isEmpty(){ return ( osc_message_u_getArgCount( ptr.get() ) == 0); }
-    void print();
+    inline int size() const { return osc_message_u_getArgCount( ptr.get() ); }
+    inline bool isEmpty() const { return ( osc_message_u_getArgCount( ptr.get() ) == 0); }
+    void print() const;
     
     string getJSON();
     

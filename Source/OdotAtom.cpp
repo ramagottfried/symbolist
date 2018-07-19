@@ -35,7 +35,41 @@ OdotAtom& OdotAtom::operator=( const OdotAtom& src )
     return *this;
 }
 
-OdotBundle OdotAtom::getBundle()
+
+bool OdotAtom::operator!=( const OdotAtom& src ) const
+{
+    return !((*this) == src);
+}
+
+bool OdotAtom::operator==( const OdotAtom& src ) const
+{
+    // once there is a ref version, check for pointer address first
+    // and replace pointer.get with wrapper function
+    if( ptr.get() == src.ptr.get() )
+        return true;
+    
+    if( getType() != src.getType() )
+        return false;
+    
+    switch ( osc_atom_u_getTypetag( ptr.get() ) )
+    {
+        case 'f':
+            return getFloat() == src.getFloat();
+        case 'd':
+            return getDouble() == src.getDouble();
+        case 'i':
+            return getInt()== src.getInt();
+        case 's':
+            return getString() == src.getString();
+        case OSC_BUNDLE_TYPETAG:
+            return getBundle() == src.getBundle();
+        default:
+            return false;
+    }
+}
+
+
+OdotBundle OdotAtom::getBundle() const
 {
     return OdotBundle( osc_atom_u_getBndl( ptr.get() ) );
 }

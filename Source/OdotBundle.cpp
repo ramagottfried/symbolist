@@ -309,7 +309,8 @@ bool OdotBundle::operator==( const OdotBundle& src )
     while( osc_bndl_it_u_hasNext(it) )
     {
         t_osc_msg_u *msg = osc_bndl_it_u_next(it);
-        if( !src.addressExists( osc_message_u_getAddress(msg) ) )
+        const char * addr = osc_message_u_getAddress(msg);
+        if( src.getMessage(addr) != OdotMessage(msg) )
         {
             osc_bndl_it_u_destroy(it);
             return false;

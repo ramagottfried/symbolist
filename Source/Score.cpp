@@ -67,8 +67,8 @@ void Score::buildTimeLookups()
     1. find all staves and put them into order based on sorting rules
     2. set start and end times (also duration?) for each stave accumulating time from the previous staves
         note: this sorted vector doesn't really need to be saved if we are recalculating everything whenever a new symbol is added
-        2. find all Symbols that are linked to staves and set the symbol /time bundle
-        3. create TimePoint Array to optimize lookup into score sequence
+    3. find all Symbols that are linked to staves and set the symbol /time bundle
+    4. create TimePoint Array to optimize lookup into score sequence
     */
     
     m_type_selector.select( OdotMessage("/type", "staff") );
@@ -94,27 +94,32 @@ void Score::buildTimeLookups()
                               )" );
     
     float time = 0.0f;
-    for( auto& staff : stave_vec )
+    for( auto& addr_staff : stave_vec )
     {
+        auto staff = addr_staff.second;
         staff.addMessage("/time", time);
         staff.addMessage( pixTimeFn );
         staff.applyExpr( pixTimeApplyExpr );
+        m_score.addMessage( addr_staff.first, staff );
+        
         time = staff.getMessage("/end/time").getFloat();
+        
+        // addStaff was doing this naming business which should be somewhere else
+        /*
+         string name = staff.getMessage("/name").getString();
+         if( name.empty() ) // For now allow  name == s->getID()
+         staff.addMessage( "/name", "staff_" + to_string(staves.size()) );
+         */
     }
     
     
+    time_points.reset();
+
+    // ... working here... 
     
-    for( auto s : m_type_selector.getVector() )
-    {
-        staves.addStaff(s);
-    }
-    
-    
-    for(auto it = src.score_symbols.begin(); it != src.score_symbols.end(); it++)
-    {
-        score_symbols.push_back(std::unique_ptr<Symbol>(new Symbol( it->get() ) ) );
-        addStaff( score_symbols.back().get() );
-    }
+    for( auto it = score_symbols.begin(); it != score_symbols.end(); it++)
+        time_points.addSymbolTimePoints( (*it).get() );
+
     
     updateStavesAndTimepoints();
     

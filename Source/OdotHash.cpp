@@ -93,13 +93,13 @@ void OdotBundleHash::recursiveSelect( const t_osc_bndl_u *bndl, const string& bn
 }
 
 
-vector<OdotBundle> OdotBundleHash::getVector()
+vector< pair<string, OdotBundle> > OdotBundleHash::getVector()
 {
-    vector<OdotBundle> vec;
+    vector< pair<string, OdotBundle> > vec;
     vec.reserve( m_map.size() );
     for( auto e : m_map )
     {
-        vec.emplace_back( OdotBundle(e.second) );
+        vec.emplace_back( e.first, OdotBundle(e.second) );
     }
     return vec;
 }

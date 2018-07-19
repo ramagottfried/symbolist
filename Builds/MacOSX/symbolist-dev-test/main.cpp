@@ -27,7 +27,7 @@ void hashtest()
     auto vec = hash.getVector();
     for( auto o : vec )
     {
-        o.print();
+        o.second.print();
     }
     //hash.get("/sub/2").print();
 }
@@ -92,10 +92,10 @@ int main(int argc, const char * argv[])
     OdotExpr compareExpr( "/t = /stave/sort/fn( /stave/a, /stave/b )" );
     
     sort( stave_vec.begin(), stave_vec.end(),
-         [&compareExpr, &compareFn](OdotBundle& a, OdotBundle& b){
+         [&compareExpr, &compareFn](auto& a, auto& b){
              OdotBundle test(compareFn);
-             test.addMessage("/stave/a", a);
-             test.addMessage("/stave/b", b);
+             test.addMessage("/stave/a", a.second );
+             test.addMessage("/stave/b", b.second );
              test.applyExpr( compareExpr );
              return test.getMessage("/t").getInt();
          });
@@ -108,19 +108,23 @@ int main(int argc, const char * argv[])
                                 )" );
     
     float time = 0.0f;
-    for( auto& staff : stave_vec )
+    for( auto& addr_staff : stave_vec )
     {
+        auto staff = addr_staff.second;
         staff.addMessage("/time", time);
         staff.addMessage( pixTimeFn );
         staff.applyExpr( pixTimeApplyExpr );
+        m_score.addMessage( addr_staff.first, staff );
         
         time = staff.getMessage("/end/time").getFloat();
     }
 
-    for( auto& s : stave_vec )
+    m_score.print();
+    /*
+    for( auto& addr_staff : stave_vec )
     {
-        s.print();
+        addr_staff.second.print();
     }
-    
+    */
     return 0;
 }

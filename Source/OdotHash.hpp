@@ -75,7 +75,7 @@ public:
      *
      * @return           <code>vector<OdotBundle></code>
      */
-    vector<OdotBundle> getVector();
+    vector< pair<string, OdotBundle> > getVector();
     
     /**
      * Gets vector of Bundle with subbundles selected by hash table

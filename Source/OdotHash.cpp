@@ -23,13 +23,17 @@ void OdotBundleHash::recursiveAddSubs( const t_osc_bndl_u *bndl )
     {
         t_osc_msg_u *msg = osc_bndl_it_u_next(it);
         t_osc_atom_u *at = osc_message_u_getArg(msg, 0);
+        const char * addr = osc_message_u_getAddress(msg);
         
-        // could do matching here later
-
+        if( m_selector.size() > 0 && string(addr).find(m_selector) != 0 )
+        {
+            continue;
+        }
+        
         if( osc_atom_u_getTypetag(at) == OSC_BUNDLE_TYPETAG )
         {
             t_osc_bndl_u *sub = osc_atom_u_getBndl(at);
-            add( osc_message_u_getAddress(msg), sub );
+            add( addr, sub );
             
             recursiveAddSubs( sub );
         }

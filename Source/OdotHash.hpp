@@ -10,7 +10,9 @@ using namespace std;
 class OdotBundleHash
 {
 public:
-    OdotBundleHash(OdotBundle& bndl) : m_bndl(bndl)
+    
+    OdotBundleHash(OdotBundle& bndl, const string& prefix_selector = string() ) :
+        m_selector(prefix_selector),  m_bndl(bndl)
     {
         rehash();
     }
@@ -39,6 +41,15 @@ public:
         for( auto e : m_map )
         {
             cout << e.first << " " << e.second << endl;
+        }
+    }
+    
+    vector<OdotBundle> getVector()
+    {
+        vector<OdotBundle> vec;
+        for( auto e : m_map )
+        {
+            vec.emplace_back( OdotBundle(e.second) );
         }
     }
     

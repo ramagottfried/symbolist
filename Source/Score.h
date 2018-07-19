@@ -9,6 +9,8 @@
 
 #include "SVGFileIO.hpp"
 
+#include "OdotHash.hpp"
+
 using namespace std;
 
 //============================
@@ -157,6 +159,13 @@ public:
      */
     void importSymbols( const OdotBundle_s& s_bundle );
 
+    
+    /**
+     * Trigger rebuilding of Timepoint array and Stave sorting.
+     *
+     */
+    void buildTimeLookups();
+    
     void addSymbolTimePoints( Symbol* s );
     void removeSymbolTimePoints( Symbol* s );
     
@@ -227,8 +236,11 @@ private:
 
     OdotBundle                  m_score;
     
+    OdotBundleHash              m_symbol_table;
+    
 	vector< unique_ptr<Symbol> > score_symbols;
     TimePointArray              time_points;
+    
     SortedStaves                staves;
     ScoreSorter                 score_sorter;
 	

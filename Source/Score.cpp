@@ -4,45 +4,66 @@
 #include <algorithm>
 #include <vector>
 
-Score::Score()
+Score::Score() : m_symbol_table(m_score)
 {
-    DEBUG_FULL("Score instance address: " << this << ", score size: " << score_symbols.size() << endl)
-	score_symbols = vector<unique_ptr<Symbol> >();
-	
     // Sets the score_ptr reference for time_points instance variable.
     time_points.setScore(this);
 }
 
-Score::Score(const Score& src)
+Score::Score(const Score& src) : m_symbol_table(m_score, "/symbol")
 {
     // copy score
     m_score = src.m_score;
+    m_symbol_table.rehash();
     
     // Sets the score_ptr reference for time_points instance variable.
     time_points.setScore(this);
     
+    buildTimeLookups();
 
-    for(auto it = src.score_symbols.begin(); it != src.score_symbols.end(); it++)
-    {
-        score_symbols.push_back(std::unique_ptr<Symbol>(new Symbol( it->get() ) ) );
-        addStaff( score_symbols.back().get() );
-    }
-
-    updateStavesAndTimepoints();
-    
-    DEBUG_FULL("Copying score of address " << this << " and size " << score_symbols.size()
-    			<< ", owning " << staves.size() << " staves " << endl)
 }
 
-Score::Score( const OdotBundle_s& s_bundle  )
+Score::Score( const OdotBundle_s& s_bundle  ) : m_symbol_table(m_score, "/symbol")
 {
     importSymbols( s_bundle );
+
 }
 
 Score::~Score()
 {
 
 }
+
+void Score::buildTimeLookups()
+{
+    /*
+    1. connect Staves in time and set /time bundle in stave symbols
+    1. find all staves and put them into order based on sorting rules
+    2. set start and end times (also duration?) for each stave accumulating time from the previous staves
+        note: this sorted vector doesn't really need to be saved if we are recalculating everything whenever a new symbol is added
+        2. find all Symbols that are linked to staves and set the symbol /time bundle
+        3. create TimePoint Array to optimize lookup into score sequence
+    */
+    
+    staves.clear();
+    for( auto s : m_symbol_table.getVector() )
+    {
+        staves.addStaff(s);
+    }
+    
+    
+    for(auto it = src.score_symbols.begin(); it != src.score_symbols.end(); it++)
+    {
+        score_symbols.push_back(std::unique_ptr<Symbol>(new Symbol( it->get() ) ) );
+        addStaff( score_symbols.back().get() );
+    }
+    
+    updateStavesAndTimepoints();
+    
+    DEBUG_FULL("Copying score of address " << this << " and size " << score_symbols.size()
+               << ", owning " << staves.size() << " staves " << endl)
+}
+
 
 void Score::print() const
 {
@@ -295,6 +316,8 @@ OdotBundle_s Score::getDurationBundle()
  ***********************************/
 Symbol* Score::getSymbol(int n)
 {
+    m_score.getMessage( "/symbol/" + to_string(n) );
+    
     if (n < score_symbols.size())
         return score_symbols[n].get();
     else
@@ -404,11 +427,12 @@ void Score::importReplaceScore( const OdotBundle_s& s_bundle )
 /***********************************
  * Staff/Stave handling
  ***********************************/
-
+/*
 void Score::addStaff(Symbol* s)
 {
     staves.addStaff(s);
 }
+*/
 
 /***********************************
  * called when staff is moved

@@ -473,6 +473,7 @@ OdotBundle OdotBundle::getBundleContainingMessage_imp( t_osc_bndl_u * bndl, cons
  *  recursively search all subbundles for address with a given value and return containing subbundle
  *  only one value for now, need to implement atom vector check
  */
+/*
 OdotBundle OdotBundle::getBundleContainingMessage( OdotMessage& msg ) const
 {
     return getBundleContainingMessage_imp(ptr.get(), msg );
@@ -517,140 +518,6 @@ OdotBundle OdotBundle::getBundleContainingMessage_imp( t_osc_bndl_u * bndl, Odot
     return OdotBundleRef();
 }
 
-
-
-
-/* Converts the string into char* to pass it
- * to the osc_parser_parseString function.
- */
-/*
-OdotBundle* OdotBundle::createOdotBundleFromString(string textToParse)
-{
-
-	t_osc_bndl_u* bundle = NULL;
-	char textToParseChar [textToParse.length() + 1];
-	strcpy(textToParseChar, textToParse.c_str());
-	
-	// Creates the OSC bundle from the parsed text
-	t_osc_err error = osc_parser_parseString(strlen(textToParseChar), textToParseChar, &bundle);
-	if (error == OSC_ERR_PARSER)
-		throw invalid_argument("The string being parsed is not a well-formed odot bundle.");
-	
-	return new OdotBundle(bundle);
-}
 */
 
 
-/* Creates a file input stream to read the content
- * of the osc file which path is in parameter.
- */
-/*
-OdotBundle* OdotBundle::createOdotBundleFromFile(string oscFilePath)
-{
-	
-	ifstream oscFile(oscFilePath);
-	
-	if(!oscFile)
-		throw invalid_argument("Invalid path to osc file.");
-	
-	// Stores the file content into a string buffer
-	stringstream fileContentBuffer;
-	fileContentBuffer << oscFile.rdbuf();
-	
-	return createOdotBundleFromString(fileContentBuffer.str());
-}
-*/
-
-/*
-// unfinished set of functions that was going to merge the bundle keeping the msg pointers in the same mem locations
- 
-t_osc_msg_u * OdotBundle::lookup_osc_msg_u( const char * address )
-{
-    const long addr_len = strlen( address );
-    t_osc_bndl_it_u *iter_bndl = osc_bndl_it_u_get( ptr.get() );
-    while( osc_bndl_it_u_hasNext(iter_bndl) )
-    {
-        t_osc_msg_u *m = osc_bndl_it_u_next(iter_bndl);
-        char *a = osc_message_u_getAddress(m);
-        if( strlen(a) != addr_len ) {
-            continue;
-        }
-        else if( !strncmp( a, address, addr_len ) )
-        {
-            osc_bndl_it_u_destroy(iter_bndl);
-            return m;
-        }
-    }
-    osc_bndl_it_u_destroy(iter_bndl);
-    return nullptr;
-}
-
-void OdotBundle::deserializeMerge( const t_osc_bundle_s *src )
-{
-    long len = osc_bundle_s_getLen((t_osc_bndl_s *)src);
-    char *s_ptr = osc_bundle_s_getPtr((t_osc_bndl_s *)src);
-    std::cout << osc_bundle_s_format(len, s_ptr) << "+" << std::endl;
-    
-    t_osc_bndl_it_s *it = osc_bndl_it_s_get(len, s_ptr);
-    while(osc_bndl_it_s_hasNext(it))
-    {
-        t_osc_msg_s *s_m = osc_bndl_it_s_next(it);
-        
-        // more efficient would be to iterate the pre and post s bundles and check to see if the value changed, and don't deserialize if nothing changed
-        
-        t_osc_msg_u *u_m = osc_message_s_deserialize(s_m);
-        const char * address = osc_message_u_getAddress(u_m);
-        t_osc_msg_u * dst_m = lookup_osc_msg_u( address );
-        std::cout << "&& " << address << " " << dst_m << std::endl;
-        if( dst_m )
-        {
-            osc_message_u_clearArgs( dst_m );
-            osc_message_u_setArgArrayCopy( dst_m , osc_message_u_getArgArrayCopy( u_m ) );
-            osc_message_u_free( u_m );
-        }
-        else
-            osc_bundle_u_addMsg( ptr.get(), u_m );
-        
-    }
-    osc_bndl_it_s_destroy(it);
-}
-
-void OdotBundle::addMessage( const OdotMessage& msg )
-{
-    OdotMessage msg_cpy( msg );
-    t_osc_msg_u * existing_msg = lookup_osc_msg_u( msg_cpy.getAddress().c_str() );
-    if( existing_msg ) // update existing message if exists without reallocating the pointer
-    {
-        auto atoms = msg_cpy.getAtoms();
-        
-        if( atoms.size() == 1 && atoms[0].getType() == OdotAtom::O_ATOM_BUNDLE )
-        {
-            // if it's a subbundle, don't move those either?
-            // but then what about sub-sub bundles?
-            // I guess for now we can just leave the
-            
-            auto iter_u_b = osc_bndl_it_u_get(atoms[0].getBundlePtr());
-            
-            t_osc_bndl_s * serial_copy = osc_bundle_u_serialize( atoms[0].getBundlePtr() );
-
-//             t_osc_bndl_s *bs = osc_bundle_u_serialize(src);
-//             *dest = osc_bundle_s_deserialize(osc_bundle_s_getLen(bs), osc_bundle_s_getPtr(bs));
-//             osc_bundle_s_deepFree(bs);
-
-        }
-        else
-        {
-            osc_message_u_clearArgs( existing_msg );
-            for( auto a : atoms )
-            {
-                osc_message_u_appendAtom( existing_msg, a.release() );
-            }
-            // osc_message_u_setArgArrayCopy( existing_msg , osc_message_u_getArgArrayCopy( msg_cpy.get_o_ptr() ) );
-        }
-    }
-    else
-        osc_bundle_u_addMsg( ptr.get(), msg_cpy.release() );
-}
- 
-
-*/

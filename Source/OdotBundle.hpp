@@ -175,7 +175,6 @@ private:
     
     odot::OdotBundlePtr ptr;
     
-    
     OdotBundle getBundleContainingMessage_imp( t_osc_bndl_u * bndl, const char * address ) const;
     OdotBundle getBundleContainingMessage_imp( t_osc_bndl_u * bndl, OdotMessage& msg ) const;
 

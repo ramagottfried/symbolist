@@ -69,6 +69,9 @@ bool OdotMessage::operator==( const OdotMessage& src ) const
     if( size() != src.size() )
         return false;
     
+    if( getAddress() != src.getAddress() )
+        return false;
+    
     for( int i = 0; i < size(); i++ )
     {
         if( (*this)[i] != src[i] )

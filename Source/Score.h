@@ -42,9 +42,18 @@ public:
     Score(const OdotBundle_s& s_bundle) ;
     ~Score();
     
+
+    
     /**********************************************
      *             GETTERS AND SETTERS            *
      **********************************************/
+    /**
+     * Sets default stave sorting function and pixel to time value
+     *
+     */
+    void setDefaults();
+
+    
     inline TimePointArray* getTimePoints() { return &time_points; };
     
     /**
@@ -237,7 +246,8 @@ private:
     OdotBundle                  m_score;
     
     OdotBundleHash              m_symbol_table;
-    
+    OdotBundleHash              m_type_selector;
+
 	vector< unique_ptr<Symbol> > score_symbols;
     TimePointArray              time_points;
     

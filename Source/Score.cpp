@@ -4,34 +4,60 @@
 #include <algorithm>
 #include <vector>
 
-Score::Score() : m_symbol_table(m_score)
+Score::Score() : m_symbol_table(m_score), m_type_selector(m_score)
 {
     // Sets the score_ptr reference for time_points instance variable.
     time_points.setScore(this);
+    setDefaults();
 }
 
-Score::Score(const Score& src) : m_symbol_table(m_score, "/symbol")
+Score::Score(const Score& src) : m_symbol_table(m_score), m_type_selector(m_score)
 {
     // copy score
     m_score = src.m_score;
-    m_symbol_table.rehash();
+    setDefaults();
     
     // Sets the score_ptr reference for time_points instance variable.
     time_points.setScore(this);
     
+    m_symbol_table.select("/symbol");
     buildTimeLookups();
 
 }
 
-Score::Score( const OdotBundle_s& s_bundle  ) : m_symbol_table(m_score, "/symbol")
+Score::Score( const OdotBundle_s& s_bundle  ) : m_symbol_table(m_score), m_type_selector(m_score)
 {
     importSymbols( s_bundle );
+    setDefaults();
 
+    // Sets the score_ptr reference for time_points instance variable.
+    time_points.setScore(this);
+    
+    m_symbol_table.select("/symbol");
+    buildTimeLookups();
 }
 
 Score::~Score()
 {
 
+}
+
+void Score::setDefaults()
+{
+    if( !m_score.addressExists("/stave/sort/fn") )
+        m_score.addMessage("/stave/sort/fn", "lambda([a,b], (a./y < b./y) && (b./x < (a./x + a./w)) )" );
+    
+    if( !m_score.addressExists("/stave/pixTime/fn") )
+    {
+        m_score.addMessage("/stave/pixTime/fn",
+                           R"(
+                               lambda([time],
+                                  /start/time = time,
+                                  /end/time = time + (/w * 0.01)
+                              )
+                           )" );
+    }
+    
 }
 
 void Score::buildTimeLookups()
@@ -45,8 +71,40 @@ void Score::buildTimeLookups()
         3. create TimePoint Array to optimize lookup into score sequence
     */
     
-    staves.clear();
-    for( auto s : m_symbol_table.getVector() )
+    m_type_selector.select( OdotMessage("/type", "staff") );
+    auto stave_vec = m_type_selector.getVector();
+    
+    OdotMessage compareFn = m_score.getMessage("/stave/sort/fn");
+    OdotExpr compareExpr( "/t = /stave/sort/fn( /stave/a, /stave/b )" );
+    
+    sort( stave_vec.begin(), stave_vec.end(),
+         [&compareExpr, &compareFn](OdotBundle& a, OdotBundle& b){
+             OdotBundle test(compareFn);
+             test.addMessage("/stave/a", a);
+             test.addMessage("/stave/b", b);
+             test.applyExpr( compareExpr );
+             return test.getMessage("/t").getInt();
+         });
+    
+    
+    OdotMessage pixTimeFn = m_score.getMessage("/stave/pixTime/fn");
+    OdotExpr pixTimeApplyExpr(  R"(
+                              /stave/pixTime/fn( /time ),
+                              delete(/stave/pixTime/fn), delete(/time)
+                              )" );
+    
+    float time = 0.0f;
+    for( auto& staff : stave_vec )
+    {
+        staff.addMessage("/time", time);
+        staff.addMessage( pixTimeFn );
+        staff.applyExpr( pixTimeApplyExpr );
+        time = staff.getMessage("/end/time").getFloat();
+    }
+    
+    
+    
+    for( auto s : m_type_selector.getVector() )
     {
         staves.addStaff(s);
     }

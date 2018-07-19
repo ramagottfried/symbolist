@@ -426,6 +426,99 @@ void OdotBundle::setFromFile( const string& oscFilePath )
     setFromString(fileContentBuffer.str());
 }
 
+
+
+/*
+ *  recursively search all subbundles for address and return containing subbundle
+ */
+OdotBundle OdotBundle::getBundleContainingMessage( const char * address ) const
+{
+    return getBundleContainingMessage_imp( ptr.get(), address );
+
+}
+
+OdotBundle OdotBundle::getBundleContainingMessage_imp( t_osc_bndl_u * bndl, const char * address ) const
+{
+    t_osc_bndl_it_u *it = osc_bndl_it_u_get( bndl );
+    while( osc_bndl_it_u_hasNext(it) )
+    {
+        t_osc_msg_u *current_message = osc_bndl_it_u_next(it);
+        int po, ao;
+        int r = osc_match( address, osc_message_u_getAddress( current_message ), &po, &ao );
+        if(r == (OSC_MATCH_ADDRESS_COMPLETE | OSC_MATCH_PATTERN_COMPLETE))
+        {
+            osc_bndl_it_u_destroy(it);
+            return OdotBundle( bndl );
+        }
+        else
+        {
+            for( int i = 0; i < osc_message_u_getArgCount(current_message); i++ )
+            {
+                t_osc_atom_u * at = osc_message_u_getArg(current_message, i);
+                if( osc_atom_u_getTypetag(at) == OSC_BUNDLE_TYPETAG )
+                {
+                    OdotBundle sub = getBundleContainingMessage_imp( osc_atom_u_getBndl(at), address );
+                    if( !sub.unbound() )
+                        return sub;
+                }
+            }
+        }
+    }
+    osc_bndl_it_u_destroy(it);
+    return OdotBundle();
+}
+
+/**
+ *  recursively search all subbundles for address with a given value and return containing subbundle
+ *  only one value for now, need to implement atom vector check
+ */
+OdotBundle OdotBundle::getBundleContainingMessage( OdotMessage& msg ) const
+{
+    return getBundleContainingMessage_imp(ptr.get(), msg );
+}
+
+OdotBundle OdotBundle::getBundleContainingMessage_imp( t_osc_bndl_u * bndl, OdotMessage& msg ) const
+{
+    
+    t_osc_bndl_it_u *it = osc_bndl_it_u_get( bndl );
+    const char * address = msg.getAddress().c_str();
+    while( osc_bndl_it_u_hasNext(it) )
+    {
+        t_osc_msg_u *current_message = osc_bndl_it_u_next(it);
+        int po, ao;
+        int r = osc_match( address, osc_message_u_getAddress( current_message ), &po, &ao );
+        if(r == (OSC_MATCH_ADDRESS_COMPLETE | OSC_MATCH_PATTERN_COMPLETE))
+        {
+            
+            if( msg == OdotMessage(msg) )
+            {
+                
+            }
+            
+            osc_bndl_it_u_destroy(it);
+            return OdotBundle(bndl);
+        }
+        else
+        {
+            for( int i = 0; i < osc_message_u_getArgCount(current_message); i++ )
+            {
+                t_osc_atom_u * at = osc_message_u_getArg(current_message, i);
+                if( osc_atom_u_getTypetag(at) == OSC_BUNDLE_TYPETAG )
+                {
+                    OdotBundleRef sub = OdotBundleRef( osc_atom_u_getBndl(at) ).getBundleContainingMessage( address );
+                    if( !sub.unbound() )
+                        return sub;
+                }
+            }
+        }
+    }
+    osc_bndl_it_u_destroy(it);
+    return OdotBundleRef();
+}
+
+
+
+
 /* Converts the string into char* to pass it
  * to the osc_parser_parseString function.
  */

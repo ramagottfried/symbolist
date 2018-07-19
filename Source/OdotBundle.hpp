@@ -115,8 +115,23 @@ public:
     OdotMessage getMessage( const char * address ) const;
     OdotMessage getMessage( const string& address ) const { return getMessage( address.c_str() ); }
     
+    /**
+     *  Recursively search all subbundles for address and return containing subbundle
+     *
+     *  @param address      address to find
+     *
+     *  @returns            Bundle containing first matching message
+     */
     OdotBundle getBundleContainingMessage( const char * address ) const;
     OdotBundle getBundleContainingMessageValue( const char * address, OdotAtom& val ) const;
+    
+    /**
+     *  Recursively search all subbundles for address/value pair and return containing subbundle
+     *
+     *  @param msg      OdotMessage to find
+     *
+     *  @returns        Bundle containing first matching message
+     */
     OdotBundle getBundleContainingMessage( OdotMessage& msg ) const;
     
     vector<OdotMessage> getMessageArray() const;
@@ -160,6 +175,10 @@ private:
     
     odot::OdotBundlePtr ptr;
     
+    
+    OdotBundle getBundleContainingMessage_imp( t_osc_bndl_u * bndl, const char * address ) const;
+    OdotBundle getBundleContainingMessage_imp( t_osc_bndl_u * bndl, OdotMessage& msg ) const;
+
 };
 
 /*

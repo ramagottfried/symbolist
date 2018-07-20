@@ -84,10 +84,8 @@
 
     /symbol : {
         /1 : {
-
-            /layer : 1,
             /name : "path",  # type name
-            /id : "path/1", # unique id able to be referred to by name
+            /id : "1/path", # unique id able to be referred to by name
             /type : "line", # possibly, as in this case, the type could be different from the svg/type
 
             # SVG drawing information
@@ -132,9 +130,8 @@
         },
 
         /2 : {
-            /layer : 2,
             /name : "box",
-            /id : "box/1",
+            /id : "2/box",
             /type : "rectangle",
 
             # SVG drawing information, in this case it's the same as the type
@@ -157,10 +154,56 @@
 
         },
         /3 : {
-            /layer : 3,
             /name : "zwei",
-            /id : "zwei/1",
+            /id : "/3",
             /type : "group",
+
+            # if the /id is the lookup address, then the user might add the value to a stave by clicking, or by assigning to a stave name with a /time/start which will then find the right stave.
+            # or, if using the pulldown menu we could list the staves like "teststave[/4]" with the /stave/id in brackets.
+            /staff/name : "teststave",
+            /staff/id : "/4",
+
+            # SVG drawing information, if it's a group,
+            /svg : {
+                /type : "group",
+                /group : {
+                    /1 : {
+                        /type : "circle",
+                        /cx : 205,
+                        /cy : 305,
+                        /r : 10,
+                        /style : {
+                            /stroke_width : 1
+                        }
+                    },
+                    /2 : {
+                        /type : "line",
+                        /x1 : 205,
+                        /y1 : 305,
+                        /x2 : 205,
+                        /y2 : 305,
+                        /style : {
+                            /stroke_width : 1
+                        }
+                    }
+                }
+            },
+
+            # JUCE positioning information (determined by mouse placement, and graphic bounds):
+            /x : 200,
+            /y : 300,
+            /w : 20,
+            /h : 20,
+
+        },
+        /4 : {
+            /name : "teststave",
+            /id : "/4",
+            /type : "staff",
+
+            # use name + layer number for ids so they are easier to lookup, the name in the id makes it easier to read
+            # while the number makes it easier to lookup the main symbol address
+            # putting layer number first since it makes it clearer that the number is not a count of objects
 
             # SVG drawing information, if it's a group,
             /svg : {

@@ -190,6 +190,12 @@
 		1196B42120FFBBC1002F4391 /* OdotMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116A7EF42047E99D004B545D /* OdotMessage.cpp */; };
 		1196B42220FFBBC1002F4391 /* OdotAtom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 116A7EFA2047ECB8004B545D /* OdotAtom.cpp */; };
 		1196B42320FFBBC1002F4391 /* OdotHash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1196B40C20FF8CFC002F4391 /* OdotHash.cpp */; };
+		1196B426210231C9002F4391 /* OdotSelect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1196B424210231C9002F4391 /* OdotSelect.cpp */; };
+		1196B427210231C9002F4391 /* OdotSelect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1196B424210231C9002F4391 /* OdotSelect.cpp */; };
+		1196B428210231C9002F4391 /* OdotSelect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1196B424210231C9002F4391 /* OdotSelect.cpp */; };
+		1196B429210231C9002F4391 /* OdotSelect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1196B424210231C9002F4391 /* OdotSelect.cpp */; };
+		1196B42A210231C9002F4391 /* OdotSelect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1196B424210231C9002F4391 /* OdotSelect.cpp */; };
+		1196B42B210231C9002F4391 /* OdotSelect.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1196B425210231C9002F4391 /* OdotSelect.hpp */; };
 		11A3939C20528799002C8916 /* OdotBundle_s.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A3939A20528799002C8916 /* OdotBundle_s.cpp */; };
 		11A3939D20528799002C8916 /* OdotBundle_s.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A3939A20528799002C8916 /* OdotBundle_s.cpp */; };
 		11A3939E20528799002C8916 /* OdotBundle_s.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A3939A20528799002C8916 /* OdotBundle_s.cpp */; };
@@ -628,6 +634,8 @@
 		1196B40D20FF8CFC002F4391 /* OdotHash.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = OdotHash.hpp; path = ../../Source/OdotHash.hpp; sourceTree = "<group>"; };
 		1196B41620FFBA83002F4391 /* symbolist-dev-test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "symbolist-dev-test"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1196B41820FFBA83002F4391 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		1196B424210231C9002F4391 /* OdotSelect.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = OdotSelect.cpp; path = ../../Source/OdotSelect.cpp; sourceTree = "<group>"; };
+		1196B425210231C9002F4391 /* OdotSelect.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = OdotSelect.hpp; path = ../../Source/OdotSelect.hpp; sourceTree = "<group>"; };
 		11A3939A20528799002C8916 /* OdotBundle_s.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OdotBundle_s.cpp; path = ../../Source/OdotBundle_s.cpp; sourceTree = "<group>"; };
 		11A3939B20528799002C8916 /* OdotBundle_s.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = OdotBundle_s.hpp; path = ../../Source/OdotBundle_s.hpp; sourceTree = "<group>"; };
 		11AEF237207A943800B1398D /* JsonTreeItem.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = JsonTreeItem.cpp; path = ../../Source/JsonTreeItem.cpp; sourceTree = "<group>"; };
@@ -971,6 +979,8 @@
 				116A7F35204C4F20004B545D /* OdotPointers.h */,
 				1196B40C20FF8CFC002F4391 /* OdotHash.cpp */,
 				1196B40D20FF8CFC002F4391 /* OdotHash.hpp */,
+				1196B424210231C9002F4391 /* OdotSelect.cpp */,
+				1196B425210231C9002F4391 /* OdotSelect.hpp */,
 			);
 			name = "odot-wrapper";
 			sourceTree = "<group>";
@@ -1351,6 +1361,7 @@
 				75AEFCCB20F3B5A900728E1A /* Zone.hpp in Headers */,
 				11A3939F20528799002C8916 /* OdotBundle_s.hpp in Headers */,
 				751E315C2069493F00C3318F /* PaletteController.hpp in Headers */,
+				1196B42B210231C9002F4391 /* OdotSelect.hpp in Headers */,
 				116A7EF92047E99D004B545D /* OdotMessage.hpp in Headers */,
 				75AEFCB920EF998900728E1A /* Command.hpp in Headers */,
 				75FB5EFF207F51760083A1C0 /* OdotPointers.h in Headers */,
@@ -1646,6 +1657,7 @@
 				757E1B46206A83CD002E472E /* View.cpp in Sources */,
 				751E31552069410400C3318F /* PaletteButton.cpp in Sources */,
 				118648701EF7E68B00904672 /* include_juce_gui_basics.mm in Sources */,
+				1196B428210231C9002F4391 /* OdotSelect.cpp in Sources */,
 				75B86ECD20E24D8C0080DB3D /* CodeBoxController.cpp in Sources */,
 				757E1B47206A83D5002E472E /* Observable.cpp in Sources */,
 				4425D3071EF8599300B8BF1C /* SymbolistHandler.cpp in Sources */,
@@ -1765,6 +1777,7 @@
 				1196B42320FFBBC1002F4391 /* OdotHash.cpp in Sources */,
 				1196B42220FFBBC1002F4391 /* OdotAtom.cpp in Sources */,
 				1196B41F20FFBBC1002F4391 /* OdotBundle.cpp in Sources */,
+				1196B42A210231C9002F4391 /* OdotSelect.cpp in Sources */,
 				1196B42020FFBBC1002F4391 /* OdotBundle_s.cpp in Sources */,
 				1196B42120FFBBC1002F4391 /* OdotMessage.cpp in Sources */,
 			);
@@ -1791,6 +1804,7 @@
 				444C43A21EE4A2E4000C6F69 /* PageComponent.cpp in Sources */,
 				111A261D1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */,
 				7558B830209C9F2400BCA92C /* SmuflComponent.cpp in Sources */,
+				1196B427210231C9002F4391 /* OdotSelect.cpp in Sources */,
 				44CFE03A1EC3789C009135F8 /* include_juce_core.mm in Sources */,
 				75B86ECC20E24D8C0080DB3D /* CodeBoxController.cpp in Sources */,
 				44CFE03F1EC3789C009135F8 /* include_juce_gui_extra.mm in Sources */,
@@ -1867,6 +1881,7 @@
 				ECAB07494F266A96C75A7E47 /* include_juce_events.mm in Sources */,
 				446388D51EC34DC90038CFCB /* SymbolistMainWindow.cpp in Sources */,
 				11A3939C20528799002C8916 /* OdotBundle_s.cpp in Sources */,
+				1196B426210231C9002F4391 /* OdotSelect.cpp in Sources */,
 				75B86ECB20E24D8C0080DB3D /* CodeBoxController.cpp in Sources */,
 				11B71DD11F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */,
 				118C38E31EC5EB23006FF4A1 /* BaseComponent.cpp in Sources */,
@@ -1929,6 +1944,7 @@
 				7571E6F42084EA240092A3E0 /* pugixml.cpp in Sources */,
 				758F6F42207BCB00006EDD53 /* PaletteController.cpp in Sources */,
 				758F6F43207BCB00006EDD53 /* SymbolistHandler.cpp in Sources */,
+				1196B429210231C9002F4391 /* OdotSelect.cpp in Sources */,
 				7571E6F62084EA3F0092A3E0 /* SVGParser.cpp in Sources */,
 				758F6F44207BCB00006EDD53 /* OdotExpr.cpp in Sources */,
 				758F6F45207BCB00006EDD53 /* OdotBundle.cpp in Sources */,

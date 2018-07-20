@@ -47,9 +47,18 @@ public:
     /**********************************************
      *             GETTERS AND SETTERS            *
      **********************************************/
+    
     /**
-     * Sets default stave sorting function and pixel to time value
+     *  Sets default stave sequencing functions.
+     *  these functions should be moved to the stave or clef prototype
      *
+     *  /stave/sort/fn      is a comparator
+     *
+     *  /stave/pixTime/fn   takes an argument t for the current time, and must set the symbol's start and end time.
+     *                      the /time/end value is used for the text intput t
+     *
+     *  /stave/event/timePix/fn     takes and argument stave, and calculates /x and /w based on the symbol's
+     *                               /time/start and /time/end values (required).
      */
     void setDefaults();
 

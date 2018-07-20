@@ -94,6 +94,7 @@ public:
     template <typename... Ts>
     inline void addMessage (const char * address, Ts&&... args)
     {
+        
         addMessage( OdotMessage( address, args... ).release() );
     }
 

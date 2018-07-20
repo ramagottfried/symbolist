@@ -42,22 +42,60 @@ Score::~Score()
 
 }
 
+/**
+ *  Sets default stave sequencing functions.
+ *  these functions should be moved to the stave or clef prototype
+ *
+ *  /stave/sort/fn      is a comparator
+ *
+ *  /stave/pixTime/fn   takes an argument t for the current time, and must set the symbol's start and end time.
+ *                      the /time/end value is used for the text intput t
+ *
+ *  /stave/event/timePix/fn     takes and argument stave, and calculates /x and /w based on the symbol's
+ *                               /time/start and /time/end values (required).
+ */
 void Score::setDefaults()
 {
     if( !m_score.addressExists("/stave/sort/fn") )
-        m_score.addMessage("/stave/sort/fn", "lambda([a,b], (a./y < b./y) && (b./x < (a./x + a./w)) )" );
+        m_score.addMessage("/stave/sort/fn",
+                           R"(
+                                lambda([a,b],
+                                       (a./y < b./y) && (b./x < (a./x + a./w))
+                                )
+                           )" );
     
     if( !m_score.addressExists("/stave/pixTime/fn") )
     {
         m_score.addMessage("/stave/pixTime/fn",
                            R"(
-                               lambda([time],
-                                  /start/time = time,
-                                  /end/time = time + (/w * 0.01)
-                              )
+                           lambda([t],
+                                    /time/start = t,
+                                    /time/end = t + (/w * 0.01)
+                                  )
                            )" );
     }
     
+    if( !m_score.addressExists("/stave/note/pixTime/fn") )
+    {
+        m_score.addMessage("/stave/event/pixTime/fn",
+                           R"(
+                           lambda([stave],
+                                    /time/start = stave./time/start + (/x - stave./x) * 0.01 ,
+                                    /time/end = /time/start + (/w * 0.01)
+                                  )
+                           )" );
+    }
+    
+    if( !m_score.addressExists("/stave/note/timePix/fn") )
+    {
+        m_score.addMessage("/stave/event/timePix/fn",
+                           R"(
+                           lambda([stave],
+                                    /x = stave./x + ( (/time/start - stave./time/start) * 100. ),
+                                    /w = (/time/end - /time/start) * 100.
+                                  )
+                           )" );
+    }
 }
 
 void Score::buildTimeLookups()
@@ -75,7 +113,7 @@ void Score::buildTimeLookups()
     auto stave_vec = m_type_selector.getVector();
     
     OdotMessage compareFn = m_score.getMessage("/stave/sort/fn");
-    OdotExpr compareExpr( "/t = /stave/sort/fn( /stave/a, /stave/b )" );
+    OdotExpr compareExpr( "/order = /stave/sort/fn( /stave/a, /stave/b )" );
     
     sort( stave_vec.begin(), stave_vec.end(),
          [&compareExpr, &compareFn](OdotBundle& a, OdotBundle& b){
@@ -83,26 +121,26 @@ void Score::buildTimeLookups()
              test.addMessage("/stave/a", a);
              test.addMessage("/stave/b", b);
              test.applyExpr( compareExpr );
-             return test.getMessage("/t").getInt();
+             return test.getMessage("/order").getInt();
          });
     
     
     OdotMessage pixTimeFn = m_score.getMessage("/stave/pixTime/fn");
     OdotExpr pixTimeApplyExpr(  R"(
-                              /stave/pixTime/fn( /time ),
-                              delete(/stave/pixTime/fn), delete(/time)
+                              /stave/pixTime/fn( /t ),
+                              delete(/stave/pixTime/fn), delete(/t)
                               )" );
     
     float time = 0.0f;
     for( auto& addr_staff : stave_vec )
     {
         auto staff = addr_staff.second;
-        staff.addMessage("/time", time);
+        staff.addMessage("/t", time);
         staff.addMessage( pixTimeFn );
         staff.applyExpr( pixTimeApplyExpr );
         m_score.addMessage( addr_staff.first, staff );
         
-        time = staff.getMessage("/end/time").getFloat();
+        time = staff.getMessage("/time/end").getFloat();
         
         // addStaff was doing this naming business which should be somewhere else
         /*
@@ -115,7 +153,20 @@ void Score::buildTimeLookups()
     
     time_points.reset();
 
-    // ... working here... 
+    
+    auto symbols = m_symbol_table.getVector();
+    for( auto& addr_sym : symbols )
+    {
+        auto s = addr_sym.second;
+        auto staff = s.getMessage("/staff");
+        if( staff.size() > 0 )
+        {
+            
+            m_type_selector.get( staff );
+        }
+    }
+    
+    
     
     for( auto it = score_symbols.begin(); it != score_symbols.end(); it++)
         time_points.addSymbolTimePoints( (*it).get() );

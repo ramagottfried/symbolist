@@ -1,23 +1,25 @@
-{
-    /symbol/1 : {
-        /id : 1,
-        /x : 0,
-        /y : 0,
-        /h : 10,
-        /w : 10
-    },
-    /symbol/2 : {
-        /id : 2,
-        /x : 0,
-        /y : 0,
-        /h : 10,
-        /w : 10
-    },
-    /symbol/3 : {
-        /id : 3,
-        /x : 0,
-        /y : 0,
-        /h : 10,
-        /w : 10
-    }
+/symbol/1 : {
+    /id : "/symbol/1",
+    /name : "foo",
+    /type : "staff",
+    /x : 0,
+    /y : 10,
+    /h : 10,
+    /w : 10
+},
+/symbol/2 : {
+    /id : "/symbol/2",
+    /staff/name : "foo",
+    /staff/id : "/symbol/1",
+    /x : 0,
+    /y : 5,
+    /h : 10,
+    /w : 10
+},
+/symbol/3 : {
+    /id : "/symbol/3",
+    /x : 0,
+    /y : 0,
+    /h : 10,
+    /w : 10
 }

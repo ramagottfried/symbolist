@@ -5,39 +5,28 @@
 
 using namespace std;
 
-// add separate message hash?
-
 // check on address syntax, might need to concatentate with '.'
 
-//  should this be part of the Bundle since it's storing pointers?
-
-class OdotBundleHash
+class OdotSelect
 {
 public:
     
-    OdotBundleHash( OdotBundle& bndl ) : m_bndl(bndl) {}
-    ~OdotBundleHash() {}
+    OdotSelect( OdotBundle& bndl ) : m_bndl(bndl) {}
+    ~OdotSelect() {}
     
     /**
-    * Select all subundles for hash table.
-    *
-    */
+     * Select all messages and store in hash table for fast lookup.
+     *
+     */
     void select();
-
+    
     /**
-     * Select all subundles with a given address prefix
+     * Select all messages with a given address prefix
      *
      * @param   addr_prefix     prefix to select, e.g. /foo will match any address starting with /foo
      *
      */
     void select( const string& addr_prefix, bool fullmatch = 0 );
-    
-    /**
-     * Select all subundles with a given address prefix
-     *
-     * @param   addr_prefix     prefix to select, e.g. /foo will match any address starting with /foo
-     *
-     */
     void select( const char * addr_prefix, bool fullmatch = 0 )
     {
         select( string(addr_prefix), fullmatch );
@@ -52,38 +41,38 @@ public:
     void select( const OdotMessage& select_msg, bool fullmatch = 0 );
     
     /**
-     * Gets subbundle associated with the address key.
+     * Gets message associated with the address key.
      *
      * @param addr       the address to look for.
      *
      * @return           <code>OdotBundle</code>, associated with the address;
      */
-    OdotBundle get( const string& addr )
+    OdotMessage get( const string& addr )
     {
-        return OdotBundle( m_map[ addr ] );
+        return OdotMessage( m_map[ addr ] );
     }
     
     /*
-    OdotBundle operator[]( const int i )
-    {
-        return OdotBundle( m_map[ addr ] );
-    }
-    */
-    
-    /**
-     * Gets vector of Bundles in hash table
-     *
-     * @return           <code>vector<OdotBundle></code>
+     OdotBundle operator[]( const int i )
+     {
+     return OdotBundle( m_map[ addr ] );
+     }
      */
-    vector< pair<string, OdotBundle> > getVector();
     
     /**
-     * Gets vector of Bundle with subbundles selected by hash table
+     * Gets vector of OdotMessages in hash table
+     *
+     * @return           <code>vector<OdotMessages></code>
+     */
+    vector< OdotMessage > getVector();
+    
+    /**
+     * Gets vector of OdotBundle with OdotMessages selected by hash table
      *
      * @return           <code>OdotBundle</code>
      */
     OdotBundle getBundle();
-
+    
     inline size_t size() const { return m_map.size(); }
     
     void print()
@@ -97,19 +86,20 @@ public:
     
 private:
     
-    void add( const string& addr, t_osc_bndl_u * bndl )
+    void add( const string& addr, t_osc_msg_u * msg )
     {
         // note: we need to avoid adding the same entry twice...
-        m_map.emplace( addr, bndl );
+        m_map.emplace( addr, msg );
     }
     
     void recursiveSelect( const t_osc_bndl_u *bndl );
     void recursiveSelect( const t_osc_bndl_u *bndl, const string& selector );
-    void recursiveSelect( const t_osc_bndl_u *bndl, const string& bndl_addr, const OdotMessage& select_msg );
+    void recursiveSelect( const t_osc_bndl_u *bndl, t_osc_msg_u * parent, const OdotMessage& select_msg );
     
     // add prefix selector?
     string                                      m_selector;
     OdotMessage                                 m_msg;
     OdotBundle&                                 m_bndl;
-    unordered_map< string, t_osc_bndl_u * >     m_map;
+    unordered_map< string, t_osc_msg_u * >      m_map;
 };
+

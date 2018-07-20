@@ -142,7 +142,7 @@ public:
     
     /* ======= Info ======= */
 
-    bool operator==( const OdotBundle& src );
+    bool operator==( const OdotBundle& src ) const ;
     
     int size() const { return osc_bundle_u_getMsgCount( ptr.get() ); }
     

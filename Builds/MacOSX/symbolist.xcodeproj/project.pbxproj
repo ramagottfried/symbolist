@@ -196,6 +196,7 @@
 		1196B429210231C9002F4391 /* OdotSelect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1196B424210231C9002F4391 /* OdotSelect.cpp */; };
 		1196B42A210231C9002F4391 /* OdotSelect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1196B424210231C9002F4391 /* OdotSelect.cpp */; };
 		1196B42B210231C9002F4391 /* OdotSelect.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1196B425210231C9002F4391 /* OdotSelect.hpp */; };
+		1196B42C210260ED002F4391 /* TimePointArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118648941EFA811800904672 /* TimePointArray.cpp */; };
 		11A3939C20528799002C8916 /* OdotBundle_s.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A3939A20528799002C8916 /* OdotBundle_s.cpp */; };
 		11A3939D20528799002C8916 /* OdotBundle_s.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A3939A20528799002C8916 /* OdotBundle_s.cpp */; };
 		11A3939E20528799002C8916 /* OdotBundle_s.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A3939A20528799002C8916 /* OdotBundle_s.cpp */; };
@@ -1777,6 +1778,7 @@
 				1196B42320FFBBC1002F4391 /* OdotHash.cpp in Sources */,
 				1196B42220FFBBC1002F4391 /* OdotAtom.cpp in Sources */,
 				1196B41F20FFBBC1002F4391 /* OdotBundle.cpp in Sources */,
+				1196B42C210260ED002F4391 /* TimePointArray.cpp in Sources */,
 				1196B42A210231C9002F4391 /* OdotSelect.cpp in Sources */,
 				1196B42020FFBBC1002F4391 /* OdotBundle_s.cpp in Sources */,
 				1196B42120FFBBC1002F4391 /* OdotMessage.cpp in Sources */,

@@ -7,6 +7,18 @@ using namespace std;
 
 // check on address syntax, might need to concatentate with '.'
 
+/**
+ *  @class OdotSelect
+ *
+ *  Creates a hash table (unordered map) of OSC Messages.
+ *  Optionally will return a vector of OdotMessages from the hash table.
+ *  If an OdotMessage is passed to the select function, the selection will be of the parent subbundle message address.
+ *
+ *  OdotSelect hashes t_osc_message_u * since the pointer address stays stable using the replace_message function, however,
+ *  OdotSelect is storing pointers, so remember that the pointers may not be valid if messages are removed.
+ *  For safety, run the select() function immediately after any change is made.
+ */
+
 class OdotSelect
 {
 public:
@@ -51,13 +63,10 @@ public:
     {
         return OdotMessage( m_map[ addr ] );
     }
-    
-    /*
-     OdotBundle operator[]( const int i )
-     {
-     return OdotBundle( m_map[ addr ] );
-     }
-     */
+    OdotMessage operator[]( const string& addr )
+    {
+        return OdotMessage( m_map[ addr ] );
+    }
     
     /**
      * Gets vector of OdotMessages in hash table

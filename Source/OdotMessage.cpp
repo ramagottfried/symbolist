@@ -95,7 +95,7 @@ OdotAtom OdotMessage::operator[](int i) const
 
 void OdotMessage::print() const
 {
-    char buf[256];
+    char buf[32768];
     char *buf_ptr = buf;
     
     cout << "==== ODOT MESSAGE ====" << endl;
@@ -106,7 +106,7 @@ void OdotMessage::print() const
     int argcount = osc_message_u_getArgCount( ptr.get() );
     for( int i = 0; i < argcount; i++ )
     {
-        osc_atom_u_getString( osc_message_u_getArg( ptr.get() , i), 256, &buf_ptr );
+        osc_atom_u_getString( osc_message_u_getArg( ptr.get() , i), 32768, &buf_ptr );
         cout << "\t" << buf_ptr;
     }
     cout << endl;

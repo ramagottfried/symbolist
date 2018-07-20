@@ -1,9 +1,6 @@
 #pragma once
-
-#ifndef TimePointArray_h
-#define TimePointArray_h
-
-#include "Symbol.h"
+#include "OdotBundle.hpp"
+#include <cmath>
 
 //============================
 // SYMBOL Timepoint
@@ -16,121 +13,83 @@ class Score;
 struct SymbolTimePoint
 {
     inline SymbolTimePoint() {}
-    inline SymbolTimePoint(Symbol* s, double t, Symbol* staff)
+    inline SymbolTimePoint(OdotBundle& s, double t, OdotBundle& staff)
     {
         addSymbol(s);
         time = t;
         staff_ref = staff;
     }
 	
-    inline ~SymbolTimePoint()
-    {
-		DEBUG_FULL("Time point value = " << time << endl)
-        staff_ref = NULL;
-        for (Symbol* symbol : symbols_at_time)
-            symbol = NULL;
-    }
-    
-    inline void removeSymbol(Symbol* s)
-    {
-        symbols_at_time.erase( remove(symbols_at_time.begin(), symbols_at_time.end(), s ), symbols_at_time.end() );
-        
-        if( symbols_at_time.size() == 0 )
-            delete this;
-    }
-    
-    inline void addSymbol(Symbol* s)
+    inline void addSymbol(OdotBundle& s)
     {
         symbols_at_time.emplace_back(s);
     }
     
-    double           time;
-    vector<Symbol* > symbols_at_time;
-    Symbol*          staff_ref; // << add reference to staff for timepoint (a timepoint can only be on one staff)
+    int size() const { return symbols_at_time.size(); }
+    
+    double              time;
+    vector<OdotBundle>  symbols_at_time;
+    OdotBundle          staff_ref; // << add reference to staff for timepoint (a timepoint can only be on one staff)
 
-    
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SymbolTimePoint)
-    
 };
 
 class TimePointArray
 {
 public:
     
-    inline TimePointArray(){}
-    inline ~TimePointArray(){}
+    //TimePointArray(const Score& ref_score) : score(ref_score) {}
+    //~TimePointArray(){}
     
-    /**
-     * Sets the score_ptr of this TimePointArray instance.
-     */
-    inline void setScore(Score* pointerToScore)
+	void reset()
     {
-        this->score_ptr = pointerToScore;
-    }
-	
-    inline vector< unique_ptr<SymbolTimePoint> >& getSymbolTimePoints()
-    {
-        return symbol_time_points;
-    }
-	
-	/**
-	 * Gets the last time point in this instance of TimePointArray.
-	 *
-	 * @return a pointer to the last element of the symbol_time_points vector,
-	 *         or <code>NULL</code> if symbol_time_points is empty.
-	 */
-    inline SymbolTimePoint* getLastTimePoint()
-    {
-    	if (!symbol_time_points.empty())
-        	return symbol_time_points.back().get();
-		else return NULL;
+        symbol_time_points.clear();
+        voice_staff_vector.clear();
+        
+        m_duration = 0;
+        current_time = 0;
+        
+        current_point = 0;
+        prev_point = 0;
     }
     
-    void printTimePoints();
-    void printBundle(OSCBundle bndl);
 	
     /**
-     * Retrieves the time point index matching the time timeToMatch.
+     * Adds symbol to time point array, with staff reference.
      *
-     * Runs a dichotomic search to find a time point matching the time
-     * timeToMatch in this TimePointArray instance.
+     * @param symbol      Symbol to insert into TimePointArray
      *
-     * @param timeToMatch the time to match.
+     * @param staff       Staff reference for Symbol
      *
-     * @param match       indicates if a time point has matched the time t.
-     *
-     * @return            the index to insert a new time point, matching the time timeToMatch,
-     * 		              in this TimePointArray instance.
+     * @return            the index of the time point for the start of the symbol
      */
-    int getTimePointInsertIndex(float timeToMatch, bool& match);
-    
-    void addSymbolTimePoints(Symbol* s);
-    void removeSymbolTimePoints(Symbol* s);
-    void removeStaffAndSymbolTimePoints( Symbol* s);
+    int addSymbol(OdotBundle& symbol, OdotBundle& staff);
 
-    int addSymbol_atTime(Symbol* s, float t, Symbol* staff);
+    /**
+     * Retrieves a bundle of active symbols at the lookup time. (pre-evaluation of expressions)
+     *
+     * @param t       time to lookup (float)
+     *
+     * @return        OdotBundle_s, serialized OSC bundle for output
+     */
+    OdotBundle getSymbolsAtTime(float t);
     
-    inline bool f_almost_equal(float x, float y, int ulp = 2)
-    {
-        // the machine epsilon has to be scaled to the magnitude of the values used
-        // and multiplied by the desired precision in ULPs (units in the last place)
-        return std::abs(x-y) < std::numeric_limits<float>::epsilon() * std::abs(x+y) * ulp
-        // unless the result is subnormal
-        || std::abs(x-y) < std::numeric_limits<float>::min();
-    }
+    /**
+     * Retrieves a bundle of active symbols at the lookup time. (pre-evaluation of expressions)
+     *
+     * @param tpoint   SymbolTimePoint to output
+     *
+     * @return        OdotBundle_s, serialized OSC bundle for output
+     */
+    OdotBundle timePointStreamToOSC(const SymbolTimePoint& tpoint);
     
-    inline int compareTimes( float a_t, float b_t )
-    {
-        return ( a_t < b_t ? 1 : ( f_almost_equal(a_t, b_t) ? 0 : -1 ) );
-    }
-
-    OdotBundle_s getSymbolsAtTime(float t);
-    OdotBundle_s timePointStreamToOSC(const SymbolTimePoint* tpoint);
     
     int lookupTimePoint(float t);
-    Point<float> lookupPathPoint(const Symbol* s, const float t);
-    Point<float> lookupPathPoint(const Symbol* s, const int pathIDX, const float t, const float start, const float dur);
-    Point<float> lookupPathPoint(const Symbol* s, string& path_base_addr , const float t);
+    
+    
+    // should pathpoint lookups be in the score, clef, or stave? or here?
+    vector<float> lookupPathPoint(const OdotBundle& symbol, const float t);
+    vector<float> lookupPathPoint(const OdotBundle& symbol, const int pathIDX, const float t, const float start, const float dur);
+    vector<float> lookupPathPoint(const OdotBundle& symbol, string& path_base_addr , const float t);
     
     /**
      * @param s                main root symbol (not subbundle)
@@ -147,15 +106,42 @@ public:
      * --- in the case of path within a group within a group, the scaling would be in terms of the first containing group.
      * For example subsymbol_addr could be "/subsymbol/1/subsymbol/2".
      */
-    void groupLookup(const Symbol* s,
+    void groupLookup(const OdotBundle& s,
                      const string& output_prefix,
                      double parent_x,
                      double parent_y,
                      float time_ratio,
                      OdotBundle& bndl);
     
-    vector<const Symbol* > getNoteOffs(const SymbolTimePoint* prev_tpoint , const SymbolTimePoint* tpoint);
-	
+    
+    
+    
+    vector< const OdotBundle >
+    getNoteOffs(const SymbolTimePoint& prev_tpoint , const SymbolTimePoint& tpoint);
+    
+    pair<size_t, int>
+    getVoiceNumberState(const OdotBundle& symbol, const SymbolTimePoint& tpoint);
+    
+    pair<size_t, int>
+    setNoteOff(const OdotBundle& symbol);
+    
+    typedef tuple<size_t, const OdotBundle, const OdotBundle> ID_SYM_STAFF;
+    
+    vector<ID_SYM_STAFF> getNoteOffs(const SymbolTimePoint& p);
+
+    
+    
+    /**
+     * Gets total time for score.
+     *
+     * @return float, duration of full score
+     */
+    inline double getTotalDuration()
+    {
+        // calculate time...
+        return m_duration;
+    }
+    
     /**
      * Says if a symbol is referenced in a time point.
      *
@@ -164,34 +150,65 @@ public:
      * @param timePoint the time point in which to look for the symbol.
      *
      * @return          <code>true</code> if symbol is referenced in
-     *					timePoint, <code>false</code> otherwise.
+     *                    timePoint, <code>false</code> otherwise.
      */
-    bool isSymbolInTimePoint(const Symbol* symbol, const SymbolTimePoint* timePoint);
+    bool isSymbolInTimePoint( OdotBundle& symbol, const SymbolTimePoint& timePoint);
     
-    pair<size_t, int> getVoiceNumberState(const Symbol* s, const SymbolTimePoint* tpoint);
-    pair<size_t, int> setNoteOff(const Symbol* s);
-    vector<tuple<size_t, const Symbol*, const Symbol*> > getNoteOffs(const SymbolTimePoint* p);
-
-    void resetTimes();
-
-    inline void reset()
+    inline bool timeHitTest( OdotBundle& symbol, float t )
     {
-        symbol_time_points.clear();
-        prev_timepoint = nullptr;
+        float start = symbol.getMessage("/time/start").getFloat();
+        return t >= start && t <= symbol.getMessage("/time/end").getFloat();
+    }
+    
+    void printTimePoints();
+
+    
+    inline vector<SymbolTimePoint>& getSymbolTimePoints()
+    {
+        return symbol_time_points;
     }
     
 private:
-    vector<unique_ptr<SymbolTimePoint> > symbol_time_points;
     
-    Score*                       score_ptr = nullptr;
-    const SymbolTimePoint*       prev_timepoint = nullptr;
+    /**
+     * Retrieves the time point index matching the time timeToMatch.
+     *
+     * Runs a dichotomic search to find a time point matching the time
+     * timeToMatch in this TimePointArray instance.
+     *
+     * @param timeToMatch the time to match.
+     *
+     * @param match       indicates if a time point has matched the time t.
+     *
+     * @return            the index to insert a new time point, matching the time timeToMatch,
+     *                       in this TimePointArray instance.
+     */
+    int getTimePointInsertIndex(float timeToMatch, bool& match);
     
-    vector<pair<const Symbol*, const Symbol*> > voice_staff_vector;
+    inline bool f_almost_equal(float x, float y, int ulp = 2)
+    {
+        return std::abs(x-y) < std::numeric_limits<float>::epsilon() * std::abs(x+y) * ulp || std::abs(x-y) < std::numeric_limits<float>::min();
+    }
     
-    int                          current_point = 0;
-    float                        current_time = 0;
+    inline int compareTimes( float a_t, float b_t )
+    {
+        return ( a_t < b_t ? 1 : ( f_almost_equal(a_t, b_t) ? 0 : -1 ) );
+    }
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimePointArray)
+    
+    
+    vector<SymbolTimePoint>     symbol_time_points;
+    
+    // const Score&                score;
+    
+    SymbolTimePoint             prev_timepoint;
+    
+    vector< pair< OdotBundle, OdotBundle> > voice_staff_vector;
+    
+    int current_point = 0;
+    int prev_point = 0;
+    float current_time = 0;
+    float m_duration = 0;
+    
 };
 
-#endif

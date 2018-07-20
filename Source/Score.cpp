@@ -4,34 +4,27 @@
 #include <algorithm>
 #include <vector>
 
-Score::Score() : m_symbol_table(m_score), m_type_selector(m_score)
+Score::Score() : m_time_points(m_score), m_symbol_table(m_score), m_type_selector(m_score)
 {
     // Sets the score_ptr reference for time_points instance variable.
-    time_points.setScore(this);
     setDefaults();
 }
 
-Score::Score(const Score& src) : m_symbol_table(m_score), m_type_selector(m_score)
+Score::Score(const Score& src) : m_time_points(m_score), m_symbol_table(m_score), m_type_selector(m_score)
 {
     // copy score
     m_score = src.m_score;
     setDefaults();
-    
-    // Sets the score_ptr reference for time_points instance variable.
-    time_points.setScore(this);
     
     m_symbol_table.select("/symbol");
     buildTimeLookups();
 
 }
 
-Score::Score( const OdotBundle_s& s_bundle  ) : m_symbol_table(m_score), m_type_selector(m_score)
+Score::Score( const OdotBundle_s& s_bundle  ) : m_time_points(m_score), m_symbol_table(m_score), m_type_selector(m_score)
 {
     importSymbols( s_bundle );
     setDefaults();
-
-    // Sets the score_ptr reference for time_points instance variable.
-    time_points.setScore(this);
     
     m_symbol_table.select("/symbol");
     buildTimeLookups();
@@ -75,7 +68,7 @@ void Score::setDefaults()
                            )" );
     }
     
-    if( !m_score.addressExists("/stave/note/pixTime/fn") )
+    if( !m_score.addressExists("/stave/event/pixTime/fn") )
     {
         m_score.addMessage("/stave/event/pixTime/fn",
                            R"(
@@ -86,7 +79,7 @@ void Score::setDefaults()
                            )" );
     }
     
-    if( !m_score.addressExists("/stave/note/timePix/fn") )
+    if( !m_score.addressExists("/stave/event/timePix/fn") )
     {
         m_score.addMessage("/stave/event/timePix/fn",
                            R"(
@@ -116,10 +109,10 @@ void Score::buildTimeLookups()
     OdotExpr compareExpr( "/order = /stave/sort/fn( /stave/a, /stave/b )" );
     
     sort( stave_vec.begin(), stave_vec.end(),
-         [&compareExpr, &compareFn](OdotBundle& a, OdotBundle& b){
+         [&compareExpr, &compareFn](OdotMessage& a, OdotMessage& b){
              OdotBundle test(compareFn);
-             test.addMessage("/stave/a", a);
-             test.addMessage("/stave/b", b);
+             test.addMessage("/stave/a", a.getBundle() );
+             test.addMessage("/stave/b", b.getBundle() );
              test.applyExpr( compareExpr );
              return test.getMessage("/order").getInt();
          });
@@ -132,13 +125,13 @@ void Score::buildTimeLookups()
                               )" );
     
     float time = 0.0f;
-    for( auto& addr_staff : stave_vec )
+    for( auto& staff_msg : stave_vec )
     {
-        auto staff = addr_staff.second;
+        auto staff = staff_msg.getBundle();
         staff.addMessage("/t", time);
         staff.addMessage( pixTimeFn );
         staff.applyExpr( pixTimeApplyExpr );
-        m_score.addMessage( addr_staff.first, staff );
+        m_score.addMessage( staff_msg.getAddress(), staff );
         
         time = staff.getMessage("/time/end").getFloat();
         
@@ -153,43 +146,37 @@ void Score::buildTimeLookups()
     
     time_points.reset();
 
+    OdotExpr eventPixTimeApplyExpr(  R"~(
+                                   /stave/event/pixTime/fn( /stave ),
+                                   delete(/stave/event/pixTime/fn), delete(/stave)
+                                   )~" );
     
-    auto symbols = m_symbol_table.getVector();
-    for( auto& addr_sym : symbols )
+    auto symbol_vec = m_symbol_table.getVector();
+    for( auto& sym_msg : symbol_vec )
     {
-        auto s = addr_sym.second;
-        auto staff = s.getMessage("/staff");
-        if( staff.size() > 0 )
+        auto sym = sym_msg.getBundle();
+        auto staff_id = sym.getMessage("/staff/id").getString();
+        if( staff_id.size() > 0 )
         {
-            
-            m_type_selector.get( staff );
+            auto linked_staff = m_symbol_table[staff_id].getBundle();
+            if( linked_staff.size() > 0 )
+            {
+                sym.addMessage("/stave", linked_staff );
+                sym.addMessage( eventPixTimeFn );
+                sym.applyExpr( eventPixTimeApplyExpr );
+                m_score.addMessage(sym_msg.getAddress(), sym );
+                
+                m_time_points.addSymbol( sym, linked_staff );
+            }
         }
     }
     
-    
-    
-    for( auto it = score_symbols.begin(); it != score_symbols.end(); it++)
-        time_points.addSymbolTimePoints( (*it).get() );
-
-    
-    updateStavesAndTimepoints();
-    
-    DEBUG_FULL("Copying score of address " << this << " and size " << score_symbols.size()
-               << ", owning " << staves.size() << " staves " << endl)
 }
 
 
 void Score::print() const
 {
     m_score.print();
-    /*
-    int count = 1;
-    for (auto it = score_symbols.begin(); it != score_symbols.end(); it++)
-    {
-        DEBUG_INLINE("Symbol n° " << count << endl)
-        (*it)->print();
-        count++;
-    }*/
 }
 
 /***********************************
@@ -198,9 +185,7 @@ void Score::print() const
 void Score::removeAllSymbols()
 {
     m_score.clear();
-    // score_symbols.clear();
-    time_points.getSymbolTimePoints().clear();
-    staves.clear();
+    time_points.reset();
 }
 
 /******************************************
@@ -415,12 +400,7 @@ void Score::addSymbolTimePoints( Symbol* s )
 
 OdotBundle_s Score::getDurationBundle()
 {
-    auto lastTimePoint = time_points.getLastTimePoint();
-    if( lastTimePoint == NULL )
-        return NULL;
-    
-    OdotBundle bndl;
-    bndl.addMessage("/time/duration", lastTimePoint->time);
+    OdotBundle bndl("/time/duration", time_points.getTotalDuration() );
     
     return bndl.serialize();
 }
@@ -582,24 +562,6 @@ void Score::updateStaves(Symbol* moved_stave)
     }
     
     // time_points.resetTimes();
-}
-
-/*
- *  called when a stave is moved to update all timepoints, could be optimized in the future
- */
-
-void Score::updateStavesAndTimepoints()
-{
-    
-    // sort staves and set times for each stave
-    staves.resetTimes();
-    time_points.reset();
-    
-    // add the symbols
-    
-    for( auto it = score_symbols.begin(); it != score_symbols.end(); it++)
-        time_points.addSymbolTimePoints( (*it).get() );
-    
 }
 
 Symbol* Score::getStaveAtTime( float time )

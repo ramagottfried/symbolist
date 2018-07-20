@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "JuceHeader.h"
+//#include "JuceHeader.h"
 #include "types.h"
 #include "Symbol.h"
 #include "TimePointArray.h"
@@ -9,7 +9,7 @@
 
 #include "SVGFileIO.hpp"
 
-#include "OdotHash.hpp"
+#include "OdotSelect.hpp"
 
 using namespace std;
 
@@ -63,7 +63,7 @@ public:
     void setDefaults();
 
     
-    inline TimePointArray* getTimePoints() { return &time_points; };
+    inline TimePointArray& getTimePoints() { return m_time_points; };
     
     /**
      * Gets the count of symbols contained in the score.
@@ -227,7 +227,7 @@ public:
     inline int exportSVG( const char * filename )
     {
         SVGFileIO svg;
-        svg.write( score_symbols, filename );
+       // svg.write( score_symbols, filename );
         
         return 0;
     }
@@ -254,14 +254,11 @@ private:
 
     OdotBundle                  m_score;
     
-    OdotBundleHash              m_symbol_table;
-    OdotBundleHash              m_type_selector;
+    OdotSelect                  m_symbol_table;
+    OdotSelect                  m_type_selector;
 
-	vector< unique_ptr<Symbol> > score_symbols;
-    TimePointArray              time_points;
+    TimePointArray              m_time_points;
     
-    SortedStaves                staves;
-    ScoreSorter                 score_sorter;
 	
     //==============================================================================
     JUCE_LEAK_DETECTOR (Score)

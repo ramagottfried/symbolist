@@ -1,5 +1,6 @@
 #include "OdotBundle.hpp"
 #include "OdotSelect.hpp"
+#include "TimePointArray.h"
 
 #include <iostream>
 
@@ -69,21 +70,43 @@ int main(int argc, const char * argv[])
     
     if( !m_score.addressExists("/stave/sort/fn") )
         m_score.addMessage("/stave/sort/fn",
-                        R"(
+                        R"~(
                             lambda([a,b],
                               (a./y < b./y) && (b./x < (a./x + a./w))
                             )
-                        )" );
+                        )~" );
     
     if( !m_score.addressExists("/stave/pixTime/fn") )
     {
         m_score.addMessage("/stave/pixTime/fn",
-                           R"(
+                           R"~(
                            lambda([prev_time],
-                                  /start/time = prev_time,
-                                  /end/time = /start/time + (/w * 0.01)
+                                  /time/start = prev_time,
+                                  /time/end = /time/start + (/w * 0.01)
                              )
-                           )" );
+                           )~" );
+    }
+    
+    if( !m_score.addressExists("/stave/event/pixTime/fn") )
+    {
+        m_score.addMessage("/stave/event/pixTime/fn",
+                           R"~(
+                           lambda([stave],
+                                  /time/start = stave./time/start + (/x - stave./x) * 0.01 ,
+                                  /time/end = /time/start + (/w * 0.01)
+                              )
+                           )~" );
+    }
+    
+    if( !m_score.addressExists("/stave/event/timePix/fn") )
+    {
+        m_score.addMessage("/stave/event/timePix/fn",
+                           R"~(
+                           lambda([stave],
+                                  /x = stave./x + ( (/time/start - stave./time/start) * 100. ),
+                                  /w = (/time/end - /time/start) * 100.
+                                  )
+                           )~" );
     }
     
    // m_score.print();
@@ -111,10 +134,10 @@ int main(int argc, const char * argv[])
     
     
     OdotMessage pixTimeFn = m_score.getMessage("/stave/pixTime/fn");
-    OdotExpr pixTimeApplyExpr(  R"(
+    OdotExpr pixTimeApplyExpr(  R"~(
                                      /stave/pixTime/fn( /time ),
                                      delete(/stave/pixTime/fn), delete(/time)
-                                )" );
+                                )~" );
     
     float time = 0.0f;
     for( auto& staff_msg : stave_vec )
@@ -127,21 +150,41 @@ int main(int argc, const char * argv[])
         
         time = staff.getMessage("/end/time").getFloat();
     }
+    
+    OdotMessage eventPixTimeFn = m_score.getMessage("/stave/event/pixTime/fn");
+    
+    eventPixTimeFn.print();
+    
+    OdotExpr eventPixTimeApplyExpr(  R"~(
+                                        /stave/event/pixTime/fn( /stave ),
+                                        delete(/stave/event/pixTime/fn), delete(/stave)
+                                      )~" );
+    
+    TimePointArray m_time_points;
 
-    m_score.print();
-    
-    
     for( auto& sym_msg : symbol_vec )
     {
-        auto s = sym_msg.getBundle();
-        auto staff_id = s.getMessage("/staff/id").getString();
+        auto sym = sym_msg.getBundle();
+        auto staff_id = sym.getMessage("/staff/id").getString();
         if( staff_id.size() > 0 )
         {
-            auto linked_staff = m_symbol_table.get( "/symbol/1" ).getBundle();
-            linked_staff.print();
+            auto linked_staff = m_symbol_table[staff_id].getBundle();
+            if( linked_staff.size() > 0 )
+            {
+                sym.addMessage("/stave", linked_staff );
+                sym.addMessage( eventPixTimeFn );
+                sym.applyExpr( eventPixTimeApplyExpr );
+                m_score.addMessage(sym_msg.getAddress(), sym );
+                
+                m_time_points.addSymbol( sym, linked_staff );
+            }
         }
     }
-
+    
+//    m_score.print();
+    m_time_points.printTimePoints();
+    
+    
     
     return 0;
 }

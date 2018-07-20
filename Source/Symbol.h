@@ -46,23 +46,9 @@ public:
 	/**************************************
 	 *           TIME CONVERSION          *
 	 **************************************/
-	
-    inline float pixelsToTime( const float f )
-    {
-        return f * m_pixels_to_time;
-    }
+
+    // now in score, later to be in stave
     
-    inline float timeToPixels( const float t )
-    {
-        return t * m_time_to_pixels;
-    }
-    
-    inline bool hitTestTime( float t )
-    {
-        float start = getTime();
-        return t >= start && t <= ( start + getDuration() );
-    }
-	
 	/************************************
 	 *           ID GENERATION          *
 	 ************************************/
@@ -86,9 +72,7 @@ public:
 	void resetAllIds();
 		
 private:
-    
-    float m_pixels_to_time = 0.01f;
-    float m_time_to_pixels = 100.0f;
+
 
 };
 

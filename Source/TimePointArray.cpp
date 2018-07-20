@@ -1,227 +1,56 @@
 #include "TimePointArray.h"
-#include "Score.h"
 
 void TimePointArray::printTimePoints()
 {
-    DEBUG_INLINE("-------- timepoint list ----------" << endl)
+    cout << "-------- timepoint list ----------" << endl;
     for (int i = 0; i < symbol_time_points.size(); i++)
     {
-        auto t = symbol_time_points[i].get();
-        DEBUG_INLINE("Timepoint n°" << i << ", time = " << t->time << ", nsyms = " << t->symbols_at_time.size() << endl)
+        auto t = symbol_time_points[i];
+        cout << "Timepoint n°" << i << ", time = " << t.time << ", nsyms = " << t.symbols_at_time.size() << endl;
         
         int symcount = 0;
-        for( auto sym : t->symbols_at_time )
+        for( auto sym : t.symbols_at_time )
         {
-            DEBUG_INLINE("\tSymbol n°" << symcount++
-                                       << ", address = " << sym
-                                       << ", size (number of messages) = "
-                                       << (sym != NULL ? String(sym->size()) : "") << endl)
+           cout << "\tSymbol n°" << (symcount++) << ", address = " << sym.get_o_ptr() << ", size (number of messages) = " << (sym.get_o_ptr() != NULL ? to_string(sym.size()) : "") << endl;
         }
     }
 }
 
-void TimePointArray::removeStaffAndSymbolTimePoints( Symbol* symbol )
+int TimePointArray::addSymbol(OdotBundle& symbol, OdotBundle& staff)
 {
-    if( symbol->getType() == "staff" )
-    {
-    	// Removes every time point for which symbol is the staff reference.
-        for(auto it = symbol_time_points.begin(); it != symbol_time_points.end(); it++)
-        {
-            if( (*it)->staff_ref == symbol )
-                symbol_time_points.erase(it);
-        }
-    }
-    else
-        removeSymbolTimePoints(symbol);
-}
-
-void TimePointArray::removeSymbolTimePoints(Symbol* symbol)
-{
-
-    float startTime = symbol->getTime();
     
-    if( startTime == -1 )
-        return;
-    
-    bool match = false;
-    int insertIndex = getTimePointInsertIndex(startTime, match);
-    
-    if( !match )
-    {
-		DEBUG_FULL(" Could not find existing timepoint at time " << startTime << endl)
-		printTimePoints();
-        return;
-    }
-    
-    float timeAtCurrentIndex = startTime;
-    float endTime = symbol->getEndTime();
-    
-    vector<SymbolTimePoint* > pointsToRemove;
-    
-    while (insertIndex < symbol_time_points.size())
-    {
-        timeAtCurrentIndex = symbol_time_points[insertIndex]->time;
-        
-        if( timeAtCurrentIndex > endTime && !f_almost_equal( timeAtCurrentIndex, endTime ) )
-            break;
-        
-        vector<Symbol* >& symbolsAtCurrentTimePoint = symbol_time_points[insertIndex]->symbols_at_time;
-
-        // Remove this symbol from the symbols at current time point.
-        symbolsAtCurrentTimePoint.erase( std::remove(symbolsAtCurrentTimePoint.begin(), symbolsAtCurrentTimePoint.end(), symbol),
-										 symbolsAtCurrentTimePoint.end() );
-
-        /* If no other symbol at this time point start
-         * or end here, we should fully delete this time point.
-         */
-        int otherStartOrEnd = 0;
-        if( f_almost_equal( timeAtCurrentIndex, startTime ) || f_almost_equal( timeAtCurrentIndex, endTime ) )
-        {
-            for (auto it = symbolsAtCurrentTimePoint.begin(); it != symbolsAtCurrentTimePoint.end(); it++ )
-            {
-                if( f_almost_equal( (*it)->getTime(), timeAtCurrentIndex ) || f_almost_equal( (*it)->getEndTime(), timeAtCurrentIndex ) )
-                {
-				    otherStartOrEnd = 1;
-				}
-				
-            }
-            if (!otherStartOrEnd)
-                pointsToRemove.emplace_back( symbol_time_points[insertIndex].get() );
-
-        }
-        
-        if( symbolsAtCurrentTimePoint.size() == 0 )
-            pointsToRemove.emplace_back( symbol_time_points[insertIndex].get() );
-        
-        insertIndex++;
-    }
-    
-    for (SymbolTimePoint* pointToRemove : pointsToRemove)
-    {
-        
-        auto iteratorOnTargetTimePoint = find_if(symbol_time_points.begin(),
-                                              symbol_time_points.end(),
-                                                 [&pointToRemove](unique_ptr<SymbolTimePoint>& tmpt){
-                                                     return pointToRemove == tmpt.get();
-                                                 });
-        if( iteratorOnTargetTimePoint != symbol_time_points.end() )
-            symbol_time_points.erase( iteratorOnTargetTimePoint );
-        
-    }
-    
-}
-
-// this is only reseting the /time/start for the symbols, not the timepoints, the timepoints should probably be deleted and then recreated, since we reset the symbol when it is modified in the score...
-void TimePointArray::resetTimes()
-{
-
-    for( int i = 0; i < symbol_time_points.size(); i++ )
-    {
-        auto t = symbol_time_points[i].get();
-        
-        Symbol* staff = t->staff_ref;
-        
-        float staff_x = staff->getMessage("/x").getFloat();
-        float staff_start_t = staff->getMessage("/time/start").getFloat();
-
-        auto vec = t->symbols_at_time;
-        
-        float sym_start_t = 0;
-        for( auto it = vec.begin(); it != vec.end(); it++ )
-        {
-            Symbol* s = *it;
-            float start_x = s->getMessage("/x").getFloat() - staff_x;
-            float dur_x = s->getMessage("/w").getFloat();
-            
-            sym_start_t = staff_start_t + s->pixelsToTime(start_x);
-            
-            s->setTimeAndDuration(sym_start_t, s->pixelsToTime(dur_x) );
-        }
-        
-    }
-    
-    voice_staff_vector.clear();
-    current_point = 0;
-}
-
-void TimePointArray::addSymbolTimePoints( Symbol* s )
-{
-    // 0) Checks if the symbol has a staff reference, if not ignore it.
-    string staff_name = s->getMessage( "/staff" ).getString();
-
-    if( staff_name.size() == 0 )
-        return;
-    
-    auto foundStaves = score_ptr->getSymbolsByValue("/id", staff_name);
-    if( foundStaves.isEmpty() )
-        return;
-    
-    // 1) If attached to a staff, calculate start & end times based on staff ( for now: start = x, end = x+w )
-    Symbol* staff = foundStaves.getFirst();
-    
-    float staffX = staff->getMessage("/x").getFloat();
-    
-    float startX = s->getMessage("/x").getFloat() - staffX;
-    float durationX = s->getMessage("/w").getFloat();
-    float endX = startX + durationX;
-    
-    float staffStart = staff->getMessage("/time/start").getFloat();
-    
-    float startTime = staffStart + s->pixelsToTime(startX);
-    float endTime = staffStart + s->pixelsToTime(endX);
-    
-    s->setTimeAndDuration(startTime, s->pixelsToTime(durationX) );
-    
-    DEBUG_FULL("Adding timepoints starting at time " << startTime << ", on " << staff_name
-    			<< " (own starting value = " << staffStart << ")"  << endl)
-    
-    // 2) Adds start and end points to time points array.
-    // 3) Checks previous start-1 and end-1 points for continuing symbols to add to new start/end points.
-    int startIndex = addSymbol_atTime( s, startTime, staff );
-    int endIndex = addSymbol_atTime( s, endTime, staff );
-    
-    // 4) Iterate forward from start to end point and add this symbol to all preexisting time points
-    for( int i = (startIndex + 1); i < endIndex; i++ )
-        symbol_time_points[i]->addSymbol(s);
-    
-    current_point = 0;
-    voice_staff_vector.clear();
-    
-}
-
-int TimePointArray::addSymbol_atTime(Symbol* s, float time, Symbol* staff)
-{
+    float time = symbol.getMessage("/time/start").getFloat();
     
     bool match;
     int insertIndex = getTimePointInsertIndex(time, match);
     
     if (match)
         // If it's an exact match we don't need to check the previous point.
-        symbol_time_points[insertIndex]->addSymbol(s);
+        symbol_time_points[insertIndex].addSymbol(symbol);
     else
     {
         // Otherwise, create new point and check previous for continuing points
-        auto newTimePoint = symbol_time_points.insert(symbol_time_points.begin() + insertIndex,
-													  unique_ptr<SymbolTimePoint>(new SymbolTimePoint(s, time, staff)));
+        auto newTimePoint = symbol_time_points.insert( symbol_time_points.begin() + insertIndex,
+                                                       SymbolTimePoint(symbol, time, staff) );
 
         if( insertIndex - 1 >= 0 )
         {
-            auto prevTimePoint = symbol_time_points[insertIndex-1].get();
+            auto prevTimePoint = symbol_time_points[ insertIndex - 1 ];
 
-            auto vec = prevTimePoint->symbols_at_time;
+            auto prevTimePoint_vec = prevTimePoint.symbols_at_time;
 			
             /* Adds to the new time point all symbols beginning before and ending
              * after the specified time.
              */
-            for (auto symbolAtPreviousTime = vec.begin(); symbolAtPreviousTime != vec.end(); symbolAtPreviousTime++)
+            for (auto& symbolAtPreviousTime : prevTimePoint_vec )
             {
-                if (s == *symbolAtPreviousTime) continue;
+                if (symbol == symbolAtPreviousTime) continue;
 				
-                /* Checks if time is between the start and end time
+                /* Checks if time is between the start and end timex
 				 * of the symbol at time point n-1
                  */
-                if ((*symbolAtPreviousTime)->hitTestTime( time ))
-                    (*newTimePoint)->addSymbol(*symbolAtPreviousTime);
+                if ( timeHitTest( symbolAtPreviousTime, time ) )
+                    newTimePoint->addSymbol( symbolAtPreviousTime );
             }
     
         }
@@ -231,50 +60,44 @@ int TimePointArray::addSymbol_atTime(Symbol* s, float time, Symbol* staff)
     
 }
 
-void TimePointArray::printBundle(OSCBundle bndl)
+bool TimePointArray::isSymbolInTimePoint( OdotBundle& symbol , const SymbolTimePoint& timePoint )
 {
-    cout << "\t==== TIMEPOINT OSC BUNDLE ====" << endl;
-    for (auto osc : bndl )
+    if( timePoint.size() > 0 )
     {
-        OSCMessage msg = osc.getMessage();
-        cout << "\t" << msg.getAddressPattern().toString() << endl;
-        
-        for (auto arg : msg )
+        for (size_t i = 0; i < timePoint.size(); i++ )
         {
-            if( arg.isString() )
-				cout << " " << arg.getString() << endl;
-            else if( arg.isFloat32() )
-                cout << " " << (String)arg.getFloat32() << endl;
-            else if( arg.isInt32() )
-                cout << " " << (String)arg.getInt32() << endl;
-            else if( arg.isBlob() )
-                cout << " " << "blob" << endl;
+            if( symbol == timePoint.symbols_at_time[i] )
+                return true;
         }
-        
-        cout << endl;
     }
-    cout << "\t====-===-======-====" << endl;
     
+    return false;
 }
 
 
-Point<float> TimePointArray::lookupPathPoint( const Symbol* s, const float t )
+vector<float> TimePointArray::lookupPathPoint( const OdotBundle& symbol, const float t )
 {
-    string path_str = s->getMessage( "/path" ).getString();
+    string path_str = symbol.getMessage( "/path" ).getString();
     if( path_str.size() == 0 )
-        return Point<float>();
+        return vector<float>();
     
-    float length = s->getMessage( "/pathlength" ).getFloat();
+    float length = symbol.getMessage( "/pathlength" ).getFloat();
     if( length == 0 )
-        return Point<float>();
+        return vector<float>();
+
+    /* this could be optimized */
+    /* removing JUCE reference:
+     
+     Path p;
+     p.restoreFromString( path_str.c_str() );
+     
+     return p.getPointAlongPath( t * length );
+     */
+    return vector<float>();
     
-    Path p;
-    p.restoreFromString( path_str.c_str() );
-    
-    return p.getPointAlongPath( t * length );
 }
 /*
-Point<float> TimePointArray::lookupPathPoint( const Symbol* s, const int pathIDX, const float t, const float start, const float dur )
+Point<float> TimePointArray::lookupPathPoint( const OdotBundle& symbol, const int pathIDX, const float t, const float start, const float dur )
 {
     OSCBundle b = *(s->getOSCBundle());
     
@@ -299,33 +122,41 @@ Point<float> TimePointArray::lookupPathPoint( const Symbol* s, const int pathIDX
 }
 */
 
-Point<float> TimePointArray::lookupPathPoint( const Symbol* s, string& path_base_addr , const float t )
+vector<float> TimePointArray::lookupPathPoint( const OdotBundle& symbol, string& path_base_addr , const float t )
 {
-    string path_str = s->getMessage( path_base_addr + "/str" ).getString();
+    string path_str = symbol.getMessage( path_base_addr + "/str" ).getString();
     if( path_str.size() == 0 )
-        return Point<float>();
+        return vector<float>();
     
-    float length = s->getMessage( path_base_addr + "/length" ).getFloat();
+    float length = symbol.getMessage( path_base_addr + "/length" ).getFloat();
     if( length == 0 )
-        return Point<float>();
+        return vector<float>();
+    
+    /* this could be optimized */
+    /* removing JUCE reference:
     
     Path p;
     p.restoreFromString( path_str.c_str() );
     
     return p.getPointAlongPath( t * length );
+     */
+    
+    return vector<float>();
 }
 
-vector<const Symbol* > TimePointArray::getNoteOffs( const SymbolTimePoint* prev_tpoint , const SymbolTimePoint* tpoint   )
+
+vector<const OdotBundle >
+TimePointArray::getNoteOffs( const SymbolTimePoint& prev_tpoint , const SymbolTimePoint& tpoint   )
 {
-    vector<const Symbol* > off_vec;
-    if( prev_tpoint != nullptr )
+    vector<const OdotBundle > off_vec;
+    if( prev_tpoint.size() > 0 )
     {
-        for (auto prv : prev_tpoint->symbols_at_time )
+        for (auto& prv : prev_tpoint.symbols_at_time )
         {
             bool found = false;
             
-            if (tpoint)
-                for (auto s : tpoint->symbols_at_time)
+            if (tpoint.size() > 0 )
+                for (auto& s : tpoint.symbols_at_time)
                     if (prv == s)
                     {
                         found = true;
@@ -340,28 +171,14 @@ vector<const Symbol* > TimePointArray::getNoteOffs( const SymbolTimePoint* prev_
     return off_vec;
 }
 
-bool TimePointArray::isSymbolInTimePoint( const Symbol* symbol , const SymbolTimePoint* timePoint )
-{
-    if( timePoint )
-    {
-        for (size_t i = 0; i < timePoint->symbols_at_time.size(); i++ )
-        {
-            if( symbol == timePoint->symbols_at_time[i] )
-                return true;
-        }
-    }
-    
-    return false;
-}
-
-pair<size_t, int> TimePointArray::setNoteOff(const Symbol* s)
+pair<size_t, int> TimePointArray::setNoteOff(const OdotBundle& symbol)
 {
     
     for(size_t i = 0; i < voice_staff_vector.size(); i++ )
     {
-        if(voice_staff_vector[i].first == s )
+        if(voice_staff_vector[i].first == symbol )
         {
-            voice_staff_vector[i].first = nullptr;
+            voice_staff_vector[i].first.clear();
             return pair<size_t, bool>(i, -1); // was playing, and now is off
         }
     }
@@ -370,14 +187,14 @@ pair<size_t, int> TimePointArray::setNoteOff(const Symbol* s)
 
 }
 
-pair<size_t, int> TimePointArray::getVoiceNumberState(const Symbol* s, const SymbolTimePoint* tpoint)
+pair<size_t, int> TimePointArray::getVoiceNumberState(const OdotBundle& symbol, const SymbolTimePoint& tpoint)
 {
     size_t i = 0;
     for( ; i < voice_staff_vector.size(); i++ )
     {
-        if(voice_staff_vector[i].first == s )
+        if(voice_staff_vector[i].first == symbol )
         {
-            if( current_time > s->getEndTime() )
+            if( current_time > symbol.getMessage("/time/end").getFloat() )
                 return pair<size_t, bool>(i, -1); // was playing but is now past end
             else
                 return pair<size_t, bool>(i, 0); // still playing
@@ -388,37 +205,33 @@ pair<size_t, int> TimePointArray::getVoiceNumberState(const Symbol* s, const Sym
     // new voice, find first unused value in vector, and log the symbol and staff reference
     for( i = 0; i < voice_staff_vector.size(); i++ )
     {
-        if(voice_staff_vector[i].first == NULL )
+        if(voice_staff_vector[i].first.size() == 0 )
         {
-            voice_staff_vector[i] = make_pair(s, tpoint->staff_ref);
+            voice_staff_vector[i] = make_pair(symbol, tpoint.staff_ref);
             return pair<size_t, bool>(i, 1); // new voice
         }
     }
     
     // no open voices, make a new one (i was incremented already by the loop)
-    voice_staff_vector.emplace_back( pair<const Symbol*, const Symbol*>( s, tpoint->staff_ref ) );
+    voice_staff_vector.emplace_back( make_pair( symbol, tpoint.staff_ref ) );
     return pair<size_t, bool>(i, 1); // new voice
 }
 
-vector<tuple<size_t,
-       const Symbol*,
-       const Symbol*> >
-TimePointArray::getNoteOffs(const SymbolTimePoint* p)
+vector<TimePointArray::ID_SYM_STAFF>
+TimePointArray::getNoteOffs(const SymbolTimePoint& p)
 {
-    vector<tuple<size_t,
-                 const Symbol*,
-                 const Symbol*> > offs;
+    vector<ID_SYM_STAFF> offs;
     
-    if(p)
+    if(p.size() > 0)
     {
         bool found;
         for( size_t i = 0; i < voice_staff_vector.size(); i++)
         {
-            if( !voice_staff_vector[i].first )
+            if( voice_staff_vector[i].first.size() == 0 )
                 continue;
             
             found = false;
-            for( auto s : p->symbols_at_time )
+            for( auto s : p.symbols_at_time )
             {
                 if( s == voice_staff_vector[i].first )
                 {
@@ -429,10 +242,8 @@ TimePointArray::getNoteOffs(const SymbolTimePoint* p)
             
             if(!found)
             {
-                offs.emplace_back(tuple<size_t,
-                                        const Symbol*,
-                                        const Symbol* >(i, voice_staff_vector[i].first, voice_staff_vector[i].second));
-                voice_staff_vector[i].first = NULL;
+                offs.emplace_back( ID_SYM_STAFF(i, voice_staff_vector[i].first, voice_staff_vector[i].second) );
+                voice_staff_vector[i].first.clear();
             }
         }
     }
@@ -440,19 +251,17 @@ TimePointArray::getNoteOffs(const SymbolTimePoint* p)
     {
         for(size_t i = 0; i < voice_staff_vector.size(); i++)
         {
-            if(!voice_staff_vector[i].first)
+            if(voice_staff_vector[i].first.size() == 0)
                 continue;
             
-            offs.emplace_back(tuple<size_t,
-                                    const Symbol*,
-                                    const Symbol*>(i, voice_staff_vector[i].first, voice_staff_vector[i].second));
-            voice_staff_vector[i].first = NULL;
+            offs.emplace_back( ID_SYM_STAFF(i, voice_staff_vector[i].first, voice_staff_vector[i].second) );
+            voice_staff_vector[i].first.clear();
         }
     }
     return offs;
 }
 
-void TimePointArray::groupLookup(const Symbol* s,
+void TimePointArray::groupLookup(const OdotBundle& symbol,
                                  const string& output_prefix,  // parent prefix to prepend
                                  double parent_x,
                                  double parent_y,
@@ -460,15 +269,15 @@ void TimePointArray::groupLookup(const Symbol* s,
                                  OdotBundle& bndl)
 {
     //I'm not sure we need this groupsymbol address anymore since we're using subbundles now
-    string group_name = "/" + s->getMessage("/name").getString();
+    string group_name = "/" + symbol.getMessage("/name").getString();
     
-    vector<OdotMessage> msg_array = s->getMessageArray();
+    vector<OdotMessage> msg_array = symbol.getMessageArray();
     
     float this_x = parent_x, this_y = parent_y;
     
     // iterate group symbol bundle messages
     // adjust positions to be relative to the parent, and do path lookups
-    for ( auto msg : msg_array )
+    for ( auto& msg : msg_array )
     {
         string msg_addr = msg.getAddress();
         string newaddr = output_prefix + group_name + msg_addr;
@@ -487,15 +296,15 @@ void TimePointArray::groupLookup(const Symbol* s,
         }
         else if( msg_addr.find("/subsymbol") == 0 && msg[0].getType() == OdotAtom::O_ATOM_BUNDLE )
         {
-            string type = s->getMessage("/type").getString();
+            string type = symbol.getMessage("/type").getString();
             if( type == "group" )
             {
-                groupLookup(s, output_prefix + group_name + msg_addr, this_x, this_y, time_ratio, bndl );
+                groupLookup(symbol, output_prefix + group_name + msg_addr, this_x, this_y, time_ratio, bndl );
             }
             else // ** note: this requires that groups cannot contain higher level types of groups (staves, etc.) **
             {
                 // if not a group, add the bundle with name prefix
-                string subsymbol_name = s->getMessage("/name").getString();
+                string subsymbol_name = symbol.getMessage("/name").getString();
                 
                 vector<OdotMessage> sub_msg_array = msg.getBundle().getMessageArray();
                 for( auto sub_msg : sub_msg_array )
@@ -507,22 +316,22 @@ void TimePointArray::groupLookup(const Symbol* s,
                 if( type == "path" )
                 {
                     // maybe move this part below to another function...
-                    int npaths = s->getMessage( "/num_sub_paths" ).getInt();
+                    int npaths = symbol.getMessage( "/num_sub_paths" ).getInt();
                     for( int p_idx = 0; p_idx < npaths; p_idx++)
                     {
                         auto path_addr = "/path/" + to_string(p_idx);
-                        auto xy = lookupPathPoint(s, path_addr, time_ratio );
+                        auto xy = lookupPathPoint(symbol, path_addr, time_ratio );
                         
-                        float w = s->getMessage( "/w" ).getFloat();
-                        float h = s->getMessage( "/h" ).getFloat();
+                        float w = symbol.getMessage( "/w" ).getFloat();
+                        float h = symbol.getMessage( "/h" ).getFloat();
                         
                         if( w > 0 && h > 0 )
                         {
                             // use group name first, otherwise, if there is subsymbol_name name, use that.
                             if( !group_name.empty() || !subsymbol_name.empty() )
-                                bndl.addMessage( output_prefix + group_name + msg_addr +  "/" + subsymbol_name + "/lookup/xy", xy.x / w, xy.y / h) ;
+                                bndl.addMessage( output_prefix + group_name + msg_addr +  "/" + subsymbol_name + "/lookup/xy", xy[0] / w, xy[1] / h) ;
                             else
-                                bndl.addMessage( output_prefix + msg_addr + "/path/" + to_string(p_idx) + "/lookup/xy", xy.x / w, xy.y / h) ;
+                                bndl.addMessage( output_prefix + msg_addr + "/path/" + to_string(p_idx) + "/lookup/xy", xy[0] / w, xy[1] / h) ;
                             
                         }
                     }
@@ -542,17 +351,37 @@ void TimePointArray::groupLookup(const Symbol* s,
     
 }
 
-OdotBundle_s TimePointArray::timePointStreamToOSC(const SymbolTimePoint* tpoint  )
+
+OdotBundle TimePointArray::getSymbolsAtTime( float t )
+{
+    if (symbol_time_points.size() == 0 )
+        return OdotBundle();
+    
+    /* note: lookupTimePoint() also sets current_time */
+    int idx = lookupTimePoint( t );
+    current_point = idx;
+    
+    if( idx >= 0 )
+    {
+        SymbolTimePoint& tpoint = symbol_time_points[idx];
+        
+        return timePointStreamToOSC( tpoint );
+    }
+    
+    return timePointStreamToOSC( SymbolTimePoint() );
+}
+
+OdotBundle TimePointArray::timePointStreamToOSC(const SymbolTimePoint& tpoint  )
 {
     OdotBundle bndl;
     bndl.addMessage("/time/lookup", current_time ) ;
-    bndl.addMessage("/time/end", symbol_time_points.back()->time ) ;
+    bndl.addMessage("/time/end", m_duration ) ;
     
     string prefix = "/symbolsAtTime/";
 
-    if( tpoint != nullptr )
+    if( tpoint.size() > 0 )
     {
-        const vector<Symbol* > symbolsAtTPoint = tpoint->symbols_at_time;
+        const vector<OdotBundle>& symbolsAtTPoint = tpoint.symbols_at_time;
         
         int count = 0;
         for (auto symbol : symbolsAtTPoint )
@@ -560,27 +389,27 @@ OdotBundle_s TimePointArray::timePointStreamToOSC(const SymbolTimePoint* tpoint 
 			/* If the current symbol posseses a /expr odot message
 		     * then apply the content (normally odot expressions) on it.
 			 */
-			if (symbol->addressExists("/expr"))
-					symbol->applyExpr(symbol->getMessage("/expr").getString());
+			if (symbol.addressExists("/expr"))
+                symbol.applyExpr( symbol.getMessage("/expr").getString() );
 			
-            const Symbol* staff = tpoint->staff_ref;
-            string staffName = staff->getName();
+            const OdotBundle& staff = tpoint.staff_ref;
+            string staffName = staff.getMessage("/name").getString();
 
-            string toplevelName = symbol->getMessage( "/name" ).getString();
+            string toplevelName = symbol.getMessage( "/name" ).getString();
             
-            if( current_time > symbol->getEndTime() )
+            if( current_time > symbol.getMessage("/time/end").getFloat() )
             {
                 pair<size_t, int> voiceNumState = setNoteOff( symbol );
                 if( voiceNumState.first != -1 ) // voice number is set to -1 if not found
                 {
-                    string symbolPrefix = "/staff/" + staff->getName() + "/voice/" + to_string(voiceNumState.first) + "/" + toplevelName;
+                    string symbolPrefix = "/staff/" + staffName + "/voice/" + to_string(voiceNumState.first) + "/" + toplevelName;
                     bndl.addMessage( symbolPrefix + "/state", -1 );
                 }
             }
             else
             {
                 pair<size_t, int> voiceNumState = getVoiceNumberState( symbol, tpoint );
-                string symbolPrefix = "/staff/" + staff->getName() + "/voice/" + to_string(voiceNumState.first) + "/" + toplevelName;
+                string symbolPrefix = "/staff/" + staffName + "/voice/" + to_string(voiceNumState.first) + "/" + toplevelName;
                 
                 bndl.addMessage( symbolPrefix + "/state", voiceNumState.second ) ;
                 // staff is already stored in timepoint so we could probably removed the staff check here...
@@ -588,34 +417,40 @@ OdotBundle_s TimePointArray::timePointStreamToOSC(const SymbolTimePoint* tpoint 
                 //String staff_name = "default";
                 //String staff_id;
                 float staffXCoordinate = 0, staffYCoordinate = 0;
-                staffXCoordinate = staff->getMessage("/x").getFloat();
-                staffYCoordinate = staff->getMessage("/y").getFloat();
+                staffXCoordinate = staff.getMessage("/x").getFloat();
+                staffYCoordinate = staff.getMessage("/y").getFloat();
 
-                float timeRatio = (current_time - symbol->getTime()) / symbol->getDuration() ;
+                float starttime = symbol.getMessage("/time/start").getFloat();
+                float endtime = symbol.getMessage("/time/end").getFloat();
+                float duration = endtime - starttime;
+                
+                float timeRatio = ( current_time - starttime ) / duration ;
                 bndl.addMessage( symbolPrefix + "/time/ratio", timeRatio );
                 
-                if( symbol->getType() == "path" )
+                const string& type = symbol.getMessage("/type").getString();
+                
+                if( type == "path" )
                 {
-                    int npaths = symbol->getMessage( "/num_sub_paths" ).getInt();
+                    int npaths = symbol.getMessage( "/num_sub_paths" ).getInt();
 
                     for( int i = 0; i < npaths; i++)
                     {
                         auto path_addr = "/path/" + to_string(i);
                         auto xy = lookupPathPoint(symbol, path_addr, timeRatio );
-                        bndl.addMessage( symbolPrefix + "/path/" + to_string(i) + "/lookup/xy", xy.x, xy.y );
+                        bndl.addMessage( symbolPrefix + "/path/" + to_string(i) + "/lookup/xy", xy[0], xy[1] );
 
                     }
 
                 }
-                else if( symbol->getType() == "group" )
+                else if( type == "group" )
                 {
-                    string group_prefix = "/staff/" + staff->getName() + "/voice/" + to_string(voiceNumState.first);
+                    string group_prefix = "/staff/" + staffName + "/voice/" + to_string(voiceNumState.first);
                     groupLookup(symbol, group_prefix, staffXCoordinate, staffYCoordinate, timeRatio, bndl );
                 }
                 else
                 {
                 
-                    auto symbolBundleMessages = symbol->getMessageArray();
+                    auto symbolBundleMessages = symbol.getMessageArray();
 
                     for ( auto msg : symbolBundleMessages )
                     {
@@ -648,16 +483,20 @@ OdotBundle_s TimePointArray::timePointStreamToOSC(const SymbolTimePoint* tpoint 
         }
     }
     
-    vector<tuple<size_t, const Symbol*, const Symbol*> > offs = getNoteOffs(tpoint);
+    vector< ID_SYM_STAFF > offs = getNoteOffs(tpoint);
     for( int i = 0; i < offs.size(); i++ )
     {
-        string s_prefix = "/staff/" + get<2>(offs[i])->getName() + "/voice/" + to_string(get<0>(offs[i])) +"/"+ get<1>(offs[i])->getName();
+        string s_prefix = "/staff/" +
+                            get<2>(offs[i]).getMessage("/name").getString() +
+                            "/voice/" + to_string(get<0>(offs[i])) +
+                            "/"+ get<1>(offs[i]).getMessage("/name").getString();
+        
         bndl.addMessage( s_prefix + "/state", -1 );
     }
     
     prev_timepoint = tpoint;
 
-    return bndl.serialize();
+    return bndl;
 }
 
 int TimePointArray::lookupTimePoint( float t )
@@ -671,7 +510,7 @@ int TimePointArray::lookupTimePoint( float t )
         
         for ( ; idx < symbol_time_points.size(); idx++ ) // step forward
         {
-            p_time = symbol_time_points[idx]->time;
+            p_time = symbol_time_points[idx].time;
             
             if (p_time > t) // if point time is >, we want the previous one
             {
@@ -684,7 +523,7 @@ int TimePointArray::lookupTimePoint( float t )
         if( idx >= symbol_time_points.size() )
             current_point = static_cast<int>(symbol_time_points.size() - 1);
         else
-            DEBUG_FULL("Shouldn't happen " << current_point << endl)
+            cout << "Shouldn't happen " << current_point << endl;
         
         current_time = t;
         return current_point;
@@ -694,7 +533,7 @@ int TimePointArray::lookupTimePoint( float t )
     {
         for ( ; idx >= 0; idx-- ) // step backward
         {
-            p_time = symbol_time_points[idx]->time;
+            p_time = symbol_time_points[idx].time;
             
             if (p_time < t) // if point time is <, we want this one
             {
@@ -716,23 +555,6 @@ int TimePointArray::lookupTimePoint( float t )
     return current_point;
 }
 
-OdotBundle_s TimePointArray::getSymbolsAtTime( float t )
-{
-    if (symbol_time_points.size() == 0 )
-        return nullptr;
-    
-    int idx = lookupTimePoint( t ); //<< also sets current time
-    current_point = idx;
-    
-    if( idx >= 0 )
-    {
-        SymbolTimePoint* tpoint = symbol_time_points[idx].get();
-        
-        return timePointStreamToOSC( tpoint );
-    }
-    
-    return timePointStreamToOSC( nullptr );
-}
 
 int TimePointArray::getTimePointInsertIndex( float timeToMatch, bool& match )
 {
@@ -741,7 +563,7 @@ int TimePointArray::getTimePointInsertIndex( float timeToMatch, bool& match )
     int firstElement = 0, lastElement = static_cast<int>(symbol_time_points.size());
     while (firstElement < lastElement)
     {
-        if (compareTimes(symbol_time_points[firstElement]->time, timeToMatch) == 0)
+        if (compareTimes(symbol_time_points[firstElement].time, timeToMatch) == 0)
         {
             match = true;
             break;
@@ -756,13 +578,13 @@ int TimePointArray::getTimePointInsertIndex( float timeToMatch, bool& match )
              */
             if (halfway == firstElement)
             {
-                if (compareTimes(symbol_time_points[halfway]->time, timeToMatch) >= 0)
+                if (compareTimes(symbol_time_points[halfway].time, timeToMatch) >= 0)
                 {
                     ++firstElement;
                 }
                 break;
             }
-            else if (compareTimes(symbol_time_points[halfway]->time, timeToMatch) >= 0)
+            else if (compareTimes(symbol_time_points[halfway].time, timeToMatch) >= 0)
             {
                 firstElement = halfway;
             }

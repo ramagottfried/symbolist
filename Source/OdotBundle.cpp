@@ -173,7 +173,7 @@ void OdotBundle::print_imp( t_osc_bndl_u * bndl, int level ) const
         
         cout << indent << osc_message_u_getAddress(msg);
         
-        char buf[256];
+        char buf[32768];
         char *buf_ptr = buf;
         int argcount = osc_message_u_getArgCount(msg);
         for( int i = 0; i < argcount; i++ )
@@ -187,7 +187,7 @@ void OdotBundle::print_imp( t_osc_bndl_u * bndl, int level ) const
             }
             else
             {
-                osc_atom_u_getString( a, 256, &buf_ptr );
+                osc_atom_u_getString( a, 32768, &buf_ptr );
                 cout << "\t" << buf_ptr;
             }
         }
@@ -297,7 +297,7 @@ string OdotBundle::getJSON()
     return JSON;
 }
 
-bool OdotBundle::operator==( const OdotBundle& src )
+bool OdotBundle::operator==( const OdotBundle& src ) const
 {
     if( get_o_ptr() == src.get_o_ptr() )
         return true;

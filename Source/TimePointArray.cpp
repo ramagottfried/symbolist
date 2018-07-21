@@ -11,7 +11,7 @@ void TimePointArray::printTimePoints()
         int symcount = 0;
         for( auto sym : t.symbols_at_time )
         {
-           cout << "\tSymbol n°" << (symcount++) << ", address = " << sym.get_o_ptr() << ", size (number of messages) = " << (sym.get_o_ptr() != NULL ? to_string(sym.size()) : "") << endl;
+           cout << "\tSymbol n°" << (symcount++) << ", address = " << sym.get_o_ptr() << ", start = " << sym.getMessage("/time/start").getFloat() << ", end = " << sym.getMessage("/time/end").getFloat() << endl;
         }
     }
 }

@@ -40,30 +40,45 @@ int main(int argc, const char * argv[])
     
     string symbolstr = R"(
         /symbol/1 : {
-            /id : "/symbol/1",
             /name : "foo",
+            /id : "/symbol/1",
             /type : "staff",
             /x : 0,
             /y : 10,
             /h : 10,
-            /w : 10
+            /w : 100
         },
         /symbol/2 : {
+            /name : "note",
             /id : "/symbol/2",
             /staff/name : "foo",
             /staff/id : "/symbol/1",
-            /x : 0,
+            /x : 1,
             /y : 5,
             /h : 10,
             /w : 10
         },
         /symbol/3 : {
+            /name : "note",
             /id : "/symbol/3",
-            /x : 0,
+            /staff/name : "foo",
+            /staff/id : "/symbol/1",
+            /x : 5,
+            /y : 0,
+            /h : 10,
+            /w : 10
+        },
+        /symbol/4 : {
+            /name : "note",
+            /id : "/symbol/4",
+            /staff/name : "foo",
+            /staff/id : "/symbol/1",
+            /x : 7,
             /y : 0,
             /h : 10,
             /w : 10
         }
+    
      )";
     
     OdotBundle m_score( symbolstr );
@@ -181,10 +196,13 @@ int main(int argc, const char * argv[])
         }
     }
     
-//    m_score.print();
+    //m_score.print();
     m_time_points.printTimePoints();
     
-    
+    auto b = m_time_points.getSymbolsAtTime(0.02);
+    b.print();
+    b = m_time_points.getSymbolsAtTime(0.2);
+    b.print();
     
     return 0;
 }

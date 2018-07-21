@@ -5,7 +5,6 @@
 #include "types.h"
 #include "Symbol.h"
 #include "TimePointArray.h"
-#include "SortedStaves.hpp"
 
 #include "SVGFileIO.hpp"
 
@@ -16,19 +15,6 @@ using namespace std;
 //============================
 // SCORE
 //============================
-
-/**
- * A sorter for the symbols in the score, based on time value comparison.
- */
-struct ScoreSorter
-{
-    bool operator() (const std::unique_ptr<Symbol>& a, const std::unique_ptr<Symbol>& b)
-    {
-        auto a_t = a->getTime();
-        auto b_t = b->getTime();
-        return (a_t < b_t);
-    }
-};
 
 class Score {
 
@@ -42,12 +28,11 @@ public:
     Score(const OdotBundle_s& s_bundle) ;
     ~Score();
     
-
     
     /**********************************************
-     *             GETTERS AND SETTERS            *
+     *             INITIALIZATION                 *
      **********************************************/
-    
+
     /**
      *  Sets default stave sequencing functions.
      *  these functions should be moved to the stave or clef prototype
@@ -62,6 +47,61 @@ public:
      */
     void setDefaults();
 
+    
+    /**
+     * Trigger rebuilding of Timepoint array and Stave sorting.
+     *
+     */
+    void buildTimeLookups();
+    
+    /**
+     * Clears all /symbol addresses in the score.
+     *
+     * Removes all elements from the vector of symbols, the array
+     * of time points, and the list of sorted staves.
+     *
+     * (to do) Leaves Palette and other setup addresses.
+     */
+    void removeAllSymbols();
+    
+    /**
+     * Clears score bundle completely, clears timepoints and sets default Palette.
+     *
+     *
+     * (to do) sets default Palette
+     */
+    void reset();
+    
+    /**********************************************
+     *             GETTERS AND SETTERS            *
+     **********************************************/
+    
+    
+    /**
+     * Adds a new symbol to the score.
+     *
+     * Actually, a new symbol is created by copying
+     * the one in parameter, then it is added to the score.
+     * If the symbol in parameter already exists in the score
+     * then the symbol is updated with the values of the incoming
+     * symbol, and a pointer to the currently existing symbol
+     * in the score is returned.
+     *
+     * @param symbol a pointer to the symbol which will be copied
+     *               to create a new symbol in the score.
+     *
+     * @return       a pointer to the newly created symbol.
+     */
+    Symbol* addSymbol(Symbol* symbol);
+    
+    
+    /**
+     * Creates a new symbol in the score.
+     *
+     * @return a pointer to the newly created symbol.
+     */
+    Symbol* createSymbol();
+    
     
     inline TimePointArray& getTimePoints() { return m_time_points; };
     
@@ -94,30 +134,9 @@ public:
 	 *               of symbols, or -1 if the symbol is not in the score.
 	 */
     int getSymbolPosition(Symbol* symbol);
+
     
-    /**
-     * Creates a new symbol in the score.
-     *
-     * @return a pointer to the newly created symbol.
-     */
-    Symbol* createSymbol();
-    
-    /**
-     * Adds a new symbol to the score.
-     *
-     * Actually, a new symbol is created by copying
-     * the one in parameter, then it is added to the score.
-     * If the symbol in parameter already exists in the score
-     * then the symbol is updated with the values of the incoming
-     * symbol, and a pointer to the currently existing symbol
-     * in the score is returned.
-     *
-     * @param symbol a pointer to the symbol which will be copied
-     *               to create a new symbol in the score.
-     *
-     * @return       a pointer to the newly created symbol.
-     */
-    Symbol* addSymbol(Symbol* symbol);
+
     
     
     /**
@@ -149,13 +168,7 @@ public:
      */
     void removeSymbol(Symbol* symbol);
 	
-	/**
-	 * Clears all symbols for this Score instance.
-	 *
-	 * Removes all elements from the vector of symbols, the array
-	 * of time points, and the list of sorted staves.
-	 */
-    void removeAllSymbols();
+	
 	
 	/**
 	 * Clears all symbols for this Score instance, then re-populates it.
@@ -178,11 +191,7 @@ public:
     void importSymbols( const OdotBundle_s& s_bundle );
 
     
-    /**
-     * Trigger rebuilding of Timepoint array and Stave sorting.
-     *
-     */
-    void buildTimeLookups();
+
     
     void addSymbolTimePoints( Symbol* s );
     void removeSymbolTimePoints( Symbol* s );
@@ -250,14 +259,42 @@ public:
 	
 	void print() const;
 	
+    
+    void setTypeXYWH(OdotBundle& b, const string & type, float x, float y, float w, float h)
+    {
+        b.addMessage( "/type", type );
+        b.addMessage( "/x", x );
+        b.addMessage( "/y", y );
+        b.addMessage( "/w", w );
+        b.addMessage( "/h", h );
+        // add name?
+    }
+    
 private:
 
+    /**
+     *  Full score containing symbols, palette, and scripts.
+     */
     OdotBundle                  m_score;
     
+    /**
+     *  Subbundle of Symbols copied from m_score
+     *  Lookup table of score symbols, and staff symbols
+     */
+    OdotBundle                  m_symbols;
     OdotSelect                  m_symbol_table;
-    OdotSelect                  m_type_selector;
+    OdotSelect                  m_staff_table;
+    
+    /**
+     *  Subbundle of Palette prototypes copied from m_score, with lookup table.
+     */
+    OdotBundle                  m_palette;
+    OdotSelect                  m_palette_table;
+    
 
     TimePointArray              m_time_points;
+    
+    
     
 	
     //==============================================================================

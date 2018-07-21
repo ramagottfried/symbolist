@@ -23,3 +23,40 @@
     /h : 10,
     /w : 10
 }
+
+
+
+
+
+selection in the bundle is easier with subbundles but then the symbol reference system will require the . operator to access the symbols. I'm ok with that but the dot operator only works for one level.
+
+
+/symbol : {
+    /1 : {
+        /id : "/symbol./1",
+        /name : "foo",
+        /type : "staff",
+        /x : 0,
+        /y : 10,
+        /h : 10,
+        /w : 10
+    },
+    /2 : {
+        /id : "/symbol./2",
+        /staff/name : "foo",
+        /staff/id : "/symbol./1",
+        /x : 0,
+        /y : 5,
+        /h : 10,
+        /w : 10
+    },
+    /3 : {
+        /id : "/symbol./3",
+        /x : 0,
+        /y : 0,
+        /h : 10,
+        /w : 10
+    }
+}
+
+another option could be to make a copy of the symbol bundle, and palette bundle from the main file bundle -- and then select one level of addresses in each bundle.

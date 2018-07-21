@@ -9,13 +9,13 @@
 #include <fstream>
 #include <sstream>
 
-OdotBundle::OdotBundle()
+OdotBundle::OdotBundle() : m_select(*this)
 {
     ptr = odot::newOdotBundlePtr();
 //    D_(std::cout << "new bundle " << &ptr << " " << ptr.get() << std::endl;)
 }
 
-OdotBundle::OdotBundle( const OdotBundle& src )
+OdotBundle::OdotBundle( const OdotBundle& src ) : m_select(*this)
 {
 //    D_(cout << __func__ << "copy \n";)
     t_osc_bndl_u *b = osc_bundle_u_alloc();
@@ -23,7 +23,7 @@ OdotBundle::OdotBundle( const OdotBundle& src )
     ptr = odot::newOdotBundlePtr( b );
 }
 
-OdotBundle::OdotBundle( const OdotBundle* src )
+OdotBundle::OdotBundle( const OdotBundle* src ) : m_select(*this)
 {
     //    D_(cout << __func__ << "copy \n";)
     t_osc_bndl_u *b = osc_bundle_u_alloc();
@@ -31,7 +31,7 @@ OdotBundle::OdotBundle( const OdotBundle* src )
     ptr = odot::newOdotBundlePtr( b );
 }
 
-OdotBundle::OdotBundle( const t_osc_bndl_u * src )
+OdotBundle::OdotBundle( const t_osc_bndl_u * src ) : m_select(*this)
 {
 //    D_(cout << __func__  << "copy from odot pointer \n";)
     t_osc_bndl_u *b = osc_bundle_u_alloc();
@@ -39,19 +39,19 @@ OdotBundle::OdotBundle( const t_osc_bndl_u * src )
     ptr = odot::newOdotBundlePtr( b );
 }
 
-OdotBundle::OdotBundle( const OdotBundle_s& src )
+OdotBundle::OdotBundle( const OdotBundle_s& src ) : m_select(*this)
 {
     OdotBundle b( src.get_o_ptr() );
     ptr = odot::newOdotBundlePtr( b.release() );
 }
 
-OdotBundle::OdotBundle( const t_osc_bndl_s * src )
+OdotBundle::OdotBundle( const t_osc_bndl_s * src ) : m_select(*this)
 {
     ptr = odot::newOdotBundlePtr(osc_bundle_s_deserialize(osc_bundle_s_getLen((t_osc_bndl_s *)src),
                                                            osc_bundle_s_getPtr((t_osc_bndl_s *)src)));
 }
 
-OdotBundle::OdotBundle( const OdotMessage& msg )
+OdotBundle::OdotBundle( const OdotMessage& msg ) : m_select(*this)
 {
     ptr = odot::newOdotBundlePtr();
     addMessage( msg );
@@ -71,13 +71,13 @@ OdotBundle& OdotBundle::operator=( const OdotBundle& src )
     return *this;
 }
 
-OdotBundle::OdotBundle( vector<OdotMessage> msg_vec )
+OdotBundle::OdotBundle( vector<OdotMessage> msg_vec ) : m_select(*this)
 {
     OdotBundle();
     addMessage( msg_vec );
 }
 
-OdotBundle::OdotBundle( const string& str )
+OdotBundle::OdotBundle( const string& str ) : m_select(*this)
 {
     setFromString( str );
 }
@@ -146,6 +146,32 @@ void OdotBundle::addMessage( t_osc_msg_u * msg )
     //  cout << "replace " << endl;
     osc_bundle_u_replaceMessage( ptr.get(), msg );
 }
+
+void OdotBundle::removeMessage( t_osc_msg_u * msg )
+{
+    osc_bundle_u_removeMsg( ptr.get(), msg );
+    osc_message_u_free( msg );
+    msg = NULL;
+}
+
+void OdotBundle::removeMessage( const string & addr )
+{
+    t_osc_bndl_it_u *it = osc_bndl_it_u_get( ptr.get() );
+    while( osc_bndl_it_u_hasNext(it) )
+    {
+        t_osc_msg_u *msg = osc_bndl_it_u_next(it);
+        const char * msg_addr = osc_message_u_getAddress(msg);
+        if( addr == msg_addr )
+        {
+            osc_bundle_u_removeMsg( ptr.get(), msg );
+            osc_message_u_free( msg );
+            msg = NULL;
+        }
+        
+    }
+    osc_bndl_it_u_destroy(it);
+}
+
 
 void OdotBundle::clear()
 {

@@ -4,24 +4,32 @@
 #include <algorithm>
 #include <vector>
 
-Score::Score() : m_time_points(m_score), m_symbol_table(m_score), m_type_selector(m_score)
+Score::Score() :
+m_time_points(m_score), m_symbol_table(m_score), m_staff_table(m_score), m_palette_table(m_score)
 {
     // Sets the score_ptr reference for time_points instance variable.
     setDefaults();
 }
 
-Score::Score(const Score& src) : m_time_points(m_score), m_symbol_table(m_score), m_type_selector(m_score)
+Score::Score(const Score& src) :
+m_time_points(m_score),m_symbol_table(m_score), m_staff_table(m_score), m_palette_table(m_score)
 {
     // copy score
     m_score = src.m_score;
     setDefaults();
     
-    m_symbol_table.select("/symbol");
+    m_symbols = m_score.getMessage("/symbol").getBundle();
+    m_symbols.selector().select();
+    
+    m_palette = m_score.getMessage("/palette").getBundle();
+    m_palette.selector().select();
+    
     buildTimeLookups();
 
 }
 
-Score::Score( const OdotBundle_s& s_bundle  ) : m_time_points(m_score), m_symbol_table(m_score), m_type_selector(m_score)
+Score::Score( const OdotBundle_s& s_bundle  ) :
+m_time_points(m_score), m_symbol_table(m_score), m_staff_table(m_score), m_palette_table(m_score)
 {
     importSymbols( s_bundle );
     setDefaults();
@@ -102,8 +110,8 @@ void Score::buildTimeLookups()
     4. create TimePoint Array to optimize lookup into score sequence
     */
     
-    m_type_selector.select( OdotMessage("/type", "staff") );
-    auto stave_vec = m_type_selector.getVector();
+    m_staff_table.select( OdotMessage("/type", "staff") );
+    auto stave_vec = m_staff_table.getVector();
     
     OdotMessage compareFn = m_score.getMessage("/stave/sort/fn");
     OdotExpr compareExpr( "/order = /stave/sort/fn( /stave/a, /stave/b )" );
@@ -180,18 +188,38 @@ void Score::print() const
 }
 
 /***********************************
- * Add a new Symbol in the Score
+ * Remove Symbols from Score
  ***********************************/
 void Score::removeAllSymbols()
 {
-    m_score.clear();
+    m_symbol_table.deleteSelected();
+    m_staff_table.clear();
     time_points.reset();
+}
+
+
+/***********************************
+ * Clear Score and set default Palette
+ ***********************************/
+void Score::reset()
+{
+    time_points.reset();
+    m_staff_table.clear();
+    m_symbol_table.clear();
+    
+    m_palette_table.clear();
+    
+    m_score.clear();
+    
+    // set default palette here
+    m_palette_table.select("/palette");
+    
 }
 
 /******************************************
  * Creates a new empty symbol in the score
  ******************************************/
-Symbol* Score::createSymbol()
+OdotBundle Score::createSymbol()
 {
     return addSymbol(NULL);
 }

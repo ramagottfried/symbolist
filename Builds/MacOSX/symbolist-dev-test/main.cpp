@@ -34,11 +34,55 @@ void hashtest()
 }
 
 
+string symbolstr = R"(
+/symbol : {
+    /1 : {
+        /name : "foo",
+        /id : "/1",
+        /type : "staff",
+        /x : 0,
+        /y : 10,
+        /h : 10,
+        /w : 100
+    },
+    /2 : {
+        /name : "note",
+        /id : "/2",
+        /staff/name : "foo",
+        /staff/id : "/1",
+        /x : 1,
+        /y : 5,
+        /h : 10,
+        /w : 10
+    },
+    /3 : {
+        /name : "note",
+        /id : "/3",
+        /staff/name : "foo",
+        /staff/id : "/1",
+        /x : 5,
+        /y : 0,
+        /h : 10,
+        /w : 10
+    },
+    /4 : {
+        /name : "note",
+        /id : "/4",
+        /staff/name : "foo",
+        /staff/id : "/1",
+        /x : 7,
+        /y : 0,
+        /h : 10,
+        /w : 10
+    }
+}
+)";
+
 
 int main(int argc, const char * argv[])
 {
     
-    string symbolstr = R"(
+    string symbolstr2 = R"(
         /symbol/1 : {
             /name : "foo",
             /id : "/symbol/1",
@@ -126,11 +170,12 @@ int main(int argc, const char * argv[])
     
    // m_score.print();
     
-    OdotSelect m_symbol_table( m_score );
-    m_symbol_table.select("/symbol");
-    auto symbol_vec = m_symbol_table.getVector();
+    OdotBundle m_symbols = m_score.getMessage("/symbol").getBundle();
+    m_symbols.selector().select();
     
-    OdotSelect m_type_selector( m_score );
+    auto symbol_vec = m_symbols.selector().getVector();
+    
+    OdotSelect m_type_selector( m_symbols );
     m_type_selector.select( OdotMessage("/type", "staff") ); // how do we know that this is bundles now, not the messages?
     auto stave_vec = m_type_selector.getVector();
     m_type_selector.print();
@@ -161,7 +206,7 @@ int main(int argc, const char * argv[])
         staff.addMessage("/time", time);
         staff.addMessage( pixTimeFn );
         staff.applyExpr( pixTimeApplyExpr );
-        m_score.addMessage( staff_msg.getAddress(), staff );
+        m_symbols.addMessage( staff_msg.getAddress(), staff );
         
         time = staff.getMessage("/end/time").getFloat();
     }
@@ -183,20 +228,20 @@ int main(int argc, const char * argv[])
         auto staff_id = sym.getMessage("/staff/id").getString();
         if( staff_id.size() > 0 )
         {
-            auto linked_staff = m_symbol_table[staff_id].getBundle();
+            auto linked_staff = m_symbols.selector()[staff_id].getBundle();
             if( linked_staff.size() > 0 )
             {
                 sym.addMessage("/stave", linked_staff );
                 sym.addMessage( eventPixTimeFn );
                 sym.applyExpr( eventPixTimeApplyExpr );
-                m_score.addMessage(sym_msg.getAddress(), sym );
-                
+                m_symbols.addMessage(sym_msg.getAddress(), sym );
                 m_time_points.addSymbol( sym, linked_staff );
             }
         }
     }
     
-    //m_score.print();
+    m_score.addMessage("/symbol", m_symbols);
+    
     m_time_points.printTimePoints();
     
     auto b = m_time_points.getSymbolsAtTime(0.02);

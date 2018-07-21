@@ -1,11 +1,14 @@
 #pragma once
 
-#include "OdotBundle.hpp"
 #include <unordered_map>
+#include "OdotMessage.hpp"
 
 using namespace std;
 
 // check on address syntax, might need to concatentate with '.'
+
+class OdotBundle;
+
 
 /**
  *  @class OdotSelect
@@ -26,6 +29,13 @@ public:
     OdotSelect( OdotBundle& bndl ) : m_bndl(bndl) {}
     ~OdotSelect() {}
     
+    inline void clear()
+    {
+        m_map.clear();
+    }
+    
+    void deleteSelected();
+    
     /**
      * Select all messages and store in hash table for fast lookup.
      *
@@ -35,13 +45,13 @@ public:
     /**
      * Select all messages with a given address prefix
      *
-     * @param   addr_prefix     prefix to select, e.g. /foo will match any address starting with /foo
+     * @param   selection_prefix     prefix to select, e.g. /foo will match any address starting with /foo
      *
      */
-    void select( const string& addr_prefix, bool fullmatch = 0 );
-    void select( const char * addr_prefix, bool fullmatch = 0 )
+    void select( const string& selection_prefix, bool fullmatch = 0 );
+    void select( const char * selection_prefix, bool fullmatch = 0 )
     {
-        select( string(addr_prefix), fullmatch );
+        select( string(selection_prefix), fullmatch );
     }
     
     /**
@@ -76,6 +86,13 @@ public:
     vector< OdotMessage > getVector();
     
     /**
+     * Gets vector of addresses in hash table
+     *
+     * @return           <code>vector<string></code>
+     */
+    vector< string > getAddresses();
+    
+    /**
      * Gets vector of OdotBundle with OdotMessages selected by hash table
      *
      * @return           <code>OdotBundle</code>
@@ -92,6 +109,18 @@ public:
             cout << e.first << " " << e.second << endl;
         }
     }
+    
+    using array_type = unordered_map<string, t_osc_msg_u *>;
+    using iterator = array_type::iterator;
+    using const_iterator = array_type::const_iterator;
+    
+    inline iterator begin() noexcept { return m_map.begin(); }
+    inline const_iterator cbegin() const noexcept { return m_map.cbegin(); }
+    inline iterator end() noexcept { return m_map.end(); }
+    inline const_iterator cend() const noexcept { return m_map.end(); }
+    
+    
+    
     
 private:
     

@@ -11,6 +11,8 @@
 #include "OdotBundle_s.hpp"
 #include "OdotExpr.hpp"
 
+#include "OdotSelect.hpp"
+
 using namespace std;
 
 class OdotBundle {
@@ -86,7 +88,7 @@ public:
     
     
     
-    /* ======= Add Messages ======= */
+    /* ======= Add/Remove Messages ======= */
 
     void addMessage( const OdotMessage& msg );
     void addMessage( t_osc_msg_u * msg );
@@ -104,6 +106,13 @@ public:
         addMessage( address.c_str(), args... );
     }
     void addMessage( vector<OdotMessage > msg_vec );
+    
+    void removeMessage( const string& addr );
+    void removeMessage( t_osc_msg_u * msg );
+    
+    /* ======= Selector ======= */
+    
+    OdotSelect& selector(){ return m_select; }
     
     /* ======= Expressions ======= */
     
@@ -175,6 +184,8 @@ public:
 private:
     
     odot::OdotBundlePtr ptr;
+    
+    OdotSelect  m_select;
     
     OdotBundle getBundleContainingMessage_imp( t_osc_bndl_u * bndl, const char * address ) const;
     OdotBundle getBundleContainingMessage_imp( t_osc_bndl_u * bndl, OdotMessage& msg ) const;

@@ -1,5 +1,6 @@
 #include "OdotSelect.hpp"
 #include "osc_bundle_iterator_u.h"
+#include "OdotBundle.hpp"
 
 void OdotSelect::select()
 {
@@ -7,10 +8,10 @@ void OdotSelect::select()
     recursiveSelect( m_bndl.get_o_ptr() );
 }
 
-void OdotSelect::select( const string& addr_prefix, bool fullmatch )
+void OdotSelect::select( const string& selection_prefix, bool fullmatch )
 {
     m_map.clear();
-    recursiveSelect( m_bndl.get_o_ptr(), addr_prefix );
+    recursiveSelect( m_bndl.get_o_ptr(), selection_prefix );
 }
 
 void OdotSelect::select( const OdotMessage& select_msg, bool fullmatch )
@@ -90,6 +91,15 @@ void OdotSelect::recursiveSelect( const t_osc_bndl_u *bndl, t_osc_msg_u * parent
     osc_bndl_it_u_destroy(it);
 }
 
+void OdotSelect::deleteSelected()
+{
+    for( auto m : m_map )
+    {
+        m_bndl.removeMessage( m.second );
+    }
+    m_map.clear();
+    
+}
 
 vector< OdotMessage > OdotSelect::getVector()
 {
@@ -98,6 +108,17 @@ vector< OdotMessage > OdotSelect::getVector()
     for( auto e : m_map )
     {
         vec.emplace_back( OdotMessage(e.second) );
+    }
+    return vec;
+}
+
+vector< string > OdotSelect::getAddresses()
+{
+    vector< string > vec;
+    vec.reserve( m_map.size() );
+    for( auto e : m_map )
+    {
+        vec.emplace_back( e.first );
     }
     return vec;
 }

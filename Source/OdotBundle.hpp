@@ -112,7 +112,7 @@ public:
     
     /* ======= Selector ======= */
     
-    OdotSelect& selector(){ return m_select; }
+    //OdotSelect& selector(){ return m_select; }
     
     /* ======= Expressions ======= */
     
@@ -185,7 +185,7 @@ private:
     
     odot::OdotBundlePtr ptr;
     
-    OdotSelect  m_select;
+    //OdotSelect  m_select;
     
     OdotBundle getBundleContainingMessage_imp( t_osc_bndl_u * bndl, const char * address ) const;
     OdotBundle getBundleContainingMessage_imp( t_osc_bndl_u * bndl, OdotMessage& msg ) const;

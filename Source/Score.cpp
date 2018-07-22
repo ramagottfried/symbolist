@@ -4,44 +4,46 @@
 #include <algorithm>
 #include <vector>
 
-Score::Score() :
-m_time_points(m_score), m_symbol_table(m_score), m_staff_table(m_score), m_palette_table(m_score)
+Score::Score()
 {
     // Sets the score_ptr reference for time_points instance variable.
     setDefaults();
 }
 
-Score::Score(const Score& src) :
-m_time_points(m_score),m_symbol_table(m_score), m_staff_table(m_score), m_palette_table(m_score)
+Score::Score(const Score& src)
 {
     // copy score
     m_score = src.m_score;
     setDefaults();
     
+    /*
     m_symbols = m_score.getMessage("/symbol").getBundle();
     m_symbols.selector().select();
     
     m_palette = m_score.getMessage("/palette").getBundle();
     m_palette.selector().select();
-    
+    */
     buildTimeLookups();
 
 }
 
-Score::Score( const OdotBundle_s& s_bundle  ) :
-m_time_points(m_score), m_symbol_table(m_score), m_staff_table(m_score), m_palette_table(m_score)
+Score::Score( const OdotBundle_s& s_bundle  )
 {
     importSymbols( s_bundle );
     setDefaults();
     
-    m_symbol_table.select("/symbol");
+    /*
+    m_symbols = m_score.getMessage("/symbol").getBundle();
+    m_symbols.selector().select();
+    
+    m_palette = m_score.getMessage("/palette").getBundle();
+    m_palette.selector().select();
+    */
     buildTimeLookups();
 }
 
-Score::~Score()
-{
+Score::~Score() {}
 
-}
 
 /**
  *  Sets default stave sequencing functions.
@@ -110,11 +112,25 @@ void Score::buildTimeLookups()
     4. create TimePoint Array to optimize lookup into score sequence
     */
     
-    m_staff_table.select( OdotMessage("/type", "staff") );
-    auto stave_vec = m_staff_table.getVector();
+    
+    /*
+        maybe do layer re-numbering here
+     */
+    
+    OdotBundle symbols = m_score.getMessage("/symbol").getBundle();
+    
+    OdotSelect sym_select(symbols);
+    sym_select.select();
+    auto symbol_vec = sym_select.getVector();
+    
+    OdotSelect staff_select( symbols );
+    staff_select.select( OdotMessage("/type", "staff") );
+    // how do we know that this is bundles now, not the messages?
+    auto stave_vec = staff_select.getVector();
+    
     
     OdotMessage compareFn = m_score.getMessage("/stave/sort/fn");
-    OdotExpr compareExpr( "/order = /stave/sort/fn( /stave/a, /stave/b )" );
+    OdotExpr compareExpr( "/t = /stave/sort/fn( /stave/a, /stave/b )" );
     
     sort( stave_vec.begin(), stave_vec.end(),
          [&compareExpr, &compareFn](OdotMessage& a, OdotMessage& b){
@@ -122,64 +138,87 @@ void Score::buildTimeLookups()
              test.addMessage("/stave/a", a.getBundle() );
              test.addMessage("/stave/b", b.getBundle() );
              test.applyExpr( compareExpr );
-             return test.getMessage("/order").getInt();
+             return test.getMessage("/t").getInt();
          });
     
     
     OdotMessage pixTimeFn = m_score.getMessage("/stave/pixTime/fn");
-    OdotExpr pixTimeApplyExpr(  R"(
-                              /stave/pixTime/fn( /t ),
-                              delete(/stave/pixTime/fn), delete(/t)
-                              )" );
+    OdotExpr pixTimeApplyExpr(  R"~(
+                              /stave/pixTime/fn( /time ),
+                              delete(/stave/pixTime/fn), delete(/time)
+                              )~" );
     
     float time = 0.0f;
     for( auto& staff_msg : stave_vec )
     {
         auto staff = staff_msg.getBundle();
-        staff.addMessage("/t", time);
+        staff.addMessage("/time", time);
         staff.addMessage( pixTimeFn );
         staff.applyExpr( pixTimeApplyExpr );
-        m_score.addMessage( staff_msg.getAddress(), staff );
+        symbols.addMessage( staff_msg.getAddress(), staff );
         
-        time = staff.getMessage("/time/end").getFloat();
-        
-        // addStaff was doing this naming business which should be somewhere else
-        /*
-         string name = staff.getMessage("/name").getString();
-         if( name.empty() ) // For now allow  name == s->getID()
-         staff.addMessage( "/name", "staff_" + to_string(staves.size()) );
-         */
+        time = staff.getMessage("/end/time").getFloat();
     }
     
-    
-    time_points.reset();
-
+    OdotMessage eventPixTimeFn = m_score.getMessage("/stave/event/pixTime/fn");
     OdotExpr eventPixTimeApplyExpr(  R"~(
                                    /stave/event/pixTime/fn( /stave ),
                                    delete(/stave/event/pixTime/fn), delete(/stave)
                                    )~" );
     
-    auto symbol_vec = m_symbol_table.getVector();
+    
+    int layer = 0;
     for( auto& sym_msg : symbol_vec )
     {
         auto sym = sym_msg.getBundle();
         auto staff_id = sym.getMessage("/staff/id").getString();
         if( staff_id.size() > 0 )
         {
-            auto linked_staff = m_symbol_table[staff_id].getBundle();
+            auto linked_staff = sym_select[staff_id].getBundle();
             if( linked_staff.size() > 0 )
             {
                 sym.addMessage("/stave", linked_staff );
                 sym.addMessage( eventPixTimeFn );
                 sym.applyExpr( eventPixTimeApplyExpr );
-                m_score.addMessage(sym_msg.getAddress(), sym );
-                
+                symbols.addMessage(sym_msg.getAddress(), sym );
                 m_time_points.addSymbol( sym, linked_staff );
             }
         }
     }
     
+    m_score.addMessage("/symbol", symbols);
+    
 }
+
+
+void Score::renumberLayers()
+{
+    /*
+     
+     reset /id based on layer order
+     check for stave /id link, and update to match also
+     
+     use time? or previous link to update?
+     probably time is the best idea...
+     
+     actually it only matters which staff is attached when the symbol needs to calculate its time
+     after it has a time value it actually doesn't need the attached staff, unless there is some other kind of clef expressions
+     
+     */
+    
+    OdotBundle symbols = m_score.getMessage("/symbol").getBundle();
+    OdotSelect symbol_table(symbols);
+    
+    OdotBundle symbols_renum;
+    
+    
+    for( auto b = symbol_table.begin(); b  )
+    {
+        
+    }
+    
+}
+
 
 
 void Score::print() const
@@ -192,9 +231,8 @@ void Score::print() const
  ***********************************/
 void Score::removeAllSymbols()
 {
-    m_symbol_table.deleteSelected();
-    m_staff_table.clear();
-    time_points.reset();
+    m_score.addMessage("/symbol", OdotBundle() );
+    m_time_points.reset();
 }
 
 
@@ -203,16 +241,10 @@ void Score::removeAllSymbols()
  ***********************************/
 void Score::reset()
 {
-    time_points.reset();
-    m_staff_table.clear();
-    m_symbol_table.clear();
-    
-    m_palette_table.clear();
-    
+    m_time_points.reset();
     m_score.clear();
     
     // set default palette here
-    m_palette_table.select("/palette");
     
 }
 
@@ -227,21 +259,36 @@ OdotBundle Score::createSymbol()
 /***********************************
  * Add a new Symbol in the Score
  ***********************************/
-Symbol* Score::addSymbol(Symbol* symbol)
+void Score::addSymbol(OdotBundle& symbol)
 {
-    DEBUG_FULL(symbol << endl )
+    // maybe do a validity check?
+    
+    OdotBundle symbols = m_score.getMessage("/symbol").getBundle();
+    // figure out id here
+    // maybe ids should be opaque?
+    // or rather, they are layers, and we will need to renumber everything whenever they are changed
+    // therefor the staff ids will have to be updated also, so if there is a /time address then use that to figure out which stave the symbol should be linked to.
+    
+  
+    /* If symbol id exists in score, then union the incoming values with the current values
+     * and return the symbol reference.
+     */
+    string id = symbol.getMessage("/id").getString();
 
-    // Calls symbol's empty constructor if reference is NULL.
-    if (symbol == NULL)
+    if( id.size() == 0 )
     {
-        score_symbols.push_back(unique_ptr<Symbol>(new Symbol()));
-        return score_symbols.back().get();
+        id = "/" + to_string( symbols.size()+1 );
+        symbol.addMessage("/id", id )
     }
+
+    symbols.addMessage(id, symbol)
+    
+    m_score.addMessage("/symbol", symbols);
+    
     
     /* If symbol id exists in score, then union the incoming values with the current values
      * and return the symbol reference.
      */
-    string id = symbol->getID();
     DEBUG_FULL("checking for " << id << endl )
 
     if( id == "" )

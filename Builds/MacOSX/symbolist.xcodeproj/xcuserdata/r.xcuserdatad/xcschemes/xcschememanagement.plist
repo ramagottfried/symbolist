@@ -7,7 +7,7 @@
 		<key>SymbolistTests.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>4</integer>
+			<integer>5</integer>
 		</dict>
 		<key>symbolist - Dynamic Library.xcscheme</key>
 		<dict>
@@ -19,10 +19,15 @@
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
+		<key>symbolist-dev-test copy.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
 		<key>symbolist-dev-test.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>5</integer>
+			<integer>4</integer>
 		</dict>
 		<key>symbolist-libo.xcscheme</key>
 		<dict>

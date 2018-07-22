@@ -5,6 +5,9 @@
 #include <iostream>
 
 
+
+
+
 void hashtest()
 {
     OdotBundle b;
@@ -34,117 +37,77 @@ void hashtest()
 }
 
 
-string symbolstr = R"(
-/symbol : {
-    /1 : {
-        /name : "foo",
-        /id : "/1",
-        /type : "staff",
-        /x : 0,
-        /y : 10,
-        /h : 10,
-        /w : 100
-    },
-    /2 : {
-        /name : "note",
-        /id : "/2",
-        /staff/name : "foo",
-        /staff/id : "/1",
-        /x : 1,
-        /y : 5,
-        /h : 10,
-        /w : 10
-    },
-    /3 : {
-        /name : "note",
-        /id : "/3",
-        /staff/name : "foo",
-        /staff/id : "/1",
-        /x : 5,
-        /y : 0,
-        /h : 10,
-        /w : 10
-    },
-    /4 : {
-        /name : "note",
-        /id : "/4",
-        /staff/name : "foo",
-        /staff/id : "/1",
-        /x : 7,
-        /y : 0,
-        /h : 10,
-        /w : 10
-    }
-}
-)";
 
 
-int main(int argc, const char * argv[])
+void timepointTest()
 {
     
-    string symbolstr2 = R"(
-        /symbol/1 : {
+    string symbolstr = R"(
+    /symbol : {
+        /1 : {
             /name : "foo",
-            /id : "/symbol/1",
+            /id : "/1",
             /type : "staff",
             /x : 0,
             /y : 10,
             /h : 10,
             /w : 100
         },
-        /symbol/2 : {
+        /2 : {
             /name : "note",
-            /id : "/symbol/2",
+            /id : "/2",
             /staff/name : "foo",
-            /staff/id : "/symbol/1",
+            /staff/id : "/1",
             /x : 1,
             /y : 5,
             /h : 10,
             /w : 10
         },
-        /symbol/3 : {
+        /3 : {
             /name : "note",
-            /id : "/symbol/3",
+            /id : "/3",
             /staff/name : "foo",
-            /staff/id : "/symbol/1",
+            /staff/id : "/1",
             /x : 5,
             /y : 0,
             /h : 10,
             /w : 10
         },
-        /symbol/4 : {
+        /4 : {
             /name : "note",
-            /id : "/symbol/4",
+            /id : "/4",
             /staff/name : "foo",
-            /staff/id : "/symbol/1",
+            /staff/id : "/1",
             /x : 7,
             /y : 0,
             /h : 10,
             /w : 10
         }
+    }
+    )";
     
-     )";
+    
     
     OdotBundle m_score( symbolstr );
     
     if( !m_score.addressExists("/stave/sort/fn") )
         m_score.addMessage("/stave/sort/fn",
-                        R"~(
-                            lambda([a,b],
-                              (a./y < b./y) && (b./x < (a./x + a./w))
-                            )
-                        )~" );
-    
-    if( !m_score.addressExists("/stave/pixTime/fn") )
-    {
-        m_score.addMessage("/stave/pixTime/fn",
                            R"~(
-                           lambda([prev_time],
-                                  /time/start = prev_time,
-                                  /time/end = /time/start + (/w * 0.01)
-                             )
+                           lambda([a,b],
+                                  (a./y < b./y) && (b./x < (a./x + a./w))
+                                  )
                            )~" );
-    }
+        
+        if( !m_score.addressExists("/stave/pixTime/fn") )
+        {
+            m_score.addMessage("/stave/pixTime/fn",
+                               R"~(
+                               lambda([prev_time],
+                                      /time/start = prev_time,
+                                      /time/end = /time/start + (/w * 0.01)
+                                      )
+                               )~" );
+        }
     
     if( !m_score.addressExists("/stave/event/pixTime/fn") )
     {
@@ -153,7 +116,7 @@ int main(int argc, const char * argv[])
                            lambda([stave],
                                   /time/start = stave./time/start + (/x - stave./x) * 0.01 ,
                                   /time/end = /time/start + (/w * 0.01)
-                              )
+                                  )
                            )~" );
     }
     
@@ -168,14 +131,15 @@ int main(int argc, const char * argv[])
                            )~" );
     }
     
-   // m_score.print();
+    // m_score.print();
     
-    OdotBundle m_symbols = m_score.getMessage("/symbol").getBundle();
-    m_symbols.selector().select();
+    OdotBundle symbols = m_score.getMessage("/symbol").getBundle();
     
-    auto symbol_vec = m_symbols.selector().getVector();
+    OdotSelect sym_select(symbols);
+    sym_select.select();
+    auto symbol_vec = sym_select.getVector();
     
-    OdotSelect m_type_selector( m_symbols );
+    OdotSelect m_type_selector( symbols );
     m_type_selector.select( OdotMessage("/type", "staff") ); // how do we know that this is bundles now, not the messages?
     auto stave_vec = m_type_selector.getVector();
     m_type_selector.print();
@@ -195,9 +159,9 @@ int main(int argc, const char * argv[])
     
     OdotMessage pixTimeFn = m_score.getMessage("/stave/pixTime/fn");
     OdotExpr pixTimeApplyExpr(  R"~(
-                                     /stave/pixTime/fn( /time ),
-                                     delete(/stave/pixTime/fn), delete(/time)
-                                )~" );
+                              /stave/pixTime/fn( /time ),
+                              delete(/stave/pixTime/fn), delete(/time)
+                              )~" );
     
     float time = 0.0f;
     for( auto& staff_msg : stave_vec )
@@ -206,7 +170,7 @@ int main(int argc, const char * argv[])
         staff.addMessage("/time", time);
         staff.addMessage( pixTimeFn );
         staff.applyExpr( pixTimeApplyExpr );
-        m_symbols.addMessage( staff_msg.getAddress(), staff );
+        symbols.addMessage( staff_msg.getAddress(), staff );
         
         time = staff.getMessage("/end/time").getFloat();
     }
@@ -216,31 +180,31 @@ int main(int argc, const char * argv[])
     eventPixTimeFn.print();
     
     OdotExpr eventPixTimeApplyExpr(  R"~(
-                                        /stave/event/pixTime/fn( /stave ),
-                                        delete(/stave/event/pixTime/fn), delete(/stave)
-                                      )~" );
+                                   /stave/event/pixTime/fn( /stave ),
+                                   delete(/stave/event/pixTime/fn), delete(/stave)
+                                   )~" );
     
     TimePointArray m_time_points;
-
+    
     for( auto& sym_msg : symbol_vec )
     {
         auto sym = sym_msg.getBundle();
         auto staff_id = sym.getMessage("/staff/id").getString();
         if( staff_id.size() > 0 )
         {
-            auto linked_staff = m_symbols.selector()[staff_id].getBundle();
+            auto linked_staff = sym_select[staff_id].getBundle();
             if( linked_staff.size() > 0 )
             {
                 sym.addMessage("/stave", linked_staff );
                 sym.addMessage( eventPixTimeFn );
                 sym.applyExpr( eventPixTimeApplyExpr );
-                m_symbols.addMessage(sym_msg.getAddress(), sym );
+                symbols.addMessage(sym_msg.getAddress(), sym );
                 m_time_points.addSymbol( sym, linked_staff );
             }
         }
     }
     
-    m_score.addMessage("/symbol", m_symbols);
+    m_score.addMessage("/symbol", symbols);
     
     m_time_points.printTimePoints();
     
@@ -249,5 +213,15 @@ int main(int argc, const char * argv[])
     b = m_time_points.getSymbolsAtTime(0.2);
     b.print();
     
+    
+}
+
+int main(int argc, const char * argv[])
+{
+    timepointTest();
+    
+    OdotBundle b;
+    b.setFromFile("default-score.odot");
+    b.print();
     return 0;
 }

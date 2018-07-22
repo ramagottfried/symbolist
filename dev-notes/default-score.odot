@@ -1,0 +1,24 @@
+
+/palette : {
+    /foo : 1
+},
+/~/stave : {
+    /sort : "lambda([a, b],
+        (a./y < b./y) && (b./x < (a./x + a./w))
+    )",
+    /pixTime : "lambda([t],
+        /time/start = t,
+        /time/end = t + (/w * 0.01)
+    )",
+    /event/pixTime : "lambda([stave],
+     /time/start = stave./time/start + (/x - stave./x) * 0.01 ,
+     /time/end = /time/start + (/w * 0.01)
+    )",
+    /event/timePix : "lambda([stave],
+        /x = stave./x + ( (/time/start - stave./time/start) * 100. ),
+        /w = (/time/end - /time/start) * 100.
+    )"
+},
+/symbol : {
+    /1 : 1
+}

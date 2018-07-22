@@ -60,3 +60,126 @@ selection in the bundle is easier with subbundles but then the symbol reference 
 }
 
 another option could be to make a copy of the symbol bundle, and palette bundle from the main file bundle -- and then select one level of addresses in each bundle.
+
+New setup without /ids:
+To attach to a staff, Symbols must have either a /staff name and /time/start, or /staff and /id.
+the /id will be removed after the /time is calculated since the ids could change based on layer order, add/removing symbols.
+
+Problem, what about the bounds? if there is a /time value, but it doesn't match the bounds?
+
+Maybe the staff/clef should contain scripts to position graphic objects, and then the score symbols don't contain their own bounds.
+
+To do later, add /system is a list of stave types that get grouped together? like /system : ["foo", "bar"]
+
+Palette:
+* on empty score, the Palette shows:
+    1. pure graphic objects with no mapping, (can also be user created)
+    2. Stave objects that have mappings associated (with defined symbol types and input/output mappings)
+* With a Stave selected, you can add predefined Symbols to the Stave. The Palette shows a selection of predefined types, and offers an option to create a new Stave Symbol. The Symbol details are saved as a Palette within the Stave object.
+
+
+
+/symbol : {
+    /1 : {
+        /name : "foo",
+        /type : "stave",
+
+        /time : {
+            /start : 0,
+            /end : 10,
+            /pixTimeScale : 0.01,
+            /timePixScale : 100,
+        },
+
+        /graphic : {
+            /clef : {
+                /path :  "M path data, if there are sub paths, we can parse them on edit",
+                /style : {
+                    /color : "black"
+                }
+            },
+            /staff : {
+                /path :  "M path data, if there are sub paths, we can parse them on edit",
+                /style : {
+                    /color : "black"
+                }
+            },
+            /path : "M0,0 ...",
+            /bounds : {
+                /x : 0,
+                /y : 10,
+                /h : 10,
+                /w : 10
+            },
+            /transform : [matrix]
+        },
+
+        /script : {
+            /self/sort : "lambda([a, b],
+                (a./y < b./y) && (b./x < (a./x + a./w))
+            )",
+            /self/pixTime : "lambda([t],
+                /time/start = t,
+                /time/end = t + (/w * 0.01)
+            )",
+            /event/pixTime : "lambda([stave],
+             /time/start = stave./time/start + (/x - stave./x) * 0.01 ,
+             /time/end = /time/start + (/w * 0.01)
+            )",
+            /event/timePix : "lambda([stave],
+                /x = stave./x + ( (/time/start - stave./time/start) * 100. ),
+                /w = (/time/end - /time/start) * 100.
+            )"
+        },
+        /palette : {
+            /name? : "set name as /address here?",
+            /graphic : {
+                /path : "M0,0 ...",
+                /style : {
+                    /css : "attributes"
+                }
+            },
+            /position : "lambda([stave, start, end],
+                    /x = stave./x + ( (start - stave./time/start) * 100. ),
+                    /w = (end - start) * 100.
+            )",
+            /expr : {
+                /set : "lambda([stave, start, pitch, duration, amp],
+                        /x = stave./x + ( (start - stave./time/start) * stave./time/timePixScale ),
+                        /w = duration * stave./time/timePixScale,
+                        /y = /stave./y + scale(pitch, 0, 127, 0, stave./h) #here 0 is the bottom,
+                        /style./stroke_width = scale( amp, 0, 1, 0, 10)
+                )",
+                /get : "lambda([stave, t],
+                        /pitch = scale(/y, 0, stave./h, 0., 127.),
+                        /relative/time = t,
+                        /amp = scale( /style./stroke_width, 0, 10, 0, 1)
+
+                        #... there's a valid argument to be had that this should be in Max... but having it embedded means you can quickly add / switch mappings without having to route them in Max which is quite time consuming.
+
+                )"
+
+            }
+
+        }
+
+    },
+    /2 : {
+        /name : "event",
+        /type : "rectangle",
+        /x : 0,
+        /y : 5,
+        /h : 10,
+        /w : 10,
+        /staff : "foo"
+    },
+    /3 : {
+        /name : "event",
+        /type : "rectangle",
+        /x : 0,
+        /y : 0,
+        /h : 10,
+        /w : 10,
+        /staff : "foo"
+    }
+}

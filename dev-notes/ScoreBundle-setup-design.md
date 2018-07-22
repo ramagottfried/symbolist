@@ -37,3 +37,15 @@ Time calc process:
     note: this sorted vector doesn't really need to be saved if we are recalculating everything whenever a new symbol is added
 2. find all Symbols that are linked to staves and set the symbol /time bundle
 3. create TimePoint Array to optimize lookup into score sequence
+
+*actually, staves may not need the /staff/id tag in their bundle. The linkage is only useful when finding the /time values for a given symbol from a graphic manipulation.*
+
+New Time Calc design:
+1. Symbols may have a /staff address that specifies which type of staff to attach to. Only one type of staff may be happening at the same time. A System type can specify a group of Stave names to synchronize for time setup.
+
+
+Memory Design:
+Avoid storing values that might get out of sync from Score i.e. timepoints, staves, etc.
+TimePoints are a necessary evil in order to make a fast lookup for streaming OSC, but processes that only happen when Symbols are added/removed can be slower, and safer.
+
+Symbol Layer Numbering w/ Staff linkage

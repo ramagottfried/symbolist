@@ -9,13 +9,13 @@
 #include <fstream>
 #include <sstream>
 
-OdotBundle::OdotBundle() : m_select(*this)
+OdotBundle::OdotBundle()
 {
     ptr = odot::newOdotBundlePtr();
 //    D_(std::cout << "new bundle " << &ptr << " " << ptr.get() << std::endl;)
 }
 
-OdotBundle::OdotBundle( const OdotBundle& src ) : m_select(*this)
+OdotBundle::OdotBundle( const OdotBundle& src )
 {
 //    D_(cout << __func__ << "copy \n";)
     t_osc_bndl_u *b = osc_bundle_u_alloc();
@@ -23,7 +23,7 @@ OdotBundle::OdotBundle( const OdotBundle& src ) : m_select(*this)
     ptr = odot::newOdotBundlePtr( b );
 }
 
-OdotBundle::OdotBundle( const OdotBundle* src ) : m_select(*this)
+OdotBundle::OdotBundle( const OdotBundle* src )
 {
     //    D_(cout << __func__ << "copy \n";)
     t_osc_bndl_u *b = osc_bundle_u_alloc();
@@ -31,7 +31,7 @@ OdotBundle::OdotBundle( const OdotBundle* src ) : m_select(*this)
     ptr = odot::newOdotBundlePtr( b );
 }
 
-OdotBundle::OdotBundle( const t_osc_bndl_u * src ) : m_select(*this)
+OdotBundle::OdotBundle( const t_osc_bndl_u * src )
 {
 //    D_(cout << __func__  << "copy from odot pointer \n";)
     t_osc_bndl_u *b = osc_bundle_u_alloc();
@@ -39,19 +39,19 @@ OdotBundle::OdotBundle( const t_osc_bndl_u * src ) : m_select(*this)
     ptr = odot::newOdotBundlePtr( b );
 }
 
-OdotBundle::OdotBundle( const OdotBundle_s& src ) : m_select(*this)
+OdotBundle::OdotBundle( const OdotBundle_s& src )
 {
     OdotBundle b( src.get_o_ptr() );
     ptr = odot::newOdotBundlePtr( b.release() );
 }
 
-OdotBundle::OdotBundle( const t_osc_bndl_s * src ) : m_select(*this)
+OdotBundle::OdotBundle( const t_osc_bndl_s * src )
 {
     ptr = odot::newOdotBundlePtr(osc_bundle_s_deserialize(osc_bundle_s_getLen((t_osc_bndl_s *)src),
                                                            osc_bundle_s_getPtr((t_osc_bndl_s *)src)));
 }
 
-OdotBundle::OdotBundle( const OdotMessage& msg ) : m_select(*this)
+OdotBundle::OdotBundle( const OdotMessage& msg )
 {
     ptr = odot::newOdotBundlePtr();
     addMessage( msg );
@@ -71,13 +71,13 @@ OdotBundle& OdotBundle::operator=( const OdotBundle& src )
     return *this;
 }
 
-OdotBundle::OdotBundle( vector<OdotMessage> msg_vec ) : m_select(*this)
+OdotBundle::OdotBundle( vector<OdotMessage> msg_vec )
 {
     OdotBundle();
     addMessage( msg_vec );
 }
 
-OdotBundle::OdotBundle( const string& str ) : m_select(*this)
+OdotBundle::OdotBundle( const string& str )
 {
     setFromString( str );
 }
@@ -449,6 +449,8 @@ void OdotBundle::setFromFile( const string& oscFilePath )
     /* Stores the file content into a string buffer */
     stringstream fileContentBuffer;
     fileContentBuffer << oscFile.rdbuf();
+    
+    cout << fileContentBuffer.str() << endl;
     
     setFromString(fileContentBuffer.str());
 }

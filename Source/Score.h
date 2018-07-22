@@ -48,6 +48,9 @@ public:
     void setDefaults();
 
     
+    
+    void renumberLayers();
+    
     /**
      * Trigger rebuilding of Timepoint array and Stave sorting.
      *
@@ -80,19 +83,14 @@ public:
     /**
      * Adds a new symbol to the score.
      *
-     * Actually, a new symbol is created by copying
-     * the one in parameter, then it is added to the score.
-     * If the symbol in parameter already exists in the score
-     * then the symbol is updated with the values of the incoming
-     * symbol, and a pointer to the currently existing symbol
-     * in the score is returned.
+     * If the Bundle's /id address is set, addSymbol() will see if the symbol is
+     * already in the score, and then the symbol is updated with the values of the incoming
+     * symbol.
      *
-     * @param symbol a pointer to the symbol which will be copied
-     *               to create a new symbol in the score.
+     * @param symbol   OdotBundle containing symbol messages.
      *
-     * @return       a pointer to the newly created symbol.
      */
-    Symbol* addSymbol(Symbol* symbol);
+    void addSymbol(OdotBundle& symbol);
     
     
     /**
@@ -276,25 +274,13 @@ private:
      *  Full score containing symbols, palette, and scripts.
      */
     OdotBundle                  m_score;
-    
-    /**
-     *  Subbundle of Symbols copied from m_score
-     *  Lookup table of score symbols, and staff symbols
-     */
-    OdotBundle                  m_symbols;
-    OdotSelect                  m_symbol_table;
-    OdotSelect                  m_staff_table;
-    
-    /**
-     *  Subbundle of Palette prototypes copied from m_score, with lookup table.
-     */
-    OdotBundle                  m_palette;
-    OdotSelect                  m_palette_table;
-    
 
     TimePointArray              m_time_points;
     
     
+    // For now, don't cache anything, just get the data when you need it
+    // this avoids having to maintain the selector
+    // probably it doesn't matter, but if it starts slowing down we can add a hash table.
     
 	
     //==============================================================================

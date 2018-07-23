@@ -16,13 +16,7 @@ Score::Score(const Score& src)
     m_score = src.m_score;
     setDefaults();
     
-    /*
-    m_symbols = m_score.getMessage("/symbol").getBundle();
-    m_symbols.selector().select();
     
-    m_palette = m_score.getMessage("/palette").getBundle();
-    m_palette.selector().select();
-    */
     buildTimeLookups();
 
 }
@@ -32,13 +26,6 @@ Score::Score( const OdotBundle_s& s_bundle  )
     importSymbols( s_bundle );
     setDefaults();
     
-    /*
-    m_symbols = m_score.getMessage("/symbol").getBundle();
-    m_symbols.selector().select();
-    
-    m_palette = m_score.getMessage("/palette").getBundle();
-    m_palette.selector().select();
-    */
     buildTimeLookups();
 }
 
@@ -59,6 +46,8 @@ Score::~Score() {}
  */
 void Score::setDefaults()
 {
+    
+    // note: staves must be of the same kind also
     if( !m_score.addressExists("/stave/sort/fn") )
         m_score.addMessage("/stave/sort/fn",
                            R"(
@@ -262,6 +251,11 @@ OdotBundle Score::createSymbol()
 void Score::addSymbol(OdotBundle& symbol)
 {
     // maybe do a validity check?
+    
+    if( symbol.addressExists("/time/start") )
+    {
+        
+    }
     
     OdotBundle symbols = m_score.getMessage("/symbol").getBundle();
     // figure out id here

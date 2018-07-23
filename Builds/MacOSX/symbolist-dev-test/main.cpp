@@ -216,12 +216,239 @@ void timepointTest()
     
 }
 
-int main(int argc, const char * argv[])
+
+void timepointTest2()
 {
-    timepointTest();
+    
+    /*
+        use lower_bound to find reference stave for non-time based event mapping lookups (e.g. y axis, etc.)
+     
+        * assume that a score contains /time'd bundles *
+     
+        palette symbols will be in the order they are listed, that way if a new one is assigned it will overwrite the previous one.
+            no two symbols should have the same name
+     
+     actually the system maybe should hold the time information, since there could be multiple staves, and the staff/clef mapping could change mid-system
+     
+     ... but then what about the issue of Clefs?
+        for now let's do one stave per system and not change stave mid-system
+     
+     */
+    
+    
+    string symbolstr = R"bundle(
+    /layout : {
+        /page : {
+            /margins : {
+                /left : 10,
+                /right : 10,
+                /top : 10,
+                /bottom : 10
+            }
+        },
+        /system : {
+            /margin/topbottom : [20, 20],
+            /staves : {
+                /piccolo : {
+                    /margin : [10, 10],
+                    /name : "piccolo"
+                },
+                /oboe : {
+                    /margin : [10, 10],
+                    /name : "oboe"
+                },
+            }
+        }
+    },
+    /palette : {
+        /foo : {
+            /type : "stave",
+            /sort : "lambda([a, b],
+                (a./y < b./y) && (b./x < (a./x + a./w))
+            )",
+            /pixTime : "lambda([t],
+                /time/start = t,
+                /time/end = t + (/w * 0.01)
+            )",
+            /event/pixTime : "lambda([stave],
+                /time/start = stave./time/start + (/x - stave./x) * 0.01 ,
+                /time/end = /time/start + (/w * 0.01)
+            )",
+            /event/timePix : "lambda([stave],
+                /x = stave./x + ( (/time/start - stave./time/start) * 100. ),
+                /w = (/time/end - /time/start) * 100.
+            )"
+        }
+    },
+    /symbol : {
+        /1 : {
+            /name : "foo",
+            /type : "stave",
+            /time/start : 0,
+            /time/end : 10
+            .... add graphic info here ...
+        },
+        /2 : {
+            /name : "foo",
+            /type : "stave",
+            /x : 0,
+            /y : 20,
+            /h : 10,
+            /w : 100
+            /time/start :
+        },
+        /3 : {
+            /name : "foo",
+            /type : "stave",
+            /x : 0,
+            /y : 30,
+            /h : 10,
+            /w : 100
+        },
+        /4 : {
+            /name : "note",
+            /stave : "foo",
+            /x : 1,
+            /y : 5,
+            /h : 10,
+            /w : 10
+        },
+        /5 : {
+            /name : "note",
+            /stave : "foo",
+            /x : 5,
+            /y : 0,
+            /h : 10,
+            /w : 10
+        },
+        /6 : {
+            /name : "note",
+            /stave : "foo",
+            /x : 7,
+            /y : 0,
+            /h : 10,
+            /w : 10
+        }
+    }
+    )bundle";
+    
+    OdotBundle m_score( symbolstr );
+   
+    // m_score.print();
+    
+    OdotBundle symbols = m_score.getMessage("/symbol").getBundle();
+    
+    OdotSelect sym_select(symbols);
+    sym_select.select();
+    auto symbol_vec = sym_select.getVector();
+    
+    OdotSelect m_type_selector( symbols );
+    m_type_selector.select( OdotMessage("/type", "staff") ); // how do we know that this is bundles now, not the messages?
+    auto stave_vec = m_type_selector.getVector();
+    m_type_selector.print();
+    
+    OdotMessage compareFn = m_score.getMessage("/stave/sort/fn");
+    OdotExpr compareExpr( "/t = /stave/sort/fn( /stave/a, /stave/b )" );
+    
+    sort( stave_vec.begin(), stave_vec.end(),
+         [&compareExpr, &compareFn](OdotMessage& a, OdotMessage& b){
+             OdotBundle test(compareFn);
+             test.addMessage("/stave/a", a.getBundle() );
+             test.addMessage("/stave/b", b.getBundle() );
+             test.applyExpr( compareExpr );
+             return test.getMessage("/t").getInt();
+         });
+    
+    
+    OdotMessage pixTimeFn = m_score.getMessage("/stave/pixTime/fn");
+    OdotExpr pixTimeApplyExpr(  R"~(
+                              /stave/pixTime/fn( /time ),
+                              delete(/stave/pixTime/fn), delete(/time)
+                              )~" );
+    
+    float time = 0.0f;
+    for( auto& staff_msg : stave_vec )
+    {
+        auto staff = staff_msg.getBundle();
+        staff.addMessage("/time", time);
+        staff.addMessage( pixTimeFn );
+        staff.applyExpr( pixTimeApplyExpr );
+        symbols.addMessage( staff_msg.getAddress(), staff );
+        
+        time = staff.getMessage("/end/time").getFloat();
+    }
+    
+    OdotMessage eventPixTimeFn = m_score.getMessage("/stave/event/pixTime/fn");
+    
+    eventPixTimeFn.print();
+    
+    OdotExpr eventPixTimeApplyExpr(  R"~(
+                                   /stave/event/pixTime/fn( /stave ),
+                                   delete(/stave/event/pixTime/fn), delete(/stave)
+                                   )~" );
+    
+    TimePointArray m_time_points;
+    
+    for( auto& sym_msg : symbol_vec )
+    {
+        auto sym = sym_msg.getBundle();
+        auto staff_id = sym.getMessage("/staff/id").getString();
+        if( staff_id.size() > 0 )
+        {
+            auto linked_staff = sym_select[staff_id].getBundle();
+            if( linked_staff.size() > 0 )
+            {
+                sym.addMessage("/stave", linked_staff );
+                sym.addMessage( eventPixTimeFn );
+                sym.applyExpr( eventPixTimeApplyExpr );
+                symbols.addMessage(sym_msg.getAddress(), sym );
+                m_time_points.addSymbol( sym, linked_staff );
+            }
+        }
+    }
+    
+    m_score.addMessage("/symbol", symbols);
+    
+    m_time_points.printTimePoints();
+    
+    auto b = m_time_points.getSymbolsAtTime(0.02);
+    b.print();
+    b = m_time_points.getSymbolsAtTime(0.2);
+    b.print();
+    
+    
+}
+
+void readFile()
+{
     
     OdotBundle b;
     b.setFromFile("default-score.odot");
     b.print();
+}
+
+int main(int argc, const char * argv[])
+{
+    
+    
+    
+
+    vector<OdotBundle> staves;
+    
+    
+    
+    
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+

@@ -113,7 +113,8 @@ Palette:
             },
             /transform : [matrix]
         },
-
+        # should this script be in the palette prototype?
+        # along with the associated palette symbols
         /script : {
             /self/sort : "lambda([a, b],
                 (a./y < b./y) && (b./x < (a./x + a./w))
@@ -143,14 +144,22 @@ Palette:
                     /x = stave./x + ( (start - stave./time/start) * 100. ),
                     /w = (end - start) * 100.
             )",
-            /expr : {
-                /set : "lambda([stave, start, pitch, duration, amp],
-                        /x = stave./x + ( (start - stave./time/start) * stave./time/timePixScale ),
-                        /w = duration * stave./time/timePixScale,
-                        /y = /stave./y + scale(pitch, 0, 127, 0, stave./h) #here 0 is the bottom,
-                        /style./stroke_width = scale( amp, 0, 1, 0, 10)
+            /mapping : {
+                /set : "lambda([stave],
+                    #setup parameters
+                        /params = {},
+                        /params./start ??= 0,
+                        /params./pitch ??= 60,
+                        /params./duration ??= 1,
+                        /params./amp ??= 0.5,
+                    # map to graphic parameters
+                        /x = stave./x + ( (/params./start - stave./time/start) * stave./time/timePixScale ),
+                        /w = /params./duration * stave./time/timePixScale,
+                        /y = /stave./y + scale(/params./pitch, 0, 127, 0, stave./h) #here 0 is the bottom,
+                        /style./stroke_width = scale( /params./amp, 0, 1, 0, 10)
                 )",
                 /get : "lambda([stave, t],
+                    # map graphic to output parameters
                         /pitch = scale(/y, 0, stave./h, 0., 127.),
                         /relative/time = t,
                         /amp = scale( /style./stroke_width, 0, 10, 0, 1)
@@ -181,5 +190,49 @@ Palette:
         /h : 10,
         /w : 10,
         /staff : "foo"
+    }
+}
+
+---->
+adding layout...
+specifying the margins and spacing will make it possible to insert time points and generate the system automatically.
+Problem: what about override situations?
+??
+
+
+
+
+/layout : {
+    /page : {
+        /size : [600, 1600],
+        /margins : {
+            /left : 10,
+            /right : 10,
+            /top : 10,
+            /bottom : 10
+        }
+    },
+    /system : {
+        /margin/topbottom : [20, 20],
+        /staves : {
+            /piccolo : {
+                /margin : [10, 10],
+                /name : "piccolo"
+            },
+            /oboe : {
+                /margin : [10, 10],
+                /name : "oboe"
+            },
+        }
+    }
+},
+/palette : {
+
+},
+/score : {
+    /system : {
+        /1 : {
+
+        }
     }
 }

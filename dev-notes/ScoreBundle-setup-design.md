@@ -1,8 +1,8 @@
-Symbol-Component
+# Symbol-Component
 when a new symbol/component is created:
 1. copy the default bundle prototype from the palette
 2. update the prototype based on the mouse interaction details (position etc.)
-3. set z-order id for the symbol as unique id connection for component->symbol lookup
+3. set z-order layer id for the symbol
 4. add symbol to score /symbol list with /number as id
 
 when a component is altered in the GUI:
@@ -15,7 +15,48 @@ if the z-order of a component changes:
     (how to do that exactly I'm not sure yet)
 
 
-Timepoint Array
+# Add Symbol
+symbol/stave relation, one of these types:
+## 1. Add from GUI
+With graphic UI add, /time must be calculated, therefore there must be a reference Stave instance (a specific Stave Symbol). (Otherwise, Symbols that have a /time value, can be added to the appropriate Stave instance based on the Stave's /time value).
+
+If no /staff is defined, the Symbol is considered strictly graphic, with no /time or mapping information.
+
+If a Stave is added to a System:
+1. Get System bundle for coordinates and time information.
+    * *Note: For for the quick dev version, use main PageComponent as System (i.e. time will start at the left edge of the component).*
+2. Set /time information for Stave based on Symbol's placement relative to the System.
+
+When Stave is selected (ctrl-cmd click?) Palette changes to show Stave Symbols for this stave. You can also make new Symbols in this mode, which then get stored into the Stave Palette.
+
+If a Symbol is added to a Stave:
+1. if not already present, set /staff name in Symbol to reference in palette
+2. union with Stave Symbol that will be used for relative calculations.
+3. check to make sure that the Symbol is defined in the Stave Palette (i.e. has a mapping), if not, highlight the symbols and print an error message notifying the user that the Symbols are not recognized by the Stave. Provide mechanism to copy the mapping from one stave to another based on the definition in the Symbol's /stave id.
+4. execute View-Controller interface if there is any custom UI for the Symbol creation routine in the Symbol Prototype definition.
+5. after ViewController UI processes, add Symbol to score:
+6. get /time information from Stave
+7. set /time information for Symbol
+8. add Symbol as top layer within Stave
+
+
+
+## 2. Add from OSC input with `/time`
+`/time` should be used to position the symbol
+
+## 3. OSC input without `/time`
+purely graphic addition, no stave information will be processed
+
+Then, set layer number, and add to end of list
+
+All Symbols are assumed to either have a /time and /stave value, or neither. Symbols cannot have a /stave assignment and not have a /time value.
+
+When processing a Score from file or on update (after adding a new object), iteration should skip any Symbols that do not satisfy the above validation check (/time, /stave, /name).
+
+... added more ideas above
+
+
+# Timepoint Array
 after moving to a single OSC bundle the symbol locations will be slightly harder to find.
 option 1: copy the symbol values into the timepoints themselves
 option 2: store the names of the symbols and use a hashtable to look up the symbol bundle every time you need it
@@ -23,7 +64,7 @@ option 3: store the t_osc_bndl_u pointer instead of the Symbol (since the Symbol
 option 4: use a SymbolRef which wraps the pointer but doesn't free it (maybe just release() the unique_ptr in the destructor?)
 
 
-Time / Stave array setup:
+# Time / Stave array setup:
 when ever a symbol changes we should rebuild the time sequence -- this might add a little overhead in comparison to adding/removing symbols, but it will likely be more stable and make the code easier to read.
 
 SortedStaves
@@ -40,12 +81,70 @@ Time calc process:
 
 *actually, staves may not need the /staff/id tag in their bundle. The linkage is only useful when finding the /time values for a given symbol from a graphic manipulation.*
 
-New Time Calc design:
+# New Time Calc design:
 1. Symbols may have a /staff address that specifies which type of staff to attach to. Only one type of staff may be happening at the same time. A System type can specify a group of Stave names to synchronize for time setup.
 
+# New setup without /ids:
+To attach to a staff, Symbols must have either a /staff name and /time/start, or /staff and /id.
+the /id will be removed after the /time is calculated since the ids could change based on layer order, add/removing symbols.
 
-Memory Design:
+#### Problem 1: what about the bounds? if there is a /time value, but it doesn't match the bounds?
+    Answer: this is an invalid Symbol.
+
+#### Problem 2: if there are no /id's how can we translate/alter/remove an existing Symbol?
+    Answer: the identifier can still be the /layer. If you send in a /symbol/1 or /symbol : { /1 ...etc } bundle it will replace any matching layers.
+
+#### Problem 3: what if a Stave is sent in with a score, and has /time information, but no graphic position information?
+    Answer options:
+        1. this is an invalid Stave. Generally speaking scores should be created in the Editor and therefore have position information.
+        2. auto calculate Stave position based on positioning rules:
+            1. the Score should have a Page Size, Margins, and line-break rules.
+                * Page Size, Page Number location
+                * Margin (Left, Right, Top, Bottom)
+                * System Spacing
+                This could all be CSS.
+            2. note also the Stave could be auto created when a symbol has a time element and set/parameters that determine its position.
+
+*actually the system maybe should hold the time information, since there could be multiple staves, and the staff/clef mapping could change mid-system*
+
+
+Maybe the staff/clef should contain scripts to position graphic objects, and then the score symbols don't contain their own bounds.
+
+# System holds Time
+To do later, add /system is a list of stave types that get grouped together? like /system : ["foo", "bar"]
+* the System connects Staves.
+* Staves have Clefs which define the Symbol Mapping to control parameters
+* Systems define the time flow logic, and therefore all Staves within a System should use the same logic?
+    - for example, if there was a 2D space that was using a lookup point cursor, the System would not actually need a time mapping, since there is no time lookup
+    - if there are Staves in the System, they need to define how they sit in the System's Time flow
+        * for example, Laban Notation might have Left and Right sides
+    Somewhat like Iannix, a Cursor moves along a System, reading the contents, the cursor might
+
+* Specifying the margins and spacing will make it possible to insert time points and generate the system automatically.
+#### Problem: what about override situations?
+    not sure. maybe there should be just a default position in the case where it gets autocreated, but then if you make a stave, it's position is just relative to the System like a Symbol.
+
+* System will be a Component that has children Components, the bounds of the System will be hard, with no overflow.
+
+*see osc-design2.md*
+
+* Stave sorting will become System sorting, since the Stave exists within the System. Staves can remap the time, but should be relative to the global (possibly absolute) time.
+
+#### Problem: what about the position of the Stave within the System? What marks the beginning of the time in the System?
+    Option: the Clef could have a mapping that defines a time offset -- if multiple Clefs are there, then use the widest? but then you have to go through and check each one which might not be that fun.
+    *For simplicity we can start by not switching Staves mid-system. And then add that functionality later.*
+* System will need a bracket or some kind of graphic
+
+*maybe a Stave is the parent container (group) for a set of Symbols, and a System is a container for a set of Staves. In this case the bounds of the Stave would need to be adapted to contain the placement range of the Symbols. Or at the minimum, the Symbol would need to be able to locate the associated Stave based on the /time value*
+
+
+# Palette:
+* on empty score, the Palette shows:
+    1. pure graphic objects with no mapping, (can also be user created)
+    2. Stave objects that have mappings associated (with defined symbol types and input/output mappings)
+* With a Stave selected, you can add predefined Symbols to the Stave. The Palette shows a selection of predefined types, and offers an option to create a new Stave Symbol. The Symbol details are saved as a Palette within the Stave object.
+
+
+# Memory Design:
 Avoid storing values that might get out of sync from Score i.e. timepoints, staves, etc.
 TimePoints are a necessary evil in order to make a fast lookup for streaming OSC, but processes that only happen when Symbols are added/removed can be slower, and safer.
-
-Symbol Layer Numbering w/ Staff linkage

@@ -12,13 +12,11 @@
     /system : {
         /margin/topbottom : [20, 20],
         /staves : {
-            /piccolo : {
+            /1 : {
                 /margin : [10, 10],
-                /name : "piccolo"
             },
-            /oboe : {
+            /2 : {
                 /margin : [10, 10],
-                /name : "oboe"
             },
         },
         /system/sort : "lambda([a, b],
@@ -34,12 +32,24 @@
                 /path :  "M path data, if there are sub paths, we can parse them on edit",
                 /style : {
                     /color : "black"
+                },
+                /bounds : {
+                    /x : 0,
+                    /y : 10,
+                    /h : 10,
+                    /w : 10
                 }
             },
             /staff : {
                 /path :  "M path data, if there are sub paths, we can parse them on edit",
                 /style : {
                     /color : "black"
+                },
+                /bounds : {
+                    /x : 0,
+                    /y : 10,
+                    /h : 10,
+                    /w : 10
                 }
             },
             /bounds : {
@@ -54,25 +64,43 @@
             /self/pixTime : "lambda([t],
                 /time/start = t,
                 /time/end = t + (/w * 0.01)
-            )",
-            /event/pixTime : "lambda([stave],
-                /time/start = stave./time/start + (/x - stave./x) * 0.01 ,
-                /time/end = /time/start + (/w * 0.01)
-            )",
-            /event/timePix : "lambda([stave],
-                /x = stave./x + ( (/time/start - stave./time/start) * 100. ),
-                /w = (/time/end - /time/start) * 100.
             )"
         },
         /palette : {
             /staveEvent : {
-                /type : path, # or is everything a path?
+                /type : "group",
                 /graphic : {
                     /path : "M0,0 ...",
                     /style : {
                         /css : "attributes"
                     }
                 },
+                /subsymbol : {
+                    /notehead : {
+                        /graphic : {
+
+                        },
+                        /bounds : {
+                            /x : 0,
+                            /y : 30,
+                            /h : 10,
+                            /w : 100,
+                            /transform : [matrix]
+                        }
+                    },
+                    /stem : {
+                        /graphic : {
+
+                        },
+                        /bounds : {
+                            /x : 0,
+                            /y : 30,
+                            /h : 10,
+                            /w : 100,
+                            /transform : [matrix]
+                        }
+                    },
+                }
                 /scripts : {
                     /position : "lambda([stave, start, end],
                         /x = stave./x + ( (start - stave./time/start) * 100. ),
@@ -90,7 +118,9 @@
                                 /x = stave./x + ( (/params./start - stave./time/start) * stave./time/timePixScale ),
                                 /w = /params./duration * stave./time/timePixScale,
                                 /y = /stave./y + scale(/params./pitch, 0, 127, 0, stave./h) #here 0 is the bottom,
-                                /style./stroke_width = scale( /params./amp, 0, 1, 0, 10)
+                                /style./stroke_width = scale( /params./amp, 0, 1, 0, 10),
+                                /subsymbols./notehead./bounds./x = /x,
+                                /subsymbols./stem./bounds./y = /y
                         )",
                         /get : "lambda([stave, t],
                             # map graphic to output parameters
@@ -132,8 +162,38 @@
                         /symbols : {
                             /1 : {
                                 /name : "note",
+                                /params : {
+                                    /pitch : 60,
+                                    /amp : 1
+                                }
                                 /graphic : {
 
+                                },
+                                /subsymbol : {
+                                    /notehead : {
+                                        /graphic : {
+
+                                        },
+                                        /bounds : {
+                                            /x : 0,
+                                            /y : 30,
+                                            /h : 10,
+                                            /w : 100,
+                                            /transform : [matrix]
+                                        }
+                                    },
+                                    /stem : {
+                                        /graphic : {
+
+                                        },
+                                        /bounds : {
+                                            /x : 0,
+                                            /y : 30,
+                                            /h : 10,
+                                            /w : 100,
+                                            /transform : [matrix]
+                                        }
+                                    },
                                 },
                                 /bounds : {
                                     /x : 0,
@@ -145,8 +205,40 @@
                             },
                             /2 : {
                                 /name : "note",
+                                /params : {
+                                    /pitch : 60,
+                                    /amp : 1
+                                }
                                 /graphic : {
 
+                                },
+                                /subsymbol : {
+                                    /1 : {
+                                        /name : "notehead",
+                                        /graphic : {
+
+                                        },
+                                        /bounds : {
+                                            /x : 0,
+                                            /y : 30,
+                                            /h : 10,
+                                            /w : 100,
+                                            /transform : [matrix]
+                                        }
+                                    },
+                                    /2 : {
+                                        /name : "stem",
+                                        /graphic : {
+
+                                        },
+                                        /bounds : {
+                                            /x : 0,
+                                            /y : 30,
+                                            /h : 10,
+                                            /w : 100,
+                                            /transform : [matrix]
+                                        }
+                                    },
                                 },
                                 /bounds : {
                                     /x : 0,

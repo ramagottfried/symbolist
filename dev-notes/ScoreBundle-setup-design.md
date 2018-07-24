@@ -14,13 +14,17 @@ if the z-order of a component changes:
 1. reorder the addresses of the bundle to match the order of the component stack
     (how to do that exactly I'm not sure yet)
 
+# Symbol / Stave
+
 
 # Add Symbol
-symbol/stave relation, one of these types:
-## 1. Add from GUI
-With graphic UI add, /time must be calculated, therefore there must be a reference Stave instance (a specific Stave Symbol). (Otherwise, Symbols that have a /time value, can be added to the appropriate Stave instance based on the Stave's /time value).
+based on the symbol/stave relation, adding a symbol will be one of these processes:
 
-If no /staff is defined, the Symbol is considered strictly graphic, with no /time or mapping information.
+### 1. Add from GUI without Stave/System Reference -> Purely Graphic
+If no `/staff` is defined the Symbol is considered strictly graphic, and no `/time` information is added.
+
+### 2. Add from GUI With Stave/System Reference -> Generate Time
+When a symbol is added from the GUI and has a Stave reference, the `/time` must be calculated, using the reference Stave instance (a specific Stave Symbol).
 
 If a Stave is added to a System:
 1. Get System bundle for coordinates and time information.
@@ -39,29 +43,23 @@ If a Symbol is added to a Stave:
 7. set /time information for Symbol
 8. add Symbol as top layer within Stave
 
+### 3. Add from OSC input with `/time` -> Generate Graphics
+Symbols that have a `/time` value, can be added to the appropriate Stave instance based on the Stave's `/time` value. The Symbol's input `/time` value will be used to position the symbol graphically based on the `/set` expression, similarly if there are other mapping parameters, use the `/set` function to set graphics from parameters.
 
+If a `/layer` value is set, the Symbol will replace (union with?) the Symbol currently at that layer. If no `/layer` the Symbol is added to the end of the list.
 
-## 2. Add from OSC input with `/time`
-`/time` should be used to position the symbol
+### 4. OSC input without `/time` -> Insert Graphic without Time
+Purely graphic addition, no stave information will be processed.
 
-## 3. OSC input without `/time`
-purely graphic addition, no stave information will be processed
+If a `/layer` value is set, the Symbol will replace (union with?) the Symbol currently at that layer. If no `/layer` the Symbol is added to the end of the list.
 
-Then, set layer number, and add to end of list
+### 5. OSC input from Symbolist Score File (or Application State change)
+When processing a Score from a file, we should attempt to do the same process as above: if there is no `/time` value, calculate the `/time`, if there is `/time` but no graphic positioning, set the position of the Symbol based on the `/set` function for the Symbol found in the Stave/Palette.
 
-All Symbols are assumed to either have a /time and /stave value, or neither. Symbols cannot have a /stave assignment and not have a /time value.
-
-When processing a Score from file or on update (after adding a new object), iteration should skip any Symbols that do not satisfy the above validation check (/time, /stave, /name).
-
-... added more ideas above
 
 
 # Timepoint Array
-after moving to a single OSC bundle the symbol locations will be slightly harder to find.
-option 1: copy the symbol values into the timepoints themselves
-option 2: store the names of the symbols and use a hashtable to look up the symbol bundle every time you need it
-option 3: store the t_osc_bndl_u pointer instead of the Symbol (since the Symbol is always a copy),
-option 4: use a SymbolRef which wraps the pointer but doesn't free it (maybe just release() the unique_ptr in the destructor?)
+
 
 
 # Time / Stave array setup:
@@ -135,7 +133,8 @@ To do later, add /system is a list of stave types that get grouped together? lik
     *For simplicity we can start by not switching Staves mid-system. And then add that functionality later.*
 * System will need a bracket or some kind of graphic
 
-*maybe a Stave is the parent container (group) for a set of Symbols, and a System is a container for a set of Staves. In this case the bounds of the Stave would need to be adapted to contain the placement range of the Symbols. Or at the minimum, the Symbol would need to be able to locate the associated Stave based on the /time value*
+##### Notes:
+Maybe a Stave is the parent container (group) for a set of Symbols, and a System is a container for a set of Staves. In this case the bounds of the Stave would need to be adapted to contain the placement range of the Symbols. Or at the minimum, the Symbol would need to be able to locate the associated Stave based on the /time value. In this case, does the Symbol need to hold the /time anymore? maybe still good to keep since that makes it more human readable. Or then: does it need the graphic information? or only the semantic values?
 
 
 # Palette:

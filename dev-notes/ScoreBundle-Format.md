@@ -306,12 +306,14 @@ Symbol, Stave and System bundles will contain a `/graphic` sub-bundle which defi
 
 * `/svg` : a sub-bundle of SVG style drawing commands, containing:
     * `/path` : a SVG format path drawing string, see the <a href="https://www.w3.org/TR/SVG/paths.html">SVG Path Specification</a> for more details.
-    
+
+    _Note: The Symbolist path coordinate system is relative to it's parent bounding box, not to the top-level Page component._
+
     * `/transform` : a transformation matrix, as a list of six numbers `[a, b, c, d, e, f]`, see <a href="https://www.w3.org/TR/SVG/coords.html#TransformAttribute">SVG Transformation Matrix</a> for more details.
 
     * `/style` : a sub-bundle containing CSS style information which is applied to the SVG object. See <a href="https://www.w3.org/TR/SVG/styling.html">SVG Styling</a> for more details.
 
-    *Note: the Odot Expression Language uses the `-` sign for subtraction, so use an `_` (underscore) in place of `-` (hyphen) for SVG/CSS style attribute names that have a `-` in them, for example `stroke-width`, becomes `/stroke_width` etc.*
+    *Note: The Odot Expression Language uses the `-` sign for subtraction, so use an `_` (underscore) in place of `-` (hyphen) for SVG/CSS style attribute names that have a `-` in them, for example `stroke-width`, becomes `/stroke_width` etc.*
 
 * `/bounds` : a sub-bundle bounds information which acts to place the `/svg` graphic commands in the JUCE graphic user interface (*post SVG transform rendering*), containing:
     * `/x` : the leftmost point of the object's bounding box

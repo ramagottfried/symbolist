@@ -198,7 +198,7 @@ The format for a Stave/Symbol prototype is as follows:
             /exampleSymbolPrototype : {
                 /type : "symbol",
                 /graphic : {},
-                /expr : {
+                /mapping : {
                     /param : {},
                     /set : "lambda([stave], ... )",
                     /get : "lambda([stave, t], ... )"
@@ -221,7 +221,7 @@ Within the Stave's `/palette` sub-bundle, there are prototypes for Symbols which
 The basic Symbol prototype contains:
 * `/type` : "symbol" or "group"
 * `/graphic` : the graphic drawing element defaults (to be described later)
-* `/expr` : `/param`, `/set` and `/get` functions.
+* `/mapping` : `/param`, `/set` and `/get` functions.
     * `/param` : a sub-bundle holding user defined parameters that are mapped to and from graphic data defined in the `/set` and `/get` functions.
     * The `/set` function takes the relative Stave object as an argument, and defines the Input mapping, from Parameter values to Graphic values.
     * The `/get` function takes the relative Stave object and the current time (`t`) as arguments, and defines the Output mapping, from Graphic values to Parameter values.
@@ -229,13 +229,13 @@ The basic Symbol prototype contains:
 In the case of Group Symbols there is an additional sub-bundle:
 * `/subsymbol` : a set of Symbols that are grouped together.
 
-In the case of Group Symbols, the top-most symbol will contain the `/expr` bundle pertaining to all of its the sub-symbols.
+In the case of Group Symbols, the top-most symbol will contain the `/mapping` bundle pertaining to all of its the sub-symbols.
 
 ```
 /exampleGroupPrototype : {
     /type : "group",
     /graphic : {},
-    /expr : {
+    /mapping : {
         /param : {},
         /set : "lambda([stave], ... )",
         /get : "lambda([stave, t], ... )"
@@ -253,11 +253,11 @@ In the case of Group Symbols, the top-most symbol will contain the `/expr` bundl
 }
 ```
 
-#### Parameters and `/expr`
+#### Parameters and `/mapping`
 
 The ideal for Symbolist semantically is that Symbols should be thought of as representing parameters that can be used for controlling synthesis, or other electronic processes.
 
-The `/expr` sub-bundle defined in the Palette prototype provides a means to define input and output processes using the Odot Expression Language. (see `o.expr.codebox`).
+The `/mapping` sub-bundle defined in the Palette prototype provides a means to define input and output processes using the Odot Expression Language. (see `o.expr.codebox`).
 
 The `/param` sub-bundle sets the default parameter values.
 
@@ -266,7 +266,7 @@ The `/set` function uses `/param` values to set Graphic values, and may be used 
 The `/get` function uses Graphic information to produce parameter values.
 
 ```
-/expr : {
+/mapping : {
     /param : {
         /start : 0,
         /pitch : 60,
@@ -274,20 +274,20 @@ The `/get` function uses Graphic information to produce parameter values.
         /amp : 0.5
     },
     /set : "lambda([stave],
-        /x = stave./x + ( (/params./start - stave./time/start) * stave./time/timePixScale ),
-        /w = /params./duration * stave./time/timePixScale,
-        /y = /stave./y + scale(/params./pitch, 0, 127, 0, stave./h)
-        /style./stroke_width = scale( /params./amp, 0, 1, 0, 10),
+        /x = stave./x + ( (/param./start - stave./time/start) * stave./time/timePixScale ),
+        /w = /param./duration * stave./time/timePixScale,
+        /y = /stave./y + scale(/param./pitch, 0, 127, 0, stave./h)
+        /style./stroke_width = scale( /param./amp, 0, 1, 0, 10),
         /subsymbol./notehead./bounds./x = /x,
         /subsymbol./stem./bounds./y = /y
     )",
     /get : "lambda([stave, t],
-        /params./pitch = scale(/y, 0, stave./h, 0., 127.),
-        /params./relative/time = t,
-        /params./amp = scale( /style./stroke_width, 0, 10, 0, 1)
+        /param./pitch = scale(/y, 0, stave./h, 0., 127.),
+        /param./relative/time = t,
+        /param./amp = scale( /style./stroke_width, 0, 10, 0, 1)
     )"
 }
 
 ```
 
-Each Symbol of a given type shares the same `/expr` scripts. The Palette prototypes are used as reference when processing input and output bundles.  Therefore, the `/expr` sub-bundle is not included in the `/score` hierarchy.
+Each Symbol of a given type shares the same `/mapping` scripts. The Palette prototypes are used as reference when processing input and output bundles.  Therefore, the `/mapping` sub-bundle is not included in the `/score` hierarchy.

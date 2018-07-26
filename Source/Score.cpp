@@ -272,10 +272,10 @@ void Score::addSymbol(OdotBundle& symbol)
     if( id.size() == 0 )
     {
         id = "/" + to_string( symbols.size()+1 );
-        symbol.addMessage("/id", id )
+        symbol.addMessage("/id", id );
     }
 
-    symbols.addMessage(id, symbol)
+    symbols.addMessage(id, symbol);
     
     m_score.addMessage("/symbol", symbols);
     

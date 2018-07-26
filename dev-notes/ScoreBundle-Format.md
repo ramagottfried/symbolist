@@ -167,7 +167,8 @@ A simple illustration of System, Stave and Symbol `/time` bundles:
                                         /start : 5,
                                         /end : 6
                                     },
-
+                                /2 : {
+                                    ... etc.
                                 }
                             }
                         }
@@ -184,7 +185,7 @@ A simple illustration of System, Stave and Symbol `/time` bundles:
 ### Palette
 The Palette defines a set of contextual prototypes that can be used in the Score.
 
-Since Staves are containers for Symbols, and determine how a given Symbol is interpreted (e.g. as a notation reference key), the Stave prototypes contain Symbol prototypes, which define a set of input and output mappings between graphic and control parameters.
+Since Staves are containers for Symbols, and determine how a given Symbol is interpreted (e.g. as a notation reference key), the Stave prototypes also contain Symbol prototypes, which define a set of input and output mappings between graphic and control parameters.
 
 The format for a Stave/Symbol prototype is as follows:
 
@@ -196,6 +197,7 @@ The format for a Stave/Symbol prototype is as follows:
         /graphic : {},
         /palette : {
             /exampleSymbolPrototype : {
+                /name : "/exampleSymbolPrototype",
                 /type : "symbol",
                 /graphic : {},
                 /mapping : {
@@ -219,6 +221,7 @@ The master `/palette` sub-bundle is at the root level of the bundle namespace (a
 Within the Stave's `/palette` sub-bundle, there are prototypes for Symbols which function within this Stave.
 
 The basic Symbol prototype contains:
+* `/name` : provides the name of the object prototype for later lookup.
 * `/type` : "symbol" or "group"
 * `/graphic` : the graphic drawing element defaults (to be described later)
 * `/mapping` : `/param`, `/set` and `/get` functions.
@@ -226,13 +229,18 @@ The basic Symbol prototype contains:
     * The `/set` function takes the relative Stave object as an argument, and defines the Input mapping, from Parameter values to Graphic values.
     * The `/get` function takes the relative Stave object and the current time (`t`) as arguments, and defines the Output mapping, from Graphic values to Parameter values.
 
-In the case of Group Symbols there is an additional sub-bundle:
+#### Symbol Prototype Reference
+When a Symbol is looked up in the score it can be found by sub-bundle reference, for example: `/exampleStavePrototype./exampleSymbolPrototype` would be the address of the prototype within the `/palette` sub-bundle.
+
+#### Group Symbol
+In the case of `Group` Symbols there is an additional sub-bundle:
 * `/subsymbol` : a set of Symbols that are grouped together.
 
 In the case of Group Symbols, the top-most symbol will contain the `/mapping` bundle pertaining to all of its the sub-symbols.
 
 ```
 /exampleGroupPrototype : {
+    /name : "/exampleGroupPrototype",
     /type : "group",
     /graphic : {},
     /mapping : {
@@ -278,16 +286,35 @@ The `/get` function uses Graphic information to produce parameter values.
         /w = /param./duration * stave./time/timePixScale,
         /y = /stave./y + scale(/param./pitch, 0, 127, 0, stave./h)
         /style./stroke_width = scale( /param./amp, 0, 1, 0, 10),
-        /subsymbol./notehead./bounds./x = /x,
-        /subsymbol./stem./bounds./y = /y
+        /subsymbol./notehead./graphic./bounds./x = /x,
+        /subsymbol./stem./graphic./bounds./y = /y
     )",
     /get : "lambda([stave, t],
         /param./pitch = scale(/y, 0, stave./h, 0., 127.),
         /param./relative/time = t,
-        /param./amp = scale( /style./stroke_width, 0, 10, 0, 1)
+        /param./amp = scale( /graphic./style./stroke_width, 0, 10, 0, 1)
     )"
 }
 
 ```
 
 Each Symbol of a given type shares the same `/mapping` scripts. The Palette prototypes are used as reference when processing input and output bundles.  Therefore, the `/mapping` sub-bundle is not included in the `/score` hierarchy.
+
+
+## Graphic Data
+Symbol, Stave and System bundles will contain a `/graphic` sub-bundle which defines the object's graphic drawing routine. Within the `/graphic` bundle there are the following messages:
+
+* `/svg` : a sub-bundle of SVG style drawing commands, containing:
+    * `/path` : a SVG format path drawing string, see the <a href="https://www.w3.org/TR/SVG/paths.html">SVG Path Specification</a> for more details.
+    
+    * `/transform` : a transformation matrix, as a list of six numbers `[a, b, c, d, e, f]`, see <a href="https://www.w3.org/TR/SVG/coords.html#TransformAttribute">SVG Transformation Matrix</a> for more details.
+
+    * `/style` : a sub-bundle containing CSS style information which is applied to the SVG object. See <a href="https://www.w3.org/TR/SVG/styling.html">SVG Styling</a> for more details.
+
+    *Note: the Odot Expression Language uses the `-` sign for subtraction, so use an `_` (underscore) in place of `-` (hyphen) for SVG/CSS style attribute names that have a `-` in them, for example `stroke-width`, becomes `/stroke_width` etc.*
+
+* `/bounds` : a sub-bundle bounds information which acts to place the `/svg` graphic commands in the JUCE graphic user interface (*post SVG transform rendering*), containing:
+    * `/x` : the leftmost point of the object's bounding box
+    * `/y` : the topmost point of the object's bounding box (where `0` is the top of the parent component)
+    * `/w` : the width of the component
+    * `/h` : the height of the component

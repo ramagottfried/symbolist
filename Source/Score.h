@@ -256,7 +256,6 @@ public:
     bool idExists( string& searchedId );
 	
 	void print() const;
-	
     
     void setTypeXYWH(OdotBundle& b, const string & type, float x, float y, float w, float h)
     {

@@ -85,11 +85,11 @@ Eventually we might add a default Stave layout on a System:
     /staves : {
         /piccolo : {
             /margin : [10, 10],
-            /name : "piccolo"
+            /name : "/piccolo"
         },
         /oboe : {
             /margin : [10, 10],
-            /name : "oboe"
+            /name : "/oboe"
         },
     }
 }
@@ -219,14 +219,41 @@ The master `/palette` sub-bundle is at the root level of the bundle namespace (a
 Within the Stave's `/palette` sub-bundle, there are prototypes for Symbols which function within this Stave.
 
 The basic Symbol prototype contains:
-`/type` : "symbol" or "group"
-`/graphic` : the graphic drawing element defaults (to be described later)
-`/expr` : `/set` and `/get` functions.
-* The `/set` function takes the relative Stave object as an argument, and defines the Input mapping, from Parameter values to Graphic values.
-* The `/get` function takes the relative Stave object and the current time (`t`) as arguments, and defines the Output mapping, from Graphic values to Parameter values.
-* `/param` : a sub-bundle holding user defined parameters that are mapped to and from graphic data defined in the `/set` and `/get` functions.
+* `/type` : "symbol" or "group"
+* `/graphic` : the graphic drawing element defaults (to be described later)
+* `/expr` : `/param`, `/set` and `/get` functions.
+    * `/param` : a sub-bundle holding user defined parameters that are mapped to and from graphic data defined in the `/set` and `/get` functions.
+    * The `/set` function takes the relative Stave object as an argument, and defines the Input mapping, from Parameter values to Graphic values.
+    * The `/get` function takes the relative Stave object and the current time (`t`) as arguments, and defines the Output mapping, from Graphic values to Parameter values.
 
-#### Parameters
+In the case of Group Symbols there is an additional sub-bundle:
+* `/subsymbol` : a set of Symbols that are grouped together.
+
+In the case of Group Symbols, the top-most symbol will contain the `/expr` bundle pertaining to all of its the sub-symbols.
+
+```
+/exampleGroupPrototype : {
+    /type : "group",
+    /graphic : {},
+    /expr : {
+        /param : {},
+        /set : "lambda([stave], ... )",
+        /get : "lambda([stave, t], ... )"
+    },
+    /subsymbol : {
+        /notehead : {
+            /type : "symbol",
+            /graphic : {},
+        },
+        /stem : {
+            /type : "symbol",
+            /graphic : {},
+        }
+    }
+}
+```
+
+#### Parameters and `/expr`
 
 The ideal for Symbolist semantically is that Symbols should be thought of as representing parameters that can be used for controlling synthesis, or other electronic processes.
 
@@ -251,8 +278,8 @@ The `/get` function uses Graphic information to produce parameter values.
         /w = /params./duration * stave./time/timePixScale,
         /y = /stave./y + scale(/params./pitch, 0, 127, 0, stave./h)
         /style./stroke_width = scale( /params./amp, 0, 1, 0, 10),
-        /subsymbols./notehead./bounds./x = /x,
-        /subsymbols./stem./bounds./y = /y
+        /subsymbol./notehead./bounds./x = /x,
+        /subsymbol./stem./bounds./y = /y
     )",
     /get : "lambda([stave, t],
         /params./pitch = scale(/y, 0, stave./h, 0., 127.),

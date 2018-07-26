@@ -305,7 +305,7 @@ Each Symbol of a given type shares the same `/mapping` scripts. The Palette prot
 Symbol, Stave and System bundles will contain a `/graphic` sub-bundle which defines the object's graphic drawing routine. Within the `/graphic` bundle there are the following messages:
 
 * `/svg` : a sub-bundle of SVG style drawing commands, containing:
-    * `/path` : a SVG format path drawing string, see the <a href="https://www.w3.org/TR/SVG/paths.html">SVG Path Specification</a> for more details.
+    * `/path` : a SVG format path drawing string, see the <a href="https://www.w3.org/TR/SVG/paths.html">SVG Path Specification</a> for more details. All graphic shapes are able to be converted to a Path.
 
     _Note: The Symbolist path coordinate system is relative to it's parent bounding box, not to the top-level Page component._
 
@@ -320,3 +320,9 @@ Symbol, Stave and System bundles will contain a `/graphic` sub-bundle which defi
     * `/y` : the topmost point of the object's bounding box (where `0` is the top of the parent component)
     * `/w` : the width of the component
     * `/h` : the height of the component
+
+**Dev note:**
+* Maybe not necessary to have `/graphic` sub-bundle since `/bounds` and `/svg` are going to be used a lot.
+* Should `/svg` be renamed `/graphic`? (still separate from `/bounds`). This re-iterates the relationship to SVG, but is more "technical" sounding. Maybe `/graphic` is more intuitive?
+
+Also, how to deal with mouse interaction? for example, a mouse down might want to be the middle point of the event, or the top left, etc. maybe we need a `/mouse./down` in the `/set` (i.e. `/set/fromGUI`) or/and a `/mouse` set of expressions in the JUCE area, `/graphic` ?

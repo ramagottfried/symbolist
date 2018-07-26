@@ -200,9 +200,10 @@ The format for a Stave/Symbol prototype is as follows:
                 /name : "/exampleSymbolPrototype",
                 /type : "symbol",
                 /graphic : {},
-                /mapping : {
+                /script : {
                     /param : {},
-                    /set : "lambda([stave], ... )",
+                    /set/fromOSC : "lambda([stave, t], ... )",
+                    /set/fromGUI : "lambda([stave, mouse], ... )",
                     /get : "lambda([stave, t], ... )"
                 }
             }
@@ -215,7 +216,7 @@ The master `/palette` sub-bundle is at the root level of the bundle namespace (a
 
 `/name` : provides the name of the object prototype for later lookup.
 `/type` : sets the object type, current types are "symbol", "stave", and "group".
-`/graphic` : the graphic drawing element defaults (to be described later)
+`/graphic` : the graphic drawing element defaults (described below)
 `/palette` : a contextual palette of objects which have mappings related to this Stave.
 
 Within the Stave's `/palette` sub-bundle, there are prototypes for Symbols which function within this Stave.
@@ -223,11 +224,12 @@ Within the Stave's `/palette` sub-bundle, there are prototypes for Symbols which
 The basic Symbol prototype contains:
 * `/name` : provides the name of the object prototype for later lookup.
 * `/type` : "symbol" or "group"
-* `/graphic` : the graphic drawing element defaults (to be described later)
-* `/mapping` : `/param`, `/set` and `/get` functions.
-    * `/param` : a sub-bundle holding user defined parameters that are mapped to and from graphic data defined in the `/set` and `/get` functions.
-    * The `/set` function takes the relative Stave object as an argument, and defines the Input mapping, from Parameter values to Graphic values.
-    * The `/get` function takes the relative Stave object and the current time (`t`) as arguments, and defines the Output mapping, from Graphic values to Parameter values.
+* `/graphic` : the graphic drawing element defaults (described below)
+* `/param` : a sub-bundle holding user defined parameters that are mapped to and from graphic data as defined in the `/script` functions.
+* `/script` : `/param`, `/set` and `/get` functions.
+    * The `/set/fromOSC` functions takes the relative Stave object and time `time` as arguments, and defines the Input mapping from Parameter values to Graphic values.
+    * The `/set/fromGUI` functions takes the relative Stave object and `mouse` information arguments, and defines the Input mapping from Parameter values to Graphic values.
+    * The `/get` function takes the relative Stave object and the current time (`time`) as arguments, and defines the Output mapping, from Graphic values to Parameter values.
 
 #### Symbol Prototype Reference
 When a Symbol is looked up in the score it can be found by sub-bundle reference, for example: `/exampleStavePrototype./exampleSymbolPrototype` would be the address of the prototype within the `/palette` sub-bundle.
@@ -236,93 +238,114 @@ When a Symbol is looked up in the score it can be found by sub-bundle reference,
 In the case of `Group` Symbols there is an additional sub-bundle:
 * `/subsymbol` : a set of Symbols that are grouped together.
 
-In the case of Group Symbols, the top-most symbol will contain the `/mapping` bundle pertaining to all of its the sub-symbols.
+In the case of Group Symbols, the top-most symbol will contain the `/script` bundle pertaining to all of its the sub-symbols.
 
 ```
 /exampleGroupPrototype : {
     /name : "/exampleGroupPrototype",
     /type : "group",
     /graphic : {},
-    /mapping : {
-        /param : {},
-        /set : "lambda([stave], ... )",
-        /get : "lambda([stave, t], ... )"
+    /param : {},
+    /script : {
+        /set/fromOSC : "lambda([stave, time], ... )",
+        /set/fromGUI : "lambda([stave, mouse], ... )",
+        /get : "lambda([stave, time], ... )"
     },
     /subsymbol : {
         /notehead : {
             /type : "symbol",
+            /param : {},
             /graphic : {},
         },
         /stem : {
             /type : "symbol",
+            /param : {},
             /graphic : {},
         }
     }
 }
 ```
 
-#### Parameters and `/mapping`
+#### Parameter and Mapping Expressions
 
-The ideal for Symbolist semantically is that Symbols should be thought of as representing parameters that can be used for controlling synthesis, or other electronic processes.
-
-The `/mapping` sub-bundle defined in the Palette prototype provides a means to define input and output processes using the Odot Expression Language. (see `o.expr.codebox`).
+The ideal for Symbolist is that Symbols should be thought of as representing semantic parameters which can be used for controlling synthesis, or other electronic processes. The `/script` sub-bundle defined in the Palette prototype provides a means to define input and output processes, and other behaviors using the Odot Expression Language. (see `o.expr.codebox`).
 
 The `/param` sub-bundle sets the default parameter values.
 
-The `/set` function uses `/param` values to set Graphic values, and may be used to manipulate other graphic information within the Symbol.
+`/script` expressions are evaluated within the scope of the Symbol, with the relative `stave`, `mouse` and `time` passed in as function arguments.
+
+The `/set` functions uses `/param`values to set Graphic values, and may be used to manipulate other graphic information within the Symbol.
+* `/set/fromOSC` function defines how the graphic values should be configured based on the reference stave and the time point for the symbol.
+* `/set/fromGUI` function defines how the graphic values should be configured based on the reference stave and the mouse-down location.
 
 The `/get` function uses Graphic information to produce parameter values.
 
+
 ```
-/mapping : {
+/exampleSymbol : {
+    /type : "symbol",
+    /name : "/exampleSymbol",
+    /graphic : {},
     /param : {
-        /start : 0,
-        /pitch : 60,
         /duration : 1,
+        /pitch : 60,
         /amp : 0.5
     },
-    /set : "lambda([stave],
-        /x = stave./x + ( (/param./start - stave./time/start) * stave./time/timePixScale ),
-        /w = /param./duration * stave./time/timePixScale,
-        /y = /stave./y + scale(/param./pitch, 0, 127, 0, stave./h)
-        /style./stroke_width = scale( /param./amp, 0, 1, 0, 10),
-        /subsymbol./notehead./graphic./bounds./x = /x,
-        /subsymbol./stem./graphic./bounds./y = /y
-    )",
-    /get : "lambda([stave, t],
-        /param./pitch = scale(/y, 0, stave./h, 0., 127.),
-        /param./relative/time = t,
-        /param./amp = scale( /graphic./style./stroke_width, 0, 10, 0, 1)
-    )"
+    /script : {
+        /set/fromOSC : "lambda([stave, time],
+            /bounds./x = stave./x + ( (time - stave./time/start) * stave./time/timePixScale ),
+            /bounds./y = /stave./y + scale(/param./pitch, 0, 127, 0, stave./h),
+            /bounds./w = /param./duration * stave./time/timePixScale,
+            /graphic./style./stroke_width = scale( /param./amp, 0, 1, 0, 10),
+            /subsymbol./notehead./bounds./x = /x,
+            /subsymbol./stem./bounds./y = /y
+        )",
+        /set/fromGUI : "lambda([stave, mouse],
+            /bounds./x = mouse./x,
+            /bounds./y = mouse./y,
+            /bounds./w = /param./duration * stave./time/timePixScale,
+            /graphic./style./stroke_width = scale( /param./amp, 0, 1, 0, 10),
+            /subsymbol./notehead./bounds./x = /bounds./x,
+            /subsymbol./stem./bounds./y = /bounds./y
+        )",
+        /get : "lambda([stave, time],
+            /param./pitch = scale(/bounds./y, 0, stave./h, 0., 127.),
+            /param./relative/time = time,
+            /param./amp = scale( /graphic./style./stroke_width, 0, 10, 0, 1)
+        )"
+    }    
 }
 
 ```
 
-Each Symbol of a given type shares the same `/mapping` scripts. The Palette prototypes are used as reference when processing input and output bundles.  Therefore, the `/mapping` sub-bundle is not included in the `/score` hierarchy.
+Each Symbol of a given type shares the same `/script` expressions. The Palette prototypes are used as reference when processing input and output bundles.  Therefore, the `/script` sub-bundle is not included in the `/score` hierarchy.
 
 
-## Graphic Data
-Symbol, Stave and System bundles will contain a `/graphic` sub-bundle which defines the object's graphic drawing routine. Within the `/graphic` bundle there are the following messages:
+#### Graphic Drawing
+Symbol, Stave and System bundles will contain a `/graphic` sub-bundle which defines the object's graphic drawing routine, using SVG style drawing parameters.
 
-* `/svg` : a sub-bundle of SVG style drawing commands, containing:
-    * `/path` : a SVG format path drawing string, see the <a href="https://www.w3.org/TR/SVG/paths.html">SVG Path Specification</a> for more details. All graphic shapes are able to be converted to a Path.
+Within the `/graphic` bundle there are the following messages:
 
-    _Note: The Symbolist path coordinate system is relative to it's parent bounding box, not to the top-level Page component._
+* `/path` : a SVG format path drawing string, see the <a href="https://www.w3.org/TR/SVG/paths.html">SVG Path Specification</a> for more details. All graphic shapes are able to be converted to a Path. <br><br>
+*Note: The Symbolist path coordinate system is relative to it's parent bounding box, not to the top-level Page component.*
 
-    * `/transform` : a transformation matrix, as a list of six numbers `[a, b, c, d, e, f]`, see <a href="https://www.w3.org/TR/SVG/coords.html#TransformAttribute">SVG Transformation Matrix</a> for more details.
+* `/transform` : a transformation matrix, as a list of six numbers `[a, b, c, d, e, f]`, see <a href="https://www.w3.org/TR/SVG/coords.html#TransformAttribute">SVG Transformation Matrix</a> for more details.
 
-    * `/style` : a sub-bundle containing CSS style information which is applied to the SVG object. See <a href="https://www.w3.org/TR/SVG/styling.html">SVG Styling</a> for more details.
+* `/style` : a sub-bundle containing CSS style information which is applied to the SVG object. See <a href="https://www.w3.org/TR/SVG/styling.html">SVG Styling</a> for more details.<br><br>
+*Note: The Odot Expression Language uses the `-` sign for subtraction, so use an `_` (underscore) in place of `-` (hyphen) for SVG/CSS style attribute names that have a `-` in them, for example `stroke-width`, becomes `/stroke_width` etc.*
 
-    *Note: The Odot Expression Language uses the `-` sign for subtraction, so use an `_` (underscore) in place of `-` (hyphen) for SVG/CSS style attribute names that have a `-` in them, for example `stroke-width`, becomes `/stroke_width` etc.*
+#### Bounding Box Positioning
+The `/bounds` sub-bundle is separate from the `/graphic` information, and acts to place the `/graphic` graphic commands in the JUCE graphic user interface (*post SVG transform rendering*).
 
-* `/bounds` : a sub-bundle bounds information which acts to place the `/svg` graphic commands in the JUCE graphic user interface (*post SVG transform rendering*), containing:
-    * `/x` : the leftmost point of the object's bounding box
-    * `/y` : the topmost point of the object's bounding box (where `0` is the top of the parent component)
-    * `/w` : the width of the component
-    * `/h` : the height of the component
+`/bounds` : a sub-bundle containing the bounding-box positioning values:
+* `/x` : the leftmost point of the object's bounding box
+* `/y` : the topmost point of the object's bounding box (where `0` is the top of the parent component)
+* `/w` : the width of the component
+* `/h` : the height of the component
 
-**Dev note:**
-* Maybe not necessary to have `/graphic` sub-bundle since `/bounds` and `/svg` are going to be used a lot.
-* Should `/svg` be renamed `/graphic`? (still separate from `/bounds`). This re-iterates the relationship to SVG, but is more "technical" sounding. Maybe `/graphic` is more intuitive?
+*Note: the bounding box should generally be created algorithmically by one of the `/set` functions*
 
-Also, how to deal with mouse interaction? for example, a mouse down might want to be the middle point of the event, or the top left, etc. maybe we need a `/mouse./down` in the `/set` (i.e. `/set/fromGUI`) or/and a `/mouse` set of expressions in the JUCE area, `/graphic` ?
+**Dev notes:**
+* How to deal with more advanced mouse interaction?
+* should `/time` be part of the `/param` bundle?
+* should `/param` be a top-level Symbol sub-bundle? ... I think so.

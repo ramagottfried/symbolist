@@ -7,7 +7,7 @@ Using Odot we are able to take advantage of sub-bundle hierarchies, and make use
 An Odot-OSC bundle is notated in a similar way to JSON, using `:` to define address/value pairs. In OSC all addresses must begin with a `/` forward slash.
 
 
-Lists are indicated as a comma separated sequence of values within square brackets `[ 0, 1, 2 ]`. A *sub-bundle* is notated by `{ }` with comma-separated OSC messages inside. In Odot, all sub-bundles must be assigned to an address. In the notations below, the top-level, parent bundle is notated by an outer anonymous bundle `{ }` (not assigned to an address.)
+Lists are indicated as a comma separated sequence of values within square brackets `[ 0, 1, 2 ]`. A *sub-bundle* is notated by `{ }` with comma-separated OSC messages inside. In Odot, all sub-bundles must be assigned to an address. The top-level, parent bundle is notated by an anonymous outer bundle `{ }` (not assigned to an address.). For example, here is a bundle containing two OSC messages:
 
 ```
 {
@@ -16,7 +16,7 @@ Lists are indicated as a comma separated sequence of values within square bracke
 }
 ```
 
-For example, the central data structure used for organizing Symbols is a list of Symbol sub-bundles, with addresses indicating their z-layer drawing order (`/1`, `/2`, ...etc.).
+The central data structure used for organizing Symbols is a list of Symbol sub-bundles, with addresses indicating their z-layer drawing order (`/1`, `/2`, ...etc.).
 
 ```
 {
@@ -53,14 +53,11 @@ The Score format is a single bundle that contains sub-bundles which set differen
 }
 ```
 
-`/layout` holds definitions for the page size, margins and other top-level display settings.
+* `/layout` holds definitions for the page size, margins and other top-level display settings.
+* `/score` is the container and graphic Symbols and Stave/Symbol hierarchies.
+* `/palette` is a sub-bundle containing Stave and Symbol prototypes. Note that Staves may also contain a contextual Palette.
 
-`/score` is the container and graphic Symbols and Stave/Symbol hierarchies.
-
-`/palette` is a sub-bundle containing Stave and Symbol prototypes. Note that Staves may also contain a contextual Palette.
-
-### Layout
-
+## Layout
 In the Score format, the empty screen is though of as a `/page` container of the symbols. The `/layout` section sets the page (canvas) size, and sets some margin values that add a buffer around the edges of the page for printing purposes. The basic setup would be something like:
 
 ```
@@ -76,7 +73,7 @@ In the Score format, the empty screen is though of as a `/page` container of the
     }
 }
 ```
-Larger scores may have multiple pages, and multiple `Systems` per page...
+Larger scores may have multiple `Pages`, with multiple `Systems` per page, and multiple `Staves` per `System`.
 
 Eventually we might add a default Stave layout on a System:
 ```
@@ -95,8 +92,8 @@ Eventually we might add a default Stave layout on a System:
 }
 ```
 
-### Score
-The score sub-bundle is where the Symbols displayed on the Page are laid out. Each parent object can contain one or more child objects.
+## Score
+The `/score` sub-bundle is where the Symbols displayed on the Page are laid out. Each parent object can contain one or more child objects.
 
 `Score` : `Page` : `System` : `Stave` : `Symbol`
 
@@ -181,11 +178,12 @@ A simple illustration of System, Stave and Symbol `/time` bundles:
 
 ```
 
+See the [Symbol Graphics](#symbol-graphics) section for more information about Symbol data.
 
-### Palette
-The Palette defines a set of contextual prototypes that can be used in the Score.
+## Palette
+The `/palette` sub-bundle defines a set of contextual prototypes that can be used in the Score.
 
-Since Staves are containers for Symbols, and determine how a given Symbol is interpreted (e.g. as a notation reference key), the Stave prototypes also contain Symbol prototypes, which define a set of input and output mappings between graphic and control parameters.
+Since Staves are containers for Symbols, and determine how a given Symbol is interpreted. A Stave prototypes also contains Symbol prototypes, which include a set of input and output scripts that map between graphic and control parameters, relative to the Stave. The `/script` mappings can be thought of as a kind of notation key for a custom clef and staff (see Parameter and Mapping Expressions below for more information).
 
 The format for a Stave/Symbol prototype is as follows:
 
@@ -214,14 +212,15 @@ The format for a Stave/Symbol prototype is as follows:
 
 The master `/palette` sub-bundle is at the root level of the bundle namespace (as noted above). Within the `/palette` an array of sub-bundles define the prototypes, listed by name as an OSC address. In this example `/exampleStavePrototype` is the name of the object.
 
-`/name` : provides the name of the object prototype for later lookup.
-`/type` : sets the object type, current types are "symbol", "stave", and "group".
-`/graphic` : the graphic drawing element defaults (described below)
-`/palette` : a contextual palette of objects which have mappings related to this Stave.
+The basic `Stave` prototype contains:
+* `/name` : provides the name of the object prototype for later lookup.
+* `/type` : sets the object type, current types are "symbol", "stave", and "group".
+* `/graphic` : the graphic drawing element defaults (described below)
+* `/palette` : a contextual palette of objects which have mappings related to this Stave.
 
 Within the Stave's `/palette` sub-bundle, there are prototypes for Symbols which function within this Stave.
 
-The basic Symbol prototype contains:
+The basic `Symbol` prototype contains:
 * `/name` : provides the name of the object prototype for later lookup.
 * `/type` : "symbol" or "group"
 * `/graphic` : the graphic drawing element defaults (described below)
@@ -321,9 +320,10 @@ The `/get` function uses Graphic information to produce parameter values.
 Each Symbol of a given type shares the same `/script` expressions. The Palette prototypes are used as reference when processing input and output bundles.  Therefore, the `/script` sub-bundle is not included in the `/score` hierarchy.
 
 
-#### Graphic Drawing
-Symbol, Stave and System bundles will contain a `/graphic` sub-bundle which defines the object's graphic drawing routine, using SVG style drawing parameters.
+## Symbol Graphics
+Symbol, Stave and System bundles will contain a `/graphic` sub-bundle which defines the object's graphic drawing routine, using SVG style drawing parameters, and a `/bounds` sub-bundle with the bounding-box size and position.
 
+#### `/graphic`
 Within the `/graphic` bundle there are the following messages:
 
 * `/path` : a SVG format path drawing string, see the <a href="https://www.w3.org/TR/SVG/paths.html">SVG Path Specification</a> for more details. All graphic shapes are able to be converted to a Path. <br><br>
@@ -334,7 +334,7 @@ Within the `/graphic` bundle there are the following messages:
 * `/style` : a sub-bundle containing CSS style information which is applied to the SVG object. See <a href="https://www.w3.org/TR/SVG/styling.html">SVG Styling</a> for more details.<br><br>
 *Note: The Odot Expression Language uses the `-` sign for subtraction, so use an `_` (underscore) in place of `-` (hyphen) for SVG/CSS style attribute names that have a `-` in them, for example `stroke-width`, becomes `/stroke_width` etc.*
 
-#### Bounding Box Positioning
+#### `/bounds`
 The `/bounds` sub-bundle is separate from the `/graphic` information, and acts to place the `/graphic` graphic commands in the JUCE graphic user interface (*post SVG transform rendering*).
 
 `/bounds` : a sub-bundle containing the bounding-box positioning values:

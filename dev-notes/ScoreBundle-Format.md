@@ -7,13 +7,12 @@
     * [Score](#score)
         * [Time assignment through Symbol / Stave / System linkage](#time-assignment-through-symbol-stave-system-linkage)
     * [Palette](#palette)
-        * [Symbol Prototype](#symbol-prototype)
+        * [Symbol Prototype](#symbol-prototype-reference)
         * [Group Symbol](#group-symbol)
         * [Parameter and Mapping Expressions](#parameter-and-mapping-expressions)
-    * [Symbol Graphics](#symbol-graphics)
-        * [/graphic](#/graphic)
-        * [/bounds](#/bounds)
-
+* [Symbol Graphics](#symbol-graphics)
+    * [/graphic](#graphic)
+    * [/bounds](#bounds)
 
 # Symbol Notation
 A `Symbol` in Symbolist is an Odot-OpenSoundControl (OSC) bundle, used as a container for graphic and parameter values. Through a set of semantic rules and organizing principles, Symbolist sets up methods for composing and streaming OSC parameters in real time.
@@ -247,10 +246,10 @@ The basic `Symbol` prototype contains:
     * The `/set/fromGUI` functions takes the relative Stave object and `mouse` information arguments, and defines the Input mapping from Parameter values to Graphic values.
     * The `/get` function takes the relative Stave object and the current time (`time`) as arguments, and defines the Output mapping, from Graphic values to Parameter values.
 
-#### Symbol Prototype Reference
+### Symbol Prototype Reference
 When a Symbol is looked up in the score it can be found by sub-bundle reference, for example: `/exampleStavePrototype./exampleSymbolPrototype` would be the address of the prototype within the `/palette` sub-bundle.
 
-#### Group Symbol
+### Group Symbol
 In the case of `Group` Symbols there is an additional sub-bundle:
 * `/subsymbol` : a set of Symbols that are grouped together.
 
@@ -282,7 +281,7 @@ In the case of Group Symbols, the top-most symbol will contain the `/script` bun
 }
 ```
 
-#### Parameter and Mapping Expressions
+### Parameter and Mapping Expressions
 
 The ideal for Symbolist is that Symbols should be thought of as representing semantic parameters which can be used for controlling synthesis, or other electronic processes. The `/script` sub-bundle defined in the Palette prototype provides a means to define input and output processes, and other behaviors using the Odot Expression Language. (see `o.expr.codebox`).
 

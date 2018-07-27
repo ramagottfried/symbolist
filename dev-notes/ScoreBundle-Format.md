@@ -1,3 +1,20 @@
+
+[Symbol Notation](#Symbol-Notation)
+[OSC Notation](#OSC-Notation)
+[Symbolist Naming Conventions](#Symbolist-Naming-Conventions)
+[Symbolist File Format](#Symbolist-File-Format)
+[Layout](#Layout)
+[Score](#Score)
+[Time assignment through Symbol / Stave / System linkage](#Time-assignment-through-Symbol-/-Stave-/-System-linkage)
+[Palette](#Palette)
+[Symbol Prototype](#Symbol-Prototype)
+[Group Symbol](#Group-Symbol)
+[Parameter and Mapping Expressions](#Parameter-and-Mapping-Expressions)
+[Symbol Graphics](#symbol-graphics)
+[/graphic](#/graphic)
+[/bounds](#/bounds)
+
+
 # Symbol Notation
 A `Symbol` in Symbolist is an Odot-OpenSoundControl (OSC) bundle, used as a container for graphic and parameter values. Through a set of semantic rules and organizing principles, Symbolist sets up methods for composing and streaming OSC parameters in real time.
 
@@ -326,12 +343,12 @@ Symbol, Stave and System bundles will contain a `/graphic` sub-bundle which defi
 ### `/graphic`
 Within the `/graphic` bundle there are the following messages:
 
-* `/path` : a SVG format path drawing string, see the <a target="blank" href="https://www.w3.org/TR/SVG/paths.html">SVG Path Specification</a> for more details. All graphic shapes are able to be converted to a Path. <br><br>
+* `/path` : a SVG format path drawing string, see the [SVG Path Specification](https://www.w3.org/TR/SVG/paths.html) for more details. All graphic shapes are able to be converted to a Path. <br><br>
 *Note: The Symbolist path coordinate system is relative to it's parent bounding box, not to the top-level Page component.*
 
-* `/transform` : a transformation matrix, as a list of six numbers `[a, b, c, d, e, f]`, see <a target="blank" href="https://www.w3.org/TR/SVG/coords.html#TransformAttribute">SVG Transformation Matrix</a> for more details.
+* `/transform` : a transformation matrix, as a list of six numbers `[a, b, c, d, e, f]`, see [SVG Transformation Matrix](https://www.w3.org/TR/SVG/coords.html#TransformAttribute) for more details.
 
-* `/style` : a sub-bundle containing CSS style information which is applied to the SVG object. See <a target="blank" href="https://www.w3.org/TR/SVG/styling.html">SVG Styling</a> for more details.<br><br>
+* `/style` : a sub-bundle containing CSS style information which is applied to the SVG object. See [SVG Styling](https://www.w3.org/TR/SVG/styling.html) for more details.<br><br>
 *Note: The Odot Expression Language uses the `-` sign for subtraction, so use an `_` (underscore) in place of `-` (hyphen) for SVG/CSS style attribute names that have a `-` in them, for example `stroke-width`, becomes `/stroke_width` etc.*
 
 ### `/bounds`

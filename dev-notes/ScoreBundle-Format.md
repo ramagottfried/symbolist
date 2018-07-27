@@ -183,7 +183,7 @@ See the [Symbol Graphics](#symbol-graphics) section for more information about S
 ## Palette
 The `/palette` sub-bundle defines a set of contextual prototypes that can be used in the Score.
 
-Since Staves are containers for Symbols, and determine how a given Symbol is interpreted. A Stave prototypes also contains Symbol prototypes, which include a set of input and output scripts that map between graphic and control parameters, relative to the Stave. The `/script` mappings can be thought of as a kind of notation key for a custom clef and staff (see Parameter and Mapping Expressions below for more information).
+Since Staves are containers for Symbols, and determine how a given Symbol is interpreted. A Stave prototypes also contains Symbol prototypes, which include a set of input and output scripts that map between graphic and control parameters, relative to the Stave. The `/script` mappings can be thought of as a kind of notation key for a custom clef and staff (see [Parameter and Mapping Expressions](#parameter-and-mapping-expressions) below for more information).
 
 The format for a Stave/Symbol prototype is as follows:
 
@@ -323,18 +323,18 @@ Each Symbol of a given type shares the same `/script` expressions. The Palette p
 ## Symbol Graphics
 Symbol, Stave and System bundles will contain a `/graphic` sub-bundle which defines the object's graphic drawing routine, using SVG style drawing parameters, and a `/bounds` sub-bundle with the bounding-box size and position.
 
-#### `/graphic`
+### `/graphic`
 Within the `/graphic` bundle there are the following messages:
 
-* `/path` : a SVG format path drawing string, see the <a href="https://www.w3.org/TR/SVG/paths.html">SVG Path Specification</a> for more details. All graphic shapes are able to be converted to a Path. <br><br>
+* `/path` : a SVG format path drawing string, see the <a target="blank" href="https://www.w3.org/TR/SVG/paths.html">SVG Path Specification</a> for more details. All graphic shapes are able to be converted to a Path. <br><br>
 *Note: The Symbolist path coordinate system is relative to it's parent bounding box, not to the top-level Page component.*
 
-* `/transform` : a transformation matrix, as a list of six numbers `[a, b, c, d, e, f]`, see <a href="https://www.w3.org/TR/SVG/coords.html#TransformAttribute">SVG Transformation Matrix</a> for more details.
+* `/transform` : a transformation matrix, as a list of six numbers `[a, b, c, d, e, f]`, see <a target="blank" href="https://www.w3.org/TR/SVG/coords.html#TransformAttribute">SVG Transformation Matrix</a> for more details.
 
-* `/style` : a sub-bundle containing CSS style information which is applied to the SVG object. See <a href="https://www.w3.org/TR/SVG/styling.html">SVG Styling</a> for more details.<br><br>
+* `/style` : a sub-bundle containing CSS style information which is applied to the SVG object. See <a target="blank" href="https://www.w3.org/TR/SVG/styling.html">SVG Styling</a> for more details.<br><br>
 *Note: The Odot Expression Language uses the `-` sign for subtraction, so use an `_` (underscore) in place of `-` (hyphen) for SVG/CSS style attribute names that have a `-` in them, for example `stroke-width`, becomes `/stroke_width` etc.*
 
-#### `/bounds`
+### `/bounds`
 The `/bounds` sub-bundle is separate from the `/graphic` information, and acts to place the `/graphic` graphic commands in the JUCE graphic user interface (*post SVG transform rendering*).
 
 `/bounds` : a sub-bundle containing the bounding-box positioning values:

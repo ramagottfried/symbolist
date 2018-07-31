@@ -289,9 +289,15 @@ The `/param` sub-bundle sets the default parameter values.
 
 `/script` expressions are evaluated within the scope of the Symbol, with the relative `stave`, `mouse` and `time` passed in as function arguments.
 
-The `/set` functions uses `/param`values to set Graphic values, and may be used to manipulate other graphic information within the Symbol.
-* `/set/fromOSC` function defines how the graphic values should be configured based on the reference stave and the time point for the symbol.
-* `/set/fromGUI` function defines how the graphic values should be configured based on the reference stave and the mouse-down location.
+The `/set` functions uses `/param` values to set Graphic values, and may be used to manipulate other graphic information within the Symbol.
+* `/set/fromOSC` function defines how the graphic values should be configured based on the reference stave and the time point for the symbol, with the function signature: `lambda([stave, time], ... )`
+  * The `stave` argument is a sub-bundle containing the relative Stave that the Symbol is attached to.
+  * The `time` argument is a floating point value of the lookup time.
+* `/set/fromGUI` function defines how the graphic values should be configured based on the reference stave and the mouse event information, with the function signature: `lambda([stave, mouse], ... )`
+  * The `mouse` argument is a sub-bundle containing the mouse event information, with the messages:
+    * `/x` and `/y` : the mouse position coordinates
+    * `/state` : the mouse state, possible values are: `down`, `drag`, `up`
+    * `/origin` : the mouse position on mouse down, can be used to determine drag distance and angle
 
 The `/get` function uses Graphic information to produce parameter values.
 
@@ -316,12 +322,16 @@ The `/get` function uses Graphic information to produce parameter values.
             /subsymbol./stem./bounds./y = /y
         )",
         /set/fromGUI : "lambda([stave, mouse],
-            /bounds./x = mouse./x,
-            /bounds./y = mouse./y,
-            /bounds./w = /param./duration * stave./time/timePixScale,
-            /graphic./style./stroke_width = scale( /param./amp, 0, 1, 0, 10),
-            /subsymbol./notehead./bounds./x = /bounds./x,
-            /subsymbol./stem./bounds./y = /bounds./y
+          if( mouse./state == "down",
+            progn(
+              /bounds./x = mouse./x,
+              /bounds./y = mouse./y,
+              /bounds./w = /param./duration * stave./time/timePixScale,
+              /graphic./style./stroke_width = scale( /param./amp, 0, 1, 0, 10),
+              /subsymbol./notehead./bounds./x = /bounds./x,
+              /subsymbol./stem./bounds./y = /bounds./y
+            )
+          )
         )",
         /get : "lambda([stave, time],
             /param./pitch = scale(/bounds./y, 0, stave./h, 0., 127.),
@@ -340,14 +350,27 @@ Each Symbol of a given type shares the same `/script` expressions. The Palette p
 Symbol, Stave and System bundles will contain a `/graphic` sub-bundle which defines the object's graphic drawing routine, using SVG style drawing parameters, and a `/bounds` sub-bundle with the bounding-box size and position.
 
 ### `/graphic`
+The `/graphic` sub-bundle contains the drawing information for the Symbol.
+
+There are essentially three types of graphic Symbols: `shape`, `text`, and `path`.
+
+In the cases of `shape` and `text` the graphic drawing routine will stay the same, even if the Symbol is transformed by stretching or rotating. In these cases the default path data address `/d` can be used from the Symbol `/palette` prototype without copying the data into the `/score`.
+
+We use the name `path` to describe graphic objects that are potentially different in every instance, for example representation of bow movement over time, or a trajectory through space. In these cases, the `/d` path data value *is* included within the Symbol bundle in the Score (since potentially each version is different, but they are all the same type of object).
+
+Note that the Symbolist `/graphic` coordinate system is relative to the parent bounding box, not to the top-level Page component. For this reason, the SVG drawing elements will have 0,0 as their top-left corner.
+
 Within the `/graphic` bundle there are the following messages:
 
-* `/path` : a SVG format path drawing string, see the [SVG Path Specification](https://www.w3.org/TR/SVG/paths.html) for more details. All graphic shapes are able to be converted to a Path. <br><br>
-*Note: The Symbolist path coordinate system is relative to it's parent bounding box, not to the top-level Page component.*
+* `/d` : a SVG format "path data" string, see the [SVG Path Specification](https://www.w3.org/TR/SVG/paths.html) for more details. All graphic shapes are able to be converted to a Path.
+
+* `/text` : a sub-bundle, with drawing parameters (currently in development)
+  * `/string` : the string that will be displayed.
+  * `/tspan` : an optional SVG text control, see [SVG TSpan](https://www.w3.org/TR/SVG/text.html#TSpanElement)<br><br>
 
 * `/transform` : a transformation matrix, as a list of six numbers `[a, b, c, d, e, f]`, see [SVG Transformation Matrix](https://www.w3.org/TR/SVG/coords.html#TransformAttribute) for more details.
 
-* `/style` : a sub-bundle containing CSS style information which is applied to the SVG object. See [SVG Styling](https://www.w3.org/TR/SVG/styling.html) for more details.<br><br>
+* `/style` : a sub-bundle containing CSS style information which is applied to the SVG object. See [SVG Styling](https://www.w3.org/TR/SVG/styling.html) for more details. <br><br>
 *Note: The Odot Expression Language uses the `-` sign for subtraction, so use an `_` (underscore) in place of `-` (hyphen) for SVG/CSS style attribute names that have a `-` in them, for example `stroke-width`, becomes `/stroke_width` etc.*
 
 ### `/bounds`

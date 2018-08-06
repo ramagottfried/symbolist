@@ -245,6 +245,9 @@
 		11E8083C2080A12F00E0342F /* StringTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11E808392080A12F00E0342F /* StringTools.cpp */; };
 		11E8083D2080A12F00E0342F /* StringTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11E808392080A12F00E0342F /* StringTools.cpp */; };
 		11E8083E2080A12F00E0342F /* StringTools.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11E8083A2080A12F00E0342F /* StringTools.hpp */; };
+		2194B30A211356BC00CACD2D /* osc_expr_u.h in Headers */ = {isa = PBXBuildFile; fileRef = 2194B307211356BB00CACD2D /* osc_expr_u.h */; };
+		2194B30B211356BC00CACD2D /* osc_expr_u_privatedecls.h in Headers */ = {isa = PBXBuildFile; fileRef = 2194B308211356BB00CACD2D /* osc_expr_u_privatedecls.h */; };
+		2194B30C211356BC00CACD2D /* osc_expr_u.c in Sources */ = {isa = PBXBuildFile; fileRef = 2194B309211356BC00CACD2D /* osc_expr_u.c */; };
 		27D1022754DD8B9BF3100BB7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A18855981466E65AB497B9D /* QuartzCore.framework */; };
 		41C3942D9A94933B560F98F2 /* include_juce_gui_basics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFC6EDE4A457A367163EEE /* include_juce_gui_basics.mm */; };
 		43C388A942D2F5ACD2A53FB6 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 981D2B1E1F9131A715FECA14 /* WebKit.framework */; };
@@ -668,6 +671,9 @@
 		11E8083A2080A12F00E0342F /* StringTools.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = StringTools.hpp; path = ../../Source/StringTools.hpp; sourceTree = "<group>"; };
 		1345DFF5C1163A6CDA99FFDC /* JuceHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JuceHeader.h; path = ../../JuceLibraryCode/JuceHeader.h; sourceTree = SOURCE_ROOT; };
 		1FFFC6EDE4A457A367163EEE /* include_juce_gui_basics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_gui_basics.mm; path = ../../JuceLibraryCode/include_juce_gui_basics.mm; sourceTree = SOURCE_ROOT; };
+		2194B307211356BB00CACD2D /* osc_expr_u.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_expr_u.h; path = ../../../libo/osc_expr_u.h; sourceTree = "<group>"; };
+		2194B308211356BB00CACD2D /* osc_expr_u_privatedecls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_expr_u_privatedecls.h; path = ../../../libo/osc_expr_u_privatedecls.h; sourceTree = "<group>"; };
+		2194B309211356BC00CACD2D /* osc_expr_u.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_expr_u.c; path = ../../../libo/osc_expr_u.c; sourceTree = "<group>"; };
 		26C36CB1C5754D666DE2579C /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		29145EF0199DBA0ADDED7DCC /* juce_events */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_events; path = ../../../JUCE/modules/juce_events; sourceTree = SOURCE_ROOT; };
 		31AA60335333AFCFC2C433D3 /* symbolist.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = symbolist.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -925,6 +931,7 @@
 				116A7EC12046CFCD004B545D /* osc_util.h */,
 				116A7EC22046CFCD004B545D /* osc_vtable.h */,
 				116A7EC32046CFCD004B545D /* osc.h */,
+				2194B308211356BB00CACD2D /* osc_expr_u_privatedecls.h */,
 				116A7E562046CFB6004B545D /* osc_array.c */,
 				116A7E572046CFB6004B545D /* osc_atom_array_s.c */,
 				116A7E582046CFB6004B545D /* osc_atom_array_u.c */,
@@ -940,6 +947,8 @@
 				116A7E622046CFB6004B545D /* osc_expr_rec.c */,
 				116A7E632046CFB6004B545D /* osc_expr_scanner.c */,
 				116A7E642046CFB6004B545D /* osc_expr.c */,
+				2194B307211356BB00CACD2D /* osc_expr_u.h */,
+				2194B309211356BC00CACD2D /* osc_expr_u.c */,
 				116A7E652046CFB6004B545D /* osc_hashtab.c */,
 				116A7E662046CFB6004B545D /* osc_legacy_parser.c */,
 				116A7E672046CFB6004B545D /* osc_legacy_scanner.c */,
@@ -1387,6 +1396,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2194B30A211356BC00CACD2D /* osc_expr_u.h in Headers */,
 				116A7ED32046CFCD004B545D /* osc_expr_rec.h in Headers */,
 				116A7ED12046CFCD004B545D /* osc_expr_parser.h in Headers */,
 				116A7EE32046CFCD004B545D /* osc_rset.h in Headers */,
@@ -1413,6 +1423,7 @@
 				116A7EE92046CFCD004B545D /* osc_util.h in Headers */,
 				116A7EE02046CFCD004B545D /* osc_parser.h in Headers */,
 				75AEFCC320EF9D3500728E1A /* CreateSymbolCommand.hpp in Headers */,
+				2194B30B211356BC00CACD2D /* osc_expr_u_privatedecls.h in Headers */,
 				116A7ED92046CFCD004B545D /* osc_linkedlist.h in Headers */,
 				116A7EE52046CFCD004B545D /* osc_serial.h in Headers */,
 				116A7EE82046CFCD004B545D /* osc_typetag.h in Headers */,
@@ -1737,6 +1748,7 @@
 				116A7E7B2046CFB6004B545D /* osc_atom_array_u.c in Sources */,
 				116A7E7A2046CFB6004B545D /* osc_atom_array_s.c in Sources */,
 				116A7E792046CFB6004B545D /* osc_array.c in Sources */,
+				2194B30C211356BC00CACD2D /* osc_expr_u.c in Sources */,
 				75FB5F08207F54C80083A1C0 /* PageController.cpp in Sources */,
 				116A7E982046CFB6004B545D /* osc_timetag.c in Sources */,
 				116A7E8C2046CFB6004B545D /* osc_match.c in Sources */,

@@ -384,6 +384,140 @@ The `/bounds` sub-bundle is separate from the `/graphic` information, and acts t
 
 *Note: the bounding box should generally be created algorithmically by one of the `/set` functions*
 
+In the palette prototype for a graphic object, a default bounds aids in scaling the graphic if necessary (e.g. a stave will normally need to be scaled to span the dimensions of the time duration). ---> or if I can get the path bounds put into the score/model then we can probably autogenerate that? ...
+
+
+## example
+
+```
+/palette : {
+  /exampleStavePrototype : {
+    /name : "/exampleStavePrototype",
+    /type : "stave",
+    /time : {
+      /timePixScale : 100.
+    },
+    /bounds : {
+      /x : 0,
+      /y : 0,
+      /w : 10,
+      /h : 10
+    }
+    /graphic : {
+      /type : "shape",
+      /d : "M0,0 L0,10 L10,10 L10,0 Z",
+      /transform : [],
+      /style : {
+        /fill : "none",
+        /stroke : "#000000",
+        /stroke_miterlimit : 10
+      }
+    },
+    /script : {
+      /set/fromOSC : "lambda([system, time],
+          /bounds./x = system./x + ( (time - system./time./start) * system./time./timePixScale ),
+          /bounds./y = system./y + scale(/param./pitch, 0, 127, 0, stave./h),
+          /bounds./w = /param./duration * system./time./timePixScale,
+          /graphic./style./stroke_width = scale( /param./amp, 0, 1, 0, 10)
+      )",
+      /set/fromGUI : "lambda([system, mouse],
+        if( mouse./state == "down",
+          progn(
+            /bounds./x = mouse./x,
+            /bounds./y = mouse./y,
+            /bounds./w = /param./duration * system./time./timePixScale,
+            /graphic./style./stroke_width = scale( /param./amp, 0, 1, 0, 10)
+          )
+        )
+      )",
+      /get : "lambda([system, time],
+          /param./pitch = scale(/bounds./y, 0, stave./h, 0., 127.),
+          /param./relative/time = time,
+          /param./amp = scale( /graphic./style./stroke_width, 0, 10, 0, 1)
+      )"
+    }
+    },
+    /palette : {
+      /exampleSymbolPrototype : {
+        /name : "/exampleSymbolPrototype",
+        /type : "symbol",
+        /graphic : {
+          /type : "shape",
+          /d : "M204.7-0.7C119.3,53.7-19.8-118.2,2.2,201.8c79.7-22.7,156-46.9,202-84c9.2-36.7,6.8-77.2,0-119",
+          /style : {
+            /fill : "none",
+            /stroke : "#000000",
+            /stroke_miterlimit : 10,
+            /stroke_width : 1
+          }
+        },
+        /param : {
+            /duration : 1,
+            /pitch : 60,
+            /amp : 0.5
+        },
+        /script : {
+          /set/fromOSC : "lambda([stave, time],
+              /bounds./x = stave./x + ( (time - stave./time./start) * stave./time./timePixScale ),
+              /bounds./y = /stave./y + scale(/param./pitch, 0, 127, 0, stave./h),
+              /bounds./w = /param./duration * stave./time./timePixScale,
+              /graphic./style./stroke_width = scale( /param./amp, 0, 1, 0, 10)
+          )",
+          /set/fromGUI : "lambda([stave, mouse],
+            if( mouse./state == "down",
+              progn(
+                /bounds./x = mouse./x,
+                /bounds./y = mouse./y,
+                /bounds./w = /param./duration * stave./time./timePixScale,
+                /graphic./style./stroke_width = scale( /param./amp, 0, 1, 0, 10)
+              )
+            )
+          )",
+          /get : "lambda([stave, time],
+              /param./pitch = scale(/bounds./y, 0, stave./h, 0., 127.),
+              /param./relative/time = time,
+              /param./amp = scale( /graphic./style./stroke_width, 0, 10, 0, 1)
+          )"
+        }
+      }
+    }
+  }
+},
+/score : {
+  /page : {
+    /1 : {
+      /system : {
+        /1 : {
+          /time : {
+            /start : 0,
+            /end : 8
+          },
+          /stave : {
+            /1 : {
+              /name : "/exampleStavePrototype",
+              /time : {
+                /start : 0,
+                /end : 8
+              },
+              /symbol : {
+                /1 : {
+                  /name : "/exampleSymbolPrototype"
+                  /time : {
+                    /start : 5,
+                    /end : 6
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+```
+
 **Dev notes:**
 * How to deal with more advanced mouse interaction?
 * should `/time` be part of the `/param` bundle?

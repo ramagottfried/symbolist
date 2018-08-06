@@ -81,3 +81,42 @@ OdotExpr& OdotExpr::operator=( const char * expr )
     return *this;
 }
 
+
+
+void OdotExpr::print() const
+{
+    
+    t_osc_expr *e = get_o_ptr();
+    while ( e )
+    {
+        t_osc_expr_arg *arg = osc_expr_getArgs(e);
+        while( arg )
+        {
+            switch (osc_expr_arg_getType(arg)) {
+                case OSC_EXPR_ARG_TYPE_ATOM:
+                    cout << " atom ";
+                    break;
+                case OSC_EXPR_ARG_TYPE_EXPR:
+                {
+                    cout << " expr " << osc_expr_rec_getName( osc_expr_getRec(osc_expr_arg_getExpr(arg)));
+                    //OdotExpr( osc_expr_arg_getExpr(arg) ).print();
+                }
+                    break;
+                case OSC_EXPR_ARG_TYPE_OSCADDRESS:
+                    cout << " osc addr: " << osc_expr_arg_getOSCAddress(arg);
+                    break;
+                case OSC_EXPR_ARG_TYPE_FUNCTION:
+                    cout << " func ";
+                    break;
+                default:
+                    cout << " ?? " << endl;
+                    break;
+            }
+            cout << endl;
+            
+            arg = osc_expr_arg_next(arg);
+        }
+        
+        e = osc_expr_next(e);
+    }
+}

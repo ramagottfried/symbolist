@@ -4,6 +4,7 @@
 
 #include <iostream>
 
+#include <sys/time.h>
 
 
 
@@ -427,17 +428,69 @@ void readFile()
     b.print();
 }
 
+typedef unsigned long long timestamp_t;
+
+static timestamp_t
+get_timestamp ()
+{
+    struct timeval now;
+    gettimeofday (&now, NULL);
+    return  now.tv_usec + (timestamp_t)now.tv_sec * 1000000;
+}
+
+inline double
+get_timedelta(timestamp_t start, timestamp_t end)
+{
+    return (end - start) / 1000000.0L;
+}
+
+
 int main(int argc, const char * argv[])
 {
-    
-    
-    
 
-    vector<OdotBundle> staves;
+//    vector<OdotBundle> staves;
+
+    OdotBundle b;
+    b.addMessage("/foo", OdotBundle("/bar", OdotBundle("/steve", 4)));
+//    b.applyExpr("/foo./bar./steve = 111, /foo./bar./steve = /foo");
+
+   /*
+    timestamp_t t0 = get_timestamp();
+    b.applyExpr("/a = /foo, /x./y./z = 100, /q = /foo./bar");
+    b.applyExpr("/foo./bar./steve = 111");
+    timestamp_t t1 = get_timestamp();
+
+    cout << get_timedelta(t0, t1) << endl;
+        */
+    
+    OdotBundle_s s = b.serialize();
+    
+    // testfunction assignment
+    s.applyExpr("/d./b./a./q = quote(lambda([v,x], /z = v, /zz = x)), /d./b./a./q(11,22)" );
+    s.print();
+
+    
+    /*
+     /a./c./e = 1,
+     
+     /fn = "lambda([b], /zz = b./c./e)",
+     
+     /fn( /a ),
+     */
+ 
+    /*
+    OdotBundle bb;
+    bb.applyExpr(R"expr(
+                 /a./b./c = "lambda([], /z = 1)",
+               
+                 
+                 /a./b./c()
+                 
+                 )expr" );
     
     
-    
-    
+    bb.print();
+*/
     return 0;
 }
 

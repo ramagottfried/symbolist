@@ -96,35 +96,23 @@ void OdotBundle::unionWith( const OdotBundle& other, bool passive )
 
 void OdotBundle::applyExpr( const OdotExpr& expr )
 {
-    OdotBundle_s s_bndl = serialize();
-    
-    char *copy = NULL;
-    long copylen = osc_bundle_s_getLen( s_bndl.get_o_ptr() );
-    copy = (char *)osc_mem_alloc( copylen );
-    if (copy)
-    {
-        memcpy(copy, osc_bundle_s_getPtr( s_bndl.get_o_ptr() ), copylen);
-        
-        int error = 0;
-        t_osc_expr *f = expr.get_o_ptr();
-        while (f) {
-            t_osc_atom_ar_u *av = NULL;
-            error = osc_expr_eval( f, &copylen, &copy, &av, this );
-			
-            if (av)
-				osc_atom_array_u_free(av);
-		
-            if (error)
-                break;
-			
-            f = osc_expr_next(f);
+    int error = 0;
+    t_osc_expr *f = expr.get_o_ptr();
+    t_osc_bndl_u * bndl = ptr.get();
+    while( f && bndl ){
+        t_osc_atom_ar_u *av = NULL;
+        error = osc_expr_u_eval( f, bndl, &av, this);
+        if(av){
+            osc_atom_array_u_free(av);
         }
-        
-        if ( !error )
-            ptr = odot::newOdotBundlePtr( osc_bundle_s_deserialize(copylen, copy) );
-        
-        osc_mem_free(copy);
+        if(error)
+        {
+            cout << "error: " << error << endl;
+            break;
+        }
+        f = osc_expr_next(f);
     }
+    
 }
 
 void OdotBundle::addMessage( vector<OdotMessage> msg_vec )

@@ -30,9 +30,8 @@ public:
     OdotBundle( const string& str );
     
     template <typename... Ts>
-    OdotBundle(const char * address, Ts&&... args)
+    OdotBundle(const char * address, Ts&&... args) : OdotBundle()
     {
-        OdotBundle();
         OdotMessage msg( address, args... );
         addMessage( msg );
     }

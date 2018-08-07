@@ -6,7 +6,7 @@
 
 #include <sys/time.h>
 
-
+#include "SymbolistPath.hpp"
 
 
 void hashtest()
@@ -444,31 +444,30 @@ get_timedelta(timestamp_t start, timestamp_t end)
     return (end - start) / 1000000.0L;
 }
 
-
-int main(int argc, const char * argv[])
+void subbundletests()
 {
-
-//    vector<OdotBundle> staves;
-
+    
+    //    vector<OdotBundle> staves;
+    
     OdotBundle b;
     b.addMessage("/foo", OdotBundle("/bar", OdotBundle("/steve", 4)));
-//    b.applyExpr("/foo./bar./steve = 111, /foo./bar./steve = /foo");
-
-   /*
-    timestamp_t t0 = get_timestamp();
-    b.applyExpr("/a = /foo, /x./y./z = 100, /q = /foo./bar");
-    b.applyExpr("/foo./bar./steve = 111");
-    timestamp_t t1 = get_timestamp();
-
-    cout << get_timedelta(t0, t1) << endl;
-        */
+    //    b.applyExpr("/foo./bar./steve = 111, /foo./bar./steve = /foo");
+    
+    /*
+     timestamp_t t0 = get_timestamp();
+     b.applyExpr("/a = /foo, /x./y./z = 100, /q = /foo./bar");
+     b.applyExpr("/foo./bar./steve = 111");
+     timestamp_t t1 = get_timestamp();
+     
+     cout << get_timedelta(t0, t1) << endl;
+     */
     
     OdotBundle_s s = b.serialize();
     
     // testfunction assignment
     s.applyExpr("/d./b./a./q = quote(lambda([v,x], /z = v, /zz = x)), /d./b./a./q(11,22)" );
     s.print();
-
+    
     
     /*
      /a./c./e = 1,
@@ -477,20 +476,180 @@ int main(int argc, const char * argv[])
      
      /fn( /a ),
      */
- 
+    
     /*
-    OdotBundle bb;
-    bb.applyExpr(R"expr(
-                 /a./b./c = "lambda([], /z = 1)",
-               
-                 
-                 /a./b./c()
-                 
-                 )expr" );
+     OdotBundle bb;
+     bb.applyExpr(R"expr(
+     /a./b./c = "lambda([], /z = 1)",
+     
+     
+     /a./b./c()
+     
+     )expr" );
+     
+     
+     bb.print();
+     */
+}
+
+SymbolistPath path;
+
+
+vector<SymbolistPoint> parseSegment(string& seg, const char type, SymbolistPoint startPt)
+{
+    size_t prevnumpos = 0, numpos;
+    
+    vector<SymbolistPoint> pts;
+    double x = 0;
+    int count = 0;
+
+    while ( (numpos = seg.find_first_of(", ", prevnumpos) ) != std::string::npos )
+    {
+        if( count % 2 == 0 )
+        {
+            x = stod( seg.substr(prevnumpos, numpos-prevnumpos));
+        }
+        else
+        {
+            pts.emplace_back(SymbolistPoint(x, stod( seg.substr(prevnumpos, numpos-prevnumpos) ) ) );
+        }
+        count++;
+        prevnumpos = numpos+1;
+    }
+    
+    if (prevnumpos < seg.length() )
+    {
+        if( count % 2 == 0 )
+        {
+            cout << "error: uneven number of points" << endl;
+            return vector<SymbolistPoint>();
+        }
+        
+        pts.emplace_back(SymbolistPoint(x, stod( seg.substr(prevnumpos, numpos-prevnumpos) ) ) );
+    }
     
     
-    bb.print();
-*/
+    switch (type) {
+        case 'M':
+        case 'm':
+            return pts;
+            break;
+        case 'L':
+            if( pts.size() == 1 )
+            {
+                path.addSegment(startPt, pts[0]);
+            }
+            else
+                cout << "L parse error: wrong number of points" << endl;
+            break;
+        case 'l':
+            if( pts.size() == 2 )
+            {
+                path.addSegment(startPt, startPt+pts[0]);
+            }
+            else
+                cout << "l parse error: wrong number of points" << endl;
+            break;
+            
+        case 'Q':
+            if( pts.size() == 2 )
+            {
+                path.addSegment(startPt, pts[0], pts[1]);
+            }
+            else
+                cout << "Q parse error: wrong number of points" << endl;
+            break;
+        case 'q':
+            if( pts.size() == 2 )
+            {
+                path.addSegment(startPt, startPt+pts[0], startPt+pts[1]);
+            }
+            else
+                cout << "q parse error: wrong number of points" << endl;
+            break;
+        
+        case 'C':
+            if( pts.size() == 3 )
+            {
+                path.addSegment(startPt, pts[0], pts[1], pts[2]);
+            }
+            else
+                cout << "C parse error: wrong number of points" << endl;
+            break;
+        case 'c':
+            if( pts.size() == 3 )
+            {
+                path.addSegment(startPt, startPt+pts[0], startPt+pts[1], startPt+pts[2]);
+            }
+            else
+                cout << "c parse error: wrong number of points" << endl;
+            break;
+        default:
+            break;
+    }
+    
+    cout << type << " " << pts.size() << endl;
+    for( auto p : pts )
+    {
+        cout << "x " << p.getX() << " y " << p.getY() << endl;
+    }
+    cout << "--" << endl;
+    
+    return pts;
+}
+
+int main(int argc, const char * argv[])
+{
+    
+    
+    string svg_path = "M0.5,0.12q10,1.1 .20,21Q11,12 22,23";
+    
+    SymbolistPath p(svg_path);
+    p.print();
+    
+    auto rect = p.getBounds();
+    cout << rect.getX() << " " << rect.getY() << " " << rect.getWidth() << " " << rect.getHeight() << endl;
+    
+    /*
+    
+    
+    
+    SymbolistPoint startPt;
+    std::size_t prev = 0, pos;
+    string seg;
+    char type = '\0', nexttype = '\0';
+    
+    while ( (pos = svg_path.find_first_of("MmLlQqCcZ", prev) ) != std::string::npos )
+    {
+        nexttype = svg_path[pos];
+        
+        if (pos > prev)
+        {
+            seg = svg_path.substr(prev, pos-prev);
+
+            auto pts = parseSegment(seg, type, startPt);
+            if( !pts.size() )
+            {
+                return 1;
+            }
+
+            startPt = pts.back();
+        
+        }
+        prev = pos+1;
+        type = nexttype;
+    }
+    
+    if (prev < svg_path.length())
+    {
+        seg = svg_path.substr(prev, std::string::npos);
+        auto pts = parseSegment(seg, type, startPt);
+        if( !pts.size() )
+        {
+            return 1;
+        }
+    }
+    */
     return 0;
 }
 

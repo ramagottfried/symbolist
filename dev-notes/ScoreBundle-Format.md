@@ -386,6 +386,7 @@ The `/bounds` sub-bundle is separate from the `/graphic` information, and acts t
 
 In the palette prototype for a graphic object, a default bounds aids in scaling the graphic if necessary (e.g. a stave will normally need to be scaled to span the dimensions of the time duration). ---> or if I can get the path bounds put into the score/model then we can probably autogenerate that? ...
 
+... note: shape symbols can use the pre-rotated drawing functions + transform, but paths need to have the transform applied somewhere so that reading through the trajectory is correct
 
 ## example
 

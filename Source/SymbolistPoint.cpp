@@ -1,0 +1,2 @@
+
+#include "SymbolistPoint.hpp"

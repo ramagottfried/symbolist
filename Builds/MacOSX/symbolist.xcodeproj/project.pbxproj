@@ -248,6 +248,36 @@
 		2194B30A211356BC00CACD2D /* osc_expr_u.h in Headers */ = {isa = PBXBuildFile; fileRef = 2194B307211356BB00CACD2D /* osc_expr_u.h */; };
 		2194B30B211356BC00CACD2D /* osc_expr_u_privatedecls.h in Headers */ = {isa = PBXBuildFile; fileRef = 2194B308211356BB00CACD2D /* osc_expr_u_privatedecls.h */; };
 		2194B30C211356BC00CACD2D /* osc_expr_u.c in Sources */ = {isa = PBXBuildFile; fileRef = 2194B309211356BC00CACD2D /* osc_expr_u.c */; };
+		21CF60D42118D5BA000DD366 /* SymbolistPath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60D22118D5BA000DD366 /* SymbolistPath.cpp */; };
+		21CF60D52118D5BA000DD366 /* SymbolistPath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60D22118D5BA000DD366 /* SymbolistPath.cpp */; };
+		21CF60D62118D5BA000DD366 /* SymbolistPath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60D22118D5BA000DD366 /* SymbolistPath.cpp */; };
+		21CF60D72118D5BA000DD366 /* SymbolistPath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60D22118D5BA000DD366 /* SymbolistPath.cpp */; };
+		21CF60D82118D5BA000DD366 /* SymbolistPath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60D22118D5BA000DD366 /* SymbolistPath.cpp */; };
+		21CF60D92118D5BA000DD366 /* SymbolistPath.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 21CF60D32118D5BA000DD366 /* SymbolistPath.hpp */; };
+		21CF60DD2118D6D5000DD366 /* SymbolistPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60DB2118D6D5000DD366 /* SymbolistPoint.cpp */; };
+		21CF60DE2118D6D5000DD366 /* SymbolistPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60DB2118D6D5000DD366 /* SymbolistPoint.cpp */; };
+		21CF60DF2118D6D5000DD366 /* SymbolistPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60DB2118D6D5000DD366 /* SymbolistPoint.cpp */; };
+		21CF60E02118D6D5000DD366 /* SymbolistPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60DB2118D6D5000DD366 /* SymbolistPoint.cpp */; };
+		21CF60E12118D6D5000DD366 /* SymbolistPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60DB2118D6D5000DD366 /* SymbolistPoint.cpp */; };
+		21CF60E22118D6D5000DD366 /* SymbolistPoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 21CF60DC2118D6D5000DD366 /* SymbolistPoint.hpp */; };
+		21CF60E62118E3B1000DD366 /* SymbolistRect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60E42118E3B1000DD366 /* SymbolistRect.cpp */; };
+		21CF60E72118E3B1000DD366 /* SymbolistRect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60E42118E3B1000DD366 /* SymbolistRect.cpp */; };
+		21CF60E82118E3B1000DD366 /* SymbolistRect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60E42118E3B1000DD366 /* SymbolistRect.cpp */; };
+		21CF60E92118E3B1000DD366 /* SymbolistRect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60E42118E3B1000DD366 /* SymbolistRect.cpp */; };
+		21CF60EA2118E3B1000DD366 /* SymbolistRect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60E42118E3B1000DD366 /* SymbolistRect.cpp */; };
+		21CF60EB2118E3B1000DD366 /* SymbolistRect.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 21CF60E52118E3B1000DD366 /* SymbolistRect.hpp */; };
+		21CF60EE2119F882000DD366 /* AGG_BezierLength.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60EC2119F882000DD366 /* AGG_BezierLength.cpp */; };
+		21CF60EF2119F882000DD366 /* AGG_BezierLength.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60EC2119F882000DD366 /* AGG_BezierLength.cpp */; };
+		21CF60F02119F882000DD366 /* AGG_BezierLength.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60EC2119F882000DD366 /* AGG_BezierLength.cpp */; };
+		21CF60F12119F882000DD366 /* AGG_BezierLength.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60EC2119F882000DD366 /* AGG_BezierLength.cpp */; };
+		21CF60F22119F882000DD366 /* AGG_BezierLength.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60EC2119F882000DD366 /* AGG_BezierLength.cpp */; };
+		21CF60F32119F882000DD366 /* AGG_BezierLength.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 21CF60ED2119F882000DD366 /* AGG_BezierLength.hpp */; };
+		21CF60F62119FBA8000DD366 /* SymbolistPathSegment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60F42119FBA8000DD366 /* SymbolistPathSegment.cpp */; };
+		21CF60F72119FBA8000DD366 /* SymbolistPathSegment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60F42119FBA8000DD366 /* SymbolistPathSegment.cpp */; };
+		21CF60F82119FBA8000DD366 /* SymbolistPathSegment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60F42119FBA8000DD366 /* SymbolistPathSegment.cpp */; };
+		21CF60F92119FBA8000DD366 /* SymbolistPathSegment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60F42119FBA8000DD366 /* SymbolistPathSegment.cpp */; };
+		21CF60FA2119FBA8000DD366 /* SymbolistPathSegment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21CF60F42119FBA8000DD366 /* SymbolistPathSegment.cpp */; };
+		21CF60FB2119FBA8000DD366 /* SymbolistPathSegment.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 21CF60F52119FBA8000DD366 /* SymbolistPathSegment.hpp */; };
 		27D1022754DD8B9BF3100BB7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A18855981466E65AB497B9D /* QuartzCore.framework */; };
 		41C3942D9A94933B560F98F2 /* include_juce_gui_basics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFC6EDE4A457A367163EEE /* include_juce_gui_basics.mm */; };
 		43C388A942D2F5ACD2A53FB6 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 981D2B1E1F9131A715FECA14 /* WebKit.framework */; };
@@ -674,6 +704,16 @@
 		2194B307211356BB00CACD2D /* osc_expr_u.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_expr_u.h; path = ../../../libo/osc_expr_u.h; sourceTree = "<group>"; };
 		2194B308211356BB00CACD2D /* osc_expr_u_privatedecls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osc_expr_u_privatedecls.h; path = ../../../libo/osc_expr_u_privatedecls.h; sourceTree = "<group>"; };
 		2194B309211356BC00CACD2D /* osc_expr_u.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osc_expr_u.c; path = ../../../libo/osc_expr_u.c; sourceTree = "<group>"; };
+		21CF60D22118D5BA000DD366 /* SymbolistPath.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolistPath.cpp; path = ../../Source/SymbolistPath.cpp; sourceTree = "<group>"; };
+		21CF60D32118D5BA000DD366 /* SymbolistPath.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = SymbolistPath.hpp; path = ../../Source/SymbolistPath.hpp; sourceTree = "<group>"; };
+		21CF60DB2118D6D5000DD366 /* SymbolistPoint.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolistPoint.cpp; path = ../../Source/SymbolistPoint.cpp; sourceTree = "<group>"; };
+		21CF60DC2118D6D5000DD366 /* SymbolistPoint.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = SymbolistPoint.hpp; path = ../../Source/SymbolistPoint.hpp; sourceTree = "<group>"; };
+		21CF60E42118E3B1000DD366 /* SymbolistRect.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolistRect.cpp; path = ../../Source/SymbolistRect.cpp; sourceTree = "<group>"; };
+		21CF60E52118E3B1000DD366 /* SymbolistRect.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = SymbolistRect.hpp; path = ../../Source/SymbolistRect.hpp; sourceTree = "<group>"; };
+		21CF60EC2119F882000DD366 /* AGG_BezierLength.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AGG_BezierLength.cpp; path = ../../Source/AGG_BezierLength.cpp; sourceTree = "<group>"; };
+		21CF60ED2119F882000DD366 /* AGG_BezierLength.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = AGG_BezierLength.hpp; path = ../../Source/AGG_BezierLength.hpp; sourceTree = "<group>"; };
+		21CF60F42119FBA8000DD366 /* SymbolistPathSegment.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolistPathSegment.cpp; path = ../../Source/SymbolistPathSegment.cpp; sourceTree = "<group>"; };
+		21CF60F52119FBA8000DD366 /* SymbolistPathSegment.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = SymbolistPathSegment.hpp; path = ../../Source/SymbolistPathSegment.hpp; sourceTree = "<group>"; };
 		26C36CB1C5754D666DE2579C /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		29145EF0199DBA0ADDED7DCC /* juce_events */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_events; path = ../../../JUCE/modules/juce_events; sourceTree = SOURCE_ROOT; };
 		31AA60335333AFCFC2C433D3 /* symbolist.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = symbolist.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1067,6 +1107,23 @@
 			name = "svg-io";
 			sourceTree = "<group>";
 		};
+		21CF60DA2118D6AC000DD366 /* path */ = {
+			isa = PBXGroup;
+			children = (
+				21CF60D32118D5BA000DD366 /* SymbolistPath.hpp */,
+				21CF60D22118D5BA000DD366 /* SymbolistPath.cpp */,
+				21CF60DB2118D6D5000DD366 /* SymbolistPoint.cpp */,
+				21CF60DC2118D6D5000DD366 /* SymbolistPoint.hpp */,
+				21CF60E42118E3B1000DD366 /* SymbolistRect.cpp */,
+				21CF60E52118E3B1000DD366 /* SymbolistRect.hpp */,
+				21CF60F42119FBA8000DD366 /* SymbolistPathSegment.cpp */,
+				21CF60F52119FBA8000DD366 /* SymbolistPathSegment.hpp */,
+				21CF60EC2119F882000DD366 /* AGG_BezierLength.cpp */,
+				21CF60ED2119F882000DD366 /* AGG_BezierLength.hpp */,
+			);
+			name = path;
+			sourceTree = "<group>";
+		};
 		5BA2DB05C7718E6A683CC674 /* symbolist */ = {
 			isa = PBXGroup;
 			children = (
@@ -1135,6 +1192,7 @@
 				110B9F9A1F47784F00E9D593 /* staff-time */,
 				75774F9C2062960C0069A89D /* SymbolistModel.cpp */,
 				75774F9D2062960C0069A89D /* SymbolistModel.hpp */,
+				21CF60DA2118D6AC000DD366 /* path */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -1345,13 +1403,16 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21CF60FB2119FBA8000DD366 /* SymbolistPathSegment.hpp in Headers */,
 				116A7EF22046DCAE004B545D /* OdotBundle.hpp in Headers */,
 				7501AC5620BD4A9B002E0573 /* NewPropertyFormComponent.hpp in Headers */,
 				11AEF245207A94D000B1398D /* CodeBoxComponent.hpp in Headers */,
 				75B86ED020E24D8C0080DB3D /* CodeBoxController.hpp in Headers */,
 				75FB5F10207F8C4C0083A1C0 /* Observer.hpp in Headers */,
 				75FB5F11207F8C500083A1C0 /* View.hpp in Headers */,
+				21CF60E22118D6D5000DD366 /* SymbolistPoint.hpp in Headers */,
 				113980B6206449EA002A2408 /* OdotExpr.hpp in Headers */,
+				21CF60EB2118E3B1000DD366 /* SymbolistRect.hpp in Headers */,
 				7558B834209C9F2400BCA92C /* SmuflComponent.hpp in Headers */,
 				75AEFCC220EF9D3500728E1A /* CreateSymbolCommand.hpp in Headers */,
 				116A7EFF2047ECB8004B545D /* OdotAtom.hpp in Headers */,
@@ -1376,6 +1437,7 @@
 				75AEFCB920EF998900728E1A /* Command.hpp in Headers */,
 				75FB5EFF207F51760083A1C0 /* OdotPointers.h in Headers */,
 				751E31572069410400C3318F /* PaletteButton.hpp in Headers */,
+				21CF60D92118D5BA000DD366 /* SymbolistPath.hpp in Headers */,
 				75FB5F02207F51AA0083A1C0 /* TimePointArray.h in Headers */,
 				75FB5F0F207F8C460083A1C0 /* Observable.hpp in Headers */,
 				75987CF320D81A0500EDE4F9 /* CallbackButtonPropertyComponent.hpp in Headers */,
@@ -1385,6 +1447,7 @@
 				7571E717208F2F1A0092A3E0 /* InspectorController.hpp in Headers */,
 				11E80838208082CB00E0342F /* SVGEncoder.hpp in Headers */,
 				75774FA92062A4D40069A89D /* Palette.hpp in Headers */,
+				21CF60F32119F882000DD366 /* AGG_BezierLength.hpp in Headers */,
 				11263098207F3D520086653D /* SVGFileIO.hpp in Headers */,
 				75774FA12062960C0069A89D /* SymbolistModel.hpp in Headers */,
 				75FB5F0A207F54C80083A1C0 /* PageController.hpp in Headers */,
@@ -1656,8 +1719,10 @@
 				11E80837208082CB00E0342F /* SVGEncoder.cpp in Sources */,
 				75FB5F07207F54C80083A1C0 /* PageController.cpp in Sources */,
 				1107B3FC1EF7D55D00E2DFA9 /* BaseComponent.cpp in Sources */,
+				21CF60F02119F882000DD366 /* AGG_BezierLength.cpp in Sources */,
 				75774FA02062960C0069A89D /* SymbolistModel.cpp in Sources */,
 				1186486C1EF7E68B00904672 /* include_juce_core.mm in Sources */,
+				21CF60E82118E3B1000DD366 /* SymbolistRect.cpp in Sources */,
 				118353481F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp in Sources */,
 				11E80830207FCAC000E0342F /* SVGParser.cpp in Sources */,
 				1107B3F31EF7D54800E2DFA9 /* symbolist.cpp in Sources */,
@@ -1683,6 +1748,7 @@
 				1107B3F61EF7D55D00E2DFA9 /* Score.cpp in Sources */,
 				75AEFCAD20EF7F0F00728E1A /* Invoker.cpp in Sources */,
 				116A7EFE2047ECB8004B545D /* OdotAtom.cpp in Sources */,
+				21CF60D62118D5BA000DD366 /* SymbolistPath.cpp in Sources */,
 				114027CC1F4B185E00A9B8C4 /* StaffComponent.cpp in Sources */,
 				1186489E1EFAC44100904672 /* ScoreCursor.cpp in Sources */,
 				1107B4011EF7D55D00E2DFA9 /* SymbolistComponent.cpp in Sources */,
@@ -1698,6 +1764,7 @@
 				11C442D21F585C1B00F2E9B6 /* TimeDisplayComponent.cpp in Sources */,
 				1196B41020FF8CFC002F4391 /* OdotHash.cpp in Sources */,
 				1107B3F51EF7D55D00E2DFA9 /* Symbol.cpp in Sources */,
+				21CF60DF2118D6D5000DD366 /* SymbolistPoint.cpp in Sources */,
 				1107B4001EF7D55D00E2DFA9 /* ScoreComponent.cpp in Sources */,
 				114027C61F49C21E00A9B8C4 /* SortedStaves.cpp in Sources */,
 				113DEE0E1FA1D7C600A45220 /* EditSelectionBox.cpp in Sources */,
@@ -1721,6 +1788,7 @@
 				11D1235E1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */,
 				1186486B1EF7E68200904672 /* include_juce_osc.cpp in Sources */,
 				1186486E1EF7E68B00904672 /* include_juce_events.mm in Sources */,
+				21CF60F82119FBA8000DD366 /* SymbolistPathSegment.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1786,14 +1854,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				1196B41E20FFBBC1002F4391 /* OdotExpr.cpp in Sources */,
+				21CF60D82118D5BA000DD366 /* SymbolistPath.cpp in Sources */,
 				1196B41920FFBA83002F4391 /* main.cpp in Sources */,
+				21CF60E12118D6D5000DD366 /* SymbolistPoint.cpp in Sources */,
 				1196B42320FFBBC1002F4391 /* OdotHash.cpp in Sources */,
 				1196B42220FFBBC1002F4391 /* OdotAtom.cpp in Sources */,
+				21CF60EA2118E3B1000DD366 /* SymbolistRect.cpp in Sources */,
 				1196B41F20FFBBC1002F4391 /* OdotBundle.cpp in Sources */,
 				1196B42C210260ED002F4391 /* TimePointArray.cpp in Sources */,
+				21CF60FA2119FBA8000DD366 /* SymbolistPathSegment.cpp in Sources */,
 				1196B42A210231C9002F4391 /* OdotSelect.cpp in Sources */,
 				1196B42020FFBBC1002F4391 /* OdotBundle_s.cpp in Sources */,
 				1196B42120FFBBC1002F4391 /* OdotMessage.cpp in Sources */,
+				21CF60F22119F882000DD366 /* AGG_BezierLength.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1827,6 +1900,7 @@
 				112630B1207F4AC20086653D /* pugixml.cpp in Sources */,
 				114027CB1F4B185E00A9B8C4 /* StaffComponent.cpp in Sources */,
 				11AEF23A207A943800B1398D /* JsonTreeItem.cpp in Sources */,
+				21CF60EF2119F882000DD366 /* AGG_BezierLength.cpp in Sources */,
 				44CFE03C1EC3789C009135F8 /* include_juce_events.mm in Sources */,
 				75AEFCB520EF998900728E1A /* Command.cpp in Sources */,
 				11B71DD21F098F1400CDE209 /* SymbolPropertiesPanel.cpp in Sources */,
@@ -1850,6 +1924,7 @@
 				116A7EF02046DCAE004B545D /* OdotBundle.cpp in Sources */,
 				116F87751F9D04B90062EE91 /* ScoreBundleViewer.cpp in Sources */,
 				116F877B1F9D04FC0062EE91 /* InspectorComponent.cpp in Sources */,
+				21CF60F72119FBA8000DD366 /* SymbolistPathSegment.cpp in Sources */,
 				7501AC5220BD4A9B002E0573 /* NewPropertyFormComponent.cpp in Sources */,
 				751E314C2069378600C3318F /* PaletteController.cpp in Sources */,
 				118648971EFA811800904672 /* TimePointArray.cpp in Sources */,
@@ -1860,8 +1935,11 @@
 				116A7EF72047E99D004B545D /* OdotMessage.cpp in Sources */,
 				113DEE0D1FA1D7C600A45220 /* EditSelectionBox.cpp in Sources */,
 				44CFE03B1EC3789C009135F8 /* include_juce_data_structures.mm in Sources */,
+				21CF60DE2118D6D5000DD366 /* SymbolistPoint.cpp in Sources */,
 				11A3939D20528799002C8916 /* OdotBundle_s.cpp in Sources */,
 				44CFE0391EC377EA009135F8 /* SymbolistMainWindow.cpp in Sources */,
+				21CF60D52118D5BA000DD366 /* SymbolistPath.cpp in Sources */,
+				21CF60E72118E3B1000DD366 /* SymbolistRect.cpp in Sources */,
 				444C43A61EE4A748000C6F69 /* SymbolGroupComponent.cpp in Sources */,
 				11B71DCE1F09844300CDE209 /* symbolist.cpp in Sources */,
 				75AEFCBE20EF9D3500728E1A /* CreateSymbolCommand.cpp in Sources */,
@@ -1882,8 +1960,10 @@
 				11E80835208082CB00E0342F /* SVGEncoder.cpp in Sources */,
 				11263095207F3D520086653D /* SVGFileIO.cpp in Sources */,
 				AC7BC43E089630154F7F79D6 /* include_juce_core.mm in Sources */,
+				21CF60EE2119F882000DD366 /* AGG_BezierLength.cpp in Sources */,
 				118353461F26AD0600DB1DF5 /* SymbolistLookAndFeel.cpp in Sources */,
 				52B193FE560B5C8022529FF5 /* include_juce_data_structures.mm in Sources */,
+				21CF60E62118E3B1000DD366 /* SymbolistRect.cpp in Sources */,
 				751E314B2069378600C3318F /* PaletteController.cpp in Sources */,
 				11CE00571EC328EC00E4F624 /* SymbolistMainComponent.cpp in Sources */,
 				44B718B11EDD9D010039884E /* Symbol.cpp in Sources */,
@@ -1909,6 +1989,7 @@
 				111A261C1F40B0C200D3713C /* MouseModeComponent.cpp in Sources */,
 				75AEFCAB20EF7F0F00728E1A /* Invoker.cpp in Sources */,
 				11AEF239207A943800B1398D /* JsonTreeItem.cpp in Sources */,
+				21CF60D42118D5BA000DD366 /* SymbolistPath.cpp in Sources */,
 				11D1235C1F44796800A5EA5B /* SymbolistMenu.cpp in Sources */,
 				75774F9A206176790069A89D /* Observer.cpp in Sources */,
 				118C38DE1EC5BC4F006FF4A1 /* Score.cpp in Sources */,
@@ -1924,6 +2005,7 @@
 				113DEE0C1FA1D7C600A45220 /* EditSelectionBox.cpp in Sources */,
 				1196B40E20FF8CFC002F4391 /* OdotHash.cpp in Sources */,
 				75774F98206176790069A89D /* Controller.cpp in Sources */,
+				21CF60DD2118D6D5000DD366 /* SymbolistPoint.cpp in Sources */,
 				114027C41F49C21E00A9B8C4 /* SortedStaves.cpp in Sources */,
 				75774F99206176790069A89D /* Observable.cpp in Sources */,
 				44C0729E1EC4AF870028D5F8 /* include_juce_osc.cpp in Sources */,
@@ -1947,6 +2029,7 @@
 				44A3C1EE1EC317BE00C4AD14 /* symbolist.cpp in Sources */,
 				444C43A51EE4A748000C6F69 /* SymbolGroupComponent.cpp in Sources */,
 				118C38EF1EC61404006FF4A1 /* PaletteComponent.cpp in Sources */,
+				21CF60F62119FBA8000DD366 /* SymbolistPathSegment.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1971,6 +2054,7 @@
 				758F6F4B207BCB00006EDD53 /* Score.cpp in Sources */,
 				758F6F4C207BCB00006EDD53 /* Palette.cpp in Sources */,
 				758F6F4D207BCB00006EDD53 /* TimePointArray.cpp in Sources */,
+				21CF60E02118D6D5000DD366 /* SymbolistPoint.cpp in Sources */,
 				758F6F4E207BCB00006EDD53 /* SortedStaves.cpp in Sources */,
 				75FB5EF3207CAD7E0083A1C0 /* ScoreTestsFixture.cpp in Sources */,
 				758F6F4F207BCB00006EDD53 /* SymbolistModel.cpp in Sources */,
@@ -1987,6 +2071,7 @@
 				758F6F59207BCB00006EDD53 /* StaffComponent.cpp in Sources */,
 				758F6F5A207BCB00006EDD53 /* EditSelectionBox.cpp in Sources */,
 				75987CF220D81A0500EDE4F9 /* CallbackButtonPropertyComponent.cpp in Sources */,
+				21CF60D72118D5BA000DD366 /* SymbolistPath.cpp in Sources */,
 				75B86ECF20E24D8C0080DB3D /* CodeBoxController.cpp in Sources */,
 				758F6F5B207BCB00006EDD53 /* SymbolistComponent.cpp in Sources */,
 				758F6F5C207BCB00006EDD53 /* ScoreComponent.cpp in Sources */,
@@ -1999,9 +2084,11 @@
 				758F6F62207BCB00006EDD53 /* ScoreCursor.cpp in Sources */,
 				75AEFCCA20F3B5A900728E1A /* Zone.cpp in Sources */,
 				7501AC5520BD4A9B002E0573 /* NewPropertyFormComponent.cpp in Sources */,
+				21CF60F92119FBA8000DD366 /* SymbolistPathSegment.cpp in Sources */,
 				75AEFCAF20EF7F0F00728E1A /* Invoker.cpp in Sources */,
 				758F6F65207BCB00006EDD53 /* SymbolistMenu.cpp in Sources */,
 				758F6F66207BCB00006EDD53 /* SymbolPropertiesPanel.cpp in Sources */,
+				21CF60F12119F882000DD366 /* AGG_BezierLength.cpp in Sources */,
 				75AEFCC120EF9D3500728E1A /* CreateSymbolCommand.cpp in Sources */,
 				758F6F67207BCB00006EDD53 /* OSCPropertyComponents.cpp in Sources */,
 				758F6F68207BCB00006EDD53 /* ScoreBundleViewer.cpp in Sources */,
@@ -2010,6 +2097,7 @@
 				758F6F6B207BCB00006EDD53 /* CodeBoxComponent.cpp in Sources */,
 				758F6F6C207BCB00006EDD53 /* Controller.cpp in Sources */,
 				758F6F6D207BCB00006EDD53 /* Observable.cpp in Sources */,
+				21CF60E92118E3B1000DD366 /* SymbolistRect.cpp in Sources */,
 				75AEFCB820EF998900728E1A /* Command.cpp in Sources */,
 				758F6F6E207BCB00006EDD53 /* Observer.cpp in Sources */,
 				7571E716208F2F1A0092A3E0 /* InspectorController.cpp in Sources */,

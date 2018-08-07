@@ -288,7 +288,7 @@ void SymbolistPath::fromSVG(const string& svg_path)
     string seg;
     char type = '\0', nexttype = '\0';
     
-    while ( (pos = svg_path.find_first_of("MmLlQqCcZ", prev) ) != std::string::npos )
+    while ( (pos = svg_path.find_first_of("MmLlQqCcSsZz", prev) ) != std::string::npos )
     {
         nexttype = svg_path[pos];
         
@@ -307,9 +307,14 @@ void SymbolistPath::fromSVG(const string& svg_path)
         }
         prev = pos+1;
         type = nexttype;
+
     }
     
-    if (prev < svg_path.length())
+    if( type == 'Z' || type == 'z' )
+    {
+        addSegment( startPt, m_path[0].pts[0] );
+    }
+    else if (prev < svg_path.length())
     {
         seg = svg_path.substr(prev, std::string::npos);
         auto pts = parseSegment(seg, type, startPt);
@@ -376,7 +381,6 @@ vector<SymbolistPoint> SymbolistPath::parseSegment(string& seg, const char type,
             else
                 cout << "l parse error: wrong number of points" << endl;
             break;
-            
         case 'Q':
             if( pts.size() == 2 )
             {

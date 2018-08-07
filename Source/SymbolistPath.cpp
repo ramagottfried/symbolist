@@ -33,13 +33,17 @@ void SymbolistPath::print()
     int count = 0;
     for( auto s : m_path )
     {
-        cout << count++ << " type " << s.type << endl;
+        cout << "segment " << count++ << " type " << s.type << endl;
         int ptcount = 0;
         for( auto p : s.pts )
         {
-            cout << "\t" << ptcount << " " << p.x << " " << p.y << endl;
+            cout << "\t[" << ptcount++ << "] (" << p.x << ",\t" << p.y << ")"<< endl;
         }
+        cout << "\t length " << s.length << endl;
     }
+    cout << "  total length: " << m_length << endl;
+    cout << "  bounds : "<< m_bounds.getX() << " " << m_bounds.getY() << " " << m_bounds.getWidth() << " " << m_bounds.getHeight() << endl;
+    
 }
 
 
@@ -326,15 +330,15 @@ vector<SymbolistPoint> SymbolistPath::parseSegment(string& seg, const char type,
     double x = 0;
     int count = 0;
     
-    while ( (numpos = seg.find_first_of(", ", prevnumpos) ) != std::string::npos )
+    while ( (numpos = seg.find_first_of(", -", prevnumpos) ) != std::string::npos )
     {
         if( count % 2 == 0 )
         {
-            x = stod( seg.substr(prevnumpos, numpos-prevnumpos));
+            x = stod( ( seg[numpos] == '-' ? '-' : ' ') + seg.substr(prevnumpos, numpos-prevnumpos));
         }
         else
         {
-            pts.emplace_back(SymbolistPoint(x, stod( seg.substr(prevnumpos, numpos-prevnumpos) ) ) );
+            pts.emplace_back(SymbolistPoint(x, ( seg[numpos] == '-' ? '-' : ' ') + stod( seg.substr(prevnumpos, numpos-prevnumpos) ) ) );
         }
         count++;
         prevnumpos = numpos+1;
@@ -348,7 +352,7 @@ vector<SymbolistPoint> SymbolistPath::parseSegment(string& seg, const char type,
             return vector<SymbolistPoint>();
         }
         
-        pts.emplace_back(SymbolistPoint(x, stod( seg.substr(prevnumpos, numpos-prevnumpos) ) ) );
+        pts.emplace_back(SymbolistPoint(x, stod( ( seg[numpos] == '-' ? '-' : ' ') + seg.substr(prevnumpos, numpos-prevnumpos) ) ) );
     }
     
     switch (type) {
@@ -389,8 +393,8 @@ vector<SymbolistPoint> SymbolistPath::parseSegment(string& seg, const char type,
             else
                 cout << "q parse error: wrong number of points" << endl;
             break;
-            
         case 'C':
+        case 'S':
             if( pts.size() == 3 )
             {
                 addSegment(startPt, pts[0], pts[1], pts[2]);
@@ -399,6 +403,7 @@ vector<SymbolistPoint> SymbolistPath::parseSegment(string& seg, const char type,
                 cout << "C parse error: wrong number of points" << endl;
             break;
         case 'c':
+        case 's':
             if( pts.size() == 3 )
             {
                 addSegment(startPt, startPt+pts[0], startPt+pts[1], startPt+pts[2]);

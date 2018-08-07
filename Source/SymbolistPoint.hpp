@@ -14,16 +14,15 @@ struct SymbolistPoint
     SymbolistPoint (const SymbolistPoint& other) : x (other.x), y (other.y)  {}
     SymbolistPoint (double initialX, double initialY) : x (initialX), y (initialY) {}
     
-    bool isEmpty() { return ( std::isnan(x) && std::isnan(y)); }
-    
-    
     SymbolistPoint& operator= (const SymbolistPoint& other) { x = other.x; y = other.y; return *this; }
     
-     inline bool operator== (SymbolistPoint other) const       { return x == other.x && y == other.y; }
-     inline bool operator!= (SymbolistPoint other) const       { return x != other.x || y != other.y; }
-    
-     bool isOrigin() const                            { return x == 0 && y == 0; }
-    
+    inline bool operator== (SymbolistPoint other) const       { return x == other.x && y == other.y; }
+    inline bool operator!= (SymbolistPoint other) const       { return x != other.x || y != other.y; }
+
+    bool isOrigin() const                            { return x == 0 && y == 0; }
+
+    bool isEmpty() { return ( std::isnan(x) && std::isnan(y)); }
+
     /** Returns true if the coordinates are finite values. */
    //  inline bool isFinite() const                     { return juce_isfinite(x) && juce_isfinite(y); }
     

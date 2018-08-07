@@ -492,164 +492,17 @@ void subbundletests()
      */
 }
 
-SymbolistPath path;
-
-
-vector<SymbolistPoint> parseSegment(string& seg, const char type, SymbolistPoint startPt)
-{
-    size_t prevnumpos = 0, numpos;
-    
-    vector<SymbolistPoint> pts;
-    double x = 0;
-    int count = 0;
-
-    while ( (numpos = seg.find_first_of(", ", prevnumpos) ) != std::string::npos )
-    {
-        if( count % 2 == 0 )
-        {
-            x = stod( seg.substr(prevnumpos, numpos-prevnumpos));
-        }
-        else
-        {
-            pts.emplace_back(SymbolistPoint(x, stod( seg.substr(prevnumpos, numpos-prevnumpos) ) ) );
-        }
-        count++;
-        prevnumpos = numpos+1;
-    }
-    
-    if (prevnumpos < seg.length() )
-    {
-        if( count % 2 == 0 )
-        {
-            cout << "error: uneven number of points" << endl;
-            return vector<SymbolistPoint>();
-        }
-        
-        pts.emplace_back(SymbolistPoint(x, stod( seg.substr(prevnumpos, numpos-prevnumpos) ) ) );
-    }
-    
-    
-    switch (type) {
-        case 'M':
-        case 'm':
-            return pts;
-            break;
-        case 'L':
-            if( pts.size() == 1 )
-            {
-                path.addSegment(startPt, pts[0]);
-            }
-            else
-                cout << "L parse error: wrong number of points" << endl;
-            break;
-        case 'l':
-            if( pts.size() == 2 )
-            {
-                path.addSegment(startPt, startPt+pts[0]);
-            }
-            else
-                cout << "l parse error: wrong number of points" << endl;
-            break;
-            
-        case 'Q':
-            if( pts.size() == 2 )
-            {
-                path.addSegment(startPt, pts[0], pts[1]);
-            }
-            else
-                cout << "Q parse error: wrong number of points" << endl;
-            break;
-        case 'q':
-            if( pts.size() == 2 )
-            {
-                path.addSegment(startPt, startPt+pts[0], startPt+pts[1]);
-            }
-            else
-                cout << "q parse error: wrong number of points" << endl;
-            break;
-        
-        case 'C':
-            if( pts.size() == 3 )
-            {
-                path.addSegment(startPt, pts[0], pts[1], pts[2]);
-            }
-            else
-                cout << "C parse error: wrong number of points" << endl;
-            break;
-        case 'c':
-            if( pts.size() == 3 )
-            {
-                path.addSegment(startPt, startPt+pts[0], startPt+pts[1], startPt+pts[2]);
-            }
-            else
-                cout << "c parse error: wrong number of points" << endl;
-            break;
-        default:
-            break;
-    }
-    
-    cout << type << " " << pts.size() << endl;
-    for( auto p : pts )
-    {
-        cout << "x " << p.getX() << " y " << p.getY() << endl;
-    }
-    cout << "--" << endl;
-    
-    return pts;
-}
 
 int main(int argc, const char * argv[])
 {
     
     
-    string svg_path = "M0.5,0.12q10,1.1 .20,21Q11,12 22,23";
+    string svg_path = "M204.7-0.7C119.3,53.7-19.8-118.2,2.2,201.8c79.7-22.7,156-46.9,202-84c9.2-36.7,6.8-77.2,0-119";
     
     SymbolistPath p(svg_path);
     p.print();
     
-    auto rect = p.getBounds();
-    cout << rect.getX() << " " << rect.getY() << " " << rect.getWidth() << " " << rect.getHeight() << endl;
     
-    /*
-    
-    
-    
-    SymbolistPoint startPt;
-    std::size_t prev = 0, pos;
-    string seg;
-    char type = '\0', nexttype = '\0';
-    
-    while ( (pos = svg_path.find_first_of("MmLlQqCcZ", prev) ) != std::string::npos )
-    {
-        nexttype = svg_path[pos];
-        
-        if (pos > prev)
-        {
-            seg = svg_path.substr(prev, pos-prev);
-
-            auto pts = parseSegment(seg, type, startPt);
-            if( !pts.size() )
-            {
-                return 1;
-            }
-
-            startPt = pts.back();
-        
-        }
-        prev = pos+1;
-        type = nexttype;
-    }
-    
-    if (prev < svg_path.length())
-    {
-        seg = svg_path.substr(prev, std::string::npos);
-        auto pts = parseSegment(seg, type, startPt);
-        if( !pts.size() )
-        {
-            return 1;
-        }
-    }
-    */
     return 0;
 }
 

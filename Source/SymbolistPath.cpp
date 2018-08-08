@@ -288,7 +288,7 @@ void SymbolistPath::fromSVG(const string& svg_path)
     string seg;
     char type = '\0', nexttype = '\0';
     
-    while ( (pos = svg_path.find_first_of("MmLlQqCcSsZz", prev) ) != std::string::npos )
+    while ( (pos = svg_path.find_first_of("MmLlHhVvQqCcSsZz", prev) ) != std::string::npos )
     {
         nexttype = svg_path[pos];
         
@@ -332,32 +332,74 @@ vector<SymbolistPoint> SymbolistPath::parseSegment(string& seg, const char type,
     size_t prevnumpos = 0, numpos;
     
     vector<SymbolistPoint> pts;
-    double x = 0;
+    double x = 0, y = 0, d = 0;
     int count = 0;
     
+    // step through string segment until last value
     while ( (numpos = seg.find_first_of(", -", prevnumpos) ) != std::string::npos )
     {
+        try {
+            d = stod( ( seg[numpos] == '-' ? '-' : ' ') + seg.substr(prevnumpos, numpos-prevnumpos) );
+        } catch (exception& e) {
+            cout << "number parsing error " << (seg[numpos] == '-' ? '-' : ' ') + seg.substr(prevnumpos, numpos-prevnumpos) << endl;
+            return vector<SymbolistPoint>();
+        }
+        
         if( count % 2 == 0 )
         {
-            x = stod( ( seg[numpos] == '-' ? '-' : ' ') + seg.substr(prevnumpos, numpos-prevnumpos));
+            x = d;
         }
         else
         {
-            pts.emplace_back(SymbolistPoint(x, ( seg[numpos] == '-' ? '-' : ' ') + stod( seg.substr(prevnumpos, numpos-prevnumpos) ) ) );
+            y = d;
+            pts.emplace_back( SymbolistPoint(x, y) );
         }
+        
         count++;
         prevnumpos = numpos+1;
     }
     
+    // final section of the string
     if (prevnumpos < seg.length() )
     {
-        if( count % 2 == 0 )
-        {
-            cout << "error: uneven number of points" << endl;
+        try {
+            d = stod( ( seg[numpos] == '-' ? '-' : ' ') + seg.substr(prevnumpos, numpos-prevnumpos) );
+        } catch (exception& e) {
+            cout << "number parsing error " << (seg[numpos] == '-' ? '-' : ' ') + seg.substr(prevnumpos, numpos-prevnumpos) << endl;
             return vector<SymbolistPoint>();
         }
         
-        pts.emplace_back(SymbolistPoint(x, stod( ( seg[numpos] == '-' ? '-' : ' ') + seg.substr(prevnumpos, numpos-prevnumpos) ) ) );
+        // catch special cases with one value
+        switch (type) {
+            case 'H':
+                pts.emplace_back( SymbolistPoint(d, startPt.y) );
+                addSegment(startPt, pts.back() );
+                return pts;
+                break;
+            case 'h':
+                pts.emplace_back( SymbolistPoint(startPt.x+d, startPt.y) );
+                addSegment(startPt, pts.back() );
+                return pts;
+                break;
+            case 'V':
+                pts.emplace_back( SymbolistPoint(startPt.x, d) );
+                addSegment(startPt, pts.back() );
+                return pts;
+                break;
+            case 'v':
+                pts.emplace_back( SymbolistPoint(startPt.x, startPt.y+d) );
+                addSegment(startPt, pts.back() );
+                return pts;
+                break;
+            default: // final point of xy pair
+                if( count % 2 == 0 )
+                {
+                    cout << "error: uneven number of points" << endl;
+                    return vector<SymbolistPoint>();
+                }
+                pts.emplace_back(SymbolistPoint(x, d ) );
+                break;
+        }
     }
     
     switch (type) {
@@ -382,35 +424,40 @@ vector<SymbolistPoint> SymbolistPath::parseSegment(string& seg, const char type,
                 cout << "l parse error: wrong number of points" << endl;
             break;
         case 'Q':
-            if( pts.size() == 2 )
+            if( pts.size() % 2 == 0)
             {
-                addSegment(startPt, pts[0], pts[1]);
+                for( int i = 0; i < pts.size(); i+=2)
+                    addSegment(startPt, pts[i], pts[i+1]);
             }
             else
                 cout << "Q parse error: wrong number of points" << endl;
             break;
         case 'q':
-            if( pts.size() == 2 )
+            if( pts.size() % 2 == 0)
             {
-                addSegment(startPt, startPt+pts[0], startPt+pts[1]);
+                for( int i = 0; i < pts.size(); i+=2)
+                    addSegment(startPt, startPt+pts[i], startPt+pts[i+1]);
             }
             else
                 cout << "q parse error: wrong number of points" << endl;
             break;
         case 'C':
         case 'S':
-            if( pts.size() == 3 )
+            if( (pts.size() % 3) == 0 )
             {
-                addSegment(startPt, pts[0], pts[1], pts[2]);
+                for( int i = 0; i < pts.size(); i+=3)
+                    addSegment(startPt, pts[i], pts[i+1], pts[i+2] );
             }
             else
                 cout << "C parse error: wrong number of points" << endl;
             break;
         case 'c':
         case 's':
-            if( pts.size() == 3 )
+            // if the coordinates are relative, are the second sequence also reltaive to the same reference point?
+            if( (pts.size() % 3) == 0 )
             {
-                addSegment(startPt, startPt+pts[0], startPt+pts[1], startPt+pts[2]);
+                for( int i = 0; i < pts.size(); i+=3)
+                    addSegment(startPt, startPt+pts[i], startPt+pts[i+1], startPt+pts[i+2] );
             }
             else
                 cout << "c parse error: wrong number of points" << endl;
@@ -418,13 +465,6 @@ vector<SymbolistPoint> SymbolistPath::parseSegment(string& seg, const char type,
         default:
             break;
     }
-    
-    cout << type << " " << pts.size() << endl;
-    for( auto p : pts )
-    {
-        cout << "x " << p.getX() << " y " << p.getY() << endl;
-    }
-    cout << "--" << endl;
     
     return pts;
 }

@@ -9,19 +9,15 @@
 
 using namespace std;
 
-// inserting points into the Path could also do the bound, which makes some sense, since any Path will have bounds...
-
-// parse from SVG string
 // lookup functions
-
 
 class SymbolistPath
 {
 public:
     SymbolistPath(){}
     SymbolistPath(const string& svg_path) { fromSVG(svg_path); }
-    
     ~SymbolistPath(){}
+    
     void clear();
 
     void addSegment(SymbolistPoint a, SymbolistPoint b);

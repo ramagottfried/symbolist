@@ -121,9 +121,9 @@ public:
     
     /* ======= Get Messages ======= */
 
-    OdotMessage getMessage( const char * address ) const;
-    OdotMessage getMessage( const string& address ) const { return getMessage( address.c_str() ); }
-    
+    OdotMessage getMessage( const char * address ) const { return getMessage( string(address) ); };
+    OdotMessage getMessage( const string& address ) const;
+
     /**
      *  Recursively search all subbundles for address and return containing subbundle
      *
@@ -188,6 +188,7 @@ private:
     
     OdotBundle getBundleContainingMessage_imp( t_osc_bndl_u * bndl, const char * address ) const;
     OdotBundle getBundleContainingMessage_imp( t_osc_bndl_u * bndl, OdotMessage& msg ) const;
+    OdotMessage getMessage_recursive( t_osc_bndl_u * bndl, const vector<string>& addr_vec, int level ) const;
 
 };
 

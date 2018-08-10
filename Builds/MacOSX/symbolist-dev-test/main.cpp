@@ -493,16 +493,65 @@ void subbundletests()
 }
 
 
+void scoreDev()
+{
+    OdotBundle m_score;
+    m_score.setFromFile("/Users/rama/Documents/symbolist/testscore.osc");
+ //   m_score.print();
+    
+    auto system = m_score.getMessage("/score./page./1./system./1").getBundle();
+    
+    auto palette = m_score.getMessage("/palette").getBundle();
+    
+    auto staves = system.getMessage("/stave").getBundle();
+
+    for( auto stave_m : staves.getMessageArray() )
+    {
+
+        auto stave = stave_m.getBundle();
+        
+        const string& stave_name = stave.getMessage("/name").getString();
+        
+        auto stave_prototype = palette.getMessage(stave_name).getBundle();
+        double stave_timeConst = stave_prototype.getMessage("/param./timePixScale").getFloat();
+        
+        auto stave_script = stave_prototype.getMessage("/script").getBundle();
+        stave_prototype.print();
+        
+        auto stave_palette = stave_prototype.getMessage("/palette").getBundle();
+        
+        auto syms = stave.getMessage("/symbol").getBundle();
+        
+        for ( auto sym : syms.getMessageArray() )
+        {
+            auto s = sym.getBundle();
+            const string& s_name = s.getMessage("/name").getString();
+
+            auto sym_set_script = stave_palette.getMessage(s_name).getBundle().getMessage("/script./set/fromOSC").getString();
+            
+//            cout << sym.get_o_ptr() << " " << s_name << "\n\t" << sym_set_script << endl;
+            
+        //    const string set_bounds_
+            
+  //          s.applyExpr(sym_set_script)
+            
+        }
+        
+    }
+    
+}
+
 int main(int argc, const char * argv[])
 {
+    scoreDev();
     
-    
+    /*
     string svg_path = "M104.7-0.7C119.3,53.7-19.8-118.2,2.2,201.8H127c79.7-22.7,156-46.9,202-84c9.2-36.7,6.8-77.2,0-119Z";
     //string svg_path = "M104.7-0.7C119.3,53.7-19.8-118.2,2.2,201.8,119.3,53.7-19.8-118.2,2.2,201.8";
 
     SymbolistPath p(svg_path);
     p.print();
-    
+    */
     
    // cout << x << endl;
     

@@ -168,7 +168,7 @@ void OdotBundle::clear()
 
 void OdotBundle::print( int level ) const
 {
-    print_imp( ptr.get() );
+    print_imp( ptr.get(), level );
 }
 
 void OdotBundle::print_imp( t_osc_bndl_u * bndl, int level ) const
@@ -348,25 +348,59 @@ bool OdotBundle::addressExists( const char * address ) const
     return (res == 1);
 }
 
-/* get first OSC Messages matching this address (full match) */
-OdotMessage OdotBundle::getMessage( const char * address ) const
+vector<string> split(string data, string token)
 {
-    t_osc_bndl_it_u *it = osc_bndl_it_u_get( ptr.get() );
+    vector<string> output;
+    size_t pos = string::npos; // size_t to avoid improbable overflow
+    do
+    {
+        pos = data.find(token);
+        output.push_back(data.substr(0, pos));
+        if (string::npos != pos)
+            data = data.substr(pos + token.size());
+    } while (string::npos != pos);
+    return output;
+}
+
+/* get first OSC Messages matching this address (full match) */
+OdotMessage OdotBundle::getMessage( const string& address ) const
+{
+    auto addr_vec = split(address, ".");
+    return getMessage_recursive(ptr.get(), addr_vec, 0);
+}
+
+OdotMessage OdotBundle::getMessage_recursive( t_osc_bndl_u * bndl, const vector<string>& addr_vec, int level ) const
+{
+    t_osc_bndl_it_u *it = osc_bndl_it_u_get( bndl );
     while( osc_bndl_it_u_hasNext(it) )
     {
         t_osc_msg_u *current_message = osc_bndl_it_u_next(it);
-        int po, ao;
-        int r = osc_match( address, osc_message_u_getAddress( current_message ), &po, &ao );
-        
-        if(r == (OSC_MATCH_ADDRESS_COMPLETE | OSC_MATCH_PATTERN_COMPLETE))
+        if(addr_vec[level] == osc_message_u_getAddress( current_message ) )
         {
             osc_bndl_it_u_destroy(it);
-            return OdotMessage( current_message );
+
+            if( level == (addr_vec.size()-1) )
+            {
+                return OdotMessage( current_message );
+            }
+            else
+            {
+                auto first_atom = osc_message_u_getArg(current_message, 0);
+                if( osc_atom_u_getTypetag( first_atom ) == OSC_BUNDLE_TYPETAG )
+                {
+                    return getMessage_recursive( osc_atom_u_getBndl(first_atom), addr_vec, level+1 );
+                }
+                else
+                {
+                    return OdotMessage();
+                }
+            }
         }
     }
     osc_bndl_it_u_destroy(it);
     return OdotMessage();
 }
+
 
 vector<OdotMessage> OdotBundle::matchAddress( const char * address, int fullmatch ) const
 {
@@ -422,6 +456,7 @@ void OdotBundle::setFromString( const string& str )
         throw invalid_argument("The string being parsed is not a well-formed odot bundle.");
  
     ptr = odot::newOdotBundlePtr( bndl );
+    
 }
 
 void OdotBundle::setFromFile( const string& oscFilePath ) 
@@ -438,9 +473,10 @@ void OdotBundle::setFromFile( const string& oscFilePath )
     stringstream fileContentBuffer;
     fileContentBuffer << oscFile.rdbuf();
     
-    cout << fileContentBuffer.str() << endl;
+ //   cout << fileContentBuffer.str() << endl;
     
     setFromString(fileContentBuffer.str());
+    
 }
 
 

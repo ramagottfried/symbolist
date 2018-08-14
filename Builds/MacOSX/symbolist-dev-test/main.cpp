@@ -497,17 +497,86 @@ void scoreDev()
 {
     OdotBundle m_score;
     m_score.setFromFile("/Users/rama/Documents/symbolist/testscore.osc");
- //   m_score.print();
+
+    auto basis = m_score.getMessage("/basis").getBundle();
+    auto palette = m_score.getMessage("/palette").getBundle();
+    auto pages = m_score.getMessage("/score./page").getBundle().getMessageArray();
+   
+    // do system sorting and time assignment before iterating to map time to sub elements
+    
+    //1. collect systems
+    vector<OdotMessage> systems;
+    for( auto& p_msg : pages )
+    {
+        auto vec = p_msg.getBundle().getMessage("/system").getBundle().getMessageArray();
+        systems.reserve( systems.size() + vec.size() );
+        systems.insert( systems.end(), vec.begin(), vec.end() );
+    }
+
+    //2. all systems have the same base time scaling and sorting function, stored in the /basis bundle.
+    //      this can be warped, but there must be a constant basis value.
+    
+    OdotMessage compareFn = basis.getMessage("/time/sort");
+    compareFn.print();
+    
+    OdotExpr compareExpr( "/t = /time/sort( /system/a, /system/b )" );
+    
+    sort( systems.begin(), systems.end(),
+         [&compareExpr, &compareFn](OdotMessage& a, OdotMessage& b){
+             OdotBundle test(compareFn);
+             test.addMessage("/system/a", a.getBundle() );
+             test.addMessage("/system/b", b.getBundle() );
+             test.applyExpr( compareExpr );
+             test.print();
+             return test.getMessage("/t").getInt();
+         });
+    
+    
+    //3. the placement of staves on pages is determined by the /layout
+    //      when the system is larger than the page, it needs to be placed on a new page
+    
+    // then iterating through all elements, using time of parent to set children
+    for( auto& p_msg : pages )
+    {
+        auto systems = p_msg.getBundle().getMessage("/system").getBundle().getMessageArray();
+     
+        // system needs bounds, but to generate the bounds, we need to know how the time aspect fits on the page
+        
+        for( auto& sys_msg : systems )
+        {
+            auto staves = sys_msg.getBundle().getMessage("/stave").getBundle().getMessageArray();
+
+            for( auto& stave_msg : staves )
+            {
+               auto symbols = stave_msg.getBundle().getMessage("/symbol").getBundle().getMessageArray();
+                
+                for( auto& sym_msg : symbols )
+                {
+                    auto s = sym_msg.getBundle();
+                    s.print();
+                    
+                }
+                
+            }
+
+            
+            
+        }
+        
+    }
+    
+    return;
+    
+    
     
     auto system = m_score.getMessage("/score./page./1./system./1").getBundle();
+
     
-    auto palette = m_score.getMessage("/palette").getBundle();
     
     auto staves = system.getMessage("/stave").getBundle();
 
     for( auto stave_m : staves.getMessageArray() )
     {
-
         auto stave = stave_m.getBundle();
         
         const string& stave_name = stave.getMessage("/name").getString();
@@ -515,21 +584,33 @@ void scoreDev()
         auto stave_prototype = palette.getMessage(stave_name).getBundle();
         double stave_timeConst = stave_prototype.getMessage("/param./timePixScale").getFloat();
         
-        auto stave_script = stave_prototype.getMessage("/script").getBundle();
-        stave_prototype.print();
+        auto stave_scripts = stave_prototype.getMessage("/script").getBundle();
+        stave_scripts.print();
         
         auto stave_palette = stave_prototype.getMessage("/palette").getBundle();
         
         auto syms = stave.getMessage("/symbol").getBundle();
         
+        stave.removeMessage("/symbol");
+        
         for ( auto sym : syms.getMessageArray() )
         {
             auto s = sym.getBundle();
+            
             const string& s_name = s.getMessage("/name").getString();
 
-            auto sym_set_script = stave_palette.getMessage(s_name).getBundle().getMessage("/script./set/fromOSC").getString();
+            auto sym_prototype = stave_palette.getMessage(s_name).getBundle();
             
-//            cout << sym.get_o_ptr() << " " << s_name << "\n\t" << sym_set_script << endl;
+            s.addMessage("/script", sym_prototype.getMessage("/script./set/fromOSC").getString() );
+            
+            s.addMessage( "/stave", stave );
+            
+            s.print();
+            
+            
+           // s.applyExpr(sym_set_script);
+            
+            //cout << sym.get_o_ptr() << " " << s_name << "\n\t" << sym_set_script << endl;
             
         //    const string set_bounds_
             

@@ -451,7 +451,22 @@ vector<OdotMessage> OdotBundle::getMessageArray() const
 void OdotBundle::setFromString( const string& str )
 {
     t_osc_bndl_u * bndl = nullptr;
-    t_osc_err error = osc_parser_parseString( (long)str.size(), (char *)str.c_str(), &bndl );
+    if( str.size() == 0 )
+        throw invalid_argument("The string being parsed is empty.");
+
+    // strip white space at ends
+    string parse_str = str.substr(str.find_first_not_of(" \t\n\r\f\v"), str.length()-1 );
+    parse_str = parse_str.substr(0, parse_str.find_last_not_of(" \t\n\r\f\v") + 1);
+
+    // remove enclosing brackets if present
+    if( parse_str.front() == '{' ) {
+        if( parse_str.back() == '}' )
+            parse_str = parse_str.substr(1, parse_str.length() - 2 );
+        else
+            throw invalid_argument("The string being parsed is not a well-formed odot bundle.");
+    }
+    
+    t_osc_err error = osc_parser_parseString( (long)parse_str.size(), (char *)parse_str.c_str(), &bndl );
     if (error == OSC_ERR_PARSER)
         throw invalid_argument("The string being parsed is not a well-formed odot bundle.");
  

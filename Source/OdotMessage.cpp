@@ -99,7 +99,7 @@ void OdotMessage::print() const
     memset(buf, '\0', 32768);
 
     char *buf_ptr = buf;
-    cout << "==== ODOT MESSAGE ====" << endl;
+    cout << ":::: ODOT MESSAGE ::::" << endl;
     cout << "   ( " << ptr.get() << " )" << endl;
     
     cout << osc_message_u_getAddress( ptr.get() );
@@ -107,10 +107,6 @@ void OdotMessage::print() const
     int argcount = osc_message_u_getArgCount( ptr.get() );
     for( int i = 0; i < argcount; i++ )
     {
-        
-        osc_atom_u_getString( osc_message_u_getArg( ptr.get() , i), 32768, &buf_ptr );
-        cout << "\t" << buf_ptr;
-        
         t_osc_atom_u *a = osc_message_u_getArg(ptr.get(), i);
         if( osc_atom_u_getTypetag(a) == OSC_BUNDLE_TYPETAG )
         {
@@ -127,7 +123,7 @@ void OdotMessage::print() const
     }
 
     cout << endl;
-    cout << "====-===-======-====" << endl;
+    cout << ":::::::::::::::::::::::" << endl;
 }
 
 string OdotMessage::getJSON()

@@ -44,6 +44,15 @@ The central data structure used for organizing Symbols is a list of Symbol sub-b
 }
 ```
 
+In scripts, sub-bundles can be referenced with the `.` operation like:
+
+```
+/foo = /bar./inner
+```
+
+See the `o.expr.codebox` Max help file for more information about Odot scripting.
+
+
 # Naming Conventions
 In Symbolist there is a set of basic objects that can be used in different ways, for convenience we are using a typical musical score naming scheme (but of course the "score" might not look or act anything like a musical score!).
 
@@ -124,16 +133,16 @@ Eventually we might add a default Stave layout on a System:
     /margin/topbottom : [20, 20],
     /staves : {
         /piccolo : {
-            /margin : [10, 10],
-            /name : "/piccolo"
+            /margin : [10, 10]
         },
         /oboe : {
-            /margin : [10, 10],
-            /name : "/oboe"
+            /margin : [10, 10]
         },
     }
 }
 ```
+
+If no `/layout` is present, Symbolist will expand the `Page` to fit the `Staves`. If there is a `/page./size` found, Symbolist will attempt to fit as many `Staves` on the `Page` as possible based on the size of the `Page` and any margins that have been set. If a `Stave` does not fit on a page, a new `Page` will be created for the extra `Stave`.
 
 ## Score
 The `/score` sub-bundle is where the Symbols displayed on the Page are laid out. Each parent object can contain one or more child objects.

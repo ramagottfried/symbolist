@@ -466,8 +466,7 @@ void subbundletests()
     
     // testfunction assignment
     s.applyExpr("/d./b./a./q = quote(lambda([v,x], /z = v, /zz = x)), /d./b./a./q(11,22)" );
-    s.print();
-    
+   // s.print();
     
     /*
      /a./c./e = 1,
@@ -476,23 +475,28 @@ void subbundletests()
      
      /fn( /a ),
      */
-    
-    /*
+
      OdotBundle bb;
      bb.applyExpr(R"expr(
      /a./b./c = "lambda([], /z = 1)",
      
-     
-     /a./b./c()
+     /a./b./c(),
+                  
+    /a./c./e = 111,
+
+    /fn = "lambda([b], /zz = b./c./e)",
+
+    /fn( /a )
      
      )expr" );
-     
-     
+    
      bb.print();
-     */
 }
 
-
+/**
+ *  Setting the score from a file
+ *
+ */
 void scoreDev()
 {
     OdotBundle m_score;
@@ -503,6 +507,7 @@ void scoreDev()
     auto pages = m_score.getMessage("/score./page").getBundle().getMessageArray();
    
     // do system sorting and time assignment before iterating to map time to sub elements
+    // pages have no time information, so they are always in the order they are listed.
     
     //1. collect systems
     vector<OdotMessage> systems;
@@ -527,13 +532,12 @@ void scoreDev()
              test.addMessage("/system/a", a.getBundle() );
              test.addMessage("/system/b", b.getBundle() );
              test.applyExpr( compareExpr );
-             test.print();
              return test.getMessage("/t").getInt();
          });
     
-    
     //3. the placement of staves on pages is determined by the /layout
     //      when the system is larger than the page, it needs to be placed on a new page
+    //      or, if no page dimensions have been set, just increase the size of the page
     
     // then iterating through all elements, using time of parent to set children
     for( auto& p_msg : pages )
@@ -624,6 +628,8 @@ void scoreDev()
 
 int main(int argc, const char * argv[])
 {
+    //subbundletests();
+    
     scoreDev();
     
     /*

@@ -1,5 +1,7 @@
 #pragma once
 #include "SymbolistPoint.hpp"
+#include "OdotBundle.hpp"
+
 #include <vector>
 #include <algorithm>
 
@@ -32,6 +34,33 @@ public:
         if (w < double()) w = -w;
         if (h < double()) h = -h;
     }
+    
+    SymbolistRect( const OdotBundle& b ) :
+        pos ( b.getMessage("/x").getDouble(), b.getMessage("/y").getDouble() ),
+        w ( b.getMessage("/w").getDouble() ),
+        h ( b.getMessage("/h").getDouble() )
+    {}
+    
+    inline std::vector<double> getVector(){ return std::vector<double>( {pos.x,pos.y,w,h} ); }
+    
+    inline OdotBundle getBundle()
+    {
+        OdotBundle b;
+        b.addMessage("/x", pos.x);
+        b.addMessage("/y", pos.x);
+        b.addMessage("/w", w);
+        b.addMessage("/h", h);
+        return b;
+    }
+    
+    inline void fromBundle( const OdotBundle& b )
+    {
+        pos.x = b.getMessage("/x").getDouble();
+        pos.y = b.getMessage("/y").getDouble();
+        w = b.getMessage("/w").getDouble();
+        h = b.getMessage("/h").getDouble();
+    }
+
     
     /** Creates a SymbolistRect from a set of left, right, top, bottom coordinates.
      The right and bottom values must be larger than the left and top ones, or the resulting
@@ -685,6 +714,17 @@ public:
             setBottom(y);
     }
     
+    /**
+     * expands rectangle to fit the point at X Y, unlike unionWith() it will not shrink to fit
+     *
+     * @param other   other rect to expand to contain
+     *
+     */
+    void expandToFit(const SymbolistRect& other )
+    {
+        expandToFit(other.pos.x, other.pos.y);
+        expandToFit(other.getRight(), other.getBottom() );
+    }
         
 };
             

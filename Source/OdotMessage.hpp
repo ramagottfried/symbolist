@@ -54,6 +54,7 @@ public:
     
     inline string getString(int argIndex = 0) const { return ((*this)[argIndex]).getString(); }
     inline float getFloat(int argIndex = 0) const { return  osc_atom_u_getFloat( osc_message_u_getArg( ptr.get(), argIndex ) ); }
+    inline double getDouble(int argIndex = 0) const { return  osc_atom_u_getDouble( osc_message_u_getArg( ptr.get(), argIndex ) ); }
     inline int getInt(int argIndex = 0) const { return  osc_atom_u_getInt( osc_message_u_getArg( ptr.get(), argIndex ) ); }
     OdotBundle getBundle(int argIndex = 0) const;
 
@@ -82,12 +83,23 @@ public:
 //    inline void appendValue( String& val ){   osc_message_u_appendString( ptr.get(), val.getCharPointer() );     }
 //    inline void appendValue( const String& val ){   osc_message_u_appendString( ptr.get(), val.getCharPointer() );     }
 
+    template <typename T>
+    void appendValue( vector<T> val )
+    {
+        for( auto it = val.begin(); it != val.end(); it++ )
+        {
+            appendValue(*it);
+        }
+    }
+    
     template <typename... Ts>
     void  appendValueList(Ts&&... args)
     {
         using expand = int[];
         (void) expand { 0, ((void)appendValue( std::forward<Ts>(args) ), 0) ... };
     }
+    
+    
     
     inline void clear(){ osc_message_u_clearArgs( ptr.get() ); }
     

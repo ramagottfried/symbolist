@@ -1,5 +1,5 @@
 #pragma once
-
+#include "OdotBundle.hpp"
 #include <cmath>
 
 /*
@@ -25,6 +25,15 @@ struct SymbolistPoint
 
     /** Returns true if the coordinates are finite values. */
    //  inline bool isFinite() const                     { return juce_isfinite(x) && juce_isfinite(y); }
+    
+    inline OdotBundle getBundle()
+    {
+        OdotBundle b;
+        b.addMessage("/x", x);
+        b.addMessage("/y", y);
+        return b;
+        
+    }
     
     /** Returns the SymbolistPoint's x coordinate. */
      inline double getX() const                    { return x; }

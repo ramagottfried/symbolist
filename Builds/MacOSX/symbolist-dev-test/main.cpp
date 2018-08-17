@@ -493,18 +493,48 @@ void subbundletests()
      bb.print();
 }
 
+void addSub()
+{
+    string bundlestr = R"bundle(
+    /layout : {
+        /page : {
+            /margins : {
+                /left : 10,
+                /right : 10,
+                /top : 10,
+                /bottom : 10
+            }
+        }
+    })bundle";
+    
+    OdotBundle b(bundlestr);
+    
+    // need something like assign to bundle member here...
+    b.addMessage("/layout./page./margins./foo", 0);
+    b.print();
+}
+
+void SymbolistUtil_setBounds(OdotBundle& b, double x, double y, double w, double h)
+{
+    b.addMessage("/x", x);
+    b.addMessage("/y", y);
+    b.addMessage("/w", w);
+    b.addMessage("/h", h);
+}
+
 /**
  *  Setting the score from a file
  *
  */
 void scoreDev()
 {
-    OdotBundle m_score;
-    m_score.setFromFile("/Users/rama/Documents/symbolist/testscore.osc");
+    OdotBundle file, m_score;
+    file.setFromFile("/Users/rama/Documents/symbolist/testscore2.osc");
 
-    auto basis = m_score.getMessage("/basis").getBundle();
-    auto palette = m_score.getMessage("/palette").getBundle();
-    auto pages = m_score.getMessage("/score./page").getBundle().getMessageArray();
+    m_score = file;
+    
+    auto defs = file.getMessage("/defs").getBundle();
+    auto pages = file.getMessage("/score./page").getBundle().getMessageArray();
    
     // do system sorting and time assignment before iterating to map time to sub elements
     // pages have no time information, so they are always in the order they are listed.
@@ -521,8 +551,7 @@ void scoreDev()
     //2. all systems have the same base time scaling and sorting function, stored in the /basis bundle.
     //      this can be warped, but there must be a constant basis value.
     
-    OdotMessage compareFn = basis.getMessage("/time/sort");
-    compareFn.print();
+    OdotMessage compareFn = defs.getMessage("/system./time/sort");
     
     OdotExpr compareExpr( "/t = /time/sort( /system/a, /system/b )" );
     
@@ -534,39 +563,197 @@ void scoreDev()
              test.applyExpr( compareExpr );
              return test.getMessage("/t").getInt();
          });
+
+    // <<<< reset systems here after ordering
+    
     
     //3. the placement of staves on pages is determined by the /layout
     //      when the system is larger than the page, it needs to be placed on a new page
     //      or, if no page dimensions have been set, just increase the size of the page
     
+    // objects in the palette have a default bounds, which describes the scaling?
+    // maybe not worth it, since the scaling happens based on the transform...
+    // when parsing file, we need to get the bounds for the graphic path
+    
     // then iterating through all elements, using time of parent to set children
-    for( auto& p_msg : pages )
+    OdotBundle context;
+    context.addMessage("/defs", defs);
+    
+    // for now, all systems use the same object def
+    auto page_def = defs.getMessage("/page").getBundle();
+    auto system_def = defs.getMessage("/system").getBundle();
+    
+    double page_w = page_def.getMessage("/bounds./w").getFloat();
+    double page_h = page_def.getMessage("/bounds./h").getFloat();
+
+    // auto timePixScale = system_def.getMessage("/timePixScale").getFloat();
+    // auto timeAxis = system_def.getMessage("/timeAxis").getString();
+    
+    size_t page_count = 0, system_count = 0, stave_count = 0, symbol_count = 0;
+    
+    for( auto& page_msg : pages )
     {
-        auto systems = p_msg.getBundle().getMessage("/system").getBundle().getMessageArray();
-     
-        // system needs bounds, but to generate the bounds, we need to know how the time aspect fits on the page
+        const string page_addr = "/score./page./" + to_string(page_count+1);
         
+        auto page = page_msg.getBundle();
+        
+        // set page position and size here
+        // or if the page should expand, then set size after iterating the page items
+        SymbolistRect pageBounds;
+        pageBounds.setBounds( page_w * page_count, page_h * page_count, page_w, page_h );
+        
+        page.addMessage("/bounds", pageBounds.getBundle() );
+
+        // set page in context for child objects
+        context.addMessage("/page", page );
+
+        SymbolistRect prevSystemBounds(0,0,0,0);
+        
+        auto systems = page.getMessage("/system").getBundle().getMessageArray();
         for( auto& sys_msg : systems )
         {
-            auto staves = sys_msg.getBundle().getMessage("/stave").getBundle().getMessageArray();
+            const string system_addr = page_addr + "./system./"+to_string(symbol_count+1);
 
+            auto system = sys_msg.getBundle();
+
+//            const string& system_name = system.getMessage("/use").getString();
+            auto system_def = defs.getMessage("/system").getBundle();
+            auto system_set_script = system_def.getMessage("/script./set/fromOSC");
+            
+            system.addMessage("/prevBounds", prevSystemBounds.getBundle() );
+            system.addMessage("/context", context);
+            system.addMessage(system_set_script);
+            
+            if( system.applyExpr("/set/fromOSC(/context, /prevBounds), delete(/context), delete(/set/fromOSC), delete(/prev)") )
+            {
+                cout << "error in /system script" << endl;
+                return;
+            }
+            
+            SymbolistRect systemBounds( system.getMessage("/bounds").getBundle() );
+
+            // set system in context for child objects
+            context.addMessage("/system", system );
+            
+            SymbolistRect prevStaveBounds(0,0,0,0);
+
+            auto staves = system.getMessage("/stave").getBundle().getMessageArray();
             for( auto& stave_msg : staves )
             {
-               auto symbols = stave_msg.getBundle().getMessage("/symbol").getBundle().getMessageArray();
-                
-                for( auto& sym_msg : symbols )
+                const string stave_addr = system_addr + "./stave./"+to_string(stave_count+1);
+
+                // set Stave position here
+
+                auto stave = stave_msg.getBundle();
+                if( !stave.size() )
                 {
-                    auto s = sym_msg.getBundle();
-                    s.print();
-                    
+                    cout << "parse error: stave message \"" << stave_msg.getAddress() << "\" in stave number " << stave_count+1 << " is not a bundle" << endl;
+                    return;
                 }
                 
+                // adjust stave bounds and scale based on script time mapping
+                
+                const string& stave_name = stave.getMessage("/use").getString();
+                auto stave_def = defs.getMessage("/stave."+stave_name).getBundle();
+                if( !stave_def.size() )
+                {
+                    cout << "parse error: no stave definition found for \"" << stave_name << "\"" << endl;
+                    return;
+                }
+                
+                auto stave_setFromOSC_msg = stave_def.getMessage("/script./set/fromOSC");
+                if( !stave_setFromOSC_msg.size() )
+                {
+                    cout << "parse error: stave script /set/fromOSC not found in def \"" << stave_name << "\"" << endl;
+                    return;
+                }
+                
+                stave.addMessage("/prevBounds", prevStaveBounds.getBundle() );
+                stave.addMessage("/context", context);
+                stave.addMessage(stave_setFromOSC_msg);
+
+                if( stave.applyExpr("/set/fromOSC(/context, /prevBounds), delete(/context), delete(/set/fromOSC), delete(/prevBounds)") )
+                {
+                    cout << "error in /stave script" << endl;
+                    return;
+                }
+
+                SymbolistRect staveBounds( stave.getMessage("/bounds").getBundle() );
+                
+                SymbolistRect prevSymbolBounds(0,0,0,0);
+                
+                context.addMessage("/stave", stave );
+
+                auto symbols = stave.getMessage("/symbol").getBundle().getMessageArray();
+                for( auto& sym_msg : symbols )
+                {
+                    cout << symbol_count + 1 << endl;
+
+                    const string sym_addr = stave_addr + "./symbol./"+to_string(symbol_count+1);
+
+                    auto symbol = sym_msg.getBundle();
+                    const string symbol_name = symbol.getMessage("/use").getString();
+                    
+                    // set Symbol position and size here
+                    
+                    auto symbol_def = defs.getMessage( "/stave." + stave_name + "./palette." + symbol_name ).getBundle();
+                    if( !symbol_def.size() )
+                    {
+                        cout << "parse error: no stave definition found for \"" << symbol_name << "\"" << endl;
+                        return;
+                    }
+                    
+                    auto symbol_setFromOSC_msg = symbol_def.getMessage("/script./set/fromOSC");
+                    if( !symbol_setFromOSC_msg.size() )
+                    {
+                        cout << "parse error: stave script /set/fromOSC not found in def \"" << symbol_name << "\"" << endl;
+                        return;
+                    }
+                    
+                    symbol.addMessage("/context", context);
+                    symbol.addMessage(symbol_setFromOSC_msg);
+                    
+                    if( symbol.applyExpr("/set/fromOSC(/context), delete(/context), delete(/set/fromOSC)") )
+                    {
+                        cout << "error in /stave script" << endl;
+                        return;
+                    }
+                    //symbol.print();
+
+                    
+                    m_score.addMessage(sym_addr, symbol); // update object at address
+                    
+                    SymbolistRect symbolBounds( symbol.getMessage("/bounds").getBundle() );
+                    prevSymbolBounds = symbolBounds;
+                    symbol_count++;
+                    
+                    staveBounds.expandToFit( symbolBounds );
+                }
+                
+                // set Stave size here based on total symbol size
+                stave.addMessage("/bounds", staveBounds.getBundle() );  // << or do this with the resize() function script?
+
+                
+                m_score.addMessage(stave_addr, stave); // update object at address
+                
+                prevStaveBounds = staveBounds;
+                stave_count++;
+
+                systemBounds.expandToFit( staveBounds );
+
             }
 
+            // set System size here based on total symbol size
+            system.addMessage("/bounds", systemBounds.getBundle() );
             
-            
+            m_score.addMessage(system_addr, system); // update object at address
+
+            system_count++;
+            prevSystemBounds = systemBounds;
         }
         
+        m_score.addMessage(page_addr, page); // update object at address
+        page_count++;
     }
     
     return;
@@ -585,7 +772,7 @@ void scoreDev()
         
         const string& stave_name = stave.getMessage("/name").getString();
         
-        auto stave_prototype = palette.getMessage(stave_name).getBundle();
+        auto stave_prototype = defs.getMessage(stave_name).getBundle();
         double stave_timeConst = stave_prototype.getMessage("/param./timePixScale").getFloat();
         
         auto stave_scripts = stave_prototype.getMessage("/script").getBundle();
@@ -629,6 +816,10 @@ void scoreDev()
 int main(int argc, const char * argv[])
 {
     //subbundletests();
+
+    // OdotBundle b;
+    // b.applyExpr("/foo./x./y = 1, /z = /foo./x");
+    
     
     scoreDev();
     

@@ -67,15 +67,15 @@ The basic objects are:
 # Symbolist Structural Overview
 In Symbolist, the `Score` is the screen workspace which can be thought of as an endless roll of paper. `Pages` are large-scale containers of `Symbols`, roughly equivalent to a single sheet of paper, which could be printed, or saved as a graphic file. Any type of graphics may be drawn on the `Page`. If a `System` is added to a `Page`, it demarcates a *time* parameter within the `Score`. Each `System` indicates a section of time, which accumulates sequentially, as in a musical score. `Symbols` that are placed directly in a `System` are considered purely graphic object, that have no particular meaning. The `Stave` is a special object that defines an *interpretation* layer between a `Symbol's` graphic parameters and the *meaning* that is notated by the graphic articulation. The `Stave` is conceptually like a musical `Stave` and `Clef`, which, like a data graph, provides reference points for which to interpret the information within the graph.
 
+Per Symbolist Document there is only one type of `Page` and one type of `System`, these can be overwritten within the `Score`. The `System` template defines a global time scaling and sorting, which can be re-mapped and interpreted by `Staves`.
+
 # Symbolist File Format
 
 The Score format is a single bundle that contains sub-bundles which set different aspects of the parsing and execution of the Score. The main sections in the score bundle are:
 
 ```
 {
-  /layout : {},
-  /palette : {},
-  /basis : {},
+  /template : {},
   /score : {}
 }
 ```

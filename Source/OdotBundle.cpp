@@ -9,9 +9,19 @@
 #include <fstream>
 #include <sstream>
 
+extern "C" {
+    int odot_expr_error_handler(void *context, const char * const errorstr)
+    {
+        cout << errorstr << endl;
+        return 0;
+    }
+}
+
 OdotBundle::OdotBundle()
 {
     ptr = odot::newOdotBundlePtr();
+    osc_error_setHandler( odot_expr_error_handler );
+
 //    D_(std::cout << "new bundle " << &ptr << " " << ptr.get() << std::endl;)
 }
 
@@ -21,6 +31,7 @@ OdotBundle::OdotBundle( const OdotBundle& src )
     t_osc_bndl_u *b = osc_bundle_u_alloc();
     osc_bundle_u_copy( &b, src.ptr.get() );
     ptr = odot::newOdotBundlePtr( b );
+    osc_error_setHandler( odot_expr_error_handler );
 }
 
 OdotBundle::OdotBundle( const OdotBundle* src )
@@ -29,6 +40,7 @@ OdotBundle::OdotBundle( const OdotBundle* src )
     t_osc_bndl_u *b = osc_bundle_u_alloc();
     osc_bundle_u_copy( &b, src->ptr.get() );
     ptr = odot::newOdotBundlePtr( b );
+    osc_error_setHandler( odot_expr_error_handler );
 }
 
 OdotBundle::OdotBundle( const t_osc_bndl_u * src )
@@ -37,24 +49,28 @@ OdotBundle::OdotBundle( const t_osc_bndl_u * src )
     t_osc_bndl_u *b = osc_bundle_u_alloc();
     osc_bundle_u_copy( &b, (t_osc_bndl_u *)src );
     ptr = odot::newOdotBundlePtr( b );
+    osc_error_setHandler( odot_expr_error_handler );
 }
 
 OdotBundle::OdotBundle( const OdotBundle_s& src )
 {
     OdotBundle b( src.get_o_ptr() );
     ptr = odot::newOdotBundlePtr( b.release() );
+    osc_error_setHandler( odot_expr_error_handler );
 }
 
 OdotBundle::OdotBundle( const t_osc_bndl_s * src )
 {
     ptr = odot::newOdotBundlePtr(osc_bundle_s_deserialize(osc_bundle_s_getLen((t_osc_bndl_s *)src),
                                                            osc_bundle_s_getPtr((t_osc_bndl_s *)src)));
+    osc_error_setHandler( odot_expr_error_handler );
 }
 
 OdotBundle::OdotBundle( const OdotMessage& msg )
 {
     ptr = odot::newOdotBundlePtr();
     addMessage( msg );
+    osc_error_setHandler( odot_expr_error_handler );
 }
 
 OdotBundle& OdotBundle::operator=( const OdotBundle& src )
@@ -66,6 +82,7 @@ OdotBundle& OdotBundle::operator=( const OdotBundle& src )
         t_osc_bndl_u *b = osc_bundle_u_alloc();
         osc_bundle_u_copy( &b, (t_osc_bndl_u *)src.ptr.get() );
         ptr = odot::newOdotBundlePtr( b );
+        osc_error_setHandler( odot_expr_error_handler );
     }
     
     return *this;
@@ -94,7 +111,7 @@ void OdotBundle::unionWith( const OdotBundle& other, bool passive )
     ptr = odot::newOdotBundlePtr( unioned );
 }
 
-void OdotBundle::applyExpr( const OdotExpr& expr )
+int OdotBundle::applyExpr( const OdotExpr& expr )
 {
     int error = 0;
     t_osc_expr *f = expr.get_o_ptr();
@@ -105,14 +122,16 @@ void OdotBundle::applyExpr( const OdotExpr& expr )
         if(av){
             osc_atom_array_u_free(av);
         }
+        
         if(error)
         {
-            cout << "error: " << error << endl;
-            break;
+            return 1;
         }
+        
         f = osc_expr_next(f);
     }
     
+    return 0;
 }
 
 void OdotBundle::addMessage( vector<OdotMessage> msg_vec )
@@ -348,25 +367,64 @@ bool OdotBundle::addressExists( const char * address ) const
     return (res == 1);
 }
 
-vector<string> split(string data, string token)
-{
-    vector<string> output;
-    size_t pos = string::npos; // size_t to avoid improbable overflow
-    do
-    {
-        pos = data.find(token);
-        output.push_back(data.substr(0, pos));
-        if (string::npos != pos)
-            data = data.substr(pos + token.size());
-    } while (string::npos != pos);
-    return output;
-}
-
 /* get first OSC Messages matching this address (full match) */
 OdotMessage OdotBundle::getMessage( const string& address ) const
 {
     auto addr_vec = split(address, ".");
     return getMessage_recursive(ptr.get(), addr_vec, 0);
+}
+
+void OdotBundle::assignToBundleMember_createEmpties( t_osc_bndl_u *bndl, const vector<string>& addr_vec, int level, t_osc_msg_u * msg )
+{
+    //    printf("creating empties argc %d\n", argc );
+    t_osc_bundle_u *parent = bndl;
+    for( long i = level; i < addr_vec.size()-1; i++ )
+    {
+        t_osc_msg_u * m = osc_message_u_allocWithAddress( (char *)addr_vec[i].c_str() );
+        t_osc_bundle_u * child = osc_bundle_u_alloc();
+        osc_message_u_appendBndl_u( m, child );
+        osc_bundle_u_addMsg(parent, m); // new messsage, so no need to check for replace routine
+        
+        parent = child;
+    }
+    
+    osc_bundle_u_addMsg(parent, msg );
+    
+}
+
+void OdotBundle::assignToBundleMember_recusive( t_osc_bndl_u *bndl, const vector<string>& addr_vec, int level, t_osc_msg_u * msg )
+{
+    t_osc_msg_u *m = osc_bundle_u_getFirstFullMatch( bndl, (char *)addr_vec[level].c_str() );
+    if( m )
+    {
+       // printf("found addr %s -- argc %d\n", osc_message_u_getAddress(m), level );
+        
+        // figure out if we're done looking or not and set the target bundle message once we're done
+        if( level == addr_vec.size()-1 )
+        {
+            osc_message_u_clearArgs(m);
+            osc_message_u_deepCopy(&m, msg );
+            osc_message_u_free(msg);
+            return;
+        }
+        // if we're not at the target yet, keep checking for sub-bundles
+        
+        // if the current message doesn't have a subbundle, we need to create the rest of them
+        t_osc_atom_u * at = osc_message_u_getArg(m, 0);
+        if( osc_atom_u_getTypetag( at ) != OSC_BUNDLE_TYPETAG )
+        {
+            assignToBundleMember_createEmpties( bndl, addr_vec, level+1, msg );
+            return;
+        }
+        
+        t_osc_bundle_u * sub = osc_atom_u_getBndl(at);
+        assignToBundleMember_recusive( sub, addr_vec, level+1, msg );
+    }
+    else
+    {
+        assignToBundleMember_createEmpties(bndl, addr_vec, level, msg);
+    }
+    
 }
 
 OdotMessage OdotBundle::getMessage_recursive( t_osc_bndl_u * bndl, const vector<string>& addr_vec, int level ) const
@@ -534,6 +592,19 @@ OdotBundle OdotBundle::getBundleContainingMessage_imp( t_osc_bndl_u * bndl, cons
     }
     osc_bndl_it_u_destroy(it);
     return OdotBundle();
+}
+
+vector<string> OdotBundle::split(string data, string token) const
+{
+    vector<string> output;
+    size_t pos = string::npos; // size_t to avoid improbable overflow
+    do {
+        pos = data.find(token);
+        output.push_back(data.substr(0, pos));
+        if (string::npos != pos)
+            data = data.substr(pos + token.size());
+            } while (string::npos != pos);
+    return output;
 }
 
 /**

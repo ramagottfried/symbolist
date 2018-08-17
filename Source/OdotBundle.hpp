@@ -85,24 +85,31 @@ public:
      */
     void unionWith( const OdotBundle& other, bool passive = false );
     
-    
-    
     /* ======= Add/Remove Messages ======= */
 
     void addMessage( const OdotMessage& msg );
     void addMessage( t_osc_msg_u * msg );
 
+    /*
     template <typename... Ts>
     inline void addMessage (const char * address, Ts&&... args)
     {
         
         addMessage( OdotMessage( address, args... ).release() );
     }
-
+     */
+    
+    
     template <typename... Ts>
     inline void addMessage (const string& address, Ts&&... args)
     {
-        addMessage( address.c_str(), args... );
+        auto addr_vec = split(address, ".");
+        if( addr_vec.size() == 1 )
+            addMessage( OdotMessage( address, args... ).release() );
+        else
+            assignToBundleMember_recusive( ptr.get(), addr_vec, 0, OdotMessage( addr_vec.back(), args... ).release() );
+        
+        //addMessage( address.c_str(), args... );
     }
     void addMessage( vector<OdotMessage > msg_vec );
     
@@ -115,9 +122,9 @@ public:
     
     /* ======= Expressions ======= */
     
-    void applyExpr( const OdotExpr& expr );
-    inline void applyExpr( const string& expr ) { applyExpr( OdotExpr(expr) ); }
-    inline void applyExpr( const char * expr ) { applyExpr( OdotExpr(expr) ); }
+    int applyExpr( const OdotExpr& expr );
+    inline int applyExpr( const string& expr ) { return applyExpr( OdotExpr(expr) ); }
+    inline int applyExpr( const char * expr ) { return applyExpr( OdotExpr(expr) ); }
     
     /* ======= Get Messages ======= */
 
@@ -186,10 +193,22 @@ private:
     
     //OdotSelect  m_select;
     
+
+    
+    /**
+     *  Utility functions
+     *
+     */
+    
     OdotBundle getBundleContainingMessage_imp( t_osc_bndl_u * bndl, const char * address ) const;
     OdotBundle getBundleContainingMessage_imp( t_osc_bndl_u * bndl, OdotMessage& msg ) const;
     OdotMessage getMessage_recursive( t_osc_bndl_u * bndl, const vector<string>& addr_vec, int level ) const;
 
+    void assignToBundleMember_recusive( t_osc_bndl_u *bndl, const vector<string>& addr_vec, int level, t_osc_msg_u * msg );
+    void assignToBundleMember_createEmpties( t_osc_bundle_u *bndl, const vector<string>& addr_vec, int level, t_osc_msg_u * value );
+
+    vector<string> split(string data, string token) const;
+    
 };
 
 /*

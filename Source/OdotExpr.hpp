@@ -40,6 +40,7 @@ public:
     void print() const;
 
     inline t_osc_expr * get_o_ptr() const { return ptr.get(); }
+    
 private:
     
     odot::OdotExprPtr ptr;

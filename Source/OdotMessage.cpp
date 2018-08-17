@@ -206,6 +206,7 @@ void OdotMessage::appendValue( const t_osc_bndl_u * bndl )
 
 void OdotMessage::appendValue( OdotBundle& bndl )
 {
+    
     osc_message_u_appendBndl_u( ptr.get(), OdotBundle( bndl ).release() );
 }
 
@@ -217,6 +218,7 @@ void OdotMessage::appendValue( OdotMessage& msg )
 
 void OdotMessage::appendValue( const OdotBundle& bndl )
 {
+    
     osc_message_u_appendBndl_u( ptr.get(), (t_osc_bndl_u *)OdotBundle( bndl ).release() );
 }
 

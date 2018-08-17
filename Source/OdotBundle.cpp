@@ -246,7 +246,7 @@ void OdotBundle::getPrintString( string &str, int level )
         str += indent + osc_message_u_getAddress(msg) + " : ";
 ;
         
-        char buf[256];
+        char buf[32768];
         char *buf_ptr = buf;
         int argcount = osc_message_u_getArgCount(msg);
         if( argcount > 1 )
@@ -257,23 +257,35 @@ void OdotBundle::getPrintString( string &str, int level )
             t_osc_atom_u *a = osc_message_u_getArg(msg, i);
             if( osc_atom_u_getTypetag(a) == OSC_BUNDLE_TYPETAG )
             {
-                str += "{ \n";
+                str += "{\n";
                 OdotBundle( osc_atom_u_getBndl(a) ).getPrintString( str, level+1 );
                 str += indent + "}";
             }
             else
             {
                 char type = osc_atom_u_getTypetag(a);
-                if( type == 's')
-                    str+="\"";
-                    
-                osc_atom_u_getString( a, 256, &buf_ptr );
-                str += buf_ptr;
+                
+                osc_atom_u_getString( a, 32768, &buf_ptr );
                 
                 if( type == 's')
+                {
+                    string at_str(buf_ptr);
+                    size_t n = 0;
+                    while ( (n=at_str.find("\"",n)) != std::string::npos )
+                    {
+                        at_str.insert(n,"\\");
+                        n+=2;
+                    }
                     str+="\"";
+                    str += at_str.c_str();
+                    str+="\"";
+
+                }
                 else if( (type == 'd' || type == 'f') && str.back() == '.' )
+                {
                     str+="0";
+                }
+                
             }
             
             if( i < argcount-1 )

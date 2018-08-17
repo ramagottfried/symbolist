@@ -281,9 +281,12 @@ void OdotBundle::getPrintString( string &str, int level )
                     str+="\"";
 
                 }
-                else if( (type == 'd' || type == 'f') && str.back() == '.' )
+                else
                 {
-                    str+="0";
+                    str += buf_ptr;
+                    
+                    if( (type == 'd' || type == 'f') && str.back() == '.' )
+                        str+="0";
                 }
                 
             }

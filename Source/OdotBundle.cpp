@@ -1,6 +1,7 @@
 #include "OdotBundle.hpp"
 #include "osc_parser.h"
 #include "osc_bundle_iterator_u.h"
+#include "osc_message_iterator_u.h"
 #include "osc_bundle_iterator_s.h"
 #include "osc_strfmt.h"
 #include "osc_match.h"
@@ -242,27 +243,51 @@ void OdotBundle::getPrintString( string &str, int level )
     while( osc_bndl_it_u_hasNext(it) )
     {
         t_osc_msg_u *msg = osc_bndl_it_u_next(it);
-        str += indent + osc_message_u_getAddress(msg);
+        str += indent + osc_message_u_getAddress(msg) + " : ";
+;
         
         char buf[256];
         char *buf_ptr = buf;
         int argcount = osc_message_u_getArgCount(msg);
+        if( argcount > 1 )
+            str += "[";
+
         for( int i = 0; i < argcount; i++ )
         {
             t_osc_atom_u *a = osc_message_u_getArg(msg, i);
             if( osc_atom_u_getTypetag(a) == OSC_BUNDLE_TYPETAG )
             {
-                str += indent + "\t{ \n";
+                str += "{ \n";
                 OdotBundle( osc_atom_u_getBndl(a) ).getPrintString( str, level+1 );
-                str += indent + " } ";
+                str += indent + "}";
             }
             else
             {
-                str += "\t";
+                char type = osc_atom_u_getTypetag(a);
+                if( type == 's')
+                    str+="\"";
+                    
                 osc_atom_u_getString( a, 256, &buf_ptr );
                 str += buf_ptr;
+                
+                if( type == 's')
+                    str+="\"";
+                else if( (type == 'd' || type == 'f') && str.back() == '.' )
+                    str+="0";
+            }
+            
+            if( i < argcount-1 )
+            {
+                str += ",";
             }
         }
+        
+        if( argcount > 1 )
+            str += "]";
+        
+        if(osc_bndl_it_u_hasNext(it))
+            str += ",";
+
         str += "\n";
     }
     osc_bndl_it_u_destroy(it);
@@ -403,7 +428,16 @@ void OdotBundle::assignToBundleMember_recusive( t_osc_bndl_u *bndl, const vector
         if( level == addr_vec.size()-1 )
         {
             osc_message_u_clearArgs(m);
-            osc_message_u_deepCopy(&m, msg );
+            //osc_message_u_deepCopy(&m, msg );
+            
+            t_osc_msg_it_u *it = osc_msg_it_u_get(msg);
+            while(osc_msg_it_u_hasNext(it)){
+                t_osc_atom_u *a = osc_msg_it_u_next(it);
+                t_osc_atom_u *acpy = osc_atom_u_copy(a);
+                osc_message_u_appendAtom(m, acpy);
+            }
+            osc_msg_it_u_destroy(it);
+            
             osc_message_u_free(msg);
             return;
         }
@@ -550,6 +584,21 @@ void OdotBundle::setFromFile( const string& oscFilePath )
     
     setFromString(fileContentBuffer.str());
     
+}
+
+void OdotBundle::writeToFile(const string& filename)
+{
+    
+    string line;
+    ofstream oscFile ( filename );
+    if( !oscFile )
+        throw invalid_argument("Invalid path to osc file.");
+
+    string scoreStr;
+    getPrintString( scoreStr, 1 );
+    oscFile << "{" << endl;
+    oscFile << scoreStr << endl;
+    oscFile << "}" << endl;
 }
 
 

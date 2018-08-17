@@ -535,7 +535,7 @@ void scoreDev()
     
     auto defs = file.getMessage("/defs").getBundle();
     auto pages = file.getMessage("/score./page").getBundle().getMessageArray();
-   
+
     // do system sorting and time assignment before iterating to map time to sub elements
     // pages have no time information, so they are always in the order they are listed.
     
@@ -589,8 +589,7 @@ void scoreDev()
     // auto timePixScale = system_def.getMessage("/timePixScale").getFloat();
     // auto timeAxis = system_def.getMessage("/timeAxis").getString();
     
-    size_t page_count = 0, system_count = 0, stave_count = 0, symbol_count = 0;
-    
+    size_t page_count = 0;
     for( auto& page_msg : pages )
     {
         const string page_addr = "/score./page./" + to_string(page_count+1);
@@ -610,9 +609,11 @@ void scoreDev()
         SymbolistRect prevSystemBounds(0,0,0,0);
         
         auto systems = page.getMessage("/system").getBundle().getMessageArray();
+        
+        size_t system_count = 0;
         for( auto& sys_msg : systems )
         {
-            const string system_addr = page_addr + "./system./"+to_string(symbol_count+1);
+            const string system_addr = "/system./"+to_string(system_count+1);
 
             auto system = sys_msg.getBundle();
 
@@ -624,7 +625,7 @@ void scoreDev()
             system.addMessage("/context", context);
             system.addMessage(system_set_script);
             
-            if( system.applyExpr("/set/fromOSC(/context, /prevBounds), delete(/context), delete(/set/fromOSC), delete(/prev)") )
+            if( system.applyExpr("/set/fromOSC(/context, /prevBounds), delete(/prevBounds), delete(/context), delete(/set/fromOSC)") )
             {
                 cout << "error in /system script" << endl;
                 return;
@@ -638,9 +639,10 @@ void scoreDev()
             SymbolistRect prevStaveBounds(0,0,0,0);
 
             auto staves = system.getMessage("/stave").getBundle().getMessageArray();
+            size_t stave_count = 0;
             for( auto& stave_msg : staves )
             {
-                const string stave_addr = system_addr + "./stave./"+to_string(stave_count+1);
+                const string stave_addr = "/stave./"+to_string(stave_count+1);
 
                 // set Stave position here
 
@@ -685,11 +687,10 @@ void scoreDev()
                 context.addMessage("/stave", stave );
 
                 auto symbols = stave.getMessage("/symbol").getBundle().getMessageArray();
+                size_t symbol_count = 0;
                 for( auto& sym_msg : symbols )
                 {
-                    cout << symbol_count + 1 << endl;
-
-                    const string sym_addr = stave_addr + "./symbol./"+to_string(symbol_count+1);
+                    const string sym_addr = "/symbol./"+to_string(symbol_count+1);
 
                     auto symbol = sym_msg.getBundle();
                     const string symbol_name = symbol.getMessage("/use").getString();
@@ -703,6 +704,15 @@ void scoreDev()
                         return;
                     }
                     
+                    
+                    auto symbol_path_str = symbol_def.getMessage("/graphic./d").getString();
+                    // error check
+                    
+                    SymbolistPath symbol_path(symbol_path_str);
+                    symbol_path.getBounds();
+                    context.addMessage("/pathbounds", symbol_path.getBounds().getBundle() );
+                    
+                    
                     auto symbol_setFromOSC_msg = symbol_def.getMessage("/script./set/fromOSC");
                     if( !symbol_setFromOSC_msg.size() )
                     {
@@ -715,13 +725,12 @@ void scoreDev()
                     
                     if( symbol.applyExpr("/set/fromOSC(/context), delete(/context), delete(/set/fromOSC)") )
                     {
-                        cout << "error in /stave script" << endl;
+                        cout << "error in /stave script (" << stave_addr << ")" << endl;
                         return;
                     }
-                    //symbol.print();
-
                     
-                    m_score.addMessage(sym_addr, symbol); // update object at address
+                    cout << sym_addr << endl;
+                    stave.addMessage(sym_addr, symbol); // update object at address
                     
                     SymbolistRect symbolBounds( symbol.getMessage("/bounds").getBundle() );
                     prevSymbolBounds = symbolBounds;
@@ -733,8 +742,8 @@ void scoreDev()
                 // set Stave size here based on total symbol size
                 stave.addMessage("/bounds", staveBounds.getBundle() );  // << or do this with the resize() function script?
 
-                
-                m_score.addMessage(stave_addr, stave); // update object at address
+                cout << "adding " << stave_addr << endl;
+                system.addMessage(stave_addr, stave); // update object at address
                 
                 prevStaveBounds = staveBounds;
                 stave_count++;
@@ -745,16 +754,21 @@ void scoreDev()
 
             // set System size here based on total symbol size
             system.addMessage("/bounds", systemBounds.getBundle() );
-            
-            m_score.addMessage(system_addr, system); // update object at address
 
+            page.addMessage(system_addr, system); // update object at address
+            
             system_count++;
             prevSystemBounds = systemBounds;
         }
         
+        
+        cout << "adding " << page_addr << endl;
         m_score.addMessage(page_addr, page); // update object at address
         page_count++;
     }
+    
+    m_score.print();
+    m_score.writeToFile("/Users/rama/Documents/symbolist/testscore2_.osc");
     
     return;
     

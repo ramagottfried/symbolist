@@ -182,6 +182,8 @@ public:
     
     string getJSON();
     
+    void writeToFile(const string& filename);
+    
     /* ======= pointers ======= */
     
     inline const t_osc_bndl_u * get_o_ptr() const { return ptr.get(); }

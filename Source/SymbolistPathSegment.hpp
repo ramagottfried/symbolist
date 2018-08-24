@@ -37,6 +37,17 @@ public:
     // actually only L, Q, and C, make everything absolute
     vector<SymbolistPoint> getPoints() { return pts; }
     
+    
+    SymbolistPathSegment& operator += ( const SymbolistPoint& delta )
+    {
+        for( auto& p : pts )
+        {
+            p += delta;
+        }
+        return *this;
+    }
+    
+    
     char type;
     vector<SymbolistPoint> pts; // array of points
     double length = 0; // segment length for lookup

@@ -7,7 +7,7 @@
 #include <sys/time.h>
 
 #include "SymbolistPath.hpp"
-
+#include "SVGEncoder.hpp"
 
 void hashtest()
 {
@@ -528,12 +528,34 @@ void SymbolistUtil_setBounds(OdotBundle& b, double x, double y, double w, double
  */
 void scoreDev()
 {
+
     OdotBundle file, m_score;
-    file.setFromFile("/Users/rama/Documents/symbolist/testscore2.osc");
+    file.setFromFile("/Users/rama/Documents/symbolist/testscore2_.osc");
 
     m_score = file;
     
     auto defs = file.getMessage("/defs").getBundle();
+    
+    auto stave_defs = defs.getMessage("/stave").getBundle().getMessageArray();
+    
+    for( auto& stv_msg : stave_defs )
+    {
+        auto stv_name = stv_msg.getAddress();
+        auto stv_bndl = stv_msg.getBundle();
+        
+        auto stv_graphic = stv_bndl.getMessage("/graphic").getBundle();
+       
+        cout << SVGEncoder::graphicObjectToJUCE(stv_graphic) << endl;
+        
+        
+        
+    }
+    
+    
+    return;
+    
+    
+    
     auto pages = file.getMessage("/score./page").getBundle().getMessageArray();
 
     // do system sorting and time assignment before iterating to map time to sub elements
@@ -564,7 +586,7 @@ void scoreDev()
              return test.getMessage("/t").getInt();
          });
 
-    // <<<< reset systems here after ordering
+    // <<<< reset system numbering here after ordering?
     
     
     //3. the placement of staves on pages is determined by the /layout
@@ -706,7 +728,7 @@ void scoreDev()
                     
                     
                     auto symbol_path_str = symbol_def.getMessage("/graphic./d").getString();
-                    // error check
+                    // add error check
                     
                     SymbolistPath symbol_path(symbol_path_str);
                     symbol_path.getBounds();
@@ -769,61 +791,6 @@ void scoreDev()
     
     m_score.print();
     m_score.writeToFile("/Users/rama/Documents/symbolist/testscore2_.osc");
-    
-    return;
-    
-    
-    
-    auto system = m_score.getMessage("/score./page./1./system./1").getBundle();
-
-    
-    
-    auto staves = system.getMessage("/stave").getBundle();
-
-    for( auto stave_m : staves.getMessageArray() )
-    {
-        auto stave = stave_m.getBundle();
-        
-        const string& stave_name = stave.getMessage("/name").getString();
-        
-        auto stave_prototype = defs.getMessage(stave_name).getBundle();
-        double stave_timeConst = stave_prototype.getMessage("/param./timePixScale").getFloat();
-        
-        auto stave_scripts = stave_prototype.getMessage("/script").getBundle();
-        stave_scripts.print();
-        
-        auto stave_palette = stave_prototype.getMessage("/palette").getBundle();
-        
-        auto syms = stave.getMessage("/symbol").getBundle();
-        
-        stave.removeMessage("/symbol");
-        
-        for ( auto sym : syms.getMessageArray() )
-        {
-            auto s = sym.getBundle();
-            
-            const string& s_name = s.getMessage("/name").getString();
-
-            auto sym_prototype = stave_palette.getMessage(s_name).getBundle();
-            
-            s.addMessage("/script", sym_prototype.getMessage("/script./set/fromOSC").getString() );
-            
-            s.addMessage( "/stave", stave );
-            
-            s.print();
-            
-            
-           // s.applyExpr(sym_set_script);
-            
-            //cout << sym.get_o_ptr() << " " << s_name << "\n\t" << sym_set_script << endl;
-            
-        //    const string set_bounds_
-            
-  //          s.applyExpr(sym_set_script)
-            
-        }
-        
-    }
     
 }
 

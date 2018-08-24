@@ -425,7 +425,7 @@ Within the `/graphic` bundle there are the following messages:
   * `/string` : the string that will be displayed.
   * `/tspan` : an optional SVG text control, see [SVG TSpan](https://www.w3.org/TR/SVG/text.html#TSpanElement)<br><br>
 
-* `/transform` : a transformation matrix, as a list of six numbers `[a, b, c, d, e, f]`, see [SVG Transformation Matrix](https://www.w3.org/TR/SVG/coords.html#TransformAttribute) for more details.
+* `/transform` : a sub-bundle containing SVG transform functions: for example `/rotate`, `/scale`, see [SVG Transformation Matrix](https://www.w3.org/TR/SVG/coords.html#TransformAttribute) for more options.
 
 * `/style` : a sub-bundle containing CSS style information which is applied to the SVG object. See [SVG Styling](https://www.w3.org/TR/SVG/styling.html) for more details. <br><br>
 *Note: The Odot Expression Language uses the `-` sign for subtraction, so use an `_` (underscore) in place of `-` (hyphen) for SVG/CSS style attribute names that have a `-` in them, for example `stroke-width`, becomes `/stroke_width` etc.*
@@ -631,7 +631,4 @@ In the palette prototype for a graphic object, a default bounds aids in scaling 
 * should `/time` be part of the `/param` bundle?
 * should `/param` be a top-level Symbol sub-bundle? ... I think so.
 
-* we need to sort Systems, and also give the time value for the system -- it seems that the system is the main time holding element, so it should have a script that specifies the bounds for the system. where should that be? the bounds are used for the stave/symbol. But then, should the System be like the Stave, having a specific set of palette options? I guess that makes sense, since all Staves on a System will probably share a method of creating time. Possibly they might not, for instance if you have a vertical and horizontal time sequence... but probably one will be relative to the other.
-
-
-* Question: should the Page actually be in the prototypes? maybe we don't need the /layout, but instead a /prototype bundle, and then /palettes are user selectable items.
+* having time start / end for *everything* seems a little too much, we could probably streamline that.

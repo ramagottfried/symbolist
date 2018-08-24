@@ -7,9 +7,6 @@
 #include <sstream>
 #include <string>
 #include "types.h"
-#include "Symbol.h"
-#include "TimePointArray.h"
-#include "SortedStaves.hpp"
 #include "osc_parser.h"
 
 using namespace std;

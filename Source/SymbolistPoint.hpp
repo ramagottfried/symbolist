@@ -67,7 +67,7 @@ struct SymbolistPoint
      SymbolistPoint operator+ (SymbolistPoint other) const              { return SymbolistPoint (x + other.x, y + other.y); }
     
     /** Adds another SymbolistPoint's coordinates to this one */
-    SymbolistPoint& operator+= (SymbolistPoint other)                                 { x += other.x; y += other.y; return *this; }
+    SymbolistPoint& operator+= (SymbolistPoint other)                   { x += other.x; y += other.y; return *this; }
     
     /** Subtracts one SymbolistPoints from another */
      SymbolistPoint operator- (SymbolistPoint other) const              { return SymbolistPoint (x - other.x, y - other.y); }

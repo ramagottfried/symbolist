@@ -1,7 +1,7 @@
 #include "SVGFileIO.hpp"
 
 
-vector<unique_ptr<Symbol> > SVGFileIO::read( const char * filename )
+OdotBundle SVGFileIO::read( const char * filename )
 {
     pugi::xml_parse_result result = m_doc.load_file( filename );
     
@@ -15,7 +15,7 @@ vector<unique_ptr<Symbol> > SVGFileIO::read( const char * filename )
         {
             importedscore[i]->print();
         }
-        return importedscore;
+        return OdotBundle();// importedscore;
     }
     else
     {
@@ -24,13 +24,13 @@ vector<unique_ptr<Symbol> > SVGFileIO::read( const char * filename )
         DEBUG_FULL("Error offset: " << result.offset << " (error at [..." << (filename + result.offset) << "]\n\n")
     }
     
-    return vector<unique_ptr<Symbol> >();
+    return OdotBundle();
 }
 
-void SVGFileIO::write( vector<unique_ptr<Symbol>>& score, const char * filename )
+void SVGFileIO::write( const OdotBundle& score, const char * filename )
 {
     SVGEncoder encoder;
-    pugi::xml_document svg = encoder.encode( score );
+    pugi::xml_document svg = encoder.encodeScore( score );
     
     // print to std::cout
     // svg.save(std::cout);

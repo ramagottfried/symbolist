@@ -281,6 +281,34 @@ vector<SymbolistPoint> SymbolistPath::getCubicRoots(SymbolistPoint p1, Symbolist
     
 }
 
+string SymbolistPath::toSVG()
+{
+    string pathstr = "M" + trimStringzeros(to_string(m_path[0].pts[0].getX())) + "," + trimStringzeros(to_string(m_path[0].pts[0].getY()));
+    
+    for(const auto& segment : m_path )
+    {
+        pathstr += segment.type;
+        switch (segment.type) {
+            case 'L':
+                pathstr += trimStringzeros(to_string(segment.pts[1].getX())) + "," + trimStringzeros(to_string(segment.pts[1].getY()));
+                break;
+            default:
+                for( int i = 1; i < segment.pts.size(); ++i )
+                {
+                    if( !isalpha( pathstr.back() ) )
+                        pathstr += ",";
+                    
+                    pathstr += trimStringzeros(to_string(segment.pts[i].getX())) + "," + trimStringzeros(to_string(segment.pts[i].getY()));
+                    
+                }
+                break;
+        }
+        
+        
+    }
+    return pathstr;
+}
+
 void SymbolistPath::fromSVG(const string& svg_path)
 {
     SymbolistPoint startPt;
@@ -469,6 +497,14 @@ vector<SymbolistPoint> SymbolistPath::parseSegment(string& seg, const char type,
     return pts;
 }
 
+
+void SymbolistPath::translate(const SymbolistPoint& delta)
+{
+    for( auto& p : m_path )
+    {
+        p += delta;
+    }
+}
 
 
 /*

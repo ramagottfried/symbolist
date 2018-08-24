@@ -4,6 +4,8 @@
 #include "SymbolistRect.hpp"
 #include "SymbolistPathSegment.hpp"
 
+#include "StringTools.hpp"
+
 #include <string>
 #include <iostream>
 
@@ -25,10 +27,14 @@ public:
     void addSegment(SymbolistPoint a, SymbolistPoint b, SymbolistPoint c, SymbolistPoint d);
 
     void fromSVG(const string& svg_path);
+    string toSVG();
+
     
     SymbolistRect getBounds() { return m_bounds; }
 
     void print();
+
+    void translate(const SymbolistPoint& delta);
     
 private:
     

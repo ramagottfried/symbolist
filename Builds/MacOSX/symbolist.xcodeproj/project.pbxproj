@@ -245,6 +245,9 @@
 		11E8083C2080A12F00E0342F /* StringTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11E808392080A12F00E0342F /* StringTools.cpp */; };
 		11E8083D2080A12F00E0342F /* StringTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11E808392080A12F00E0342F /* StringTools.cpp */; };
 		11E8083E2080A12F00E0342F /* StringTools.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 11E8083A2080A12F00E0342F /* StringTools.hpp */; };
+		2154A66F212F41A80035F28A /* pugixml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 112630AD207F4AC20086653D /* pugixml.cpp */; };
+		2154A670212F41C20035F28A /* SVGEncoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11E80833208082CB00E0342F /* SVGEncoder.cpp */; };
+		2154A671212F45C60035F28A /* StringTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11E808392080A12F00E0342F /* StringTools.cpp */; };
 		2194B30A211356BC00CACD2D /* osc_expr_u.h in Headers */ = {isa = PBXBuildFile; fileRef = 2194B307211356BB00CACD2D /* osc_expr_u.h */; };
 		2194B30B211356BC00CACD2D /* osc_expr_u_privatedecls.h in Headers */ = {isa = PBXBuildFile; fileRef = 2194B308211356BB00CACD2D /* osc_expr_u_privatedecls.h */; };
 		2194B30C211356BC00CACD2D /* osc_expr_u.c in Sources */ = {isa = PBXBuildFile; fileRef = 2194B309211356BC00CACD2D /* osc_expr_u.c */; };
@@ -1853,8 +1856,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2154A66F212F41A80035F28A /* pugixml.cpp in Sources */,
 				1196B41E20FFBBC1002F4391 /* OdotExpr.cpp in Sources */,
 				21CF60D82118D5BA000DD366 /* SymbolistPath.cpp in Sources */,
+				2154A671212F45C60035F28A /* StringTools.cpp in Sources */,
 				1196B41920FFBA83002F4391 /* main.cpp in Sources */,
 				21CF60E12118D6D5000DD366 /* SymbolistPoint.cpp in Sources */,
 				1196B42320FFBBC1002F4391 /* OdotHash.cpp in Sources */,
@@ -1867,6 +1872,7 @@
 				1196B42020FFBBC1002F4391 /* OdotBundle_s.cpp in Sources */,
 				1196B42120FFBBC1002F4391 /* OdotMessage.cpp in Sources */,
 				21CF60F22119F882000DD366 /* AGG_BezierLength.cpp in Sources */,
+				2154A670212F41C20035F28A /* SVGEncoder.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

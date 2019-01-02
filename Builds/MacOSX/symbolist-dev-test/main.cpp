@@ -542,10 +542,23 @@ void scoreDev()
     {
         auto stv_name = stv_msg.getAddress();
         auto stv_bndl = stv_msg.getBundle();
-        
         auto stv_graphic = stv_bndl.getMessage("/graphic").getBundle();
        
+        // need to scale bounds to fit into palette
         cout << SVGEncoder::graphicObjectToJUCE(stv_graphic) << endl;
+        
+        auto palette_bndl = stv_bndl.getMessage("/palette").getBundle();
+        
+        for( auto& palette_msg : palette_bndl.getMessageArray() )
+        {
+            auto pal_sym_name = palette_msg.getAddress();
+            auto pal_sym_bndl = palette_msg.getBundle();
+            auto pal_sym_graphic = pal_sym_bndl.getMessage("/graphic").getBundle();
+
+            cout << SVGEncoder::graphicObjectToJUCE(pal_sym_graphic) << endl;
+
+        }
+            
         
         
         

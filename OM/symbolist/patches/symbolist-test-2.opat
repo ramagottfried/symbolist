@@ -5,10 +5,10 @@
  (:doc "")
  (:info
   (:created "2018/06/06 12:31:59")
-  (:modified "2018/06/08 17:14:57"))
- (:window (:size (931 579)) (:position (-1107 93)))
+  (:modified "2018/07/12 11:34:29"))
+ (:window (:size (1075 740)) (:position (119 114)))
  (:grid nil)
- (:lock t)
+ (:lock nil)
  (:boxes
   (:box
    (:reference
@@ -17,7 +17,7 @@
      (:name "make-bundle")
      (:doc "")
      (:info (:created nil) (:modified nil))
-     (:window (:size (733 431)) (:position (-974 420)))
+     (:window (:size (1083 431)) (:position (0 420)))
      (:grid nil)
      (:lock nil)
      (:boxes
@@ -150,7 +150,7 @@
        (:x 203)
        (:y 150)
        (:w 87)
-       (:h 28)
+       (:h 30)
        (:color nil)
        (:border nil)
        (:roundness nil)
@@ -195,10 +195,10 @@
        (:type :function)
        (:group-id nil)
        (:name "list")
-       (:x 108)
+       (:x 178)
        (:y 206)
        (:w 500)
-       (:h 28)
+       (:h 30)
        (:color nil)
        (:border nil)
        (:roundness nil)
@@ -207,6 +207,11 @@
        (:lock nil)
        (:lambda nil)
        (:inputs
+        (:input
+         (:type :optional)
+         (:name "x")
+         (:value nil)
+         (:reactive nil))
         (:input
          (:type :optional)
          (:name "x")
@@ -247,7 +252,7 @@
        (:x 297)
        (:y 149)
        (:w 80)
-       (:h 28)
+       (:h 30)
        (:color nil)
        (:border nil)
        (:roundness nil)
@@ -295,7 +300,7 @@
        (:x 386)
        (:y 149)
        (:w 80)
-       (:h 28)
+       (:h 30)
        (:color nil)
        (:border nil)
        (:roundness nil)
@@ -343,7 +348,7 @@
        (:x 473)
        (:y 149)
        (:w 80)
-       (:h 28)
+       (:h 30)
        (:color nil)
        (:border nil)
        (:roundness nil)
@@ -410,7 +415,7 @@
        (:x 558)
        (:y 149)
        (:w 80)
-       (:h 28)
+       (:h 30)
        (:color nil)
        (:border nil)
        (:roundness nil)
@@ -477,7 +482,7 @@
        (:x 113)
        (:y 150)
        (:w 80)
-       (:h 28)
+       (:h 30)
        (:color nil)
        (:border nil)
        (:roundness nil)
@@ -506,7 +511,7 @@
        (:x 475)
        (:y 36)
        (:w 62)
-       (:h 28)
+       (:h 30)
        (:color nil)
        (:border nil)
        (:roundness nil)
@@ -554,7 +559,7 @@
        (:x 236)
        (:y 67)
        (:w 60)
-       (:h 28)
+       (:h 30)
        (:color nil)
        (:border nil)
        (:roundness nil)
@@ -602,7 +607,7 @@
        (:x 383)
        (:y 57)
        (:w 60)
-       (:h 28)
+       (:h 30)
        (:color nil)
        (:border nil)
        (:roundness nil)
@@ -650,7 +655,7 @@
        (:x 568)
        (:y 83)
        (:w 97)
-       (:h 28)
+       (:h 30)
        (:color nil)
        (:border nil)
        (:roundness nil)
@@ -698,7 +703,7 @@
        (:x 28)
        (:y 62)
        (:w 82)
-       (:h 28)
+       (:h 30)
        (:color nil)
        (:border nil)
        (:roundness nil)
@@ -713,7 +718,74 @@
          (:value 0)
          (:reactive nil)))
        (:outputs (:output (:name "out") (:reactive nil)))
-       (:id 26)))
+       (:id 26))
+      (:box
+       (:reference simple-base-string)
+       (:type :value)
+       (:group-id nil)
+       (:name "value box")
+       (:x 685)
+       (:y 112)
+       (:w 54)
+       (:h 30)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:inputs)
+       (:outputs (:output (:name "value") (:reactive nil)))
+       (:value "/staff")
+       (:id 27))
+      (:box
+       (:reference osc-msg)
+       (:type :function)
+       (:group-id nil)
+       (:name "osc-msg")
+       (:x 685)
+       (:y 147)
+       (:w 80)
+       (:h 30)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "ADDRESS")
+         (:value "/w")
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "DATA")
+         (:value nil)
+         (:reactive nil)))
+       (:outputs (:output (:name "out") (:reactive nil)))
+       (:id 28))
+      (:box
+       (:reference simple-base-string)
+       (:type :value)
+       (:group-id nil)
+       (:name "value box")
+       (:x 737)
+       (:y 112)
+       (:w 60)
+       (:h 30)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:inputs)
+       (:outputs (:output (:name "value") (:reactive nil)))
+       (:value "staff/0")
+       (:id 29)))
      (:connections
       (:connection
        (:from (:box 0 :out 0))
@@ -826,12 +898,24 @@
       (:connection
        (:from (:box 26 :out 0))
        (:to (:box 3 :in 1))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 27 :out 0))
+       (:to (:box 28 :in 0))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 28 :out 0))
+       (:to (:box 6 :in 6))
+       (:attributes (:color nil :style nil :modif nil)))
+      (:connection
+       (:from (:box 29 :out 0))
+       (:to (:box 28 :in 1))
        (:attributes (:color nil :style nil :modif nil))))))
    (:type :patch)
    (:group-id nil)
    (:name "make-bundle")
-   (:x 61)
-   (:y 145)
+   (:x 324)
+   (:y 191)
    (:w 104)
    (:h 28)
    (:color nil)
@@ -858,10 +942,10 @@
    (:type :function)
    (:group-id nil)
    (:name "arithm-ser")
-   (:x 222)
-   (:y 72)
+   (:x 462)
+   (:y 102)
    (:w 91)
-   (:h 28)
+   (:h 30)
    (:color nil)
    (:border nil)
    (:roundness nil)
@@ -892,10 +976,10 @@
    (:type :function)
    (:group-id nil)
    (:name "mapcar")
-   (:x 216)
-   (:y 140)
+   (:x 409)
+   (:y 150)
    (:w 75)
-   (:h 28)
+   (:h 30)
    (:color nil)
    (:border nil)
    (:roundness nil)
@@ -921,10 +1005,10 @@
    (:type :function)
    (:group-id nil)
    (:name "sin")
-   (:x 184)
-   (:y 107)
+   (:x 377)
+   (:y 117)
    (:w 52)
-   (:h 28)
+   (:h 30)
    (:color nil)
    (:border nil)
    (:roundness nil)
@@ -945,10 +1029,10 @@
    (:type :function)
    (:group-id nil)
    (:name "mapcar")
-   (:x 150)
-   (:y 201)
+   (:x 390)
+   (:y 231)
    (:w 75)
-   (:h 28)
+   (:h 30)
    (:color nil)
    (:border nil)
    (:roundness nil)
@@ -979,8 +1063,8 @@
    (:type :value)
    (:group-id nil)
    (:name "value box")
-   (:x 223)
-   (:y 37)
+   (:x 463)
+   (:y 67)
    (:w 32)
    (:h 28)
    (:color nil)
@@ -998,8 +1082,8 @@
    (:type :value)
    (:group-id nil)
    (:name "value box")
-   (:x 258)
-   (:y 37)
+   (:x 498)
+   (:y 67)
    (:w 50)
    (:h 28)
    (:color nil)
@@ -1017,8 +1101,8 @@
    (:type :value)
    (:group-id nil)
    (:name "value box")
-   (:x 314)
-   (:y 37)
+   (:x 554)
+   (:y 67)
    (:w 34)
    (:h 28)
    (:color nil)
@@ -1037,11 +1121,19 @@
    (:type :object)
    (:group-id nil)
    (:name nil)
-   (:x 96)
-   (:y 300)
+   (:x 306)
+   (:y 317)
    (:w 128)
-   (:h 40)
-   (:color nil)
+   (:h 63)
+   (:color
+    (:color-or-nil
+     (:color
+      (:color
+       0.8991674184799194D0
+       0.8557674884796143D0
+       0.666197657585144D0
+       1.0D0))
+     (:t-or-nil t)))
    (:border nil)
    (:roundness nil)
    (:text-font (:font (:face "Calibri") (:size 12) (:style :italic)))
@@ -1088,12 +1180,44 @@
             (:attributes nil)
             (:messages
              (:list
+              (:list "/type" "staff")
+              (:list "/x" -1.0)
+              (:list "/y" 193.0)
+              (:list "/w" 1032.0)
+              (:list "/h" 15.0)
+              (:list "/name" "staff")
+              (:list "/id" "staff/0")
+              (:list "/color" 0.0 0.0 0.0 1.0)
+              (:list "/time/start" 0.0)
+              (:list "/time/duration" 10.32)
+              (:list "/staffSymbol/name" "rectangle")
+              (:list "/staffSymbol/type" "rectangle")
+              (:list "/staffSymbol/id" "rectangle/0")
+              (:list "/staffSymbol/x" 0.0)
+              (:list "/staffSymbol/y" 7.5)
+              (:list "/staffSymbol/w" 1032.0)
+              (:list "/staffSymbol/h" 15.0)
+              (:list "/staffSymbol/color" 0.5 0.5 0.5 0.5)
+              (:list "/staffSymbol/fill" 1)
+              (:list "/staffSymbol/stroke/thickness" 2.0)
+              (:list "/staffSymbol/rotation" 0.0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 0)
+            (:item-type 0)
+            (:date 0)
+            (:attributes nil)
+            (:messages
+             (:list
               (:list "/type" "circle")
               (:list "/x" 0)
               (:list "/y" 200.0)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1109,7 +1233,8 @@
               (:list "/y" 219.47092)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1125,7 +1250,8 @@
               (:list "/y" 235.8678)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1141,7 +1267,8 @@
               (:list "/y" 246.60196)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1157,7 +1284,8 @@
               (:list "/y" 249.97869)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1173,7 +1301,8 @@
               (:list "/y" 245.46488)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1189,7 +1318,8 @@
               (:list "/y" 233.77317)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1205,7 +1335,8 @@
               (:list "/y" 216.7494)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1221,7 +1352,8 @@
               (:list "/y" 197.08129)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1237,7 +1369,8 @@
               (:list "/y" 177.87397)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1253,7 +1386,8 @@
               (:list "/y" 162.15985)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1269,7 +1403,8 @@
               (:list "/y" 152.41989)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1285,7 +1420,8 @@
               (:list "/y" 150.19178)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1301,7 +1437,8 @@
               (:list "/y" 155.82729)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1317,7 +1454,8 @@
               (:list "/y" 168.4367)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1333,7 +1471,8 @@
               (:list "/y" 186.02927)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1349,7 +1488,8 @@
               (:list "/y" 205.82752)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1365,7 +1505,8 @@
               (:list "/y" 224.70572)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1381,7 +1522,8 @@
               (:list "/y" 239.68343)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1397,7 +1539,8 @@
               (:list "/y" 248.396)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1413,7 +1556,8 @@
               (:list "/y" 249.46791)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1429,7 +1573,8 @@
               (:list "/y" 242.72994)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1445,7 +1590,8 @@
               (:list "/y" 229.24585)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1461,7 +1607,8 @@
               (:list "/y" 211.1445)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1477,7 +1624,8 @@
               (:list "/y" 191.28369)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1493,7 +1641,8 @@
               (:list "/y" 172.79898)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1509,7 +1658,8 @@
               (:list "/y" 158.60872)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1525,7 +1675,8 @@
               (:list "/y" 150.9532)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1541,7 +1692,8 @@
               (:list "/y" 151.04109)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1557,7 +1709,8 @@
               (:list "/y" 158.85849)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1573,7 +1726,8 @@
               (:list "/y" 173.17124)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1589,7 +1743,8 @@
               (:list "/y" 191.71964)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1605,7 +1760,8 @@
               (:list "/y" 211.57532)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1621,7 +1777,8 @@
               (:list "/y" 229.60352)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1637,7 +1794,8 @@
               (:list "/y" 242.95798)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1653,7 +1811,8 @@
               (:list "/y" 249.53034)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1669,7 +1828,8 @@
               (:list "/y" 248.28296)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1685,7 +1845,8 @@
               (:list "/y" 239.41278)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1701,7 +1862,8 @@
               (:list "/y" 224.32019)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1717,7 +1879,8 @@
               (:list "/y" 205.388)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1733,7 +1896,8 @@
               (:list "/y" 185.60515)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1749,7 +1913,8 @@
               (:list "/y" 168.0949)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1765,7 +1930,8 @@
               (:list "/y" 155.6218)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1781,7 +1947,8 @@
               (:list "/y" 150.15503)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1797,7 +1964,8 @@
               (:list "/y" 152.55767)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1813,7 +1981,8 @@
               (:list "/y" 162.45038)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1829,7 +1998,8 @@
               (:list "/y" 178.27136)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1845,7 +2015,8 @@
               (:list "/y" 197.5228)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1861,7 +2032,8 @@
               (:list "/y" 217.16533)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1877,7 +2049,8 @@
               (:list "/y" 234.09784)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1893,7 +2066,8 @@
               (:list "/y" 245.64707)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))))
        (:symbols
         (:list
          (:object
@@ -1906,12 +2080,44 @@
             (:attributes nil)
             (:messages
              (:list
+              (:list "/type" "staff")
+              (:list "/x" -1.0)
+              (:list "/y" 193.0)
+              (:list "/w" 1032.0)
+              (:list "/h" 15.0)
+              (:list "/name" "staff")
+              (:list "/id" "staff/0")
+              (:list "/color" 0.0 0.0 0.0 1.0)
+              (:list "/time/start" 0.0)
+              (:list "/time/duration" 10.32)
+              (:list "/staffSymbol/name" "rectangle")
+              (:list "/staffSymbol/type" "rectangle")
+              (:list "/staffSymbol/id" "rectangle/0")
+              (:list "/staffSymbol/x" 0.0)
+              (:list "/staffSymbol/y" 7.5)
+              (:list "/staffSymbol/w" 1032.0)
+              (:list "/staffSymbol/h" 15.0)
+              (:list "/staffSymbol/color" 0.5 0.5 0.5 0.5)
+              (:list "/staffSymbol/fill" 1)
+              (:list "/staffSymbol/stroke/thickness" 2.0)
+              (:list "/staffSymbol/rotation" 0.0))))))
+         (:object
+          (:class osc-bundle)
+          (:slots
+           ((:item-time nil)
+            (:item-internal-time 0)
+            (:item-type 0)
+            (:date 0)
+            (:attributes nil)
+            (:messages
+             (:list
               (:list "/type" "circle")
               (:list "/x" 0)
               (:list "/y" 200.0)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1927,7 +2133,8 @@
               (:list "/y" 219.47092)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1943,7 +2150,8 @@
               (:list "/y" 235.8678)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1959,7 +2167,8 @@
               (:list "/y" 246.60196)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1975,7 +2184,8 @@
               (:list "/y" 249.97869)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -1991,7 +2201,8 @@
               (:list "/y" 245.46488)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2007,7 +2218,8 @@
               (:list "/y" 233.77317)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2023,7 +2235,8 @@
               (:list "/y" 216.7494)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2039,7 +2252,8 @@
               (:list "/y" 197.08129)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2055,7 +2269,8 @@
               (:list "/y" 177.87397)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2071,7 +2286,8 @@
               (:list "/y" 162.15985)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2087,7 +2303,8 @@
               (:list "/y" 152.41989)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2103,7 +2320,8 @@
               (:list "/y" 150.19178)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2119,7 +2337,8 @@
               (:list "/y" 155.82729)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2135,7 +2354,8 @@
               (:list "/y" 168.4367)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2151,7 +2371,8 @@
               (:list "/y" 186.02927)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2167,7 +2388,8 @@
               (:list "/y" 205.82752)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2183,7 +2405,8 @@
               (:list "/y" 224.70572)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2199,7 +2422,8 @@
               (:list "/y" 239.68343)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2215,7 +2439,8 @@
               (:list "/y" 248.396)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2231,7 +2456,8 @@
               (:list "/y" 249.46791)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2247,7 +2473,8 @@
               (:list "/y" 242.72994)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2263,7 +2490,8 @@
               (:list "/y" 229.24585)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2279,7 +2507,8 @@
               (:list "/y" 211.1445)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2295,7 +2524,8 @@
               (:list "/y" 191.28369)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2311,7 +2541,8 @@
               (:list "/y" 172.79898)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2327,7 +2558,8 @@
               (:list "/y" 158.60872)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2343,7 +2575,8 @@
               (:list "/y" 150.9532)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2359,7 +2592,8 @@
               (:list "/y" 151.04109)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2375,7 +2609,8 @@
               (:list "/y" 158.85849)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2391,7 +2626,8 @@
               (:list "/y" 173.17124)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2407,7 +2643,8 @@
               (:list "/y" 191.71964)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2423,7 +2660,8 @@
               (:list "/y" 211.57532)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2439,7 +2677,8 @@
               (:list "/y" 229.60352)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2455,7 +2694,8 @@
               (:list "/y" 242.95798)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2471,7 +2711,8 @@
               (:list "/y" 249.53034)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2487,7 +2728,8 @@
               (:list "/y" 248.28296)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2503,7 +2745,8 @@
               (:list "/y" 239.41278)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2519,7 +2762,8 @@
               (:list "/y" 224.32019)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2535,7 +2779,8 @@
               (:list "/y" 205.388)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2551,7 +2796,8 @@
               (:list "/y" 185.60515)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2567,7 +2813,8 @@
               (:list "/y" 168.0949)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2583,7 +2830,8 @@
               (:list "/y" 155.6218)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2599,7 +2847,8 @@
               (:list "/y" 150.15503)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2615,7 +2864,8 @@
               (:list "/y" 152.55767)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2631,7 +2881,8 @@
               (:list "/y" 162.45038)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2647,7 +2898,8 @@
               (:list "/y" 178.27136)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2663,7 +2915,8 @@
               (:list "/y" 197.5228)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2679,7 +2932,8 @@
               (:list "/y" 217.16533)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2695,7 +2949,8 @@
               (:list "/y" 234.09784)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 1))))))
+              (:list "/fill" 1)
+              (:list "/staff" "staff/0"))))))
          (:object
           (:class osc-bundle)
           (:slots
@@ -2711,7 +2966,8 @@
               (:list "/y" 245.64707)
               (:list "/w" 12)
               (:list "/h" 12)
-              (:list "/fill" 0))))))))))
+              (:list "/fill" 0)
+              (:list "/staff" "staff/0"))))))))))
      (:add-slots ((:palette-symbols nil) (:refresh-rate 100)))))
    (:id 8))
   (:box
@@ -2719,10 +2975,10 @@
    (:type :function)
    (:group-id nil)
    (:name "nth")
-   (:x 294)
-   (:y 313)
+   (:x 128)
+   (:y 480)
    (:w 55)
-   (:h 28)
+   (:h 30)
    (:color nil)
    (:border nil)
    (:roundness nil)
@@ -2748,8 +3004,8 @@
    (:type :object)
    (:group-id nil)
    (:name nil)
-   (:x 294)
-   (:y 362)
+   (:x 128)
+   (:y 512)
    (:w 151)
    (:h 110)
    (:color nil)
@@ -2781,33 +3037,50 @@
     (:output (:name "SELF") (:reactive nil))
     (:output (:name "DATE") (:reactive nil))
     (:output (:name "MESSAGES") (:reactive nil)))
-   (:window (:size nil) (:position nil))
+   (:window (:size (nil nil)) (:position (nil nil)))
    (:edition-params)
    (:value
     (:object
      (:class osc-bundle)
      (:slots
       ((:item-time nil)
-       (:item-internal-time 4400)
-       (:item-type 4400)
-       (:date 4400)
+       (:item-internal-time nil)
+       (:item-type nil)
+       (:date 0)
        (:attributes nil)
        (:messages
         (:list
-         (:list "/type" "circle")
-         (:list "/x" 220.00003)
-         (:list "/y" 152.41989)
-         (:list "/w" 12)
-         (:list "/h" 12)
-         (:list "/fill" 1)))))))
+         (:list "/type" "staff")
+         (:list "/x" -1.0)
+         (:list "/y" 193.0)
+         (:list "/w" 1032.0)
+         (:list "/h" 15.0)
+         (:list "/name" "staff")
+         (:list "/id" "staff/0")
+         (:list "/staff" "")
+         (:list "/color" 0.0 0.0 0.0 1.0)
+         (:list "/time/start" 0.0)
+         (:list "/time/duration" 10.32)
+         (:list "/staffSymbol/name" "rectangle")
+         (:list "/staffSymbol/type" "rectangle")
+         (:list "/staffSymbol/id" "rectangle/0")
+         (:list "/staffSymbol/staff" "")
+         (:list "/staffSymbol/x" 0.0)
+         (:list "/staffSymbol/y" 7.5)
+         (:list "/staffSymbol/w" 1032.0)
+         (:list "/staffSymbol/h" 15.0)
+         (:list "/staffSymbol/color" 0.0 0.0 0.0 1.0)
+         (:list "/staffSymbol/fill" 0)
+         (:list "/staffSymbol/stroke/thickness" 2.0)
+         (:list "/staffSymbol/rotation" 0.0)))))))
    (:id 10))
   (:box
    (:reference slider)
    (:type :interface)
    (:group-id nil)
    (:name "slider")
-   (:x 341)
-   (:y 258)
+   (:x 130)
+   (:y 437)
    (:w 242)
    (:h 34)
    (:color (:color 0.9 0.9 0.9 1.0))
@@ -2817,16 +3090,234 @@
    (:max-value 39)
    (:increment 1)
    (:orientation :horizontal)
-   (:inputs)
+   (:inputs
+    (:input
+     (:type :key)
+     (:name "MAX-VALUE")
+     (:value nil)
+     (:reactive nil)))
    (:outputs (:output (:name "value") (:reactive t)))
+   (:value 39)
    (:id 11))
+  (:box
+   (:reference osc-bundle)
+   (:type :object)
+   (:group-id nil)
+   (:name nil)
+   (:x 123)
+   (:y 212)
+   (:w 134)
+   (:h 40)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font (:font (:face "Calibri") (:size 12) (:style :italic)))
+   (:name nil)
+   (:display :hidden)
+   (:showname nil)
+   (:group-id nil)
+   (:lock nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "SELF")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "DATE")
+     (:value 0)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "MESSAGES")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs
+    (:output (:name "SELF") (:reactive nil))
+    (:output (:name "DATE") (:reactive nil))
+    (:output (:name "MESSAGES") (:reactive nil)))
+   (:window (:size (nil nil)) (:position (nil nil)))
+   (:edition-params)
+   (:value
+    (:object
+     (:class osc-bundle)
+     (:slots
+      ((:item-time nil)
+       (:item-internal-time nil)
+       (:item-type nil)
+       (:date 0)
+       (:attributes nil)
+       (:messages
+        (:list
+         (:list "/type" "staff")
+         (:list "/x" -1.0)
+         (:list "/y" 193.0)
+         (:list "/w" 1032.0)
+         (:list "/h" 15.0)
+         (:list "/name" "staff")
+         (:list "/id" "staff/0")
+         (:list "/color" 0.0 0.0 0.0 1.0)
+         (:list "/time/start" 0.0)
+         (:list "/time/duration" 10.32)
+         (:list "/staffSymbol/name" "rectangle")
+         (:list "/staffSymbol/type" "rectangle")
+         (:list "/staffSymbol/id" "rectangle/0")
+         (:list "/staffSymbol/x" 0.0)
+         (:list "/staffSymbol/y" 7.5)
+         (:list "/staffSymbol/w" 1032.0)
+         (:list "/staffSymbol/h" 15.0)
+         (:list "/staffSymbol/color" 0.5 0.5 0.5 0.5)
+         (:list "/staffSymbol/fill" 1)
+         (:list "/staffSymbol/stroke/thickness" 2.0)
+         (:list "/staffSymbol/rotation" 0.0)))))))
+   (:id 12))
+  (:box
+   (:reference textbuffer)
+   (:type :object)
+   (:group-id nil)
+   (:name nil)
+   (:x 173)
+   (:y 61)
+   (:w 126)
+   (:h 141)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font (:font (:face "Calibri") (:size 12) (:style :italic)))
+   (:name nil)
+   (:display :mini-view)
+   (:showname nil)
+   (:group-id nil)
+   (:lock :locked)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "SELF")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "CONTENTS")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :key)
+     (:name "READ-MODE")
+     (:value :lines-cols)
+     (:reactive nil)))
+   (:outputs
+    (:output (:name "SELF") (:reactive nil))
+    (:output (:name "CONTENTS") (:reactive nil))
+    (:output (:name "read-mode") (:reactive nil)))
+   (:window (:size (nil nil)) (:position (nil nil)))
+   (:edition-params (:read-mode :lines-cols))
+   (:value
+    (:object
+     (:class textbuffer)
+     (:slots
+      ((:contents
+        (:list
+         "\"/type\" \"staff\""
+         "\"/x\" -1.0"
+         "\"/y\" 193.0"
+         "\"/w\" 1032.0"
+         "\"/h\" 15.0"
+         "\"/name\" \"staff\""
+         "\"/id\" \"staff/0\""
+         "\"/color\" 0.0 0.0 0.0 1.0"
+         "\"/time/start\" 0.0"
+         "\"/time/duration\" 10.32"
+         "\"/staffSymbol/name\" \"rectangle\""
+         "\"/staffSymbol/type\" \"rectangle\""
+         "\"/staffSymbol/id\" \"rectangle/0\""
+         "\"/staffSymbol/x\" 0.0"
+         "\"/staffSymbol/y\" 7.5"
+         "\"/staffSymbol/w\" 1032.0"
+         "\"/staffSymbol/h\" 15.0"
+         "\"/staffSymbol/color\" 0.5 0.5 0.5 0.5"
+         "\"/staffSymbol/fill\" 1"
+         "\"/staffSymbol/stroke/thickness\" 2.0"
+         "\"/staffSymbol/rotation\" 0.0"
+         ""))))
+     (:add-slots ((:input-mode :lines-cols)))))
+   (:id 13))
+  (:box
+   (:reference cons)
+   (:type :function)
+   (:group-id nil)
+   (:name "cons")
+   (:x 231)
+   (:y 275)
+   (:w 60)
+   (:h 30)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "CAR")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "CDR")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 14))
+  (:box
+   (:reference length)
+   (:type :function)
+   (:group-id nil)
+   (:name "length")
+   (:x 217)
+   (:y 406)
+   (:w 69)
+   (:h 30)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "SEQUENCE")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 15))
+  (:comment
+   (:x 285)
+   (:y 517)
+   (:w 87)
+   (:h 53)
+   (:fgcolor nil)
+   (:bgcolor nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font
+    (:font-or-nil
+     (:font (:font (:face "Calibri") (:size 14) (:style :italic)))
+     (:t-or-nil t)))
+   (:align nil)
+   (:text "symbol inspector")
+   (:id 16))
   (:box
    (:reference (:out (:type omout) (:name "out") (:index 1) (:doc "")))
    (:type :io)
    (:group-id nil)
    (:name "out")
-   (:x 302)
-   (:y 494)
+   (:x 403)
+   (:y 460)
    (:w 40)
    (:h 42)
    (:color
@@ -2843,7 +3334,7 @@
      (:value nil)
      (:reactive nil)))
    (:outputs)
-   (:id 12)))
+   (:id 17)))
  (:connections
   (:connection
    (:from (:box 0 :out 0))
@@ -2867,7 +3358,7 @@
    (:attributes (:color nil :style nil :modif nil)))
   (:connection
    (:from (:box 4 :out 0))
-   (:to (:box 8 :in 1))
+   (:to (:box 14 :in 1))
    (:attributes (:color nil :style nil :modif nil)))
   (:connection
    (:from (:box 5 :out 0))
@@ -2882,18 +3373,38 @@
    (:to (:box 1 :in 2))
    (:attributes (:color nil :style nil :modif nil)))
   (:connection
+   (:from (:box 8 :out 0))
+   (:to (:box 17 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
    (:from (:box 8 :out 1))
    (:to (:box 9 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 8 :out 1))
+   (:to (:box 15 :in 0))
    (:attributes (:color nil :style nil :modif nil)))
   (:connection
    (:from (:box 9 :out 0))
    (:to (:box 10 :in 0))
    (:attributes (:color nil :style nil :modif nil)))
   (:connection
-   (:from (:box 10 :out 0))
-   (:to (:box 12 :in 0))
-   (:attributes (:color nil :style nil :modif nil)))
-  (:connection
    (:from (:box 11 :out 0))
    (:to (:box 9 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 12 :out 0))
+   (:to (:box 14 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 13 :out 1))
+   (:to (:box 12 :in 2))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 14 :out 0))
+   (:to (:box 8 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 15 :out 0))
+   (:to (:box 11 :in 0))
    (:attributes (:color nil :style nil :modif nil)))))

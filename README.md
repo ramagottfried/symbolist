@@ -3,9 +3,7 @@ SYMBOLIST is a graphic notation environment for music and multimedia. SYMBOLIST 
 
 See: [Symbolist: An Open Authoring Environment for End-user Symbolic Notation](https://hal.archives-ouvertes.fr/hal-01804933). R. Gottfried, J. Bresson. Int. Conference on Technologies for Music Notation and Representation (TENOR), 2018.
 
-<img src="https://github.com/ramagottfried/symbolist/blob/master/docs/images/symbolist-staves.png" width=300>
-<img src="https://github.com/ramagottfried/symbolist/blob/master/docs/images/symbolist-max.png" width=300>
-<img src="https://github.com/ramagottfried/symbolist/blob/master/docs/images/glissando-notes.png" width=300>
+<img src="https://github.com/ramagottfried/symbolist/blob/master/docs/images/symbolist-staves.png" height=200> <img src="https://github.com/ramagottfried/symbolist/blob/master/docs/images/symbolist-max.png" height=200> <img src="https://github.com/ramagottfried/symbolist/blob/master/docs/images/glissando-notes.png" height=200>
 
 ## Pre-requisites
 * **Warning!** For now, symbolist have been compiled, tested and executed only under the macOS platform (starting with version 10.10 Yosemite). Thus, all instructions and informations published here and in the [SYMBOLIST Wiki](https://github.com/ramagottfried/symbolist/wiki) are worth only for this paltform.  

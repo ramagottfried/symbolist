@@ -1,9 +1,6 @@
 (in-package :cl-user)
 
-
 (defpackage :symbolist)
-
-(compile&load (merge-pathnames "symbolist_api" *load-pathname*))
 
 (push :symbolist *features*)
 

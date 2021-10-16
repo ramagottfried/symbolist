@@ -1,6 +1,7 @@
 
 (in-package :om)
 
+(require-library "odot")
 
 ;; test-util
 (defun gen-score-symbols (n)

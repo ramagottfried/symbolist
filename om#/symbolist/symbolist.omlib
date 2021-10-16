@@ -1,26 +1,21 @@
 ;;;===========================================================================
 ;;; Symbolist
-;;; graphical notation editor (om version)
 ;;; J. Bresson, R. Gottfried (2017)
 ;;;===========================================================================
 
 (:om-lib
  
- (:version 0.1)
+ (:version 0.2)
 
- (:doc "graphical notation editor (om version)")
+ (:doc "Symbolist: Graphical notation editor")
 
  (:author "J. Bresson, R. Gottfried (2017)")
 
-;;; SOURCE FILES TO LOAD
-(:source-files
+ (:source-files
   (:pathname (:directory (:relative "sources")) (:name "symbolist-api"))
   (:pathname (:directory (:relative "sources")) (:name "symbolist-init"))
-  (:pathname (:directory (:relative "sources")) (:name "symbolist-object"))
-)
+  (:pathname (:directory (:relative "sources")) (:name "symbolist-object")))
 
-;;; DECLATRED SYMBOLS VISIBLE AND ACCESSIBLE THROUGH THE OM PACKAGE TREE
-(:symbols
-  (:classes symbolist)
- )
+ (:symbols
+  (:classes symbolist))
 )

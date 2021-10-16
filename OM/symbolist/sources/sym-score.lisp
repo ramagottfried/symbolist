@@ -41,7 +41,7 @@
     (loop for symbol in symbol-list 
           for i = 0 then (+ i 1) do  
           (setf (fli:dereference ptr :index i :type :pointer)
-                (make-foreign-bundle-s-pointer (messages symbol) (date symbol))))
+                (odot::osc_make_foreign_bundle_s (messages symbol) (date symbol))))
     ptr))
 
 (defun free-bundle-array-from-symbols (ptr symbol-list)
@@ -118,7 +118,7 @@
                   (let ((osc_b (symbolist::symbolistGetPaletteSymbol (symbolist-handler self) i)))
                     (unwind-protect 
                         (make-instance 'osc-bundle
-                                       :messages (om::decode-bundle-s-pointer-data osc_b))
+                                       :messages (odot::osc_decode_bundle_s_data osc_b))
                       (odot::osc_bundle_s_deepfree osc_b)))))
       )))
 
@@ -165,7 +165,7 @@
                 (unwind-protect 
                     (setf (nth n (symbols sscore))
                           (make-instance 'osc-bundle
-                                         :messages (om::decode-bundle-s-pointer-data osc_b)))
+                                         :messages (odot::osc_decode_bundle_s_data osc_b)))
                   (odot::osc_bundle_s_deepfree osc_b)))
             
               ;; else update all the symbols
@@ -174,7 +174,7 @@
                       (let ((osc_b (symbolist::symbolistGetSymbol win-ptr i)))
                         (unwind-protect 
                             (make-instance 'osc-bundle
-                                           :messages (om::decode-bundle-s-pointer-data osc_b))
+                                           :messages (odot::osc_decode_bundle_s_data osc_b))
                           (odot::osc_bundle_s_deepfree osc_b)))))
             )
           (report-modifications ed)

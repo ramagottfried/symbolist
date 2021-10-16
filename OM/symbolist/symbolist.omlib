@@ -15,7 +15,7 @@
 ;;; SOURCE FILES TO LOAD
 (:source-files
   (:pathname (:directory (:relative "sources" "c-lib")) (:name "load-symbolist"))
-  (:pathname (:directory (:relative "sources" "c-lib")) (:name "symbolist_api"))
+  (:pathname (:directory (:relative "sources" "c-lib")) (:name "symbolist-api"))
   (:pathname (:directory (:relative "sources")) (:name "sym-score"))
 )
 
@@ -24,5 +24,3 @@
   (:classes symbolist)
  )
 )
-
-

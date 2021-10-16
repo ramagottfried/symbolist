@@ -1,7 +1,8 @@
+;;;==============================
+;;; Symbolist wrapper for OM#
+;;;==============================
 
 (in-package :om)
-
-(require-library "odot")
 
 ;; test-util
 (defun gen-score-symbols (n)
@@ -65,9 +66,9 @@
     ))
 
 
-;;========================================================================
+;;==============================================
 ;; EDITOR 
-;;========================================================================
+;;==============================================
 
 (defmethod object-has-editor ((self symbolist)) t)
 (defmethod get-editor-class ((self symbolist)) 'sym-editor)

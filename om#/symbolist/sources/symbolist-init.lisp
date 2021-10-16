@@ -1,8 +1,11 @@
-(in-package :cl-user)
+;;;==============================
+;;; Symbolist wrapper for OM#
+;;;==============================
 
-(defpackage :symbolist)
 
-(push :symbolist *features*)
+(in-package :om)
+
+(require-library "odot")
 
 (defun load-symbolist-lib ()
   (let ((libpath (merge-pathnames 
@@ -13,7 +16,7 @@
            `((:macosx ,libpath)
              (:windows ,(om-fi::om-foreign-library-pathname "symbolist.dll"))
              (t (:default "symbolist")))))
-    (print (symbolist::symbolistInfo))
+    (push :symbolist *features*)
     ))
 
 ;;(probe-file "C:\\Program Files (x86)\\LispWorks\\omspat.dll")
@@ -21,6 +24,9 @@
 
 ;; load now
 (load-symbolist-lib)
+
+(print (symbolist::symbolistInfo))
+
 
 ;; load at OM startup
 ;; #+macosx(om-fi::add-foreign-loader 'load-spat-lib)

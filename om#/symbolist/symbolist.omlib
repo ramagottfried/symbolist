@@ -14,9 +14,9 @@
 
 ;;; SOURCE FILES TO LOAD
 (:source-files
-  (:pathname (:directory (:relative "sources" "c-lib")) (:name "load-symbolist"))
-  (:pathname (:directory (:relative "sources" "c-lib")) (:name "symbolist-api"))
-  (:pathname (:directory (:relative "sources")) (:name "sym-score"))
+  (:pathname (:directory (:relative "sources")) (:name "symbolist-api"))
+  (:pathname (:directory (:relative "sources")) (:name "symbolist-init"))
+  (:pathname (:directory (:relative "sources")) (:name "symbolist-object"))
 )
 
 ;;; DECLATRED SYMBOLS VISIBLE AND ACCESSIBLE THROUGH THE OM PACKAGE TREE

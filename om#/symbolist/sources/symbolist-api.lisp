@@ -1,4 +1,8 @@
+;;;==============================
+;;; Symbolist wrapper for OM#
+;;;==============================
 
+(defpackage :symbolist)
 
 (in-package :symbolist)
 
@@ -49,3 +53,8 @@
 (defun symbolist-handle-update-callback (s-comp-ptr n) 
   (declare (ignore s-comp-ptr n))
   (print "symbolist update callback undefined"))
+
+;;; to be redefined
+(defun symbolist-handle-transport-callback (s-comp-ptr n) 
+  (declare (ignore s-comp-ptr n))
+  (print "symbolist transport callback undefined"))
